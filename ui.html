@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: white;
+            margin: 0;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        button {
+            background-color: #0d99ff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            transition: background-color 0.2s;
+            margin-bottom: 12px;
+        }
+
+        button:hover {
+            background-color: #007be5;
+        }
+
+        .secondary {
+            background-color: transparent;
+            border: 1px solid #444;
+        }
+
+        .secondary:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Figma Designer</h2>
+    <div id="controls">
+        <button id="create-btn">Create</button>
+        <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px;">
+            <button id="capture-btn" style="margin-bottom: 0; flex: 1;">Download JSON</button>
+            <label
+                style="font-size: 11px; display: flex; align-items: center; justify-content: flex-end; cursor: pointer; color: #888;">
+                <input type="checkbox" id="detailed-checkbox" style="margin-right: 4px;"> Recursive (Deep)
+            </label>
+        </div>
+        <p style="font-size: 11px; color: #888; margin-top: 8px; line-height: 1.4;">
+            <b>Note:</b> For auto-saving without dialogs, run <code>npm run capture</code> in your terminal.
+        </p>
+        <div style="margin-top: 12px; border-top: 1px solid #333; padding-top: 12px;">
+            <label style="font-size: 11px; display: flex; align-items: center; cursor: pointer; color: #aaa;">
+                <input type="checkbox" id="bridge-checkbox" style="margin-right: 4px;"> Auto-Connect Terminal
+            </label>
+            <div id="bridge-status" style="font-size: 10px; color: #666; margin-left: 20px; margin-top: 2px;">
+                Disconnected</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('create-btn').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'create' } }, '*')
+        }
+
+        document.getElementById('capture-btn').onclick = () => {
+            const isDetailed = document.getElementById('detailed-checkbox').checked;
+            parent.postMessage({ pluginMessage: { type: 'capture', detailed: isDetailed } }, '*')
+        }
+
+        // BRIDGE POLLING LOGIC
+        let pollInterval = null;
+        const bridgeCheckbox = document.getElementById('bridge-checkbox');
+        const bridgeStatus = document.getElementById('bridge-status');
+
+        bridgeCheckbox.onchange = () => {
+            if (bridgeCheckbox.checked) {
+                startPolling();
+            } else {
+                stopPolling();
+            }
+        };
+
+        function startPolling() {
+            bridgeStatus.textContent = "Connecting to localhost:3001...";
+            pollInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('http://127.0.0.1:3001/poll');
+                    const json = await response.json();
+
+                    bridgeStatus.textContent = "Connected. Listening...";
+                    bridgeStatus.style.color = "#4CAF50";
+
+                    if (json.command === 'capture') {
+                        // Trigger Capture
+                        const isDetailed = document.getElementById('detailed-checkbox').checked;
+                        parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed } }, '*');
+                    }
+                } catch (e) {
+                    bridgeStatus.textContent = "Connection Failed (Run 'npm run bridge')";
+                    bridgeStatus.style.color = "#f44336";
+                }
+            }, 1000);
+        }
+
+        function stopPolling() {
+            if (pollInterval) clearInterval(pollInterval);
+            pollInterval = null;
+            bridgeStatus.textContent = "Disconnected";
+            bridgeStatus.style.color = "#666";
+        }
+
+        window.onmessage = async (event) => {
+            const msg = event.data.pluginMessage;
+
+            // Standard Download
+            if (msg.type === 'capture-download') {
+                const jsonStr = JSON.stringify(msg.data, null, 2);
+                const blob = new Blob([jsonStr], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = msg.fileName;
+                a.click();
+
+                URL.revokeObjectURL(url);
+            }
+
+            // Bridge Result -> Send to Server
+            if (msg.type === 'capture-bridge-result') {
+                try {
+                    await fetch('http://127.0.0.1:3001/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            projectName: msg.projectName,
+                            data: msg.data
+                        })
+                    });
+                } catch (e) {
+                    console.error("Failed to send data to bridge", e);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
