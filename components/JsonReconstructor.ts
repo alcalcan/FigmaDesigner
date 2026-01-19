@@ -1,14 +1,128 @@
 import { BaseComponent, ComponentProps } from "./BaseComponent";
+// import frame2609217 from "../tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json";
+
+export interface SerializedNode {
+    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE";
+    name?: string;
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    rotation?: number;
+    visible?: boolean;
+    opacity?: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    blendMode?: any;
+    locked?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constraints?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fills?: (any & { assetRef?: string })[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    strokes?: any[];
+    strokeWeight?: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    strokeAlign?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    effects?: any[];
+    cornerRadius?: number | "mixed";
+
+    layout?: {
+        mode?: "NONE" | "HORIZONTAL" | "VERTICAL";
+        sizing?: {
+            horizontal?: "AUTO" | "FIXED";
+            vertical?: "AUTO" | "FIXED";
+        };
+        alignment?: {
+            primary?: "MIN" | "MAX" | "CENTER" | "SPACE_BETWEEN";
+            counter?: "MIN" | "MAX" | "CENTER" | "BASELINE";
+        };
+        spacing?: number;
+        padding?: {
+            top?: number;
+            right?: number;
+            bottom?: number;
+            left?: number;
+        };
+    };
+
+    // Layout Positioning
+    layoutAlign?: "MIN" | "MAX" | "CENTER" | "STRETCH" | "INHERIT";
+    layoutGrow?: number;
+
+    text?: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fontName?: any;
+        fontSize?: number | "mixed";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        textAlignHorizontal?: any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        textAlignVertical?: any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        textAutoResize?: any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        letterSpacing?: any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        lineHeight?: any;
+        characters?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fills?: any[];
+    };
+
+    corners?: {
+        topLeft?: number;
+        topRight?: number;
+        bottomRight?: number;
+        bottomLeft?: number;
+    };
+
+    // Vector support
+    vectorPaths?: { windingRule: "NONZERO" | "EVENODD", data: string }[];
+
+    children?: SerializedNode[];
+}
+
+// Internal registry for data sources
+const JsonRegistry: Record<string, SerializedNode> = {
+    // "tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json": frame2609217 as unknown as SerializedNode
+};
 
 export class JsonReconstructor extends BaseComponent {
-    create(props: ComponentProps): SceneNode {
-        const frame = figma.createFrame();
-        frame.x = props.x;
-        frame.y = props.y;
-        return frame;
+    private data: SerializedNode;
+    private jsonPath: string;
+
+    constructor(jsonPath: string) {
+        super();
+        this.jsonPath = jsonPath;
+        // Default initialization to avoid build errors
+        this.data = { type: "FRAME", name: "Empty Registry Result" };
+
+        if (jsonPath) {
+            const registryData = JsonRegistry[jsonPath as keyof typeof JsonRegistry];
+            if (registryData) {
+                this.data = registryData;
+            } else {
+                console.error(`No JSON data found for path: ${jsonPath}`);
+                console.warn("Available paths:", Object.keys(JsonRegistry));
+            }
+        }
     }
 
-    async reconstruct(data: any, parent?: FrameNode | GroupNode | SectionNode): Promise<SceneNode | null> {
+    public setData(data: SerializedNode) {
+        this.data = data;
+    }
+
+    async create(props: ComponentProps & { assets?: Record<string, string> }): Promise<SceneNode> {
+        const result = await this.reconstruct(this.data, undefined, props.assets);
+        if (result) {
+            result.x = props.x;
+            result.y = props.y;
+            return result;
+        }
+        throw new Error("Failed to reconstruct node from JSON data");
+    }
+
+    async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode, assets?: Record<string, string>): Promise<SceneNode | null> {
         console.log(`Reconstructing node: ${data.name} (${data.type})`);
         let node: SceneNode | null = null;
 
@@ -32,7 +146,7 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 2. Apply Basic Properties
-            node.name = data.name || node.name;
+            if (data.name) node.name = data.name;
 
             // Set position and size
             // For children, x/y are relative to parent
@@ -47,27 +161,48 @@ export class JsonReconstructor extends BaseComponent {
             node.visible = data.visible !== undefined ? data.visible : true;
             node.opacity = data.opacity !== undefined ? data.opacity : 1;
 
-            if ("blendMode" in node) {
+            if ("blendMode" in node && data.blendMode) {
                 node.blendMode = data.blendMode || "PASS_THROUGH";
             }
             if ("locked" in node) {
                 node.locked = data.locked || false;
             }
 
-            // 3. Apply Constraints
+            // 3. Apply Constraints and Layout Positioning
             if ("constraints" in node && data.constraints) {
                 node.constraints = data.constraints;
+            }
+            if ("layoutAlign" in node && data.layoutAlign) {
+                node.layoutAlign = data.layoutAlign;
+            }
+            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
+                node.layoutGrow = data.layoutGrow;
             }
 
             // 4. Apply Visual Properties
             // Important: Apply fills carefully. Sometimes boundVariables cause issues if missing.
             if ("fills" in node && data.fills) {
                 try {
-                    node.fills = data.fills;
+                    // Hydrate images if asset mapping is provided
+                    const hydratedFills = await Promise.all(data.fills.map(async (fill) => {
+                        if (fill.type === "IMAGE" && fill.assetRef && assets && assets[fill.assetRef]) {
+                            const base64Content = assets[fill.assetRef];
+                            const bytes = figma.base64Decode(base64Content);
+                            const image = figma.createImage(bytes);
+                            return {
+                                ...fill,
+                                imageHash: image.hash
+                            };
+                        }
+                        return fill;
+                    }));
+                    node.fills = hydratedFills;
                 } catch (e) {
                     console.warn(`Failed to apply fills to ${node.name}, falling back to basic colors`);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     node.fills = data.fills.map((f: any) => {
-                        const { boundVariables: _, ...rest } = f;
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        const { boundVariables: _, assetRef: __, ...rest } = f;
                         return rest;
                     });
                 }
@@ -80,8 +215,20 @@ export class JsonReconstructor extends BaseComponent {
             if ("effects" in node && data.effects) {
                 node.effects = data.effects;
             }
-            if ("cornerRadius" in node && data.cornerRadius !== undefined && data.cornerRadius !== "mixed") {
-                node.cornerRadius = data.cornerRadius;
+            if ("cornerRadius" in node) {
+                if (data.cornerRadius !== undefined && data.cornerRadius !== "mixed") {
+                    node.cornerRadius = data.cornerRadius;
+                } else if (data.corners) {
+                    if ("topLeftRadius" in node) node.topLeftRadius = data.corners.topLeft || 0;
+                    if ("topRightRadius" in node) node.topRightRadius = data.corners.topRight || 0;
+                    if ("bottomRightRadius" in node) node.bottomRightRadius = data.corners.bottomRight || 0;
+                    if ("bottomLeftRadius" in node) node.bottomLeftRadius = data.corners.bottomLeft || 0;
+                }
+            }
+
+            // 4.5 Apply Vector Paths
+            if (node.type === "VECTOR" && data.vectorPaths) {
+                (node as VectorNode).vectorPaths = data.vectorPaths;
             }
 
             // 5. Apply Layout Properties (Auto Layout)
@@ -141,18 +288,31 @@ export class JsonReconstructor extends BaseComponent {
                 if (data.text.textAlignHorizontal) textNode.textAlignHorizontal = data.text.textAlignHorizontal;
                 if (data.text.textAlignVertical) textNode.textAlignVertical = data.text.textAlignVertical;
                 if (data.text.textAutoResize) textNode.textAutoResize = data.text.textAutoResize;
-                if (data.text.letterSpacing && data.text.letterSpacing !== "mixed") textNode.letterSpacing = data.text.letterSpacing;
-                if (data.text.lineHeight && data.text.lineHeight !== "mixed") textNode.lineHeight = data.text.lineHeight;
+                if (data.text.letterSpacing && data.text.letterSpacing !== "mixed") {
+                    textNode.letterSpacing = typeof data.text.letterSpacing === "number"
+                        ? { value: data.text.letterSpacing, unit: "PIXELS" }
+                        : data.text.letterSpacing;
+                }
+                if (data.text.lineHeight && data.text.lineHeight !== "mixed") {
+                    textNode.lineHeight = typeof data.text.lineHeight === "number"
+                        ? { value: data.text.lineHeight, unit: "PIXELS" }
+                        : data.text.lineHeight;
+                }
 
                 // Characters MUST be set after font load and other properties
                 textNode.characters = data.text.characters || "";
+
+                // Apply text fills last (to ensure font load doesn't reset them)
+                if (data.text.fills) {
+                    textNode.fills = data.text.fills;
+                }
             }
 
             // 7. Handle Children (Recursion)
             if ("children" in node && data.children && data.children.length > 0) {
                 const container = node as FrameNode;
                 for (const childData of data.children) {
-                    await this.reconstruct(childData, container);
+                    await this.reconstruct(childData, container, assets);
                 }
             }
 

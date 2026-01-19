@@ -1,35 +1,37 @@
 import { JsonReconstructor } from "./components/JsonReconstructor";
-import { fullJsonData } from "./tools/full_json_data";
+// import { fullJsonData } from "./tools/full_json_data"; // Not loading here anymore
 
 export class Pipeline {
     async run() {
         console.log("Pipeline starting...");
-        const reconstructor = new JsonReconstructor();
 
-        // Use the full JSON data for reconstruction
-        // Note: Casting as any because the JSON might be literal and TS might complain about complex types
-        const data = fullJsonData as any;
+        // Pass the path to the JSON data
+        const reconstructor = new JsonReconstructor("tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json");
+
+        // Note: We don't have 'data' here anymore to calculate width/height for centering.
+        // We'll trust defaults or let JsonReconstructor handle positioning relative to (0,0) or passed coords.
 
         // Centering the reconstruction in the viewport
         const { x, y } = figma.viewport.center;
 
-        // If the data has width/height, use them to center. 
-        // Otherwise use defaults.
-        const width = data.width || 512;
-        const height = data.height || 216;
+        // Since we don't not have access to the raw data here, we use default dimensions for centering.
+        const width = 512;
+        const height = 216;
 
-        data.x = x - (width / 2);
-        data.y = y - (height / 2);
+        const targetX = x - (width / 2);
+        const targetY = y - (height / 2);
 
-        console.log(`Starting reconstruction of ${data.name} at (${data.x}, ${data.y})`);
+        console.log(`Starting reconstruction of TableStat at (${targetX}, ${targetY})`);
 
-        const result = await reconstructor.reconstruct(data);
+        const result = await reconstructor.create({ x: targetX, y: targetY });
 
         if (result) {
+            figma.currentPage.appendChild(result);
             figma.viewport.scrollAndZoomIntoView([result]);
-            console.log("Pipeline run complete: Full Figma structure reconstructed.");
+            console.log("Pipeline run complete: TableStat reconstructed.");
         } else {
             console.error("Pipeline failed: Reconstruction returned no node.");
         }
     }
 }
+

@@ -4,5 +4,5 @@ export interface ComponentProps {
 }
 
 export abstract class BaseComponent {
-  abstract create(props: ComponentProps): SceneNode;
+  abstract create(props: ComponentProps): SceneNode | Promise<SceneNode>;
 }

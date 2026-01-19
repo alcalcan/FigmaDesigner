@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 // Polyfill EventSource for Node.js environment
-global.EventSource = EventSource as any;
+global.EventSource = EventSource as unknown as typeof global.EventSource;
 
 async function main() {
     console.log("Connecting to Figma MCP Server for Capture...");
@@ -38,12 +38,12 @@ async function main() {
             try {
                 // 1. Get Design Context
                 // We use a short timeout to avoid hanging if the server is busy
-                const result: any = await client.callTool({
+                const result = await client.callTool({
                     name: "get_design_context",
                     arguments: {}
                 });
 
-                const content = result.content?.[0]?.text;
+                const content = (result.content as { text: string }[])?.[0]?.text;
                 if (!content) {
                     // Nothing selected
                     if (lastNodeId !== null) {
@@ -73,7 +73,7 @@ async function main() {
                 lastNodeId = currentNodeId;
 
                 // 3. Extract Meta Data
-                let projectName = "Default_Project";
+                const projectName = "Default_Project";
                 // Attempt to match project name if available in content (depends on MCP tool output)
                 // Assuming it's not easily available, we stick to Default or try to infer.
 
@@ -101,7 +101,7 @@ async function main() {
 
                 console.log(`   ✅ Auto-saved to: tools/extraction/${sanitaryProjectName}/${filename}`);
 
-            } catch (err: any) {
+            } catch (err: unknown) {
                 // Ignore transient errors during polling (e.g. rate limits or connection blips)
             }
         }, 1000); // Poll every 1 second

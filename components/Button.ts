@@ -28,7 +28,6 @@ export class Button extends BaseComponent {
             frame.fills = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
         }
 
-        const text = figma.createText();
         // We need to load the font before setting characters
         // This will be handled by the caller or we need to await it. 
         // Since create is synchronous here, we might need to handle async font loading differently.

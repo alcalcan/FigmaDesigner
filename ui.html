@@ -4,112 +4,434 @@
 <head>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            padding: 20px;
-            background-color: #1e1e1e;
-            color: white;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 24px;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
+            user-select: none;
         }
 
         h2 {
             margin-top: 0;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            display: block;
         }
 
         button {
             background-color: #0d99ff;
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
             width: 100%;
-            transition: background-color 0.2s;
-            margin-bottom: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         button:hover {
             background-color: #007be5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 153, 255, 0.3);
         }
 
-        .secondary {
-            background-color: transparent;
-            border: 1px solid #444;
+        button:active {
+            transform: translateY(0);
         }
 
-        .secondary:hover {
-            background-color: #333;
+        button.secondary {
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border: 1px solid #3c3c3c;
+        }
+
+        button.secondary:hover {
+            background-color: #383838;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        button.success {
+            background-color: #1ed760;
+            color: #000;
+        }
+
+        button.success:hover {
+            background-color: #1fdf64;
+            box-shadow: 0 4px 12px rgba(30, 215, 96, 0.3);
+        }
+
+        .card {
+            background: #1e1e1e;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #3d3d3d;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #444;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #1ed760;
+            box-shadow: 0 0 8px #1ed760;
+        }
+
+        .dot.pending {
+            background-color: #f5a623;
+            box-shadow: 0 0 8px #f5a623;
+        }
+
+        .dot.error {
+            background-color: #ff4d4d;
+            box-shadow: 0 0 8px #ff4d4d;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #aaa;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+
+        .checkbox-row input {
+            cursor: pointer;
+        }
+
+        code {
+            background: #2a2a2a;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #0d99ff;
         }
     </style>
 </head>
 
 <body>
     <h2>Figma Designer</h2>
-    <div id="controls">
-        <button id="create-btn">Create</button>
-        <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px;">
-            <button id="capture-btn" style="margin-bottom: 0; flex: 1;">Download JSON</button>
-            <label
-                style="font-size: 11px; display: flex; align-items: center; justify-content: flex-end; cursor: pointer; color: #888;">
-                <input type="checkbox" id="detailed-checkbox" style="margin-right: 4px;"> Recursive (Deep)
-            </label>
-        </div>
-        <p style="font-size: 11px; color: #888; margin-top: 8px; line-height: 1.4;">
-            <b>Note:</b> For auto-saving without dialogs, run <code>npm run capture</code> in your terminal.
-        </p>
-        <div style="margin-top: 12px; border-top: 1px solid #333; padding-top: 12px;">
-            <label style="font-size: 11px; display: flex; align-items: center; cursor: pointer; color: #aaa;">
-                <input type="checkbox" id="bridge-checkbox" style="margin-right: 4px;"> Auto-Connect Terminal
-            </label>
-            <div id="bridge-status" style="font-size: 10px; color: #666; margin-left: 20px; margin-top: 2px;">
-                Disconnected</div>
+
+    <div class="section">
+        <label class="section-label">Pipeline Control</label>
+        <button id="create-btn">
+            Generate from Pipeline
+        </button>
+    </div>
+
+    <div class="section">
+        <label class="section-label">Generate from JSON</label>
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div id="file-browser-header"
+                style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
+                <span style="font-size: 11px; font-weight: 600; color: #888;">Extracted Files</span>
+                <button id="refresh-files-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+            </div>
+            <div id="file-list" style="max-height: 150px; overflow-y: auto; background: #1e1e1e;">
+                <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
+                    Connect to server to see files
+                </div>
+            </div>
+            <div id="file-actions"
+                style="padding: 12px; border-top: 1px solid #2a2a2a; background: #252525; display: none;">
+                <button id="generate-from-selected-btn" class="success" style="font-size: 12px;">Generate
+                    Selected</button>
+            </div>
         </div>
     </div>
 
+    <div class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <label class="section-label" style="margin-bottom: 0;">Bridge Server</label>
+            <div class="status-badge">
+                <div id="status-dot" class="dot"></div>
+                <span id="status-text">Disconnected</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <button id="connect-btn" class="secondary">Connect to Server</button>
+            <div id="bridge-active-tools"
+                style="display: none; margin-top: 16px; border-top: 1px solid #2a2a2a; padding-top: 16px;">
+                <button id="sync-btn" class="success">Capture Sync (to Disk)</button>
+                <div style="margin-top: 12px;">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="detailed-checkbox"> Recursive (Deep Capture)
+                    </label>
+                </div>
+            </div>
+            <div id="hint-text"
+                style="font-size: 10px; color: #555; margin-top: 12px; text-align: center; line-height: 1.4;">
+                Requires <code>npm run dev</code> to be running in terminal.
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="opacity: 0.5;">
+        <label class="section-label">Legacy Tools</label>
+        <button id="capture-btn" class="secondary" style="font-size: 12px; padding: 8px;">Download JSON
+            (Manual)</button>
+    </div>
+
     <script>
-        document.getElementById('create-btn').onclick = () => {
+        const createBtn = document.getElementById('create-btn');
+        const connectBtn = document.getElementById('connect-btn');
+        const syncBtn = document.getElementById('sync-btn');
+        const captureBtn = document.getElementById('capture-btn');
+        const detailedCheckbox = document.getElementById('detailed-checkbox');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const bridgeActiveTools = document.getElementById('bridge-active-tools');
+        const hintText = document.getElementById('hint-text');
+
+        // File Browser Elements
+        const fileList = document.getElementById('file-list');
+        const refreshFilesBtn = document.getElementById('refresh-files-btn');
+        const fileActions = document.getElementById('file-actions');
+        const generateSelectedBtn = document.getElementById('generate-from-selected-btn');
+
+        let pollInterval = null;
+        let selectedFilePath = null;
+
+        function showFeedback(btn, originalText, successText = "Captured!") {
+            const prevText = btn.textContent;
+            btn.textContent = successText;
+            const originalColor = btn.style.backgroundColor;
+            const originalBoxShadow = btn.style.boxShadow;
+
+            // Special styling for feedback state if it's the sync-btn
+            if (btn.id === 'sync-btn' || btn.id === 'generate-from-selected-btn') {
+                btn.style.backgroundColor = "#1db954"; // Brighter green
+            }
+
+            setTimeout(() => {
+                btn.textContent = originalText || prevText;
+                btn.style.backgroundColor = originalColor;
+                btn.style.boxShadow = originalBoxShadow;
+            }, 2000);
+        }
+
+        createBtn.onclick = () => {
             parent.postMessage({ pluginMessage: { type: 'create' } }, '*')
         }
 
-        document.getElementById('capture-btn').onclick = () => {
-            const isDetailed = document.getElementById('detailed-checkbox').checked;
+        captureBtn.onclick = () => {
+            const isDetailed = detailedCheckbox.checked;
             parent.postMessage({ pluginMessage: { type: 'capture', detailed: isDetailed } }, '*')
+            // We'll trigger feedback when the download starts (approximate)
+            showFeedback(captureBtn, "Download JSON (Manual)");
         }
 
-        // BRIDGE POLLING LOGIC
-        let pollInterval = null;
-        const bridgeCheckbox = document.getElementById('bridge-checkbox');
-        const bridgeStatus = document.getElementById('bridge-status');
+        syncBtn.onclick = () => {
+            const isDetailed = detailedCheckbox.checked;
+            parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed } }, '*')
+            // Feedback will be triggered on result message for precision, 
+            // but let's do immediate for responsiveness too
+            showFeedback(syncBtn, "Capture Sync (to Disk)");
+        }
 
-        bridgeCheckbox.onchange = () => {
-            if (bridgeCheckbox.checked) {
+        refreshFilesBtn.onclick = () => {
+            loadFiles();
+        }
+
+        generateSelectedBtn.onclick = async () => {
+            if (!selectedFilePath) return;
+
+            generateSelectedBtn.textContent = "Hydrating...";
+            generateSelectedBtn.disabled = true;
+
+            try {
+                const response = await fetch(`http://127.0.0.1:3001/read?path=${encodeURIComponent(selectedFilePath)}`);
+                const data = await response.json();
+
+                // 1. Find all asset references
+                const assetPaths = new Set();
+                const findAssets = (obj) => {
+                    if (!obj || typeof obj !== 'object') return;
+                    if (obj.assetRef) assetPaths.add(obj.assetRef);
+                    Object.values(obj).forEach(findAssets);
+                };
+                findAssets(data);
+
+                // 2. Fetch assets from bridge
+                // SelectedFilePath looks like "Project/File.json"
+                const project = selectedFilePath.split('/')[0];
+                const assets = {};
+
+                if (assetPaths.size > 0) {
+                    await Promise.all(Array.from(assetPaths).map(async (assetPath) => {
+                        try {
+                            const assetRes = await fetch(`http://127.0.0.1:3001/read-asset?project=${encodeURIComponent(project)}&path=${encodeURIComponent(assetPath)}`);
+                            const assetData = await assetRes.json();
+                            if (assetData.content) {
+                                assets[assetPath] = assetData.content;
+                            }
+                        } catch (e) {
+                            console.error(`Failed to fetch asset: ${assetPath}`, e);
+                        }
+                    }));
+                }
+
+                parent.postMessage({ pluginMessage: { type: 'generate-from-json', data, assets } }, '*');
+                showFeedback(generateSelectedBtn, "Generate Selected", "Generated!");
+            } catch (e) {
+                console.error("Failed to read file for generation", e);
+                generateSelectedBtn.textContent = "Error!";
+            } finally {
+                generateSelectedBtn.disabled = false;
+            }
+        }
+
+        connectBtn.onclick = () => {
+            if (pollInterval === null) {
                 startPolling();
+                connectBtn.textContent = "Disconnect Server";
             } else {
                 stopPolling();
+                connectBtn.textContent = "Connect to Server";
             }
-        };
+        }
+
+        async function loadFiles() {
+            if (pollInterval === null) {
+                fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see files</div>';
+                fileActions.style.display = "none";
+                return;
+            }
+
+            fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading files...</div>';
+            fileActions.style.display = "none";
+            selectedFilePath = null; // Clear selection when reloading
+
+            try {
+                const response = await fetch('http://127.0.0.1:3001/list');
+                if (!response.ok) throw new Error(`Server returned ${response.status}`);
+                const { files } = await response.json();
+
+                if (files.length === 0) {
+                    fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">No extractions found</div>';
+                    fileActions.style.display = "none";
+                    return;
+                }
+
+                fileList.innerHTML = '';
+                files.reverse().forEach(file => {
+                    const item = document.createElement('div');
+                    item.style.cssText = 'padding: 10px 12px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s;';
+
+                    const name = document.createElement('div');
+                    name.textContent = file.name;
+                    name.style.color = '#eee';
+                    name.style.marginBottom = '2px';
+
+                    const meta = document.createElement('div');
+                    meta.textContent = `${file.project || "Default"}`;
+                    meta.style.fontSize = '9px';
+                    meta.style.color = '#555';
+
+                    item.appendChild(name);
+                    item.appendChild(meta);
+
+                    item.onclick = () => {
+                        // Deselect previous
+                        Array.from(fileList.children).forEach(child => {
+                            child.style.background = 'transparent';
+                            child.style.borderLeft = 'none';
+                        });
+
+                        // Select current
+                        item.style.background = '#2a2a2a';
+                        item.style.borderLeft = '3px solid #0d99ff';
+                        selectedFilePath = file.path;
+                        fileActions.style.display = "block";
+                    };
+
+                    fileList.appendChild(item);
+                });
+            } catch (e) {
+                console.error("Failed to load files", e);
+                fetch('http://127.0.0.1:3001/log', {
+                    method: 'POST',
+                    body: JSON.stringify({ error: e.message, stack: e.stack })
+                }).catch(() => { });
+                fileList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Failed to load: ${e.message}</div>`;
+            }
+        }
 
         function startPolling() {
-            bridgeStatus.textContent = "Connecting to localhost:3001...";
+            statusText.textContent = "Connecting...";
+            statusText.style.color = "#888";
+            statusDot.className = "dot pending";
+
             pollInterval = setInterval(async () => {
                 try {
                     const response = await fetch('http://127.0.0.1:3001/poll');
                     const json = await response.json();
 
-                    bridgeStatus.textContent = "Connected. Listening...";
-                    bridgeStatus.style.color = "#4CAF50";
+                    if (statusDot.className !== "dot active") { // Only update if status changed
+                        statusText.textContent = "Connected & Listening";
+                        statusText.style.color = "#1ed760";
+                        statusDot.className = "dot active";
+                        bridgeActiveTools.style.display = "block";
+                        hintText.style.display = "none";
+                        loadFiles(); // Load files when connected
+                    }
 
                     if (json.command === 'capture') {
-                        // Trigger Capture
-                        const isDetailed = document.getElementById('detailed-checkbox').checked;
+                        const isDetailed = detailedCheckbox.checked;
                         parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed } }, '*');
                     }
                 } catch (e) {
-                    bridgeStatus.textContent = "Connection Failed (Run 'npm run bridge')";
-                    bridgeStatus.style.color = "#f44336";
+                    statusText.textContent = "No Server Found";
+                    statusText.style.color = "#ff4d4d";
+                    statusDot.className = "dot error";
+                    bridgeActiveTools.style.display = "none";
+                    hintText.style.display = "block";
+                    fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see files</div>';
+                    fileActions.style.display = "none";
                 }
             }, 1000);
         }
@@ -117,30 +439,48 @@
         function stopPolling() {
             if (pollInterval) clearInterval(pollInterval);
             pollInterval = null;
-            bridgeStatus.textContent = "Disconnected";
-            bridgeStatus.style.color = "#666";
+            statusText.textContent = "Disconnected";
+            statusText.style.color = "#888";
+            statusDot.className = "dot";
+            bridgeActiveTools.style.display = "none";
+            hintText.style.display = "block";
+            fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see files</div>';
+            fileActions.style.display = "none";
         }
 
         window.onmessage = async (event) => {
             const msg = event.data.pluginMessage;
 
-            // Standard Download
             if (msg.type === 'capture-download') {
                 const jsonStr = JSON.stringify(msg.data, null, 2);
                 const blob = new Blob([jsonStr], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
-
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = msg.fileName;
                 a.click();
-
                 URL.revokeObjectURL(url);
             }
 
-            // Bridge Result -> Send to Server
             if (msg.type === 'capture-bridge-result') {
                 try {
+                    // 1. Save Assets first
+                    if (msg.assets && msg.assets.length > 0) {
+                        await Promise.all(msg.assets.map(asset =>
+                            fetch('http://127.0.0.1:3001/save-asset', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    projectName: msg.projectName,
+                                    fileName: asset.fileName,
+                                    content: asset.content
+                                })
+                            })
+                        ));
+                        console.log(`Saved ${msg.assets.length} assets.`);
+                    }
+
+                    // 2. Save JSON
                     await fetch('http://127.0.0.1:3001/save', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -149,6 +489,8 @@
                             data: msg.data
                         })
                     });
+                    // Refresh file list after a new capture is saved
+                    loadFiles();
                 } catch (e) {
                     console.error("Failed to send data to bridge", e);
                 }

@@ -9,10 +9,12 @@
       "./node_modules/@types",
       "./node_modules/@figma"
     ],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "exclude": [
-    "tools",
     "node_modules"
   ]
 }

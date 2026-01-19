@@ -1,12 +1,23 @@
 import { Pipeline } from "./pipeline";
+import { JsonReconstructor } from "./components/JsonReconstructor";
 
 // Show the HTML page in "ui.html".
 figma.showUI(__html__, { width: 300, height: 400 });
 
 // --- SHARED CAPTURE LOGIC ---
-const captureNode = async (node: SceneNode, detailed: boolean): Promise<any> => {
+interface AssetRecord {
+  fileName: string;
+  type: 'image' | 'svg';
+  content: string; // base64
+}
+
+const captureNode = async (
+  node: SceneNode,
+  detailed: boolean,
+  assets: AssetRecord[]
+): Promise<Record<string, unknown>> => {
   // 1. Basic Properties
-  const data: any = {
+  const data: Record<string, unknown> = {
     id: node.id,
     name: node.name,
     type: node.type,
@@ -52,8 +63,50 @@ const captureNode = async (node: SceneNode, detailed: boolean): Promise<any> => 
 
   // 4. Visual Properties (Fills, Strokes, Effects)
   if ("fills" in node && node.fills !== figma.mixed) {
-    data.fills = node.fills;
+    // Process fills to detect images
+    const processedFills = await Promise.all(node.fills.map(async (fill) => {
+      if (fill.type === 'IMAGE' && fill.imageHash) {
+        const image = figma.getImageByHash(fill.imageHash);
+        if (image) {
+          const bytes = await image.getBytesAsync();
+          const base64 = figma.base64Encode(bytes);
+          const ext = 'png'; // Default to png for now
+          const fileName = `img_${fill.imageHash.substring(0, 8)}.${ext}`;
+
+          // Check if already in assets
+          if (!assets.find(a => a.fileName === fileName)) {
+            assets.push({ fileName, type: 'image', content: base64 });
+          }
+
+          // Add asset reference to fill
+          return { ...fill, assetRef: `assets/${fileName}` };
+        }
+      }
+      return fill;
+    }));
+    data.fills = processedFills;
   }
+
+  // Check for Icon Export (SVG)
+  // Heuristic: Small frames or instances, or nodes named "Icon"
+  const isIcon = (
+    (node.type === "FRAME" || node.type === "INSTANCE" || node.type === "COMPONENT") &&
+    (node.width <= 64 && node.height <= 64)
+  ) || node.name.toLowerCase().includes("icon");
+
+  if (isIcon && node.type !== "RECTANGLE" && node.type !== "TEXT") {
+    try {
+      const svgBytes = await node.exportAsync({ format: 'SVG' });
+      const base64 = figma.base64Encode(svgBytes);
+      const fileName = `icon_${node.name.replace(/[^a-z0-9]/gi, '_')}_${node.id.replace(/:/g, '_')}.svg`;
+
+      assets.push({ fileName, type: 'svg', content: base64 });
+      data.svgPath = `assets/${fileName}`;
+    } catch (e) {
+      console.warn(`Failed to export SVG for ${node.name}`, e);
+    }
+  }
+
   if ("strokes" in node && node.strokes.length > 0) {
     data.strokes = node.strokes;
     data.strokeWeight = "strokeWeight" in node ? node.strokeWeight : 0;
@@ -61,10 +114,17 @@ const captureNode = async (node: SceneNode, detailed: boolean): Promise<any> => 
     // Stroke specific caps/joins
     if ("strokeCap" in node) data.strokeCap = node.strokeCap;
     if ("strokeJoin" in node) data.strokeJoin = node.strokeJoin;
+    if ("dashPattern" in node) data.dashPattern = node.dashPattern;
   }
   // Check for mixed effects safely
   if ("effects" in node && node.effects.length > 0) {
     data.effects = node.effects;
+  }
+
+  // 4.5 Capture Vector Data
+  if (node.type === "VECTOR") {
+    const vectorNode = node as VectorNode;
+    data.vectorPaths = vectorNode.vectorPaths;
   }
 
   // 5. Geometry / Styling (Corner Radius)
@@ -93,6 +153,8 @@ const captureNode = async (node: SceneNode, detailed: boolean): Promise<any> => 
       lineHeight: node.lineHeight !== figma.mixed ? node.lineHeight : "mixed",
       textCase: node.textCase !== figma.mixed ? node.textCase : "ORIGINAL",
       textDecoration: node.textDecoration !== figma.mixed ? node.textDecoration : "NONE",
+      // Include color explicitly for easier use in non-figma environments
+      fills: node.fills !== figma.mixed ? node.fills : undefined
     };
   }
 
@@ -111,7 +173,7 @@ const captureNode = async (node: SceneNode, detailed: boolean): Promise<any> => 
   // Recursion
   if (detailed && "children" in node) {
     data.children = await Promise.all(
-      (node as ChildrenMixin).children.map(child => captureNode(child, detailed))
+      (node as ChildrenMixin).children.map(child => captureNode(child, detailed, assets))
     );
   }
 
@@ -136,28 +198,64 @@ figma.ui.onmessage = async (msg) => {
       return;
     }
 
-    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed)));
+    const assets: AssetRecord[] = [];
+    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assets)));
     const projectName = figma.root.name;
     const fileName = `${projectName}_capture.json`;
 
     figma.ui.postMessage({
       type: 'capture-download',
       data: details,
-      fileName: fileName
+      fileName: fileName,
+      assets: assets
     });
   }
 
   // Handle Capture request from Bridge (via UI)
   if (msg.type === 'capture-bridge') {
     const selection = figma.currentPage.selection;
-    if (selection.length > 0) {
-      const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed)));
+    if (selection.length === 0) {
+      console.log("Nothing selected to capture via bridge.");
+      return;
+    }
 
-      figma.ui.postMessage({
-        type: 'capture-bridge-result',
-        data: details,
-        projectName: figma.root.name
-      });
+    const assets: AssetRecord[] = [];
+    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assets)));
+    const projectName = figma.root.name;
+
+    figma.ui.postMessage({
+      type: 'capture-bridge-result',
+      projectName: projectName,
+      data: details,
+      assets: assets
+    });
+  }
+
+  // Handle Dynamic Generation from JSON
+  if (msg.type === 'generate-from-json') {
+    try {
+      // Figma viewport center
+      const { x, y } = figma.viewport.center;
+
+      // We use a dummy path since we're passing the data directly in a slightly hacky way for now, 
+      // or we can update JsonReconstructor to accept data directly.
+      // Given JsonReconstructor currently uses a registry, I'll update it to have a static method or 
+      // handle direct data injection.
+
+      const reconstructor = new JsonReconstructor("");
+      // Safely set data through public method
+      reconstructor.setData(msg.data);
+
+      // Pass assets (image base64 content) for hydration
+      const result = await reconstructor.create({ x, y, assets: msg.assets });
+
+      if (result) {
+        figma.currentPage.appendChild(result);
+        figma.viewport.scrollAndZoomIntoView([result]);
+        console.log("Reconstruction from JSON complete.");
+      }
+    } catch (e) {
+      console.error("Failed to generate from JSON:", e);
     }
   }
 

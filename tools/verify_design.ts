@@ -3,7 +3,7 @@ import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { EventSource } from "eventsource";
 
 // Polyfill EventSource for Node.js environment
-global.EventSource = EventSource as any;
+global.EventSource = EventSource as unknown as typeof global.EventSource;
 
 async function main() {
     console.log("Connecting to Figma MCP Server...");
@@ -44,106 +44,25 @@ async function main() {
                 }
             }
 
-            // Define display logic
-            function displayVerificationResult(codeString: string, currentName?: string, currentNodeId?: string) {
-                const matchName = codeString.match(/data-name="([^"]+)"/);
-                const name = currentName || (matchName ? matchName[1] : "Unknown Element");
-
-                const matchId = codeString.match(/data-node-id="([^"]+)"/);
-                const id = currentNodeId || (matchId ? matchId[1] : "unknown");
-
-                console.log(`\n🔎 Selection: ${name} (ID: ${id})`);
-                console.log("--------------------------------------------------");
-
-                console.log("Generated Code Snippet:");
-                console.log(codeString.substring(0, 300) + "...");
-                console.log("--------------------------------------------------");
-
-                // Check for rate limit error in content
-                if (codeString.includes("Rate limit exceeded")) {
-                    console.log("\n⚠️  Figma API Rate Limit Exceeded");
-                    console.log("   The Figma MCP server is currently limiting requests.");
-                    console.log("   Please wait a while before trying again.");
-                    return;
-                }
-
-                // Button Specific Checks
-                if (name === "Button" || codeString.includes("Button")) {
-                    console.log("✅ Component Verification: BUTTON");
-                    // Check for Tailwind classes matching our design
-                    const checks = [
-                        { pattern: /rounded-\[6px\]/, label: "Corner Radius (6px)" },
-                        { pattern: /px-\[16px\]/, label: "Padding X (16px)" },
-                        { pattern: /py-\[8px\]/, label: "Padding Y (8px)" },
-                        { pattern: /bg-\[#1a80e5\]|bg-blue/, label: "Background Color (Primary)" }
-                    ];
-
-                    checks.forEach(check => {
-                        if (check.pattern.test(codeString)) {
-                            console.log(`   ✅ ${check.label}: Found`);
-                        } else {
-                            console.log(`   ❌ ${check.label}: NOT Found in code`);
-                        }
-                    });
-                    if (codeString.includes("Primary Action") || codeString.includes("Secondary Action")) {
-                        console.log(`   ✅ Label Content Found`);
-                    }
-                } else {
-                    console.log("ℹ️  Generic Element Verification");
-
-                    // Attempt to extract common styles
-                    const stylePatterns = [
-                        { label: "Background", regex: /bg-\[?([^\]" ]+)\]?/ },
-                        { label: "Text Color", regex: /text-\[?([^\]" ]+)\]?/ },
-                        { label: "Corner Radius", regex: /rounded-\[?([^\]" ]+)\]?/ },
-                        { label: "Padding", regex: /p[xy]?-\[?([^\]" ]+)\]?/g }, // Global to find multiple
-                        { label: "Font", regex: /font-\['([^']+)'\]/ },
-                        { label: "Width", regex: /w-\[?([^\]" ]+)\]?/ },
-                        { label: "Height", regex: /h-\[?([^\]" ]+)\]?/ },
-                    ];
-
-                    console.log("   Extracted Visual Properties:");
-                    let found = false;
-
-                    stylePatterns.forEach(p => {
-                        if (p.label === "Padding") {
-                            const matches = codeString.match(p.regex);
-                            if (matches) {
-                                matches.forEach(m => console.log(`   - ${p.label}: ${m}`));
-                                found = true;
-                            }
-                        } else {
-                            const match = codeString.match(p.regex);
-                            if (match && match[1]) {
-                                console.log(`   - ${p.label}: ${match[1]}`);
-                                found = true;
-                            }
-                        }
-                    });
-
-                    if (!found) {
-                        console.log("   - No specific Tailwind styles detected in common formats.");
-                    }
-                }
-            }
 
             if (targetNodeId) {
                 // SINGLE RUN MODE
                 console.log(`\n🔎 Verifying specific Node ID: ${targetNodeId}`);
                 try {
-                    const result: any = await client.callTool({
+                    const result = await client.callTool({
                         name: "get_design_context",
                         arguments: { nodeId: targetNodeId }
                     });
 
-                    const content = result.content?.[0]?.text;
+                    const content = (result.content as { text: string }[])?.[0]?.text;
                     if (content) {
                         displayVerificationResult(content, undefined, targetNodeId);
                     } else {
                         console.log("No content returned for this Node ID.");
                     }
-                } catch (e: any) {
-                    console.error("Error fetching node context:", e.message);
+                } catch (e: unknown) {
+                    const error = e as Error;
+                    console.error("Error fetching node context:", error.message);
                 }
                 setTimeout(() => process.exit(0), 100);
                 return;
@@ -160,12 +79,12 @@ async function main() {
             stdin.on('data', async () => {
                 console.log("Verifying current selection...");
                 try {
-                    const result: any = await client.callTool({
+                    const result = await client.callTool({
                         name: "get_design_context",
                         arguments: {}
                     });
 
-                    const content = result.content?.[0]?.text;
+                    const content = (result.content as { text: string }[])?.[0]?.text;
                     if (!content) {
                         console.log("No content received. Ensure you have an element selected.");
                         return;
@@ -184,8 +103,9 @@ async function main() {
                     displayVerificationResult(codeString, currentName, currentNodeId);
                     console.log("\n👉 Press ENTER again to verify next selection...");
 
-                } catch (err: any) {
-                    console.error("Error fetching context:", err.message);
+                } catch (err: unknown) {
+                    const error = err as Error;
+                    console.error("Error fetching context:", error.message);
                 }
             });
 
@@ -210,6 +130,89 @@ async function main() {
     } catch (error) {
         console.error("Error connecting to Figma MCP:", error);
         console.error("Make sure Figma Desktop is open, Dev Mode is on, and MCP Server is enabled.");
+    }
+}
+
+
+function displayVerificationResult(codeString: string, currentName?: string, currentNodeId?: string) {
+    const matchName = codeString.match(/data-name="([^"]+)"/);
+    const name = currentName || (matchName ? matchName[1] : "Unknown Element");
+
+    const matchId = codeString.match(/data-node-id="([^"]+)"/);
+    const id = currentNodeId || (matchId ? matchId[1] : "unknown");
+
+    console.log(`\n🔎 Selection: ${name} (ID: ${id})`);
+    console.log("--------------------------------------------------");
+
+    console.log("Generated Code Snippet:");
+    console.log(codeString.substring(0, 300) + "...");
+    console.log("--------------------------------------------------");
+
+    // Check for rate limit error in content
+    if (codeString.includes("Rate limit exceeded")) {
+        console.log("\n⚠️  Figma API Rate Limit Exceeded");
+        console.log("   The Figma MCP server is currently limiting requests.");
+        console.log("   Please wait a while before trying again.");
+        return;
+    }
+
+    // Button Specific Checks
+    if (name === "Button" || codeString.includes("Button")) {
+        console.log("✅ Component Verification: BUTTON");
+        // Check for Tailwind classes matching our design
+        const checks = [
+            { pattern: /rounded-\[6px\]/, label: "Corner Radius (6px)" },
+            { pattern: /px-\[16px\]/, label: "Padding X (16px)" },
+            { pattern: /py-\[8px\]/, label: "Padding Y (8px)" },
+            { pattern: /bg-\[#1a80e5\]|bg-blue/, label: "Background Color (Primary)" }
+        ];
+
+        checks.forEach(check => {
+            if (check.pattern.test(codeString)) {
+                console.log(`   ✅ ${check.label}: Found`);
+            } else {
+                console.log(`   ❌ ${check.label}: NOT Found in code`);
+            }
+        });
+        if (codeString.includes("Primary Action") || codeString.includes("Secondary Action")) {
+            console.log(`   ✅ Label Content Found`);
+        }
+    } else {
+        console.log("ℹ️  Generic Element Verification");
+
+        // Attempt to extract common styles
+        const stylePatterns = [
+            { label: "Background", regex: /bg-\[?([^\]" ]+)\]?/ },
+            { label: "Text Color", regex: /text-\[?([^\]" ]+)\]?/ },
+            { label: "Corner Radius", regex: /rounded-\[?([^\]" ]+)\]?/ },
+            { label: "Padding", regex: /p[xy]?-\[?([^\]" ]+)\]?/g }, // Global to find multiple
+            { label: "Font", regex: /font-\['([^']+)'\]/ },
+            { label: "Width", regex: /w-\[?([^\]" ]+)\]?/ },
+            { label: "Height", regex: /h-\[?([^\]" ]+)\]?/ },
+        ];
+
+        console.log("   Extracted Visual Properties:");
+        let found = false;
+
+        stylePatterns.forEach(p => {
+            if (p.label === "Padding") {
+                const matches = codeString.match(p.regex);
+                if (matches) {
+                    matches.forEach(m => console.log(`   - ${p.label}: ${m}`));
+                    found = true;
+                }
+            } else {
+                const match = codeString.match(p.regex);
+                if (match && match[1]) {
+                    console.log(`   - ${p.label}: ${match[1]}`);
+                    found = true;
+                }
+            }
+        });
+
+        if (!found) {
+            console.log("   - No specific Tailwind styles detected in common formats.");
+        }
     }
 }
 

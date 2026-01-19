@@ -4,7 +4,7 @@ import * as path from 'path';
 
 const PORT = 3001;
 let pendingCommand: string | null = null;
-let lastCapturedData: any = null;
+// let lastCapturedData: unknown = null;
 let spinnerInterval: NodeJS.Timeout | null = null;
 
 function stopSpinner() {
@@ -21,6 +21,21 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+    // Total request logger for debugging
+    console.log(`[${req.method}] ${req.url} (Origin: ${req.headers.origin || 'none'})`);
+
+    // LOG ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/log') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            console.log("Plugin Log:", body);
+            res.writeHead(200);
+            res.end();
+        });
+        return;
+    }
+
     if (req.method === 'OPTIONS') {
         res.writeHead(200);
         res.end();
@@ -28,14 +43,67 @@ const server = http.createServer((req, res) => {
     }
 
     // POLL ENDPOINT (GET)
-    // Plugin calls this to see if it should do something
     if (req.method === 'GET' && req.url === '/poll') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ command: pendingCommand || 'idle' }));
 
-        // Reset command after sending it, so it executes only once
         if (pendingCommand === 'capture') {
-            pendingCommand = 'processing'; // Wait for save
+            pendingCommand = 'processing';
+        }
+        return;
+    }
+
+    // LIST ENDPOINT (GET)
+    if (req.method === 'GET' && req.url === '/list') {
+        try {
+            const extractionDir = path.join(process.cwd(), 'tools', 'extraction');
+            const files: { name: string, path: string, project: string }[] = [];
+
+            if (!fs.existsSync(extractionDir)) {
+                console.log("⚠️ Extraction directory not found:", extractionDir);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ files: [] }));
+                return;
+            }
+
+            walkFiles(extractionDir, "", (name, project, relPath) => {
+                files.push({ name, project, path: relPath });
+            });
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ files }));
+        } catch (e) {
+            console.error("Error in /list:", e);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: "Failed to list files" }));
+        }
+        return;
+    }
+
+    // READ ENDPOINT (GET)
+    if (req.method === 'GET' && req.url?.startsWith('/read')) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const filePath = url.searchParams.get('path');
+
+        if (!filePath) {
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing path parameter" }));
+            return;
+        }
+
+        const fullPath = path.join(process.cwd(), 'tools', 'extraction', filePath);
+        if (!fs.existsSync(fullPath) || !fullPath.startsWith(path.join(process.cwd(), 'tools', 'extraction'))) {
+            res.writeHead(404);
+            res.end(JSON.stringify({ error: "File not found or access denied" }));
+            return;
+        }
+
+        try {
+            const content = fs.readFileSync(fullPath, 'utf8');
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(content);
+        } catch (e) {
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: "Failed to read file" }));
         }
         return;
     }
@@ -63,12 +131,82 @@ const server = http.createServer((req, res) => {
                 pendingCommand = null; // Ready for next command
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok' }));
-            } catch (e: any) {
-                console.error("Error saving data:", e.message);
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error saving data:", error.message);
                 res.writeHead(500);
-                res.end(JSON.stringify({ error: e.message }));
+                res.end(JSON.stringify({ error: error.message }));
             }
         });
+        return;
+    }
+
+    // SAVE ASSET ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/save-asset') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { projectName, fileName, content } = JSON.parse(body);
+                if (!projectName || !fileName || !content) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing required fields" }));
+                    return;
+                }
+
+                const sanitaryProjectName = projectName.replace(/[^a-z0-9]/gi, '_');
+                const assetDir = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName, 'assets');
+
+                if (!fs.existsSync(assetDir)) {
+                    fs.mkdirSync(assetDir, { recursive: true });
+                }
+
+                const filePath = path.join(assetDir, fileName);
+                const buffer = Buffer.from(content, 'base64');
+                fs.writeFileSync(filePath, buffer);
+
+                console.log(`   Asset Saved: tools/extraction/${sanitaryProjectName}/assets/${fileName}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', path: `assets/${fileName}` }));
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error saving asset:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
+    // READ ASSET ENDPOINT (GET)
+    if (req.method === 'GET' && req.url?.startsWith('/read-asset')) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const projectName = url.searchParams.get('project');
+        const assetPath = url.searchParams.get('path');
+
+        if (!projectName || !assetPath) {
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: "Missing project or path parameter" }));
+            return;
+        }
+
+        const fullPath = path.join(process.cwd(), 'tools', 'extraction', projectName, assetPath);
+        if (!fs.existsSync(fullPath)) {
+            res.writeHead(404);
+            res.end(JSON.stringify({ error: "Asset not found" }));
+            return;
+        }
+
+        try {
+            const content = fs.readFileSync(fullPath);
+            const base64 = content.toString('base64');
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ content: base64 }));
+        } catch (e: unknown) {
+            const error = e as Error;
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: error.message }));
+        }
         return;
     }
 
@@ -76,7 +214,7 @@ const server = http.createServer((req, res) => {
     res.end();
 });
 
-function saveItem(item: any, projectName: string) {
+function saveItem(item: Record<string, unknown>, projectName: string) {
     const sanitaryProjectName = projectName.replace(/[^a-z0-9]/gi, '_');
     const projectDir = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName);
 
@@ -88,7 +226,7 @@ function saveItem(item: any, projectName: string) {
     const now = new Date();
     const pad = (n: number) => n.toString().padStart(2, '0');
     const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
-    const name = item.name || "Untitled";
+    const name = (item.name as string) || "Untitled";
     const sanitaryName = name.replace(/[^a-z0-9]/gi, '_');
 
     // We save as JSON because the data is now expanded and complex object
@@ -97,6 +235,23 @@ function saveItem(item: any, projectName: string) {
 
     fs.writeFileSync(filePath, JSON.stringify(item, null, 2));
     console.log(`   Saved: tools/extraction/${sanitaryProjectName}/${filename}`);
+}
+
+function walkFiles(dir: string, project: string, callback: (name: string, project: string, relPath: string) => void) {
+    if (!fs.existsSync(dir)) return;
+    const items = fs.readdirSync(dir);
+    const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+
+    items.forEach(item => {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+
+        if (stat.isDirectory()) {
+            walkFiles(fullPath, project === "" ? item : `${project}/${item}`, callback);
+        } else if (item.endsWith('.json')) {
+            callback(item, project, path.relative(extractionRoot, fullPath));
+        }
+    });
 }
 
 server.listen(PORT, '127.0.0.1', async () => {
@@ -108,7 +263,7 @@ server.listen(PORT, '127.0.0.1', async () => {
     stdin.setEncoding('utf-8');
 
     let spinnerInterval: NodeJS.Timeout | null = null;
-    stdin.on('data', (key) => {
+    stdin.on('data', (_key) => {
         // Simple enter key detection
         if (pendingCommand === null || pendingCommand === 'idle') {
             console.log("Command: CAPTURE sent to Figma...");
@@ -123,7 +278,7 @@ server.listen(PORT, '127.0.0.1', async () => {
             spinnerInterval = setInterval(() => {
                 process.stdout.write(`\r   Waiting for Figma... ${frames[frameIndex]}`);
                 frameIndex = (frameIndex + 1) % frames.length;
-            }, 80);
+            }, 80) as unknown as NodeJS.Timeout;
 
         } else {
             console.log("⚠️  Busy or waiting for plugin... (Press Ctrl+C to force quit)");
