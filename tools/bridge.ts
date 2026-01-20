@@ -82,7 +82,7 @@ const server = http.createServer((req, res) => {
     }
 
     // READ ENDPOINT (GET)
-    if (req.method === 'GET' && req.url?.startsWith('/read')) {
+    if (req.method === 'GET' && (req.url === '/read' || req.url?.startsWith('/read?'))) {
         const url = new URL(req.url, `http://${req.headers.host}`);
         const filePath = url.searchParams.get('path');
 
@@ -186,7 +186,7 @@ const server = http.createServer((req, res) => {
         const projectName = url.searchParams.get('project');
         const assetPath = url.searchParams.get('path');
 
-        if (!projectName || !assetPath) {
+        if (projectName === null || !assetPath) {
             res.writeHead(400);
             res.end(JSON.stringify({ error: "Missing project or path parameter" }));
             return;
@@ -209,6 +209,64 @@ const server = http.createServer((req, res) => {
             res.writeHead(500);
             res.end(JSON.stringify({ error: error.message }));
         }
+        return;
+    }
+
+    // SAVE PACKET ENDPOINT (POST)
+    // New endpoint for atomic save of data + assets in a folder
+    if (req.method === 'POST' && req.url === '/save-packet') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { projectName, name, data, assets } = JSON.parse(body);
+
+                // 1. Prepare Directory: tools/extraction/[Project]/[Name]_[Timestamp]
+                const sanitaryProjectName = (projectName || "Default").replace(/[^a-z0-9]/gi, '_');
+                const sanitaryName = (name || "Untitled").replace(/[^a-z0-9]/gi, '_');
+
+                const now = new Date();
+                const pad = (n: number) => n.toString().padStart(2, '0');
+                const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+
+                const folderName = `${sanitaryName}_${timestamp}`;
+                const projectRoot = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName);
+                const targetDir = path.join(projectRoot, folderName);
+
+                if (!fs.existsSync(targetDir)) {
+                    fs.mkdirSync(targetDir, { recursive: true });
+                }
+
+                // 2. Save JSON
+                // data is a single node object (or whatever stricture captureNode returns)
+                const jsonPath = path.join(targetDir, `${sanitaryName}.json`);
+                fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+
+                // 3. Save Assets
+                if (assets && Array.isArray(assets) && assets.length > 0) {
+                    const assetsDir = path.join(targetDir, 'assets');
+                    if (!fs.existsSync(assetsDir)) {
+                        fs.mkdirSync(assetsDir);
+                    }
+
+                    assets.forEach((asset: any) => {
+                        const assetPath = path.join(assetsDir, asset.fileName);
+                        const buffer = Buffer.from(asset.content, 'base64');
+                        fs.writeFileSync(assetPath, buffer);
+                    });
+                }
+
+                console.log(`   Saved Packet: ${folderName}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok' }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error saving packet:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
         return;
     }
 
@@ -240,53 +298,35 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
-                // 1. Read file to identify linked assets
-                let assetsToDelete = new Set<string>();
-                try {
-                    const content = fs.readFileSync(fullPath, 'utf8');
-                    const json = JSON.parse(content);
-                    assetsToDelete = getAllAssetRefs(json);
-                } catch (e) {
-                    console.warn("Could not parse file before deleting, skipping asset cleanup.", e);
-                }
-
                 // 2. Delete the JSON file
                 fs.unlinkSync(fullPath);
                 console.log(`Deleted file: ${relativePath}`);
 
-                // 3. Clean up orphaned assets
-                // Only if we found assets to delete and they are in a project folder
-                const projectDir = path.dirname(fullPath);
-                if (assetsToDelete.size > 0 && fs.existsSync(projectDir)) {
-                    // Check other JSON files in the same directory
-                    const siblingFiles = fs.readdirSync(projectDir).filter(f => f.endsWith('.json') && f !== path.basename(fullPath));
-                    const preservedAssets = new Set<string>();
+                // 3. New Cleanup Logic for Folder Structure
+                // If the parent directory is a specific capture folder (not the project root), try to delete it
+                const parentDir = path.dirname(fullPath);
+                const projectRoot = path.dirname(parentDir); // Grandparent
 
-                    for (const sibling of siblingFiles) {
-                        try {
-                            const siblingContent = fs.readFileSync(path.join(projectDir, sibling), 'utf8');
-                            const siblingJson = JSON.parse(siblingContent);
-                            const siblingRefs = getAllAssetRefs(siblingJson);
-                            siblingRefs.forEach(ref => preservedAssets.add(ref));
-                        } catch (e) {
-                            // ignore read errors on siblings
-                        }
+                // Check if parent looks like a capture folder (has assets dir or empty)
+                // And ensure we are at least 2 levels deep from extraction root (Project/CaptureFolder/File.json)
+                const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+                const relParent = path.relative(extractionRoot, parentDir);
+
+                // If relParent has at least one separator, it means it's Project/Folder
+                if (relParent.includes(path.sep)) {
+                    const assetsDir = path.join(parentDir, 'assets');
+
+                    // Delete assets dir if exists
+                    if (fs.existsSync(assetsDir)) {
+                        fs.rmSync(assetsDir, { recursive: true, force: true });
                     }
 
-                    // Delete assets that are not preserved
-                    assetsToDelete.forEach(assetRef => {
-                        if (!preservedAssets.has(assetRef)) {
-                            const assetFullPath = path.join(projectDir, assetRef);
-                            if (fs.existsSync(assetFullPath)) {
-                                try {
-                                    fs.unlinkSync(assetFullPath);
-                                    console.log(`   Deleted orphaned asset: ${assetRef}`);
-                                } catch (e) {
-                                    console.error(`   Failed to delete asset ${assetRef}`, e);
-                                }
-                            }
-                        }
-                    });
+                    // Check if parent dir is empty
+                    const remaining = fs.readdirSync(parentDir);
+                    if (remaining.length === 0) {
+                        fs.rmdirSync(parentDir);
+                        console.log(`   Deleted empty capture folder: ${path.basename(parentDir)}`);
+                    }
                 }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });

@@ -1,5 +1,6 @@
 import { Pipeline } from "./pipeline";
 import { JsonReconstructor } from "./components/JsonReconstructor";
+import { transformToGradientHandles, T2x3 } from "./components/TransformHelpers";
 
 // Show the HTML page in "ui.html".
 figma.showUI(__html__, { width: 300, height: 400 });
@@ -11,83 +12,181 @@ interface AssetRecord {
   content: string; // base64
 }
 
+const sanitizeName = (name: string) => name.replace(/[^a-z0-9]/gi, '_');
+
+const safeGet = (node: any, key: string) => {
+  try {
+    const val = node[key];
+    if (typeof val === "function") return undefined;
+    if (val === figma.mixed) return "mixed";
+    return val;
+  } catch (e) {
+    return undefined;
+  }
+};
+
 const captureNode = async (
   node: SceneNode,
   detailed: boolean,
-  assets: AssetRecord[]
+  assets: AssetRecord[],
+  rootName: string
 ): Promise<Record<string, unknown>> => {
-  // 1. Basic Properties
-  const data: Record<string, unknown> = {
+
+  // 1. Basic Identity & Transform
+  // Use 'any' to allow building the object dynamically without strict type guards for every intermediate read
+  const data: any = {
     id: node.id,
     name: node.name,
     type: node.type,
+    visible: safeGet(node, "visible") ?? true,
+    locked: safeGet(node, "locked") ?? false,
+    opacity: safeGet(node, "opacity") ?? 1,
+    blendMode: safeGet(node, "blendMode") ?? "PASS_THROUGH",
+    isMask: safeGet(node, "isMask"),
+    effects: safeGet(node, "effects"),
+
+    // Geometry
     x: node.x,
     y: node.y,
     width: node.width,
     height: node.height,
-    rotation: "rotation" in node ? node.rotation : undefined,
-    visible: "visible" in node ? node.visible : true,
-    opacity: "opacity" in node ? node.opacity : 1,
-    blendMode: "blendMode" in node ? node.blendMode : "PASS_THROUGH",
-    locked: "locked" in node ? node.locked : false,
+    rotation: safeGet(node, "rotation"),
+    relativeTransform: safeGet(node, "relativeTransform"),
+
+    // Constraints & Layout Positioning
+    constraints: safeGet(node, "constraints"),
+    layoutAlign: safeGet(node, "layoutAlign"), // MIN, MAX, CENTER, STRETCH, INHERIT
+    layoutGrow: safeGet(node, "layoutGrow"),
+    layoutPositioning: safeGet(node, "layoutPositioning"), // AUTO, ABSOLUTE
   };
 
-  // 2. Constraints & Resizing
-  if ("constraints" in node) {
-    data.constraints = node.constraints;
-  }
-  if ("layoutAlign" in node) data.layoutAlign = node.layoutAlign;
-  if ("layoutGrow" in node) data.layoutGrow = node.layoutGrow;
-
-  // 3. Layout Properties (Frame, Component, Instance)
+  // 2. Auto Layout (Frame / Component / Instance)
   if ("layoutMode" in node) {
     data.layout = {
-      mode: node.layoutMode,
+      mode: safeGet(node, "layoutMode"), // NONE, HORIZONTAL, VERTICAL
       sizing: {
-        horizontal: "primaryAxisSizingMode" in node ? node.primaryAxisSizingMode : undefined,
-        vertical: "counterAxisSizingMode" in node ? node.counterAxisSizingMode : undefined,
+        horizontal: safeGet(node, "primaryAxisSizingMode"), // FIXED, AUTO
+        vertical: safeGet(node, "counterAxisSizingMode"),
       },
       alignment: {
-        primary: "primaryAxisAlignItems" in node ? node.primaryAxisAlignItems : undefined,
-        counter: "counterAxisAlignItems" in node ? node.counterAxisAlignItems : undefined,
+        primary: safeGet(node, "primaryAxisAlignItems"), // MIN, MAX, CENTER, SPACE_BETWEEN
+        counter: safeGet(node, "counterAxisAlignItems"), // MIN, MAX, CENTER, BASELINE
       },
-      spacing: "itemSpacing" in node ? node.itemSpacing : 0,
+      spacing: safeGet(node, "itemSpacing"),
+      counterAxisSpacing: safeGet(node, "counterAxisSpacing"),
       padding: {
-        top: "paddingTop" in node ? node.paddingTop : 0,
-        right: "paddingRight" in node ? node.paddingRight : 0,
-        bottom: "paddingBottom" in node ? node.paddingBottom : 0,
-        left: "paddingLeft" in node ? node.paddingLeft : 0,
+        top: safeGet(node, "paddingTop"),
+        right: safeGet(node, "paddingRight"),
+        bottom: safeGet(node, "paddingBottom"),
+        left: safeGet(node, "paddingLeft"),
       }
     };
+
+    // Cleanup if no layout
+    if (data.layout.mode === "NONE") {
+      // We usually keep it to explicitly say NONE, but can simplify if needed.
+    }
   }
 
-  // 4. Visual Properties (Fills, Strokes, Effects)
-  if ("fills" in node && node.fills !== figma.mixed) {
-    // Process fills to detect images
-    const processedFills = await Promise.all(node.fills.map(async (fill) => {
-      if (fill.type === 'IMAGE' && fill.imageHash) {
-        const image = figma.getImageByHash(fill.imageHash);
-        if (image) {
-          const bytes = await image.getBytesAsync();
-          const base64 = figma.base64Encode(bytes);
-          const ext = 'png'; // Default to png for now
-          const fileName = `img_${fill.imageHash.substring(0, 8)}.${ext}`;
+  // 3. Visuals: Fills (Images & Gradients)
+  if ("fills" in node) {
+    const nodeWithFills = node as GeometryMixin;
+    if (nodeWithFills.fills !== figma.mixed && Array.isArray(nodeWithFills.fills)) {
+      const processedFills = await Promise.all(nodeWithFills.fills.map(async (fill) => {
+        // IMAGE
+        if (fill.type === 'IMAGE' && fill.imageHash) {
+          const image = figma.getImageByHash(fill.imageHash);
+          if (image) {
+            try {
+              const bytes = await image.getBytesAsync();
+              const base64 = figma.base64Encode(bytes);
+              const ext = 'png';
+              // unique filename based on hash
+              const fileName = `img_${fill.imageHash}.${ext}`;
 
-          // Check if already in assets
-          if (!assets.find(a => a.fileName === fileName)) {
-            assets.push({ fileName, type: 'image', content: base64 });
+              if (!assets.find(a => a.fileName === fileName)) {
+                console.log(`Captured Image Asset: ${fileName}`);
+                assets.push({ fileName, type: 'image', content: base64 });
+              }
+
+              // Return FULL ImagePaint property set + assetRef
+              // This is critical for keeping scaleMode, filters, transforms etc
+              return {
+                type: fill.type,
+                scaleMode: fill.scaleMode,
+                imageTransform: fill.imageTransform,
+                scalingFactor: fill.scalingFactor,
+                rotation: fill.rotation,
+                filters: fill.filters,
+                opacity: fill.opacity,
+                blendMode: fill.blendMode,
+                visible: fill.visible,
+                imageHash: fill.imageHash, // Keep original hash as ref
+                assetRef: `assets/${fileName}`
+              };
+            } catch (err) {
+              console.error(`Failed to capture image bytes for ${node.name}`, err);
+            }
           }
-
-          // Add asset reference to fill
-          return { ...fill, assetRef: `assets/${fileName}` };
         }
-      }
-      return fill;
-    }));
-    data.fills = processedFills;
+        // GRADIENTS
+        if (['GRADIENT_LINEAR', 'GRADIENT_RADIAL', 'GRADIENT_ANGULAR', 'GRADIENT_DIAMOND'].includes(fill.type)) {
+          // Normalize gradient transform to handles (0-1 space)
+          // This makes it robust against size/rotation changes
+          const handles = transformToGradientHandles(fill.gradientTransform as T2x3); // Cast assuming valid matrix
+
+          return {
+            type: fill.type,
+            opacity: fill.opacity,
+            blendMode: fill.blendMode,
+            visible: fill.visible,
+            gradientStops: fill.gradientStops.map((stop: any) => ({
+              color: stop.color,
+              position: stop.position
+            })),
+            gradientTransform: fill.gradientTransform, // Keep original as backup
+            gradientHandles: handles // The robust new way
+          };
+        }
+        // SOLID / Other
+        return fill;
+      }));
+      data.fills = processedFills;
+    } else if (nodeWithFills.fills === figma.mixed) {
+      data.fills = "mixed";
+    }
   }
 
-  // Check for Icon Export (SVG)
+  // 4. Visuals: Strokes
+  if ("strokes" in node) {
+    data.strokes = safeGet(node, "strokes");
+    data.strokeWeight = safeGet(node, "strokeWeight");
+    data.strokeAlign = safeGet(node, "strokeAlign");
+    data.strokeCap = safeGet(node, "strokeCap");
+    data.strokeJoin = safeGet(node, "strokeJoin");
+    data.dashPattern = safeGet(node, "dashPattern");
+    data.strokeMiterLimit = safeGet(node, "strokeMiterLimit");
+  }
+
+  // 5. Geometry: Corners
+  if ("cornerRadius" in node) {
+    if (node.cornerRadius !== figma.mixed) {
+      data.cornerRadius = node.cornerRadius;
+    } else {
+      data.cornerRadius = "mixed";
+      if ("topLeftRadius" in node) {
+        data.corners = {
+          topLeft: safeGet(node, "topLeftRadius"),
+          topRight: safeGet(node, "topRightRadius"),
+          bottomRight: safeGet(node, "bottomRightRadius"),
+          bottomLeft: safeGet(node, "bottomLeftRadius")
+        };
+      }
+    }
+  }
+
+  // 6. Icon / Vector Export
+  // We keep the heuristic: Vector + Small OR name has "icon"
   const isIcon = node.type === "VECTOR" && (
     (node.width <= 64 && node.height <= 64) ||
     node.name.toLowerCase().includes("icon")
@@ -97,8 +196,7 @@ const captureNode = async (
     try {
       const svgBytes = await node.exportAsync({ format: 'SVG' });
       const base64 = figma.base64Encode(svgBytes);
-      const fileName = `icon_${node.name.replace(/[^a-z0-9]/gi, '_')}_${node.id.replace(/:/g, '_')}.svg`;
-
+      const fileName = `icon_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
       assets.push({ fileName, type: 'svg', content: base64 });
       data.svgPath = `assets/${fileName}`;
     } catch (e) {
@@ -106,105 +204,72 @@ const captureNode = async (
     }
   }
 
-  if ("strokes" in node && node.strokes.length > 0) {
-    data.strokes = node.strokes;
-    data.strokeWeight = "strokeWeight" in node ? node.strokeWeight : 0;
-    data.strokeAlign = "strokeAlign" in node ? node.strokeAlign : "INSIDE";
-    // Stroke specific caps/joins
-    if ("strokeCap" in node) data.strokeCap = node.strokeCap;
-    if ("strokeJoin" in node) data.strokeJoin = node.strokeJoin;
-    if ("dashPattern" in node) data.dashPattern = node.dashPattern;
+  // Also capture raw vector paths if available (for exact reconstruction)
+  if ("vectorPaths" in node) {
+    data.vectorPaths = safeGet(node, "vectorPaths");
   }
-  // Check for mixed effects safely
-  if ("effects" in node && node.effects.length > 0) {
-    data.effects = node.effects;
+  if ("vectorNetwork" in node) {
+    data.vectorNetwork = safeGet(node, "vectorNetwork");
   }
 
-  // 4.5 Capture Vector Data
-  if (node.type === "VECTOR") {
-    const vectorNode = node as VectorNode;
-    data.vectorPaths = vectorNode.vectorPaths;
-  }
-
-  // 5. Geometry / Styling (Corner Radius)
-  if ("cornerRadius" in node && node.cornerRadius !== figma.mixed) {
-    data.cornerRadius = node.cornerRadius;
-  } else if ("topLeftRadius" in node) {
-    data.corners = {
-      topLeft: node.topLeftRadius,
-      topRight: node.topRightRadius,
-      bottomRight: node.bottomRightRadius,
-      bottomLeft: node.bottomLeftRadius
-    };
-  }
-
-  // 6. Typography (TextNode)
+  // 7. Typography
   if (node.type === "TEXT") {
-    const textNode = node as TextNode;
     data.text = {
       characters: node.characters,
-      fontSize: node.fontSize !== figma.mixed ? node.fontSize : "mixed",
-      fontName: node.fontName !== figma.mixed ? node.fontName : "mixed",
-      fontWeight: node.fontWeight !== figma.mixed ? node.fontWeight : "mixed",
-      textAlignHorizontal: node.textAlignHorizontal,
-      textAlignVertical: node.textAlignVertical,
-      textAutoResize: node.textAutoResize,
-      letterSpacing: node.letterSpacing !== figma.mixed ? node.letterSpacing : "mixed",
-      lineHeight: node.lineHeight !== figma.mixed ? node.lineHeight : "mixed",
-      textCase: node.textCase !== figma.mixed ? node.textCase : "ORIGINAL",
-      textDecoration: node.textDecoration !== figma.mixed ? node.textDecoration : "NONE",
-      // Include color explicitly for easier use in non-figma environments
-      fills: node.fills !== figma.mixed ? node.fills : undefined
+      fontSize: safeGet(node, "fontSize"),
+      fontName: safeGet(node, "fontName"),
+      fontWeight: safeGet(node, "fontWeight"),
+      textAlignHorizontal: safeGet(node, "textAlignHorizontal"),
+      textAlignVertical: safeGet(node, "textAlignVertical"),
+      textAutoResize: safeGet(node, "textAutoResize"),
+      letterSpacing: safeGet(node, "letterSpacing"),
+      lineHeight: safeGet(node, "lineHeight"),
+      textCase: safeGet(node, "textCase"),
+      textDecoration: safeGet(node, "textDecoration"),
+      fills: safeGet(node, "fills"), // Base fills
     };
 
-    // Capture segments for mixed styles
-    // We capture specific properties that tend to vary
-    const segments = textNode.getStyledTextSegments([
-      'fills',
-      'fontSize',
-      'fontName',
-      'fontWeight',
-      'letterSpacing',
-      'lineHeight',
-      'textCase',
-      'textDecoration'
-    ]);
-
-    // Optimize: only include segments if there's actual variation or if we want robustness
-    // For now, let's include them to ensure we get the data.
-    // We Map them to a serializable format
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (data.text as any).segments = segments.map(seg => ({
-      characters: seg.characters,
-      start: seg.start,
-      end: seg.end,
-      fontSize: seg.fontSize,
-      fontName: seg.fontName,
-      fontWeight: seg.fontWeight,
-      letterSpacing: seg.letterSpacing,
-      lineHeight: seg.lineHeight,
-      textCase: seg.textCase,
-      textDecoration: seg.textDecoration,
-      fills: seg.fills
-    }));
-  }
-
-  // 7. Component Properties (for Instances)
-  if (node.type === "INSTANCE") {
+    // Capture Segments for mixed styling
     try {
-      const mainComponent = await node.getMainComponentAsync();
-      data.mainComponentId = mainComponent ? mainComponent.id : null;
+      const segments = node.getStyledTextSegments([
+        'fills', 'fontSize', 'fontName', 'fontWeight', 'letterSpacing', 'lineHeight', 'textCase', 'textDecoration'
+      ]);
+      (data.text as any).segments = segments.map(seg => ({
+        characters: seg.characters,
+        start: seg.start,
+        end: seg.end,
+        fontSize: seg.fontSize,
+        fontName: seg.fontName,
+        fontWeight: seg.fontWeight,
+        letterSpacing: seg.letterSpacing,
+        lineHeight: seg.lineHeight,
+        textCase: seg.textCase,
+        textDecoration: seg.textDecoration,
+        fills: seg.fills
+      }));
     } catch (e) {
-      console.warn("Failed to get main component async", e);
-      data.mainComponentId = null;
+      console.warn("Failed to capture text segments", e);
     }
-    data.componentProperties = node.componentProperties;
   }
 
-  // Recursion
+  // 8. Component Properties
+  if (node.type === "INSTANCE") {
+    data.componentProperties = safeGet(node, "componentProperties");
+    try {
+      const main = await node.getMainComponentAsync();
+      if (main) {
+        data.mainComponentId = main.id;
+        data.mainComponentName = main.name;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // 9. Recursion
   if (detailed && "children" in node) {
     data.children = await Promise.all(
-      (node as ChildrenMixin).children.map(child => captureNode(child, detailed, assets))
+      (node as ChildrenMixin).children.map(child => captureNode(child, detailed, assets, rootName))
     );
   }
 
@@ -230,7 +295,10 @@ figma.ui.onmessage = async (msg) => {
     }
 
     const assets: AssetRecord[] = [];
-    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assets)));
+    // For manual download, we can still combine everything or separate them.
+    // Let's keep manual download as one big JSON for now as it downloads a single file.
+    // OR we could zip, but that's complex. Let's keep it simple for legacy manual download.
+    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assets, node.name)));
     const projectName = figma.root.name;
     const fileName = `${projectName}_capture.json`;
 
@@ -244,22 +312,35 @@ figma.ui.onmessage = async (msg) => {
 
   // Handle Capture request from Bridge (via UI)
   if (msg.type === 'capture-bridge') {
-    const selection = figma.currentPage.selection;
-    if (selection.length === 0) {
-      console.log("Nothing selected to capture via bridge.");
-      return;
+    try {
+      const selection = figma.currentPage.selection;
+      if (selection.length === 0) {
+        figma.notify("Please select at least one element to capture.", { error: true });
+        figma.ui.postMessage({ type: 'capture-error', message: "No selection" });
+        return;
+      }
+
+      const projectName = figma.root.name;
+      const packets = await Promise.all(selection.map(async (node) => {
+        const assets: AssetRecord[] = [];
+        const data = await captureNode(node, msg.detailed, assets, node.name);
+        return {
+          name: node.name,
+          data: data,
+          assets: assets
+        };
+      }));
+
+      figma.ui.postMessage({
+        type: 'capture-bridge-result-batch',
+        projectName: projectName,
+        packets: packets
+      });
+    } catch (e) {
+      console.error("Capture failed:", e);
+      figma.notify("Capture failed: " + (e as any).message, { error: true });
+      figma.ui.postMessage({ type: 'capture-error', message: (e as any).message });
     }
-
-    const assets: AssetRecord[] = [];
-    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assets)));
-    const projectName = figma.root.name;
-
-    figma.ui.postMessage({
-      type: 'capture-bridge-result',
-      projectName: projectName,
-      data: details,
-      assets: assets
-    });
   }
 
   // Handle Dynamic Generation from JSON

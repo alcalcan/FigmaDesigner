@@ -292,25 +292,59 @@
                 const findAssets = (obj) => {
                     if (!obj || typeof obj !== 'object') return;
                     if (obj.assetRef) assetPaths.add(obj.assetRef);
+                    if (obj.svgPath) assetPaths.add(obj.svgPath);
                     Object.values(obj).forEach(findAssets);
                 };
                 findAssets(data);
 
                 // 2. Fetch assets from bridge
-                // SelectedFilePath looks like "Project/File.json"
-                const project = selectedFilePath.split('/')[0];
+                // SelectedFilePath looks like "Project/Folder/File.json" or "Project/File.json"
+                // We need to resolve assets relative to this file's folder.
+                const lastSlashIndex = selectedFilePath.lastIndexOf('/');
+                const dirPath = lastSlashIndex !== -1 ? selectedFilePath.substring(0, lastSlashIndex) : "";
+
                 const assets = {};
 
                 if (assetPaths.size > 0) {
-                    await Promise.all(Array.from(assetPaths).map(async (assetPath) => {
+                    await Promise.all(Array.from(assetPaths).map(async (assetRef) => {
                         try {
-                            const assetRes = await fetch(`http://127.0.0.1:3001/read-asset?project=${encodeURIComponent(project)}&path=${encodeURIComponent(assetPath)}`);
-                            const assetData = await assetRes.json();
+                            // assetRef is like "assets/img.png"
+                            // full relative path = "Project/Folder/assets/img.png"
+                            const fullAssetPath = dirPath ? `${dirPath}/${assetRef}` : assetRef;
+
+                            const assetRes = await fetch(`http://127.0.0.1:3001/read?path=${encodeURIComponent(fullAssetPath)}`);
+
+                            // /read returns the raw content string if text, but for binary assets we might need to handle it.
+                            // BRIDGE /read endpoint returns utf8 string. 
+                            // Wait, my /read endpoint does `fs.readFileSync(path, 'utf8')`. This is BAD for images.
+                            // I should verify if /read can handle binary or if I need a better way.
+                            // Actually, I removed /read-asset effectively but /read assumes utf8.
+                            // Let's modify this fetch to assume base64 if it fails? 
+                            // Or better, let's keep /read-asset logic but purely generic?
+                            // No, let's check bridge.ts again. 
+                            // Bridge ts /read: fs.readFileSync(..., 'utf8'). This corrupts images.
+                            // I need to use the specialized asset reading or update /read.
+                            // But since I didn't update /read in bridge.ts to handle binary, I should probably stick to 
+                            // using a modified approach or realize I made a mistake in plan.
+                            //
+                            // Let's rely on /read-asset but pass the full relative path? 
+                            // /read-asset takes project and path.
+                            // sending "Project/Folder" as project and "assets/img.png" as path might work if logic allows.
+                            // Bridge: path.join(..., project, assetPath).
+                            // Yes, that works! fullPath = .../extraction/Project/Folder/assets/img.png
+
+                            // Splitting "Project/Folder" is tricky.
+                            // Let's just pass `project=Project/Folder` and `path=assets/img.png`.
+                            // Or `project=` (empty) and `path=Project/Folder/assets/img.png`?
+                            // Bridge: path.join(root, project, path). If project is empty, it works.
+
+                            const listRes = await fetch(`http://127.0.0.1:3001/read-asset?project=&path=${encodeURIComponent(fullAssetPath)}`);
+                            const assetData = await listRes.json();
                             if (assetData.content) {
-                                assets[assetPath] = assetData.content;
+                                assets[assetRef] = assetData.content;
                             }
                         } catch (e) {
-                            console.error(`Failed to fetch asset: ${assetPath}`, e);
+                            console.error(`Failed to fetch asset: ${assetRef}`, e);
                         }
                     }));
                 }
@@ -508,38 +542,43 @@
                 URL.revokeObjectURL(url);
             }
 
-            if (msg.type === 'capture-bridge-result') {
+            if (msg.type === 'capture-bridge-result-batch') {
                 try {
-                    // 1. Save Assets first
-                    if (msg.assets && msg.assets.length > 0) {
-                        await Promise.all(msg.assets.map(asset =>
-                            fetch('http://127.0.0.1:3001/save-asset', {
+                    // msg.packets is an array of { name, data, assets }
+                    // msg.projectName is the root name
+
+                    const packets = msg.packets || [];
+                    if (packets.length > 0) {
+                        await Promise.all(packets.map(packet =>
+                            fetch('http://127.0.0.1:3001/save-packet', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                     projectName: msg.projectName,
-                                    fileName: asset.fileName,
-                                    content: asset.content
+                                    name: packet.name,
+                                    data: packet.data,
+                                    assets: packet.assets
                                 })
                             })
                         ));
-                        console.log(`Saved ${msg.assets.length} assets.`);
+                        console.log(`Saved ${packets.length} packets.`);
+                        showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured!");
                     }
 
-                    // 2. Save JSON
-                    await fetch('http://127.0.0.1:3001/save', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            projectName: msg.projectName,
-                            data: msg.data
-                        })
-                    });
                     // Refresh file list after a new capture is saved
                     loadFiles();
                 } catch (e) {
                     console.error("Failed to send data to bridge", e);
+                    alert("Failed to save to bridge: " + e.message);
+                    syncBtn.textContent = "Capture Sync (to Disk)"; // Reset
                 }
+            }
+
+            if (msg.type === 'capture-error') {
+                alert(msg.message);
+                syncBtn.textContent = "Capture Sync (to Disk)"; // Reset
+                syncBtn.style.backgroundColor = ""; // Reset color
+                syncBtn.style.boxShadow = "";
             }
         }
 

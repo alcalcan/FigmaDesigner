@@ -1,8 +1,9 @@
 import { BaseComponent, ComponentProps } from "./BaseComponent";
+import { applySizeAndTransform, gradientHandlesToTransform, T2x3, Vec } from "./TransformHelpers";
 // import frame2609217 from "../tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json";
 
 export interface SerializedNode {
-    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE";
+    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE" | "BOOLEAN_OPERATION" | "GROUP";
     name?: string;
     x?: number;
     y?: number;
@@ -12,7 +13,13 @@ export interface SerializedNode {
     visible?: boolean;
     opacity?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    relativeTransform?: any; // Transform matrix [[a, b, tx], [c, d, ty]]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     blendMode?: any;
+    isMask?: boolean;
+    maskType?: "ALPHA" | "VECTOR" | "LUMINANCE";
+    clipsContent?: boolean;
+    booleanOperation?: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
     locked?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constraints?: any;
@@ -49,6 +56,7 @@ export interface SerializedNode {
     // Layout Positioning
     layoutAlign?: "MIN" | "MAX" | "CENTER" | "STRETCH" | "INHERIT";
     layoutGrow?: number;
+    layoutPositioning?: "AUTO" | "ABSOLUTE"; // Explicitly added
 
     text?: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,7 +132,7 @@ export class JsonReconstructor extends BaseComponent {
         throw new Error("Failed to reconstruct node from JSON data");
     }
 
-    async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode, assets?: Record<string, string>): Promise<SceneNode | null> {
+    async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode | PageNode, assets?: Record<string, string>): Promise<SceneNode | null> {
         console.log(`Reconstructing node: ${data.name} (${data.type})`);
         let node: SceneNode | null = null;
 
@@ -140,6 +148,57 @@ export class JsonReconstructor extends BaseComponent {
                 node = figma.createVector();
             } else if (data.type === "ELLIPSE") {
                 node = figma.createEllipse();
+            } else if (data.type === "GROUP") {
+                if (data.children && data.children.length > 0) {
+                    const childrenNodes: SceneNode[] = [];
+                    // Create children on current page first to establish relative positions
+                    for (const childData of data.children) {
+                        // Pass currentPage to ensure they are created on root for consistent grouping
+                        const childNode = await this.reconstruct(childData, figma.currentPage, assets);
+                        if (childNode) childrenNodes.push(childNode);
+                    }
+
+                    if (childrenNodes.length > 0) {
+                        // Create group in the target parent
+                        node = figma.group(childrenNodes, parent || figma.currentPage);
+                        data.children = []; // Prevent re-processing in Step 7
+                    }
+                }
+
+                if (!node) {
+                    console.warn("Group with no children, creating empty frame placeholder");
+                    node = figma.createFrame();
+                    node.visible = false;
+                }
+            } else if (data.type === "BOOLEAN_OPERATION") {
+                if (data.children && data.children.length > 0) {
+                    const childrenNodes: SceneNode[] = [];
+                    for (const childData of data.children) {
+                        const childNode = await this.reconstruct(childData, undefined, assets);
+                        if (childNode) childrenNodes.push(childNode);
+                    }
+
+                    if (childrenNodes.length > 0) {
+                        if (data.booleanOperation === "SUBTRACT") {
+                            node = figma.subtract(childrenNodes, parent || figma.currentPage);
+                        } else if (data.booleanOperation === "INTERSECT") {
+                            node = figma.intersect(childrenNodes, parent || figma.currentPage);
+                        } else if (data.booleanOperation === "EXCLUDE") {
+                            node = figma.exclude(childrenNodes, parent || figma.currentPage);
+                        } else {
+                            // Default to UNION
+                            node = figma.union(childrenNodes, parent || figma.currentPage);
+                        }
+
+                        // Clear children from data so Step 7 doesn't re-add them
+                        data.children = [];
+                    }
+                }
+
+                if (!node) {
+                    console.warn("Boolean operation with no children, skipping or creating empty frame placeholder");
+                    node = figma.createFrame();
+                }
             }
 
             if (!node) {
@@ -150,16 +209,72 @@ export class JsonReconstructor extends BaseComponent {
             // 2. Apply Basic Properties
             if (data.name) node.name = data.name;
 
-            // Set position and size
-            // For children, x/y are relative to parent
-            node.x = data.x !== undefined ? data.x : 0;
-            node.y = data.y !== undefined ? data.y : 0;
+            // --- STRICT ORDER OF OPERATIONS --- 
+            // 1. Layout Properties (Mode, Align)
+            // 2. Layout Positioning (Child props)
+            // 3. Size & Transform (Atomic application)
 
-            if (data.width !== undefined && data.height !== undefined) {
-                node.resize(data.width || 1, data.height || 1);
+            // Step 1: Layout Properties (Auto Layout Container)
+            if ("layoutMode" in node && data.layout) {
+                const frame = node as FrameNode;
+                frame.layoutMode = data.layout.mode || "NONE";
+
+                if (frame.layoutMode !== "NONE") {
+                    if (data.layout.sizing) {
+                        frame.primaryAxisSizingMode = data.layout.sizing.horizontal === "AUTO" ? "AUTO" : "FIXED";
+                        frame.counterAxisSizingMode = data.layout.sizing.vertical === "AUTO" ? "AUTO" : "FIXED";
+                    }
+                    if (data.layout.alignment) {
+                        frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
+                        frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";
+                    }
+                    frame.itemSpacing = data.layout.spacing || 0;
+                    if (data.layout.padding) {
+                        frame.paddingTop = data.layout.padding.top || 0;
+                        frame.paddingRight = data.layout.padding.right || 0;
+                        frame.paddingBottom = data.layout.padding.bottom || 0;
+                        frame.paddingLeft = data.layout.padding.left || 0;
+                    }
+                }
             }
 
-            node.rotation = data.rotation || 0;
+            // Step 2: Layout Positioning (Child Properties)
+            if ("layoutAlign" in node && data.layoutAlign) {
+                node.layoutAlign = data.layoutAlign;
+            }
+            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
+                node.layoutGrow = data.layoutGrow;
+            }
+            if ("layoutPositioning" in node && (data as any).layoutPositioning) {
+                (node as any).layoutPositioning = (data as any).layoutPositioning;
+            }
+
+            // Step 3: Size & Transform (Atomic)
+            // This prevents drift by setting size before matrix, and respecting auto-layout parent
+            if ("resize" in node) {
+                const width = data.width || 1;
+                const height = data.height || 1;
+                // Use relativeTransform if we have it (preferred), otherwise use rotation fallback
+                const rTransform = data.relativeTransform as T2x3 | undefined;
+
+                if (rTransform) {
+                    applySizeAndTransform(node as SceneNode & LayoutMixin, {
+                        width,
+                        height,
+                        relativeTransform: rTransform
+                    });
+                } else {
+                    // Fallback for old captures
+                    node.resizeWithoutConstraints(width, height);
+                    node.rotation = data.rotation || 0;
+                    // Only set x/y for absolute positioning fallback
+                    if ((node as any).layoutPositioning !== 'AUTO') {
+                        node.x = data.x !== undefined ? data.x : 0;
+                        node.y = data.y !== undefined ? data.y : 0;
+                    }
+                }
+            }
+
             node.visible = data.visible !== undefined ? data.visible : true;
             node.opacity = data.opacity !== undefined ? data.opacity : 1;
 
@@ -170,15 +285,19 @@ export class JsonReconstructor extends BaseComponent {
                 node.locked = data.locked || false;
             }
 
-            // 3. Apply Constraints and Layout Positioning
-            if ("constraints" in node && data.constraints) {
-                node.constraints = data.constraints;
+            // 2.5 Apply Advanced Visuals
+            if ("isMask" in node && data.isMask !== undefined) {
+                node.isMask = data.isMask;
             }
-            if ("layoutAlign" in node && data.layoutAlign) {
-                node.layoutAlign = data.layoutAlign;
+            if ("maskType" in node && data.maskType) {
+                node.maskType = data.maskType;
             }
-            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
-                node.layoutGrow = data.layoutGrow;
+            if ("clipsContent" in node && data.clipsContent !== undefined) {
+                node.clipsContent = data.clipsContent;
+            }
+            if ("booleanOperation" in node && data.booleanOperation) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (node as any).booleanOperation = data.booleanOperation;
             }
 
             // 4. Apply Visual Properties
@@ -187,15 +306,53 @@ export class JsonReconstructor extends BaseComponent {
                 try {
                     // Hydrate images if asset mapping is provided
                     const hydratedFills = await Promise.all(data.fills.map(async (fill) => {
+                        // IMAGE Rehydration
                         if (fill.type === "IMAGE" && fill.assetRef && assets && assets[fill.assetRef]) {
                             const base64Content = assets[fill.assetRef];
                             const bytes = figma.base64Decode(base64Content);
                             const image = figma.createImage(bytes);
+
+                            // Reconstruct full ImagePaint
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            const { type, imageHash, assetRef, ...rest } = fill;
+
                             return {
-                                ...fill,
-                                imageHash: image.hash
+                                type: "IMAGE",
+                                imageHash: image.hash, // Link the new image
+                                scaleMode: fill.scaleMode || "FILL", // Default
+                                ...rest
                             };
                         }
+
+                        // GRADIENT Rehydration
+                        if (['GRADIENT_LINEAR', 'GRADIENT_RADIAL', 'GRADIENT_ANGULAR', 'GRADIENT_DIAMOND'].includes(fill.type)) {
+                            // 1. Sanitize stops (legacy fix)
+                            let cleanStops = fill.gradientStops;
+                            if (fill.gradientStops) {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                cleanStops = fill.gradientStops.map((stop: any) => ({
+                                    color: stop.color,
+                                    position: stop.position
+                                }));
+                            }
+
+                            // 2. Recompute Transform from Handles (Expert fix)
+                            let transform = fill.gradientTransform;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            if ((fill as any).gradientHandles) {
+                                // Re-derive the matrix from the stable handles
+                                transform = gradientHandlesToTransform((fill as any).gradientHandles as [Vec, Vec, Vec]);
+                            }
+
+                            // If we have neither handles nor transform, we're in trouble, but let's assume one exists or we just use default
+
+                            return {
+                                ...fill,
+                                gradientStops: cleanStops,
+                                gradientTransform: transform
+                            };
+                        }
+
                         return fill;
                     }));
                     node.fills = hydratedFills;
@@ -204,7 +361,7 @@ export class JsonReconstructor extends BaseComponent {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     node.fills = data.fills.map((f: any) => {
                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        const { boundVariables: _, assetRef: __, ...rest } = f;
+                        const { boundVariables: _, assetRef: __, gradientHandles: ___, ...rest } = f;
                         return rest;
                     });
                 }
@@ -235,30 +392,6 @@ export class JsonReconstructor extends BaseComponent {
             // 4.5 Apply Vector Paths
             if (node.type === "VECTOR" && data.vectorPaths) {
                 (node as VectorNode).vectorPaths = data.vectorPaths;
-            }
-
-            // 5. Apply Layout Properties (Auto Layout)
-            if ("layoutMode" in node && data.layout) {
-                const frame = node as FrameNode;
-                frame.layoutMode = data.layout.mode || "NONE";
-
-                if (frame.layoutMode !== "NONE") {
-                    if (data.layout.sizing) {
-                        frame.primaryAxisSizingMode = data.layout.sizing.horizontal === "AUTO" ? "AUTO" : "FIXED";
-                        frame.counterAxisSizingMode = data.layout.sizing.vertical === "AUTO" ? "AUTO" : "FIXED";
-                    }
-                    if (data.layout.alignment) {
-                        frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
-                        frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";
-                    }
-                    frame.itemSpacing = data.layout.spacing || 0;
-                    if (data.layout.padding) {
-                        frame.paddingTop = data.layout.padding.top || 0;
-                        frame.paddingRight = data.layout.padding.right || 0;
-                        frame.paddingBottom = data.layout.padding.bottom || 0;
-                        frame.paddingLeft = data.layout.padding.left || 0;
-                    }
-                }
             }
 
             // 6. Apply Text Properties
