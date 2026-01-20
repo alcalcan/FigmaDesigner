@@ -258,9 +258,7 @@ export class JsonReconstructor extends BaseComponent {
             if ("layoutGrow" in node && data.layoutGrow !== undefined) {
                 node.layoutGrow = data.layoutGrow;
             }
-            if ("layoutPositioning" in node && (data as any).layoutPositioning) {
-                (node as any).layoutPositioning = (data as any).layoutPositioning;
-            }
+
 
             // Step 3: Size & Transform (Atomic)
             // This prevents drift by setting size before matrix, and respecting auto-layout parent
@@ -523,6 +521,18 @@ export class JsonReconstructor extends BaseComponent {
             } else {
                 // If it's the root call and no parent provided, ensure it's on the page
                 figma.currentPage.appendChild(node);
+            }
+
+            // 9. Apply Context-Dependent Properties (Must be attached to parent)
+            if ("layoutPositioning" in node && (data as any).layoutPositioning) {
+                // Now node.parent is set properly
+                if (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE") {
+                    try {
+                        (node as any).layoutPositioning = (data as any).layoutPositioning;
+                    } catch (e) {
+                        console.warn("Failed to set layoutPositioning", e);
+                    }
+                }
             }
 
             return node;
