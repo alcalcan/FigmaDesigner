@@ -21,8 +21,10 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    // Total request logger for debugging
-    console.log(`[${req.method}] ${req.url} (Origin: ${req.headers.origin || 'none'})`);
+    // Total request logger for debugging (ignore poll noise)
+    if (req.url !== '/poll') {
+        console.log(`[${req.method}] ${req.url} (Origin: ${req.headers.origin || 'none'})`);
+    }
 
     // LOG ENDPOINT (POST)
     if (req.method === 'POST' && req.url === '/log') {
@@ -210,6 +212,96 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // DELETE ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/delete') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { path: relativePath } = JSON.parse(body);
+                if (!relativePath) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing path" }));
+                    return;
+                }
+
+                const fullPath = path.join(process.cwd(), 'tools', 'extraction', relativePath);
+
+                // Security check
+                if (!fullPath.startsWith(path.join(process.cwd(), 'tools', 'extraction'))) {
+                    res.writeHead(403);
+                    res.end(JSON.stringify({ error: "Invalid path" }));
+                    return;
+                }
+
+                if (!fs.existsSync(fullPath)) {
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ error: "File not found" }));
+                    return;
+                }
+
+                // 1. Read file to identify linked assets
+                let assetsToDelete = new Set<string>();
+                try {
+                    const content = fs.readFileSync(fullPath, 'utf8');
+                    const json = JSON.parse(content);
+                    assetsToDelete = getAllAssetRefs(json);
+                } catch (e) {
+                    console.warn("Could not parse file before deleting, skipping asset cleanup.", e);
+                }
+
+                // 2. Delete the JSON file
+                fs.unlinkSync(fullPath);
+                console.log(`Deleted file: ${relativePath}`);
+
+                // 3. Clean up orphaned assets
+                // Only if we found assets to delete and they are in a project folder
+                const projectDir = path.dirname(fullPath);
+                if (assetsToDelete.size > 0 && fs.existsSync(projectDir)) {
+                    // Check other JSON files in the same directory
+                    const siblingFiles = fs.readdirSync(projectDir).filter(f => f.endsWith('.json') && f !== path.basename(fullPath));
+                    const preservedAssets = new Set<string>();
+
+                    for (const sibling of siblingFiles) {
+                        try {
+                            const siblingContent = fs.readFileSync(path.join(projectDir, sibling), 'utf8');
+                            const siblingJson = JSON.parse(siblingContent);
+                            const siblingRefs = getAllAssetRefs(siblingJson);
+                            siblingRefs.forEach(ref => preservedAssets.add(ref));
+                        } catch (e) {
+                            // ignore read errors on siblings
+                        }
+                    }
+
+                    // Delete assets that are not preserved
+                    assetsToDelete.forEach(assetRef => {
+                        if (!preservedAssets.has(assetRef)) {
+                            const assetFullPath = path.join(projectDir, assetRef);
+                            if (fs.existsSync(assetFullPath)) {
+                                try {
+                                    fs.unlinkSync(assetFullPath);
+                                    console.log(`   Deleted orphaned asset: ${assetRef}`);
+                                } catch (e) {
+                                    console.error(`   Failed to delete asset ${assetRef}`, e);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok' }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error deleting file:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
     res.writeHead(404);
     res.end();
 });
@@ -252,6 +344,22 @@ function walkFiles(dir: string, project: string, callback: (name: string, projec
             callback(item, project, path.relative(extractionRoot, fullPath));
         }
     });
+}
+
+function getAllAssetRefs(data: any): Set<string> {
+    const refs = new Set<string>();
+    function traverse(obj: any) {
+        if (!obj || typeof obj !== 'object') return;
+        if (obj.assetRef && typeof obj.assetRef === 'string') {
+            refs.add(obj.assetRef);
+        }
+        if (obj.svgPath && typeof obj.svgPath === 'string') {
+            refs.add(obj.svgPath);
+        }
+        Object.values(obj).forEach(traverse);
+    }
+    traverse(data);
+    return refs;
 }
 
 server.listen(PORT, '127.0.0.1', async () => {

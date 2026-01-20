@@ -88,13 +88,12 @@ const captureNode = async (
   }
 
   // Check for Icon Export (SVG)
-  // Heuristic: Small frames or instances, or nodes named "Icon"
-  const isIcon = (
-    (node.type === "FRAME" || node.type === "INSTANCE" || node.type === "COMPONENT") &&
-    (node.width <= 64 && node.height <= 64)
-  ) || node.name.toLowerCase().includes("icon");
+  const isIcon = node.type === "VECTOR" && (
+    (node.width <= 64 && node.height <= 64) ||
+    node.name.toLowerCase().includes("icon")
+  );
 
-  if (isIcon && node.type !== "RECTANGLE" && node.type !== "TEXT") {
+  if (isIcon) {
     try {
       const svgBytes = await node.exportAsync({ format: 'SVG' });
       const base64 = figma.base64Encode(svgBytes);
@@ -141,6 +140,7 @@ const captureNode = async (
 
   // 6. Typography (TextNode)
   if (node.type === "TEXT") {
+    const textNode = node as TextNode;
     data.text = {
       characters: node.characters,
       fontSize: node.fontSize !== figma.mixed ? node.fontSize : "mixed",
@@ -156,6 +156,37 @@ const captureNode = async (
       // Include color explicitly for easier use in non-figma environments
       fills: node.fills !== figma.mixed ? node.fills : undefined
     };
+
+    // Capture segments for mixed styles
+    // We capture specific properties that tend to vary
+    const segments = textNode.getStyledTextSegments([
+      'fills',
+      'fontSize',
+      'fontName',
+      'fontWeight',
+      'letterSpacing',
+      'lineHeight',
+      'textCase',
+      'textDecoration'
+    ]);
+
+    // Optimize: only include segments if there's actual variation or if we want robustness
+    // For now, let's include them to ensure we get the data.
+    // We Map them to a serializable format
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (data.text as any).segments = segments.map(seg => ({
+      characters: seg.characters,
+      start: seg.start,
+      end: seg.end,
+      fontSize: seg.fontSize,
+      fontName: seg.fontName,
+      fontWeight: seg.fontWeight,
+      letterSpacing: seg.letterSpacing,
+      lineHeight: seg.lineHeight,
+      textCase: seg.textCase,
+      textDecoration: seg.textDecoration,
+      fills: seg.fills
+    }));
   }
 
   // 7. Component Properties (for Instances)

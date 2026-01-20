@@ -372,8 +372,54 @@
                     meta.style.fontSize = '9px';
                     meta.style.color = '#555';
 
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '&times;';
+                    deleteBtn.title = 'Delete File & Assets';
+                    deleteBtn.style.cssText = 'position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; color: #666; font-size: 18px; padding: 0 6px; border-radius: 4px; width: auto; display: none; border: none; line-height: 1;';
+                    deleteBtn.onmouseover = () => deleteBtn.style.color = '#ff4d4d';
+                    deleteBtn.onmouseout = () => deleteBtn.style.color = '#666';
+
+                    deleteBtn.onclick = async (e) => {
+                        e.stopPropagation();
+                        if (!confirm(`Are you sure you want to delete ${file.name}?\nThis will also delete any unused assets associated with it.`)) return;
+
+                        const originalText = deleteBtn.innerHTML;
+                        deleteBtn.textContent = '...';
+
+                        try {
+                            const res = await fetch('http://127.0.0.1:3001/delete', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ path: file.path })
+                            });
+
+                            if (res.ok) {
+                                loadFiles();
+                            } else {
+                                let errorMsg = "Unknown error";
+                                try {
+                                    const err = await res.json();
+                                    errorMsg = err.error || errorMsg;
+                                } catch (parseErr) {
+                                    errorMsg = `Server returned ${res.status} ${res.statusText}. (Did you restart 'npm run bridge'?)`;
+                                }
+                                alert("Failed to delete: " + errorMsg);
+                                deleteBtn.innerHTML = originalText;
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            alert("Error connecting to server. Make sure 'npm run bridge' is running.");
+                            deleteBtn.innerHTML = originalText;
+                        }
+                    };
+
+                    item.onmouseenter = () => deleteBtn.style.display = 'block';
+                    item.onmouseleave = () => deleteBtn.style.display = 'none';
+                    item.style.position = 'relative';
+
                     item.appendChild(name);
                     item.appendChild(meta);
+                    item.appendChild(deleteBtn);
 
                     item.onclick = () => {
                         // Deselect previous
@@ -496,6 +542,9 @@
                 }
             }
         }
+
+        // Auto-connect on load
+        setTimeout(() => connectBtn.click(), 500);
     </script>
 </body>
 

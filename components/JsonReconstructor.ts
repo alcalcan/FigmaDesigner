@@ -67,6 +67,8 @@ export interface SerializedNode {
         characters?: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         fills?: any[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        segments?: any[];
     };
 
     corners?: {
@@ -207,10 +209,14 @@ export class JsonReconstructor extends BaseComponent {
                     });
                 }
             }
-            if ("strokes" in node && data.strokes) {
-                node.strokes = data.strokes;
-                if ("strokeWeight" in node && data.strokeWeight !== undefined) node.strokeWeight = data.strokeWeight;
-                if ("strokeAlign" in node && data.strokeAlign) node.strokeAlign = data.strokeAlign;
+            if ("strokes" in node) {
+                if (data.strokes) {
+                    node.strokes = data.strokes;
+                    if ("strokeWeight" in node && data.strokeWeight !== undefined) node.strokeWeight = data.strokeWeight;
+                    if ("strokeAlign" in node && data.strokeAlign) node.strokeAlign = data.strokeAlign;
+                } else {
+                    node.strokes = [];
+                }
             }
             if ("effects" in node && data.effects) {
                 node.effects = data.effects;
@@ -305,6 +311,97 @@ export class JsonReconstructor extends BaseComponent {
                 // Apply text fills last (to ensure font load doesn't reset them)
                 if (data.text.fills) {
                     textNode.fills = data.text.fills;
+                }
+
+                // 6b. Apply Mixed Style Segments
+                if (data.text.segments && data.text.segments.length > 0) {
+                    let currentIndex = 0;
+                    // We need to load all fonts required by segments first
+                    const uniqueFonts = new Set<string>();
+                    for (const seg of data.text.segments) {
+                        if (seg.fontName) {
+                            uniqueFonts.add(JSON.stringify(seg.fontName));
+                        }
+                    }
+
+                    // Load all fonts used in segments
+                    await Promise.all(Array.from(uniqueFonts).map(async (fStr) => {
+                        try {
+                            const fontFn = JSON.parse(fStr);
+                            await figma.loadFontAsync(fontFn);
+                        } catch (e) {
+                            console.warn("Failed to load segment font", fStr);
+                        }
+                    }));
+
+                    for (const seg of data.text.segments) {
+                        const start = currentIndex;
+                        const end = currentIndex + (seg.characters ? seg.characters.length : 0);
+
+                        // If characters match position (sanity check, though we are iterating segments in order)
+                        // Actually, segments from getStyledTextSegments usually cover the whole string in order.
+                        // But let's use the range safely.
+
+                        if (end > textNode.characters.length) {
+                            console.warn("Segment end out of bounds, skipping remaining");
+                            break;
+                        }
+
+                        // Apply Fills
+                        if (seg.fills && seg.fills !== "mixed") {
+                            try {
+                                textNode.setRangeFills(start, end, seg.fills);
+                            } catch (e) { console.warn("Failed to set range fills", e); }
+                        }
+
+                        // Apply Font Size
+                        if (seg.fontSize && seg.fontSize !== "mixed") {
+                            try {
+                                textNode.setRangeFontSize(start, end, seg.fontSize);
+                            } catch (e) { console.warn("Failed to set range font size", e); }
+                        }
+
+                        // Apply Font Name
+                        if (seg.fontName && seg.fontName !== "mixed") {
+                            try {
+                                textNode.setRangeFontName(start, end, seg.fontName);
+                            } catch (e) { console.warn("Failed to set range font name", e); }
+                        }
+
+                        // Apply Line Height
+                        if (seg.lineHeight && seg.lineHeight !== "mixed") {
+                            try {
+                                const lh = typeof seg.lineHeight === "number"
+                                    ? { value: seg.lineHeight, unit: "PIXELS" }
+                                    : seg.lineHeight;
+                                textNode.setRangeLineHeight(start, end, lh);
+                            } catch (e) { console.warn("Failed to set range line height", e); }
+                        }
+
+                        // Apply Letter Spacing
+                        if (seg.letterSpacing && seg.letterSpacing !== "mixed") {
+                            try {
+                                const ls = typeof seg.letterSpacing === "number"
+                                    ? { value: seg.letterSpacing, unit: "PIXELS" }
+                                    : seg.letterSpacing;
+                                textNode.setRangeLetterSpacing(start, end, ls);
+                            } catch (e) { console.warn("Failed to set range letter spacing", e); }
+                        }
+                        // Apply Text Case
+                        if (seg.textCase && seg.textCase !== "mixed") {
+                            try {
+                                textNode.setRangeTextCase(start, end, seg.textCase);
+                            } catch (e) { console.warn("Failed to set range text case", e); }
+                        }
+                        // Apply Text Decoration
+                        if (seg.textDecoration && seg.textDecoration !== "mixed") {
+                            try {
+                                textNode.setRangeTextDecoration(start, end, seg.textDecoration);
+                            } catch (e) { console.warn("Failed to set range text decoration", e); }
+                        }
+
+                        currentIndex = end;
+                    }
                 }
             }
 
