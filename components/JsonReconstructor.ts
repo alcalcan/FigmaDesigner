@@ -1,5 +1,6 @@
 import { BaseComponent, ComponentProps } from "./BaseComponent";
-import { applySizeAndTransform, gradientHandlesToTransform, T2x3, Vec } from "./TransformHelpers";
+import { applySizeAndTransform, T2x3 } from "./TransformHelpers";
+import { AssetSource, hydrateFills } from "./PaintHelpers";
 // import frame2609217 from "../tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json";
 
 export interface SerializedNode {
@@ -74,7 +75,7 @@ export interface SerializedNode {
         lineHeight?: any;
         characters?: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        fills?: any[];
+        fills?: any[] | "mixed";
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         segments?: any[];
     };
@@ -123,7 +124,19 @@ export class JsonReconstructor extends BaseComponent {
     }
 
     async create(props: ComponentProps & { assets?: Record<string, string> }): Promise<SceneNode> {
-        const result = await this.reconstruct(this.data, undefined, props.assets);
+        const assetSource: AssetSource = {
+            assets: {},
+            createdImagesByAssetRef: new Map()
+        };
+
+        // Populate assets from props
+        if (props.assets) {
+            Object.entries(props.assets).forEach(([key, val]) => {
+                assetSource.assets[key] = { bytesBase64: val };
+            });
+        }
+
+        const result = await this.reconstruct(this.data, undefined, assetSource);
         if (result) {
             result.x = props.x;
             result.y = props.y;
@@ -132,7 +145,7 @@ export class JsonReconstructor extends BaseComponent {
         throw new Error("Failed to reconstruct node from JSON data");
     }
 
-    async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode | PageNode, assets?: Record<string, string>): Promise<SceneNode | null> {
+    async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode | PageNode, assetSource?: AssetSource): Promise<SceneNode | null> {
         console.log(`Reconstructing node: ${data.name} (${data.type})`);
         let node: SceneNode | null = null;
 
@@ -154,7 +167,7 @@ export class JsonReconstructor extends BaseComponent {
                     // Create children on current page first to establish relative positions
                     for (const childData of data.children) {
                         // Pass currentPage to ensure they are created on root for consistent grouping
-                        const childNode = await this.reconstruct(childData, figma.currentPage, assets);
+                        const childNode = await this.reconstruct(childData, figma.currentPage, assetSource);
                         if (childNode) childrenNodes.push(childNode);
                     }
 
@@ -174,7 +187,7 @@ export class JsonReconstructor extends BaseComponent {
                 if (data.children && data.children.length > 0) {
                     const childrenNodes: SceneNode[] = [];
                     for (const childData of data.children) {
-                        const childNode = await this.reconstruct(childData, undefined, assets);
+                        const childNode = await this.reconstruct(childData, undefined, assetSource);
                         if (childNode) childrenNodes.push(childNode);
                     }
 
@@ -304,66 +317,13 @@ export class JsonReconstructor extends BaseComponent {
             // Important: Apply fills carefully. Sometimes boundVariables cause issues if missing.
             if ("fills" in node && data.fills) {
                 try {
-                    // Hydrate images if asset mapping is provided
-                    const hydratedFills = await Promise.all(data.fills.map(async (fill) => {
-                        // IMAGE Rehydration
-                        if (fill.type === "IMAGE" && fill.assetRef && assets && assets[fill.assetRef]) {
-                            const base64Content = assets[fill.assetRef];
-                            const bytes = figma.base64Decode(base64Content);
-                            const image = figma.createImage(bytes);
-
-                            // Reconstruct full ImagePaint
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            const { type, imageHash, assetRef, ...rest } = fill;
-
-                            return {
-                                type: "IMAGE",
-                                imageHash: image.hash, // Link the new image
-                                scaleMode: fill.scaleMode || "FILL", // Default
-                                ...rest
-                            };
-                        }
-
-                        // GRADIENT Rehydration
-                        if (['GRADIENT_LINEAR', 'GRADIENT_RADIAL', 'GRADIENT_ANGULAR', 'GRADIENT_DIAMOND'].includes(fill.type)) {
-                            // 1. Sanitize stops (legacy fix)
-                            let cleanStops = fill.gradientStops;
-                            if (fill.gradientStops) {
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                cleanStops = fill.gradientStops.map((stop: any) => ({
-                                    color: stop.color,
-                                    position: stop.position
-                                }));
-                            }
-
-                            // 2. Recompute Transform from Handles (Expert fix)
-                            let transform = fill.gradientTransform;
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            if ((fill as any).gradientHandles) {
-                                // Re-derive the matrix from the stable handles
-                                transform = gradientHandlesToTransform((fill as any).gradientHandles as [Vec, Vec, Vec]);
-                            }
-
-                            // If we have neither handles nor transform, we're in trouble, but let's assume one exists or we just use default
-
-                            return {
-                                ...fill,
-                                gradientStops: cleanStops,
-                                gradientTransform: transform
-                            };
-                        }
-
-                        return fill;
-                    }));
-                    node.fills = hydratedFills;
+                    const hydratedFills = await hydrateFills(data.fills, assetSource!);
+                    if (hydratedFills) {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        node.fills = hydratedFills as any;
+                    }
                 } catch (e) {
-                    console.warn(`Failed to apply fills to ${node.name}, falling back to basic colors`);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    node.fills = data.fills.map((f: any) => {
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        const { boundVariables: _, assetRef: __, gradientHandles: ___, ...rest } = f;
-                        return rest;
-                    });
+                    console.warn(`Failed to apply fills to ${node.name}`, e);
                 }
             }
             if ("strokes" in node) {
@@ -442,8 +402,9 @@ export class JsonReconstructor extends BaseComponent {
                 textNode.characters = data.text.characters || "";
 
                 // Apply text fills last (to ensure font load doesn't reset them)
-                if (data.text.fills) {
-                    textNode.fills = data.text.fills;
+                if (data.text.fills && data.text.fills !== "mixed") {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    textNode.fills = data.text.fills as any;
                 }
 
                 // 6b. Apply Mixed Style Segments
@@ -468,8 +429,14 @@ export class JsonReconstructor extends BaseComponent {
                     }));
 
                     for (const seg of data.text.segments) {
-                        const start = currentIndex;
-                        const end = currentIndex + (seg.characters ? seg.characters.length : 0);
+                        let start = currentIndex;
+                        let end = currentIndex + (seg.characters ? seg.characters.length : 0);
+
+                        // Use captured indices if available (Preferred)
+                        if (typeof seg.start === 'number' && typeof seg.end === 'number') {
+                            start = seg.start;
+                            end = seg.end;
+                        }
 
                         // If characters match position (sanity check, though we are iterating segments in order)
                         // Actually, segments from getStyledTextSegments usually cover the whole string in order.
@@ -483,7 +450,11 @@ export class JsonReconstructor extends BaseComponent {
                         // Apply Fills
                         if (seg.fills && seg.fills !== "mixed") {
                             try {
-                                textNode.setRangeFills(start, end, seg.fills);
+                                const hydrated = await hydrateFills(seg.fills, assetSource!);
+                                if (hydrated) {
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    textNode.setRangeFills(start, end, hydrated as any);
+                                }
                             } catch (e) { console.warn("Failed to set range fills", e); }
                         }
 
@@ -542,7 +513,7 @@ export class JsonReconstructor extends BaseComponent {
             if ("children" in node && data.children && data.children.length > 0) {
                 const container = node as FrameNode;
                 for (const childData of data.children) {
-                    await this.reconstruct(childData, container, assets);
+                    await this.reconstruct(childData, container, assetSource);
                 }
             }
 

@@ -1,6 +1,6 @@
 import { Pipeline } from "./pipeline";
 import { JsonReconstructor } from "./components/JsonReconstructor";
-import { transformToGradientHandles, T2x3 } from "./components/TransformHelpers";
+import { AssetStore, processFills } from "./components/PaintHelpers";
 
 // Show the HTML page in "ui.html".
 figma.showUI(__html__, { width: 300, height: 400 });
@@ -28,7 +28,7 @@ const safeGet = (node: any, key: string) => {
 const captureNode = async (
   node: SceneNode,
   detailed: boolean,
-  assets: AssetRecord[],
+  assetStore: AssetStore,
   rootName: string
 ): Promise<Record<string, unknown>> => {
 
@@ -91,70 +91,7 @@ const captureNode = async (
   // 3. Visuals: Fills (Images & Gradients)
   if ("fills" in node) {
     const nodeWithFills = node as GeometryMixin;
-    if (nodeWithFills.fills !== figma.mixed && Array.isArray(nodeWithFills.fills)) {
-      const processedFills = await Promise.all(nodeWithFills.fills.map(async (fill) => {
-        // IMAGE
-        if (fill.type === 'IMAGE' && fill.imageHash) {
-          const image = figma.getImageByHash(fill.imageHash);
-          if (image) {
-            try {
-              const bytes = await image.getBytesAsync();
-              const base64 = figma.base64Encode(bytes);
-              const ext = 'png';
-              // unique filename based on hash
-              const fileName = `img_${fill.imageHash}.${ext}`;
-
-              if (!assets.find(a => a.fileName === fileName)) {
-                console.log(`Captured Image Asset: ${fileName}`);
-                assets.push({ fileName, type: 'image', content: base64 });
-              }
-
-              // Return FULL ImagePaint property set + assetRef
-              // This is critical for keeping scaleMode, filters, transforms etc
-              return {
-                type: fill.type,
-                scaleMode: fill.scaleMode,
-                imageTransform: fill.imageTransform,
-                scalingFactor: fill.scalingFactor,
-                rotation: fill.rotation,
-                filters: fill.filters,
-                opacity: fill.opacity,
-                blendMode: fill.blendMode,
-                visible: fill.visible,
-                imageHash: fill.imageHash, // Keep original hash as ref
-                assetRef: `assets/${fileName}`
-              };
-            } catch (err) {
-              console.error(`Failed to capture image bytes for ${node.name}`, err);
-            }
-          }
-        }
-        // GRADIENTS
-        if (['GRADIENT_LINEAR', 'GRADIENT_RADIAL', 'GRADIENT_ANGULAR', 'GRADIENT_DIAMOND'].includes(fill.type)) {
-          // Normalize gradient transform to handles (0-1 space)
-          // This makes it robust against size/rotation changes
-          const handles = transformToGradientHandles(fill.gradientTransform as T2x3); // Cast assuming valid matrix
-
-          return {
-            type: fill.type,
-            opacity: fill.opacity,
-            blendMode: fill.blendMode,
-            visible: fill.visible,
-            gradientStops: fill.gradientStops.map((stop: any) => ({
-              color: stop.color,
-              position: stop.position
-            })),
-            gradientTransform: fill.gradientTransform, // Keep original as backup
-            gradientHandles: handles // The robust new way
-          };
-        }
-        // SOLID / Other
-        return fill;
-      }));
-      data.fills = processedFills;
-    } else if (nodeWithFills.fills === figma.mixed) {
-      data.fills = "mixed";
-    }
+    data.fills = await processFills(nodeWithFills.fills, assetStore);
   }
 
   // 4. Visuals: Strokes
@@ -197,8 +134,9 @@ const captureNode = async (
       const svgBytes = await node.exportAsync({ format: 'SVG' });
       const base64 = figma.base64Encode(svgBytes);
       const fileName = `icon_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
-      assets.push({ fileName, type: 'svg', content: base64 });
-      data.svgPath = `assets/${fileName}`;
+      const assetRef = `assets/${fileName}`;
+      assetStore.assets[assetRef] = { bytesBase64: base64 };
+      data.svgPath = assetRef;
     } catch (e) {
       console.warn(`Failed to export SVG for ${node.name}`, e);
     }
@@ -234,7 +172,7 @@ const captureNode = async (
       const segments = node.getStyledTextSegments([
         'fills', 'fontSize', 'fontName', 'fontWeight', 'letterSpacing', 'lineHeight', 'textCase', 'textDecoration'
       ]);
-      (data.text as any).segments = segments.map(seg => ({
+      (data.text as any).segments = await Promise.all(segments.map(async seg => ({
         characters: seg.characters,
         start: seg.start,
         end: seg.end,
@@ -245,8 +183,8 @@ const captureNode = async (
         lineHeight: seg.lineHeight,
         textCase: seg.textCase,
         textDecoration: seg.textDecoration,
-        fills: seg.fills
-      }));
+        fills: await processFills(seg.fills as any, assetStore)
+      })));
     } catch (e) {
       console.warn("Failed to capture text segments", e);
     }
@@ -269,7 +207,7 @@ const captureNode = async (
   // 9. Recursion
   if (detailed && "children" in node) {
     data.children = await Promise.all(
-      (node as ChildrenMixin).children.map(child => captureNode(child, detailed, assets, rootName))
+      (node as ChildrenMixin).children.map(child => captureNode(child, detailed, assetStore, rootName))
     );
   }
 
@@ -294,13 +232,22 @@ figma.ui.onmessage = async (msg) => {
       return;
     }
 
-    const assets: AssetRecord[] = [];
-    // For manual download, we can still combine everything or separate them.
-    // Let's keep manual download as one big JSON for now as it downloads a single file.
-    // OR we could zip, but that's complex. Let's keep it simple for legacy manual download.
-    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assets, node.name)));
+    const assetStore: AssetStore = {
+      imageHashToAssetRef: new Map(),
+      assets: {},
+      nextId: 1
+    };
+
+    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name)));
     const projectName = figma.root.name;
     const fileName = `${projectName}_capture.json`;
+
+    // Flatten AssetStore to AssetRecord[]
+    const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
+      fileName: ref.replace(/^assets\//, ''),
+      type: ref.endsWith('.svg') ? 'svg' : 'image',
+      content: val.bytesBase64
+    }));
 
     figma.ui.postMessage({
       type: 'capture-download',
@@ -322,8 +269,20 @@ figma.ui.onmessage = async (msg) => {
 
       const projectName = figma.root.name;
       const packets = await Promise.all(selection.map(async (node) => {
-        const assets: AssetRecord[] = [];
-        const data = await captureNode(node, msg.detailed, assets, node.name);
+        const assetStore: AssetStore = {
+          imageHashToAssetRef: new Map(),
+          assets: {},
+          nextId: 1
+        };
+        const data = await captureNode(node, msg.detailed, assetStore, node.name);
+
+        // Flatten for bridge
+        const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
+          fileName: ref.replace(/^assets\//, ''),
+          type: ref.endsWith('.svg') ? 'svg' : 'image',
+          content: val.bytesBase64
+        }));
+
         return {
           name: node.name,
           data: data,
