@@ -279,7 +279,7 @@ export class JsonReconstructor extends BaseComponent {
                     node.resizeWithoutConstraints(width, height);
                     node.rotation = data.rotation || 0;
                     // Only set x/y for absolute positioning fallback
-                    if ((node as any).layoutPositioning !== 'AUTO') {
+                    if ("layoutPositioning" in node && node.layoutPositioning !== 'AUTO') {
                         node.x = data.x !== undefined ? data.x : 0;
                         node.y = data.y !== undefined ? data.y : 0;
                     }
@@ -524,11 +524,11 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 9. Apply Context-Dependent Properties (Must be attached to parent)
-            if ("layoutPositioning" in node && (data as any).layoutPositioning) {
+            if ("layoutPositioning" in node && data.layoutPositioning) {
                 // Now node.parent is set properly
                 if (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE") {
                     try {
-                        (node as any).layoutPositioning = (data as any).layoutPositioning;
+                        (node as LayoutMixin).layoutPositioning = data.layoutPositioning;
                     } catch (e) {
                         console.warn("Failed to set layoutPositioning", e);
                     }

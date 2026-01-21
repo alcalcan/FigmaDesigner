@@ -2,7 +2,7 @@ export type T2x3 = [[number, number, number], [number, number, number]];
 export type Vec = { x: number; y: number };
 
 export function isAutoLayoutFrame(node: BaseNode | null): node is FrameNode | ComponentNode | InstanceNode {
-    return !!node && "layoutMode" in node && (node as any).layoutMode !== undefined;
+    return !!node && "layoutMode" in node && (node as FrameNode).layoutMode !== undefined;
 }
 
 /**
@@ -30,7 +30,7 @@ export function applySizeAndTransform(
     const inAutoLayout =
         isAutoLayoutFrame(parent) && (parent as FrameNode).layoutMode !== "NONE" && "layoutPositioning" in node;
 
-    const positioning = (inAutoLayout ? (node as any).layoutPositioning : null) as
+    const positioning = (inAutoLayout ? (node as LayoutMixin).layoutPositioning : null) as
         | "AUTO"
         | "ABSOLUTE"
         | null;

@@ -249,7 +249,7 @@ const server = http.createServer((req, res) => {
                         fs.mkdirSync(assetsDir);
                     }
 
-                    assets.forEach((asset: any) => {
+                    assets.forEach((asset: { fileName: string, content: string }) => {
                         const assetPath = path.join(assetsDir, asset.fileName);
                         const buffer = Buffer.from(asset.content, 'base64');
                         fs.writeFileSync(assetPath, buffer);
@@ -305,7 +305,7 @@ const server = http.createServer((req, res) => {
                 // 3. New Cleanup Logic for Folder Structure
                 // If the parent directory is a specific capture folder (not the project root), try to delete it
                 const parentDir = path.dirname(fullPath);
-                const projectRoot = path.dirname(parentDir); // Grandparent
+
 
                 // Check if parent looks like a capture folder (has assets dir or empty)
                 // And ensure we are at least 2 levels deep from extraction root (Project/CaptureFolder/File.json)
@@ -386,21 +386,7 @@ function walkFiles(dir: string, project: string, callback: (name: string, projec
     });
 }
 
-function getAllAssetRefs(data: any): Set<string> {
-    const refs = new Set<string>();
-    function traverse(obj: any) {
-        if (!obj || typeof obj !== 'object') return;
-        if (obj.assetRef && typeof obj.assetRef === 'string') {
-            refs.add(obj.assetRef);
-        }
-        if (obj.svgPath && typeof obj.svgPath === 'string') {
-            refs.add(obj.svgPath);
-        }
-        Object.values(obj).forEach(traverse);
-    }
-    traverse(data);
-    return refs;
-}
+
 
 server.listen(PORT, '127.0.0.1', async () => {
     console.log(`Bridge Server running at http://127.0.0.1:${PORT}`);
@@ -410,7 +396,7 @@ server.listen(PORT, '127.0.0.1', async () => {
     const stdin = process.stdin;
     stdin.setEncoding('utf-8');
 
-    let spinnerInterval: NodeJS.Timeout | null = null;
+
     stdin.on('data', (_key) => {
         // Simple enter key detection
         if (pendingCommand === null || pendingCommand === 'idle') {

@@ -1,4 +1,4 @@
-import { gradientHandlesToTransform as oldHandlesToTx, transformToGradientHandles as oldTxToHandles, T2x3, Vec } from "./TransformHelpers";
+import { } from "./TransformHelpers";
 
 // Re-export or redefine types if needed. Using simple types for portability.
 export type GradientHandle = { x: number; y: number };
@@ -8,7 +8,7 @@ export type PortablePaint =
     | (SolidPaint & { /* no extras */ })
     | (ImagePaint & { assetRef?: string; originalImageHash?: string })
     | (GradientPaint & { gradientHandles?: [GradientHandle, GradientHandle, GradientHandle] })
-    | (Paint & { [k: string]: any }); // fallback
+    | (Paint & { [k: string]: unknown }); // fallback
 
 export type PortablePaints = PortablePaint[] | "mixed";
 
@@ -90,6 +90,7 @@ export async function processFills(
 
     for (const paint of fills) {
         // Clone
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const p: any = JSON.parse(JSON.stringify(paint));
 
         // 1) IMAGE paints
@@ -148,6 +149,7 @@ export async function hydrateFills(
     const out: Paint[] = [];
 
     for (const portable of fills) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const p: any = { ...portable };
 
         // IMAGE

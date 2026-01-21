@@ -38,3 +38,19 @@ We recommend writing TypeScript code using Visual Studio code:
     you reopen Visual Studio Code.
 
 That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+
+## Code Quality
+
+This project processes explicit linting to ensure code stability and type safety. We use `eslint` with strict TypeScript rules.
+
+To check for lint errors:
+```bash
+npm run lint
+```
+
+To automatically fix auto-fixable lint errors:
+```bash
+npm run lint:fix
+```
+
+We avoid using `any` type casts (`as any`) to prevent runtime crashes in Figma's sandboxed environment. Instead, use proper interfaces or `Record<string, unknown>` for dynamic data.

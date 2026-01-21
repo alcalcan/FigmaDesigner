@@ -14,6 +14,7 @@ interface AssetRecord {
 
 const sanitizeName = (name: string) => name.replace(/[^a-z0-9]/gi, '_');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeGet = (node: any, key: string) => {
   try {
     const val = node[key];
@@ -32,9 +33,10 @@ const captureNode = async (
   rootName: string
 ): Promise<Record<string, unknown>> => {
 
+
   // 1. Basic Identity & Transform
-  // Use 'any' to allow building the object dynamically without strict type guards for every intermediate read
-  const data: any = {
+  // Use 'Record<string, unknown>' to allow building the object dynamically
+  const data: Record<string, unknown> = {
     id: node.id,
     name: node.name,
     type: node.type,
@@ -83,7 +85,7 @@ const captureNode = async (
     };
 
     // Cleanup if no layout
-    if (data.layout.mode === "NONE") {
+    if (data.layout && (data.layout as { mode: string }).mode === "NONE") {
       // We usually keep it to explicitly say NONE, but can simplify if needed.
     }
   }
@@ -91,7 +93,7 @@ const captureNode = async (
   // 3. Visuals: Fills (Images & Gradients)
   if ("fills" in node) {
     const nodeWithFills = node as GeometryMixin;
-    data.fills = await processFills(nodeWithFills.fills, assetStore);
+    data.fills = await processFills(nodeWithFills.fills as Readonly<Paint[]>, assetStore);
   }
 
   // 4. Visuals: Strokes
@@ -172,7 +174,7 @@ const captureNode = async (
       const segments = node.getStyledTextSegments([
         'fills', 'fontSize', 'fontName', 'fontWeight', 'letterSpacing', 'lineHeight', 'textCase', 'textDecoration'
       ]);
-      (data.text as any).segments = await Promise.all(segments.map(async seg => ({
+      (data.text as Record<string, unknown>).segments = await Promise.all(segments.map(async seg => ({
         characters: seg.characters,
         start: seg.start,
         end: seg.end,
@@ -183,7 +185,7 @@ const captureNode = async (
         lineHeight: seg.lineHeight,
         textCase: seg.textCase,
         textDecoration: seg.textDecoration,
-        fills: await processFills(seg.fills as any, assetStore)
+        fills: await processFills(seg.fills as Paint[], assetStore)
       })));
     } catch (e) {
       console.warn("Failed to capture text segments", e);
@@ -297,8 +299,8 @@ figma.ui.onmessage = async (msg) => {
       });
     } catch (e) {
       console.error("Capture failed:", e);
-      figma.notify("Capture failed: " + (e as any).message, { error: true });
-      figma.ui.postMessage({ type: 'capture-error', message: (e as any).message });
+      figma.notify("Capture failed: " + (e as Error).message, { error: true });
+      figma.ui.postMessage({ type: 'capture-error', message: (e as Error).message });
     }
   }
 
