@@ -218,6 +218,9 @@
                     <label class="checkbox-row">
                         <input type="checkbox" id="detailed-checkbox" checked> Recursive (Deep Capture)
                     </label>
+                    <label class="checkbox-row" style="margin-top: 4px;">
+                        <input type="checkbox" id="vector-json-checkbox"> Save Vector in JSON (Slow)
+                    </label>
                 </div>
             </div>
             <div id="hint-text"
@@ -239,6 +242,7 @@
         const syncBtn = document.getElementById('sync-btn');
         const captureBtn = document.getElementById('capture-btn');
         const detailedCheckbox = document.getElementById('detailed-checkbox');
+        const vectorJsonCheckbox = document.getElementById('vector-json-checkbox');
         const statusDot = document.getElementById('status-dot');
         const statusText = document.getElementById('status-text');
         const bridgeActiveTools = document.getElementById('bridge-active-tools');
@@ -288,7 +292,8 @@
 
         syncBtn.onclick = () => {
             const isDetailed = detailedCheckbox.checked;
-            parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed } }, '*')
+            const saveVectorInJson = vectorJsonCheckbox.checked;
+            parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed, saveVectorInJson: saveVectorInJson } }, '*')
             // Feedback will be triggered on result message for precision, 
             // but let's do immediate for responsiveness too
             showFeedback(syncBtn, "Capture Sync (to Disk)");
@@ -654,7 +659,8 @@
 
                     if (json.command === 'capture') {
                         const isDetailed = detailedCheckbox.checked;
-                        parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed } }, '*');
+                        const saveVectorInJson = vectorJsonCheckbox.checked;
+                        parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed, saveVectorInJson: saveVectorInJson } }, '*');
                     }
                 } catch (e) {
                     statusText.textContent = "No Server Found";

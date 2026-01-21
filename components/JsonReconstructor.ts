@@ -90,6 +90,7 @@ export interface SerializedNode {
 
     // Vector support
     vectorPaths?: { windingRule: "NONZERO" | "EVENODD", data: string }[];
+    svgPath?: string;
 
     children?: SerializedNode[];
 }
@@ -149,6 +150,7 @@ export class JsonReconstructor extends BaseComponent {
     async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode | PageNode, assetSource?: AssetSource): Promise<SceneNode | null> {
         console.log(`Reconstructing node: ${data.name} (${data.type})`);
         let node: SceneNode | null = null;
+        let isFromSvg = false; // Declare isFromSvg here
 
         try {
             // 1. Create Node based on type
@@ -159,7 +161,50 @@ export class JsonReconstructor extends BaseComponent {
             } else if (data.type === "RECTANGLE") {
                 node = figma.createRectangle();
             } else if (data.type === "VECTOR") {
-                node = figma.createVector();
+                if (data.svgPath && assetSource) {
+                    const asset = assetSource.assets[data.svgPath];
+                    if (asset) {
+                        try {
+                            const bytes = figma.base64Decode(asset.bytesBase64);
+
+                            // More robust byte-to-string conversion
+                            let svgContent = "";
+                            try {
+                                const textDecoder = new TextDecoder();
+                                svgContent = textDecoder.decode(bytes);
+                            } catch (e) {
+                                // Fallback for environments where TextDecoder might fail or behave unexpectedly
+                                for (let i = 0; i < bytes.length; i++) {
+                                    svgContent += String.fromCharCode(bytes[i]);
+                                }
+                            }
+
+                            if (!svgContent || svgContent.length === 0) {
+                                throw new Error("Decoded SVG content is empty");
+                            }
+
+                            // figma.createNodeFromSvg returns the root node of the SVG (usually a Frame or Group)
+                            const svgContainer = figma.createNodeFromSvg(svgContent);
+
+                            // Flatten the container to get a pure VectorNode.
+                            // This also normalizes the coordinates relative to the new node's bounds.
+                            const flattenedNode = figma.flatten([svgContainer]);
+                            node = flattenedNode;
+
+                            // If we created from SVG, we mark it to skip redundant visual property application
+                            // because the SVG already contains the fills/strokes.
+                            isFromSvg = true; // Use the local variable
+                        } catch (e) {
+                            console.error(`Failed to create node from SVG asset: ${data.svgPath}`, e);
+                            node = figma.createVector();
+                        }
+                    } else {
+                        console.warn(`SVG asset not found in source: ${data.svgPath}`);
+                        node = figma.createVector();
+                    }
+                } else {
+                    node = figma.createVector();
+                }
             } else if (data.type === "ELLIPSE") {
                 node = figma.createEllipse();
             } else if (data.type === "GROUP") {
@@ -314,7 +359,8 @@ export class JsonReconstructor extends BaseComponent {
 
             // 4. Apply Visual Properties
             // Important: Apply fills carefully. Sometimes boundVariables cause issues if missing.
-            if ("fills" in node && data.fills) {
+            // Skip if node was created from SVG to avoid overlapping fills on the container frame.
+            if ("fills" in node && data.fills && !isFromSvg) {
                 try {
                     const hydratedFills = await hydrateFills(data.fills, assetSource!);
                     if (hydratedFills) {
@@ -325,7 +371,7 @@ export class JsonReconstructor extends BaseComponent {
                     console.warn(`Failed to apply fills to ${node.name}`, e);
                 }
             }
-            if ("strokes" in node) {
+            if ("strokes" in node && !isFromSvg) {
                 if (data.strokes) {
                     node.strokes = data.strokes;
                     if ("strokeWeight" in node && data.strokeWeight !== undefined) node.strokeWeight = data.strokeWeight;
@@ -349,7 +395,7 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 4.5 Apply Vector Paths
-            if (node.type === "VECTOR" && data.vectorPaths) {
+            if (node.type === "VECTOR" && data.vectorPaths && !data.svgPath) {
                 (node as VectorNode).vectorPaths = data.vectorPaths;
             }
 

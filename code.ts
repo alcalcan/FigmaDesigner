@@ -31,8 +31,14 @@ const captureNode = async (
   node: SceneNode,
   detailed: boolean,
   assetStore: AssetStore,
-  rootName: string
-): Promise<Record<string, unknown>> => {
+  rootName: string,
+  saveVectorInJson: boolean = false
+): Promise<Record<string, unknown> | null> => {
+
+  // Skip non-visible nodes
+  if (!node.visible) {
+    return null;
+  }
 
 
   // 1. Basic Identity & Transform
@@ -132,11 +138,15 @@ const captureNode = async (
     node.name.toLowerCase().includes("icon")
   );
 
-  if (isIcon) {
+  // New logic: Export vectors as SVG unless explicitly asked to keep in JSON
+  const isVectorToExport = node.type === "VECTOR" && !saveVectorInJson;
+
+  if (isIcon || isVectorToExport) {
     try {
       const svgBytes = await node.exportAsync({ format: 'SVG' });
       const base64 = figma.base64Encode(svgBytes);
-      const fileName = `icon_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
+      const prefix = isIcon ? 'icon' : 'vector';
+      const fileName = `${prefix}_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
       const assetRef = `assets/${fileName}`;
       assetStore.assets[assetRef] = { bytesBase64: base64 };
       data.svgPath = assetRef;
@@ -146,10 +156,11 @@ const captureNode = async (
   }
 
   // Also capture raw vector paths if available (for exact reconstruction)
-  if ("vectorPaths" in node) {
+  // ONLY if not exported as SVG OR if explicitly requested
+  if ("vectorPaths" in node && (saveVectorInJson || !data.svgPath)) {
     data.vectorPaths = safeGet(node, "vectorPaths");
   }
-  if ("vectorNetwork" in node) {
+  if ("vectorNetwork" in node && (saveVectorInJson || !data.svgPath)) {
     data.vectorNetwork = safeGet(node, "vectorNetwork");
   }
 
@@ -209,9 +220,11 @@ const captureNode = async (
 
   // 9. Recursion
   if (detailed && "children" in node) {
-    data.children = await Promise.all(
-      (node as ChildrenMixin).children.map(child => captureNode(child, detailed, assetStore, rootName))
+    const childPromises = (node as ChildrenMixin).children.map(child =>
+      captureNode(child, detailed, assetStore, rootName, saveVectorInJson)
     );
+    const resolvedChildren = await Promise.all(childPromises);
+    data.children = resolvedChildren.filter((c): c is Record<string, unknown> => c !== null);
   }
 
   return data;
@@ -241,7 +254,14 @@ figma.ui.onmessage = async (msg) => {
       nextId: 1
     };
 
-    const details = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name)));
+    const detailsRaw = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name)));
+    const details = detailsRaw.filter((d): d is Record<string, unknown> => d !== null);
+
+    if (details.length === 0) {
+      console.log("No visible nodes in selection to capture.");
+      return;
+    }
+
     const projectName = figma.root.name;
     const fileName = `${projectName}_capture.json`;
 
@@ -277,7 +297,8 @@ figma.ui.onmessage = async (msg) => {
           assets: {},
           nextId: 1
         };
-        const data = await captureNode(node, msg.detailed, assetStore, node.name);
+        const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson);
+        if (!data) return null;
 
         // Flatten for bridge
         const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
@@ -293,10 +314,18 @@ figma.ui.onmessage = async (msg) => {
         };
       }));
 
+      // Filter out skipped (null) results
+      const validPackets = packets.filter(p => p !== null);
+
+      if (validPackets.length === 0) {
+        figma.notify("No visible elements found to capture.", { error: true });
+        return;
+      }
+
       figma.ui.postMessage({
         type: 'capture-bridge-result-batch',
         projectName: projectName,
-        packets: packets
+        packets: validPackets
       });
     } catch (e) {
       console.error("Capture failed:", e);
