@@ -88,20 +88,34 @@ const server = http.createServer((req, res) => {
             const components: string[] = [];
 
             if (fs.existsSync(componentsDir)) {
-                const items = fs.readdirSync(componentsDir);
-                items.forEach(item => {
-                    // Filter for .ts files that are likely components (Start with Uppercase, exclude Base/Index/Helpers)
-                    if (item.endsWith('.ts') &&
-                        /^[A-Z]/.test(item) &&
-                        !item.includes('BaseComponent') &&
-                        !item.includes('Helpers') &&
-                        !item.includes('JsonReconstructor')) {
+                // Recursive walker
+                const walkComponents = (dir: string, baseDir: string) => {
+                    const items = fs.readdirSync(dir);
+                    items.forEach(item => {
+                        const fullPath = path.join(dir, item);
+                        const stat = fs.statSync(fullPath);
 
-                        // Strip extension
-                        const name = item.replace(/\.ts$/, '');
-                        components.push(name);
-                    }
-                });
+                        if (stat.isDirectory()) {
+                            walkComponents(fullPath, baseDir);
+                        } else {
+                            // Filter logic
+                            if (item.endsWith('.ts') &&
+                                /^[A-Z]/.test(item) &&
+                                !item.includes('BaseComponent') &&
+                                !item.includes('Helpers') &&
+                                !item.includes('JsonReconstructor')) {
+
+                                // Get path relative to componentsDir
+                                const relativePath = path.relative(baseDir, fullPath);
+                                // Strip extension
+                                const name = relativePath.replace(/\.ts$/, '');
+                                components.push(name);
+                            }
+                        }
+                    });
+                };
+
+                walkComponents(componentsDir, componentsDir);
             }
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ components }));

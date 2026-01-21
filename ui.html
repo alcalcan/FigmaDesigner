@@ -516,49 +516,118 @@
             try {
                 const response = await fetch('http://127.0.0.1:3001/list-components');
                 if (!response.ok) throw new Error("Failed");
-                const { components } = await response.json();
+                const { components } = await response.json(); // Array of "Folder/Subfolder/Component"
 
                 if (components.length === 0) {
                     componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">No components found</div>';
                     return;
                 }
 
-                componentList.innerHTML = '';
-                components.forEach(name => {
-                    const item = document.createElement('div');
-                    item.style.cssText = 'padding: 10px 12px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;';
+                // Build Tree
+                const tree = {};
+                components.forEach(pathStr => {
+                    const parts = pathStr.split('/'); // Windows users might need check, but bridge sends relative path which usually uses / or we normalized it? 
+                    // Wait, path.relative on Windows uses backslashes. Bridge should normalize to forward slashes for Consistency.
+                    // But I can handle both here just in case: .split(/[/\\]/);
+                    // Actually, let's fix bridge.ts to normalize, OR just handle it here.
+                    // handling here is safer.
+                    const normalized = pathStr.replace(/\\/g, '/');
+                    const partsNorm = normalized.split('/');
 
-                    const nameSpan = document.createElement('span');
-                    nameSpan.textContent = name;
-                    item.appendChild(nameSpan);
-
-                    const genBtn = document.createElement('span');
-                    genBtn.textContent = 'Generate';
-                    genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
-                    item.appendChild(genBtn);
-
-                    item.onmouseenter = () => {
-                        item.style.background = '#2a2a2a';
-                        genBtn.style.opacity = '1';
-                    }
-                    item.onmouseleave = () => {
-                        item.style.background = 'transparent';
-                        genBtn.style.opacity = '0';
-                    }
-
-                    item.onclick = () => {
-                        parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: name } }, '*')
-                        genBtn.textContent = 'Done!';
-                        genBtn.style.background = '#1ed760';
-                        setTimeout(() => {
-                            genBtn.textContent = 'Generate';
-                            genBtn.style.background = '#0d99ff';
-                        }, 1000);
-                    }
-                    componentList.appendChild(item);
+                    let current = tree;
+                    partsNorm.forEach((part, i) => {
+                        if (!current[part]) {
+                            current[part] = (i === partsNorm.length - 1) ? null : {}; // null indicates leaf (file)
+                        }
+                        current = current[part];
+                    });
                 });
 
+                // Render Tree
+                componentList.innerHTML = '';
+
+                function renderNode(node, container, depth, fullPathBase = "") {
+                    // Sort: Folders first, then files? Or alphabetical? Alphabetical is usually best.
+                    const keys = Object.keys(node).sort();
+
+                    keys.forEach(key => {
+                        const isLeaf = node[key] === null;
+                        const fullPath = fullPathBase ? `${fullPathBase}/${key}` : key;
+
+                        const item = document.createElement('div');
+                        const paddingLeft = 12 + (depth * 12);
+                        item.style.cssText = `padding: 8px 12px 8px ${paddingLeft}px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;`;
+
+                        if (isLeaf) {
+                            // Render Component File
+                            const nameSpan = document.createElement('div');
+                            nameSpan.style.display = 'flex';
+                            nameSpan.style.alignItems = 'center';
+                            nameSpan.style.gap = '6px';
+                            nameSpan.innerHTML = `<span style="opacity:0.6">❖</span> ${key}`; // Component icon hint
+                            item.appendChild(nameSpan);
+
+                            const genBtn = document.createElement('span');
+                            genBtn.textContent = 'Generate';
+                            genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
+                            item.appendChild(genBtn);
+
+                            item.onmouseenter = () => {
+                                item.style.background = '#2a2a2a';
+                                genBtn.style.opacity = '1';
+                            }
+                            item.onmouseleave = () => {
+                                item.style.background = 'transparent';
+                                genBtn.style.opacity = '0';
+                            }
+
+                            item.onclick = (e) => {
+                                e.stopPropagation();
+                                parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: key } }, '*')
+                                genBtn.textContent = 'Done!';
+                                genBtn.style.background = '#1ed760';
+                                setTimeout(() => {
+                                    genBtn.textContent = 'Generate';
+                                    genBtn.style.background = '#0d99ff';
+                                }, 1000);
+                            }
+                            container.appendChild(item);
+
+                        } else {
+                            // Render Folder
+                            const folderRow = document.createElement('div');
+                            // Folders can be visually distinct
+                            folderRow.style.cssText = `padding: 8px 12px 8px ${paddingLeft}px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; background: #222;`;
+                            folderRow.innerHTML = `<span class="arrow" style="font-size: 9px; transition: transform 0.2s;">▶</span> <span>${key}</span>`;
+
+                            const childrenContainer = document.createElement('div');
+                            childrenContainer.style.display = 'none'; // Collapsed by default
+
+                            folderRow.onclick = (e) => {
+                                e.stopPropagation();
+                                const arrow = folderRow.querySelector('.arrow');
+                                if (childrenContainer.style.display === 'none') {
+                                    childrenContainer.style.display = 'block';
+                                    arrow.style.transform = 'rotate(90deg)';
+                                } else {
+                                    childrenContainer.style.display = 'none';
+                                    arrow.style.transform = 'rotate(0deg)';
+                                }
+                            };
+
+                            container.appendChild(folderRow);
+                            container.appendChild(childrenContainer);
+
+                            // Recurse
+                            renderNode(node[key], childrenContainer, depth + 1, fullPath);
+                        }
+                    });
+                }
+
+                renderNode(tree, componentList, 0);
+
             } catch (e) {
+                console.error(e);
                 componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Error loading components</div>';
             }
         }

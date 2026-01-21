@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps } from "./BaseComponent";
+import { BaseComponent, ComponentProps } from "../BaseComponent";
 
 interface RowData {
     rank: string;

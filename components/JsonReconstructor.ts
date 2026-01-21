@@ -85,6 +85,7 @@ export interface SerializedNode {
         topRight?: number;
         bottomRight?: number;
         bottomLeft?: number;
+
     };
 
     // Vector support

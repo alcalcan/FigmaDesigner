@@ -1,0 +1,5052 @@
+{
+  "id": "I1248:23322;1248:22935",
+  "name": "Logo",
+  "type": "FRAME",
+  "visible": false,
+  "locked": false,
+  "opacity": 1,
+  "blendMode": "PASS_THROUGH",
+  "isMask": false,
+  "effects": [],
+  "x": 47,
+  "y": 0,
+  "width": 165,
+  "height": 31.26315689086914,
+  "rotation": 0,
+  "relativeTransform": [
+    [
+      1,
+      0,
+      47
+    ],
+    [
+      0,
+      1,
+      0
+    ]
+  ],
+  "constraints": {
+    "horizontal": "MIN",
+    "vertical": "MIN"
+  },
+  "layoutAlign": "INHERIT",
+  "layoutGrow": 0,
+  "layoutPositioning": "AUTO",
+  "layout": {
+    "mode": "NONE",
+    "sizing": {
+      "horizontal": "AUTO",
+      "vertical": "FIXED"
+    },
+    "alignment": {
+      "primary": "MIN",
+      "counter": "MIN"
+    },
+    "spacing": 0,
+    "counterAxisSpacing": 0,
+    "padding": {
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    }
+  },
+  "fills": [],
+  "strokes": [],
+  "strokeWeight": 0.43421053886413574,
+  "strokeAlign": "INSIDE",
+  "strokeCap": "NONE",
+  "strokeJoin": "MITER",
+  "dashPattern": [],
+  "strokeMiterLimit": 4,
+  "cornerRadius": 0,
+  "children": [
+    {
+      "id": "I1248:23322;1248:22936",
+      "name": "Group 18",
+      "type": "GROUP",
+      "visible": true,
+      "locked": false,
+      "opacity": 1,
+      "blendMode": "PASS_THROUGH",
+      "isMask": false,
+      "effects": [],
+      "x": 4.547473508864641E-13,
+      "y": 8.806107521057129,
+      "width": 52.241119384765625,
+      "height": 14.559842109680176,
+      "rotation": 0,
+      "relativeTransform": [
+        [
+          1,
+          0,
+          4.547473508864641E-13
+        ],
+        [
+          0,
+          1,
+          8.806107521057129
+        ]
+      ],
+      "layoutAlign": "INHERIT",
+      "layoutGrow": 0,
+      "layoutPositioning": "AUTO",
+      "children": [
+        {
+          "id": "I1248:23322;1248:22937",
+          "name": "UEFA",
+          "type": "VECTOR",
+          "visible": true,
+          "locked": false,
+          "opacity": 1,
+          "blendMode": "PASS_THROUGH",
+          "isMask": false,
+          "effects": [],
+          "x": 4.547473508864641E-13,
+          "y": 8.806107521057129,
+          "width": 52.241119384765625,
+          "height": 14.559842109680176,
+          "rotation": 0,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              4.547473508864641E-13
+            ],
+            [
+              0,
+              1,
+              8.806107521057129
+            ]
+          ],
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          },
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "layoutPositioning": "AUTO",
+          "fills": [
+            {
+              "type": "SOLID",
+              "visible": true,
+              "opacity": 1,
+              "blendMode": "NORMAL",
+              "color": {
+                "r": 0.07058823853731155,
+                "g": 0.2235294133424759,
+                "b": 0.5215686559677124
+              },
+              "boundVariables": {}
+            }
+          ],
+          "strokes": [],
+          "strokeWeight": 0.43421053886413574,
+          "strokeAlign": "INSIDE",
+          "strokeCap": "NONE",
+          "strokeJoin": "MITER",
+          "dashPattern": [],
+          "strokeMiterLimit": 4,
+          "cornerRadius": 0,
+          "vectorPaths": [
+            {
+              "windingRule": "NONZERO",
+              "data": "M 45.266836834341966 0.007535621539608989 C 45.575690051299084 -0.019258321367607956 45.88426936986538 0.06142501462979899 46.13453812352793 0.23441039544757966 C 46.384806877190485 0.40739577626536033 46.55951918345412 0.6607628232710424 46.62581609293073 0.9468599759486716 L 52.24111938476562 14.472103684129362 L 49.03392750504103 14.472103684129362 L 47.94674409817002 11.808118839580894 L 44.28837010924783 11.808118839580894 L 45.266836834341966 9.149266053622636 L 46.82150943794955 9.149266053622636 L 44.85370597849382 4.4167150217256 L 41.08118237679881 14.477237700773212 L 38.09142800790353 14.477237700773212 L 43.16313544902736 0.9519930135657008 C 43.23049803822221 0.6664328265042294 43.40547318617519 0.41372180395438807 43.65547926825149 0.240917986719827 C 43.90548535032779 0.06811416948526597 44.21348145826713 -0.013003780323933322 44.52211470761612 0.012668658678597693 L 45.266836834341966 0.007535621539608989 Z M 31.405248396736603 8.548715337832524 L 38.33060553726777 8.548715337832524 L 38.33060553726777 5.915526760932591 L 31.405248396736603 5.915526760932591 L 31.405248396736603 4.555302142251287 C 31.405248396736603 3.0154261021080626 31.948839063353216 2.66638737636464 33.400228952998766 2.66638737636464 L 38.97204391321269 2.66638737636464 L 38.97204391321269 0.0024025836835596254 L 33.23171685206194 0.0024025836835596254 C 30.58986110078807 0.0024025836835596254 28.41549402784133 1.1316443738384447 28.41549402784133 4.252459776034307 L 28.41549402784133 13.409589373074828 C 28.405023036907068 13.55166744318648 28.426948397956696 13.694214268280067 28.479793388269673 13.827608370498709 C 28.53263837858265 13.96100247271735 28.61517213516835 14.082140910690313 28.721824243225672 14.182848252119731 C 28.828476351282994 14.28355559354915 28.956767679638546 14.361488935471106 29.098036051954807 14.411388356862973 C 29.23930442427107 14.46128777825484 29.390263732170343 14.481991024176633 29.5407286880618 14.472103684129362 L 31.41068547500812 14.472103684129362 L 31.405248396736603 8.548715337832524 Z M 26.34441096488024 2.66638737636464 L 26.34441096488024 0.0024025836835596254 L 16.913092629272676 0.0024025836835596254 C 16.762627673381218 -0.0074847563637119256 16.61166629184416 0.013220449284863073 16.470397919527898 0.06311987067673043 C 16.329129547211636 0.11301929206859779 16.20084029249387 0.1909516626123803 16.094188184436547 0.291659004041799 C 15.987536076379225 0.39236634547121774 15.905004393431312 0.5135047834441806 15.852159403118335 0.6468988856628222 C 15.799314412805359 0.7802929878814637 15.777386978117942 0.9228387727590548 15.787857969052205 1.0649168428707059 L 15.787857969052205 10.227180456555077 C 15.787857969052205 13.342863065890615 17.962224005180055 14.472103684129362 20.604079756453928 14.472103684129362 L 26.34441096488024 14.472103684129362 L 26.34441096488024 11.808118839580894 L 20.77259600466632 11.808118839580894 C 19.332077938721287 11.808118839580894 18.77761337476637 11.438549554287938 18.77761337476637 9.924338090338097 L 18.77761337476637 8.548715337832524 L 25.69753551066381 8.548715337832524 L 25.69753551066381 5.915526760932591 L 18.77761337476637 5.915526760932591 L 18.77761337476637 2.66638737636464 L 26.34441096488024 2.66638737636464 Z M 3.9864831035499204 10.822599113754977 C 3.2363265554009715 10.093724476781954 2.991710452275473 9.369982877425961 2.9971463691883256 7.835239752521413 L 2.9971463691883256 0.0024025836835596254 L 0.007390860197277371 0.0024025836835596254 L 0.007390860197277371 8.569245530247 C -0.033691853139817776 9.346635412958708 0.09682809514944501 10.123601254679022 0.3906654852962495 10.850826415027948 C 0.684502875443054 11.578051575376874 1.1352397033269828 12.239654770794495 1.7142684508772357 12.79364052346045 C 2.3601547798703604 13.385735629363305 3.1271260032072723 13.847243181697158 3.9683055947291366 14.14995686707649 C 4.809485186251001 14.452670552455823 5.7072045856108184 14.590231660522843 6.606594948218029 14.55423228600183 C 7.505985310825239 14.590231660522843 8.403702118137826 14.452670552455823 9.24488170965969 14.14995686707649 C 10.086061301181555 13.847243181697158 10.853033431734996 13.385735629363305 11.498919760728121 12.79364052346045 C 12.079589274175527 12.239927429763853 12.530986393690936 11.577500566844767 12.824032367016969 10.84903283789379 C 13.117078340343001 10.120565108942811 13.245272705881746 9.34221112957015 13.200360299462044 8.564113471656793 L 13.200360299462044 0.0024025836835596254 L 10.243222179282505 0.0024025836835596254 L 10.243222179282505 7.835239752521413 C 10.243222179282505 9.375115792664637 10.009477904920118 10.093724476781954 9.25388544492091 10.822599113754977 C 8.541791360725696 11.449059957902751 7.595587523508542 11.783184351604714 6.6229020357570025 11.751656404820393 C 6.140361695566586 11.767947925475973 5.659152598433365 11.694282098360869 5.206779540734937 11.534868538023904 C 4.754406483036509 11.375454977686939 4.339740001207016 11.133420579149186 3.9864831035499204 10.822599113754977 L 3.9864831035499204 10.822599113754977 Z"
+            }
+          ],
+          "vectorNetwork": {
+            "vertices": [
+              {
+                "x": 45.266836834341966,
+                "y": 0.007535621539608989,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 46.13453812352793,
+                "y": 0.23441039544757966,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 46.62581609293073,
+                "y": 0.9468599759486716,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 52.24111938476562,
+                "y": 14.472103684129362,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 49.03392750504103,
+                "y": 14.472103684129362,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 47.94674409817002,
+                "y": 11.808118839580894,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 44.28837010924783,
+                "y": 11.808118839580894,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 45.266836834341966,
+                "y": 9.149266053622636,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 46.82150943794955,
+                "y": 9.149266053622636,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 44.85370597849382,
+                "y": 4.4167150217256,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 41.08118237679881,
+                "y": 14.477237700773212,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 38.09142800790353,
+                "y": 14.477237700773212,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 43.16313544902736,
+                "y": 0.9519930135657008,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 43.65547926825149,
+                "y": 0.240917986719827,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 44.52211470761612,
+                "y": 0.012668658678597693,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.405248396736603,
+                "y": 8.548715337832524,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 38.33060553726777,
+                "y": 8.548715337832524,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 38.33060553726777,
+                "y": 5.915526760932591,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.405248396736603,
+                "y": 5.915526760932591,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.405248396736603,
+                "y": 4.555302142251287,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 33.400228952998766,
+                "y": 2.66638737636464,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 38.97204391321269,
+                "y": 2.66638737636464,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 38.97204391321269,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 33.23171685206194,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 28.41549402784133,
+                "y": 4.252459776034307,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 28.41549402784133,
+                "y": 13.409589373074828,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 28.479793388269673,
+                "y": 13.827608370498709,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 28.721824243225672,
+                "y": 14.182848252119731,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 29.098036051954807,
+                "y": 14.411388356862973,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 29.5407286880618,
+                "y": 14.472103684129362,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.41068547500812,
+                "y": 14.472103684129362,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 26.34441096488024,
+                "y": 2.66638737636464,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 26.34441096488024,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 16.913092629272676,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 16.470397919527898,
+                "y": 0.06311987067673043,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 16.094188184436547,
+                "y": 0.291659004041799,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 15.852159403118335,
+                "y": 0.6468988856628222,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 15.787857969052205,
+                "y": 1.0649168428707059,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 15.787857969052205,
+                "y": 10.227180456555077,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 20.604079756453928,
+                "y": 14.472103684129362,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 26.34441096488024,
+                "y": 14.472103684129362,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 26.34441096488024,
+                "y": 11.808118839580894,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 20.77259600466632,
+                "y": 11.808118839580894,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 18.77761337476637,
+                "y": 9.924338090338097,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 18.77761337476637,
+                "y": 8.548715337832524,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 25.69753551066381,
+                "y": 8.548715337832524,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 25.69753551066381,
+                "y": 5.915526760932591,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 18.77761337476637,
+                "y": 5.915526760932591,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 18.77761337476637,
+                "y": 2.66638737636464,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 3.9864831035499204,
+                "y": 10.822599113754977,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 2.9971463691883256,
+                "y": 7.835239752521413,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 2.9971463691883256,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 0.007390860197277371,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 0.007390860197277371,
+                "y": 8.569245530247,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 0.3906654852962495,
+                "y": 10.850826415027948,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 1.7142684508772357,
+                "y": 12.79364052346045,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 3.9683055947291366,
+                "y": 14.14995686707649,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 6.606594948218029,
+                "y": 14.55423228600183,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 9.24488170965969,
+                "y": 14.14995686707649,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 11.498919760728121,
+                "y": 12.79364052346045,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 12.824032367016969,
+                "y": 10.84903283789379,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 13.200360299462044,
+                "y": 8.564113471656793,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 13.200360299462044,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 10.243222179282505,
+                "y": 0.0024025836835596254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 10.243222179282505,
+                "y": 7.835239752521413,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 9.25388544492091,
+                "y": 10.822599113754977,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 6.6229020357570025,
+                "y": 11.751656404820393,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 5.206779540734937,
+                "y": 11.534868538023904,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 3.9864831035499204,
+                "y": 10.822599113754977,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              }
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 1,
+                "tangentStart": {
+                  "x": 0.30885321695712037,
+                  "y": -0.026793942907216945
+                },
+                "tangentEnd": {
+                  "x": -0.25026875366255547,
+                  "y": -0.17298538081778067
+                }
+              },
+              {
+                "start": 1,
+                "end": 2,
+                "tangentStart": {
+                  "x": 0.25026875366255547,
+                  "y": 0.17298538081778067
+                },
+                "tangentEnd": {
+                  "x": -0.06629690947660902,
+                  "y": -0.28609715267762914
+                }
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 5,
+                "end": 6,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 6,
+                "end": 7,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 7,
+                "end": 8,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 8,
+                "end": 9,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 9,
+                "end": 10,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 10,
+                "end": 11,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 11,
+                "end": 12,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 12,
+                "end": 13,
+                "tangentStart": {
+                  "x": 0.06736258919485139,
+                  "y": -0.2855601870614714
+                },
+                "tangentEnd": {
+                  "x": -0.2500060820762952,
+                  "y": 0.17280381723456104
+                }
+              },
+              {
+                "start": 13,
+                "end": 14,
+                "tangentStart": {
+                  "x": 0.2500060820762952,
+                  "y": -0.17280381723456104
+                },
+                "tangentEnd": {
+                  "x": -0.308633249348989,
+                  "y": -0.025672439002531015
+                }
+              },
+              {
+                "start": 14,
+                "end": 0,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 15,
+                "end": 16,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 16,
+                "end": 17,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 17,
+                "end": 18,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 18,
+                "end": 19,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 19,
+                "end": 20,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -1.5398760401432248
+                },
+                "tangentEnd": {
+                  "x": -1.4513898896455524,
+                  "y": 0
+                }
+              },
+              {
+                "start": 20,
+                "end": 21,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 21,
+                "end": 22,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 22,
+                "end": 23,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 23,
+                "end": 24,
+                "tangentStart": {
+                  "x": -2.6418557512738734,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -3.1208154021958623
+                }
+              },
+              {
+                "start": 24,
+                "end": 25,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 25,
+                "end": 26,
+                "tangentStart": {
+                  "x": -0.010470990934262191,
+                  "y": 0.14207807011165102
+                },
+                "tangentEnd": {
+                  "x": -0.05284499031297672,
+                  "y": -0.1333941022186416
+                }
+              },
+              {
+                "start": 26,
+                "end": 27,
+                "tangentStart": {
+                  "x": 0.05284499031297672,
+                  "y": 0.1333941022186416
+                },
+                "tangentEnd": {
+                  "x": -0.10665210805732177,
+                  "y": -0.1007073414294187
+                }
+              },
+              {
+                "start": 27,
+                "end": 28,
+                "tangentStart": {
+                  "x": 0.10665210805732177,
+                  "y": 0.1007073414294187
+                },
+                "tangentEnd": {
+                  "x": -0.1412683723162615,
+                  "y": -0.04989942139186736
+                }
+              },
+              {
+                "start": 28,
+                "end": 29,
+                "tangentStart": {
+                  "x": 0.1412683723162615,
+                  "y": 0.04989942139186736
+                },
+                "tangentEnd": {
+                  "x": -0.15046495589145858,
+                  "y": 0.009887340047271551
+                }
+              },
+              {
+                "start": 29,
+                "end": 30,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 30,
+                "end": 15,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 31,
+                "end": 32,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 32,
+                "end": 33,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 33,
+                "end": 34,
+                "tangentStart": {
+                  "x": -0.15046495589145858,
+                  "y": -0.009887340047271551
+                },
+                "tangentEnd": {
+                  "x": 0.1412683723162615,
+                  "y": -0.04989942139186736
+                }
+              },
+              {
+                "start": 34,
+                "end": 35,
+                "tangentStart": {
+                  "x": -0.1412683723162615,
+                  "y": 0.04989942139186736
+                },
+                "tangentEnd": {
+                  "x": 0.10665210805732177,
+                  "y": -0.1007073414294187
+                }
+              },
+              {
+                "start": 35,
+                "end": 36,
+                "tangentStart": {
+                  "x": -0.10665210805732177,
+                  "y": 0.1007073414294187
+                },
+                "tangentEnd": {
+                  "x": 0.05284499031297672,
+                  "y": -0.1333941022186416
+                }
+              },
+              {
+                "start": 36,
+                "end": 37,
+                "tangentStart": {
+                  "x": -0.05284499031297672,
+                  "y": 0.1333941022186416
+                },
+                "tangentEnd": {
+                  "x": -0.010470990934262191,
+                  "y": -0.14207807011165102
+                }
+              },
+              {
+                "start": 37,
+                "end": 38,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 38,
+                "end": 39,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 3.1156826093355385
+                },
+                "tangentEnd": {
+                  "x": -2.6418557512738734,
+                  "y": 0
+                }
+              },
+              {
+                "start": 39,
+                "end": 40,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 40,
+                "end": 41,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 41,
+                "end": 42,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 42,
+                "end": 43,
+                "tangentStart": {
+                  "x": -1.4405180659450312,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 1.5142114639498414
+                }
+              },
+              {
+                "start": 43,
+                "end": 44,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 44,
+                "end": 45,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 45,
+                "end": 46,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 46,
+                "end": 47,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 47,
+                "end": 48,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 48,
+                "end": 31,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 49,
+                "end": 50,
+                "tangentStart": {
+                  "x": -0.7501565481489487,
+                  "y": -0.7288746369730229
+                },
+                "tangentEnd": {
+                  "x": -0.00543591691285283,
+                  "y": 1.534743124904548
+                }
+              },
+              {
+                "start": 50,
+                "end": 51,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 51,
+                "end": 52,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 52,
+                "end": 53,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 53,
+                "end": 54,
+                "tangentStart": {
+                  "x": -0.04108271333709514,
+                  "y": 0.7773898827117072
+                },
+                "tangentEnd": {
+                  "x": -0.2938373901468045,
+                  "y": -0.7272251603489258
+                }
+              },
+              {
+                "start": 54,
+                "end": 55,
+                "tangentStart": {
+                  "x": 0.2938373901468045,
+                  "y": 0.7272251603489258
+                },
+                "tangentEnd": {
+                  "x": -0.5790287475502529,
+                  "y": -0.5539857526659547
+                }
+              },
+              {
+                "start": 55,
+                "end": 56,
+                "tangentStart": {
+                  "x": 0.6458863289931248,
+                  "y": 0.5920951059028557
+                },
+                "tangentEnd": {
+                  "x": -0.8411795915218641,
+                  "y": -0.3027136853793318
+                }
+              },
+              {
+                "start": 56,
+                "end": 57,
+                "tangentStart": {
+                  "x": 0.8411795915218641,
+                  "y": 0.3027136853793318
+                },
+                "tangentEnd": {
+                  "x": -0.8993903626072106,
+                  "y": 0.035999374521014225
+                }
+              },
+              {
+                "start": 57,
+                "end": 58,
+                "tangentStart": {
+                  "x": 0.8993903626072106,
+                  "y": 0.035999374521014225
+                },
+                "tangentEnd": {
+                  "x": -0.8411795915218641,
+                  "y": 0.3027136853793318
+                }
+              },
+              {
+                "start": 58,
+                "end": 59,
+                "tangentStart": {
+                  "x": 0.8411795915218641,
+                  "y": -0.3027136853793318
+                },
+                "tangentEnd": {
+                  "x": -0.6458863289931248,
+                  "y": 0.5920951059028557
+                }
+              },
+              {
+                "start": 59,
+                "end": 60,
+                "tangentStart": {
+                  "x": 0.5806695134474061,
+                  "y": -0.5537130936965969
+                },
+                "tangentEnd": {
+                  "x": -0.29304597332603305,
+                  "y": 0.7284677289509787
+                }
+              },
+              {
+                "start": 60,
+                "end": 61,
+                "tangentStart": {
+                  "x": 0.29304597332603305,
+                  "y": -0.7284677289509787
+                },
+                "tangentEnd": {
+                  "x": 0.04491240641970167,
+                  "y": 0.778097657913359
+                }
+              },
+              {
+                "start": 61,
+                "end": 62,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 62,
+                "end": 63,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 63,
+                "end": 64,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 64,
+                "end": 65,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 1.5398760401432248
+                },
+                "tangentEnd": {
+                  "x": 0.7555924599992093,
+                  "y": -0.7288746369730229
+                }
+              },
+              {
+                "start": 65,
+                "end": 66,
+                "tangentStart": {
+                  "x": -0.7120940841952126,
+                  "y": 0.6264608441477739
+                },
+                "tangentEnd": {
+                  "x": 0.9726854877515397,
+                  "y": 0.03152794678432021
+                }
+              },
+              {
+                "start": 66,
+                "end": 67,
+                "tangentStart": {
+                  "x": -0.48254034019041603,
+                  "y": 0.016291520655580146
+                },
+                "tangentEnd": {
+                  "x": 0.45237305769842795,
+                  "y": 0.1594135603369648
+                }
+              },
+              {
+                "start": 67,
+                "end": 68,
+                "tangentStart": {
+                  "x": -0.45237305769842795,
+                  "y": -0.1594135603369648
+                },
+                "tangentEnd": {
+                  "x": 0.3532568976570957,
+                  "y": 0.3108214653942091
+                }
+              },
+              {
+                "start": 68,
+                "end": 49,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            ],
+            "regions": [
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                  ],
+                  [
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26,
+                    27,
+                    28,
+                    29,
+                    30
+                  ],
+                  [
+                    31,
+                    32,
+                    33,
+                    34,
+                    35,
+                    36,
+                    37,
+                    38,
+                    39,
+                    40,
+                    41,
+                    42,
+                    43,
+                    44,
+                    45,
+                    46,
+                    47,
+                    48
+                  ],
+                  [
+                    49,
+                    50,
+                    51,
+                    52,
+                    53,
+                    54,
+                    55,
+                    56,
+                    57,
+                    58,
+                    59,
+                    60,
+                    61,
+                    62,
+                    63,
+                    64,
+                    65,
+                    66,
+                    67,
+                    68
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "I1248:23322;1248:22938",
+          "name": "Learning",
+          "type": "VECTOR",
+          "visible": false,
+          "locked": false,
+          "opacity": 1,
+          "blendMode": "PASS_THROUGH",
+          "isMask": false,
+          "effects": [],
+          "x": 74.24497985839889,
+          "y": 6.001325368881226,
+          "width": 90.75508117675781,
+          "height": 22.679176330566406,
+          "rotation": 0,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              74.24497985839889
+            ],
+            [
+              0,
+              1,
+              6.001325368881226
+            ]
+          ],
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          },
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "layoutPositioning": "AUTO",
+          "fills": [
+            {
+              "type": "SOLID",
+              "visible": true,
+              "opacity": 1,
+              "blendMode": "NORMAL",
+              "color": {
+                "r": 0.07058823853731155,
+                "g": 0.2235294133424759,
+                "b": 0.5215686559677124
+              },
+              "boundVariables": {}
+            }
+          ],
+          "strokes": [],
+          "strokeWeight": 0.43421053886413574,
+          "strokeAlign": "OUTSIDE",
+          "strokeCap": "NONE",
+          "strokeJoin": "MITER",
+          "dashPattern": [],
+          "strokeMiterLimit": 4,
+          "cornerRadius": 0,
+          "vectorPaths": [
+            {
+              "windingRule": "NONZERO",
+              "data": "M 3.0038640854148606 14.440006739997328 L 7.938783797291915 14.440006739997328 L 7.938783797291915 16.821641546860725 L 0 16.821641546860725 L 0 1.8452319777094437 L 3.0038640854148606 1.8452319777094437 L 3.0038640854148606 14.440006739997328 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 20.683415974624673 10.62080795607626 C 20.683415974624673 11.049931437122842 20.65480696582668 11.4361414830103 20.59759039045437 11.779440095475758 L 11.907841183450591 11.779440095475758 C 11.979361688070044 12.637687057568925 12.279747785230224 13.30998098106076 12.809000030969178 13.796321031894124 C 13.338252276708133 14.282660860312252 13.989090470134723 14.52583055210608 14.761512943134818 14.52583055210608 C 15.877233526926982 14.52583055210608 16.67111145070498 14.046642374407494 17.14314754852587 13.08826657504841 L 20.38302909901123 13.08826657504841 C 20.039729653727857 14.232595969046917 19.38173981018671 15.176668578174535 18.40906023563345 15.920482623109375 C 17.436380661080193 16.649992588151804 16.241987366515975 17.014747793088254 14.825879907110368 17.014747793088254 C 13.681550498707812 17.014747793088254 12.651655054255512 16.76442550531013 11.736191794431729 16.263781430188164 C 10.835032446478902 15.748833219569978 10.126978494360879 15.026475461285182 9.612030382908099 14.096707932918537 C 9.111386294533883 13.166940460155702 8.861064083535362 12.0941311876002 8.861064083535362 10.878281171724405 C 8.861064083535362 9.648127298371437 9.111386294533883 8.568167264757339 9.612030382908099 7.638399347164031 C 10.112674471282315 6.708631874401195 10.8135757168135 5.993424932778803 11.714734953558718 5.4927813580911184 C 12.615894301511545 4.992136949346298 13.652942452550683 4.741814995191028 14.825879907110368 4.741814995191028 C 15.955904903207728 4.741814995191028 16.964344952485934 4.984984853796283 17.851200166152587 5.471324515402984 C 18.75235973652063 5.95766456623635 19.446110054786722 6.651414109132517 19.932449675251938 7.552573755733388 C 20.433094041645177 8.439429044422802 20.683415974624673 9.46217459339296 20.683415974624673 10.62080795607626 Z M 17.572270131412154 9.76255915905739 C 17.5579662012962 8.99013706554535 17.2790366296312 8.375061185341238 16.735480027190857 7.917329405500312 C 16.191923869580947 7.445293712578403 15.526782487132857 7.20927539348507 14.740056102261807 7.20927539348507 C 13.996242342664495 7.20927539348507 13.366861156922328 7.438140782971251 12.85191282305433 7.895872562812178 C 12.351268845887722 8.339299984741649 12.043730069942606 8.9615287389491 11.92929713466273 9.76255915905739 L 17.572270131412154 9.76255915905739 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 21.888984744212785 10.83536926567003 C 21.888984744212785 9.6338236633095 22.125001597641436 8.568167264757339 22.5970373618395 7.638399347164031 C 23.08337726032374 6.708631874401195 23.73421478650468 5.993424932778803 24.54954938434427 5.4927813580911184 C 25.379188005262428 4.992136949346298 26.301804194088266 4.741814995191028 27.317396449519066 4.741814995191028 C 28.20425166318572 4.741814995191028 28.976672968505923 4.92061571582711 29.63466231161283 5.278218269175456 C 30.306955566590688 5.635821684382843 30.843356821263487 6.086402230532796 31.243871997436393 6.629958434124375 L 31.243871997436393 4.9349203517576115 L 34.26919225647861 4.9349203517576115 L 34.26919225647861 16.821641546860725 L 31.243871997436393 16.821641546860725 L 31.243871997436393 15.083690668778642 C 30.85766117796488 15.641551119074059 30.32125992329208 16.10643568951261 29.63466231161283 16.478342739781937 C 28.962368611804532 16.83594565455504 28.182794377482274 17.014747793088254 27.295939608646055 17.014747793088254 C 26.294651209482407 17.014747793088254 25.379188005262428 16.75727279811822 24.54954938434427 16.242324587500033 C 23.73421478650468 15.727376432485656 23.08337726032374 15.005018674200858 22.5970373618395 14.075251090230404 C 22.125001597641436 13.13117948197135 21.888984744212785 12.051219281545825 21.888984744212785 10.83536926567003 Z M 31.243871997436393 10.878281171724405 C 31.243871997436393 10.148771262285784 31.10083143302792 9.526542952908805 30.814749414550107 9.011594575479192 C 30.528666979043763 8.482342284968595 30.142457382855945 8.081826852499216 29.656117373164097 7.810048750703426 C 29.16977775269888 7.523966290996181 28.647678324754374 7.3809239073635196 28.089817810443073 7.3809239073635196 C 27.531957296131772 7.3809239073635196 27.01700940709421 7.516813806219504 26.54497330927332 7.7885919080152926 C 26.072937656282864 8.060370454641555 25.686725863744773 8.460885442280462 25.386339488565568 8.990137732791059 C 25.100257247672538 9.5050856653902 24.957216905679285 10.120163324916202 24.957216905679285 10.83536926567003 C 24.957216905679285 11.550575039612431 25.100257247672538 12.179956278596562 25.386339488565568 12.723512704603376 C 25.686725863744773 13.252764995113973 26.072937656282864 13.66043113303814 26.54497330927332 13.946513592745385 C 27.031313318965168 14.232595857839298 27.54626120800273 14.375637991254818 28.089817810443073 14.375637991254818 C 28.647678324754374 14.375637991254818 29.16977775269888 14.239748537229307 29.656117373164097 13.967970435433518 C 30.142457382855945 13.681887975726273 30.528666979043763 13.28137276567213 30.814749414550107 12.766424610657753 C 31.10083143302792 12.237172320147156 31.243871997436393 11.607791081163025 31.243871997436393 10.878281171724405 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 39.99229166986237 6.780150994975637 C 40.378502906362414 6.150769922802933 40.87914738396326 5.657278554872881 41.49422426860784 5.299676001524535 C 42.12360528753859 4.942072586317148 42.83881038933693 4.763270948218216 43.63984074168274 4.763270948218216 L 43.63984074168274 7.917329405500312 L 42.84596431920746 7.917329405500312 C 41.90189301322655 7.917329405500312 41.18668785582441 8.13904233801172 40.700347846132566 8.582470176969759 C 40.22831197072689 9.02589759889923 39.99229166986237 9.798321193714118 39.99229166986237 10.89973801441254 L 39.99229166986237 16.821641546860725 L 36.9884300310149 16.821641546860725 L 36.9884300310149 4.9349203517576115 L 39.99229166986237 4.9349203517576115 L 39.99229166986237 6.780150994975637 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 52.03557393456622 4.763270948218216 C 53.45168139397183 4.763270948218216 54.59601085797819 5.213850576905319 55.468561714943455 6.115010223506189 C 56.34111257190872 7.001865512195604 56.77738808379706 8.246323910271455 56.77738808379706 9.848384750488034 L 56.77738808379706 16.821641546860725 L 53.77352644494959 16.821641546860725 L 53.77352644494959 10.256052306309334 C 53.77352644494959 9.311980920465516 53.53750592166985 8.589622828557864 53.06547026867939 8.088978809039707 C 52.593434615688935 7.574030431610094 51.949749796094835 7.316556048281956 51.134415087047635 7.316556048281956 C 50.304776466129475 7.316556048281956 49.64678979200518 7.574030431610094 49.160449782313336 8.088978809039707 C 48.68841390690766 8.589622828557864 48.45239360604314 9.311980920465516 48.45239360604314 10.256052306309334 L 48.45239360604314 16.821641546860725 L 45.44853196719567 16.821641546860725 L 45.44853196719567 4.9349203517576115 L 48.45239360604314 4.9349203517576115 L 48.45239360604314 6.415396234869658 C 48.85290897682936 5.900447857440046 49.360704604110516 5.499933342433515 49.97578126633988 5.213851299754838 C 50.60516228527063 4.9134644821361375 51.29175973013847 4.763270948218216 52.03557393456622 4.763270948218216 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 60.94273757542461 3.518813217388074 C 60.41348544089326 3.518813217388074 59.97005196785857 3.3543156591815517 59.61244902773277 3.0253209597970763 C 59.26915027749695 2.6820214854725766 59.09749908135445 2.2600499609664846 59.09749908135445 1.7594063862788005 C 59.09749908135445 1.2587619775339798 59.26915027749695 0.8439424651721883 59.61244902773277 0.5149477657877127 C 59.97005196785857 0.17164915332225428 60.41348544089326 0 60.94273757542461 0 C 61.47198982116356 0 61.90826513843859 0.17164915332225428 62.25156394427821 0.5149477657877127 C 62.60916688440401 0.8439424651721883 62.78796539356433 1.2587619775339798 62.78796539356433 1.7594063862788005 C 62.78796539356433 2.2600499609664846 62.60916688440401 2.6820214854725766 62.25156394427821 3.0253209597970763 C 61.90826513843859 3.3543156591815517 61.47198982116356 3.518813217388074 60.94273757542461 3.518813217388074 Z M 62.423211553975335 4.9349203517576115 L 62.423211553975335 16.821641546860725 L 59.419342797840905 16.821641546860725 L 59.419342797840905 4.9349203517576115 L 62.423211553975335 4.9349203517576115 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 71.7635261621413 4.763270948218216 C 73.17963362154691 4.763270948218216 74.32396308555329 5.213850576905319 75.19651394251855 6.115010223506189 C 76.06906479948381 7.001865512195604 76.50534031137215 8.246323910271455 76.50534031137215 9.848384750488034 L 76.50534031137215 16.821641546860725 L 73.5014751138812 16.821641546860725 L 73.5014751138812 10.256052306309334 C 73.5014751138812 9.311980920465516 73.26545459060145 8.589622828557864 72.793418937611 8.088978809039707 C 72.32138328462054 7.574030431610094 71.67769846502645 7.316556048281956 70.86236375597925 7.316556048281956 C 70.03272513506109 7.316556048281956 69.37473846093678 7.574030431610094 68.88839845124494 8.088978809039707 C 68.41636257583926 8.589622828557864 68.18034227497475 9.311980920465516 68.18034227497475 10.256052306309334 L 68.18034227497475 16.821641546860725 L 65.1764770774838 16.821641546860725 L 65.1764770774838 4.9349203517576115 L 68.18034227497475 4.9349203517576115 L 68.18034227497475 6.415396234869658 C 68.58085764576097 5.900447857440046 69.08865683168561 5.499933342433515 69.70373349391497 5.213851299754838 C 70.33311451284573 4.9134644821361375 71.01971195771355 4.763270948218216 71.7635261621413 4.763270948218216 Z"
+            },
+            {
+              "windingRule": "NONZERO",
+              "data": "M 83.80328536979826 4.741814995191028 C 84.69014058346491 4.741814995191028 85.4697112591437 4.92061571582711 86.14200451412155 5.278218269175456 C 86.81429821392985 5.621517743499956 87.34355365688756 6.072098261848004 87.72976447635908 6.629958434124375 L 87.72976447635908 4.9349203517576115 L 90.75508117675781 4.9349203517576115 L 90.75508117675781 16.90746535896948 C 90.75508117675781 18.00888229087552 90.53336920826669 18.988715099734165 90.08994224087712 19.84696206182733 C 89.64651443943048 20.719513159416717 88.98137352961471 21.40611066236668 88.09451831594806 21.906754904300072 C 87.20766310228142 22.42170283689921 86.134850306232 22.679176330566406 84.8760882683705 22.679176330566406 C 83.18820253554662 22.679176330566406 81.80070556886554 22.285813633090843 80.71359280881528 21.499087348478774 C 79.64078412744739 20.712360897055277 79.03285761402987 19.639551624499774 78.88981649358335 18.28066058728464 L 81.87223018816651 18.28066058728464 C 82.02957555410681 18.824217013291456 82.36571623198867 19.253341467404695 82.88066434344145 19.568032003491048 C 83.40991636676519 19.897026702875525 84.04645381773767 20.061523371421103 84.79026802216542 20.061523371421103 C 85.66281887913068 20.061523371421103 86.3708728312487 19.79689739297723 86.91442943368905 19.267645102466634 C 87.45798559129896 18.75269683624464 87.72976447635908 17.96596993999067 87.72976447635908 16.90746535896948 L 87.72976447635908 15.062235605412399 C 87.34355365688756 15.620096111311623 86.80715062289302 16.084978874626383 86.12055301121377 16.4568858970938 C 85.44825931140548 16.82879291956122 84.67583622676352 17.014747793088254 83.80328536979826 17.014747793088254 C 82.80199719304983 17.014747793088254 81.88653376641464 16.75727279811822 81.05689514549648 16.242324587500033 C 80.22725641337071 15.727376432485656 79.56926262195945 15.005018674200858 79.08292272347522 14.075251090230404 C 78.61088695927715 13.13117948197135 78.37487366449199 12.051219281545825 78.37487366449199 10.83536926567003 C 78.37487366449199 9.6338236633095 78.61088695927715 8.568167264757339 79.08292272347522 7.638399347164031 C 79.56926262195945 6.708631874401195 80.22010192746214 5.993424932778803 81.03543652530173 5.4927813580911184 C 81.8650751462199 4.992136949346298 82.78769311436746 4.741814995191028 83.80328536979826 4.741814995191028 Z M 87.72976447635908 10.878281171724405 C 87.72976447635908 10.148771262285784 87.5867239119506 9.526542952908805 87.30064189347279 9.011594575479192 C 87.01455945796644 8.482342284968595 86.6283445238134 8.081826852499216 86.14200451412155 7.810048750703426 C 85.65566489365634 7.523966290996181 85.13356368639009 7.3809239073635196 84.57570317207879 7.3809239073635196 C 84.01784265776749 7.3809239073635196 83.50289654805167 7.516813806219504 83.03086045023078 7.7885919080152926 C 82.55882479724032 8.060370454641555 82.17261656334571 8.460885442280462 81.87223018816651 8.990137732791059 C 81.58614794727349 9.5050856653902 81.44310048799326 10.120163324916202 81.44310048799326 10.83536926567003 C 81.44310048799326 11.550575039612431 81.58614794727349 12.179956278596562 81.87223018816651 12.723512704603376 C 82.17261656334571 13.252764995113973 82.55882479724032 13.66043113303814 83.03086045023078 13.946513592745385 C 83.51720045992262 14.232595857839298 84.03214656963844 14.375637991254818 84.57570317207879 14.375637991254818 C 85.13356368639009 14.375637991254818 85.65566489365634 14.239748537229307 86.14200451412155 13.967970435433518 C 86.6283445238134 13.681887975726273 87.01455945796644 13.28137276567213 87.30064189347279 12.766424610657753 C 87.5867239119506 12.237172320147156 87.72976447635908 11.607791081163025 87.72976447635908 10.878281171724405 Z"
+            }
+          ],
+          "vectorNetwork": {
+            "vertices": [
+              {
+                "x": 3.0038640854148606,
+                "y": 14.440006739997328,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 7.938783797291915,
+                "y": 14.440006739997328,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 7.938783797291915,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 0,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 0,
+                "y": 1.8452319777094437,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 3.0038640854148606,
+                "y": 1.8452319777094437,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 20.683415974624673,
+                "y": 10.62080795607626,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 20.59759039045437,
+                "y": 11.779440095475758,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 11.907841183450591,
+                "y": 11.779440095475758,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 12.809000030969178,
+                "y": 13.796321031894124,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 14.761512943134818,
+                "y": 14.52583055210608,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 17.14314754852587,
+                "y": 13.08826657504841,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 20.38302909901123,
+                "y": 13.08826657504841,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 18.40906023563345,
+                "y": 15.920482623109375,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 14.825879907110368,
+                "y": 17.014747793088254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 11.736191794431729,
+                "y": 16.263781430188164,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 9.612030382908099,
+                "y": 14.096707932918537,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 8.861064083535362,
+                "y": 10.878281171724405,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 9.612030382908099,
+                "y": 7.638399347164031,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 11.714734953558718,
+                "y": 5.4927813580911184,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 14.825879907110368,
+                "y": 4.741814995191028,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 17.851200166152587,
+                "y": 5.471324515402984,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 19.932449675251938,
+                "y": 7.552573755733388,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 17.572270131412154,
+                "y": 9.76255915905739,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 16.735480027190857,
+                "y": 7.917329405500312,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 14.740056102261807,
+                "y": 7.20927539348507,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 12.85191282305433,
+                "y": 7.895872562812178,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 11.92929713466273,
+                "y": 9.76255915905739,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 21.888984744212785,
+                "y": 10.83536926567003,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 22.5970373618395,
+                "y": 7.638399347164031,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 24.54954938434427,
+                "y": 5.4927813580911184,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 27.317396449519066,
+                "y": 4.741814995191028,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 29.63466231161283,
+                "y": 5.278218269175456,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.243871997436393,
+                "y": 6.629958434124375,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.243871997436393,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 34.26919225647861,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 34.26919225647861,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.243871997436393,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.243871997436393,
+                "y": 15.083690668778642,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 29.63466231161283,
+                "y": 16.478342739781937,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 27.295939608646055,
+                "y": 17.014747793088254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 24.54954938434427,
+                "y": 16.242324587500033,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 22.5970373618395,
+                "y": 14.075251090230404,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 31.243871997436393,
+                "y": 10.878281171724405,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 30.814749414550107,
+                "y": 9.011594575479192,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 29.656117373164097,
+                "y": 7.810048750703426,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 28.089817810443073,
+                "y": 7.3809239073635196,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 26.54497330927332,
+                "y": 7.7885919080152926,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 25.386339488565568,
+                "y": 8.990137732791059,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 24.957216905679285,
+                "y": 10.83536926567003,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 25.386339488565568,
+                "y": 12.723512704603376,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 26.54497330927332,
+                "y": 13.946513592745385,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 28.089817810443073,
+                "y": 14.375637991254818,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 29.656117373164097,
+                "y": 13.967970435433518,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 30.814749414550107,
+                "y": 12.766424610657753,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 39.99229166986237,
+                "y": 6.780150994975637,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 41.49422426860784,
+                "y": 5.299676001524535,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 43.63984074168274,
+                "y": 4.763270948218216,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 43.63984074168274,
+                "y": 7.917329405500312,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 42.84596431920746,
+                "y": 7.917329405500312,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 40.700347846132566,
+                "y": 8.582470176969759,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 39.99229166986237,
+                "y": 10.89973801441254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 39.99229166986237,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 36.9884300310149,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 36.9884300310149,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 39.99229166986237,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 52.03557393456622,
+                "y": 4.763270948218216,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 55.468561714943455,
+                "y": 6.115010223506189,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 56.77738808379706,
+                "y": 9.848384750488034,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 56.77738808379706,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 53.77352644494959,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 53.77352644494959,
+                "y": 10.256052306309334,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 53.06547026867939,
+                "y": 8.088978809039707,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 51.134415087047635,
+                "y": 7.316556048281956,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 49.160449782313336,
+                "y": 8.088978809039707,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 48.45239360604314,
+                "y": 10.256052306309334,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 48.45239360604314,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 45.44853196719567,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 45.44853196719567,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 48.45239360604314,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 48.45239360604314,
+                "y": 6.415396234869658,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 49.97578126633988,
+                "y": 5.213851299754838,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 60.94273757542461,
+                "y": 3.518813217388074,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 59.61244902773277,
+                "y": 3.0253209597970763,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 59.09749908135445,
+                "y": 1.7594063862788005,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 59.61244902773277,
+                "y": 0.5149477657877127,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 60.94273757542461,
+                "y": 0,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 62.25156394427821,
+                "y": 0.5149477657877127,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 62.78796539356433,
+                "y": 1.7594063862788005,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 62.25156394427821,
+                "y": 3.0253209597970763,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 62.423211553975335,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 62.423211553975335,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 59.419342797840905,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 59.419342797840905,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 71.7635261621413,
+                "y": 4.763270948218216,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 75.19651394251855,
+                "y": 6.115010223506189,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 76.50534031137215,
+                "y": 9.848384750488034,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 76.50534031137215,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 73.5014751138812,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 73.5014751138812,
+                "y": 10.256052306309334,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 72.793418937611,
+                "y": 8.088978809039707,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 70.86236375597925,
+                "y": 7.316556048281956,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 68.88839845124494,
+                "y": 8.088978809039707,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 68.18034227497475,
+                "y": 10.256052306309334,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 68.18034227497475,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 65.1764770774838,
+                "y": 16.821641546860725,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 65.1764770774838,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 68.18034227497475,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 68.18034227497475,
+                "y": 6.415396234869658,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 69.70373349391497,
+                "y": 5.213851299754838,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 83.80328536979826,
+                "y": 4.741814995191028,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 86.14200451412155,
+                "y": 5.278218269175456,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.72976447635908,
+                "y": 6.629958434124375,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.72976447635908,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 90.75508117675781,
+                "y": 4.9349203517576115,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 90.75508117675781,
+                "y": 16.90746535896948,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 90.08994224087712,
+                "y": 19.84696206182733,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 88.09451831594806,
+                "y": 21.906754904300072,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 84.8760882683705,
+                "y": 22.679176330566406,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 80.71359280881528,
+                "y": 21.499087348478774,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 78.88981649358335,
+                "y": 18.28066058728464,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 81.87223018816651,
+                "y": 18.28066058728464,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 82.88066434344145,
+                "y": 19.568032003491048,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 84.79026802216542,
+                "y": 20.061523371421103,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 86.91442943368905,
+                "y": 19.267645102466634,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.72976447635908,
+                "y": 16.90746535896948,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.72976447635908,
+                "y": 15.062235605412399,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 86.12055301121377,
+                "y": 16.4568858970938,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 83.80328536979826,
+                "y": 17.014747793088254,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 81.05689514549648,
+                "y": 16.242324587500033,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 79.08292272347522,
+                "y": 14.075251090230404,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 78.37487366449199,
+                "y": 10.83536926567003,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 79.08292272347522,
+                "y": 7.638399347164031,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 81.03543652530173,
+                "y": 5.4927813580911184,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.72976447635908,
+                "y": 10.878281171724405,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.30064189347279,
+                "y": 9.011594575479192,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 86.14200451412155,
+                "y": 7.810048750703426,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 84.57570317207879,
+                "y": 7.3809239073635196,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 83.03086045023078,
+                "y": 7.7885919080152926,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 81.87223018816651,
+                "y": 8.990137732791059,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 81.44310048799326,
+                "y": 10.83536926567003,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 81.87223018816651,
+                "y": 12.723512704603376,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 83.03086045023078,
+                "y": 13.946513592745385,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 84.57570317207879,
+                "y": 14.375637991254818,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 86.14200451412155,
+                "y": 13.967970435433518,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              },
+              {
+                "x": 87.30064189347279,
+                "y": 12.766424610657753,
+                "strokeCap": "NONE",
+                "strokeJoin": "MITER",
+                "cornerRadius": 0,
+                "handleMirroring": "NONE"
+              }
+            ],
+            "segments": [
+              {
+                "start": 0,
+                "end": 1,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 1,
+                "end": 2,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 2,
+                "end": 3,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 3,
+                "end": 4,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 4,
+                "end": 5,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 5,
+                "end": 0,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 6,
+                "end": 7,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0.4291234810465834
+                },
+                "tangentEnd": {
+                  "x": 0.0572165753723086,
+                  "y": -0.34329861246545845
+                }
+              },
+              {
+                "start": 7,
+                "end": 8,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 8,
+                "end": 9,
+                "tangentStart": {
+                  "x": 0.07152050461945314,
+                  "y": 0.8582469620931668
+                },
+                "tangentEnd": {
+                  "x": -0.5292522457389537,
+                  "y": -0.4863400508333651
+                }
+              },
+              {
+                "start": 9,
+                "end": 10,
+                "tangentStart": {
+                  "x": 0.5292522457389537,
+                  "y": 0.48633982841812873
+                },
+                "tangentEnd": {
+                  "x": -0.7724224730000949,
+                  "y": 0
+                }
+              },
+              {
+                "start": 10,
+                "end": 11,
+                "tangentStart": {
+                  "x": 1.1157205837921653,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.47203609782089145,
+                  "y": 0.9583757993590837
+                }
+              },
+              {
+                "start": 11,
+                "end": 12,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 12,
+                "end": 13,
+                "tangentStart": {
+                  "x": -0.3432994452833761,
+                  "y": 1.1443293939985073
+                },
+                "tangentEnd": {
+                  "x": 0.972679574553259,
+                  "y": -0.7438140449348397
+                }
+              },
+              {
+                "start": 13,
+                "end": 14,
+                "tangentStart": {
+                  "x": -0.972679574553259,
+                  "y": 0.7295099650424295
+                },
+                "tangentEnd": {
+                  "x": 1.4161074594056084,
+                  "y": 0
+                }
+              },
+              {
+                "start": 14,
+                "end": 15,
+                "tangentStart": {
+                  "x": -1.144329408402556,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.9154632598237836,
+                  "y": 0.5006440751219662
+                }
+              },
+              {
+                "start": 15,
+                "end": 16,
+                "tangentStart": {
+                  "x": -0.9011593479528279,
+                  "y": -0.5149482106181855
+                },
+                "tangentEnd": {
+                  "x": 0.5149481114527804,
+                  "y": 0.929767528366645
+                }
+              },
+              {
+                "start": 16,
+                "end": 17,
+                "tangentStart": {
+                  "x": -0.500644088374216,
+                  "y": -0.9297674727628359
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 1.2158500158757946
+                }
+              },
+              {
+                "start": 17,
+                "end": 18,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -1.2301538733529684
+                },
+                "tangentEnd": {
+                  "x": -0.500644088374216,
+                  "y": 0.9297679175933088
+                }
+              },
+              {
+                "start": 18,
+                "end": 19,
+                "tangentStart": {
+                  "x": 0.500644088374216,
+                  "y": -0.9297674727628359
+                },
+                "tangentEnd": {
+                  "x": -0.9011592367452191,
+                  "y": 0.5006435746876843
+                }
+              },
+              {
+                "start": 19,
+                "end": 20,
+                "tangentStart": {
+                  "x": 0.9011593479528279,
+                  "y": -0.5006444087448209
+                },
+                "tangentEnd": {
+                  "x": -1.172937454559685,
+                  "y": 0
+                }
+              },
+              {
+                "start": 20,
+                "end": 21,
+                "tangentStart": {
+                  "x": 1.1300249960973605,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.8868552136666547,
+                  "y": -0.4863396616067014
+                }
+              },
+              {
+                "start": 21,
+                "end": 22,
+                "tangentStart": {
+                  "x": 0.9011595703680455,
+                  "y": 0.4863400508333651
+                },
+                "tangentEnd": {
+                  "x": -0.48633962046521634,
+                  "y": -0.9011596466008702
+                }
+              },
+              {
+                "start": 22,
+                "end": 6,
+                "tangentStart": {
+                  "x": 0.5006443663932381,
+                  "y": 0.8868552886894144
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -1.1586333626832992
+                }
+              },
+              {
+                "start": 23,
+                "end": 24,
+                "tangentStart": {
+                  "x": -0.014303930115953982,
+                  "y": -0.7724220935120418
+                },
+                "tangentEnd": {
+                  "x": 0.5435566024403446,
+                  "y": 0.45773177984092656
+                }
+              },
+              {
+                "start": 24,
+                "end": 25,
+                "tangentStart": {
+                  "x": -0.5435561576099094,
+                  "y": -0.4720356929219094
+                },
+                "tangentEnd": {
+                  "x": 0.7867263848710505,
+                  "y": 0
+                }
+              },
+              {
+                "start": 25,
+                "end": 26,
+                "tangentStart": {
+                  "x": -0.7438137595973131,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.5149483338679981,
+                  "y": -0.45773177984092656
+                }
+              },
+              {
+                "start": 26,
+                "end": 27,
+                "tangentStart": {
+                  "x": -0.5006439771666072,
+                  "y": 0.4434274219294708
+                },
+                "tangentEnd": {
+                  "x": 0.11443293527987515,
+                  "y": -0.8010304201082895
+                }
+              },
+              {
+                "start": 27,
+                "end": 23,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 28,
+                "end": 29,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -1.2015456023605298
+                },
+                "tangentEnd": {
+                  "x": -0.47203576419806503,
+                  "y": 0.9297679175933088
+                }
+              },
+              {
+                "start": 29,
+                "end": 30,
+                "tangentStart": {
+                  "x": 0.4863398984842383,
+                  "y": -0.9297674727628359
+                },
+                "tangentEnd": {
+                  "x": -0.8153345978395927,
+                  "y": 0.5006435746876843
+                }
+              },
+              {
+                "start": 30,
+                "end": 31,
+                "tangentStart": {
+                  "x": 0.8296386209181572,
+                  "y": -0.5006444087448209
+                },
+                "tangentEnd": {
+                  "x": -1.0155922554308008,
+                  "y": 0
+                }
+              },
+              {
+                "start": 31,
+                "end": 32,
+                "tangentStart": {
+                  "x": 0.8868552136666547,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.6579893431069044,
+                  "y": -0.3576025533483459
+                }
+              },
+              {
+                "start": 32,
+                "end": 33,
+                "tangentStart": {
+                  "x": 0.67229325497786,
+                  "y": 0.35760341520738703
+                },
+                "tangentEnd": {
+                  "x": -0.40051517617290533,
+                  "y": -0.5435562035915786
+                }
+              },
+              {
+                "start": 33,
+                "end": 34,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 34,
+                "end": 35,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 35,
+                "end": 36,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 36,
+                "end": 37,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 37,
+                "end": 38,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 38,
+                "end": 39,
+                "tangentStart": {
+                  "x": -0.3862108194715144,
+                  "y": 0.5578604502954161
+                },
+                "tangentEnd": {
+                  "x": 0.6865976116792509,
+                  "y": -0.3719070502693244
+                }
+              },
+              {
+                "start": 39,
+                "end": 40,
+                "tangentStart": {
+                  "x": -0.6722936998082952,
+                  "y": 0.3576029147731051
+                },
+                "tangentEnd": {
+                  "x": 0.8868547688362194,
+                  "y": 0
+                }
+              },
+              {
+                "start": 40,
+                "end": 41,
+                "tangentStart": {
+                  "x": -1.0012883991636496,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.8296386209181572,
+                  "y": 0.5149482106181855
+                }
+              },
+              {
+                "start": 41,
+                "end": 42,
+                "tangentStart": {
+                  "x": -0.8153345978395927,
+                  "y": -0.5149481550143764
+                },
+                "tangentEnd": {
+                  "x": 0.4863398984842383,
+                  "y": 0.9297675839704541
+                }
+              },
+              {
+                "start": 42,
+                "end": 28,
+                "tangentStart": {
+                  "x": -0.47203576419806503,
+                  "y": -0.9440716082590552
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 1.2158500158757946
+                }
+              },
+              {
+                "start": 43,
+                "end": 44,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -0.7295099094386204
+                },
+                "tangentEnd": {
+                  "x": 0.28608201847781256,
+                  "y": 0.5149483774296129
+                }
+              },
+              {
+                "start": 44,
+                "end": 45,
+                "tangentStart": {
+                  "x": -0.28608243550634554,
+                  "y": -0.5292522905105957
+                },
+                "tangentEnd": {
+                  "x": 0.48634000969184715,
+                  "y": 0.2717781017957893
+                }
+              },
+              {
+                "start": 45,
+                "end": 46,
+                "tangentStart": {
+                  "x": -0.48633962046521634,
+                  "y": -0.286082459707245
+                },
+                "tangentEnd": {
+                  "x": 0.5578605143113002,
+                  "y": 0
+                }
+              },
+              {
+                "start": 46,
+                "end": 47,
+                "tangentStart": {
+                  "x": -0.5578605143113002,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.47203609782089145,
+                  "y": -0.2717781017957893
+                }
+              },
+              {
+                "start": 47,
+                "end": 48,
+                "tangentStart": {
+                  "x": -0.47203565299045624,
+                  "y": 0.27177854662626216
+                },
+                "tangentEnd": {
+                  "x": 0.3003863751792034,
+                  "y": -0.5292522905105957
+                }
+              },
+              {
+                "start": 48,
+                "end": 49,
+                "tangentStart": {
+                  "x": -0.2860822408930302,
+                  "y": 0.51494793259914
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -0.7152059407538284
+                }
+              },
+              {
+                "start": 49,
+                "end": 50,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0.715205773942401
+                },
+                "tangentEnd": {
+                  "x": -0.2860822408930302,
+                  "y": -0.543556426006815
+                }
+              },
+              {
+                "start": 50,
+                "end": 51,
+                "tangentStart": {
+                  "x": 0.3003863751792034,
+                  "y": 0.5292522905105957
+                },
+                "tangentEnd": {
+                  "x": -0.47203565299045624,
+                  "y": -0.286082459707245
+                }
+              },
+              {
+                "start": 51,
+                "end": 52,
+                "tangentStart": {
+                  "x": 0.48634000969184715,
+                  "y": 0.28608226509391316
+                },
+                "tangentEnd": {
+                  "x": -0.5435566024403446,
+                  "y": 0
+                }
+              },
+              {
+                "start": 52,
+                "end": 53,
+                "tangentStart": {
+                  "x": 0.5578605143113002,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.48633962046521634,
+                  "y": 0.2717781017957893
+                }
+              },
+              {
+                "start": 53,
+                "end": 54,
+                "tangentStart": {
+                  "x": 0.48634000969184715,
+                  "y": -0.286082459707245
+                },
+                "tangentEnd": {
+                  "x": -0.28608243550634554,
+                  "y": 0.5149481550143764
+                }
+              },
+              {
+                "start": 54,
+                "end": 43,
+                "tangentStart": {
+                  "x": 0.28608201847781256,
+                  "y": -0.5292522905105957
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0.7295099094386204
+                }
+              },
+              {
+                "start": 55,
+                "end": 56,
+                "tangentStart": {
+                  "x": 0.38621123650004746,
+                  "y": -0.6293810721727034
+                },
+                "tangentEnd": {
+                  "x": -0.6150768846445801,
+                  "y": 0.3576025533483459
+                }
+              },
+              {
+                "start": 56,
+                "end": 57,
+                "tangentStart": {
+                  "x": 0.6293810189307534,
+                  "y": -0.35760341520738703
+                },
+                "tangentEnd": {
+                  "x": -0.8010303523458107,
+                  "y": 0
+                }
+              },
+              {
+                "start": 57,
+                "end": 58,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 58,
+                "end": 59,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 59,
+                "end": 60,
+                "tangentStart": {
+                  "x": -0.9440713059809125,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.48634000969184715,
+                  "y": -0.4434278389580391
+                }
+              },
+              {
+                "start": 60,
+                "end": 61,
+                "tangentStart": {
+                  "x": -0.4720358754056739,
+                  "y": 0.4434274219294708
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -1.101416820698422
+                }
+              },
+              {
+                "start": 61,
+                "end": 62,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 62,
+                "end": 63,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 63,
+                "end": 64,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 64,
+                "end": 65,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 65,
+                "end": 55,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 66,
+                "end": 67,
+                "tangentStart": {
+                  "x": 1.4161074594056084,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.8725508569652638,
+                  "y": -0.9011596466008702
+                }
+              },
+              {
+                "start": 67,
+                "end": 68,
+                "tangentStart": {
+                  "x": 0.8725508569652638,
+                  "y": 0.8868552886894144
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -1.602060840216579
+                }
+              },
+              {
+                "start": 68,
+                "end": 69,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 69,
+                "end": 70,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 70,
+                "end": 71,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 71,
+                "end": 72,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -0.9440713858438188
+                },
+                "tangentEnd": {
+                  "x": 0.47203565299045624,
+                  "y": 0.5006440195181571
+                }
+              },
+              {
+                "start": 72,
+                "end": 73,
+                "tangentStart": {
+                  "x": -0.47203565299045624,
+                  "y": -0.5149483774296129
+                },
+                "tangentEnd": {
+                  "x": 0.8153347090472015,
+                  "y": 0
+                }
+              },
+              {
+                "start": 73,
+                "end": 74,
+                "tangentStart": {
+                  "x": -0.8296386209181572,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.48634000969184715,
+                  "y": -0.5149483774296129
+                }
+              },
+              {
+                "start": 74,
+                "end": 75,
+                "tangentStart": {
+                  "x": -0.4720358754056739,
+                  "y": 0.5006440195181571
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -0.9440713858438188
+                }
+              },
+              {
+                "start": 75,
+                "end": 76,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 76,
+                "end": 77,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 77,
+                "end": 78,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 78,
+                "end": 79,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 79,
+                "end": 80,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 80,
+                "end": 81,
+                "tangentStart": {
+                  "x": 0.40051537078622074,
+                  "y": -0.5149483774296129
+                },
+                "tangentEnd": {
+                  "x": -0.6150766622293625,
+                  "y": 0.2860820426786767
+                }
+              },
+              {
+                "start": 81,
+                "end": 66,
+                "tangentStart": {
+                  "x": 0.6293810189307534,
+                  "y": -0.30038681761870073
+                },
+                "tangentEnd": {
+                  "x": -0.7438142044277484,
+                  "y": 0
+                }
+              },
+              {
+                "start": 82,
+                "end": 83,
+                "tangentStart": {
+                  "x": -0.5292521345313449,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.3576029401257987,
+                  "y": 0.3289946993844756
+                }
+              },
+              {
+                "start": 83,
+                "end": 84,
+                "tangentStart": {
+                  "x": -0.343298750235821,
+                  "y": -0.3432994743244996
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0.5006435746876843
+                }
+              },
+              {
+                "start": 84,
+                "end": 85,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -0.5006444087448209
+                },
+                "tangentEnd": {
+                  "x": -0.343298750235821,
+                  "y": 0.3289946993844756
+                }
+              },
+              {
+                "start": 85,
+                "end": 86,
+                "tangentStart": {
+                  "x": 0.3576029401257987,
+                  "y": -0.34329861246545845
+                },
+                "tangentEnd": {
+                  "x": -0.5292521345313449,
+                  "y": 0
+                }
+              },
+              {
+                "start": 86,
+                "end": 87,
+                "tangentStart": {
+                  "x": 0.5292522457389537,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.34329880583962546,
+                  "y": -0.34329861246545845
+                }
+              },
+              {
+                "start": 87,
+                "end": 88,
+                "tangentStart": {
+                  "x": 0.3576029401257987,
+                  "y": 0.3289946993844756
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -0.5006444087448209
+                }
+              },
+              {
+                "start": 88,
+                "end": 89,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0.5006435746876843
+                },
+                "tangentEnd": {
+                  "x": 0.3576029401257987,
+                  "y": -0.3432994743244996
+                }
+              },
+              {
+                "start": 89,
+                "end": 82,
+                "tangentStart": {
+                  "x": -0.34329880583962546,
+                  "y": 0.3289946993844756
+                },
+                "tangentEnd": {
+                  "x": 0.5292522457389537,
+                  "y": 0
+                }
+              },
+              {
+                "start": 90,
+                "end": 91,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 91,
+                "end": 92,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 92,
+                "end": 93,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 93,
+                "end": 90,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 94,
+                "end": 95,
+                "tangentStart": {
+                  "x": 1.4161074594056084,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.8725508569652638,
+                  "y": -0.9011596466008702
+                }
+              },
+              {
+                "start": 95,
+                "end": 96,
+                "tangentStart": {
+                  "x": 0.8725508569652638,
+                  "y": 0.8868552886894144
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -1.602060840216579
+                }
+              },
+              {
+                "start": 96,
+                "end": 97,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 97,
+                "end": 98,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 98,
+                "end": 99,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 99,
+                "end": 100,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -0.9440713858438188
+                },
+                "tangentEnd": {
+                  "x": 0.47203565299045624,
+                  "y": 0.5006440195181571
+                }
+              },
+              {
+                "start": 100,
+                "end": 101,
+                "tangentStart": {
+                  "x": -0.47203565299045624,
+                  "y": -0.5149483774296129
+                },
+                "tangentEnd": {
+                  "x": 0.8153347090472015,
+                  "y": 0
+                }
+              },
+              {
+                "start": 101,
+                "end": 102,
+                "tangentStart": {
+                  "x": -0.8296386209181572,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.48634000969184715,
+                  "y": -0.5149483774296129
+                }
+              },
+              {
+                "start": 102,
+                "end": 103,
+                "tangentStart": {
+                  "x": -0.4720358754056739,
+                  "y": 0.5006440195181571
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -0.9440713858438188
+                }
+              },
+              {
+                "start": 103,
+                "end": 104,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 104,
+                "end": 105,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 105,
+                "end": 106,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 106,
+                "end": 107,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 107,
+                "end": 108,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 108,
+                "end": 109,
+                "tangentStart": {
+                  "x": 0.40051537078622074,
+                  "y": -0.5149483774296129
+                },
+                "tangentEnd": {
+                  "x": -0.6150766622293625,
+                  "y": 0.2860820426786767
+                }
+              },
+              {
+                "start": 109,
+                "end": 94,
+                "tangentStart": {
+                  "x": 0.6293810189307534,
+                  "y": -0.30038681761870073
+                },
+                "tangentEnd": {
+                  "x": -0.7438142044277484,
+                  "y": 0
+                }
+              },
+              {
+                "start": 110,
+                "end": 111,
+                "tangentStart": {
+                  "x": 0.8868552136666547,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.67229325497786,
+                  "y": -0.3576025533483459
+                }
+              },
+              {
+                "start": 111,
+                "end": 112,
+                "tangentStart": {
+                  "x": 0.6722936998082952,
+                  "y": 0.3432994743244996
+                },
+                "tangentEnd": {
+                  "x": -0.3862108194715144,
+                  "y": -0.5578601722763705
+                }
+              },
+              {
+                "start": 112,
+                "end": 113,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 113,
+                "end": 114,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 114,
+                "end": 115,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 115,
+                "end": 116,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 1.1014169319060403
+                },
+                "tangentEnd": {
+                  "x": 0.4434269673895767,
+                  "y": -0.8582469620931668
+                }
+              },
+              {
+                "start": 116,
+                "end": 117,
+                "tangentStart": {
+                  "x": -0.44342780144664273,
+                  "y": 0.8725510975893861
+                },
+                "tangentEnd": {
+                  "x": 0.8868552136666547,
+                  "y": -0.5006442419333935
+                }
+              },
+              {
+                "start": 117,
+                "end": 118,
+                "tangentStart": {
+                  "x": -0.8868552136666547,
+                  "y": 0.51494793259914
+                },
+                "tangentEnd": {
+                  "x": 1.2587620378615068,
+                  "y": 0
+                }
+              },
+              {
+                "start": 118,
+                "end": 119,
+                "tangentStart": {
+                  "x": -1.6878857328238785,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 1.087112760050254,
+                  "y": 0.7867262846120703
+                }
+              },
+              {
+                "start": 119,
+                "end": 120,
+                "tangentStart": {
+                  "x": -1.0728086813678852,
+                  "y": -0.7867264514234976
+                },
+                "tangentEnd": {
+                  "x": 0.1430411204465151,
+                  "y": 1.358891037215133
+                }
+              },
+              {
+                "start": 120,
+                "end": 121,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 121,
+                "end": 122,
+                "tangentStart": {
+                  "x": 0.15734536594029716,
+                  "y": 0.543556426006815
+                },
+                "tangentEnd": {
+                  "x": -0.5149481114527804,
+                  "y": -0.3146905360863517
+                }
+              },
+              {
+                "start": 122,
+                "end": 123,
+                "tangentStart": {
+                  "x": 0.5292520233237361,
+                  "y": 0.3289946993844756
+                },
+                "tangentEnd": {
+                  "x": -0.7438142044277484,
+                  "y": 0
+                }
+              },
+              {
+                "start": 123,
+                "end": 124,
+                "tangentStart": {
+                  "x": 0.8725508569652638,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.5435566024403446,
+                  "y": 0.5292522905105957
+                }
+              },
+              {
+                "start": 124,
+                "end": 125,
+                "tangentStart": {
+                  "x": 0.5435561576099094,
+                  "y": -0.5149482662219946
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 1.0585045810211915
+                }
+              },
+              {
+                "start": 125,
+                "end": 126,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "start": 126,
+                "end": 127,
+                "tangentStart": {
+                  "x": -0.3862108194715144,
+                  "y": 0.5578605058992252
+                },
+                "tangentEnd": {
+                  "x": 0.6865976116792509,
+                  "y": -0.37190702246741986
+                }
+              },
+              {
+                "start": 127,
+                "end": 128,
+                "tangentStart": {
+                  "x": -0.6722936998082952,
+                  "y": 0.37190702246741986
+                },
+                "tangentEnd": {
+                  "x": 0.8725508569652638,
+                  "y": 0
+                }
+              },
+              {
+                "start": 128,
+                "end": 129,
+                "tangentStart": {
+                  "x": -1.001288176748432,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.8296386209181572,
+                  "y": 0.5149482106181855
+                }
+              },
+              {
+                "start": 129,
+                "end": 130,
+                "tangentStart": {
+                  "x": -0.829638732125766,
+                  "y": -0.5149481550143764
+                },
+                "tangentEnd": {
+                  "x": 0.4863398984842383,
+                  "y": 0.9297675839704541
+                }
+              },
+              {
+                "start": 130,
+                "end": 131,
+                "tangentStart": {
+                  "x": -0.47203576419806503,
+                  "y": -0.9440716082590552
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 1.2158500158757946
+                }
+              },
+              {
+                "start": 131,
+                "end": 132,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -1.2015456023605298
+                },
+                "tangentEnd": {
+                  "x": -0.47203576419806503,
+                  "y": 0.9297679175933088
+                }
+              },
+              {
+                "start": 132,
+                "end": 133,
+                "tangentStart": {
+                  "x": 0.4863398984842383,
+                  "y": -0.9297674727628359
+                },
+                "tangentEnd": {
+                  "x": -0.8153345978395927,
+                  "y": 0.5006435746876843
+                }
+              },
+              {
+                "start": 133,
+                "end": 110,
+                "tangentStart": {
+                  "x": 0.8296386209181572,
+                  "y": -0.5006444087448209
+                },
+                "tangentEnd": {
+                  "x": -1.0155922554308008,
+                  "y": 0
+                }
+              },
+              {
+                "start": 134,
+                "end": 135,
+                "tangentStart": {
+                  "x": 0,
+                  "y": -0.7295099094386204
+                },
+                "tangentEnd": {
+                  "x": 0.28608201847781256,
+                  "y": 0.5149483774296129
+                }
+              },
+              {
+                "start": 135,
+                "end": 136,
+                "tangentStart": {
+                  "x": -0.28608243550634554,
+                  "y": -0.5292522905105957
+                },
+                "tangentEnd": {
+                  "x": 0.48634000969184715,
+                  "y": 0.2717781017957893
+                }
+              },
+              {
+                "start": 136,
+                "end": 137,
+                "tangentStart": {
+                  "x": -0.48633962046521634,
+                  "y": -0.286082459707245
+                },
+                "tangentEnd": {
+                  "x": 0.5578605143113002,
+                  "y": 0
+                }
+              },
+              {
+                "start": 137,
+                "end": 138,
+                "tangentStart": {
+                  "x": -0.5578605143113002,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": 0.47203609782089145,
+                  "y": -0.2717781017957893
+                }
+              },
+              {
+                "start": 138,
+                "end": 139,
+                "tangentStart": {
+                  "x": -0.47203565299045624,
+                  "y": 0.27177854662626216
+                },
+                "tangentEnd": {
+                  "x": 0.3003863751792034,
+                  "y": -0.5292522905105957
+                }
+              },
+              {
+                "start": 139,
+                "end": 140,
+                "tangentStart": {
+                  "x": -0.2860822408930302,
+                  "y": 0.51494793259914
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": -0.7152059407538284
+                }
+              },
+              {
+                "start": 140,
+                "end": 141,
+                "tangentStart": {
+                  "x": 0,
+                  "y": 0.715205773942401
+                },
+                "tangentEnd": {
+                  "x": -0.2860822408930302,
+                  "y": -0.543556426006815
+                }
+              },
+              {
+                "start": 141,
+                "end": 142,
+                "tangentStart": {
+                  "x": 0.3003863751792034,
+                  "y": 0.5292522905105957
+                },
+                "tangentEnd": {
+                  "x": -0.47203565299045624,
+                  "y": -0.286082459707245
+                }
+              },
+              {
+                "start": 142,
+                "end": 143,
+                "tangentStart": {
+                  "x": 0.48634000969184715,
+                  "y": 0.28608226509391316
+                },
+                "tangentEnd": {
+                  "x": -0.5435566024403446,
+                  "y": 0
+                }
+              },
+              {
+                "start": 143,
+                "end": 144,
+                "tangentStart": {
+                  "x": 0.5578605143113002,
+                  "y": 0
+                },
+                "tangentEnd": {
+                  "x": -0.48633962046521634,
+                  "y": 0.2717781017957893
+                }
+              },
+              {
+                "start": 144,
+                "end": 145,
+                "tangentStart": {
+                  "x": 0.48634000969184715,
+                  "y": -0.286082459707245
+                },
+                "tangentEnd": {
+                  "x": -0.28608243550634554,
+                  "y": 0.5149481550143764
+                }
+              },
+              {
+                "start": 145,
+                "end": 134,
+                "tangentStart": {
+                  "x": 0.28608201847781256,
+                  "y": -0.5292522905105957
+                },
+                "tangentEnd": {
+                  "x": 0,
+                  "y": 0.7295099094386204
+                }
+              }
+            ],
+            "regions": [
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22
+                  ],
+                  [
+                    23,
+                    24,
+                    25,
+                    26,
+                    27
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    28,
+                    29,
+                    30,
+                    31,
+                    32,
+                    33,
+                    34,
+                    35,
+                    36,
+                    37,
+                    38,
+                    39,
+                    40,
+                    41,
+                    42
+                  ],
+                  [
+                    43,
+                    44,
+                    45,
+                    46,
+                    47,
+                    48,
+                    49,
+                    50,
+                    51,
+                    52,
+                    53,
+                    54
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    55,
+                    56,
+                    57,
+                    58,
+                    59,
+                    60,
+                    61,
+                    62,
+                    63,
+                    64,
+                    65
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    66,
+                    67,
+                    68,
+                    69,
+                    70,
+                    71,
+                    72,
+                    73,
+                    74,
+                    75,
+                    76,
+                    77,
+                    78,
+                    79,
+                    80,
+                    81
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    82,
+                    83,
+                    84,
+                    85,
+                    86,
+                    87,
+                    88,
+                    89
+                  ],
+                  [
+                    90,
+                    91,
+                    92,
+                    93
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    94,
+                    95,
+                    96,
+                    97,
+                    98,
+                    99,
+                    100,
+                    101,
+                    102,
+                    103,
+                    104,
+                    105,
+                    106,
+                    107,
+                    108,
+                    109
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              },
+              {
+                "windingRule": "NONZERO",
+                "loops": [
+                  [
+                    110,
+                    111,
+                    112,
+                    113,
+                    114,
+                    115,
+                    116,
+                    117,
+                    118,
+                    119,
+                    120,
+                    121,
+                    122,
+                    123,
+                    124,
+                    125,
+                    126,
+                    127,
+                    128,
+                    129,
+                    130,
+                    131,
+                    132,
+                    133
+                  ],
+                  [
+                    134,
+                    135,
+                    136,
+                    137,
+                    138,
+                    139,
+                    140,
+                    141,
+                    142,
+                    143,
+                    144,
+                    145
+                  ]
+                ],
+                "fillStyleId": "",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "color": {
+                      "r": 0.07058823853731155,
+                      "g": 0.2235294133424759,
+                      "b": 0.5215686559677124
+                    },
+                    "boundVariables": {}
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "I1248:23322;1248:22939",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "visible": false,
+      "locked": false,
+      "opacity": 1,
+      "blendMode": "PASS_THROUGH",
+      "isMask": false,
+      "effects": [],
+      "x": 62.52631378173828,
+      "y": 0.4338534474372864,
+      "width": 0.43421053886413574,
+      "height": 30.828947067260742,
+      "rotation": 0,
+      "relativeTransform": [
+        [
+          1,
+          0,
+          62.52631378173828
+        ],
+        [
+          0,
+          1,
+          0.4338534474372864
+        ]
+      ],
+      "constraints": {
+        "horizontal": "MIN",
+        "vertical": "MIN"
+      },
+      "layoutAlign": "INHERIT",
+      "layoutGrow": 0,
+      "layoutPositioning": "AUTO",
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.07058823853731155,
+            "g": 0.2235294133424759,
+            "b": 0.5215686559677124
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "strokeWeight": 0.43421053886413574,
+      "strokeAlign": "INSIDE",
+      "strokeCap": "NONE",
+      "strokeJoin": "MITER",
+      "dashPattern": [],
+      "strokeMiterLimit": 4,
+      "cornerRadius": 0
+    }
+  ]
+}

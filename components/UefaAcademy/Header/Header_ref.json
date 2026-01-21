@@ -1,0 +1,693 @@
+{
+  "id": "809:15320",
+  "name": "Header",
+  "type": "FRAME",
+  "visible": true,
+  "locked": false,
+  "opacity": 1,
+  "blendMode": "PASS_THROUGH",
+  "isMask": false,
+  "effects": [],
+  "x": 0,
+  "y": 40,
+  "width": 1680,
+  "height": 184,
+  "rotation": 0,
+  "relativeTransform": [
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      40
+    ]
+  ],
+  "constraints": {
+    "horizontal": "MIN",
+    "vertical": "MIN"
+  },
+  "layoutAlign": "STRETCH",
+  "layoutGrow": 0,
+  "layoutPositioning": "AUTO",
+  "layout": {
+    "mode": "VERTICAL",
+    "sizing": {
+      "horizontal": "FIXED",
+      "vertical": "FIXED"
+    },
+    "alignment": {
+      "primary": "CENTER",
+      "counter": "MIN"
+    },
+    "spacing": 8,
+    "counterAxisSpacing": 0,
+    "padding": {
+      "top": 16,
+      "right": 120,
+      "bottom": 16,
+      "left": 120
+    }
+  },
+  "fills": [
+    {
+      "type": "SOLID",
+      "visible": true,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "color": {
+        "r": 0.09666664153337479,
+        "g": 0.6444442868232727,
+        "b": 0.6038684248924255
+      },
+      "boundVariables": {}
+    },
+    {
+      "type": "IMAGE",
+      "visible": true,
+      "opacity": 1,
+      "blendMode": "OVERLAY",
+      "scaleMode": "FILL",
+      "imageTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "scalingFactor": 0.5,
+      "rotation": 0,
+      "filters": {
+        "exposure": 0.17796610295772552,
+        "contrast": 0,
+        "saturation": -1,
+        "temperature": 0,
+        "tint": 0,
+        "highlights": 0,
+        "shadows": 0
+      },
+      "originalImageHash": "4e43f0beb37bf8962bd3b95e3346809e1ad6aa07",
+      "assetRef": "assets/img_1.bin"
+    }
+  ],
+  "strokes": [],
+  "strokeWeight": 1,
+  "strokeAlign": "INSIDE",
+  "strokeCap": "NONE",
+  "strokeJoin": "MITER",
+  "dashPattern": [],
+  "strokeMiterLimit": 4,
+  "cornerRadius": 0,
+  "children": [
+    {
+      "id": "2638:15972",
+      "name": "Frame 1931",
+      "type": "FRAME",
+      "visible": true,
+      "locked": false,
+      "opacity": 1,
+      "blendMode": "PASS_THROUGH",
+      "isMask": false,
+      "effects": [],
+      "x": 120,
+      "y": 53,
+      "width": 300,
+      "height": 78,
+      "rotation": 0,
+      "relativeTransform": [
+        [
+          1,
+          0,
+          120
+        ],
+        [
+          0,
+          1,
+          53
+        ]
+      ],
+      "constraints": {
+        "horizontal": "MIN",
+        "vertical": "MIN"
+      },
+      "layoutAlign": "INHERIT",
+      "layoutGrow": 0,
+      "layoutPositioning": "AUTO",
+      "layout": {
+        "mode": "VERTICAL",
+        "sizing": {
+          "horizontal": "AUTO",
+          "vertical": "AUTO"
+        },
+        "alignment": {
+          "primary": "MIN",
+          "counter": "MIN"
+        },
+        "spacing": 8,
+        "counterAxisSpacing": 0,
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "fills": [],
+      "strokes": [],
+      "strokeWeight": 1,
+      "strokeAlign": "INSIDE",
+      "strokeCap": "NONE",
+      "strokeJoin": "MITER",
+      "dashPattern": [],
+      "strokeMiterLimit": 4,
+      "cornerRadius": 0,
+      "children": [
+        {
+          "id": "809:15321",
+          "name": "Frame 1612",
+          "type": "FRAME",
+          "visible": true,
+          "locked": false,
+          "opacity": 1,
+          "blendMode": "PASS_THROUGH",
+          "isMask": false,
+          "effects": [],
+          "x": 0,
+          "y": 0,
+          "width": 300,
+          "height": 50,
+          "rotation": 0,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          },
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "layoutPositioning": "AUTO",
+          "layout": {
+            "mode": "HORIZONTAL",
+            "sizing": {
+              "horizontal": "AUTO",
+              "vertical": "AUTO"
+            },
+            "alignment": {
+              "primary": "MIN",
+              "counter": "CENTER"
+            },
+            "spacing": 16,
+            "counterAxisSpacing": 0,
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "fills": [],
+          "strokes": [],
+          "strokeWeight": 1,
+          "strokeAlign": "INSIDE",
+          "strokeCap": "NONE",
+          "strokeJoin": "MITER",
+          "dashPattern": [],
+          "strokeMiterLimit": 4,
+          "cornerRadius": 0,
+          "children": [
+            {
+              "id": "809:15322",
+              "name": "Frame 1613",
+              "type": "FRAME",
+              "visible": true,
+              "locked": false,
+              "opacity": 1,
+              "blendMode": "PASS_THROUGH",
+              "isMask": false,
+              "effects": [],
+              "x": 0,
+              "y": 0,
+              "width": 300,
+              "height": 50,
+              "rotation": 0,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ],
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              },
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "layoutPositioning": "AUTO",
+              "layout": {
+                "mode": "HORIZONTAL",
+                "sizing": {
+                  "horizontal": "AUTO",
+                  "vertical": "AUTO"
+                },
+                "alignment": {
+                  "primary": "MIN",
+                  "counter": "CENTER"
+                },
+                "spacing": 4,
+                "counterAxisSpacing": 0,
+                "padding": {
+                  "top": 0,
+                  "right": 0,
+                  "bottom": 0,
+                  "left": 0
+                }
+              },
+              "fills": [],
+              "strokes": [],
+              "strokeWeight": 1,
+              "strokeAlign": "INSIDE",
+              "strokeCap": "NONE",
+              "strokeJoin": "MITER",
+              "dashPattern": [],
+              "strokeMiterLimit": 4,
+              "cornerRadius": 0,
+              "children": [
+                {
+                  "id": "809:15323",
+                  "name": "UEFA Resources",
+                  "type": "TEXT",
+                  "visible": true,
+                  "locked": false,
+                  "opacity": 1,
+                  "blendMode": "PASS_THROUGH",
+                  "isMask": false,
+                  "effects": [],
+                  "x": 0,
+                  "y": 0,
+                  "width": 300,
+                  "height": 50,
+                  "rotation": 0,
+                  "relativeTransform": [
+                    [
+                      1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      0
+                    ]
+                  ],
+                  "constraints": {
+                    "horizontal": "MIN",
+                    "vertical": "MIN"
+                  },
+                  "layoutAlign": "INHERIT",
+                  "layoutGrow": 0,
+                  "layoutPositioning": "AUTO",
+                  "fills": [
+                    {
+                      "type": "SOLID",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "color": {
+                        "r": 1,
+                        "g": 1,
+                        "b": 1
+                      },
+                      "boundVariables": {}
+                    }
+                  ],
+                  "strokes": [],
+                  "strokeWeight": 1,
+                  "strokeAlign": "OUTSIDE",
+                  "strokeCap": "NONE",
+                  "strokeJoin": "MITER",
+                  "dashPattern": [],
+                  "strokeMiterLimit": 4,
+                  "text": {
+                    "characters": "UEFA Resources",
+                    "fontSize": 40,
+                    "fontName": {
+                      "family": "Open Sans",
+                      "style": "Regular"
+                    },
+                    "fontWeight": 400,
+                    "textAlignHorizontal": "LEFT",
+                    "textAlignVertical": "CENTER",
+                    "textAutoResize": "WIDTH_AND_HEIGHT",
+                    "letterSpacing": {
+                      "unit": "PIXELS",
+                      "value": 0
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 50
+                    },
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE",
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "visible": true,
+                        "opacity": 1,
+                        "blendMode": "NORMAL",
+                        "color": {
+                          "r": 1,
+                          "g": 1,
+                          "b": 1
+                        },
+                        "boundVariables": {}
+                      }
+                    ],
+                    "segments": [
+                      {
+                        "characters": "UEFA Resources",
+                        "start": 0,
+                        "end": 14,
+                        "fontSize": 40,
+                        "fontName": {
+                          "family": "Open Sans",
+                          "style": "Regular"
+                        },
+                        "fontWeight": 400,
+                        "letterSpacing": {
+                          "unit": "PIXELS",
+                          "value": 0
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 50
+                        },
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE",
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "visible": true,
+                            "opacity": 1,
+                            "blendMode": "NORMAL",
+                            "color": {
+                              "r": 1,
+                              "g": 1,
+                              "b": 1
+                            },
+                            "boundVariables": {}
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "809:15324",
+          "name": "Frame 1613",
+          "type": "FRAME",
+          "visible": true,
+          "locked": false,
+          "opacity": 1,
+          "blendMode": "PASS_THROUGH",
+          "isMask": false,
+          "effects": [],
+          "x": 0,
+          "y": 58,
+          "width": 241,
+          "height": 20,
+          "rotation": 0,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              58
+            ]
+          ],
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          },
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "layoutPositioning": "AUTO",
+          "layout": {
+            "mode": "HORIZONTAL",
+            "sizing": {
+              "horizontal": "AUTO",
+              "vertical": "AUTO"
+            },
+            "alignment": {
+              "primary": "MIN",
+              "counter": "CENTER"
+            },
+            "spacing": 16,
+            "counterAxisSpacing": 0,
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "fills": [],
+          "strokes": [],
+          "strokeWeight": 1,
+          "strokeAlign": "INSIDE",
+          "strokeCap": "NONE",
+          "strokeJoin": "MITER",
+          "dashPattern": [],
+          "strokeMiterLimit": 4,
+          "cornerRadius": 0,
+          "children": [
+            {
+              "id": "809:15325",
+              "name": "Frame 1613",
+              "type": "FRAME",
+              "visible": true,
+              "locked": false,
+              "opacity": 1,
+              "blendMode": "PASS_THROUGH",
+              "isMask": false,
+              "effects": [],
+              "x": 0,
+              "y": 0,
+              "width": 241,
+              "height": 20,
+              "rotation": 0,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ],
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              },
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "layoutPositioning": "AUTO",
+              "layout": {
+                "mode": "HORIZONTAL",
+                "sizing": {
+                  "horizontal": "AUTO",
+                  "vertical": "AUTO"
+                },
+                "alignment": {
+                  "primary": "MIN",
+                  "counter": "CENTER"
+                },
+                "spacing": 4,
+                "counterAxisSpacing": 0,
+                "padding": {
+                  "top": 0,
+                  "right": 0,
+                  "bottom": 0,
+                  "left": 0
+                }
+              },
+              "fills": [],
+              "strokes": [],
+              "strokeWeight": 1,
+              "strokeAlign": "INSIDE",
+              "strokeCap": "NONE",
+              "strokeJoin": "MITER",
+              "dashPattern": [],
+              "strokeMiterLimit": 4,
+              "cornerRadius": 0,
+              "children": [
+                {
+                  "id": "809:15326",
+                  "name": "Second line for text description",
+                  "type": "TEXT",
+                  "visible": true,
+                  "locked": false,
+                  "opacity": 1,
+                  "blendMode": "PASS_THROUGH",
+                  "isMask": false,
+                  "effects": [],
+                  "x": 0,
+                  "y": 0,
+                  "width": 241,
+                  "height": 20,
+                  "rotation": 0,
+                  "relativeTransform": [
+                    [
+                      1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      1,
+                      0
+                    ]
+                  ],
+                  "constraints": {
+                    "horizontal": "MIN",
+                    "vertical": "MIN"
+                  },
+                  "layoutAlign": "INHERIT",
+                  "layoutGrow": 0,
+                  "layoutPositioning": "AUTO",
+                  "fills": [
+                    {
+                      "type": "SOLID",
+                      "visible": true,
+                      "opacity": 1,
+                      "blendMode": "NORMAL",
+                      "color": {
+                        "r": 1,
+                        "g": 1,
+                        "b": 1
+                      },
+                      "boundVariables": {}
+                    }
+                  ],
+                  "strokes": [],
+                  "strokeWeight": 1,
+                  "strokeAlign": "OUTSIDE",
+                  "strokeCap": "NONE",
+                  "strokeJoin": "MITER",
+                  "dashPattern": [],
+                  "strokeMiterLimit": 4,
+                  "text": {
+                    "characters": "Second line for text description",
+                    "fontSize": 16,
+                    "fontName": {
+                      "family": "Open Sans",
+                      "style": "SemiBold"
+                    },
+                    "fontWeight": 600,
+                    "textAlignHorizontal": "LEFT",
+                    "textAlignVertical": "CENTER",
+                    "textAutoResize": "WIDTH_AND_HEIGHT",
+                    "letterSpacing": {
+                      "unit": "PIXELS",
+                      "value": 0
+                    },
+                    "lineHeight": {
+                      "unit": "PIXELS",
+                      "value": 20
+                    },
+                    "textCase": "ORIGINAL",
+                    "textDecoration": "NONE",
+                    "fills": [
+                      {
+                        "type": "SOLID",
+                        "visible": true,
+                        "opacity": 1,
+                        "blendMode": "NORMAL",
+                        "color": {
+                          "r": 1,
+                          "g": 1,
+                          "b": 1
+                        },
+                        "boundVariables": {}
+                      }
+                    ],
+                    "segments": [
+                      {
+                        "characters": "Second line for text description",
+                        "start": 0,
+                        "end": 32,
+                        "fontSize": 16,
+                        "fontName": {
+                          "family": "Open Sans",
+                          "style": "SemiBold"
+                        },
+                        "fontWeight": 600,
+                        "letterSpacing": {
+                          "unit": "PIXELS",
+                          "value": 0
+                        },
+                        "lineHeight": {
+                          "unit": "PIXELS",
+                          "value": 20
+                        },
+                        "textCase": "ORIGINAL",
+                        "textDecoration": "NONE",
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "visible": true,
+                            "opacity": 1,
+                            "blendMode": "NORMAL",
+                            "color": {
+                              "r": 1,
+                              "g": 1,
+                              "b": 1
+                            },
+                            "boundVariables": {}
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
