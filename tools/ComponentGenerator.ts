@@ -78,10 +78,61 @@ export class ComponentGenerator {
             imageImports += `import ${varName} from "./${relPath}";\n`;
         });
 
+        const applySizeAndTransformHelper = `
+type T2x3 = [[number, number, number], [number, number, number]];
+function applySizeAndTransform(
+    node: SceneNode & LayoutMixin & GeometryMixin,
+    opts: {
+        width?: number;
+        height?: number;
+        relativeTransform?: T2x3;
+        parentIsAutoLayout: boolean;
+        layoutPositioning?: "AUTO" | "ABSOLUTE";
+    }
+) {
+    const { width, height, relativeTransform, parentIsAutoLayout } = opts;
+    const positioning = opts.layoutPositioning ?? "AUTO";
+
+    if (typeof width === "number" && typeof height === "number") {
+        node.resize(width, height);
+    }
+
+    if (relativeTransform) {
+        const t = relativeTransform;
+        const inFlow = parentIsAutoLayout && positioning !== "ABSOLUTE";
+
+        // Strip translation in auto-layout flow; keep axis vectors
+        const tx = inFlow ? 0 : t[0][2];
+        const ty = inFlow ? 0 : t[1][2];
+
+        try {
+            node.relativeTransform = [
+                [t[0][0], t[0][1], tx],
+                [t[1][0], t[1][1], ty],
+            ];
+        } catch (e) {
+            console.warn("Failed to set relativeTransform", e);
+        }
+    }
+}
+`;
+
+        const rootOpts = {
+            width: data.width,
+            height: data.height,
+            parentIsAutoLayout: false
+            // Root behaves like absolute for inner contents, but external props control its x/y
+        };
+        const rootTransformCode = (data.width !== undefined && data.height !== undefined)
+            ? `applySizeAndTransform(${variableName}, ${JSON.stringify(rootOpts)});\n`
+            : '';
+
         return `import { BaseComponent, ComponentProps } from "${importPrefix}BaseComponent";
 ${imageImports}
 
 ${svgCode}
+
+${applySizeAndTransformHelper}
 
 export class ${this.componentName} extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -94,6 +145,7 @@ export class ${this.componentName} extends BaseComponent {
         
         ${bodyContent}
 
+        ${rootTransformCode}
         ${variableName}.x = props.x;
         ${variableName}.y = props.y;
 
@@ -103,11 +155,11 @@ export class ${this.componentName} extends BaseComponent {
 `;
     }
 
-    private generateNodeCode(data: SerializedNode, varName: string): string {
+    private generateNodeCode(data: SerializedNode, varName: string, parentIsAutoLayout: boolean = false): string {
         const type = data.type;
         let code = '';
 
-        // 1. Create Node
+        // --- Phase A: Create Node & Set Static Props ---
         if (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT') {
             code += `const ${varName} = figma.createFrame();\n`;
         } else if (type === 'TEXT') {
@@ -137,63 +189,62 @@ export class ${this.componentName} extends BaseComponent {
             code += `const ${varName} = figma.createFrame(); // Fallback for ${type}\n`;
         }
 
-        // 2. Basic properties
-        code += `${varName}.name = "${data.name || 'Unnamed'}";\n`;
+        // Basic Properties
+        code += `${varName}.name = "${(data.name || 'Unnamed').replace(/"/g, '\\"')}";\n`;
         if (data.visible !== undefined) code += `${varName}.visible = ${data.visible};\n`;
         if (data.opacity !== undefined) code += `${varName}.opacity = ${data.opacity};\n`;
         if (data.locked !== undefined) code += `${varName}.locked = ${data.locked};\n`;
+        if (data.blendMode) code += `if ("blendMode" in ${varName}) ${varName}.blendMode = "${data.blendMode}";\n`;
 
-        if (data.width !== undefined && data.height !== undefined && !code.includes('figma.flatten')) {
-            code += `${varName}.resize(${data.width}, ${data.height});\n`;
-        }
-
-
-        // 3. Layout Properties
-        if (data.layout && (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT')) {
+        // 1. Container Layout Props (Must be set BEFORE appending children to avoid reflow spikes)
+        let isCurrentNodeAutoLayout = false;
+        if (data.layout && (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT' || type === 'GROUP')) {
             code += `if ("layoutMode" in ${varName}) {\n`;
+            if (data.layout.mode && data.layout.mode !== "NONE") {
+                code += `    ${varName}.layoutMode = "${data.layout.mode}";\n`;
+                isCurrentNodeAutoLayout = true;
 
-            if (data.layout.mode) code += `    ${varName}.layoutMode = "${data.layout.mode}";\n`;
-            if (data.layout.sizing) {
-                if (data.layout.sizing.horizontal) code += `    ${varName}.primaryAxisSizingMode = "${data.layout.sizing.horizontal === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
-                if (data.layout.sizing.vertical) code += `    ${varName}.counterAxisSizingMode = "${data.layout.sizing.vertical === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
-            }
-            if (data.layout.alignment) {
-                if (data.layout.alignment.primary) {
-                    const align = data.layout.alignment.primary === 'SPACE_BETWEEN' ? 'SPACE_BETWEEN' : data.layout.alignment.primary;
-                    code += `    ${varName}.primaryAxisAlignItems = "${align}";\n`;
+                if (data.layout.sizing) {
+                    if (data.layout.sizing.horizontal) code += `    ${varName}.primaryAxisSizingMode = "${data.layout.sizing.horizontal === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
+                    if (data.layout.sizing.vertical) code += `    ${varName}.counterAxisSizingMode = "${data.layout.sizing.vertical === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
                 }
-                if (data.layout.alignment.counter) code += `    ${varName}.counterAxisAlignItems = "${data.layout.alignment.counter}";\n`;
-            }
-            if (data.layout.spacing !== undefined) code += `    ${varName}.itemSpacing = ${data.layout.spacing};\n`;
-            if (data.layout.padding) {
-                if (data.layout.padding.top !== undefined) code += `    ${varName}.paddingTop = ${data.layout.padding.top};\n`;
-                if (data.layout.padding.right !== undefined) code += `    ${varName}.paddingRight = ${data.layout.padding.right};\n`;
-                if (data.layout.padding.bottom !== undefined) code += `    ${varName}.paddingBottom = ${data.layout.padding.bottom};\n`;
-                if (data.layout.padding.left !== undefined) code += `    ${varName}.paddingLeft = ${data.layout.padding.left};\n`;
+                if (data.layout.alignment) {
+                    if (data.layout.alignment.primary) {
+                        const align = data.layout.alignment.primary === 'SPACE_BETWEEN' ? 'SPACE_BETWEEN' : data.layout.alignment.primary;
+                        code += `    ${varName}.primaryAxisAlignItems = "${align}";\n`;
+                    }
+                    if (data.layout.alignment.counter) code += `    ${varName}.counterAxisAlignItems = "${data.layout.alignment.counter}";\n`;
+                }
+                if (data.layout.spacing !== undefined) code += `    ${varName}.itemSpacing = ${data.layout.spacing};\n`;
+                if (data.layout.padding) {
+                    // Check against undefined simply
+                    if (data.layout.padding.top !== undefined) code += `    ${varName}.paddingTop = ${data.layout.padding.top};\n`;
+                    if (data.layout.padding.right !== undefined) code += `    ${varName}.paddingRight = ${data.layout.padding.right};\n`;
+                    if (data.layout.padding.bottom !== undefined) code += `    ${varName}.paddingBottom = ${data.layout.padding.bottom};\n`;
+                    if (data.layout.padding.left !== undefined) code += `    ${varName}.paddingLeft = ${data.layout.padding.left};\n`;
+                }
+            } else {
+                code += `    ${varName}.layoutMode = "NONE";\n`;
             }
             code += `}\n`;
         }
 
-
-        // 3.5 Child Layout Properties
-        if (data.layoutAlign) code += `${varName}.layoutAlign = "${data.layoutAlign}";\n`;
-        if (data.layoutGrow !== undefined) code += `${varName}.layoutGrow = ${data.layoutGrow};\n`;
-
-        // 4. Visual properties
+        // 2. Visual Properties (Fills, Strokes, Effects) - Safe to apply here
         if (Array.isArray(data.fills) && (type !== 'VECTOR' || !data.svgPath)) {
             code += `${varName}.fills = await this.hydratePaints(${this.stringifyPaints(data.fills)});\n`;
         }
         if (data.strokes && Array.isArray(data.strokes)) {
             code += `${varName}.strokes = await this.hydratePaints(${this.stringifyPaints(data.strokes)});\n`;
         } else if (data.strokes) {
-            code += `${varName}.strokes = ${JSON.stringify(data.strokes)};\n`;
+            // fallback
         }
         if (data.strokeWeight !== undefined) code += `${varName}.strokeWeight = ${data.strokeWeight};\n`;
         if (data.strokeAlign) code += `${varName}.strokeAlign = "${data.strokeAlign}";\n`;
         if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
         if (data.cornerRadius !== undefined) code += `if ("cornerRadius" in ${varName}) ${varName}.cornerRadius = ${typeof data.cornerRadius === 'number' ? data.cornerRadius : JSON.stringify(data.cornerRadius)};\n`;
 
-        // 5. Text specific
+
+        // 3. Text Properties
         if (type === 'TEXT' && data.text) {
             code += `// Text Properties\n`;
             code += `${varName}.characters = "${(data.text.characters || '').replace(/"/g, '\\"')}";\n`;
@@ -218,23 +269,44 @@ export class ${this.componentName} extends BaseComponent {
             }
         }
 
-        // 6. Vector specific
+        // 4. Vector Paths
         if (type === 'VECTOR' && data.vectorPaths && !data.svgPath) {
             code += `${varName}.vectorPaths = ${JSON.stringify(data.vectorPaths)};\n`;
         }
 
-        // 7. Children
+        // 5. Recursion (Children) using Phase B (Append) logic inside the loop
         if (data.children && data.children.length > 0) {
             data.children.forEach((child, index) => {
                 const childVar = `${varName}_child_${index}`;
                 code += `\n// Start Child: ${child.name}\n`;
-                code += this.generateNodeCode(child, childVar);
+
+                // Recursively generate child (Phase A inside child)
+                code += this.generateNodeCode(child, childVar, isCurrentNodeAutoLayout);
+
+                // Phase B: Append
                 code += `${varName}.appendChild(${childVar});\n`;
-                if (child.relativeTransform) {
-                    code += `${childVar}.relativeTransform = ${JSON.stringify(child.relativeTransform)};\n`;
+
+                // --- Phase C: Child Layout Props (Must happen AFTER append) ---
+                if (isCurrentNodeAutoLayout) {
+                    code += `// Child Layout Props\n`;
+                    if (child.layoutPositioning && child.layoutPositioning !== "AUTO") {
+                        code += `${childVar}.layoutPositioning = "${child.layoutPositioning}";\n`;
+                    }
+                    if (child.layoutAlign) code += `${childVar}.layoutAlign = "${child.layoutAlign}";\n`;
+                    if (child.layoutGrow !== undefined) code += `${childVar}.layoutGrow = ${child.layoutGrow};\n`;
                 }
-                if (child.layoutPositioning === "ABSOLUTE") {
-                    code += `${childVar}.layoutPositioning = "ABSOLUTE";\n`;
+
+                // --- Phase D: Size & Transform (Atomic with context, AFTER append) ---
+                const childOpts = {
+                    width: (child.type !== 'VECTOR' || !child.svgPath) ? child.width : undefined,
+                    height: (child.type !== 'VECTOR' || !child.svgPath) ? child.height : undefined,
+                    relativeTransform: child.relativeTransform,
+                    parentIsAutoLayout: isCurrentNodeAutoLayout,
+                    layoutPositioning: child.layoutPositioning
+                };
+
+                if (childOpts.width !== undefined || childOpts.relativeTransform) {
+                    code += `applySizeAndTransform(${childVar}, ${JSON.stringify(childOpts)});\n`;
                 }
             });
         }
