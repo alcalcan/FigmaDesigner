@@ -103,7 +103,7 @@ export async function processFills(
                     if (img) {
                         try {
                             const bytes = await img.getBytesAsync();
-                            assetRef = `assets/img_${assetStore.nextId++}.bin`;
+                            assetRef = `assets/img_${assetStore.nextId++}.png`;
                             assetStore.imageHashToAssetRef.set(imageHash, assetRef);
                             assetStore.assets[assetRef] = { bytesBase64: bytesToBase64(bytes) };
                         } catch (err) {

@@ -1,6 +1,7 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ComponentGenerator } from './ComponentGenerator';
 
 const PORT = 3001;
 let pendingCommand: string | null = null;
@@ -381,6 +382,100 @@ const server = http.createServer((req, res) => {
             } catch (e: unknown) {
                 const error = e as Error;
                 console.error("Error deleting file:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
+    // GENERATE TO CODE ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/generate-to-code') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { path: relativePath, project: projectName } = JSON.parse(body);
+                if (!relativePath || !projectName) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing path or project" }));
+                    return;
+                }
+
+                const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+                const fullPath = path.join(extractionRoot, relativePath);
+
+                if (!fs.existsSync(fullPath)) {
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ error: "JSON file not found" }));
+                    return;
+                }
+
+                const generator = new ComponentGenerator();
+                const result = generator.generate(fullPath, projectName);
+
+                console.log(`✅ Component Generated: \${result.tsPath}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', ...result }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error generating component code:", error.message, error.stack);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: error.message, stack: error.stack }));
+            }
+        });
+        return;
+    }
+
+    // DELETE COMPONENT ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/delete-component') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { name } = JSON.parse(body); // e.g. "Competition_newsletters/DesktopBanner/DesktopBanner"
+                if (!name) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing component name" }));
+                    return;
+                }
+
+                // name is path relative to 'components/' without extension
+                const fullPath = path.join(process.cwd(), 'components', `${name}.ts`);
+                const componentDir = path.dirname(fullPath);
+
+                if (!fs.existsSync(componentDir)) {
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ error: "Component directory not found" }));
+                    return;
+                }
+
+                // 1. Remove from registry FIRST to prevent build errors
+                const registryPath = path.join(process.cwd(), 'components', 'index.ts');
+                if (fs.existsSync(registryPath)) {
+                    let content = fs.readFileSync(registryPath, 'utf8');
+                    const componentClassName = path.basename(name);
+                    const lines = content.split('\n');
+                    const filteredLines = lines.filter(line => !line.includes(`{ ${componentClassName} }`));
+                    fs.writeFileSync(registryPath, filteredLines.join('\n'));
+                    console.log(`   Removed ${componentClassName} from registry.`);
+                }
+
+                // 2. Delete the directory
+                // Small delay to ensure fs file watchers pick up the index.ts change first might be needed,
+                // but usually synchronous write is enough.
+                if (fs.existsSync(componentDir)) {
+                    fs.rmSync(componentDir, { recursive: true, force: true });
+                    console.log(`Deleted component: ${name}`);
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok' }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error deleting component:", error.message);
                 res.writeHead(500);
                 res.end(JSON.stringify({ error: error.message }));
             }

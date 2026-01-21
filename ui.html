@@ -196,6 +196,8 @@
                 style="padding: 12px; border-top: 1px solid #2a2a2a; background: #252525; display: none;">
                 <button id="generate-from-selected-btn" class="success" style="font-size: 12px;">Generate
                     Selected</button>
+                <button id="convert-to-code-btn" class="secondary" style="font-size: 12px; margin-top: 8px;">Convert to
+                    Code Component</button>
             </div>
         </div>
     </div>
@@ -257,6 +259,7 @@
         const refreshFilesBtn = document.getElementById('refresh-files-btn');
         const fileActions = document.getElementById('file-actions');
         const generateSelectedBtn = document.getElementById('generate-from-selected-btn');
+        const convertToCodeBtn = document.getElementById('convert-to-code-btn');
 
         let pollInterval = null;
         let selectedFilePath = null;
@@ -386,6 +389,44 @@
                 generateSelectedBtn.textContent = "Error!";
             } finally {
                 generateSelectedBtn.disabled = false;
+            }
+        }
+
+        convertToCodeBtn.onclick = async () => {
+            if (!selectedFilePath) return;
+
+            convertToCodeBtn.textContent = "Converting...";
+            convertToCodeBtn.disabled = true;
+
+            try {
+                // selectedFilePath is relative to 'tools/extraction'
+                // We need to pass the project name separately if we want to organize it, 
+                // but for now let's extract project from path.
+                // path is usually "ProjectName/FolderName/FileName.json" or "ProjectName/FileName.json"
+                const parts = selectedFilePath.split('/');
+                const projectName = parts[0] || "Default";
+
+                const response = await fetch('http://127.0.0.1:3001/generate-to-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: selectedFilePath, project: projectName })
+                });
+
+                const result = await response.json();
+                if (result.status === 'ok') {
+                    showFeedback(convertToCodeBtn, "Convert to Code Component", "Success!");
+                    console.log("Component generated at:", result.tsPath);
+                    // Refresh component list to show new component
+                    loadComponents();
+                } else {
+                    alert("Conversion failed: " + result.error);
+                    showFeedback(convertToCodeBtn, "Convert to Code Component", "Error!");
+                }
+            } catch (e) {
+                console.error("Failed to convert to code", e);
+                showFeedback(convertToCodeBtn, "Convert to Code Component", "Network Error");
+            } finally {
+                convertToCodeBtn.disabled = false;
             }
         }
 
@@ -572,29 +613,60 @@
                             nameSpan.innerHTML = `<span style="opacity:0.6">❖</span> ${key}`; // Component icon hint
                             item.appendChild(nameSpan);
 
+                            const actions = document.createElement('div');
+                            actions.style.display = 'flex';
+                            actions.style.gap = '4px';
+
                             const genBtn = document.createElement('span');
-                            genBtn.textContent = 'Generate';
+                            genBtn.textContent = 'Insert';
                             genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
-                            item.appendChild(genBtn);
+                            actions.appendChild(genBtn);
+
+                            const delBtn = document.createElement('span');
+                            delBtn.textContent = '×';
+                            delBtn.title = 'Delete component folder and registry';
+                            delBtn.style.cssText = 'font-size: 11px; background: #ff3b3b; color: white; padding: 0 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; cursor: pointer; display: flex; align-items: center;';
+                            actions.appendChild(delBtn);
+
+                            item.appendChild(actions);
 
                             item.onmouseenter = () => {
                                 item.style.background = '#2a2a2a';
                                 genBtn.style.opacity = '1';
+                                delBtn.style.opacity = '1';
                             }
                             item.onmouseleave = () => {
                                 item.style.background = 'transparent';
                                 genBtn.style.opacity = '0';
+                                delBtn.style.opacity = '0';
                             }
 
-                            item.onclick = (e) => {
+                            genBtn.onclick = (e) => {
                                 e.stopPropagation();
                                 parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: key } }, '*')
-                                genBtn.textContent = 'Done!';
+                                genBtn.textContent = 'Sent!';
                                 genBtn.style.background = '#1ed760';
                                 setTimeout(() => {
-                                    genBtn.textContent = 'Generate';
+                                    genBtn.textContent = 'Insert';
                                     genBtn.style.background = '#0d99ff';
                                 }, 1000);
+                            }
+
+                            delBtn.onclick = async (e) => {
+                                e.stopPropagation();
+                                if (!confirm(`Delete component ${key} folder and remove from registry?`)) return;
+                                try {
+                                    const resp = await fetch('http://127.0.0.1:3001/delete-component', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ name: fullPath })
+                                    });
+                                    if (resp.ok) loadComponents();
+                                    else alert("Delete failed");
+                                } catch (err) {
+                                    console.error(err);
+                                    alert("Network error deleting component");
+                                }
                             }
                             container.appendChild(item);
 
@@ -724,7 +796,8 @@
                     }
 
                     // Refresh file list after a new capture is saved
-                    loadFiles();
+                    await loadFiles();
+
                 } catch (e) {
                     console.error("Failed to send data to bridge", e);
                     alert("Failed to save to bridge: " + e.message);
