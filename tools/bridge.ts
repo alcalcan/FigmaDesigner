@@ -81,6 +81,38 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // LIST COMPONENTS (GET)
+    if (req.method === 'GET' && req.url === '/list-components') {
+        try {
+            const componentsDir = path.join(process.cwd(), 'components');
+            const components: string[] = [];
+
+            if (fs.existsSync(componentsDir)) {
+                const items = fs.readdirSync(componentsDir);
+                items.forEach(item => {
+                    // Filter for .ts files that are likely components (Start with Uppercase, exclude Base/Index/Helpers)
+                    if (item.endsWith('.ts') &&
+                        /^[A-Z]/.test(item) &&
+                        !item.includes('BaseComponent') &&
+                        !item.includes('Helpers') &&
+                        !item.includes('JsonReconstructor')) {
+
+                        // Strip extension
+                        const name = item.replace(/\.ts$/, '');
+                        components.push(name);
+                    }
+                });
+            }
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ components }));
+        } catch (e) {
+            console.error("Error in /list-components:", e);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: "Failed to list components" }));
+        }
+        return;
+    }
+
     // READ ENDPOINT (GET)
     if (req.method === 'GET' && (req.url === '/read' || req.url?.startsWith('/read?'))) {
         const url = new URL(req.url, `http://${req.headers.host}`);

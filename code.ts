@@ -1,6 +1,7 @@
 import { Pipeline } from "./pipeline";
 import { JsonReconstructor } from "./components/JsonReconstructor";
 import { AssetStore, processFills } from "./components/PaintHelpers";
+import * as ComponentRegistry from "./components/index";
 
 // Show the HTML page in "ui.html".
 figma.showUI(__html__, { width: 300, height: 400 });
@@ -329,6 +330,51 @@ figma.ui.onmessage = async (msg) => {
       }
     } catch (e) {
       console.error("Failed to generate from JSON:", e);
+    }
+  }
+
+  if (msg.type === 'generate-component') {
+    const name = msg.componentName;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ComponentClass = (ComponentRegistry as any)[name];
+
+    if (!ComponentClass) {
+      figma.notify(`Component ${name} not found`, { error: true });
+      return;
+    }
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const instance = new ComponentClass() as any;
+      const { x, y } = figma.viewport.center;
+
+      // Default props
+      // We pass extra props 'label'/'primary' in case it's a Button.
+      // Other components will ignore them.
+      const props = {
+        x,
+        y,
+        label: "Click Me",
+        primary: true
+      };
+
+      let result: SceneNode;
+
+      // Prefer createAsync if available (used in Button.ts for font loading)
+      if (typeof instance.createAsync === 'function') {
+        result = await instance.createAsync(props);
+      } else {
+        result = await instance.create(props);
+      }
+
+      if (result) {
+        figma.currentPage.appendChild(result);
+        figma.viewport.scrollAndZoomIntoView([result]);
+        figma.notify(`Generated ${name}`);
+      }
+    } catch (e) {
+      console.error(e);
+      figma.notify(`Failed to generate ${name}: ${(e as Error).message}`, { error: true });
     }
   }
 

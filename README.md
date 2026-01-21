@@ -54,3 +54,27 @@ npm run lint:fix
 ```
 
 We avoid using `any` type casts (`as any`) to prevent runtime crashes in Figma's sandboxed environment. Instead, use proper interfaces or `Record<string, unknown>` for dynamic data.
+
+## Bridge Server & Components
+
+This plugin utilizes a local Node.js server (the "Bridge") to enable advanced features like file extraction, saving to disk, and dynamic component scanning.
+
+### 1. Starting the Bridge
+To use the advanced features, keep the bridge server running in a terminal:
+```bash
+npm run bridge
+```
+*(Or use `npm run dev` to watch for code changes and run the bridge simultaneously)*
+
+### 2. Available Components
+The plugin now supports a **Components** section in the UI that auto-scans for available TypeScript components in the `components/` directory.
+
+- **Refresh**: Click to scan the `components/` folder for new `.ts` component files.
+- **Generate**: Click on any listed component (e.g., `Button`, `TableStat`) to instantiate it on the Figma canvas.
+
+**Adding New Components:**
+1. Create a new `.ts` file in `components/` (e.g., `MyCard.ts`).
+2. Implement your component class (must follow the `BaseComponent` pattern).
+3. Export it in `components/index.ts`.
+4. Restart the bridge server (`npm run bridge`) to pick up the new file.
+5. Click **Refresh** in the plugin UI.

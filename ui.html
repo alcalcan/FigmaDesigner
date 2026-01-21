@@ -162,6 +162,23 @@
     </div>
 
     <div class="section">
+        <label class="section-label">Components (Auto-Scan)</label>
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div
+                style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
+                <span style="font-size: 11px; font-weight: 600; color: #888;">Available Components</span>
+                <button id="refresh-components-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+            </div>
+            <div id="component-list" style="max-height: 150px; overflow-y: auto; background: #1e1e1e;">
+                <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
+                    Connect to server to see components
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
         <label class="section-label">Generate from JSON</label>
         <div class="card" style="padding: 0; overflow: hidden;">
             <div id="file-browser-header"
@@ -227,6 +244,10 @@
         const bridgeActiveTools = document.getElementById('bridge-active-tools');
         const hintText = document.getElementById('hint-text');
 
+        // Component Elements
+        const refreshComponentsBtn = document.getElementById('refresh-components-btn');
+        const componentList = document.getElementById('component-list');
+
         // File Browser Elements
         const fileList = document.getElementById('file-list');
         const refreshFilesBtn = document.getElementById('refresh-files-btn');
@@ -275,6 +296,10 @@
 
         refreshFilesBtn.onclick = () => {
             loadFiles();
+        }
+
+        refreshComponentsBtn.onclick = () => {
+            loadComponents();
         }
 
         generateSelectedBtn.onclick = async () => {
@@ -481,6 +506,63 @@
             }
         }
 
+        async function loadComponents() {
+            if (pollInterval === null) {
+                componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see components</div>';
+                return;
+            }
+            componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading...</div>';
+
+            try {
+                const response = await fetch('http://127.0.0.1:3001/list-components');
+                if (!response.ok) throw new Error("Failed");
+                const { components } = await response.json();
+
+                if (components.length === 0) {
+                    componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">No components found</div>';
+                    return;
+                }
+
+                componentList.innerHTML = '';
+                components.forEach(name => {
+                    const item = document.createElement('div');
+                    item.style.cssText = 'padding: 10px 12px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;';
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.textContent = name;
+                    item.appendChild(nameSpan);
+
+                    const genBtn = document.createElement('span');
+                    genBtn.textContent = 'Generate';
+                    genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
+                    item.appendChild(genBtn);
+
+                    item.onmouseenter = () => {
+                        item.style.background = '#2a2a2a';
+                        genBtn.style.opacity = '1';
+                    }
+                    item.onmouseleave = () => {
+                        item.style.background = 'transparent';
+                        genBtn.style.opacity = '0';
+                    }
+
+                    item.onclick = () => {
+                        parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: name } }, '*')
+                        genBtn.textContent = 'Done!';
+                        genBtn.style.background = '#1ed760';
+                        setTimeout(() => {
+                            genBtn.textContent = 'Generate';
+                            genBtn.style.background = '#0d99ff';
+                        }, 1000);
+                    }
+                    componentList.appendChild(item);
+                });
+
+            } catch (e) {
+                componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Error loading components</div>';
+            }
+        }
+
         function startPolling() {
             statusText.textContent = "Connecting...";
             statusText.style.color = "#888";
@@ -498,6 +580,7 @@
                         bridgeActiveTools.style.display = "block";
                         hintText.style.display = "none";
                         loadFiles(); // Load files when connected
+                        loadComponents(); // Load components when connected
                     }
 
                     if (json.command === 'capture') {
