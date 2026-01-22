@@ -217,7 +217,7 @@ root_child_0_child_0_child_0.appendChild(root_child_0_child_0_child_0_child_0);
 // Child Layout Props
 root_child_0_child_0_child_0.layoutAlign = "INHERIT";
 root_child_0_child_0_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_0_child_0_child_0, {"width":54,"height":16,"relativeTransform":[[1,0,0],[0,1,2.5]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_0_child_0_child_0, {"width":54,"height":18.5,"relativeTransform":[[1,0,0],[0,1,2.5]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 root_child_0_child_0.appendChild(root_child_0_child_0_child_0);
 
 // Start Child: Line 39

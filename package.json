@@ -7,7 +7,7 @@
     "build": "tsc -p tsconfig.json --noEmit && esbuild code.ts --bundle --outfile=code.js --format=iife --target=es6 --loader:.png=base64 --loader:.jpg=base64 --loader:.jpeg=base64 --loader:.svg=text --loader:.bin=base64",
     "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules .",
     "lint:fix": "eslint --ext .ts,.tsx --ignore-pattern node_modules --fix .",
-    "watch": "npm run build -- --watch & npm run bridge",
+    "watch": "npm run build -- --watch=forever & npm run bridge",
     "dev": "npm run watch",
     "verify": "ts-node tools/verify_design.ts",
     "capture": "ts-node tools/capture.ts",

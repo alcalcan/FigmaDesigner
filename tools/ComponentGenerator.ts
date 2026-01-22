@@ -402,7 +402,10 @@ export class ${this.componentName} extends BaseComponent {
                 // Recursively generate child (Phase A inside child)
                 code += this.generateNodeCode(child, childVar, isCurrentNodeAutoLayout);
 
-                // --- Phase C: Child Layout Props (Apply BEFORE append) ---
+                // Phase B: Append (Now happens BEFORE Layout Props & Transform)
+                code += `${varName}.appendChild(${childVar});\n`;
+
+                // --- Phase C: Child Layout Props (Apply AFTER append) ---
                 if (isCurrentNodeAutoLayout) {
                     code += `// Child Layout Props\n`;
                     if (child.layoutPositioning && child.layoutPositioning !== "AUTO") {
@@ -412,7 +415,7 @@ export class ${this.componentName} extends BaseComponent {
                     if (child.layoutGrow !== undefined) code += `${childVar}.layoutGrow = ${child.layoutGrow};\n`;
                 }
 
-                // --- Phase D: Size & Transform (Atomic with context, BEFORE append) ---
+                // --- Phase D: Size & Transform (Atomic with context, AFTER append) ---
                 const childOpts = {
                     width: child.width,
                     height: child.height,
@@ -430,9 +433,6 @@ export class ${this.componentName} extends BaseComponent {
                     if (child.x !== undefined) code += `${childVar}.x = ${child.x};\n`;
                     if (child.y !== undefined) code += `${childVar}.y = ${child.y};\n`;
                 }
-
-                // Phase B: Append (Now happens LAST)
-                code += `${varName}.appendChild(${childVar});\n`;
             });
         }
 
