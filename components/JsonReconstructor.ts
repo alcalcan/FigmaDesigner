@@ -28,7 +28,7 @@ export interface SerializedNode {
     fills?: (any & { assetRef?: string })[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     strokes?: any[];
-    strokeWeight?: number;
+    strokeWeight?: number | "mixed";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     strokeAlign?: any;
     strokeCap?: "NONE" | "ROUND" | "SQUARE" | "ARROW_LINES" | "ARROW_EQUILATERAL";
@@ -38,6 +38,12 @@ export interface SerializedNode {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     effects?: any[];
     cornerRadius?: number | "mixed";
+    itemReverseZIndex?: boolean;
+    strokesIncludedInLayout?: boolean;
+    strokeTopWeight?: number | "mixed";
+    strokeRightWeight?: number | "mixed";
+    strokeBottomWeight?: number | "mixed";
+    strokeLeftWeight?: number | "mixed";
 
     layout?: {
         mode?: "NONE" | "HORIZONTAL" | "VERTICAL";
@@ -56,6 +62,8 @@ export interface SerializedNode {
             bottom?: number;
             left?: number;
         };
+        itemReverseZIndex?: boolean;
+        strokesIncludedInLayout?: boolean;
     };
 
     // Layout Positioning
@@ -84,6 +92,8 @@ export interface SerializedNode {
         segments?: any[];
         textCase?: string;
         textDecoration?: string;
+        paragraphSpacing?: number | "mixed";
+        paragraphIndent?: number | "mixed";
     };
 
     corners?: {
@@ -308,6 +318,8 @@ export class JsonReconstructor extends BaseComponent {
                         frame.paddingBottom = data.layout.padding.bottom || 0;
                         frame.paddingLeft = data.layout.padding.left || 0;
                     }
+                    if (data.layout.itemReverseZIndex !== undefined) frame.itemReverseZIndex = data.layout.itemReverseZIndex;
+                    if (data.layout.strokesIncludedInLayout !== undefined) frame.strokesIncludedInLayout = data.layout.strokesIncludedInLayout;
                 }
             }
 
@@ -388,7 +400,7 @@ export class JsonReconstructor extends BaseComponent {
             if ("strokes" in node && !isFromSvg) {
                 if (data.strokes) {
                     node.strokes = data.strokes;
-                    if ("strokeWeight" in node && data.strokeWeight !== undefined) node.strokeWeight = data.strokeWeight;
+                    if ("strokeWeight" in node && typeof data.strokeWeight === 'number') node.strokeWeight = data.strokeWeight;
                     if ("strokeAlign" in node && data.strokeAlign) node.strokeAlign = data.strokeAlign;
                     if ("strokeCap" in node && data.strokeCap) node.strokeCap = data.strokeCap as StrokeCap;
                     if ("strokeJoin" in node && data.strokeJoin) node.strokeJoin = data.strokeJoin as StrokeJoin;
@@ -397,6 +409,10 @@ export class JsonReconstructor extends BaseComponent {
                 } else {
                     node.strokes = [];
                 }
+                if ("strokeTopWeight" in node && typeof data.strokeTopWeight === 'number') node.strokeTopWeight = data.strokeTopWeight;
+                if ("strokeRightWeight" in node && typeof data.strokeRightWeight === 'number') node.strokeRightWeight = data.strokeRightWeight;
+                if ("strokeBottomWeight" in node && typeof data.strokeBottomWeight === 'number') node.strokeBottomWeight = data.strokeBottomWeight;
+                if ("strokeLeftWeight" in node && typeof data.strokeLeftWeight === 'number') node.strokeLeftWeight = data.strokeLeftWeight;
             }
             if ("effects" in node && data.effects) {
                 node.effects = data.effects;
@@ -473,6 +489,9 @@ export class JsonReconstructor extends BaseComponent {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     textNode.fills = data.text.fills as any;
                 }
+
+                if (typeof data.text.paragraphSpacing === 'number') textNode.paragraphSpacing = data.text.paragraphSpacing;
+                if (typeof data.text.paragraphIndent === 'number') textNode.paragraphIndent = data.text.paragraphIndent;
 
                 // 6b. Apply Mixed Style Segments
                 if (data.text.segments && data.text.segments.length > 0) {

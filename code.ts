@@ -52,6 +52,7 @@ const captureNode = async (
     opacity: safeGet(node, "opacity") ?? 1,
     blendMode: safeGet(node, "blendMode") ?? "PASS_THROUGH",
     isMask: safeGet(node, "isMask"),
+    maskType: safeGet(node, "maskType"),
     clipsContent: safeGet(node, "clipsContent"),
     booleanOperation: safeGet(node, "booleanOperation"),
     effects: safeGet(node, "effects"),
@@ -90,7 +91,9 @@ const captureNode = async (
         right: safeGet(node, "paddingRight"),
         bottom: safeGet(node, "paddingBottom"),
         left: safeGet(node, "paddingLeft"),
-      }
+      },
+      itemReverseZIndex: safeGet(node, "itemReverseZIndex"),
+      strokesIncludedInLayout: safeGet(node, "strokesIncludedInLayout"),
     };
 
     // Cleanup if no layout
@@ -115,6 +118,10 @@ const captureNode = async (
     data.dashPattern = safeGet(node, "dashPattern");
     data.strokeMiterLimit = safeGet(node, "strokeMiterLimit");
     data.strokeStyleId = safeGet(node, "strokeStyleId");
+    data.strokeTopWeight = safeGet(node, "strokeTopWeight");
+    data.strokeRightWeight = safeGet(node, "strokeRightWeight");
+    data.strokeBottomWeight = safeGet(node, "strokeBottomWeight");
+    data.strokeLeftWeight = safeGet(node, "strokeLeftWeight");
   }
 
   // 5. Geometry: Corners
@@ -182,6 +189,8 @@ const captureNode = async (
       textCase: safeGet(node, "textCase"),
       textDecoration: safeGet(node, "textDecoration"),
       fills: safeGet(node, "fills"), // Base fills
+      paragraphSpacing: safeGet(node, "paragraphSpacing"),
+      paragraphIndent: safeGet(node, "paragraphIndent"),
     };
 
     // Capture Segments for mixed styling

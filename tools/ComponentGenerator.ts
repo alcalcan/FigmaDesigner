@@ -316,6 +316,8 @@ export class ${this.componentName} extends BaseComponent {
                     if (data.layout.padding.bottom !== undefined) code += `    ${varName}.paddingBottom = ${data.layout.padding.bottom};\n`;
                     if (data.layout.padding.left !== undefined) code += `    ${varName}.paddingLeft = ${data.layout.padding.left};\n`;
                 }
+                if (data.layout.itemReverseZIndex !== undefined) code += `    ${varName}.itemReverseZIndex = ${data.layout.itemReverseZIndex};\n`;
+                if (data.layout.strokesIncludedInLayout !== undefined) code += `    ${varName}.strokesIncludedInLayout = ${data.layout.strokesIncludedInLayout};\n`;
             } else {
                 code += `    ${varName}.layoutMode = "NONE";\n`;
             }
@@ -336,7 +338,13 @@ export class ${this.componentName} extends BaseComponent {
         if (data.strokeCap) code += `if ("strokeCap" in ${varName}) ${varName}.strokeCap = "${data.strokeCap}";\n`;
         if (data.strokeJoin) code += `if ("strokeJoin" in ${varName}) ${varName}.strokeJoin = "${data.strokeJoin}";\n`;
         if (data.dashPattern && data.dashPattern.length > 0) code += `if ("dashPattern" in ${varName}) ${varName}.dashPattern = ${JSON.stringify(data.dashPattern)};\n`;
-        if (data.strokeMiterLimit !== undefined) code += `if ("strokeMiterLimit" in ${varName}) ${varName}.strokeMiterLimit = ${data.strokeMiterLimit};\n`;
+        if (data.strokeMiterLimit !== undefined && typeof data.strokeMiterLimit === 'number') code += `if ("strokeMiterLimit" in ${varName}) ${varName}.strokeMiterLimit = ${data.strokeMiterLimit};\n`;
+
+        if (data.strokeTopWeight !== undefined && typeof data.strokeTopWeight === 'number') code += `if ("strokeTopWeight" in ${varName}) ${varName}.strokeTopWeight = ${data.strokeTopWeight};\n`;
+        if (data.strokeRightWeight !== undefined && typeof data.strokeRightWeight === 'number') code += `if ("strokeRightWeight" in ${varName}) ${varName}.strokeRightWeight = ${data.strokeRightWeight};\n`;
+        if (data.strokeBottomWeight !== undefined && typeof data.strokeBottomWeight === 'number') code += `if ("strokeBottomWeight" in ${varName}) ${varName}.strokeBottomWeight = ${data.strokeBottomWeight};\n`;
+        if (data.strokeLeftWeight !== undefined && typeof data.strokeLeftWeight === 'number') code += `if ("strokeLeftWeight" in ${varName}) ${varName}.strokeLeftWeight = ${data.strokeLeftWeight};\n`;
+
         if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
         if (data.cornerRadius !== undefined) {
             if (data.cornerRadius === "mixed") {
@@ -385,6 +393,9 @@ export class ${this.componentName} extends BaseComponent {
 
             if (data.text.textCase) code += `if ("textCase" in ${varName}) ${varName}.textCase = "${data.text.textCase}";\n`;
             if (data.text.textDecoration) code += `if ("textDecoration" in ${varName}) ${varName}.textDecoration = "${data.text.textDecoration}";\n`;
+
+            if (data.text.paragraphSpacing !== undefined && typeof data.text.paragraphSpacing === 'number') code += `${varName}.paragraphSpacing = ${data.text.paragraphSpacing};\n`;
+            if (data.text.paragraphIndent !== undefined && typeof data.text.paragraphIndent === 'number') code += `${varName}.paragraphIndent = ${data.text.paragraphIndent};\n`;
 
             if (data.text.fontName && data.text.fontName !== "mixed") {
                 code += `await this.setFont(${varName}, ${JSON.stringify(data.text.fontName)});\n`;
