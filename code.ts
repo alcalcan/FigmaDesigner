@@ -53,6 +53,7 @@ const captureNode = async (
     blendMode: safeGet(node, "blendMode") ?? "PASS_THROUGH",
     isMask: safeGet(node, "isMask"),
     clipsContent: safeGet(node, "clipsContent"),
+    booleanOperation: safeGet(node, "booleanOperation"),
     effects: safeGet(node, "effects"),
 
     // Geometry
@@ -106,13 +107,14 @@ const captureNode = async (
 
   // 4. Visuals: Strokes
   if ("strokes" in node) {
-    data.strokes = safeGet(node, "strokes");
+    data.strokes = await processFills(node.strokes as Readonly<Paint[]>, assetStore);
     data.strokeWeight = safeGet(node, "strokeWeight");
     data.strokeAlign = safeGet(node, "strokeAlign");
     data.strokeCap = safeGet(node, "strokeCap");
     data.strokeJoin = safeGet(node, "strokeJoin");
     data.dashPattern = safeGet(node, "dashPattern");
     data.strokeMiterLimit = safeGet(node, "strokeMiterLimit");
+    data.strokeStyleId = safeGet(node, "strokeStyleId");
   }
 
   // 5. Geometry: Corners

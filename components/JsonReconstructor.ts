@@ -31,6 +31,10 @@ export interface SerializedNode {
     strokeWeight?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     strokeAlign?: any;
+    strokeCap?: "NONE" | "ROUND" | "SQUARE" | "ARROW_LINES" | "ARROW_EQUILATERAL";
+    strokeJoin?: "MITER" | "BEVEL" | "ROUND";
+    dashPattern?: number[];
+    strokeMiterLimit?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     effects?: any[];
     cornerRadius?: number | "mixed";
@@ -154,13 +158,14 @@ export class JsonReconstructor extends BaseComponent {
 
         try {
             // 1. Create Node based on type
-            if (data.type === "FRAME" || data.type === "INSTANCE" || data.type === "COMPONENT") {
+            const safeType = (data.type || "").trim();
+            if (safeType === "FRAME" || safeType === "INSTANCE" || safeType === "COMPONENT") {
                 node = figma.createFrame();
-            } else if (data.type === "TEXT") {
+            } else if (safeType === "TEXT") {
                 node = figma.createText();
-            } else if (data.type === "RECTANGLE") {
+            } else if (safeType === "RECTANGLE") {
                 node = figma.createRectangle();
-            } else if (data.type === "VECTOR") {
+            } else if (safeType === "VECTOR") {
                 if (data.svgPath && assetSource) {
                     const asset = assetSource.assets[data.svgPath];
                     if (asset) {
@@ -206,11 +211,11 @@ export class JsonReconstructor extends BaseComponent {
                 } else {
                     node = figma.createVector();
                 }
-            } else if (data.type === "ELLIPSE") {
+            } else if (safeType === "ELLIPSE") {
                 node = figma.createEllipse();
-            } else if (data.type === "LINE") {
+            } else if (safeType === "LINE") {
                 node = figma.createLine();
-            } else if (data.type === "GROUP") {
+            } else if (safeType === "GROUP") {
                 if (data.children && data.children.length > 0) {
                     const childrenNodes: SceneNode[] = [];
                     // Create children on current page first to establish relative positions
@@ -232,7 +237,7 @@ export class JsonReconstructor extends BaseComponent {
                     node = figma.createFrame();
                     node.visible = false;
                 }
-            } else if (data.type === "BOOLEAN_OPERATION") {
+            } else if (safeType === "BOOLEAN_OPERATION") {
                 if (data.children && data.children.length > 0) {
                     const childrenNodes: SceneNode[] = [];
                     for (const childData of data.children) {
@@ -379,6 +384,10 @@ export class JsonReconstructor extends BaseComponent {
                     node.strokes = data.strokes;
                     if ("strokeWeight" in node && data.strokeWeight !== undefined) node.strokeWeight = data.strokeWeight;
                     if ("strokeAlign" in node && data.strokeAlign) node.strokeAlign = data.strokeAlign;
+                    if ("strokeCap" in node && data.strokeCap) node.strokeCap = data.strokeCap as StrokeCap;
+                    if ("strokeJoin" in node && data.strokeJoin) node.strokeJoin = data.strokeJoin as StrokeJoin;
+                    if ("dashPattern" in node && data.dashPattern) node.dashPattern = data.dashPattern;
+                    if ("strokeMiterLimit" in node && data.strokeMiterLimit) node.strokeMiterLimit = data.strokeMiterLimit;
                 } else {
                     node.strokes = [];
                 }

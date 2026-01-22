@@ -157,10 +157,11 @@ export class ${this.componentName} extends BaseComponent {
 
     private generateNodeCode(data: SerializedNode, varName: string, parentIsAutoLayout: boolean = false): string {
         const type = data.type;
+        const safeType = (type || '').trim();
         let code = '';
 
         // --- Phase A: Create Node & Set Static Props ---
-        if (type === 'BOOLEAN_OPERATION') {
+        if (safeType === 'BOOLEAN_OPERATION') {
             if (data.children && data.children.length > 0) {
                 const childVars: string[] = [];
                 data.children.forEach((child, index) => {
@@ -176,17 +177,17 @@ export class ${this.componentName} extends BaseComponent {
             } else {
                 code += `const ${varName} = figma.createFrame(); // Empty Boolean Op\n`;
             }
-        } else if (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT') {
+        } else if (safeType === 'FRAME' || safeType === 'INSTANCE' || safeType === 'COMPONENT') {
             code += `const ${varName} = figma.createFrame();\n`;
-        } else if (type === 'TEXT') {
+        } else if (safeType === 'TEXT') {
             code += `const ${varName} = figma.createText();\n`;
-        } else if (type === 'RECTANGLE') {
+        } else if (safeType === 'RECTANGLE') {
             code += `const ${varName} = figma.createRectangle();\n`;
-        } else if (type === 'ELLIPSE') {
+        } else if (safeType === 'ELLIPSE') {
             code += `const ${varName} = figma.createEllipse();\n`;
-        } else if (type === 'LINE') {
+        } else if (safeType === 'LINE') {
             code += `const ${varName} = figma.createLine();\n`;
-        } else if (type === 'VECTOR') {
+        } else if (safeType === 'VECTOR') {
             if (data.svgPath) {
                 const fullSvgPath = path.join(this.sourceDir, data.svgPath);
                 if (fs.existsSync(fullSvgPath)) {
@@ -202,11 +203,11 @@ export class ${this.componentName} extends BaseComponent {
             } else {
                 code += `const ${varName} = figma.createVector();\n`;
             }
-        } else if (type === 'GROUP') {
+        } else if (safeType === 'GROUP') {
             code += `const ${varName} = figma.createFrame(); // Group handled as Frame\n`;
             code += `${varName}.fills = []; // Groups normally have no fills, but Frame defaults to white\n`;
         } else {
-            code += `const ${varName} = figma.createFrame(); // Fallback for ${type}\n`;
+            code += `const ${varName} = figma.createFrame(); // Fallback for ${safeType}\n`;
         }
 
         // Basic Properties
@@ -221,7 +222,7 @@ export class ${this.componentName} extends BaseComponent {
 
         // 1. Container Layout Props (Must be set BEFORE appending children to avoid reflow spikes)
         let isCurrentNodeAutoLayout = false;
-        if (data.layout && (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT' || type === 'GROUP')) {
+        if (data.layout && (safeType === 'FRAME' || safeType === 'INSTANCE' || safeType === 'COMPONENT' || safeType === 'GROUP')) {
             code += `if ("layoutMode" in ${varName}) {\n`;
             if (data.layout.mode && data.layout.mode !== "NONE") {
                 code += `    ${varName}.layoutMode = "${data.layout.mode}";\n`;
@@ -253,7 +254,7 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 2. Visual Properties (Fills, Strokes, Effects) - Safe to apply here
-        if (Array.isArray(data.fills) && (type !== 'VECTOR' || !data.svgPath)) {
+        if (Array.isArray(data.fills) && (safeType !== 'VECTOR' || !data.svgPath)) {
             code += `${varName}.fills = await this.hydratePaints(${this.stringifyPaints(data.fills)});\n`;
         }
         if (data.strokes && Array.isArray(data.strokes)) {
@@ -263,12 +264,16 @@ export class ${this.componentName} extends BaseComponent {
         }
         if (data.strokeWeight !== undefined && typeof data.strokeWeight === 'number') code += `${varName}.strokeWeight = ${data.strokeWeight};\n`;
         if (data.strokeAlign) code += `${varName}.strokeAlign = "${data.strokeAlign}";\n`;
+        if (data.strokeCap) code += `if ("strokeCap" in ${varName}) ${varName}.strokeCap = "${data.strokeCap}";\n`;
+        if (data.strokeJoin) code += `if ("strokeJoin" in ${varName}) ${varName}.strokeJoin = "${data.strokeJoin}";\n`;
+        if (data.dashPattern && data.dashPattern.length > 0) code += `if ("dashPattern" in ${varName}) ${varName}.dashPattern = ${JSON.stringify(data.dashPattern)};\n`;
+        if (data.strokeMiterLimit !== undefined) code += `if ("strokeMiterLimit" in ${varName}) ${varName}.strokeMiterLimit = ${data.strokeMiterLimit};\n`;
         if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
         if (data.cornerRadius !== undefined) code += `if ("cornerRadius" in ${varName}) ${varName}.cornerRadius = ${typeof data.cornerRadius === 'number' ? data.cornerRadius : JSON.stringify(data.cornerRadius)};\n`;
 
 
         // 3. Text Properties
-        if (type === 'TEXT' && data.text) {
+        if (safeType === 'TEXT' && data.text) {
             code += `// Text Properties\n`;
             code += `${varName}.characters = "${(data.text.characters || '').replace(/"/g, '\\"')}";\n`;
             if (typeof data.text.fontSize === 'number') code += `${varName}.fontSize = ${data.text.fontSize};\n`;
@@ -291,12 +296,12 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 4. Vector Paths
-        if (type === 'VECTOR' && data.vectorPaths && !data.svgPath) {
+        if (safeType === 'VECTOR' && data.vectorPaths && !data.svgPath) {
             code += `${varName}.vectorPaths = ${JSON.stringify(data.vectorPaths)};\n`;
         }
 
         // 5. Recursion (Children) using Phase B (Append) logic inside the loop
-        if (type !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
+        if (safeType !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
             data.children.forEach((child, index) => {
                 const childVar = `${varName}_child_${index}`;
                 code += `\n// Start Child: ${child.name}\n`;
