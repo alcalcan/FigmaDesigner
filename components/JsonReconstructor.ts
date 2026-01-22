@@ -4,7 +4,7 @@ import { AssetSource, hydrateFills } from "./PaintHelpers";
 // import frame2609217 from "../tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json";
 
 export interface SerializedNode {
-    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE" | "BOOLEAN_OPERATION" | "GROUP";
+    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE" | "BOOLEAN_OPERATION" | "GROUP" | "LINE";
     name?: string;
     x?: number;
     y?: number;
@@ -208,6 +208,8 @@ export class JsonReconstructor extends BaseComponent {
                 }
             } else if (data.type === "ELLIPSE") {
                 node = figma.createEllipse();
+            } else if (data.type === "LINE") {
+                node = figma.createLine();
             } else if (data.type === "GROUP") {
                 if (data.children && data.children.length > 0) {
                     const childrenNodes: SceneNode[] = [];

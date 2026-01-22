@@ -101,7 +101,7 @@ const server = http.createServer((req, res) => {
                         } else {
                             // Filter logic
                             if (item.endsWith('.ts') &&
-                                /^[A-Z]/.test(item) &&
+                                /^[A-Za-z]/.test(item) &&
                                 !item.includes('BaseComponent') &&
                                 !item.includes('Helpers') &&
                                 !item.includes('JsonReconstructor')) {
@@ -414,7 +414,13 @@ const server = http.createServer((req, res) => {
                 const generator = new ComponentGenerator();
                 const result = generator.generate(fullPath, projectName);
 
-                console.log(`✅ Component Generated: \${result.tsPath}`);
+                console.log(`✅ Component Generated: ${result.tsPath}`);
+
+                // Trigger Rebuild
+                console.log("🔨 Rebuilding Plugin Bundle...");
+                require('child_process').execSync('npm run build', { stdio: 'inherit' });
+                console.log("✅ Build Complete.");
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', ...result }));
 

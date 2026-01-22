@@ -160,7 +160,23 @@ export class ${this.componentName} extends BaseComponent {
         let code = '';
 
         // --- Phase A: Create Node & Set Static Props ---
-        if (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT') {
+        if (type === 'BOOLEAN_OPERATION') {
+            if (data.children && data.children.length > 0) {
+                const childVars: string[] = [];
+                data.children.forEach((child, index) => {
+                    const childVar = `${varName}_child_${index}`;
+                    code += `\n// Boolean Child: ${child.name}\n`;
+                    code += this.generateNodeCode(child, childVar, false);
+                    childVars.push(childVar);
+                });
+
+                const opMap: Record<string, string> = { "UNION": "union", "SUBTRACT": "subtract", "INTERSECT": "intersect", "EXCLUDE": "exclude" };
+                const method = opMap[data.booleanOperation || "UNION"] || "union";
+                code += `const ${varName} = figma.${method}([${childVars.join(', ')}], figma.currentPage);\n`;
+            } else {
+                code += `const ${varName} = figma.createFrame(); // Empty Boolean Op\n`;
+            }
+        } else if (type === 'FRAME' || type === 'INSTANCE' || type === 'COMPONENT') {
             code += `const ${varName} = figma.createFrame();\n`;
         } else if (type === 'TEXT') {
             code += `const ${varName} = figma.createText();\n`;
@@ -168,6 +184,8 @@ export class ${this.componentName} extends BaseComponent {
             code += `const ${varName} = figma.createRectangle();\n`;
         } else if (type === 'ELLIPSE') {
             code += `const ${varName} = figma.createEllipse();\n`;
+        } else if (type === 'LINE') {
+            code += `const ${varName} = figma.createLine();\n`;
         } else if (type === 'VECTOR') {
             if (data.svgPath) {
                 const fullSvgPath = path.join(this.sourceDir, data.svgPath);
@@ -186,6 +204,7 @@ export class ${this.componentName} extends BaseComponent {
             }
         } else if (type === 'GROUP') {
             code += `const ${varName} = figma.createFrame(); // Group handled as Frame\n`;
+            code += `${varName}.fills = []; // Groups normally have no fills, but Frame defaults to white\n`;
         } else {
             code += `const ${varName} = figma.createFrame(); // Fallback for ${type}\n`;
         }
@@ -196,6 +215,9 @@ export class ${this.componentName} extends BaseComponent {
         if (data.opacity !== undefined) code += `${varName}.opacity = ${data.opacity};\n`;
         if (data.locked !== undefined) code += `${varName}.locked = ${data.locked};\n`;
         if (data.blendMode) code += `if ("blendMode" in ${varName}) ${varName}.blendMode = "${data.blendMode}";\n`;
+        if (data.isMask !== undefined) code += `if ("isMask" in ${varName}) ${varName}.isMask = ${data.isMask};\n`;
+        if (data.maskType) code += `if ("maskType" in ${varName}) ${varName}.maskType = "${data.maskType}";\n`;
+        if (data.clipsContent !== undefined) code += `if ("clipsContent" in ${varName}) ${varName}.clipsContent = ${data.clipsContent};\n`;
 
         // 1. Container Layout Props (Must be set BEFORE appending children to avoid reflow spikes)
         let isCurrentNodeAutoLayout = false;
@@ -239,7 +261,7 @@ export class ${this.componentName} extends BaseComponent {
         } else if (data.strokes) {
             // fallback
         }
-        if (data.strokeWeight !== undefined) code += `${varName}.strokeWeight = ${data.strokeWeight};\n`;
+        if (data.strokeWeight !== undefined && typeof data.strokeWeight === 'number') code += `${varName}.strokeWeight = ${data.strokeWeight};\n`;
         if (data.strokeAlign) code += `${varName}.strokeAlign = "${data.strokeAlign}";\n`;
         if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
         if (data.cornerRadius !== undefined) code += `if ("cornerRadius" in ${varName}) ${varName}.cornerRadius = ${typeof data.cornerRadius === 'number' ? data.cornerRadius : JSON.stringify(data.cornerRadius)};\n`;
@@ -274,7 +296,7 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 5. Recursion (Children) using Phase B (Append) logic inside the loop
-        if (data.children && data.children.length > 0) {
+        if (type !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
             data.children.forEach((child, index) => {
                 const childVar = `${varName}_child_${index}`;
                 code += `\n// Start Child: ${child.name}\n`;
