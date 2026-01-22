@@ -82,6 +82,8 @@ export interface SerializedNode {
         fills?: any[] | "mixed";
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         segments?: any[];
+        textCase?: string;
+        textDecoration?: string;
     };
 
     corners?: {

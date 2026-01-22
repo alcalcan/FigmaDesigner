@@ -9,6 +9,7 @@ export abstract class BaseComponent {
   /**
    * Helper to convert portable paints (with handles/assetRefs) to Figma-ready paints
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async hydratePaints(paints: any[]): Promise<any[]> {
     if (!paints || !Array.isArray(paints)) return paints;
 
@@ -80,7 +81,7 @@ export abstract class BaseComponent {
         const fallback = { family: "Inter", style: "Regular" };
         await figma.loadFontAsync(fallback);
         node.setRangeFontName(start, end, fallback);
-      } catch (e2) { }
+      } catch (e2) { /* ignore */ }
     }
   }
 }

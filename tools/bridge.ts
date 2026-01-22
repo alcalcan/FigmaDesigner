@@ -418,6 +418,7 @@ const server = http.createServer((req, res) => {
 
                 // Trigger Rebuild
                 console.log("🔨 Rebuilding Plugin Bundle...");
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 require('child_process').execSync('npm run build', { stdio: 'inherit' });
                 console.log("✅ Build Complete.");
 
@@ -460,7 +461,7 @@ const server = http.createServer((req, res) => {
                 // 1. Remove from registry FIRST to prevent build errors
                 const registryPath = path.join(process.cwd(), 'components', 'index.ts');
                 if (fs.existsSync(registryPath)) {
-                    let content = fs.readFileSync(registryPath, 'utf8');
+                    const content = fs.readFileSync(registryPath, 'utf8');
                     const componentClassName = path.basename(name);
                     const lines = content.split('\n');
                     const filteredLines = lines.filter(line => !line.includes(`{ ${componentClassName} }`));

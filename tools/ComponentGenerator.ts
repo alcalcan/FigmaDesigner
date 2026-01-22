@@ -155,7 +155,7 @@ export class ${this.componentName} extends BaseComponent {
 `;
     }
 
-    private generateNodeCode(data: SerializedNode, varName: string, parentIsAutoLayout: boolean = false): string {
+    private generateNodeCode(data: SerializedNode, varName: string, _parentIsAutoLayout: boolean = false): string {
         const type = data.type;
         const safeType = (type || '').trim();
         let code = '';
@@ -172,8 +172,8 @@ export class ${this.componentName} extends BaseComponent {
                     // Critical: Apply Transform/Size to children BEFORE they are merged into the Boolean Operation
                     // because figma.union/subtract consumes them as-is.
                     const childOpts = {
-                        width: (child.type !== 'VECTOR' || !child.svgPath) ? child.width : undefined,
-                        height: (child.type !== 'VECTOR' || !child.svgPath) ? child.height : undefined,
+                        width: child.width,
+                        height: child.height,
                         relativeTransform: child.relativeTransform,
                         parentIsAutoLayout: false, // Boolean ops are never auto-layout
                         layoutPositioning: child.layoutPositioning
@@ -207,9 +207,23 @@ export class ${this.componentName} extends BaseComponent {
             if (data.svgPath) {
                 const fullSvgPath = path.join(this.sourceDir, data.svgPath);
                 if (fs.existsSync(fullSvgPath)) {
-                    const content = fs.readFileSync(fullSvgPath, 'utf8');
-                    this.svgAssets.set(data.svgPath, content);
-                    const safeRef = data.svgPath.replace(/[^a-z0-9]/gi, '_');
+                    let content = fs.readFileSync(fullSvgPath, 'utf8');
+
+                    // Patch SVG Header to match JSON dimensions (Fix clipping)
+                    if (data.width && data.height) {
+                        const w = data.width;
+                        const h = data.height;
+                        // Replace the opening <svg ...> tag entirely
+                        content = content.replace(/<svg[^>]*>/i,
+                            `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" xmlns="http://www.w3.org/2000/svg">`
+                        );
+                    }
+
+                    // Use unique key for dimensions to avoid conflicts
+                    const distinctKey = `${data.svgPath}_${data.width}x${data.height}`;
+                    this.svgAssets.set(distinctKey, content);
+
+                    const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
                     code += `${varName}_svgContainer.fills = []; // Ensure transparent background\n`;
                     code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
@@ -222,6 +236,9 @@ export class ${this.componentName} extends BaseComponent {
         } else if (safeType === 'GROUP') {
             code += `const ${varName} = figma.createFrame(); // Group handled as Frame\n`;
             code += `${varName}.fills = []; // Groups normally have no fills, but Frame defaults to white\n`;
+            code += `${varName}.clipsContent = false; // Groups never clip content\n`;
+            code += `${varName}.strokes = [];\n`;
+            code += `${varName}.strokeWeight = 0;\n`;
         } else {
             code += `const ${varName} = figma.createFrame(); // Fallback for ${safeType}\n`;
         }
@@ -293,6 +310,30 @@ export class ${this.componentName} extends BaseComponent {
             code += `// Text Properties\n`;
             code += `${varName}.characters = "${(data.text.characters || '').replace(/"/g, '\\"')}";\n`;
             if (typeof data.text.fontSize === 'number') code += `${varName}.fontSize = ${data.text.fontSize};\n`;
+            if (data.text.textAlignHorizontal) code += `${varName}.textAlignHorizontal = "${data.text.textAlignHorizontal}";\n`;
+            if (data.text.textAlignVertical) code += `${varName}.textAlignVertical = "${data.text.textAlignVertical}";\n`;
+            if (data.text.textAutoResize) code += `${varName}.textAutoResize = "${data.text.textAutoResize}";\n`;
+
+            if (data.text.letterSpacing) {
+                const ls = data.text.letterSpacing;
+                if (typeof ls === 'number') {
+                    code += `${varName}.letterSpacing = { value: ${ls}, unit: "PIXELS" };\n`;
+                } else if (ls && typeof ls === 'object') {
+                    code += `${varName}.letterSpacing = ${JSON.stringify(ls)};\n`;
+                }
+            }
+
+            if (data.text.lineHeight) {
+                const lh = data.text.lineHeight;
+                if (typeof lh === 'number') {
+                    code += `${varName}.lineHeight = { value: ${lh}, unit: "PIXELS" };\n`;
+                } else if (lh && typeof lh === 'object') {
+                    code += `${varName}.lineHeight = ${JSON.stringify(lh)};\n`;
+                }
+            }
+
+            if (data.text.textCase) code += `if ("textCase" in ${varName}) ${varName}.textCase = "${data.text.textCase}";\n`;
+            if (data.text.textDecoration) code += `if ("textDecoration" in ${varName}) ${varName}.textDecoration = "${data.text.textDecoration}";\n`;
 
             if (data.text.fontName) {
                 code += `await this.setFont(${varName}, ${JSON.stringify(data.text.fontName)});\n`;
@@ -325,10 +366,7 @@ export class ${this.componentName} extends BaseComponent {
                 // Recursively generate child (Phase A inside child)
                 code += this.generateNodeCode(child, childVar, isCurrentNodeAutoLayout);
 
-                // Phase B: Append
-                code += `${varName}.appendChild(${childVar});\n`;
-
-                // --- Phase C: Child Layout Props (Must happen AFTER append) ---
+                // --- Phase C: Child Layout Props (Apply BEFORE append) ---
                 if (isCurrentNodeAutoLayout) {
                     code += `// Child Layout Props\n`;
                     if (child.layoutPositioning && child.layoutPositioning !== "AUTO") {
@@ -338,10 +376,10 @@ export class ${this.componentName} extends BaseComponent {
                     if (child.layoutGrow !== undefined) code += `${childVar}.layoutGrow = ${child.layoutGrow};\n`;
                 }
 
-                // --- Phase D: Size & Transform (Atomic with context, AFTER append) ---
+                // --- Phase D: Size & Transform (Atomic with context, BEFORE append) ---
                 const childOpts = {
-                    width: (child.type !== 'VECTOR' || !child.svgPath) ? child.width : undefined,
-                    height: (child.type !== 'VECTOR' || !child.svgPath) ? child.height : undefined,
+                    width: child.width,
+                    height: child.height,
                     relativeTransform: child.relativeTransform,
                     parentIsAutoLayout: isCurrentNodeAutoLayout,
                     layoutPositioning: child.layoutPositioning
@@ -353,13 +391,12 @@ export class ${this.componentName} extends BaseComponent {
 
                 // Explicit Position Override (Reliable fallback if relativeTransform specific translation is tricky)
                 if (!isCurrentNodeAutoLayout && child.layoutPositioning !== 'ABSOLUTE') {
-                    // Only apply if not absolute, because absolute position is handled by relativeTransform usually, 
-                    // BUT for safety we can apply x/y to be sure. 
-                    // However, if parent is auto layout, we CANNOT set x/y unless it's absolute.
-                    // If parent is NOT auto layout (like BooleanGroup or Frame), we SHOULD set x/y.
                     if (child.x !== undefined) code += `${childVar}.x = ${child.x};\n`;
                     if (child.y !== undefined) code += `${childVar}.y = ${child.y};\n`;
                 }
+
+                // Phase B: Append (Now happens LAST)
+                code += `${varName}.appendChild(${childVar});\n`;
             });
         }
 
@@ -379,10 +416,12 @@ export class ${this.componentName} extends BaseComponent {
         });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private stringifyPaints(paints: any[]): string {
         // Create a deep copy to avoid mutating the original data
         const processedPaints = JSON.parse(JSON.stringify(paints));
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         processedPaints.forEach((p: any) => {
             // 1. Bake Gradients (Handles -> Transform)
             if (p.type && p.type.startsWith("GRADIENT") && p.gradientHandles) {
@@ -414,6 +453,7 @@ export class ${this.componentName} extends BaseComponent {
                         const optimizedPath = path.join(this.sourceDir, optimizedRelPath);
 
                         try {
+                            // eslint-disable-next-line @typescript-eslint/no-var-requires
                             const { execSync } = require('child_process');
                             // Resample to max 1024px dimension
                             execSync(`sips -Z 1024 "${sourcePath}" --out "${optimizedPath}"`);
