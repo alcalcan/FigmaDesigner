@@ -338,17 +338,32 @@ export class ${this.componentName} extends BaseComponent {
         if (data.dashPattern && data.dashPattern.length > 0) code += `if ("dashPattern" in ${varName}) ${varName}.dashPattern = ${JSON.stringify(data.dashPattern)};\n`;
         if (data.strokeMiterLimit !== undefined) code += `if ("strokeMiterLimit" in ${varName}) ${varName}.strokeMiterLimit = ${data.strokeMiterLimit};\n`;
         if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
-        if (data.cornerRadius !== undefined) code += `if ("cornerRadius" in ${varName}) ${varName}.cornerRadius = ${typeof data.cornerRadius === 'number' ? data.cornerRadius : JSON.stringify(data.cornerRadius)};\n`;
+        if (data.cornerRadius !== undefined) {
+            if (data.cornerRadius === "mixed") {
+                if (data.corners) {
+                    if (data.corners.topLeft) code += `if ("topLeftRadius" in ${varName}) ${varName}.topLeftRadius = ${data.corners.topLeft};\n`;
+                    if (data.corners.topRight) code += `if ("topRightRadius" in ${varName}) ${varName}.topRightRadius = ${data.corners.topRight};\n`;
+                    if (data.corners.bottomRight) code += `if ("bottomRightRadius" in ${varName}) ${varName}.bottomRightRadius = ${data.corners.bottomRight};\n`;
+                    if (data.corners.bottomLeft) code += `if ("bottomLeftRadius" in ${varName}) ${varName}.bottomLeftRadius = ${data.corners.bottomLeft};\n`;
+                }
+            } else {
+                code += `if ("cornerRadius" in ${varName}) ${varName}.cornerRadius = ${typeof data.cornerRadius === 'number' ? data.cornerRadius : JSON.stringify(data.cornerRadius)};\n`;
+            }
+        }
 
 
         // 3. Text Properties
         if (safeType === 'TEXT' && data.text) {
             code += `// Text Properties\n`;
-            code += `${varName}.characters = "${(data.text.characters || '').replace(/"/g, '\\"')}";\n`;
+            code += `${varName}.characters = \`${(data.text.characters || '').replace(/`/g, '\\`').replace(/\${/g, '\\${')}\`;\n`;
             if (typeof data.text.fontSize === 'number') code += `${varName}.fontSize = ${data.text.fontSize};\n`;
             if (data.text.textAlignHorizontal) code += `${varName}.textAlignHorizontal = "${data.text.textAlignHorizontal}";\n`;
             if (data.text.textAlignVertical) code += `${varName}.textAlignVertical = "${data.text.textAlignVertical}";\n`;
-            if (data.text.textAutoResize) code += `${varName}.textAutoResize = "${data.text.textAutoResize}";\n`;
+            if (data.text.textAutoResize === "TRUNCATE") {
+                code += `${varName}.textTruncation = "ENDING";\n`;
+            } else {
+                if (data.text.textAutoResize) code += `${varName}.textAutoResize = "${data.text.textAutoResize}";\n`;
+            }
 
             if (data.text.letterSpacing) {
                 const ls = data.text.letterSpacing;
@@ -371,7 +386,7 @@ export class ${this.componentName} extends BaseComponent {
             if (data.text.textCase) code += `if ("textCase" in ${varName}) ${varName}.textCase = "${data.text.textCase}";\n`;
             if (data.text.textDecoration) code += `if ("textDecoration" in ${varName}) ${varName}.textDecoration = "${data.text.textDecoration}";\n`;
 
-            if (data.text.fontName) {
+            if (data.text.fontName && data.text.fontName !== "mixed") {
                 code += `await this.setFont(${varName}, ${JSON.stringify(data.text.fontName)});\n`;
             }
 

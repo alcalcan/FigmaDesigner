@@ -51,7 +51,7 @@ function applySizeAndTransform(
 }
 
 
-export class Frame_1621 extends BaseComponent {
+export class Info extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         // Load default font
         try {
@@ -61,7 +61,7 @@ export class Frame_1621 extends BaseComponent {
         }
         
         const root = figma.createFrame();
-root.name = "Frame 1621";
+root.name = "Info";
 root.visible = true;
 root.opacity = 1;
 root.locked = false;
@@ -80,14 +80,14 @@ if ("layoutMode" in root) {
     root.paddingBottom = 0;
     root.paddingLeft = 120;
 }
-root.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.907531201839447,"b":0.6541666984558105},"boundVariables":{}}]);
+root.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.7803921699523926,"g":0.9176470637321472,"b":0.9843137264251709},"boundVariables":{}}]);
 root.strokes = await this.hydratePaints([]);
 root.strokeWeight = 1;
 root.strokeAlign = "INSIDE";
 if ("strokeCap" in root) root.strokeCap = "NONE";
 if ("strokeJoin" in root) root.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
-root.effects = [{"type":"DROP_SHADOW","visible":true,"radius":6,"boundVariables":{},"color":{"r":0,"g":0,"b":0,"a":0.11999999731779099},"offset":{"x":0,"y":2},"spread":0,"blendMode":"NORMAL","showShadowBehindNode":true}];
+root.effects = [];
 if ("cornerRadius" in root) root.cornerRadius = 4;
 
 // Start Child: AV / play-circle
@@ -134,9 +134,9 @@ if ("layoutMode" in root_child_1) {
     root_child_1.primaryAxisAlignItems = "MIN";
     root_child_1.counterAxisAlignItems = "MIN";
     root_child_1.itemSpacing = 16;
-    root_child_1.paddingTop = 24;
+    root_child_1.paddingTop = 16;
     root_child_1.paddingRight = 0;
-    root_child_1.paddingBottom = 24;
+    root_child_1.paddingBottom = 16;
     root_child_1.paddingLeft = 0;
 }
 root_child_1.fills = await this.hydratePaints([]);
@@ -233,7 +233,7 @@ root_child_1.appendChild(root_child_1_child_0);
 // Child Layout Props
 root_child_1_child_0.layoutAlign = "INHERIT";
 root_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_0, {"width":24,"height":30,"relativeTransform":[[1,0,0],[0,1,24]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_1_child_0, {"width":24,"height":30,"relativeTransform":[[1,0,0],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Frame 1923
 const root_child_1_child_1 = figma.createFrame();
@@ -466,15 +466,15 @@ root_child_1.appendChild(root_child_1_child_1);
 // Child Layout Props
 root_child_1_child_1.layoutAlign = "INHERIT";
 root_child_1_child_1.layoutGrow = 1;
-applySizeAndTransform(root_child_1_child_1, {"width":1400,"height":58,"relativeTransform":[[1,0,40],[0,1,24]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_1_child_1, {"width":1400,"height":58,"relativeTransform":[[1,0,40],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 root.appendChild(root_child_1);
 // Child Layout Props
 root_child_1.layoutAlign = "STRETCH";
 root_child_1.layoutGrow = 1;
-applySizeAndTransform(root_child_1, {"width":1440,"height":106,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_1, {"width":1440,"height":90,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 
-        applySizeAndTransform(root, {"width":1680,"height":106,"parentIsAutoLayout":false});
+        applySizeAndTransform(root, {"width":1680,"height":90,"parentIsAutoLayout":false});
 
         root.x = props.x;
         root.y = props.y;

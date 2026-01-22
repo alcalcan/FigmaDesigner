@@ -154,6 +154,10 @@ export class JsonReconstructor extends BaseComponent {
     }
 
     async reconstruct(data: SerializedNode, parent?: FrameNode | GroupNode | SectionNode | PageNode, assetSource?: AssetSource): Promise<SceneNode | null> {
+        if (!data || !data.type) {
+            console.warn("Invalid node data passed to reconstruct:", data);
+            return null;
+        }
         console.log(`Reconstructing node: ${data.name} (${data.type})`);
         let node: SceneNode | null = null;
         let isFromSvg = false; // Declare isFromSvg here
@@ -398,7 +402,7 @@ export class JsonReconstructor extends BaseComponent {
                 node.effects = data.effects;
             }
             if ("cornerRadius" in node) {
-                if (data.cornerRadius !== undefined && data.cornerRadius !== "mixed") {
+                if (typeof data.cornerRadius === 'number') {
                     node.cornerRadius = data.cornerRadius;
                 } else if (data.corners) {
                     if ("topLeftRadius" in node) node.topLeftRadius = data.corners.topLeft || 0;
@@ -445,7 +449,11 @@ export class JsonReconstructor extends BaseComponent {
                 }
                 if (data.text.textAlignHorizontal) textNode.textAlignHorizontal = data.text.textAlignHorizontal;
                 if (data.text.textAlignVertical) textNode.textAlignVertical = data.text.textAlignVertical;
-                if (data.text.textAutoResize) textNode.textAutoResize = data.text.textAutoResize;
+                if (data.text.textAutoResize === "TRUNCATE") {
+                    textNode.textTruncation = "ENDING";
+                } else if (data.text.textAutoResize) {
+                    textNode.textAutoResize = data.text.textAutoResize;
+                }
                 if (data.text.letterSpacing && data.text.letterSpacing !== "mixed") {
                     textNode.letterSpacing = typeof data.text.letterSpacing === "number"
                         ? { value: data.text.letterSpacing, unit: "PIXELS" }

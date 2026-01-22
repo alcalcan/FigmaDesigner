@@ -318,6 +318,12 @@
 
             try {
                 const response = await fetch(`http://127.0.0.1:3001/read?path=${encodeURIComponent(selectedFilePath)}`);
+                if (!response.ok) {
+                    showFeedback(generateSelectedBtn, "Generate Selected", "File Not Found!");
+                    console.error(`Failed to read file: ${response.status} ${response.statusText}`);
+                    generateSelectedBtn.disabled = false;
+                    return;
+                }
                 const data = await response.json();
 
                 // 1. Find all asset references
