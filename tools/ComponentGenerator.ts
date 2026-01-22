@@ -176,6 +176,7 @@ export class ${this.componentName} extends BaseComponent {
                     this.svgAssets.set(data.svgPath, content);
                     const safeRef = data.svgPath.replace(/[^a-z0-9]/gi, '_');
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
+                    code += `${varName}_svgContainer.fills = []; // Ensure transparent background\n`;
                     code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
                 } else {
                     code += `const ${varName} = figma.createVector();\n`;
@@ -251,8 +252,7 @@ export class ${this.componentName} extends BaseComponent {
             if (typeof data.text.fontSize === 'number') code += `${varName}.fontSize = ${data.text.fontSize};\n`;
 
             if (data.text.fontName) {
-                code += `await figma.loadFontAsync(${JSON.stringify(data.text.fontName)});\n`;
-                code += `${varName}.fontName = ${JSON.stringify(data.text.fontName)};\n`;
+                code += `await this.setFont(${varName}, ${JSON.stringify(data.text.fontName)});\n`;
             }
 
             if (data.text.segments) {
@@ -261,8 +261,7 @@ export class ${this.componentName} extends BaseComponent {
                     const seg = data.text.segments[i];
                     const start = seg.start || 0;
                     const end = seg.end || 0;
-                    if (seg.fontName) code += `await figma.loadFontAsync(${JSON.stringify(seg.fontName)});\n`;
-                    if (seg.fontName) code += `${varName}.setRangeFontName(${start}, ${end}, ${JSON.stringify(seg.fontName)});\n`;
+                    if (seg.fontName) code += `await this.setRangeFont(${varName}, ${start}, ${end}, ${JSON.stringify(seg.fontName)});\n`;
                     if (seg.fills) code += `${varName}.setRangeFills(${start}, ${end}, ${JSON.stringify(seg.fills)});\n`;
                     if (seg.fontSize) code += `${varName}.setRangeFontSize(${start}, ${end}, ${seg.fontSize});\n`;
                 }

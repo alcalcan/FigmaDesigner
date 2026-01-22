@@ -1,4 +1,3 @@
 export { Button } from "./Newsletter/Button";
 export { TableStat } from "./Newsletter/TableStat";
-export { Frame_1682 } from "./UEFA_Academy_online/Frame_1682/Frame_1682";
-export { DesktopBanner } from "./Competition_newsletters/DesktopBanner/DesktopBanner";
+export { Top_bar } from "./UEFA_Academy_online/Top_bar/Top_bar";

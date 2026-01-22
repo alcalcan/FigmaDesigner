@@ -185,6 +185,7 @@ export class JsonReconstructor extends BaseComponent {
 
                             // figma.createNodeFromSvg returns the root node of the SVG (usually a Frame or Group)
                             const svgContainer = figma.createNodeFromSvg(svgContent);
+                            svgContainer.fills = []; // Ensure transparent background
 
                             // Flatten the container to get a pure VectorNode.
                             // This also normalizes the coordinates relative to the new node's bounds.

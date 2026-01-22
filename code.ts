@@ -52,6 +52,7 @@ const captureNode = async (
     opacity: safeGet(node, "opacity") ?? 1,
     blendMode: safeGet(node, "blendMode") ?? "PASS_THROUGH",
     isMask: safeGet(node, "isMask"),
+    clipsContent: safeGet(node, "clipsContent"),
     effects: safeGet(node, "effects"),
 
     // Geometry

@@ -46,4 +46,41 @@ export abstract class BaseComponent {
     // Filter out nulls (failed/skipped images)
     return hydrated.filter(Boolean);
   }
+
+  /**
+   * Safe setter for fontName. Falls back to Inter Regular if loading fails.
+   */
+  async setFont(node: TextNode, font: FontName): Promise<void> {
+    try {
+      await figma.loadFontAsync(font);
+      node.fontName = font;
+    } catch (e) {
+      console.warn(`Failed to load font ${font.family} ${font.style}, falling back.`);
+      // Attempt to load Inter Regular just in case it wasn't loaded
+      try {
+        const fallback = { family: "Inter", style: "Regular" };
+        await figma.loadFontAsync(fallback);
+        node.fontName = fallback;
+      } catch (e2) {
+        console.warn("Retrying Inter Regular failed", e2);
+      }
+    }
+  }
+
+  /**
+   * Safe setter for setRangeFontName. Falls back to Inter Regular if loading fails.
+   */
+  async setRangeFont(node: TextNode, start: number, end: number, font: FontName): Promise<void> {
+    try {
+      await figma.loadFontAsync(font);
+      node.setRangeFontName(start, end, font);
+    } catch (e) {
+      console.warn(`Failed to load font range ${font.family} ${font.style}, falling back.`);
+      try {
+        const fallback = { family: "Inter", style: "Regular" };
+        await figma.loadFontAsync(fallback);
+        node.setRangeFontName(start, end, fallback);
+      } catch (e2) { }
+    }
+  }
 }
