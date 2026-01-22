@@ -162,6 +162,23 @@
     </div>
 
     <div class="section">
+        <label class="section-label">Screens & Pages (Auto-Scan)</label>
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div
+                style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
+                <span style="font-size: 11px; font-weight: 600; color: #888;">Available Pages</span>
+                <button id="refresh-pages-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+            </div>
+            <div id="page-list" style="max-height: 150px; overflow-y: auto; background: #1e1e1e;">
+                <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
+                    Connect to server to see pages
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
         <label class="section-label">Components (Auto-Scan)</label>
         <div class="card" style="padding: 0; overflow: hidden;">
             <div
@@ -253,6 +270,8 @@
         // Component Elements
         const refreshComponentsBtn = document.getElementById('refresh-components-btn');
         const componentList = document.getElementById('component-list');
+        const refreshPagesBtn = document.getElementById('refresh-pages-btn');
+        const pageList = document.getElementById('page-list');
 
         // File Browser Elements
         const fileList = document.getElementById('file-list');
@@ -307,6 +326,10 @@
         }
 
         refreshComponentsBtn.onclick = () => {
+            loadComponents();
+        }
+
+        refreshPagesBtn.onclick = () => {
             loadComponents();
         }
 
@@ -561,169 +584,155 @@
         async function loadComponents() {
             if (pollInterval === null) {
                 componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see components</div>';
+                pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>';
                 return;
             }
             componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading...</div>';
+            pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading...</div>';
 
             try {
                 const response = await fetch('http://127.0.0.1:3001/list-components');
                 if (!response.ok) throw new Error("Failed");
-                const { components } = await response.json(); // Array of "Folder/Subfolder/Component"
+                const { components, pages } = await response.json();
 
-                if (components.length === 0) {
-                    componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">No components found</div>';
-                    return;
-                }
-
-                // Build Flat Groups
-                const groups = {};
-                const topLevelComponents = [];
-
-                components.forEach(pathStr => {
-                    // Normalize path separators
-                    const normalized = pathStr.replace(/\\/g, '/');
-                    const parts = normalized.split('/');
-                    const componentName = parts[parts.length - 1]; // Last part is the component name
-
-                    if (parts.length > 1) {
-                        const topFolder = parts[0];
-                        if (!groups[topFolder]) {
-                            groups[topFolder] = [];
-                        }
-                        groups[topFolder].push({
-                            name: componentName,
-                            fullPath: normalized
-                        });
-                    } else {
-                        // Root level component
-                        topLevelComponents.push({
-                            name: componentName,
-                            fullPath: normalized
-                        });
-                    }
-                });
-
-                // Clear List
-                componentList.innerHTML = '';
-
-                // Helper to render a component item
-                function createComponentItem(comp, paddingLeft) {
-                    const item = document.createElement('div');
-                    item.style.cssText = `padding: 8px 12px 8px ${paddingLeft}px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;`;
-
-                    // Render Component File
-                    const nameSpan = document.createElement('div');
-                    nameSpan.style.display = 'flex';
-                    nameSpan.style.alignItems = 'center';
-                    nameSpan.style.gap = '6px';
-                    nameSpan.innerHTML = `<span style="opacity:0.6">❖</span> ${comp.name}`; // Component icon hint
-                    nameSpan.title = comp.fullPath; // Tooltip shows full path
-                    item.appendChild(nameSpan);
-
-                    const actions = document.createElement('div');
-                    actions.style.display = 'flex';
-                    actions.style.gap = '4px';
-
-                    const genBtn = document.createElement('span');
-                    genBtn.textContent = 'Insert';
-                    genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
-                    actions.appendChild(genBtn);
-
-                    const delBtn = document.createElement('span');
-                    delBtn.textContent = '×';
-                    delBtn.title = 'Delete component folder and registry';
-                    delBtn.style.cssText = 'font-size: 11px; background: #ff3b3b; color: white; padding: 0 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; cursor: pointer; display: flex; align-items: center;';
-                    actions.appendChild(delBtn);
-
-                    item.appendChild(actions);
-
-                    item.onmouseenter = () => {
-                        item.style.background = '#2a2a2a';
-                        genBtn.style.opacity = '1';
-                        delBtn.style.opacity = '1';
-                    }
-                    item.onmouseleave = () => {
-                        item.style.background = 'transparent';
-                        genBtn.style.opacity = '0';
-                        delBtn.style.opacity = '0';
-                    }
-
-                    genBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        // ComponentRegistry uses the exported class name, which matches comp.name (filename)
-                        // delete-component uses the file path (comp.fullPath)
-                        parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: comp.name } }, '*')
-                        genBtn.textContent = 'Sent!';
-                        genBtn.style.background = '#1ed760';
-                        setTimeout(() => {
-                            genBtn.textContent = 'Insert';
-                            genBtn.style.background = '#0d99ff';
-                        }, 1000);
-                    }
-
-                    delBtn.onclick = async (e) => {
-                        e.stopPropagation();
-                        if (!confirm(`Delete component ${comp.name} folder and remove from registry?`)) return;
-                        try {
-                            const resp = await fetch('http://127.0.0.1:3001/delete-component', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ name: comp.fullPath })
-                            });
-                            if (resp.ok) loadComponents();
-                            else alert("Delete failed");
-                        } catch (err) {
-                            console.error(err);
-                            alert("Network error deleting component");
-                        }
-                    }
-                    return item;
-                }
-
-                // 1. Render Top Level Components
-                topLevelComponents.sort((a, b) => a.name.localeCompare(b.name)).forEach(comp => {
-                    componentList.appendChild(createComponentItem(comp, 12));
-                });
-
-                // 2. Render Groups (Big Folders)
-                const sortedGroups = Object.keys(groups).sort((a, b) => a.localeCompare(b));
-                sortedGroups.forEach(groupName => {
-                    const groupContainer = document.createElement('div');
-
-                    const folderRow = document.createElement('div');
-                    folderRow.style.cssText = `padding: 8px 12px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; background: #222;`;
-                    folderRow.innerHTML = `<span class="arrow" style="font-size: 9px; transition: transform 0.2s;">▶</span> <span>${groupName}</span>`;
-
-                    const childrenContainer = document.createElement('div');
-                    childrenContainer.style.display = 'none'; // Collapsed by default
-
-                    folderRow.onclick = (e) => {
-                        e.stopPropagation();
-                        const arrow = folderRow.querySelector('.arrow');
-                        if (childrenContainer.style.display === 'none') {
-                            childrenContainer.style.display = 'block';
-                            arrow.style.transform = 'rotate(90deg)';
-                        } else {
-                            childrenContainer.style.display = 'none';
-                            arrow.style.transform = 'rotate(0deg)';
-                        }
-                    };
-
-                    groupContainer.appendChild(folderRow);
-                    groupContainer.appendChild(childrenContainer);
-
-                    // Render children inside group (flattened)
-                    groups[groupName].sort((a, b) => a.name.localeCompare(b.name)).forEach(comp => {
-                        childrenContainer.appendChild(createComponentItem(comp, 24));
-                    });
-
-                    componentList.appendChild(groupContainer);
-                });
+                renderGenericList(componentList, components);
+                renderGenericList(pageList, pages || []);
 
             } catch (e) {
                 console.error(e);
                 componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Error loading components</div>';
+                pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Error loading pages</div>';
             }
+        }
+
+        function renderGenericList(container, items) {
+            if (items.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">None found</div>';
+                return;
+            }
+
+            // Build Flat Groups
+            const groups = {};
+            const topLevelItems = [];
+
+            items.forEach(pathStr => {
+                const normalized = pathStr.replace(/\\/g, '/');
+                const parts = normalized.split('/');
+                const itemName = parts[parts.length - 1];
+
+                if (parts.length > 1) {
+                    const topFolder = parts[0];
+                    if (!groups[topFolder]) groups[topFolder] = [];
+                    groups[topFolder].push({ name: itemName, fullPath: normalized });
+                } else {
+                    topLevelItems.push({ name: itemName, fullPath: normalized });
+                }
+            });
+
+            // Clear List
+            container.innerHTML = '';
+
+            // Helper to render an item
+            function createItem(comp, paddingLeft) {
+                const item = document.createElement('div');
+                item.style.cssText = `padding: 8px 12px 8px ${paddingLeft}px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;`;
+
+                const nameSpan = document.createElement('div');
+                nameSpan.style.display = 'flex';
+                nameSpan.style.alignItems = 'center';
+                nameSpan.style.gap = '6px';
+                nameSpan.innerHTML = `<span style="opacity:0.6">❖</span> ${comp.name}`;
+                nameSpan.title = comp.fullPath;
+                item.appendChild(nameSpan);
+
+                const actions = document.createElement('div');
+                actions.style.display = 'flex';
+                actions.style.gap = '4px';
+
+                const genBtn = document.createElement('span');
+                genBtn.textContent = 'Insert';
+                genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
+                actions.appendChild(genBtn);
+
+                const delBtn = document.createElement('span');
+                delBtn.textContent = '×';
+                delBtn.style.cssText = 'font-size: 11px; background: #ff3b3b; color: white; padding: 0 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; cursor: pointer; display: flex; align-items: center;';
+                actions.appendChild(delBtn);
+
+                item.appendChild(actions);
+
+                item.onmouseenter = () => {
+                    item.style.background = '#2a2a2a';
+                    genBtn.style.opacity = '1';
+                    delBtn.style.opacity = '1';
+                }
+                item.onmouseleave = () => {
+                    item.style.background = 'transparent';
+                    genBtn.style.opacity = '0';
+                    delBtn.style.opacity = '0';
+                }
+
+                genBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: comp.name } }, '*')
+                    genBtn.textContent = 'Sent!';
+                    genBtn.style.background = '#1ed760';
+                    setTimeout(() => {
+                        genBtn.textContent = 'Insert';
+                        genBtn.style.background = '#0d99ff';
+                    }, 1000);
+                }
+
+                delBtn.onclick = async (e) => {
+                    e.stopPropagation();
+                    if (!confirm(`Delete ${comp.name}?`)) return;
+                    try {
+                        const resp = await fetch('http://127.0.0.1:3001/delete-component', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: comp.fullPath })
+                        });
+                        if (resp.ok) loadComponents();
+                    } catch (err) { console.error(err); }
+                }
+                return item;
+            }
+
+            // 1. Render Top Level
+            topLevelItems.sort((a, b) => a.name.localeCompare(b.name)).forEach(comp => {
+                container.appendChild(createItem(comp, 12));
+            });
+
+            // 2. Render Groups
+            const sortedGroups = Object.keys(groups).sort((a, b) => a.localeCompare(b));
+            sortedGroups.forEach(groupName => {
+                const groupContainer = document.createElement('div');
+                const folderRow = document.createElement('div');
+                folderRow.style.cssText = `padding: 8px 12px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; background: #222;`;
+                folderRow.innerHTML = `<span class="arrow" style="font-size: 9px; transition: transform 0.2s;">▶</span> <span>${groupName}</span>`;
+
+                const childrenContainer = document.createElement('div');
+                childrenContainer.style.display = 'none';
+
+                folderRow.onclick = (e) => {
+                    e.stopPropagation();
+                    const arrow = folderRow.querySelector('.arrow');
+                    if (childrenContainer.style.display === 'none') {
+                        childrenContainer.style.display = 'block';
+                        arrow.style.transform = 'rotate(90deg)';
+                    } else {
+                        childrenContainer.style.display = 'none';
+                        arrow.style.transform = 'rotate(0deg)';
+                    }
+                };
+
+                groupContainer.appendChild(folderRow);
+                groupContainer.appendChild(childrenContainer);
+                groups[groupName].sort((a, b) => a.name.localeCompare(b.name)).forEach(comp => {
+                    childrenContainer.appendChild(createItem(comp, 24));
+                });
+                container.appendChild(groupContainer);
+            });
         }
 
         function startPolling() {
@@ -758,6 +767,8 @@
                     bridgeActiveTools.style.display = "none";
                     hintText.style.display = "block";
                     fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see files</div>';
+                    componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see components</div>';
+                    pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>';
                     fileActions.style.display = "none";
                 }
             }, 1000);
@@ -772,6 +783,8 @@
             bridgeActiveTools.style.display = "none";
             hintText.style.display = "block";
             fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see files</div>';
+            componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see components</div>';
+            pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>';
             fileActions.style.display = "none";
         }
 

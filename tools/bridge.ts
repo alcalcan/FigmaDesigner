@@ -86,40 +86,37 @@ const server = http.createServer((req, res) => {
     if (req.method === 'GET' && req.url === '/list-components') {
         try {
             const componentsDir = path.join(process.cwd(), 'components');
+            const pagesDir = path.join(process.cwd(), 'pages');
             const components: string[] = [];
+            const pages: string[] = [];
 
-            if (fs.existsSync(componentsDir)) {
-                // Recursive walker
-                const walkComponents = (dir: string, baseDir: string) => {
-                    const items = fs.readdirSync(dir);
-                    items.forEach(item => {
-                        const fullPath = path.join(dir, item);
-                        const stat = fs.statSync(fullPath);
+            const walk = (dir: string, baseDir: string, list: string[]) => {
+                if (!fs.existsSync(dir)) return;
+                const items = fs.readdirSync(dir);
+                items.forEach(item => {
+                    const fullPath = path.join(dir, item);
+                    const stat = fs.statSync(fullPath);
 
-                        if (stat.isDirectory()) {
-                            walkComponents(fullPath, baseDir);
-                        } else {
-                            // Filter logic
-                            if (item.endsWith('.ts') &&
-                                /^[A-Za-z]/.test(item) &&
-                                !item.includes('BaseComponent') &&
-                                !item.includes('Helpers') &&
-                                !item.includes('JsonReconstructor')) {
+                    if (stat.isDirectory()) {
+                        walk(fullPath, baseDir, list);
+                    } else if (item.endsWith('.ts') &&
+                        /^[A-Za-z]/.test(item) &&
+                        !item.includes('BaseComponent') &&
+                        !item.includes('Helpers') &&
+                        !item.includes('JsonReconstructor')) {
 
-                                // Get path relative to componentsDir
-                                const relativePath = path.relative(baseDir, fullPath);
-                                // Strip extension
-                                const name = relativePath.replace(/\.ts$/, '');
-                                components.push(name);
-                            }
-                        }
-                    });
-                };
+                        const relativePath = path.relative(baseDir, fullPath);
+                        const name = relativePath.replace(/\.ts$/, '');
+                        list.push(name);
+                    }
+                });
+            };
 
-                walkComponents(componentsDir, componentsDir);
-            }
+            walk(componentsDir, componentsDir, components);
+            walk(pagesDir, pagesDir, pages);
+
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ components }));
+            res.end(JSON.stringify({ components, pages }));
         } catch (e) {
             console.error("Error in /list-components:", e);
             res.writeHead(500);

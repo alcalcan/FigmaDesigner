@@ -8,3 +8,4 @@ export { chip_dropdown } from "./UEFA_Academy_online/chip_dropdown/chip_dropdown
 export { search_bar } from "./UEFA_Academy_online/search_bar/search_bar";
 export { Page_title } from "./UEFA_Academy_online/Page_title/Page_title";
 export { card } from "./UEFA_Academy_online/card/card";
+export { UEFA_Academy_online_Summary } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Summary";
