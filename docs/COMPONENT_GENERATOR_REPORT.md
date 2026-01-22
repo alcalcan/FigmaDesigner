@@ -101,4 +101,15 @@ if (inAutoLayout && positioning !== "ABSOLUTE") {
 
 ---
 **Author:** Antigravity (Agent)
-**For:** User & External Review
+
+### Fix 3: Group Sizing & Clipping (Vector Placement)
+**Issue:** `GROUP` nodes converted to `FRAME` (necessary for code generation) were clipping content and causing Auto Layout misalignment because the JSON-reported Group size was often smaller than its visual bounds (e.g., ignoring strokes or sub-pixel positioning).
+
+**Resolution:**
+1.  **Disable Clipping:** Explicitly set `clipsContent = false` on generated Frames representing Groups.
+2.  **Reset Strokes:** Explicitly clear strokes on Group frames to prevent unwanted borders.
+3.  **Dynamic Sizing:** Added a pre-calculation phase (`Phase 0`) that iterates through the Group's children in the JSON data.
+    -   Calculates the union bounding box (`maxX`, `maxY`) of all visible children.
+    -   If the calculated bounds are larger than the reported `data.width` or `data.height`, the generator updates the dimensions before writing the code.
+    -   **Result:** The generated Frame is large enough to contain all children at their absolute positions, preventing Auto Layout from "centering" a too-small container and shifting the visual elements.
+

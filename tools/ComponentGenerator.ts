@@ -160,6 +160,42 @@ export class ${this.componentName} extends BaseComponent {
         const safeType = (type || '').trim();
         let code = '';
 
+        // --- Phase 0: Fix Group Sizing (Dynamic Calculation) ---
+        // Groups in Figma have bounds determined by children. JSON sometimes reports stale or mismatching bounds
+        // (e.g. height=16 but child at y=2.5 with height=16 -> real height 18.5).
+        // This causes misalignment when the Group is placed in an AutoLayout frame.
+        // We recalculate the bounds here to ensure the converted Frame is sized correctly.
+        if (safeType === 'GROUP' && data.children && data.children.length > 0) {
+            let maxX = 0;
+            let maxY = 0;
+            let hasValidChildren = false;
+
+            data.children.forEach(child => {
+                if (child.visible !== false) {
+                    hasValidChildren = true;
+                    // Simple bounding box addition (ignoring rotation for now as typical groups are axis-aligned)
+                    const cx = child.x || 0;
+                    const cy = child.y || 0;
+                    const cw = child.width || 0;
+                    const ch = child.height || 0;
+
+                    const right = cx + cw;
+                    const bottom = cy + ch;
+
+                    if (right > maxX) maxX = right;
+                    if (bottom > maxY) maxY = bottom;
+                }
+            });
+
+            if (hasValidChildren) {
+                // If calculated bounds are larger than reported, trust the calculation (content expands group)
+                // We typically don't shrink because there might be invisible spacers or reasons, 
+                // but expanding is necessary to prevent clipping/misalignment.
+                if (maxX > (data.width || 0)) data.width = maxX;
+                if (maxY > (data.height || 0)) data.height = maxY;
+            }
+        }
+
         // --- Phase A: Create Node & Set Static Props ---
         if (safeType === 'BOOLEAN_OPERATION') {
             if (data.children && data.children.length > 0) {
