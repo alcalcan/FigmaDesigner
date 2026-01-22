@@ -76,6 +76,9 @@ root.fills = await this.hydratePaints([]);
 root.strokes = await this.hydratePaints([]);
 root.strokeWeight = 1;
 root.strokeAlign = "INSIDE";
+if ("strokeCap" in root) root.strokeCap = "NONE";
+if ("strokeJoin" in root) root.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
 root.effects = [];
 if ("cornerRadius" in root) root.cornerRadius = 0;
 
@@ -95,6 +98,9 @@ root_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":false,"
 root_child_0.strokes = await this.hydratePaints([]);
 root_child_0.strokeWeight = 1;
 root_child_0.strokeAlign = "INSIDE";
+if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
 root_child_0.effects = [];
 if ("cornerRadius" in root_child_0) root_child_0.cornerRadius = 0;
 
@@ -112,9 +118,15 @@ root_child_0_child_0_child_0.fills = await this.hydratePaints([{"type":"SOLID","
 root_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
 root_child_0_child_0_child_0.strokeWeight = 0;
 root_child_0_child_0_child_0.strokeAlign = "CENTER";
+if ("strokeCap" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.cornerRadius = 0;
 root_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+applySizeAndTransform(root_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_0_child_0_child_0.x = 2.5;
+root_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
 const root_child_0_child_0_child_1 = figma.createVector();
@@ -128,9 +140,15 @@ root_child_0_child_0_child_1.fills = await this.hydratePaints([{"type":"SOLID","
 root_child_0_child_0_child_1.strokes = await this.hydratePaints([]);
 root_child_0_child_0_child_1.strokeWeight = 0;
 root_child_0_child_0_child_1.strokeAlign = "CENTER";
+if ("strokeCap" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.strokeCap = "NONE";
+if ("strokeJoin" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.strokeMiterLimit = 4;
 root_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.cornerRadius = 0;
 root_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
+applySizeAndTransform(root_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_0_child_0_child_1.x = 4.166666626930237;
+root_child_0_child_0_child_1.y = 4.166666626930237;
 const root_child_0_child_0 = figma.exclude([root_child_0_child_0_child_0, root_child_0_child_0_child_1], figma.currentPage);
 root_child_0_child_0.name = "Shape";
 root_child_0_child_0.visible = true;
@@ -142,10 +160,15 @@ root_child_0_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible"
 root_child_0_child_0.strokes = await this.hydratePaints([]);
 root_child_0_child_0.strokeWeight = 0;
 root_child_0_child_0.strokeAlign = "CENTER";
+if ("strokeCap" in root_child_0_child_0) root_child_0_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_0_child_0) root_child_0_child_0.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root_child_0_child_0) root_child_0_child_0.strokeMiterLimit = 4;
 root_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0) root_child_0_child_0.cornerRadius = 0;
 root_child_0.appendChild(root_child_0_child_0);
 applySizeAndTransform(root_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_0_child_0.x = 2.5;
+root_child_0_child_0.y = 2.5;
 root.appendChild(root_child_0);
 // Child Layout Props
 root_child_0.layoutAlign = "INHERIT";
@@ -164,6 +187,9 @@ root_child_1.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"o
 root_child_1.strokes = await this.hydratePaints([]);
 root_child_1.strokeWeight = 1;
 root_child_1.strokeAlign = "OUTSIDE";
+if ("strokeCap" in root_child_1) root_child_1.strokeCap = "NONE";
+if ("strokeJoin" in root_child_1) root_child_1.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root_child_1) root_child_1.strokeMiterLimit = 4;
 root_child_1.effects = [];
 // Text Properties
 root_child_1.characters = "Leadership";

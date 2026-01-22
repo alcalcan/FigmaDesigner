@@ -168,6 +168,22 @@ export class ${this.componentName} extends BaseComponent {
                     const childVar = `${varName}_child_${index}`;
                     code += `\n// Boolean Child: ${child.name}\n`;
                     code += this.generateNodeCode(child, childVar, false);
+
+                    // Critical: Apply Transform/Size to children BEFORE they are merged into the Boolean Operation
+                    // because figma.union/subtract consumes them as-is.
+                    const childOpts = {
+                        width: (child.type !== 'VECTOR' || !child.svgPath) ? child.width : undefined,
+                        height: (child.type !== 'VECTOR' || !child.svgPath) ? child.height : undefined,
+                        relativeTransform: child.relativeTransform,
+                        parentIsAutoLayout: false, // Boolean ops are never auto-layout
+                        layoutPositioning: child.layoutPositioning
+                    };
+                    if (childOpts.width !== undefined || childOpts.relativeTransform) {
+                        code += `applySizeAndTransform(${childVar}, ${JSON.stringify(childOpts)});\n`;
+                    }
+                    if (child.x !== undefined) code += `${childVar}.x = ${child.x};\n`;
+                    if (child.y !== undefined) code += `${childVar}.y = ${child.y};\n`;
+
                     childVars.push(childVar);
                 });
 
@@ -333,6 +349,16 @@ export class ${this.componentName} extends BaseComponent {
 
                 if (childOpts.width !== undefined || childOpts.relativeTransform) {
                     code += `applySizeAndTransform(${childVar}, ${JSON.stringify(childOpts)});\n`;
+                }
+
+                // Explicit Position Override (Reliable fallback if relativeTransform specific translation is tricky)
+                if (!isCurrentNodeAutoLayout && child.layoutPositioning !== 'ABSOLUTE') {
+                    // Only apply if not absolute, because absolute position is handled by relativeTransform usually, 
+                    // BUT for safety we can apply x/y to be sure. 
+                    // However, if parent is auto layout, we CANNOT set x/y unless it's absolute.
+                    // If parent is NOT auto layout (like BooleanGroup or Frame), we SHOULD set x/y.
+                    if (child.x !== undefined) code += `${childVar}.x = ${child.x};\n`;
+                    if (child.y !== undefined) code += `${childVar}.y = ${child.y};\n`;
                 }
             });
         }
