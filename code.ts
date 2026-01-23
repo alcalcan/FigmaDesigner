@@ -4,7 +4,7 @@ import { AssetStore, processFills } from "./components/PaintHelpers";
 import * as ComponentRegistry from "./components/index";
 
 // Show the HTML page in "ui.html".
-figma.showUI(__html__, { width: 300, height: 400 });
+figma.showUI(__html__, { width: 450, height: 800 });
 
 // --- SHARED CAPTURE LOGIC ---
 interface AssetRecord {
