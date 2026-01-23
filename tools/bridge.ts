@@ -1,6 +1,7 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { ComponentGenerator } from './ComponentGenerator';
 import { CleaningService } from './CleaningService';
 
@@ -39,7 +40,6 @@ const server = http.createServer((req, res) => {
                 // Folder name is like ComponentName_YYYY-MM-DD_HH-mm-ss
                 // We check if it starts with componentName
                 if (folder.toLowerCase().startsWith(componentName.toLowerCase())) {
-                    const jsonPath = path.join(projectPath, folder, `${folder.split('_20')[0]}.json`);
                     // Or look for any .json in that folder that matches
                     const folderPath = path.join(projectPath, folder);
                     if (!fs.existsSync(folderPath)) return;
@@ -454,8 +454,7 @@ const server = http.createServer((req, res) => {
 
                 // Trigger Rebuild
                 console.log("🔨 Rebuilding Plugin Bundle...");
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                require('child_process').execSync('npm run build', { stdio: 'inherit' });
+                execSync('npm run build', { stdio: 'inherit' });
                 console.log("✅ Build Complete.");
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -499,7 +498,7 @@ const server = http.createServer((req, res) => {
 
                         // Rebuild plugin
                         console.log("🔨 Rebuilding Plugin Bundle (Post-Regen)...");
-                        require('child_process').execSync('npm run build', { stdio: 'inherit' });
+                        execSync('npm run build', { stdio: 'inherit' });
 
                         res.writeHead(200, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ status: 'regenerated', message: `Component ${componentClassName} was found in extractions and automatically regenerated/fixed.` }));
@@ -543,7 +542,7 @@ const server = http.createServer((req, res) => {
 
                 // Rebuild plugin after deletion/cleanup
                 console.log("🔨 Rebuilding Plugin Bundle (Post-Delete)...");
-                require('child_process').execSync('npm run build', { stdio: 'inherit' });
+                execSync('npm run build', { stdio: 'inherit' });
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', cleanup: updatedFiles.length }));
@@ -551,6 +550,135 @@ const server = http.createServer((req, res) => {
             } catch (e: unknown) {
                 const error = e as Error;
                 console.error("Error deleting/cleaning component:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
+    // MOVE ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/move') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { type, sourcePath, destinationFolder } = JSON.parse(body);
+                if (!type || !sourcePath || !destinationFolder) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing required parameters: type, sourcePath, destinationFolder" }));
+                    return;
+                }
+
+                if (type === 'file') {
+                    // Move extraction
+                    const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+                    const fullSourcePath = path.join(extractionRoot, sourcePath);
+
+                    if (!fs.existsSync(fullSourcePath)) {
+                        res.writeHead(404);
+                        res.end(JSON.stringify({ error: "Source file not found" }));
+                        return;
+                    }
+
+                    // Check if it's in a session folder (Project/SessionFolder/File.json)
+                    const relPath = path.relative(extractionRoot, fullSourcePath);
+                    const parts = relPath.split(path.sep);
+
+                    let sourceToMove: string;
+                    let targetBaseName: string;
+
+                    if (parts.length >= 3) {
+                        // It's in a folder (Project/SessionFolder/File.json) -> move the SessionFolder
+                        // parts: [Project, SessionFolder, File.json]
+                        sourceToMove = path.join(extractionRoot, parts[0], parts[1]);
+                        targetBaseName = parts[1];
+                    } else if (parts.length === 2) {
+                        // It's a loose file in Project/File.json -> move just the file
+                        sourceToMove = fullSourcePath;
+                        targetBaseName = parts[1];
+                    } else {
+                        res.writeHead(400);
+                        res.end(JSON.stringify({ error: "Invalid source path structure" }));
+                        return;
+                    }
+
+                    const destinationRoot = path.join(extractionRoot, destinationFolder);
+                    if (!fs.existsSync(destinationRoot)) {
+                        fs.mkdirSync(destinationRoot, { recursive: true });
+                    }
+
+                    const fullTargetPath = path.join(destinationRoot, targetBaseName);
+
+                    if (fs.existsSync(fullTargetPath)) {
+                        res.writeHead(409);
+                        res.end(JSON.stringify({ error: "Target already exists" }));
+                        return;
+                    }
+
+                    fs.renameSync(sourceToMove, fullTargetPath);
+                    console.log(`✅ Moved extraction: ${sourceToMove} -> ${fullTargetPath}`);
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ status: 'ok', newPath: path.relative(extractionRoot, fullTargetPath) }));
+
+                } else if (type === 'component') {
+                    // Move component
+                    const componentsRoot = path.join(process.cwd(), 'components');
+                    const fullSourceDir = path.join(componentsRoot, sourcePath); // sourcePath is e.g. "Project/Component"
+                    const componentName = path.basename(sourcePath);
+
+                    if (!fs.existsSync(fullSourceDir)) {
+                        res.writeHead(404);
+                        res.end(JSON.stringify({ error: "Source component directory not found" }));
+                        return;
+                    }
+
+                    const targetDir = path.join(componentsRoot, destinationFolder, componentName);
+                    if (!fs.existsSync(path.join(componentsRoot, destinationFolder))) {
+                        fs.mkdirSync(path.join(componentsRoot, destinationFolder), { recursive: true });
+                    }
+
+                    if (fs.existsSync(targetDir)) {
+                        res.writeHead(409);
+                        res.end(JSON.stringify({ error: "Target component directory already exists" }));
+                        return;
+                    }
+
+                    // Perform move
+                    fs.renameSync(fullSourceDir, targetDir);
+
+                    // Update components/index.ts
+                    const registryPath = path.join(componentsRoot, 'index.ts');
+                    if (fs.existsSync(registryPath)) {
+                        let content = fs.readFileSync(registryPath, 'utf8');
+                        const newImportPath = `./${destinationFolder}/${componentName}/${componentName}`;
+
+                        // regex to find: export { ComponentName } from "./OldPath/Component";
+                        // Standard structure is ./Folder/Component/Component
+                        const regex = new RegExp(`export { (\\w+) } from "\\.\\/${sourcePath.replace(/\//g, '\\/')}\\/\\w+";`, 'g');
+                        content = content.replace(regex, `export { $1 } from "${newImportPath}";`);
+
+                        fs.writeFileSync(registryPath, content);
+                        console.log(`✅ Updated registry for ${componentName}`);
+                    }
+
+                    console.log(`✅ Moved component: ${fullSourceDir} -> ${targetDir}`);
+
+                    // Trigger Rebuild
+                    console.log("🔨 Rebuilding Plugin Bundle...");
+                    execSync('npm run build', { stdio: 'inherit' });
+                    console.log("✅ Build Complete.");
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ status: 'ok', newPath: path.join(destinationFolder, componentName) }));
+                } else {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Invalid type: must be 'file' or 'component'" }));
+                }
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error in /move:", error.message);
                 res.writeHead(500);
                 res.end(JSON.stringify({ error: error.message }));
             }

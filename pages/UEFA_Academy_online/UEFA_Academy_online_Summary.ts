@@ -1,6 +1,6 @@
-import { sidebar } from "../../components/UEFA_Academy_online/sidebar/sidebar";
+import { Placeholder } from "../../components/Placeholder";
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
-import { Top_bar } from "../../components/Alex_CookBook/Top_bar/Top_bar";
+import { Top_bar } from "../../components/Competition_newsletters/Top_bar/Top_bar";
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
 import { Page_title } from "../../components/UEFA_Academy_online/Page_title/Page_title";
 import { search_bar } from "../../components/UEFA_Academy_online/search_bar/search_bar";
@@ -29,7 +29,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         const titleComp = new Page_title();
         const searchBarComp = new search_bar();
         const cardComp = new card();
-        const sidebarComp = new sidebar();
+        const sidebarComp = new Placeholder("sidebar");
 
         // 2. Generate Nodes
         const topBarNode = await topBarComp.create({ x: 0, y: 0 });

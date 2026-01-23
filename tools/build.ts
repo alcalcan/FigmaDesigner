@@ -1,7 +1,5 @@
 import * as esbuild from 'esbuild';
 import { checkAndRecover } from './pre-build';
-import * as fs from 'fs';
-import * as path from 'path';
 
 async function startBuild() {
     const isWatch = process.argv.includes('--watch');

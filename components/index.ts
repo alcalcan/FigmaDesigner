@@ -1,6 +1,6 @@
 export { Button } from "./Newsletter/Button";
 export { TableStat } from "./Newsletter/TableStat";
-export { checkbox_element } from "./Alex_CookBook/checkbox_element/checkbox_element";
+export { checkbox_element as CompetitionCheckbox } from "./Competition_newsletters/checkbox_element/checkbox_element";
 export { Info } from "./UEFA_Academy_online/Info/Info";
 export { Header } from "./UEFA_Academy_online/Header/Header";
 export { chip_dropdown } from "./UEFA_Academy_online/chip_dropdown/chip_dropdown";
@@ -9,6 +9,8 @@ export { Page_title } from "./UEFA_Academy_online/Page_title/Page_title";
 export { card } from "./UEFA_Academy_online/card/card";
 export { UEFA_Academy_online_Summary } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Summary";
 export { Top_bar } from "./UEFA_Academy_online/Top_bar/Top_bar";
+export { Top_bar as NewsletterTopBar } from "./Competition_newsletters/Top_bar/Top_bar";
 export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
 export { Placeholder } from "./Placeholder";
+export { checkbox_element } from "./UEFA_Academy_online/checkbox_element/checkbox_element";
 export { sidebar } from "./UEFA_Academy_online/sidebar/sidebar";

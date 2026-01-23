@@ -360,8 +360,6 @@
                 findAssets(data);
 
                 // 2. Fetch assets from bridge
-                // SelectedFilePath looks like "Project/Folder/File.json" or "Project/File.json"
-                // We need to resolve assets relative to this file's folder.
                 const lastSlashIndex = selectedFilePath.lastIndexOf('/');
                 const dirPath = lastSlashIndex !== -1 ? selectedFilePath.substring(0, lastSlashIndex) : "";
 
@@ -370,36 +368,7 @@
                 if (assetPaths.size > 0) {
                     await Promise.all(Array.from(assetPaths).map(async (assetRef) => {
                         try {
-                            // assetRef is like "assets/img.png"
-                            // full relative path = "Project/Folder/assets/img.png"
                             const fullAssetPath = dirPath ? `${dirPath}/${assetRef}` : assetRef;
-
-                            const assetRes = await fetch(`http://127.0.0.1:3001/read?path=${encodeURIComponent(fullAssetPath)}`);
-
-                            // /read returns the raw content string if text, but for binary assets we might need to handle it.
-                            // BRIDGE /read endpoint returns utf8 string. 
-                            // Wait, my /read endpoint does `fs.readFileSync(path, 'utf8')`. This is BAD for images.
-                            // I should verify if /read can handle binary or if I need a better way.
-                            // Actually, I removed /read-asset effectively but /read assumes utf8.
-                            // Let's modify this fetch to assume base64 if it fails? 
-                            // Or better, let's keep /read-asset logic but purely generic?
-                            // No, let's check bridge.ts again. 
-                            // Bridge ts /read: fs.readFileSync(..., 'utf8'). This corrupts images.
-                            // I need to use the specialized asset reading or update /read.
-                            // But since I didn't update /read in bridge.ts to handle binary, I should probably stick to 
-                            // using a modified approach or realize I made a mistake in plan.
-                            //
-                            // Let's rely on /read-asset but pass the full relative path? 
-                            // /read-asset takes project and path.
-                            // sending "Project/Folder" as project and "assets/img.png" as path might work if logic allows.
-                            // Bridge: path.join(..., project, assetPath).
-                            // Yes, that works! fullPath = .../extraction/Project/Folder/assets/img.png
-
-                            // Splitting "Project/Folder" is tricky.
-                            // Let's just pass `project=Project/Folder` and `path=assets/img.png`.
-                            // Or `project=` (empty) and `path=Project/Folder/assets/img.png`?
-                            // Bridge: path.join(root, project, path). If project is empty, it works.
-
                             const listRes = await fetch(`http://127.0.0.1:3001/read-asset?project=&path=${encodeURIComponent(fullAssetPath)}`);
                             const assetData = await listRes.json();
                             if (assetData.content) {
@@ -428,10 +397,6 @@
             convertToCodeBtn.disabled = true;
 
             try {
-                // selectedFilePath is relative to 'tools/extraction'
-                // We need to pass the project name separately if we want to organize it, 
-                // but for now let's extract project from path.
-                // path is usually "ProjectName/FolderName/FileName.json" or "ProjectName/FileName.json"
                 const parts = selectedFilePath.split('/');
                 const projectName = parts[0] || "Default";
 
@@ -445,7 +410,6 @@
                 if (result.status === 'ok') {
                     showFeedback(convertToCodeBtn, "Convert to Code Component", "Success!");
                     console.log("Component generated at:", result.tsPath);
-                    // Refresh component list to show new component
                     loadComponents();
                 } else {
                     alert("Conversion failed: " + result.error);
@@ -485,18 +449,15 @@
                 if (!response.ok) throw new Error("Failed");
                 const { files } = await response.json();
 
-                // Uniqueify by Session Folder: Project/Session/File
                 const sessionMap = new Map();
                 files.forEach(file => {
                     const normalized = file.path.replace(/\\/g, '/');
                     const parts = normalized.split('/');
                     if (parts.length >= 1) {
                         const project = parts[0];
-                        // Session is the folder name if parts.length > 2, otherwise it's just the file name
                         const session = parts.length > 2 ? parts[1] : parts[parts.length - 1].replace(/\.json$/, '');
                         const key = `${project}|${session}`;
 
-                        // We prefer 'data.json' as the representative file if it exists
                         const isDataJson = parts[parts.length - 1] === 'data.json';
                         if (!sessionMap.has(key) || isDataJson) {
                             sessionMap.set(key, {
@@ -509,7 +470,7 @@
                     }
                 });
 
-                renderGroupedList(fileList, Array.from(sessionMap.values()), true); // true for desc sort
+                renderGroupedList(fileList, Array.from(sessionMap.values()), true);
             } catch (e) {
                 console.error(e);
                 fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Error loading files</div>';
@@ -570,7 +531,6 @@
                 return;
             }
 
-            // Group by Project
             const groups = {};
             const topLevel = [];
 
@@ -583,7 +543,6 @@
                 }
             });
 
-            // Helper to create a row
             function createRow(item, paddingLeft) {
                 const row = document.createElement('div');
                 row.className = 'list-item';
@@ -598,7 +557,7 @@
                 row.appendChild(nameSpan);
 
                 const actions = document.createElement('div');
-                actions.style.cssText = 'display: flex; gap: 4px; flex-shrink: 0;';
+                actions.style.cssText = 'display: flex; gap: 4px; flex-shrink: 0; align-items: center;';
 
                 if (item.type === 'component' || item.type === 'page') {
                     const insBtn = document.createElement('span');
@@ -617,6 +576,69 @@
                     actions.appendChild(insBtn);
                 }
 
+                const moveBtn = document.createElement('span');
+                moveBtn.textContent = 'Move';
+                moveBtn.style.cssText = 'font-size: 9px; background: #f5a623; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; white-space: nowrap; cursor: pointer;';
+
+                const showMoveInput = (e) => {
+                    e.stopPropagation();
+                    const originalActions = actions.innerHTML;
+                    actions.innerHTML = '';
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = item.project || "";
+                    input.placeholder = "Folder...";
+                    input.style.cssText = 'font-size: 10px; background: #333; color: white; border: 1px solid #0d99ff; border-radius: 4px; padding: 2px 4px; width: 70px; outline: none; margin-right: 4px;';
+
+                    const finish = () => {
+                        if (item.type === 'file') loadFiles();
+                        else loadComponents();
+                    };
+
+                    const save = async () => {
+                        const dest = input.value.trim();
+                        if (!dest || dest === item.project) { finish(); return; }
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                        try {
+                            const resp = await fetch('http://127.0.0.1:3001/move', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    type: item.type === 'file' ? 'file' : 'component',
+                                    sourcePath: item.fullPath,
+                                    destinationFolder: dest
+                                })
+                            });
+                            if (resp.ok) finish();
+                            else {
+                                const err = await resp.json();
+                                alert("Move failed: " + (err.error || "Unknown error"));
+                                finish();
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            alert("Network error");
+                            finish();
+                        }
+                    };
+
+                    input.onkeydown = (ev) => {
+                        ev.stopPropagation();
+                        if (ev.key === 'Enter') save();
+                        if (ev.key === 'Escape') finish();
+                    };
+                    input.onclick = (ev) => ev.stopPropagation();
+
+                    actions.appendChild(input);
+                    input.focus();
+                    input.select();
+                };
+
+                moveBtn.onclick = showMoveInput;
+                actions.appendChild(moveBtn);
+
                 const delBtn = document.createElement('span');
                 delBtn.textContent = '×';
                 delBtn.style.cssText = 'font-size: 11px; background: #ff3b3b; color: white; padding: 0 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; cursor: pointer; display: flex; align-items: center;';
@@ -633,9 +655,7 @@
                         });
                         if (resp.ok) {
                             const result = await resp.json();
-                            if (result.status === 'regenerated') {
-                                alert(result.message);
-                            }
+                            if (result.status === 'regenerated') alert(result.message);
                             if (item.type === 'file') loadFiles();
                             else loadComponents();
                         }
@@ -709,14 +729,14 @@
                     const response = await fetch('http://127.0.0.1:3001/poll');
                     const json = await response.json();
 
-                    if (statusDot.className !== "dot active") { // Only update if status changed
+                    if (statusDot.className !== "dot active") {
                         statusText.textContent = "Connected & Listening";
                         statusText.style.color = "#1ed760";
                         statusDot.className = "dot active";
                         bridgeActiveTools.style.display = "block";
                         hintText.style.display = "none";
-                        loadFiles(); // Load files when connected
-                        loadComponents(); // Load components when connected
+                        loadFiles();
+                        loadComponents();
                     }
 
                     if (json.command === 'capture') {
@@ -768,9 +788,6 @@
 
             if (msg.type === 'capture-bridge-result-batch') {
                 try {
-                    // msg.packets is an array of { name, data, assets }
-                    // msg.projectName is the root name
-
                     const packets = msg.packets || [];
                     if (packets.length > 0) {
                         await Promise.all(packets.map(packet =>
@@ -788,26 +805,22 @@
                         console.log(`Saved ${packets.length} packets.`);
                         showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured!");
                     }
-
-                    // Refresh file list after a new capture is saved
                     await loadFiles();
-
                 } catch (e) {
                     console.error("Failed to send data to bridge", e);
                     alert("Failed to save to bridge: " + e.message);
-                    syncBtn.textContent = "Capture Sync (to Disk)"; // Reset
+                    syncBtn.textContent = "Capture Sync (to Disk)";
                 }
             }
 
             if (msg.type === 'capture-error') {
                 alert(msg.message);
-                syncBtn.textContent = "Capture Sync (to Disk)"; // Reset
-                syncBtn.style.backgroundColor = ""; // Reset color
+                syncBtn.textContent = "Capture Sync (to Disk)";
+                syncBtn.style.backgroundColor = "";
                 syncBtn.style.boxShadow = "";
             }
         }
 
-        // Auto-connect on load
         setTimeout(() => connectBtn.click(), 500);
     </script>
 </body>

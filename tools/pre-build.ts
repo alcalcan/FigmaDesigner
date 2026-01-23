@@ -166,7 +166,9 @@ function walkFiles(dir: string, callback: (filePath: string) => void) {
             } else if (item.endsWith('.ts')) {
                 callback(fullPath);
             }
-        } catch (e) { }
+        } catch (e) {
+            // Silently fail if file stat fails or other read errors during pre-build
+        }
     });
 }
 

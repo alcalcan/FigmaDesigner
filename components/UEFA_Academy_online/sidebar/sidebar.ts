@@ -2,31 +2,31 @@ import { BaseComponent, ComponentProps } from "../../BaseComponent";
 
 
 // SVG Assets
-const SVG_assets_icon_Vector__Stroke__I3379_17219_3016_7769_svg_22_000059127807617x21_020004272460938 = `<svg width="22.000059127807617" height="21.020004272460938" viewBox="0 0 22.000059127807617 21.020004272460938" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M11 0C11.3806 0 11.7283 0.216072 11.8967 0.557376L14.7543 6.34647L21.1447 7.28051C21.5212 7.33555 21.8339 7.59956 21.9513 7.96157C22.0687 8.32358 21.9704 8.72083 21.6978 8.98636L17.0746 13.4894L18.1656 19.851C18.23 20.2261 18.0757 20.6053 17.7678 20.8291C17.4598 21.0528 17.0515 21.0823 16.7146 20.9051L11 17.8998L5.28548 20.9051C4.94856 21.0823 4.54027 21.0528 4.2323 20.8291C3.92432 20.6053 3.77007 20.2261 3.83442 19.851L4.92551 13.4894L0.302296 8.98636C0.0296782 8.72083 -0.0685946 8.32358 0.0487831 7.96157C0.166161 7.59956 0.478841 7.33555 0.855401 7.28051L7.24577 6.34647L10.1033 0.557376C10.2718 0.216072 10.6194 0 11 0ZM11 3.25925L8.80674 7.70262C8.6612 7.99747 8.38001 8.20193 8.05466 8.24949L3.14844 8.9666L6.69776 12.4236C6.93364 12.6534 7.0413 12.9845 6.98564 13.309L6.14821 18.1917L10.5346 15.8849C10.826 15.7317 11.1741 15.7317 11.4655 15.8849L15.8518 18.1917L15.0144 13.309C14.9588 12.9845 15.0664 12.6534 15.3023 12.4236L18.8516 8.9666L13.9454 8.24949C13.62 8.20193 13.3389 7.99747 13.1933 7.70262L11 3.25925Z" fill="#1A313C"/>
+const SVG_assets_icon_Vector__Stroke__893_10301_svg_22_000059127807617x21_020004272460938 = `<svg width="22.000059127807617" height="21.020004272460938" viewBox="0 0 22.000059127807617 21.020004272460938" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11 0C11.3806 0 11.7283 0.216072 11.8967 0.557375L14.7543 6.34646L21.1447 7.2805C21.5212 7.33554 21.8339 7.59955 21.9513 7.96156C22.0687 8.32357 21.9704 8.72082 21.6978 8.98635L17.0746 13.4894L18.1656 19.851C18.23 20.2261 18.0757 20.6053 17.7678 20.8291C17.4598 21.0528 17.0515 21.0823 16.7146 20.9051L11 17.8998L5.28547 20.9051C4.94855 21.0823 4.54026 21.0528 4.23229 20.8291C3.92431 20.6053 3.77006 20.2261 3.83441 19.851L4.9255 13.4894L0.302296 8.98635C0.0296782 8.72082 -0.0685945 8.32357 0.048783 7.96156C0.166161 7.59955 0.47884 7.33554 0.8554 7.2805L7.24576 6.34646L10.1033 0.557375C10.2718 0.216072 10.6194 0 11 0ZM11 3.25924L8.80673 7.70261C8.66119 7.99746 8.38 8.20192 8.05465 8.24948L3.14844 8.96659L6.69775 12.4236C6.93363 12.6534 7.04129 12.9845 6.98563 13.309L6.1482 18.1917L10.5346 15.8849C10.826 15.7317 11.1741 15.7317 11.4655 15.8849L15.8518 18.1917L15.0144 13.309C14.9588 12.9845 15.0664 12.6534 15.3023 12.4236L18.8516 8.96659L13.9454 8.24948C13.62 8.20192 13.3389 7.99746 13.1933 7.70261L11 3.25924Z" fill="#1A313C"/>
 </svg>
 `;
-const SVG_assets_icon_Rectangle_77_Copy_7_I3379_17221_7466_30959_svg_42x22 = `<svg width="42" height="22" viewBox="0 0 42 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+const SVG_assets_icon_Rectangle_77_Copy_7_893_10307_svg_42x22 = `<svg width="42" height="22" viewBox="0 0 42 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0 11C0 4.92487 4.92487 0 11 0H31C37.0751 0 42 4.92487 42 11C42 17.0751 37.0751 22 31 22H11C4.92487 22 0 17.0751 0 11Z" fill="#9BA8AD"/>
 </svg>
 `;
-const SVG_assets_icon_Oval_1_Copy_13_I3379_17221_7466_30960_svg_18x18 = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+const SVG_assets_icon_Oval_1_Copy_13_893_10311_svg_18x18 = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18Z" fill="white"/>
 </svg>
 `;
-const SVG_assets_icon_Shape_I3379_17221_7466_30966_svg_10x10 = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.86477 5.00039L9.82068 1.04482C10.0598 0.805562 10.0598 0.418706 9.82068 0.180999C9.58159 -0.0582615 9.195 -0.0582615 8.95746 0.180999L5 4.13501L1.04254 0.179445C0.803447 -0.0598151 0.416861 -0.0598151 0.17932 0.179445C-0.0597733 0.418706 -0.0597733 0.805562 0.17932 1.04327L4.13523 4.99884L0.17932 8.95595C-0.0597733 9.19522 -0.0597733 9.58207 0.17932 9.81978C0.298867 9.93941 0.455675 9.99845 0.61093 9.99845C0.767738 9.99845 0.922993 9.93941 1.04254 9.81978L5 5.86421L8.95746 9.82133C9.07701 9.94096 9.23226 10 9.38907 10C9.54588 10 9.70113 9.94096 9.82068 9.82133C10.0598 9.58207 10.0598 9.19522 9.82068 8.95751L5.86477 5.00039Z" fill="white"/>
+const SVG_assets_icon_Shape_893_10315_svg_10x10 = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.86476 5.00039L9.82066 1.04482C10.0598 0.805562 10.0598 0.418706 9.82066 0.180999C9.58157 -0.0582614 9.19498 -0.0582614 8.95744 0.180999L4.99999 4.13501L1.04254 0.179445C0.803445 -0.059815 0.41686 -0.059815 0.17932 0.179445C-0.0597732 0.418706 -0.0597732 0.805562 0.17932 1.04327L4.13522 4.99884L0.17932 8.95595C-0.0597732 9.19522 -0.0597732 9.58207 0.17932 9.81978C0.298866 9.93941 0.455674 9.99845 0.610929 9.99845C0.767736 9.99845 0.922991 9.93941 1.04254 9.81978L4.99999 5.86421L8.95744 9.82133C9.07699 9.94096 9.23224 10 9.38905 10C9.54586 10 9.70111 9.94096 9.82066 9.82133C10.0598 9.58207 10.0598 9.19522 9.82066 8.95751L5.86476 5.00039Z" fill="white"/>
 </svg>
 `;
-const SVG_assets_icon_Union_I3379_17230_5250_18144_svg_8x8 = `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+const SVG_assets_icon_Union_893_10339_svg_8x8 = `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.5 0.5C4.5 0.223858 4.27614 0 4 0C3.72386 0 3.5 0.223858 3.5 0.5V3.5H0.5C0.223858 3.5 0 3.72386 0 4C0 4.27614 0.223858 4.5 0.5 4.5H3.5V7.5C3.5 7.77614 3.72386 8 4 8C4.27614 8 4.5 7.77614 4.5 7.5V4.5H7.5C7.77614 4.5 8 4.27614 8 4C8 3.72386 7.77614 3.5 7.5 3.5H4.5V0.5Z" fill="#1A313C"/>
 </svg>
 `;
-const SVG_assets_icon_Vector_I3379_17234_1914_8670_svg_7x0 = `<svg width="9" height="2" viewBox="0 0 9 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+const SVG_assets_icon_Vector_893_10347_svg_7x1 = `<svg width="7" height="1" viewBox="0 0 7 1" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 1H8" stroke="#00A296" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
-const SVG_assets_icon_Union_I3379_17261_5250_18144_svg_8x8 = `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+const SVG_assets_icon_Union_893_10402_svg_8x8 = `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.5 0.5C4.5 0.223858 4.27614 0 4 0C3.72386 0 3.5 0.223858 3.5 0.5V3.5H0.5C0.223858 3.5 0 3.72386 0 4C0 4.27614 0.223858 4.5 0.5 4.5H3.5V7.5C3.5 7.77614 3.72386 8 4 8C4.27614 8 4.5 7.77614 4.5 7.5V4.5H7.5C7.77614 4.5 8 4.27614 8 4C8 3.72386 7.77614 3.5 7.5 3.5H4.5V0.5Z" fill="#1A313C"/>
 </svg>
 `;
@@ -221,7 +221,7 @@ root_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.cornerRadius = 0;
 
 // Start Child: Vector (Stroke)
-const root_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector__Stroke__I3379_17219_3016_7769_svg_22_000059127807617x21_020004272460938);
+const root_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector__Stroke__893_10301_svg_22_000059127807617x21_020004272460938);
 root_child_0_child_0_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_0_child_0_child_0 = figma.flatten([root_child_0_child_0_child_0_child_0_svgContainer]);
 root_child_0_child_0_child_0_child_0.name = "Vector (Stroke)";
@@ -232,10 +232,10 @@ if ("blendMode" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_ch
 if ("isMask" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.isMask = false;
 if ("maskType" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.maskType = "ALPHA";
 root_child_0_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
-root_child_0_child_0_child_0_child_0.strokeWeight = 2;
-root_child_0_child_0_child_0_child_0.strokeAlign = "CENTER";
-if ("strokeCap" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeCap = "ROUND";
-if ("strokeJoin" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeJoin = "ROUND";
+root_child_0_child_0_child_0_child_0.strokeWeight = 1;
+root_child_0_child_0_child_0_child_0.strokeAlign = "INSIDE";
+if ("strokeCap" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_0_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.cornerRadius = 0;
@@ -322,7 +322,7 @@ root_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_0_child_1) root_child_0_child_1.cornerRadius = 0;
 
 // Start Child: Rectangle 77 Copy 7
-const root_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Rectangle_77_Copy_7_I3379_17221_7466_30959_svg_42x22);
+const root_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Rectangle_77_Copy_7_893_10307_svg_42x22);
 root_child_0_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_1_child_0 = figma.flatten([root_child_0_child_1_child_0_svgContainer]);
 root_child_0_child_1_child_0.name = "Rectangle 77 Copy 7";
@@ -333,19 +333,20 @@ if ("blendMode" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.bl
 if ("isMask" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.isMask = false;
 if ("maskType" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.maskType = "ALPHA";
 root_child_0_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_0_child_1_child_0.strokeWeight = 0;
-root_child_0_child_1_child_0.strokeAlign = "CENTER";
+root_child_0_child_1_child_0.strokeWeight = 1;
+root_child_0_child_1_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.strokeMiterLimit = 4;
 root_child_0_child_1_child_0.effects = [];
+if ("cornerRadius" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.cornerRadius = 0;
 root_child_0_child_1.appendChild(root_child_0_child_1_child_0);
 applySizeAndTransform(root_child_0_child_1_child_0, {"width":42,"height":22,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_0_child_1_child_0.x = 0;
 root_child_0_child_1_child_0.y = 0;
 
 // Start Child: Oval 1 Copy 13
-const root_child_0_child_1_child_1_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Oval_1_Copy_13_I3379_17221_7466_30960_svg_18x18);
+const root_child_0_child_1_child_1_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Oval_1_Copy_13_893_10311_svg_18x18);
 root_child_0_child_1_child_1_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_1_child_1 = figma.flatten([root_child_0_child_1_child_1_svgContainer]);
 root_child_0_child_1_child_1.name = "Oval 1 Copy 13";
@@ -356,8 +357,8 @@ if ("blendMode" in root_child_0_child_1_child_1) root_child_0_child_1_child_1.bl
 if ("isMask" in root_child_0_child_1_child_1) root_child_0_child_1_child_1.isMask = false;
 if ("maskType" in root_child_0_child_1_child_1) root_child_0_child_1_child_1.maskType = "ALPHA";
 root_child_0_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_0_child_1_child_1.strokeWeight = 0;
-root_child_0_child_1_child_1.strokeAlign = "CENTER";
+root_child_0_child_1_child_1.strokeWeight = 1;
+root_child_0_child_1_child_1.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0_child_1_child_1) root_child_0_child_1_child_1.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_1_child_1) root_child_0_child_1_child_1.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_1_child_1) root_child_0_child_1_child_1.strokeMiterLimit = 4;
@@ -369,7 +370,7 @@ root_child_0_child_1_child_1.x = 2;
 root_child_0_child_1_child_1.y = 2;
 
 // Start Child: Shape
-const root_child_0_child_1_child_2_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Shape_I3379_17221_7466_30966_svg_10x10);
+const root_child_0_child_1_child_2_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Shape_893_10315_svg_10x10);
 root_child_0_child_1_child_2_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_1_child_2 = figma.flatten([root_child_0_child_1_child_2_svgContainer]);
 root_child_0_child_1_child_2.name = "Shape";
@@ -380,8 +381,8 @@ if ("blendMode" in root_child_0_child_1_child_2) root_child_0_child_1_child_2.bl
 if ("isMask" in root_child_0_child_1_child_2) root_child_0_child_1_child_2.isMask = false;
 if ("maskType" in root_child_0_child_1_child_2) root_child_0_child_1_child_2.maskType = "ALPHA";
 root_child_0_child_1_child_2.strokes = await this.hydratePaints([]);
-root_child_0_child_1_child_2.strokeWeight = 0;
-root_child_0_child_1_child_2.strokeAlign = "CENTER";
+root_child_0_child_1_child_2.strokeWeight = 1;
+root_child_0_child_1_child_2.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0_child_1_child_2) root_child_0_child_1_child_2.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_1_child_2) root_child_0_child_1_child_2.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_1_child_2) root_child_0_child_1_child_2.strokeMiterLimit = 4;
@@ -423,7 +424,7 @@ root.appendChild(root_child_1);
 // Child Layout Props
 root_child_1.layoutAlign = "STRETCH";
 root_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1, {"width":307,"height":0,"relativeTransform":[[1,0,16],[0,1,41]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_1, {"width":307,"height":1,"relativeTransform":[[1,0,16],[0,1,41]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Frame 1713
 const root_child_2 = figma.createFrame();
@@ -657,7 +658,7 @@ if ("strokeMiterLimit" in root_child_2_child_1_child_0_child_0_child_1) root_chi
 root_child_2_child_1_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_2_child_1_child_0_child_0_child_1) root_child_2_child_1_child_0_child_0_child_1.cornerRadius = 0;
 root_child_2_child_1_child_0_child_0_child_1.vectorPaths = [{"windingRule":"NONZERO","data":"M 6.057106971740723 4.642893314361572 L 1.7071068286895752 0.2928932309150696 C 1.3165825307369232 -0.0976310670375824 0.6834175288677216 -0.0976310670375824 0.2928932309150696 0.2928932309150696 C -0.0976310670375824 0.6834175288677216 -0.0976310670375824 1.3165825307369232 0.2928932309150696 1.7071068286895752 L 4.642893314361572 6.057106971740723 C 5.033417612314224 6.447631269693375 5.666582673788071 6.447631269693375 6.057106971740723 6.057106971740723 C 6.447631269693375 5.666582673788071 6.447631269693375 5.033417612314224 6.057106971740723 4.642893314361572 Z"}];
-applySizeAndTransform(root_child_2_child_1_child_0_child_0_child_1, {"width":6.349999904632568,"height":6.349999904632568,"relativeTransform":[[1,0,15.6484375],[0,1,15.650390625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_2_child_1_child_0_child_0_child_1, {"width":6.350000381469727,"height":6.350000381469727,"relativeTransform":[[1,0,15.6484375],[0,1,15.650390625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_2_child_1_child_0_child_0_child_1.x = 15.6484375;
 root_child_2_child_1_child_0_child_0_child_1.y = 15.650390625;
 const root_child_2_child_1_child_0_child_0 = figma.union([root_child_2_child_1_child_0_child_0_child_0, root_child_2_child_1_child_0_child_0_child_1], figma.currentPage);
@@ -678,7 +679,7 @@ if ("strokeMiterLimit" in root_child_2_child_1_child_0_child_0) root_child_2_chi
 root_child_2_child_1_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_2_child_1_child_0_child_0) root_child_2_child_1_child_0_child_0.cornerRadius = 0;
 root_child_2_child_1_child_0.appendChild(root_child_2_child_1_child_0_child_0);
-applySizeAndTransform(root_child_2_child_1_child_0_child_0, {"width":18.998437881469727,"height":19.000391006469727,"relativeTransform":[[1,0,3],[0,1,3]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_2_child_1_child_0_child_0, {"width":18.997970581054688,"height":18.999923706054688,"relativeTransform":[[1,0,3],[0,1,3]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_2_child_1_child_0_child_0.x = 3;
 root_child_2_child_1_child_0_child_0.y = 3;
 root_child_2_child_1.appendChild(root_child_2_child_1_child_0);
@@ -695,7 +696,7 @@ root.appendChild(root_child_2);
 // Child Layout Props
 root_child_2.layoutAlign = "STRETCH";
 root_child_2.layoutGrow = 0;
-applySizeAndTransform(root_child_2, {"width":307,"height":40,"relativeTransform":[[1,0,16],[0,1,57]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_2, {"width":307,"height":40,"relativeTransform":[[1,0,16],[0,1,58]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Text Field
 const root_child_3 = figma.createFrame();
@@ -960,7 +961,7 @@ root.appendChild(root_child_3);
 // Child Layout Props
 root_child_3.layoutAlign = "INHERIT";
 root_child_3.layoutGrow = 0;
-applySizeAndTransform(root_child_3, {"width":296,"height":69,"relativeTransform":[[1,0,16],[0,1,113]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_3, {"width":296,"height":69,"relativeTransform":[[1,0,16],[0,1,114]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Frame 1712
 const root_child_4 = figma.createFrame();
@@ -1067,7 +1068,7 @@ root_child_4_child_1.effects = [];
 if ("cornerRadius" in root_child_4_child_1) root_child_4_child_1.cornerRadius = 0;
 
 // Start Child: Union
-const root_child_4_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Union_I3379_17230_5250_18144_svg_8x8);
+const root_child_4_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Union_893_10339_svg_8x8);
 root_child_4_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_4_child_1_child_0 = figma.flatten([root_child_4_child_1_child_0_svgContainer]);
 root_child_4_child_1_child_0.name = "Union";
@@ -1078,10 +1079,10 @@ if ("blendMode" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.bl
 if ("isMask" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.isMask = false;
 if ("maskType" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.maskType = "ALPHA";
 root_child_4_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_4_child_1_child_0.strokeWeight = 0;
-root_child_4_child_1_child_0.strokeAlign = "CENTER";
-if ("strokeCap" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.strokeCap = "ROUND";
-if ("strokeJoin" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.strokeJoin = "ROUND";
+root_child_4_child_1_child_0.strokeWeight = 1;
+root_child_4_child_1_child_0.strokeAlign = "INSIDE";
+if ("strokeCap" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.strokeMiterLimit = 4;
 root_child_4_child_1_child_0.effects = [];
 if ("cornerRadius" in root_child_4_child_1_child_0) root_child_4_child_1_child_0.cornerRadius = 0;
@@ -1098,7 +1099,7 @@ root.appendChild(root_child_4);
 // Child Layout Props
 root_child_4.layoutAlign = "STRETCH";
 root_child_4.layoutGrow = 0;
-applySizeAndTransform(root_child_4, {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,198]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_4, {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,199]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Frame 1711
 const root_child_5 = figma.createFrame();
@@ -1243,7 +1244,7 @@ root_child_5_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_0_child_1) root_child_5_child_0_child_1.cornerRadius = 0;
 
 // Start Child: Vector
-const root_child_5_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_I3379_17234_1914_8670_svg_7x0);
+const root_child_5_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_893_10347_svg_7x1);
 root_child_5_child_0_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_5_child_0_child_1_child_0 = figma.flatten([root_child_5_child_0_child_1_child_0_svgContainer]);
 root_child_5_child_0_child_1_child_0.name = "Vector";
@@ -1262,7 +1263,7 @@ if ("strokeMiterLimit" in root_child_5_child_0_child_1_child_0) root_child_5_chi
 root_child_5_child_0_child_1_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_0_child_1_child_0) root_child_5_child_0_child_1_child_0.cornerRadius = 0;
 root_child_5_child_0_child_1.appendChild(root_child_5_child_0_child_1_child_0);
-applySizeAndTransform(root_child_5_child_0_child_1_child_0, {"width":7,"height":0,"relativeTransform":[[1,0,2.5],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_5_child_0_child_1_child_0, {"width":7,"height":1,"relativeTransform":[[1,0,2.5],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_0_child_1_child_0.x = 2.5;
 root_child_5_child_0_child_1_child_0.y = 6;
 root_child_5_child_0.appendChild(root_child_5_child_0_child_1);
@@ -1360,7 +1361,7 @@ if ("strokeJoin" in root_child_5_child_1_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_1_child_0_child_0_child_0) root_child_5_child_1_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_1_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_1_child_0_child_0_child_0) root_child_5_child_1_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_1_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_1_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_1_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_1_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_1_child_0_child_0_child_0.y = 2.5;
@@ -1384,9 +1385,9 @@ if ("strokeMiterLimit" in root_child_5_child_1_child_0_child_0_child_1) root_chi
 root_child_5_child_1_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_1_child_0_child_0_child_1) root_child_5_child_1_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_1_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_1_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_1_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_1_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_1_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_1_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_1_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_1_child_0_child_0 = figma.exclude([root_child_5_child_1_child_0_child_0_child_0, root_child_5_child_1_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_1_child_0_child_0.name = "Shape";
 root_child_5_child_1_child_0_child_0.visible = true;
@@ -1543,7 +1544,7 @@ if ("strokeJoin" in root_child_5_child_2_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_2_child_0_child_0_child_0) root_child_5_child_2_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_2_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_2_child_0_child_0_child_0) root_child_5_child_2_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_2_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_2_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_2_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_2_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_2_child_0_child_0_child_0.y = 2.5;
@@ -1567,9 +1568,9 @@ if ("strokeMiterLimit" in root_child_5_child_2_child_0_child_0_child_1) root_chi
 root_child_5_child_2_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_2_child_0_child_0_child_1) root_child_5_child_2_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_2_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_2_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_2_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_2_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_2_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_2_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_2_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_2_child_0_child_0 = figma.exclude([root_child_5_child_2_child_0_child_0_child_0, root_child_5_child_2_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_2_child_0_child_0.name = "Shape";
 root_child_5_child_2_child_0_child_0.visible = true;
@@ -1726,7 +1727,7 @@ if ("strokeJoin" in root_child_5_child_3_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_3_child_0_child_0_child_0) root_child_5_child_3_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_3_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_3_child_0_child_0_child_0) root_child_5_child_3_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_3_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_3_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_3_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_3_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_3_child_0_child_0_child_0.y = 2.5;
@@ -1750,9 +1751,9 @@ if ("strokeMiterLimit" in root_child_5_child_3_child_0_child_0_child_1) root_chi
 root_child_5_child_3_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_3_child_0_child_0_child_1) root_child_5_child_3_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_3_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_3_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_3_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_3_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_3_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_3_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_3_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_3_child_0_child_0 = figma.exclude([root_child_5_child_3_child_0_child_0_child_0, root_child_5_child_3_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_3_child_0_child_0.name = "Shape";
 root_child_5_child_3_child_0_child_0.visible = true;
@@ -1909,7 +1910,7 @@ if ("strokeJoin" in root_child_5_child_4_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_4_child_0_child_0_child_0) root_child_5_child_4_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_4_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_4_child_0_child_0_child_0) root_child_5_child_4_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_4_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_4_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_4_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_4_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_4_child_0_child_0_child_0.y = 2.5;
@@ -1933,9 +1934,9 @@ if ("strokeMiterLimit" in root_child_5_child_4_child_0_child_0_child_1) root_chi
 root_child_5_child_4_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_4_child_0_child_0_child_1) root_child_5_child_4_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_4_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_4_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_4_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_4_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_4_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_4_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_4_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_4_child_0_child_0 = figma.exclude([root_child_5_child_4_child_0_child_0_child_0, root_child_5_child_4_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_4_child_0_child_0.name = "Shape";
 root_child_5_child_4_child_0_child_0.visible = true;
@@ -2092,7 +2093,7 @@ if ("strokeJoin" in root_child_5_child_5_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_5_child_0_child_0_child_0) root_child_5_child_5_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_5_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_5_child_0_child_0_child_0) root_child_5_child_5_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_5_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_5_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_5_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_5_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_5_child_0_child_0_child_0.y = 2.5;
@@ -2116,9 +2117,9 @@ if ("strokeMiterLimit" in root_child_5_child_5_child_0_child_0_child_1) root_chi
 root_child_5_child_5_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_5_child_0_child_0_child_1) root_child_5_child_5_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_5_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_5_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_5_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_5_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_5_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_5_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_5_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_5_child_0_child_0 = figma.exclude([root_child_5_child_5_child_0_child_0_child_0, root_child_5_child_5_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_5_child_0_child_0.name = "Shape";
 root_child_5_child_5_child_0_child_0.visible = true;
@@ -2275,7 +2276,7 @@ if ("strokeJoin" in root_child_5_child_6_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_6_child_0_child_0_child_0) root_child_5_child_6_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_6_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_6_child_0_child_0_child_0) root_child_5_child_6_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_6_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_6_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_6_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_6_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_6_child_0_child_0_child_0.y = 2.5;
@@ -2299,9 +2300,9 @@ if ("strokeMiterLimit" in root_child_5_child_6_child_0_child_0_child_1) root_chi
 root_child_5_child_6_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_6_child_0_child_0_child_1) root_child_5_child_6_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_6_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_6_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_6_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_6_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_6_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_6_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_6_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_6_child_0_child_0 = figma.exclude([root_child_5_child_6_child_0_child_0_child_0, root_child_5_child_6_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_6_child_0_child_0.name = "Shape";
 root_child_5_child_6_child_0_child_0.visible = true;
@@ -2458,7 +2459,7 @@ if ("strokeJoin" in root_child_5_child_7_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_7_child_0_child_0_child_0) root_child_5_child_7_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_7_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_7_child_0_child_0_child_0) root_child_5_child_7_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_7_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_7_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_7_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_7_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_7_child_0_child_0_child_0.y = 2.5;
@@ -2482,9 +2483,9 @@ if ("strokeMiterLimit" in root_child_5_child_7_child_0_child_0_child_1) root_chi
 root_child_5_child_7_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_7_child_0_child_0_child_1) root_child_5_child_7_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_7_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_7_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_7_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_7_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_7_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_7_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_7_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_7_child_0_child_0 = figma.exclude([root_child_5_child_7_child_0_child_0_child_0, root_child_5_child_7_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_7_child_0_child_0.name = "Shape";
 root_child_5_child_7_child_0_child_0.visible = true;
@@ -2641,7 +2642,7 @@ if ("strokeJoin" in root_child_5_child_8_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_8_child_0_child_0_child_0) root_child_5_child_8_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_8_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_8_child_0_child_0_child_0) root_child_5_child_8_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_8_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_8_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_8_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_8_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_8_child_0_child_0_child_0.y = 2.5;
@@ -2665,9 +2666,9 @@ if ("strokeMiterLimit" in root_child_5_child_8_child_0_child_0_child_1) root_chi
 root_child_5_child_8_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_8_child_0_child_0_child_1) root_child_5_child_8_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_8_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_8_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_8_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_8_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_8_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_8_child_0_child_0_child_1.x = 4.166666507720947;
+root_child_5_child_8_child_0_child_0_child_1.y = 4.166666507720947;
 const root_child_5_child_8_child_0_child_0 = figma.exclude([root_child_5_child_8_child_0_child_0_child_0, root_child_5_child_8_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_8_child_0_child_0.name = "Shape";
 root_child_5_child_8_child_0_child_0.visible = true;
@@ -2743,7 +2744,7 @@ root.appendChild(root_child_5);
 // Child Layout Props
 root_child_5.layoutAlign = "STRETCH";
 root_child_5.layoutGrow = 0;
-applySizeAndTransform(root_child_5, {"width":307,"height":384,"relativeTransform":[[1,0,16],[0,1,246]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_5, {"width":307,"height":384,"relativeTransform":[[1,0,16],[0,1,247]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Frame 1649
 const root_child_6 = figma.createFrame();
@@ -2850,7 +2851,7 @@ root_child_6_child_1.effects = [];
 if ("cornerRadius" in root_child_6_child_1) root_child_6_child_1.cornerRadius = 0;
 
 // Start Child: Union
-const root_child_6_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Union_I3379_17261_5250_18144_svg_8x8);
+const root_child_6_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Union_893_10402_svg_8x8);
 root_child_6_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_6_child_1_child_0 = figma.flatten([root_child_6_child_1_child_0_svgContainer]);
 root_child_6_child_1_child_0.name = "Union";
@@ -2861,10 +2862,10 @@ if ("blendMode" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.bl
 if ("isMask" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.isMask = false;
 if ("maskType" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.maskType = "ALPHA";
 root_child_6_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_6_child_1_child_0.strokeWeight = 0;
-root_child_6_child_1_child_0.strokeAlign = "CENTER";
-if ("strokeCap" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.strokeCap = "ROUND";
-if ("strokeJoin" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.strokeJoin = "ROUND";
+root_child_6_child_1_child_0.strokeWeight = 1;
+root_child_6_child_1_child_0.strokeAlign = "INSIDE";
+if ("strokeCap" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.strokeMiterLimit = 4;
 root_child_6_child_1_child_0.effects = [];
 if ("cornerRadius" in root_child_6_child_1_child_0) root_child_6_child_1_child_0.cornerRadius = 0;
@@ -2881,7 +2882,7 @@ root.appendChild(root_child_6);
 // Child Layout Props
 root_child_6.layoutAlign = "STRETCH";
 root_child_6.layoutGrow = 0;
-applySizeAndTransform(root_child_6, {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,646]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_6, {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,647]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 // Start Child: Frame 1656
 const root_child_7 = figma.createFrame();
@@ -2924,10 +2925,10 @@ root.appendChild(root_child_7);
 // Child Layout Props
 root_child_7.layoutAlign = "STRETCH";
 root_child_7.layoutGrow = 0;
-applySizeAndTransform(root_child_7, {"width":307,"height":0,"relativeTransform":[[1,0,16],[0,1,694]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_7, {"width":307,"height":1,"relativeTransform":[[1,0,16],[0,1,695]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
 
-        applySizeAndTransform(root, {"width":339,"height":694,"parentIsAutoLayout":false});
+        applySizeAndTransform(root, {"width":339,"height":696,"parentIsAutoLayout":false});
 
         root.x = props.x;
         root.y = props.y;
