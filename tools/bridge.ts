@@ -2,6 +2,7 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ComponentGenerator } from './ComponentGenerator';
+import { CleaningService } from './CleaningService';
 
 const PORT = 3001;
 let pendingCommand: string | null = null;
@@ -21,6 +22,44 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    function findLatestExtraction(componentName: string): { path: string, mtime: number, project: string } | null {
+        const extractionDir = path.join(process.cwd(), 'tools', 'extraction');
+        if (!fs.existsSync(extractionDir)) return null;
+
+        let bestMatch: { path: string, mtime: number, project: string } | null = null;
+
+        const projects = fs.readdirSync(extractionDir);
+        projects.forEach(project => {
+            const projectPath = path.join(extractionDir, project);
+            if (!fs.statSync(projectPath).isDirectory()) return;
+
+            const folders = fs.readdirSync(projectPath);
+            folders.forEach(folder => {
+                // Folder name is like ComponentName_YYYY-MM-DD_HH-mm-ss
+                // We check if it starts with componentName
+                if (folder.toLowerCase().startsWith(componentName.toLowerCase())) {
+                    const jsonPath = path.join(projectPath, folder, `${folder.split('_20')[0]}.json`);
+                    // Or look for any .json in that folder that matches
+                    const folderPath = path.join(projectPath, folder);
+                    if (!fs.existsSync(folderPath)) return;
+
+                    const files = fs.readdirSync(folderPath);
+                    const jsonFile = files.find(f => f.endsWith('.json') && f.toLowerCase().includes(componentName.toLowerCase()));
+
+                    if (jsonFile) {
+                        const fullJsonPath = path.join(folderPath, jsonFile);
+                        const stats = fs.statSync(fullJsonPath);
+                        if (!bestMatch || stats.mtimeMs > bestMatch.mtime) {
+                            bestMatch = { path: fullJsonPath, mtime: stats.mtimeMs, project };
+                        }
+                    }
+                }
+            });
+        });
+
+        return bestMatch;
+    }
 
     // Total request logger for debugging (ignore poll noise)
     if (req.url !== '/poll') {
@@ -438,16 +477,38 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
             try {
-                const { name } = JSON.parse(body); // e.g. "Competition_newsletters/DesktopBanner/DesktopBanner"
+                const { name } = JSON.parse(body); // e.g. "Project/Folder/Component"
                 if (!name) {
                     res.writeHead(400);
                     res.end(JSON.stringify({ error: "Missing component name" }));
                     return;
                 }
 
-                // name is path relative to 'components/' without extension
+                const componentClassName = path.basename(name);
                 const fullPath = path.join(process.cwd(), 'components', `${name}.ts`);
                 const componentDir = path.dirname(fullPath);
+
+                // --- SMART REGENERATION LOGIC ---
+                // user: "maybe we should look at extraction folder... automatically regenerate"
+                const latestExtraction = findLatestExtraction(componentClassName);
+                if (latestExtraction) {
+                    console.log(`♻️ Found extraction for ${componentClassName}. Automatically regenerating instead of deleting...`);
+                    try {
+                        const generator = new ComponentGenerator();
+                        generator.generate(latestExtraction.path, latestExtraction.project);
+
+                        // Rebuild plugin
+                        console.log("🔨 Rebuilding Plugin Bundle (Post-Regen)...");
+                        require('child_process').execSync('npm run build', { stdio: 'inherit' });
+
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ status: 'regenerated', message: `Component ${componentClassName} was found in extractions and automatically regenerated/fixed.` }));
+                        return;
+                    } catch (regenError) {
+                        console.error(`Failed to automatically regenerate ${componentClassName}:`, regenError);
+                        // Fall through to normal deletion if regeneration fails
+                    }
+                }
 
                 if (!fs.existsSync(componentDir)) {
                     res.writeHead(404);
@@ -455,31 +516,41 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
-                // 1. Remove from registry FIRST to prevent build errors
+                // --- NORMAL DELETION + CLEANUP ---
+
+                // 1. Remove from registry
                 const registryPath = path.join(process.cwd(), 'components', 'index.ts');
                 if (fs.existsSync(registryPath)) {
                     const content = fs.readFileSync(registryPath, 'utf8');
-                    const componentClassName = path.basename(name);
                     const lines = content.split('\n');
                     const filteredLines = lines.filter(line => !line.includes(`{ ${componentClassName} }`));
                     fs.writeFileSync(registryPath, filteredLines.join('\n'));
-                    console.log(`   Removed ${componentClassName} from registry.`);
                 }
 
-                // 2. Delete the directory
-                // Small delay to ensure fs file watchers pick up the index.ts change first might be needed,
-                // but usually synchronous write is enough.
+                // 2. Cleanup Pages using CleaningService
+                console.log(`🧹 Cleaning up pages usage for ${componentClassName}...`);
+                const cleaner = new CleaningService();
+                const { updatedFiles } = cleaner.cleanup(componentClassName, name);
+                if (updatedFiles.length > 0) {
+                    console.log(`   Updated ${updatedFiles.length} pages: ${updatedFiles.join(', ')}`);
+                }
+
+                // 3. Delete the directory
                 if (fs.existsSync(componentDir)) {
                     fs.rmSync(componentDir, { recursive: true, force: true });
                     console.log(`Deleted component: ${name}`);
                 }
 
+                // Rebuild plugin after deletion/cleanup
+                console.log("🔨 Rebuilding Plugin Bundle (Post-Delete)...");
+                require('child_process').execSync('npm run build', { stdio: 'inherit' });
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ status: 'ok' }));
+                res.end(JSON.stringify({ status: 'ok', cleanup: updatedFiles.length }));
 
             } catch (e: unknown) {
                 const error = e as Error;
-                console.error("Error deleting component:", error.message);
+                console.error("Error deleting/cleaning component:", error.message);
                 res.writeHead(500);
                 res.end(JSON.stringify({ error: error.message }));
             }

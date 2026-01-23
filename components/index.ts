@@ -10,3 +10,5 @@ export { card } from "./UEFA_Academy_online/card/card";
 export { UEFA_Academy_online_Summary } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Summary";
 export { Top_bar } from "./UEFA_Academy_online/Top_bar/Top_bar";
 export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
+export { Placeholder } from "./Placeholder";
+export { sidebar } from "./UEFA_Academy_online/sidebar/sidebar";

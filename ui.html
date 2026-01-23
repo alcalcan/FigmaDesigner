@@ -632,6 +632,10 @@
                             body: JSON.stringify(body)
                         });
                         if (resp.ok) {
+                            const result = await resp.json();
+                            if (result.status === 'regenerated') {
+                                alert(result.message);
+                            }
                             if (item.type === 'file') loadFiles();
                             else loadComponents();
                         }

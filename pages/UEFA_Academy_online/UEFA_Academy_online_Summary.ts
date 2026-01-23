@@ -1,9 +1,9 @@
+import { sidebar } from "../../components/UEFA_Academy_online/sidebar/sidebar";
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 import { Top_bar } from "../../components/Alex_CookBook/Top_bar/Top_bar";
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
 import { Page_title } from "../../components/UEFA_Academy_online/Page_title/Page_title";
 import { search_bar } from "../../components/UEFA_Academy_online/search_bar/search_bar";
-import { sidebar } from "../../components/UEFA_Academy_online/sidebar/sidebar";
 import { card } from "../../components/UEFA_Academy_online/card/card";
 import { Content_container } from "../../components/UEFA_Academy_online/Content_container/Content_container";
 
@@ -79,17 +79,42 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         root.appendChild(contentContainerNode);
 
         // 5. Layout Alignment & Constraints
-        [topBarNode, headerNode, contentContainerNode].forEach(node => {
+
+        // Force Content Container to fixed width 1440 (matches root)
+        if ("resize" in contentContainerNode) {
+            (contentContainerNode as FrameNode).resize(1440, contentContainerNode.height);
+        }
+        if ("counterAxisSizingMode" in contentContainerNode) {
+            (contentContainerNode as FrameNode).counterAxisSizingMode = "FIXED";
+        }
+
+        // All children of the vertical root and content container should fill width
+        [topBarNode, headerNode, contentContainerNode, titleNode, mainContentRow].forEach(node => {
             if ("layoutAlign" in node) {
                 (node as LayoutMixin).layoutAlign = "STRETCH";
             }
         });
 
-        // Set constraints for children inside row to handle full width if needed
-        if ("layoutGrow" in leftColumn) (leftColumn as LayoutMixin).layoutGrow = 1;
-        if ("layoutAlign" in searchBarNode) (searchBarNode as LayoutMixin).layoutAlign = "STRETCH";
-        if ("layoutAlign" in cardNode) (cardNode as LayoutMixin).layoutAlign = "STRETCH";
-        if ("layoutAlign" in mainContentRow) (mainContentRow as LayoutMixin).layoutAlign = "STRETCH";
+        // For a horizontal frame (mainContentRow) in a vertical parent (contentContainer)
+        // to stretch width properly, its primaryAxisSizingMode should be FIXED if STRETCH is applied
+        if ("primaryAxisSizingMode" in mainContentRow) {
+            (mainContentRow as FrameNode).primaryAxisSizingMode = "FIXED";
+        }
+
+        // inside Main Content Row (HORIZONTAL):
+        // leftColumn should grow to fill horizontal space, sidebar remains fixed
+        if ("layoutGrow" in leftColumn) {
+            (leftColumn as LayoutMixin).layoutGrow = 1;
+            (leftColumn as FrameNode).primaryAxisSizingMode = "FIXED"; // Fill space
+        }
+
+        // inside Left Column (VERTICAL):
+        // search bar and card should fill vertical column width
+        [searchBarNode, cardNode].forEach(node => {
+            if ("layoutAlign" in node) {
+                (node as LayoutMixin).layoutAlign = "STRETCH";
+            }
+        });
 
         root.x = props.x;
         root.y = props.y;
