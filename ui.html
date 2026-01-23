@@ -478,106 +478,41 @@
 
             fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading files...</div>';
             fileActions.style.display = "none";
-            selectedFilePath = null; // Clear selection when reloading
+            selectedFilePath = null;
 
             try {
                 const response = await fetch('http://127.0.0.1:3001/list');
-                if (!response.ok) throw new Error(`Server returned ${response.status}`);
+                if (!response.ok) throw new Error("Failed");
                 const { files } = await response.json();
 
-                if (files.length === 0) {
-                    fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">No extractions found</div>';
-                    fileActions.style.display = "none";
-                    return;
-                }
+                // Uniqueify by Session Folder: Project/Session/File
+                const sessionMap = new Map();
+                files.forEach(file => {
+                    const normalized = file.path.replace(/\\/g, '/');
+                    const parts = normalized.split('/');
+                    if (parts.length >= 1) {
+                        const project = parts[0];
+                        // Session is the folder name if parts.length > 2, otherwise it's just the file name
+                        const session = parts.length > 2 ? parts[1] : parts[parts.length - 1].replace(/\.json$/, '');
+                        const key = `${project}|${session}`;
 
-                fileList.innerHTML = '';
-                files.reverse().forEach(file => {
-                    const item = document.createElement('div');
-                    item.style.cssText = 'padding: 10px 12px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s;';
-
-                    const name = document.createElement('div');
-                    name.textContent = file.name;
-                    name.style.color = '#eee';
-                    name.style.marginBottom = '2px';
-
-                    const meta = document.createElement('div');
-                    meta.textContent = `${file.project || "Default"}`;
-                    meta.style.fontSize = '9px';
-                    meta.style.color = '#555';
-
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.innerHTML = '&times;';
-                    deleteBtn.title = 'Delete File & Assets';
-                    deleteBtn.style.cssText = 'position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; color: #666; font-size: 18px; padding: 0 6px; border-radius: 4px; width: auto; display: none; border: none; line-height: 1;';
-                    deleteBtn.onmouseover = () => deleteBtn.style.color = '#ff4d4d';
-                    deleteBtn.onmouseout = () => deleteBtn.style.color = '#666';
-
-                    deleteBtn.onclick = async (e) => {
-                        e.stopPropagation();
-                        if (!confirm(`Are you sure you want to delete ${file.name}?\nThis will also delete any unused assets associated with it.`)) return;
-
-                        const originalText = deleteBtn.innerHTML;
-                        deleteBtn.textContent = '...';
-
-                        try {
-                            const res = await fetch('http://127.0.0.1:3001/delete', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ path: file.path })
+                        // We prefer 'data.json' as the representative file if it exists
+                        const isDataJson = parts[parts.length - 1] === 'data.json';
+                        if (!sessionMap.has(key) || isDataJson) {
+                            sessionMap.set(key, {
+                                name: session,
+                                fullPath: normalized,
+                                project: project,
+                                type: 'file'
                             });
-
-                            if (res.ok) {
-                                loadFiles();
-                            } else {
-                                let errorMsg = "Unknown error";
-                                try {
-                                    const err = await res.json();
-                                    errorMsg = err.error || errorMsg;
-                                } catch (parseErr) {
-                                    errorMsg = `Server returned ${res.status} ${res.statusText}. (Did you restart 'npm run bridge'?)`;
-                                }
-                                alert("Failed to delete: " + errorMsg);
-                                deleteBtn.innerHTML = originalText;
-                            }
-                        } catch (err) {
-                            console.error(err);
-                            alert("Error connecting to server. Make sure 'npm run bridge' is running.");
-                            deleteBtn.innerHTML = originalText;
                         }
-                    };
-
-                    item.onmouseenter = () => deleteBtn.style.display = 'block';
-                    item.onmouseleave = () => deleteBtn.style.display = 'none';
-                    item.style.position = 'relative';
-
-                    item.appendChild(name);
-                    item.appendChild(meta);
-                    item.appendChild(deleteBtn);
-
-                    item.onclick = () => {
-                        // Deselect previous
-                        Array.from(fileList.children).forEach(child => {
-                            child.style.background = 'transparent';
-                            child.style.borderLeft = 'none';
-                        });
-
-                        // Select current
-                        item.style.background = '#2a2a2a';
-                        item.style.borderLeft = '3px solid #0d99ff';
-                        selectedFilePath = file.path;
-                        fileActions.style.display = "block";
-                    };
-
-                    fileList.appendChild(item);
+                    }
                 });
+
+                renderGroupedList(fileList, Array.from(sessionMap.values()), true); // true for desc sort
             } catch (e) {
-                console.error("Failed to load files", e);
-                fetch('http://127.0.0.1:3001/log', {
-                    method: 'POST',
-                    body: JSON.stringify({ error: e.message, stack: e.stack })
-                }).catch(() => { });
-                fileList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Failed to load: ${e.message}</div>`;
+                console.error(e);
+                fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #ff4d4d;">Error loading files</div>';
             }
         }
 
@@ -595,8 +530,31 @@
                 if (!response.ok) throw new Error("Failed");
                 const { components, pages } = await response.json();
 
-                renderGenericList(componentList, components);
-                renderGenericList(pageList, pages || []);
+                const seen = new Set();
+                const mapItems = (list, type) => {
+                    const items = [];
+                    list.forEach(pathStr => {
+                        const normalized = pathStr.replace(/\\/g, '/');
+                        const parts = normalized.split('/');
+                        const project = parts.length > 1 ? parts[0] : null;
+                        const name = parts[parts.length - 1].replace(/\.json$/, '');
+                        const key = `${project}|${name}|${type}`;
+
+                        if (!seen.has(key)) {
+                            items.push({
+                                name: name,
+                                fullPath: normalized,
+                                project: project,
+                                type: type
+                            });
+                            seen.add(key);
+                        }
+                    });
+                    return items;
+                };
+
+                renderGroupedList(componentList, mapItems(components || [], 'component'));
+                renderGroupedList(pageList, mapItems(pages || [], 'page'));
 
             } catch (e) {
                 console.error(e);
@@ -605,131 +563,133 @@
             }
         }
 
-        function renderGenericList(container, items) {
+        function renderGroupedList(container, items, sortDesc = false) {
+            container.innerHTML = '';
             if (items.length === 0) {
                 container.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">None found</div>';
                 return;
             }
 
-            // Build Flat Groups
+            // Group by Project
             const groups = {};
-            const topLevelItems = [];
+            const topLevel = [];
 
-            items.forEach(pathStr => {
-                const normalized = pathStr.replace(/\\/g, '/');
-                const parts = normalized.split('/');
-                const itemName = parts[parts.length - 1];
-
-                if (parts.length > 1) {
-                    const topFolder = parts[0];
-                    if (!groups[topFolder]) groups[topFolder] = [];
-                    groups[topFolder].push({ name: itemName, fullPath: normalized });
+            items.forEach(item => {
+                if (item.project) {
+                    if (!groups[item.project]) groups[item.project] = [];
+                    groups[item.project].push(item);
                 } else {
-                    topLevelItems.push({ name: itemName, fullPath: normalized });
+                    topLevel.push(item);
                 }
             });
 
-            // Clear List
-            container.innerHTML = '';
-
-            // Helper to render an item
-            function createItem(comp, paddingLeft) {
-                const item = document.createElement('div');
-                item.style.cssText = `padding: 8px 12px 8px ${paddingLeft}px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;`;
+            // Helper to create a row
+            function createRow(item, paddingLeft) {
+                const row = document.createElement('div');
+                row.className = 'list-item';
+                row.style.cssText = `padding: 8px 12px 8px ${paddingLeft}px; font-size: 11px; color: #eee; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden;`;
 
                 const nameSpan = document.createElement('div');
-                nameSpan.style.display = 'flex';
-                nameSpan.style.alignItems = 'center';
-                nameSpan.style.gap = '6px';
-                nameSpan.innerHTML = `<span style="opacity:0.6">❖</span> ${comp.name}`;
-                nameSpan.title = comp.fullPath;
-                item.appendChild(nameSpan);
+                nameSpan.style.cssText = 'display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;';
+
+                const icon = item.type === 'file' ? '📄' : '❖';
+                nameSpan.innerHTML = `<span style="opacity:0.6; flex-shrink: 0;">${icon}</span> <span style="overflow: hidden; text-overflow: ellipsis;">${item.name}</span>`;
+                nameSpan.title = `${item.project}/${item.name}`;
+                row.appendChild(nameSpan);
 
                 const actions = document.createElement('div');
-                actions.style.display = 'flex';
-                actions.style.gap = '4px';
+                actions.style.cssText = 'display: flex; gap: 4px; flex-shrink: 0;';
 
-                const genBtn = document.createElement('span');
-                genBtn.textContent = 'Insert';
-                genBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s;';
-                actions.appendChild(genBtn);
+                if (item.type === 'component' || item.type === 'page') {
+                    const insBtn = document.createElement('span');
+                    insBtn.textContent = 'Insert';
+                    insBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; white-space: nowrap;';
+                    insBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: item.name } }, '*')
+                        insBtn.textContent = 'Sent!';
+                        insBtn.style.background = '#1ed760';
+                        setTimeout(() => {
+                            insBtn.textContent = 'Insert';
+                            insBtn.style.background = '#0d99ff';
+                        }, 1000);
+                    };
+                    actions.appendChild(insBtn);
+                }
 
                 const delBtn = document.createElement('span');
                 delBtn.textContent = '×';
                 delBtn.style.cssText = 'font-size: 11px; background: #ff3b3b; color: white; padding: 0 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; cursor: pointer; display: flex; align-items: center;';
-                actions.appendChild(delBtn);
-
-                item.appendChild(actions);
-
-                item.onmouseenter = () => {
-                    item.style.background = '#2a2a2a';
-                    genBtn.style.opacity = '1';
-                    delBtn.style.opacity = '1';
-                }
-                item.onmouseleave = () => {
-                    item.style.background = 'transparent';
-                    genBtn.style.opacity = '0';
-                    delBtn.style.opacity = '0';
-                }
-
-                genBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: comp.name } }, '*')
-                    genBtn.textContent = 'Sent!';
-                    genBtn.style.background = '#1ed760';
-                    setTimeout(() => {
-                        genBtn.textContent = 'Insert';
-                        genBtn.style.background = '#0d99ff';
-                    }, 1000);
-                }
-
                 delBtn.onclick = async (e) => {
                     e.stopPropagation();
-                    if (!confirm(`Delete ${comp.name}?`)) return;
+                    if (!confirm(`Delete ${item.name}?`)) return;
                     try {
-                        const resp = await fetch('http://127.0.0.1:3001/delete-component', {
+                        let url = item.type === 'file' ? 'http://127.0.0.1:3001/delete' : 'http://127.0.0.1:3001/delete-component';
+                        let body = item.type === 'file' ? { path: item.fullPath } : { name: item.fullPath };
+                        const resp = await fetch(url, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ name: comp.fullPath })
+                            body: JSON.stringify(body)
                         });
-                        if (resp.ok) loadComponents();
+                        if (resp.ok) {
+                            if (item.type === 'file') loadFiles();
+                            else loadComponents();
+                        }
                     } catch (err) { console.error(err); }
-                }
-                return item;
-            }
+                };
+                actions.appendChild(delBtn);
+                row.appendChild(actions);
 
-            // 1. Render Top Level
-            topLevelItems.sort((a, b) => a.name.localeCompare(b.name)).forEach(comp => {
-                container.appendChild(createItem(comp, 12));
-            });
-
-            // 2. Render Groups
-            const sortedGroups = Object.keys(groups).sort((a, b) => a.localeCompare(b));
-            sortedGroups.forEach(groupName => {
-                const groupContainer = document.createElement('div');
-                const folderRow = document.createElement('div');
-                folderRow.style.cssText = `padding: 8px 12px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; background: #222;`;
-                folderRow.innerHTML = `<span class="arrow" style="font-size: 9px; transition: transform 0.2s;">▶</span> <span>${groupName}</span>`;
-
-                const childrenContainer = document.createElement('div');
-                childrenContainer.style.display = 'none';
-
-                folderRow.onclick = (e) => {
-                    e.stopPropagation();
-                    const arrow = folderRow.querySelector('.arrow');
-                    if (childrenContainer.style.display === 'none') {
-                        childrenContainer.style.display = 'block';
-                        arrow.style.transform = 'rotate(90deg)';
-                    } else {
-                        childrenContainer.style.display = 'none';
-                        arrow.style.transform = 'rotate(0deg)';
-                    }
+                row.onmouseenter = () => {
+                    if (row.style.background !== '#3a3a3a') row.style.background = '#2a2a2a';
+                    actions.querySelectorAll('span').forEach(s => s.style.opacity = '1');
+                };
+                row.onmouseleave = () => {
+                    if (row.style.background !== '#3a3a3a') row.style.background = 'transparent';
+                    actions.querySelectorAll('span').forEach(s => s.style.opacity = '0');
                 };
 
-                groupContainer.appendChild(folderRow);
-                groupContainer.appendChild(childrenContainer);
-                groups[groupName].sort((a, b) => a.name.localeCompare(b.name)).forEach(comp => {
-                    childrenContainer.appendChild(createItem(comp, 24));
+                row.onclick = () => {
+                    if (item.type === 'file') {
+                        container.querySelectorAll('.list-item').forEach(el => {
+                            el.style.background = 'transparent';
+                            el.style.borderLeft = 'none';
+                        });
+                        row.style.background = '#3a3a3a';
+                        row.style.borderLeft = '2px solid #0d99ff';
+                        selectedFilePath = item.fullPath;
+                        fileActions.style.display = "block";
+                    }
+                };
+                return row;
+            }
+
+            const sortFn = (a, b) => sortDesc ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name);
+
+            topLevel.sort(sortFn).forEach(item => {
+                container.appendChild(createRow(item, 12));
+            });
+
+            Object.keys(groups).sort().forEach(projName => {
+                const groupContainer = document.createElement('div');
+                const header = document.createElement('div');
+                header.style.cssText = `padding: 8px 12px; font-size: 11px; color: #aaa; border-bottom: 1px solid #2a2a2a; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; background: #222;`;
+                header.innerHTML = `<span class="arrow" style="font-size: 9px; transition: transform 0.2s;">▶</span> <span>${projName}</span>`;
+                const children = document.createElement('div');
+                children.style.display = 'none';
+                header.onclick = () => {
+                    const arrow = header.querySelector('.arrow');
+                    if (children.style.display === 'none') {
+                        children.style.display = 'block'; arrow.style.transform = 'rotate(90deg)';
+                    } else {
+                        children.style.display = 'none'; arrow.style.transform = 'rotate(0deg)';
+                    }
+                };
+                groupContainer.appendChild(header);
+                groupContainer.appendChild(children);
+
+                groups[projName].sort(sortFn).forEach(item => {
+                    children.appendChild(createRow(item, 24));
                 });
                 container.appendChild(groupContainer);
             });

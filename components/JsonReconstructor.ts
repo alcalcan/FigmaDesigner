@@ -409,6 +409,8 @@ export class JsonReconstructor extends BaseComponent {
                 } else {
                     node.strokes = [];
                 }
+
+                // Apply individual weights AFTER uniform strokeWeight to override if necessary
                 if ("strokeTopWeight" in node && typeof data.strokeTopWeight === 'number') node.strokeTopWeight = data.strokeTopWeight;
                 if ("strokeRightWeight" in node && typeof data.strokeRightWeight === 'number') node.strokeRightWeight = data.strokeRightWeight;
                 if ("strokeBottomWeight" in node && typeof data.strokeBottomWeight === 'number') node.strokeBottomWeight = data.strokeBottomWeight;

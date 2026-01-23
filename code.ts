@@ -118,10 +118,16 @@ const captureNode = async (
     data.dashPattern = safeGet(node, "dashPattern");
     data.strokeMiterLimit = safeGet(node, "strokeMiterLimit");
     data.strokeStyleId = safeGet(node, "strokeStyleId");
+
+    // Always capture individual weights for frames/rects/etc.
     data.strokeTopWeight = safeGet(node, "strokeTopWeight");
     data.strokeRightWeight = safeGet(node, "strokeRightWeight");
     data.strokeBottomWeight = safeGet(node, "strokeBottomWeight");
     data.strokeLeftWeight = safeGet(node, "strokeLeftWeight");
+
+    if (data.strokeWeight === "mixed") {
+      console.log(`[Capture] Node ${node.name} has mixed strokeWeight. Weights: T:${data.strokeTopWeight} R:${data.strokeRightWeight} B:${data.strokeBottomWeight} L:${data.strokeLeftWeight}`);
+    }
   }
 
   // 5. Geometry: Corners

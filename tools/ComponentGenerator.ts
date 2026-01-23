@@ -340,10 +340,11 @@ export class ${this.componentName} extends BaseComponent {
         if (data.dashPattern && data.dashPattern.length > 0) code += `if ("dashPattern" in ${varName}) ${varName}.dashPattern = ${JSON.stringify(data.dashPattern)};\n`;
         if (data.strokeMiterLimit !== undefined && typeof data.strokeMiterLimit === 'number') code += `if ("strokeMiterLimit" in ${varName}) ${varName}.strokeMiterLimit = ${data.strokeMiterLimit};\n`;
 
-        if (data.strokeTopWeight !== undefined && typeof data.strokeTopWeight === 'number') code += `if ("strokeTopWeight" in ${varName}) ${varName}.strokeTopWeight = ${data.strokeTopWeight};\n`;
-        if (data.strokeRightWeight !== undefined && typeof data.strokeRightWeight === 'number') code += `if ("strokeRightWeight" in ${varName}) ${varName}.strokeRightWeight = ${data.strokeRightWeight};\n`;
-        if (data.strokeBottomWeight !== undefined && typeof data.strokeBottomWeight === 'number') code += `if ("strokeBottomWeight" in ${varName}) ${varName}.strokeBottomWeight = ${data.strokeBottomWeight};\n`;
-        if (data.strokeLeftWeight !== undefined && typeof data.strokeLeftWeight === 'number') code += `if ("strokeLeftWeight" in ${varName}) ${varName}.strokeLeftWeight = ${data.strokeLeftWeight};\n`;
+        // Always generate individual weights if they exist (even if 0) to override uniform strokeWeight
+        if (data.strokeTopWeight !== undefined) code += `if ("strokeTopWeight" in ${varName}) ${varName}.strokeTopWeight = ${data.strokeTopWeight};\n`;
+        if (data.strokeRightWeight !== undefined) code += `if ("strokeRightWeight" in ${varName}) ${varName}.strokeRightWeight = ${data.strokeRightWeight};\n`;
+        if (data.strokeBottomWeight !== undefined) code += `if ("strokeBottomWeight" in ${varName}) ${varName}.strokeBottomWeight = ${data.strokeBottomWeight};\n`;
+        if (data.strokeLeftWeight !== undefined) code += `if ("strokeLeftWeight" in ${varName}) ${varName}.strokeLeftWeight = ${data.strokeLeftWeight};\n`;
 
         if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
         if (data.cornerRadius !== undefined) {
