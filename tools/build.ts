@@ -1,0 +1,76 @@
+import * as esbuild from 'esbuild';
+import { checkAndRecover } from './pre-build';
+import * as fs from 'fs';
+import * as path from 'path';
+
+async function startBuild() {
+    const isWatch = process.argv.includes('--watch');
+    let context: esbuild.BuildContext | null = null;
+
+    const runBuild = async () => {
+        if (context) {
+            await context.dispose();
+        }
+
+        context = await esbuild.context({
+            entryPoints: ['code.ts'],
+            bundle: true,
+            outfile: 'code.js',
+            format: 'iife',
+            target: 'es6',
+            sourcemap: true,
+            loader: {
+                '.png': 'base64',
+                '.jpg': 'base64',
+                '.jpeg': 'base64',
+                '.svg': 'text',
+                '.bin': 'base64'
+            },
+            plugins: [
+                {
+                    name: 'recovery',
+                    setup(build) {
+                        build.onStart(async () => {
+                            const recoveredAny = await checkAndRecover();
+                            if (recoveredAny) {
+                                console.log("🔄 Files recovered. Esbuild will detect changes and rebuild...");
+                                // No manual reboot needed as esbuild context.watch() 
+                                // will see the new files and trigger a NEW build iteration automatically.
+                            }
+                        });
+                        build.onEnd(result => {
+                            if (result.errors.length > 0) {
+                                console.error(`❌ Build failed with ${result.errors.length} errors.`);
+                                // If it failed and code.js exists, it might be old. 
+                                // If it doesn't exist, we definitely have a problem.
+                            } else {
+                                const now = new Date().toLocaleTimeString();
+                                console.log(`✅ Build successful at ${now}`);
+                            }
+                        });
+                    },
+                }
+            ]
+        });
+
+        console.log("🛠️ Initializing build...");
+        if (isWatch) {
+            console.log("👀 Watching for changes...");
+            await context.watch();
+        } else {
+            // For single build, we must actually finish successfully
+            // We might need to run checkAndRecover BEFORE we even create the context for single builds
+            await checkAndRecover();
+            await context.rebuild();
+            console.log("✨ Build complete.");
+            await context.dispose();
+        }
+    };
+
+    await runBuild();
+}
+
+startBuild().catch(err => {
+    console.error("Fatal error in build script:", err);
+    process.exit(1);
+});
