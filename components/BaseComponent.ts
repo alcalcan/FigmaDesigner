@@ -1,6 +1,10 @@
 export interface ComponentProps {
   x: number;
   y: number;
+  text?: string;
+  subtext?: string;
+  hideButtons?: boolean;
+  [key: string]: any;
 }
 
 export abstract class BaseComponent {

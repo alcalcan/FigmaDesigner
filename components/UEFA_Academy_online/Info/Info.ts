@@ -52,429 +52,445 @@ function applySizeAndTransform(
 
 
 export class Info extends BaseComponent {
-    async create(props: ComponentProps): Promise<SceneNode> {
+    async create(props: ComponentProps & { text?: string }): Promise<SceneNode> {
         // Load default font
         try {
             await figma.loadFontAsync({ family: "Inter", style: "Regular" });
         } catch (e) {
             console.warn("Failed to load Inter Regular", e);
         }
-        
+
         const root = figma.createFrame();
-root.name = "Info";
-root.visible = true;
-root.opacity = 1;
-root.locked = false;
-if ("blendMode" in root) root.blendMode = "PASS_THROUGH";
-if ("isMask" in root) root.isMask = false;
-if ("clipsContent" in root) root.clipsContent = false;
-if ("layoutMode" in root) {
-    root.layoutMode = "HORIZONTAL";
-    root.primaryAxisSizingMode = "FIXED";
-    root.counterAxisSizingMode = "AUTO";
-    root.primaryAxisAlignItems = "MIN";
-    root.counterAxisAlignItems = "MIN";
-    root.itemSpacing = 0;
-    root.paddingTop = 0;
-    root.paddingRight = 120;
-    root.paddingBottom = 0;
-    root.paddingLeft = 120;
-}
-root.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.7803921699523926,"g":0.9176470637321472,"b":0.9843137264251709},"boundVariables":{}}]);
-root.strokes = await this.hydratePaints([]);
-root.strokeWeight = 1;
-root.strokeAlign = "INSIDE";
-if ("strokeCap" in root) root.strokeCap = "NONE";
-if ("strokeJoin" in root) root.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
-root.effects = [];
-if ("cornerRadius" in root) root.cornerRadius = 4;
+        root.name = "Info";
+        root.visible = true;
+        root.opacity = 1;
+        root.locked = false;
+        if ("blendMode" in root) root.blendMode = "PASS_THROUGH";
+        if ("isMask" in root) root.isMask = false;
+        if ("clipsContent" in root) root.clipsContent = false;
+        if ("layoutMode" in root) {
+            root.layoutMode = "HORIZONTAL";
+            root.primaryAxisSizingMode = "FIXED";
+            root.counterAxisSizingMode = "AUTO";
+            root.primaryAxisAlignItems = "MIN";
+            root.counterAxisAlignItems = "MIN";
+            root.itemSpacing = 0;
+            root.paddingTop = 0;
+            root.paddingRight = 120;
+            root.paddingBottom = 0;
+            root.paddingLeft = 120;
+        }
+        root.fills = await this.hydratePaints([{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0.7803921699523926, "g": 0.9176470637321472, "b": 0.9843137264251709 }, "boundVariables": {} }]);
+        root.strokes = await this.hydratePaints([]);
+        root.strokeWeight = 1;
+        root.strokeAlign = "INSIDE";
+        if ("strokeCap" in root) root.strokeCap = "NONE";
+        if ("strokeJoin" in root) root.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
+        root.effects = [];
+        if ("cornerRadius" in root) root.cornerRadius = 4;
 
-// Start Child: AV / play-circle
-const root_child_0 = figma.createFrame();
-root_child_0.name = "AV / play-circle";
-root_child_0.visible = true;
-root_child_0.opacity = 1;
-root_child_0.locked = false;
-if ("blendMode" in root_child_0) root_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_0) root_child_0.isMask = false;
-if ("clipsContent" in root_child_0) root_child_0.clipsContent = false;
-if ("layoutMode" in root_child_0) {
-    root_child_0.layoutMode = "NONE";
-}
-root_child_0.fills = await this.hydratePaints([]);
-root_child_0.strokes = await this.hydratePaints([]);
-root_child_0.strokeWeight = 1;
-root_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
-root_child_0.effects = [];
-if ("cornerRadius" in root_child_0) root_child_0.cornerRadius = 0;
-root.appendChild(root_child_0);
-// Child Layout Props
-root_child_0.layoutPositioning = "ABSOLUTE";
-root_child_0.layoutAlign = "INHERIT";
-root_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_0, {"width":64,"height":64,"relativeTransform":[[1,0,488],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"ABSOLUTE"});
+        // Start Child: AV / play-circle
+        const root_child_0 = figma.createFrame();
+        root_child_0.name = "AV / play-circle";
+        root_child_0.visible = true;
+        root_child_0.opacity = 1;
+        root_child_0.locked = false;
+        if ("blendMode" in root_child_0) root_child_0.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_0) root_child_0.isMask = false;
+        if ("clipsContent" in root_child_0) root_child_0.clipsContent = false;
+        if ("layoutMode" in root_child_0) {
+            root_child_0.layoutMode = "NONE";
+        }
+        root_child_0.fills = await this.hydratePaints([]);
+        root_child_0.strokes = await this.hydratePaints([]);
+        root_child_0.strokeWeight = 1;
+        root_child_0.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
+        root_child_0.effects = [];
+        if ("cornerRadius" in root_child_0) root_child_0.cornerRadius = 0;
+        root.appendChild(root_child_0);
+        // Child Layout Props
+        root_child_0.layoutPositioning = "ABSOLUTE";
+        root_child_0.layoutAlign = "INHERIT";
+        root_child_0.layoutGrow = 0;
+        applySizeAndTransform(root_child_0, { "width": 64, "height": 64, "relativeTransform": [[1, 0, 488], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "ABSOLUTE" });
 
-// Start Child: Frame 1615
-const root_child_1 = figma.createFrame();
-root_child_1.name = "Frame 1615";
-root_child_1.visible = true;
-root_child_1.opacity = 1;
-root_child_1.locked = false;
-if ("blendMode" in root_child_1) root_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1) root_child_1.isMask = false;
-if ("clipsContent" in root_child_1) root_child_1.clipsContent = true;
-if ("layoutMode" in root_child_1) {
-    root_child_1.layoutMode = "HORIZONTAL";
-    root_child_1.primaryAxisSizingMode = "FIXED";
-    root_child_1.counterAxisSizingMode = "FIXED";
-    root_child_1.primaryAxisAlignItems = "MIN";
-    root_child_1.counterAxisAlignItems = "MIN";
-    root_child_1.itemSpacing = 16;
-    root_child_1.paddingTop = 16;
-    root_child_1.paddingRight = 0;
-    root_child_1.paddingBottom = 16;
-    root_child_1.paddingLeft = 0;
-}
-root_child_1.fills = await this.hydratePaints([]);
-root_child_1.strokes = await this.hydratePaints([]);
-root_child_1.strokeWeight = 1;
-root_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1) root_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1) root_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1) root_child_1.strokeMiterLimit = 4;
-root_child_1.effects = [];
-if ("cornerRadius" in root_child_1) root_child_1.cornerRadius = 0;
+        // Start Child: Frame 1615
+        const root_child_1 = figma.createFrame();
+        root_child_1.name = "Frame 1615";
+        root_child_1.visible = true;
+        root_child_1.opacity = 1;
+        root_child_1.locked = false;
+        if ("blendMode" in root_child_1) root_child_1.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_1) root_child_1.isMask = false;
+        if ("clipsContent" in root_child_1) root_child_1.clipsContent = true;
+        if ("layoutMode" in root_child_1) {
+            root_child_1.layoutMode = "HORIZONTAL";
+            root_child_1.primaryAxisSizingMode = "FIXED";
+            root_child_1.counterAxisSizingMode = "FIXED";
+            root_child_1.primaryAxisAlignItems = "MIN";
+            root_child_1.counterAxisAlignItems = "MIN";
+            root_child_1.itemSpacing = 16;
+            root_child_1.paddingTop = 16;
+            root_child_1.paddingRight = 0;
+            root_child_1.paddingBottom = 16;
+            root_child_1.paddingLeft = 0;
+        }
+        root_child_1.fills = await this.hydratePaints([]);
+        root_child_1.strokes = await this.hydratePaints([]);
+        root_child_1.strokeWeight = 1;
+        root_child_1.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_1) root_child_1.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_1) root_child_1.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_1) root_child_1.strokeMiterLimit = 4;
+        root_child_1.effects = [];
+        if ("cornerRadius" in root_child_1) root_child_1.cornerRadius = 0;
 
-// Start Child: Frame 1924
-const root_child_1_child_0 = figma.createFrame();
-root_child_1_child_0.name = "Frame 1924";
-root_child_1_child_0.visible = true;
-root_child_1_child_0.opacity = 1;
-root_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_0) root_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_0) root_child_1_child_0.isMask = false;
-if ("clipsContent" in root_child_1_child_0) root_child_1_child_0.clipsContent = false;
-if ("layoutMode" in root_child_1_child_0) {
-    root_child_1_child_0.layoutMode = "VERTICAL";
-    root_child_1_child_0.primaryAxisSizingMode = "AUTO";
-    root_child_1_child_0.counterAxisSizingMode = "AUTO";
-    root_child_1_child_0.primaryAxisAlignItems = "CENTER";
-    root_child_1_child_0.counterAxisAlignItems = "MIN";
-    root_child_1_child_0.itemSpacing = 8;
-    root_child_1_child_0.paddingTop = 6;
-    root_child_1_child_0.paddingRight = 0;
-    root_child_1_child_0.paddingBottom = 0;
-    root_child_1_child_0.paddingLeft = 0;
-}
-root_child_1_child_0.fills = await this.hydratePaints([]);
-root_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_0.strokeWeight = 1;
-root_child_1_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_0) root_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_0) root_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_0) root_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_0) root_child_1_child_0.cornerRadius = 0;
+        // Start Child: Frame 1924
+        const root_child_1_child_0 = figma.createFrame();
+        root_child_1_child_0.name = "Frame 1924";
+        root_child_1_child_0.visible = true;
+        root_child_1_child_0.opacity = 1;
+        root_child_1_child_0.locked = false;
+        if ("blendMode" in root_child_1_child_0) root_child_1_child_0.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_1_child_0) root_child_1_child_0.isMask = false;
+        if ("clipsContent" in root_child_1_child_0) root_child_1_child_0.clipsContent = false;
+        if ("layoutMode" in root_child_1_child_0) {
+            root_child_1_child_0.layoutMode = "VERTICAL";
+            root_child_1_child_0.primaryAxisSizingMode = "AUTO";
+            root_child_1_child_0.counterAxisSizingMode = "AUTO";
+            root_child_1_child_0.primaryAxisAlignItems = "CENTER";
+            root_child_1_child_0.counterAxisAlignItems = "MIN";
+            root_child_1_child_0.itemSpacing = 8;
+            root_child_1_child_0.paddingTop = 6;
+            root_child_1_child_0.paddingRight = 0;
+            root_child_1_child_0.paddingBottom = 0;
+            root_child_1_child_0.paddingLeft = 0;
+        }
+        root_child_1_child_0.fills = await this.hydratePaints([]);
+        root_child_1_child_0.strokes = await this.hydratePaints([]);
+        root_child_1_child_0.strokeWeight = 1;
+        root_child_1_child_0.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_1_child_0) root_child_1_child_0.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_1_child_0) root_child_1_child_0.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_1_child_0) root_child_1_child_0.strokeMiterLimit = 4;
+        root_child_1_child_0.effects = [];
+        if ("cornerRadius" in root_child_1_child_0) root_child_1_child_0.cornerRadius = 0;
 
-// Start Child: Support / information
-const root_child_1_child_0_child_0 = figma.createFrame();
-root_child_1_child_0_child_0.name = "Support / information";
-root_child_1_child_0_child_0.visible = true;
-root_child_1_child_0_child_0.opacity = 1;
-root_child_1_child_0_child_0.locked = false;
-if ("blendMode" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.isMask = false;
-if ("clipsContent" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.clipsContent = false;
-if ("layoutMode" in root_child_1_child_0_child_0) {
-    root_child_1_child_0_child_0.layoutMode = "NONE";
-}
-root_child_1_child_0_child_0.fills = await this.hydratePaints([]);
-root_child_1_child_0_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_0_child_0.strokeWeight = 1;
-root_child_1_child_0_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeMiterLimit = 4;
-root_child_1_child_0_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.cornerRadius = 0;
+        // Start Child: Support / information
+        const root_child_1_child_0_child_0 = figma.createFrame();
+        root_child_1_child_0_child_0.name = "Support / information";
+        root_child_1_child_0_child_0.visible = true;
+        root_child_1_child_0_child_0.opacity = 1;
+        root_child_1_child_0_child_0.locked = false;
+        if ("blendMode" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.isMask = false;
+        if ("clipsContent" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.clipsContent = false;
+        if ("layoutMode" in root_child_1_child_0_child_0) {
+            root_child_1_child_0_child_0.layoutMode = "NONE";
+        }
+        root_child_1_child_0_child_0.fills = await this.hydratePaints([]);
+        root_child_1_child_0_child_0.strokes = await this.hydratePaints([]);
+        root_child_1_child_0_child_0.strokeWeight = 1;
+        root_child_1_child_0_child_0.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeMiterLimit = 4;
+        root_child_1_child_0_child_0.effects = [];
+        if ("cornerRadius" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.cornerRadius = 0;
 
-// Start Child: Vector
-const root_child_1_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_I3383_3749_1004_374_svg_20x20);
-root_child_1_child_0_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
-const root_child_1_child_0_child_0_child_0 = figma.flatten([root_child_1_child_0_child_0_child_0_svgContainer]);
-root_child_1_child_0_child_0_child_0.name = "Vector";
-root_child_1_child_0_child_0_child_0.visible = true;
-root_child_1_child_0_child_0_child_0.opacity = 1;
-root_child_1_child_0_child_0_child_0.locked = false;
-if ("blendMode" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.isMask = false;
-root_child_1_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_0_child_0_child_0.strokeWeight = 1;
-root_child_1_child_0_child_0_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeMiterLimit = 4;
-root_child_1_child_0_child_0_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.cornerRadius = 0;
-root_child_1_child_0_child_0.appendChild(root_child_1_child_0_child_0_child_0);
-applySizeAndTransform(root_child_1_child_0_child_0_child_0, {"width":20,"height":20,"relativeTransform":[[1,0,2],[0,1,2]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_1_child_0_child_0_child_0.x = 2;
-root_child_1_child_0_child_0_child_0.y = 2;
-root_child_1_child_0.appendChild(root_child_1_child_0_child_0);
-// Child Layout Props
-root_child_1_child_0_child_0.layoutAlign = "INHERIT";
-root_child_1_child_0_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_0_child_0, {"width":24,"height":24,"relativeTransform":[[1,0,0],[0,1,6]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root_child_1.appendChild(root_child_1_child_0);
-// Child Layout Props
-root_child_1_child_0.layoutAlign = "INHERIT";
-root_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_0, {"width":24,"height":30,"relativeTransform":[[1,0,0],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+        // Start Child: Vector
+        const root_child_1_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_I3383_3749_1004_374_svg_20x20);
+        root_child_1_child_0_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
+        const root_child_1_child_0_child_0_child_0 = figma.flatten([root_child_1_child_0_child_0_child_0_svgContainer]);
+        root_child_1_child_0_child_0_child_0.name = "Vector";
+        root_child_1_child_0_child_0_child_0.visible = true;
+        root_child_1_child_0_child_0_child_0.opacity = 1;
+        root_child_1_child_0_child_0_child_0.locked = false;
+        if ("blendMode" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.isMask = false;
+        root_child_1_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
+        root_child_1_child_0_child_0_child_0.strokeWeight = 1;
+        root_child_1_child_0_child_0_child_0.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeMiterLimit = 4;
+        root_child_1_child_0_child_0_child_0.effects = [];
+        if ("cornerRadius" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.cornerRadius = 0;
+        root_child_1_child_0_child_0.appendChild(root_child_1_child_0_child_0_child_0);
+        applySizeAndTransform(root_child_1_child_0_child_0_child_0, { "width": 20, "height": 20, "relativeTransform": [[1, 0, 2], [0, 1, 2]], "parentIsAutoLayout": false, "layoutPositioning": "AUTO" });
+        root_child_1_child_0_child_0_child_0.x = 2;
+        root_child_1_child_0_child_0_child_0.y = 2;
+        root_child_1_child_0.appendChild(root_child_1_child_0_child_0);
+        // Child Layout Props
+        root_child_1_child_0_child_0.layoutAlign = "INHERIT";
+        root_child_1_child_0_child_0.layoutGrow = 0;
+        applySizeAndTransform(root_child_1_child_0_child_0, { "width": 24, "height": 24, "relativeTransform": [[1, 0, 0], [0, 1, 6]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
+        root_child_1.appendChild(root_child_1_child_0);
+        // Child Layout Props
+        root_child_1_child_0.layoutAlign = "INHERIT";
+        root_child_1_child_0.layoutGrow = 0;
+        applySizeAndTransform(root_child_1_child_0, { "width": 24, "height": 30, "relativeTransform": [[1, 0, 0], [0, 1, 16]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
 
-// Start Child: Frame 1923
-const root_child_1_child_1 = figma.createFrame();
-root_child_1_child_1.name = "Frame 1923";
-root_child_1_child_1.visible = true;
-root_child_1_child_1.opacity = 1;
-root_child_1_child_1.locked = false;
-if ("blendMode" in root_child_1_child_1) root_child_1_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1) root_child_1_child_1.isMask = false;
-if ("clipsContent" in root_child_1_child_1) root_child_1_child_1.clipsContent = false;
-if ("layoutMode" in root_child_1_child_1) {
-    root_child_1_child_1.layoutMode = "VERTICAL";
-    root_child_1_child_1.primaryAxisSizingMode = "AUTO";
-    root_child_1_child_1.counterAxisSizingMode = "FIXED";
-    root_child_1_child_1.primaryAxisAlignItems = "CENTER";
-    root_child_1_child_1.counterAxisAlignItems = "MIN";
-    root_child_1_child_1.itemSpacing = 4;
-    root_child_1_child_1.paddingTop = 0;
-    root_child_1_child_1.paddingRight = 0;
-    root_child_1_child_1.paddingBottom = 0;
-    root_child_1_child_1.paddingLeft = 0;
-}
-root_child_1_child_1.fills = await this.hydratePaints([]);
-root_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_1_child_1.strokeWeight = 1;
-root_child_1_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1) root_child_1_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1) root_child_1_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1) root_child_1_child_1.strokeMiterLimit = 4;
-root_child_1_child_1.effects = [];
-if ("cornerRadius" in root_child_1_child_1) root_child_1_child_1.cornerRadius = 0;
+        // Start Child: Frame 1923
+        const root_child_1_child_1 = figma.createFrame();
+        root_child_1_child_1.name = "Frame 1923";
+        root_child_1_child_1.visible = true;
+        root_child_1_child_1.opacity = 1;
+        root_child_1_child_1.locked = false;
+        if ("blendMode" in root_child_1_child_1) root_child_1_child_1.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_1_child_1) root_child_1_child_1.isMask = false;
+        if ("clipsContent" in root_child_1_child_1) root_child_1_child_1.clipsContent = false;
+        if ("layoutMode" in root_child_1_child_1) {
+            root_child_1_child_1.layoutMode = "VERTICAL";
+            root_child_1_child_1.primaryAxisSizingMode = "AUTO";
+            root_child_1_child_1.counterAxisSizingMode = "FIXED";
+            root_child_1_child_1.primaryAxisAlignItems = "CENTER";
+            root_child_1_child_1.counterAxisAlignItems = "MIN";
+            root_child_1_child_1.itemSpacing = 4;
+            root_child_1_child_1.paddingTop = 0;
+            root_child_1_child_1.paddingRight = 0;
+            root_child_1_child_1.paddingBottom = 0;
+            root_child_1_child_1.paddingLeft = 0;
+        }
+        root_child_1_child_1.fills = await this.hydratePaints([]);
+        root_child_1_child_1.strokes = await this.hydratePaints([]);
+        root_child_1_child_1.strokeWeight = 1;
+        root_child_1_child_1.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_1_child_1) root_child_1_child_1.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_1_child_1) root_child_1_child_1.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_1_child_1) root_child_1_child_1.strokeMiterLimit = 4;
+        root_child_1_child_1.effects = [];
+        if ("cornerRadius" in root_child_1_child_1) root_child_1_child_1.cornerRadius = 0;
 
-// Start Child: Don’t miss out!
-const root_child_1_child_1_child_0 = figma.createText();
-root_child_1_child_1_child_0.name = "Don’t miss out!";
-root_child_1_child_1_child_0.visible = true;
-root_child_1_child_1_child_0.opacity = 1;
-root_child_1_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.isMask = false;
-root_child_1_child_1_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_0.strokeWeight = 1;
-root_child_1_child_1_child_0.strokeAlign = "OUTSIDE";
-if ("strokeCap" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_1_child_0.effects = [];
-// Text Properties
-root_child_1_child_1_child_0.characters = `Don’t miss out!`;
-root_child_1_child_1_child_0.fontSize = 20;
-root_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
-root_child_1_child_1_child_0.textAlignVertical = "TOP";
-root_child_1_child_1_child_0.textAutoResize = "WIDTH_AND_HEIGHT";
-root_child_1_child_1_child_0.letterSpacing = {"unit":"PIXELS","value":-0.10000000149011612};
-root_child_1_child_1_child_0.lineHeight = {"unit":"PERCENT","value":150};
-if ("textCase" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.textCase = "ORIGINAL";
-if ("textDecoration" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.textDecoration = "NONE";
-await this.setFont(root_child_1_child_1_child_0, {"family":"Manrope","style":"Bold"});
-// Styled Segments
-await this.setRangeFont(root_child_1_child_1_child_0, 0, 15, {"family":"Manrope","style":"Bold"});
-root_child_1_child_1_child_0.setRangeFills(0, 15, [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_0.setRangeFontSize(0, 15, 20);
-root_child_1_child_1.appendChild(root_child_1_child_1_child_0);
-// Child Layout Props
-root_child_1_child_1_child_0.layoutAlign = "INHERIT";
-root_child_1_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_0, {"width":146,"height":30,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+        // Start Child: Don’t miss out!
+        const root_child_1_child_1_child_0 = figma.createText();
+        root_child_1_child_1_child_0.name = "Don’t miss out!";
+        root_child_1_child_1_child_0.visible = true;
+        root_child_1_child_1_child_0.opacity = 1;
+        root_child_1_child_1_child_0.locked = false;
+        if ("blendMode" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.isMask = false;
+        root_child_1_child_1_child_0.fills = await this.hydratePaints([{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 }, "boundVariables": {} }]);
+        root_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
+        root_child_1_child_1_child_0.strokeWeight = 1;
+        root_child_1_child_1_child_0.strokeAlign = "OUTSIDE";
+        if ("strokeCap" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeMiterLimit = 4;
+        root_child_1_child_1_child_0.effects = [];
+        // Text Properties
+        root_child_1_child_1_child_0.characters = `Don’t miss out!`;
+        root_child_1_child_1_child_0.fontSize = 20;
+        root_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
+        root_child_1_child_1_child_0.textAlignVertical = "TOP";
+        root_child_1_child_1_child_0.textAutoResize = "WIDTH_AND_HEIGHT";
+        root_child_1_child_1_child_0.letterSpacing = { "unit": "PIXELS", "value": -0.10000000149011612 };
+        root_child_1_child_1_child_0.lineHeight = { "unit": "PERCENT", "value": 150 };
+        if ("textCase" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.textCase = "ORIGINAL";
+        if ("textDecoration" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.textDecoration = "NONE";
+        await this.setFont(root_child_1_child_1_child_0, { "family": "Manrope", "style": "Bold" });
+        // Styled Segments
+        await this.setRangeFont(root_child_1_child_1_child_0, 0, 15, { "family": "Manrope", "style": "Bold" });
+        root_child_1_child_1_child_0.setRangeFills(0, 15, [{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 }, "boundVariables": {} }]);
+        root_child_1_child_1_child_0.setRangeFontSize(0, 15, 20);
+        root_child_1_child_1.appendChild(root_child_1_child_1_child_0);
+        // Child Layout Props
+        root_child_1_child_1_child_0.layoutAlign = "INHERIT";
+        root_child_1_child_1_child_0.layoutGrow = 0;
+        applySizeAndTransform(root_child_1_child_1_child_0, { "width": 146, "height": 30, "relativeTransform": [[1, 0, 0], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
 
-// Start Child: Frame 1925
-const root_child_1_child_1_child_1 = figma.createFrame();
-root_child_1_child_1_child_1.name = "Frame 1925";
-root_child_1_child_1_child_1.visible = true;
-root_child_1_child_1_child_1.opacity = 1;
-root_child_1_child_1_child_1.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.isMask = false;
-if ("clipsContent" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.clipsContent = false;
-if ("layoutMode" in root_child_1_child_1_child_1) {
-    root_child_1_child_1_child_1.layoutMode = "HORIZONTAL";
-    root_child_1_child_1_child_1.primaryAxisSizingMode = "FIXED";
-    root_child_1_child_1_child_1.counterAxisSizingMode = "AUTO";
-    root_child_1_child_1_child_1.primaryAxisAlignItems = "MIN";
-    root_child_1_child_1_child_1.counterAxisAlignItems = "MIN";
-    root_child_1_child_1_child_1.itemSpacing = 4;
-    root_child_1_child_1_child_1.paddingTop = 0;
-    root_child_1_child_1_child_1.paddingRight = 0;
-    root_child_1_child_1_child_1.paddingBottom = 0;
-    root_child_1_child_1_child_1.paddingLeft = 0;
-}
-root_child_1_child_1_child_1.fills = await this.hydratePaints([]);
-root_child_1_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1.strokeWeight = 1;
-root_child_1_child_1_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeMiterLimit = 4;
-root_child_1_child_1_child_1.effects = [];
-if ("cornerRadius" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.cornerRadius = 0;
+        // Content area logic: If props.text is provided, use it. Otherwise use the default bell icon + segmented text.
+        if (props.text) {
+            // Remove the defaultsegmented text parts and icon if we have custom text
+            // In this specific implementation, we just create a single text node instead of Frame 1925
+            const customTextNode = figma.createText();
+            customTextNode.name = "Custom Info Text";
+            customTextNode.characters = props.text;
+            customTextNode.fontSize = 16;
+            customTextNode.fills = await this.hydratePaints([{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 } }]);
+            await this.setFont(customTextNode, { "family": "Manrope", "style": "SemiBold" });
+            customTextNode.layoutAlign = "STRETCH";
+            customTextNode.layoutGrow = 1;
 
-// Start Child: Click on the bell icon
-const root_child_1_child_1_child_1_child_0 = figma.createText();
-root_child_1_child_1_child_1_child_0.name = "Click on the bell icon";
-root_child_1_child_1_child_1_child_0.visible = true;
-root_child_1_child_1_child_1_child_0.opacity = 1;
-root_child_1_child_1_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.isMask = false;
-root_child_1_child_1_child_1_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_0.strokeWeight = 1;
-root_child_1_child_1_child_1_child_0.strokeAlign = "OUTSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_0.effects = [];
-// Text Properties
-root_child_1_child_1_child_1_child_0.characters = `Click on the bell icon`;
-root_child_1_child_1_child_1_child_0.fontSize = 16;
-root_child_1_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
-root_child_1_child_1_child_1_child_0.textAlignVertical = "TOP";
-root_child_1_child_1_child_1_child_0.textAutoResize = "WIDTH_AND_HEIGHT";
-root_child_1_child_1_child_1_child_0.letterSpacing = {"unit":"PIXELS","value":0};
-root_child_1_child_1_child_1_child_0.lineHeight = {"unit":"PERCENT","value":129.99999523162842};
-if ("textCase" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.textCase = "ORIGINAL";
-if ("textDecoration" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.textDecoration = "NONE";
-await this.setFont(root_child_1_child_1_child_1_child_0, {"family":"Manrope","style":"SemiBold"});
-// Styled Segments
-await this.setRangeFont(root_child_1_child_1_child_1_child_0, 0, 22, {"family":"Manrope","style":"SemiBold"});
-root_child_1_child_1_child_1_child_0.setRangeFills(0, 22, [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_0.setRangeFontSize(0, 22, 16);
-root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_0);
-// Child Layout Props
-root_child_1_child_1_child_1_child_0.layoutAlign = "INHERIT";
-root_child_1_child_1_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_1_child_0, {"width":157,"height":21,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+            root_child_1_child_1.appendChild(customTextNode);
+        } else {
+            // Start Child: Frame 1925
+            const root_child_1_child_1_child_1 = figma.createFrame();
+            root_child_1_child_1_child_1.name = "Frame 1925";
+            root_child_1_child_1_child_1.visible = true;
+            root_child_1_child_1_child_1.opacity = 1;
+            root_child_1_child_1_child_1.locked = false;
+            if ("blendMode" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.blendMode = "PASS_THROUGH";
+            if ("isMask" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.isMask = false;
+            if ("clipsContent" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.clipsContent = false;
+            if ("layoutMode" in root_child_1_child_1_child_1) {
+                root_child_1_child_1_child_1.layoutMode = "HORIZONTAL";
+                root_child_1_child_1_child_1.primaryAxisSizingMode = "FIXED";
+                root_child_1_child_1_child_1.counterAxisSizingMode = "AUTO";
+                root_child_1_child_1_child_1.primaryAxisAlignItems = "MIN";
+                root_child_1_child_1_child_1.counterAxisAlignItems = "MIN";
+                root_child_1_child_1_child_1.itemSpacing = 4;
+                root_child_1_child_1_child_1.paddingTop = 0;
+                root_child_1_child_1_child_1.paddingRight = 0;
+                root_child_1_child_1_child_1.paddingBottom = 0;
+                root_child_1_child_1_child_1.paddingLeft = 0;
+            }
+            root_child_1_child_1_child_1.fills = await this.hydratePaints([]);
+            root_child_1_child_1_child_1.strokes = await this.hydratePaints([]);
+            root_child_1_child_1_child_1.strokeWeight = 1;
+            root_child_1_child_1_child_1.strokeAlign = "INSIDE";
+            if ("strokeCap" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeCap = "NONE";
+            if ("strokeJoin" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeJoin = "MITER";
+            if ("strokeMiterLimit" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeMiterLimit = 4;
+            root_child_1_child_1_child_1.effects = [];
+            if ("cornerRadius" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.cornerRadius = 0;
 
-// Start Child: Notifications / notifications-active
-const root_child_1_child_1_child_1_child_1 = figma.createFrame();
-root_child_1_child_1_child_1_child_1.name = "Notifications / notifications-active";
-root_child_1_child_1_child_1_child_1.visible = true;
-root_child_1_child_1_child_1_child_1.opacity = 1;
-root_child_1_child_1_child_1_child_1.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.isMask = false;
-if ("clipsContent" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.clipsContent = false;
-if ("layoutMode" in root_child_1_child_1_child_1_child_1) {
-    root_child_1_child_1_child_1_child_1.layoutMode = "NONE";
-}
-root_child_1_child_1_child_1_child_1.fills = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_1.strokeWeight = 1;
-root_child_1_child_1_child_1_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_1.effects = [];
-if ("cornerRadius" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.cornerRadius = 0;
+            // Start Child: Click on the bell icon
+            const root_child_1_child_1_child_1_child_0 = figma.createText();
+            root_child_1_child_1_child_1_child_0.name = "Click on the bell icon";
+            root_child_1_child_1_child_1_child_0.visible = true;
+            root_child_1_child_1_child_1_child_0.opacity = 1;
+            root_child_1_child_1_child_1_child_0.locked = false;
+            if ("blendMode" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
+            if ("isMask" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.isMask = false;
+            root_child_1_child_1_child_1_child_0.fills = await this.hydratePaints([{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 }, "boundVariables": {} }]);
+            root_child_1_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
+            root_child_1_child_1_child_1_child_0.strokeWeight = 1;
+            root_child_1_child_1_child_1_child_0.strokeAlign = "OUTSIDE";
+            if ("strokeCap" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeCap = "NONE";
+            if ("strokeJoin" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeJoin = "MITER";
+            if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
+            root_child_1_child_1_child_1_child_0.effects = [];
+            // Text Properties
+            root_child_1_child_1_child_1_child_0.characters = `Click on the bell icon`;
+            root_child_1_child_1_child_1_child_0.fontSize = 16;
+            root_child_1_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
+            root_child_1_child_1_child_1_child_0.textAlignVertical = "TOP";
+            root_child_1_child_1_child_1_child_0.textAutoResize = "WIDTH_AND_HEIGHT";
+            root_child_1_child_1_child_1_child_0.letterSpacing = { "unit": "PIXELS", "value": 0 };
+            root_child_1_child_1_child_1_child_0.lineHeight = { "unit": "PERCENT", "value": 129.99999523162842 };
+            if ("textCase" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.textCase = "ORIGINAL";
+            if ("textDecoration" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.textDecoration = "NONE";
+            await this.setFont(root_child_1_child_1_child_1_child_0, { "family": "Manrope", "style": "SemiBold" });
+            // Styled Segments
+            await this.setRangeFont(root_child_1_child_1_child_1_child_0, 0, 22, { "family": "Manrope", "style": "SemiBold" });
+            root_child_1_child_1_child_1_child_0.setRangeFills(0, 22, [{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 }, "boundVariables": {} }]);
+            root_child_1_child_1_child_1_child_0.setRangeFontSize(0, 22, 16);
+            root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_0);
+            // Child Layout Props
+            root_child_1_child_1_child_1_child_0.layoutAlign = "INHERIT";
+            root_child_1_child_1_child_1_child_0.layoutGrow = 0;
+            applySizeAndTransform(root_child_1_child_1_child_1_child_0, { "width": 157, "height": 21, "relativeTransform": [[1, 0, 0], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
 
-// Start Child: Vector
-const root_child_1_child_1_child_1_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_I3384_160_5086_20_svg_18_715295791625977x19_192251205444336);
-root_child_1_child_1_child_1_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
-const root_child_1_child_1_child_1_child_1_child_0 = figma.flatten([root_child_1_child_1_child_1_child_1_child_0_svgContainer]);
-root_child_1_child_1_child_1_child_1_child_0.name = "Vector";
-root_child_1_child_1_child_1_child_1_child_0.visible = true;
-root_child_1_child_1_child_1_child_1_child_0.opacity = 1;
-root_child_1_child_1_child_1_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.isMask = false;
-root_child_1_child_1_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_1_child_0.strokeWeight = 1;
-root_child_1_child_1_child_1_child_1_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_1_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.cornerRadius = 0;
-root_child_1_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_1_child_0);
-applySizeAndTransform(root_child_1_child_1_child_1_child_1_child_0, {"width":18.715295791625977,"height":19.192251205444336,"relativeTransform":[[1,0,2.642333984375],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_1_child_1_child_1_child_1_child_0.x = 2.642333984375;
-root_child_1_child_1_child_1_child_1_child_0.y = 2.5;
-root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_1);
-// Child Layout Props
-root_child_1_child_1_child_1_child_1.layoutAlign = "INHERIT";
-root_child_1_child_1_child_1_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_1_child_1, {"width":24,"height":24,"relativeTransform":[[1,0,161],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+            // Start Child: Notifications / notifications-active
+            const root_child_1_child_1_child_1_child_1 = figma.createFrame();
+            root_child_1_child_1_child_1_child_1.name = "Notifications / notifications-active";
+            root_child_1_child_1_child_1_child_1.visible = true;
+            root_child_1_child_1_child_1_child_1.opacity = 1;
+            root_child_1_child_1_child_1_child_1.locked = false;
+            if ("blendMode" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.blendMode = "PASS_THROUGH";
+            if ("isMask" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.isMask = false;
+            if ("clipsContent" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.clipsContent = false;
+            if ("layoutMode" in root_child_1_child_1_child_1_child_1) {
+                root_child_1_child_1_child_1_child_1.layoutMode = "NONE";
+            }
+            root_child_1_child_1_child_1_child_1.fills = await this.hydratePaints([]);
+            root_child_1_child_1_child_1_child_1.strokes = await this.hydratePaints([]);
+            root_child_1_child_1_child_1_child_1.strokeWeight = 1;
+            root_child_1_child_1_child_1_child_1.strokeAlign = "INSIDE";
+            if ("strokeCap" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeCap = "NONE";
+            if ("strokeJoin" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeJoin = "MITER";
+            if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeMiterLimit = 4;
+            root_child_1_child_1_child_1_child_1.effects = [];
+            if ("cornerRadius" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.cornerRadius = 0;
 
-// Start Child: in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.
-const root_child_1_child_1_child_1_child_2 = figma.createText();
-root_child_1_child_1_child_1_child_2.name = "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.";
-root_child_1_child_1_child_1_child_2.visible = true;
-root_child_1_child_1_child_1_child_2.opacity = 1;
-root_child_1_child_1_child_1_child_2.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.isMask = false;
-root_child_1_child_1_child_1_child_2.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_2.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_2.strokeWeight = 1;
-root_child_1_child_1_child_1_child_2.strokeAlign = "OUTSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_2.effects = [];
-// Text Properties
-root_child_1_child_1_child_1_child_2.characters = `in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.`;
-root_child_1_child_1_child_1_child_2.fontSize = 16;
-root_child_1_child_1_child_1_child_2.textAlignHorizontal = "LEFT";
-root_child_1_child_1_child_1_child_2.textAlignVertical = "TOP";
-root_child_1_child_1_child_1_child_2.textAutoResize = "HEIGHT";
-root_child_1_child_1_child_1_child_2.letterSpacing = {"unit":"PIXELS","value":0};
-root_child_1_child_1_child_1_child_2.lineHeight = {"unit":"PERCENT","value":129.99999523162842};
-if ("textCase" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.textCase = "ORIGINAL";
-if ("textDecoration" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.textDecoration = "NONE";
-await this.setFont(root_child_1_child_1_child_1_child_2, {"family":"Manrope","style":"SemiBold"});
-// Styled Segments
-await this.setRangeFont(root_child_1_child_1_child_1_child_2, 0, 154, {"family":"Manrope","style":"SemiBold"});
-root_child_1_child_1_child_1_child_2.setRangeFills(0, 154, [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_2.setRangeFontSize(0, 154, 16);
-root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_2);
-// Child Layout Props
-root_child_1_child_1_child_1_child_2.layoutAlign = "INHERIT";
-root_child_1_child_1_child_1_child_2.layoutGrow = 1;
-applySizeAndTransform(root_child_1_child_1_child_1_child_2, {"width":1211,"height":21,"relativeTransform":[[1,0,189],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root_child_1_child_1.appendChild(root_child_1_child_1_child_1);
-// Child Layout Props
-root_child_1_child_1_child_1.layoutAlign = "STRETCH";
-root_child_1_child_1_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_1, {"width":1400,"height":24,"relativeTransform":[[1,0,0],[0,1,34]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root_child_1.appendChild(root_child_1_child_1);
-// Child Layout Props
-root_child_1_child_1.layoutAlign = "INHERIT";
-root_child_1_child_1.layoutGrow = 1;
-applySizeAndTransform(root_child_1_child_1, {"width":1400,"height":58,"relativeTransform":[[1,0,40],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root.appendChild(root_child_1);
-// Child Layout Props
-root_child_1.layoutAlign = "STRETCH";
-root_child_1.layoutGrow = 1;
-applySizeAndTransform(root_child_1, {"width":1440,"height":90,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+            // Start Child: Vector
+            const root_child_1_child_1_child_1_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_I3384_160_5086_20_svg_18_715295791625977x19_192251205444336);
+            root_child_1_child_1_child_1_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
+            const root_child_1_child_1_child_1_child_1_child_0 = figma.flatten([root_child_1_child_1_child_1_child_1_child_0_svgContainer]);
+            root_child_1_child_1_child_1_child_1_child_0.name = "Vector";
+            root_child_1_child_1_child_1_child_1_child_0.visible = true;
+            root_child_1_child_1_child_1_child_1_child_0.opacity = 1;
+            root_child_1_child_1_child_1_child_1_child_0.locked = false;
+            if ("blendMode" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
+            if ("isMask" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.isMask = false;
+            root_child_1_child_1_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
+            root_child_1_child_1_child_1_child_1_child_0.strokeWeight = 1;
+            root_child_1_child_1_child_1_child_1_child_0.strokeAlign = "INSIDE";
+            if ("strokeCap" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeCap = "NONE";
+            if ("strokeJoin" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeJoin = "MITER";
+            if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
+            root_child_1_child_1_child_1_child_1_child_0.effects = [];
+            if ("cornerRadius" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.cornerRadius = 0;
+            root_child_1_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_1_child_0);
+            applySizeAndTransform(root_child_1_child_1_child_1_child_1_child_0, { "width": 18.715295791625977, "height": 19.192251205444336, "relativeTransform": [[1, 0, 2.642333984375], [0, 1, 2.5]], "parentIsAutoLayout": false, "layoutPositioning": "AUTO" });
+            root_child_1_child_1_child_1_child_1_child_0.x = 2.642333984375;
+            root_child_1_child_1_child_1_child_1_child_0.y = 2.5;
+            root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_1);
+            // Child Layout Props
+            root_child_1_child_1_child_1_child_1.layoutAlign = "INHERIT";
+            root_child_1_child_1_child_1_child_1.layoutGrow = 0;
+            applySizeAndTransform(root_child_1_child_1_child_1_child_1, { "width": 24, "height": 24, "relativeTransform": [[1, 0, 161], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
+
+            // Start Child: in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.
+            const root_child_1_child_1_child_1_child_2 = figma.createText();
+            root_child_1_child_1_child_1_child_2.name = "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.";
+            root_child_1_child_1_child_1_child_2.visible = true;
+            root_child_1_child_1_child_1_child_2.opacity = 1;
+            root_child_1_child_1_child_1_child_2.locked = false;
+            if ("blendMode" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.blendMode = "PASS_THROUGH";
+            if ("isMask" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.isMask = false;
+            root_child_1_child_1_child_1_child_2.fills = await this.hydratePaints([{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 }, "boundVariables": {} }]);
+            root_child_1_child_1_child_1_child_2.strokes = await this.hydratePaints([]);
+            root_child_1_child_1_child_1_child_2.strokeWeight = 1;
+            root_child_1_child_1_child_1_child_2.strokeAlign = "OUTSIDE";
+            if ("strokeCap" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeCap = "NONE";
+            if ("strokeJoin" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeJoin = "MITER";
+            if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeMiterLimit = 4;
+            root_child_1_child_1_child_1_child_2.effects = [];
+            // Text Properties
+            root_child_1_child_1_child_1_child_2.characters = `in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.`;
+            root_child_1_child_1_child_1_child_2.fontSize = 16;
+            root_child_1_child_1_child_1_child_2.textAlignHorizontal = "LEFT";
+            root_child_1_child_1_child_1_child_2.textAlignVertical = "TOP";
+            root_child_1_child_1_child_1_child_2.textAutoResize = "HEIGHT";
+            root_child_1_child_1_child_1_child_2.letterSpacing = { "unit": "PIXELS", "value": 0 };
+            root_child_1_child_1_child_1_child_2.lineHeight = { "unit": "PERCENT", "value": 129.99999523162842 };
+            if ("textCase" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.textCase = "ORIGINAL";
+            if ("textDecoration" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.textDecoration = "NONE";
+            await this.setFont(root_child_1_child_1_child_1_child_2, { "family": "Manrope", "style": "SemiBold" });
+            // Styled Segments
+            await this.setRangeFont(root_child_1_child_1_child_1_child_2, 0, 154, { "family": "Manrope", "style": "SemiBold" });
+            root_child_1_child_1_child_1_child_2.setRangeFills(0, 154, [{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 0, "g": 0, "b": 0 }, "boundVariables": {} }]);
+            root_child_1_child_1_child_1_child_2.setRangeFontSize(0, 154, 16);
+            root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_2);
+            // Child Layout Props
+            root_child_1_child_1_child_1_child_2.layoutAlign = "INHERIT";
+            root_child_1_child_1_child_1_child_2.layoutGrow = 1;
+            applySizeAndTransform(root_child_1_child_1_child_1_child_2, { "width": 1211, "height": 21, "relativeTransform": [[1, 0, 189], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
+            root_child_1_child_1.appendChild(root_child_1_child_1_child_1);
+            // Child Layout Props
+            root_child_1_child_1_child_1.layoutAlign = "STRETCH";
+            root_child_1_child_1_child_1.layoutGrow = 0;
+            applySizeAndTransform(root_child_1_child_1_child_1, { "width": 1400, "height": 24, "relativeTransform": [[1, 0, 0], [0, 1, 34]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
+        }
+        root_child_1.appendChild(root_child_1_child_1);
+        // Child Layout Props
+        root_child_1_child_1.layoutAlign = "INHERIT";
+        root_child_1_child_1.layoutGrow = 1;
+        applySizeAndTransform(root_child_1_child_1, { "width": 1400, "height": 58, "relativeTransform": [[1, 0, 40], [0, 1, 16]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
+        root.appendChild(root_child_1);
+        // Child Layout Props
+        root_child_1.layoutAlign = "STRETCH";
+        root_child_1.layoutGrow = 1;
+        applySizeAndTransform(root_child_1, { "width": 1440, "height": 90, "relativeTransform": [[1, 0, 120], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
 
 
-        applySizeAndTransform(root, {"width":1680,"height":90,"parentIsAutoLayout":false});
+        applySizeAndTransform(root, { "width": 1680, "height": 90, "parentIsAutoLayout": false });
 
         root.x = props.x;
         root.y = props.y;

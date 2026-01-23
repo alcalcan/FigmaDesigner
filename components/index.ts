@@ -16,5 +16,8 @@ export { checkbox_element } from "./UEFA_Academy_online/checkbox_element/checkbo
 export { sidebar } from "./UEFA_Academy_online/sidebar/sidebar";
 export { Divider } from "./UEFA_Academy_online/Divider/Divider";
 export { SubSection } from "./UEFA_Academy_online/SubSection/SubSection";
+export { SubSection_collapsed } from "./UEFA_Academy_online/SubSection/SubSection_collapsed";
 export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 export { button_set } from "./UEFA_Academy_online/button_set/button_set";
+export { UEFA_Academy_online_CourseDetails } from "../pages/UEFA_Academy_online/UEFA_Academy_online_CourseDetails";
+
