@@ -283,7 +283,7 @@ if ("strokeJoin" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.s
 if ("strokeMiterLimit" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeMiterLimit = 4;
 root_child_1_child_1_child_0.effects = [];
 // Text Properties
-root_child_1_child_1_child_0.characters = "Don’t miss out!";
+root_child_1_child_1_child_0.characters = `Don’t miss out!`;
 root_child_1_child_1_child_0.fontSize = 20;
 root_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_1_child_0.textAlignVertical = "TOP";
@@ -351,7 +351,7 @@ if ("strokeJoin" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_c
 if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
 root_child_1_child_1_child_1_child_0.effects = [];
 // Text Properties
-root_child_1_child_1_child_1_child_0.characters = "Click on the bell icon";
+root_child_1_child_1_child_1_child_0.characters = `Click on the bell icon`;
 root_child_1_child_1_child_1_child_0.fontSize = 16;
 root_child_1_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_1_child_1_child_0.textAlignVertical = "TOP";
@@ -438,7 +438,7 @@ if ("strokeJoin" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_c
 if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeMiterLimit = 4;
 root_child_1_child_1_child_1_child_2.effects = [];
 // Text Properties
-root_child_1_child_1_child_1_child_2.characters = "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.";
+root_child_1_child_1_child_1_child_2.characters = `in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.`;
 root_child_1_child_1_child_1_child_2.fontSize = 16;
 root_child_1_child_1_child_1_child_2.textAlignHorizontal = "LEFT";
 root_child_1_child_1_child_1_child_2.textAlignVertical = "TOP";

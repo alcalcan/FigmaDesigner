@@ -215,6 +215,9 @@
                     Selected</button>
                 <button id="convert-to-code-btn" class="secondary" style="font-size: 12px; margin-top: 8px;">Convert to
                     Code Component</button>
+                <button id="convert-all-btn" class="secondary"
+                    style="font-size: 12px; margin-top: 8px; display: none; background: #6200ee; color: white; border: none;">Convert
+                    All Folder to Code</button>
             </div>
         </div>
     </div>
@@ -279,9 +282,11 @@
         const fileActions = document.getElementById('file-actions');
         const generateSelectedBtn = document.getElementById('generate-from-selected-btn');
         const convertToCodeBtn = document.getElementById('convert-to-code-btn');
+        const convertAllBtn = document.getElementById('convert-all-btn');
 
         let pollInterval = null;
         let selectedFilePath = null;
+        let selectedFolder = null;
         let isOperationActive = false;
 
         function showFeedback(btn, originalText, successText = "Captured!") {
@@ -424,6 +429,38 @@
             }
         }
 
+        convertAllBtn.onclick = async () => {
+            if (!selectedFolder) return;
+
+            const originalText = convertAllBtn.textContent;
+            convertAllBtn.textContent = "Processing Batch...";
+            convertAllBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:3001/generate-folder-to-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ folder: selectedFolder, project: selectedFolder.split('/')[0] })
+                });
+
+                const result = await response.json();
+                if (result.status === 'ok') {
+                    const successCount = result.results.filter(r => r.status === 'ok').length;
+                    const totalCount = result.results.length;
+                    showFeedback(convertAllBtn, originalText, `Converted ${successCount}/${totalCount}!`);
+                    loadComponents();
+                } else {
+                    alert("Batch conversion failed: " + result.error);
+                    showFeedback(convertAllBtn, originalText, "Error!");
+                }
+            } catch (e) {
+                console.error("Failed to convert folder items", e);
+                showFeedback(convertAllBtn, originalText, "Network Error");
+            } finally {
+                convertAllBtn.disabled = false;
+            }
+        }
+
         connectBtn.onclick = () => {
             if (pollInterval === null) {
                 startPolling();
@@ -446,6 +483,7 @@
             fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading files...</div>';
             fileActions.style.display = "none";
             selectedFilePath = null;
+            selectedFolder = null;
 
             try {
                 const response = await fetch('http://127.0.0.1:3001/list');
@@ -692,7 +730,11 @@
                         row.style.background = '#3a3a3a';
                         row.style.borderLeft = '2px solid #0d99ff';
                         selectedFilePath = item.fullPath;
+                        selectedFolder = null;
                         fileActions.style.display = "block";
+                        generateSelectedBtn.style.display = "block";
+                        convertToCodeBtn.style.display = "block";
+                        convertAllBtn.style.display = "none";
                     }
                 };
                 return row;
@@ -713,6 +755,28 @@
                 children.style.display = 'none';
                 header.onclick = () => {
                     const arrow = header.querySelector('.arrow');
+
+                    // Folder selection logic for "Convert All"
+                    if (container.id === 'file-list') {
+                        container.querySelectorAll('.list-item').forEach(el => {
+                            el.style.background = 'transparent';
+                            el.style.borderLeft = 'none';
+                        });
+                        container.querySelectorAll('[style*="background: rgb(34, 34, 34)"]').forEach(el => {
+                            el.style.background = '#222';
+                            el.style.borderLeft = 'none';
+                        });
+
+                        header.style.background = '#3a3a3a';
+                        header.style.borderLeft = '2px solid #6200ee';
+                        selectedFolder = projName;
+                        selectedFilePath = null;
+                        fileActions.style.display = "block";
+                        generateSelectedBtn.style.display = "none";
+                        convertToCodeBtn.style.display = "none";
+                        convertAllBtn.style.display = "block";
+                    }
+
                     if (children.style.display === 'none') {
                         children.style.display = 'block'; arrow.style.transform = 'rotate(90deg)';
                     } else {

@@ -409,7 +409,7 @@ of our sport.`;
 root_child_0_child_2_child_0_child_1.fontSize = 16;
 root_child_0_child_2_child_0_child_1.textAlignHorizontal = "LEFT";
 root_child_0_child_2_child_0_child_1.textAlignVertical = "CENTER";
-root_child_0_child_2_child_0_child_1.textAutoResize = "TRUNCATE";
+root_child_0_child_2_child_0_child_1.textTruncation = "ENDING";
 root_child_0_child_2_child_0_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_0_child_2_child_0_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_0_child_2_child_0_child_1) root_child_0_child_2_child_0_child_1.textCase = "ORIGINAL";

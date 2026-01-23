@@ -103,7 +103,7 @@ if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
 root_child_0.effects = [];
 // Text Properties
-root_child_0.characters = "Newer first";
+root_child_0.characters = `Newer first`;
 root_child_0.fontSize = 14;
 root_child_0.textAlignHorizontal = "LEFT";
 root_child_0.textAlignVertical = "CENTER";

@@ -162,7 +162,7 @@ if ("strokeJoin" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.s
 if ("strokeMiterLimit" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_0_child_0_child_0.effects = [];
 // Text Properties
-root_child_0_child_0_child_0.characters = "UEFA Resources";
+root_child_0_child_0_child_0.characters = `UEFA Resources`;
 root_child_0_child_0_child_0.fontSize = 40;
 root_child_0_child_0_child_0.textAlignHorizontal = "LEFT";
 root_child_0_child_0_child_0.textAlignVertical = "CENTER";
@@ -271,7 +271,7 @@ if ("strokeJoin" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.s
 if ("strokeMiterLimit" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeMiterLimit = 4;
 root_child_1_child_0_child_0.effects = [];
 // Text Properties
-root_child_1_child_0_child_0.characters = "Second line for text description";
+root_child_1_child_0_child_0.characters = `Second line for text description`;
 root_child_1_child_0_child_0.fontSize = 16;
 root_child_1_child_0_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_0_child_0.textAlignVertical = "CENTER";

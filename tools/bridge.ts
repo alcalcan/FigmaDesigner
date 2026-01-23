@@ -686,6 +686,86 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // GENERATE FOLDER TO CODE ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/generate-folder-to-code') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { folder: relativeFolder, project: projectName } = JSON.parse(body);
+                if (!relativeFolder || !projectName) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing folder or project" }));
+                    return;
+                }
+
+                const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+                const fullFolderPath = path.join(extractionRoot, relativeFolder);
+
+                if (!fs.existsSync(fullFolderPath) || !fs.statSync(fullFolderPath).isDirectory()) {
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ error: "Folder not found" }));
+                    return;
+                }
+
+                const results: string[] = [];
+                const generator = new ComponentGenerator();
+
+                // Recursively find all .json files that look like component data
+                const findJsonFiles = (dir: string) => {
+                    const items = fs.readdirSync(dir);
+                    items.forEach(item => {
+                        const fullPath = path.join(dir, item);
+                        if (fs.statSync(fullPath).isDirectory()) {
+                            findJsonFiles(fullPath);
+                        } else if (item.endsWith('.json') && !item.includes('vector') && !item.includes('icon')) {
+                            // Basic heuristic: if it's in a folder named like a component, it's likely a component data file
+                            const parentName = path.basename(path.dirname(fullPath));
+                            if (item.toLowerCase().includes(parentName.split('_')[0].toLowerCase())) {
+                                results.push(fullPath);
+                            }
+                        }
+                    });
+                };
+
+                findJsonFiles(fullFolderPath);
+
+                if (results.length === 0) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "No component JSON files found in folder" }));
+                    return;
+                }
+
+                console.log(`🚀 Batch generating ${results.length} components from folder: ${relativeFolder}`);
+                const generationResults: any[] = [];
+
+                results.forEach(jsonPath => {
+                    try {
+                        const res = generator.generate(jsonPath, projectName);
+                        generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'ok', result: res });
+                    } catch (err: any) {
+                        generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'error', error: err.message });
+                    }
+                });
+
+                // Trigger Rebuild once
+                console.log("🔨 Rebuilding Plugin Bundle (Batch)...");
+                execSync('npm run build', { stdio: 'inherit' });
+                console.log("✅ Batch Build Complete.");
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', results: generationResults }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error in batch generation:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
     res.writeHead(404);
     res.end();
 });

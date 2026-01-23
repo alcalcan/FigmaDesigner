@@ -14,3 +14,7 @@ export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
 export { Placeholder } from "./Placeholder";
 export { checkbox_element } from "./UEFA_Academy_online/checkbox_element/checkbox_element";
 export { sidebar } from "./UEFA_Academy_online/sidebar/sidebar";
+export { Divider } from "./UEFA_Academy_online/Divider/Divider";
+export { SubSection } from "./UEFA_Academy_online/SubSection/SubSection";
+export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
+export { button_set } from "./UEFA_Academy_online/button_set/button_set";

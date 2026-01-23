@@ -208,7 +208,7 @@ if ("strokeJoin" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_c
 if ("strokeMiterLimit" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_0_child_0_child_0_child_0.effects = [];
 // Text Properties
-root_child_0_child_0_child_0_child_0.characters = "Poner algo aquí para la busqueda";
+root_child_0_child_0_child_0_child_0.characters = `Poner algo aquí para la busqueda`;
 root_child_0_child_0_child_0_child_0.fontSize = 14;
 root_child_0_child_0_child_0_child_0.textAlignHorizontal = "LEFT";
 root_child_0_child_0_child_0_child_0.textAlignVertical = "TOP";
@@ -372,7 +372,7 @@ if ("strokeJoin" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.s
 if ("strokeMiterLimit" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeMiterLimit = 4;
 root_child_1_child_0_child_0.effects = [];
 // Text Properties
-root_child_1_child_0_child_0.characters = "Newer first";
+root_child_1_child_0_child_0.characters = `Newer first`;
 root_child_1_child_0_child_0.fontSize = 14;
 root_child_1_child_0_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_0_child_0.textAlignVertical = "CENTER";
@@ -531,7 +531,7 @@ if ("strokeJoin" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.s
 if ("strokeMiterLimit" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeMiterLimit = 4;
 root_child_1_child_1_child_0.effects = [];
 // Text Properties
-root_child_1_child_1_child_0.characters = "PDF";
+root_child_1_child_1_child_0.characters = `PDF`;
 root_child_1_child_1_child_0.fontSize = 14;
 root_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_1_child_0.textAlignVertical = "CENTER";
@@ -690,7 +690,7 @@ if ("strokeJoin" in root_child_1_child_2_child_0) root_child_1_child_2_child_0.s
 if ("strokeMiterLimit" in root_child_1_child_2_child_0) root_child_1_child_2_child_0.strokeMiterLimit = 4;
 root_child_1_child_2_child_0.effects = [];
 // Text Properties
-root_child_1_child_2_child_0.characters = "Author";
+root_child_1_child_2_child_0.characters = `Author`;
 root_child_1_child_2_child_0.fontSize = 14;
 root_child_1_child_2_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_2_child_0.textAlignVertical = "CENTER";
@@ -849,7 +849,7 @@ if ("strokeJoin" in root_child_1_child_3_child_0) root_child_1_child_3_child_0.s
 if ("strokeMiterLimit" in root_child_1_child_3_child_0) root_child_1_child_3_child_0.strokeMiterLimit = 4;
 root_child_1_child_3_child_0.effects = [];
 // Text Properties
-root_child_1_child_3_child_0.characters = "Range date";
+root_child_1_child_3_child_0.characters = `Range date`;
 root_child_1_child_3_child_0.fontSize = 14;
 root_child_1_child_3_child_0.textAlignHorizontal = "LEFT";
 root_child_1_child_3_child_0.textAlignVertical = "CENTER";
