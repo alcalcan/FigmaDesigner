@@ -282,6 +282,7 @@
 
         let pollInterval = null;
         let selectedFilePath = null;
+        let isOperationActive = false;
 
         function showFeedback(btn, originalText, successText = "Captured!") {
             const prevText = btn.textContent;
@@ -434,6 +435,8 @@
         }
 
         async function loadFiles() {
+            if (isOperationActive) return;
+
             if (pollInterval === null) {
                 fileList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see files</div>';
                 fileActions.style.display = "none";
@@ -478,6 +481,8 @@
         }
 
         async function loadComponents() {
+            if (isOperationActive) return;
+
             if (pollInterval === null) {
                 componentList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see components</div>';
                 pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>';
@@ -592,6 +597,8 @@
                     input.style.cssText = 'font-size: 10px; background: #333; color: white; border: 1px solid #0d99ff; border-radius: 4px; padding: 2px 4px; width: 70px; outline: none; margin-right: 4px;';
 
                     const finish = () => {
+                        if (!isOperationActive) return;
+                        isOperationActive = false;
                         if (item.type === 'file') loadFiles();
                         else loadComponents();
                     };
@@ -629,11 +636,14 @@
                         if (ev.key === 'Enter') save();
                         if (ev.key === 'Escape') finish();
                     };
+                    input.onblur = () => finish();
                     input.onclick = (ev) => ev.stopPropagation();
+                    input.onmousedown = (ev) => ev.stopPropagation();
 
                     actions.appendChild(input);
                     input.focus();
                     input.select();
+                    isOperationActive = true;
                 };
 
                 moveBtn.onclick = showMoveInput;
