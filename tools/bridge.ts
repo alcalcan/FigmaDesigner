@@ -97,7 +97,7 @@ const server = http.createServer((req, res) => {
     }
 
     // LIST ENDPOINT (GET)
-    if (req.method === 'GET' && req.url === '/list') {
+    if (req.method === 'GET' && (req.url === '/list' || req.url?.startsWith('/list?'))) {
         try {
             const extractionDir = path.join(process.cwd(), 'tools', 'extraction');
             const files: { name: string, path: string, project: string }[] = [];
@@ -123,7 +123,7 @@ const server = http.createServer((req, res) => {
     }
 
     // LIST COMPONENTS (GET)
-    if (req.method === 'GET' && req.url === '/list-components') {
+    if (req.method === 'GET' && (req.url === '/list-components' || req.url?.startsWith('/list-components?'))) {
         try {
             const componentsDir = path.join(process.cwd(), 'components');
             const pagesDir = path.join(process.cwd(), 'pages');
@@ -382,6 +382,15 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
+                // Check if directory
+                if (fs.statSync(fullPath).isDirectory()) {
+                    fs.rmSync(fullPath, { recursive: true, force: true });
+                    console.log(`Deleted directory: ${relativePath}`);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ status: 'ok' }));
+                    return;
+                }
+
                 // 2. Delete the JSON file
                 fs.unlinkSync(fullPath);
                 console.log(`Deleted file: ${relativePath}`);
@@ -499,9 +508,9 @@ const server = http.createServer((req, res) => {
                 }
 
                 // Trigger Rebuild
-                console.log("🔨 Rebuilding Plugin Bundle...");
-                execSync('npm run build', { stdio: 'inherit' });
-                console.log("✅ Build Complete.");
+                // console.log("🔨 Rebuilding Plugin Bundle...");
+                // execSync('npm run build', { stdio: 'inherit' });
+                // console.log("✅ Build Complete.");
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', ...result }));
@@ -580,25 +589,25 @@ const server = http.createServer((req, res) => {
 
                 // --- SMART REGENERATION LOGIC ---
                 // user: "maybe we should look at extraction folder... automatically regenerate"
-                const latestExtraction = findLatestExtraction(componentClassName);
-                if (latestExtraction) {
-                    console.log(`♻️ Found extraction for ${componentClassName}. Automatically regenerating instead of deleting...`);
-                    try {
-                        const generator = new ComponentGenerator();
-                        generator.generate(latestExtraction.path, latestExtraction.project);
-
-                        // Rebuild plugin
-                        console.log("🔨 Rebuilding Plugin Bundle (Post-Regen)...");
-                        execSync('npm run build', { stdio: 'inherit' });
-
-                        res.writeHead(200, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify({ status: 'regenerated', message: `Component ${componentClassName} was found in extractions and automatically regenerated/fixed.` }));
-                        return;
-                    } catch (regenError) {
-                        console.error(`Failed to automatically regenerate ${componentClassName}:`, regenError);
-                        // Fall through to normal deletion if regeneration fails
-                    }
-                }
+                // const latestExtraction = findLatestExtraction(componentClassName);
+                // if (latestExtraction) {
+                //     console.log(`♻️ Found extraction for ${componentClassName}. Automatically regenerating instead of deleting...`);
+                //     try {
+                //         const generator = new ComponentGenerator();
+                //         generator.generate(latestExtraction.path, latestExtraction.project);
+                //
+                //         // Rebuild plugin
+                //         // console.log("🔨 Rebuilding Plugin Bundle (Post-Regen)...");
+                //         // execSync('npm run build', { stdio: 'inherit' });
+                //
+                //         res.writeHead(200, { 'Content-Type': 'application/json' });
+                //         res.end(JSON.stringify({ status: 'regenerated', message: `Component ${componentClassName} was found in extractions and automatically regenerated/fixed.` }));
+                //         return;
+                //     } catch (regenError) {
+                //         console.error(`Failed to automatically regenerate ${componentClassName}:`, regenError);
+                //         // Fall through to normal deletion if regeneration fails
+                //     }
+                // }
 
                 if (!fs.existsSync(componentDir)) {
                     res.writeHead(404);
@@ -632,8 +641,8 @@ const server = http.createServer((req, res) => {
                 }
 
                 // Rebuild plugin after deletion/cleanup
-                console.log("🔨 Rebuilding Plugin Bundle (Post-Delete)...");
-                execSync('npm run build', { stdio: 'inherit' });
+                // console.log("🔨 Rebuilding Plugin Bundle (Post-Delete)...");
+                // execSync('npm run build', { stdio: 'inherit' });
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', cleanup: updatedFiles.length }));
@@ -641,6 +650,76 @@ const server = http.createServer((req, res) => {
             } catch (e: unknown) {
                 const error = e as Error;
                 console.error("Error deleting/cleaning component:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
+    // DELETE COMPONENT FOLDER ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/delete-component-folder') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { folder } = JSON.parse(body); // e.g. "ProjectName"
+                if (!folder) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing folder name" }));
+                    return;
+                }
+
+                // Security: simple folder name or path relative to components
+                const componentsRoot = path.join(process.cwd(), 'components');
+                const fullPath = path.join(componentsRoot, folder);
+
+                if (!fullPath.startsWith(componentsRoot)) {
+                    res.writeHead(403);
+                    res.end(JSON.stringify({ error: "Invalid path" }));
+                    return;
+                }
+
+                if (!fs.existsSync(fullPath)) {
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ error: "Folder not found" }));
+                    return;
+                }
+
+                // 1. Cleanup Registry (index.ts)
+                const registryPath = path.join(componentsRoot, 'index.ts');
+                if (fs.existsSync(registryPath)) {
+                    let content = fs.readFileSync(registryPath, 'utf8');
+                    const lines = content.split('\n');
+                    // Remove lines that import from "./folder/..."
+                    // folder might be "Alex_CookBook"
+                    // imports look like: from "./Alex_CookBook/..."
+                    const folderPrefix = `./${folder}/`;
+                    const folderPrefixWin = `.\\${folder}\\`; // Just in case, though standard imports are /
+
+                    const forwardedContent = lines.filter(line => {
+                        return !line.includes(`"${folderPrefix}`) && !line.includes(`'${folderPrefix}`);
+                    });
+
+                    if (lines.length !== forwardedContent.length) {
+                        fs.writeFileSync(registryPath, forwardedContent.join('\n'));
+                        console.log(`Updated registry: removed ${lines.length - forwardedContent.length} exports for folder ${folder}`);
+                    }
+                }
+
+                // 2. Delete Directory
+                fs.rmSync(fullPath, { recursive: true, force: true });
+                console.log(`Deleted component folder: ${folder}`);
+
+                // Rebuild? (Optional, watcher usually handles it, but explicit build ensures sync)
+                // execSync('npm run build', { stdio: 'inherit' });
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok' }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error deleting component folder:", error.message);
                 res.writeHead(500);
                 res.end(JSON.stringify({ error: error.message }));
             }
@@ -757,9 +836,9 @@ const server = http.createServer((req, res) => {
                     console.log(`✅ Moved component: ${fullSourceDir} -> ${targetDir}`);
 
                     // Trigger Rebuild
-                    console.log("🔨 Rebuilding Plugin Bundle...");
-                    execSync('npm run build', { stdio: 'inherit' });
-                    console.log("✅ Build Complete.");
+                    // console.log("🔨 Rebuilding Plugin Bundle...");
+                    // execSync('npm run build', { stdio: 'inherit' });
+                    // console.log("✅ Build Complete.");
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ status: 'ok', newPath: path.join(destinationFolder, componentName) }));

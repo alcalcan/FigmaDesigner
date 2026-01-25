@@ -497,7 +497,7 @@
             selectedFolder = null;
 
             try {
-                const response = await fetch('http://127.0.0.1:3001/list');
+                const response = await fetch(`http://127.0.0.1:3001/list?t=${Date.now()}`);
                 if (!response.ok) throw new Error("Failed");
                 const { files } = await response.json();
 
@@ -541,7 +541,7 @@
             pageList.innerHTML = '<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Loading...</div>';
 
             try {
-                const response = await fetch('http://127.0.0.1:3001/list-components');
+                const response = await fetch(`http://127.0.0.1:3001/list-components?t=${Date.now()}`);
                 if (!response.ok) throw new Error("Failed");
                 const { components, pages } = await response.json();
 
@@ -794,6 +794,76 @@
                         children.style.display = 'none'; arrow.style.transform = 'rotate(0deg)';
                     }
                 };
+                // Add delete button for the group (Folder Delete)
+                const groupActions = document.createElement('div');
+                groupActions.style.cssText = 'display: flex; gap: 4px; margin-left: auto; align-items: center;';
+
+                const delGroupBtn = document.createElement('span');
+                delGroupBtn.textContent = '×';
+                delGroupBtn.style.cssText = 'font-size: 11px; background: #ff3b3b; color: white; padding: 0 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; cursor: pointer;';
+                delGroupBtn.title = "Delete Folder";
+
+                delGroupBtn.onclick = async (e) => {
+                    e.stopPropagation();
+                    if (!confirm(`Delete folder ${projName} and all contents?`)) return;
+
+                    // Deletion Logic
+                    if (container.id === 'file-list') {
+                        // For files, projName is usually the folder name in extraction root.
+                        // Or it could be "Project" if files are in root of project.
+                        // But groups[projName] contains items.
+                        // If items have project=projName, then the folder is probably `projName`.
+                        // Let's use the project from the first item.
+                        const representative = groups[projName][0];
+                        // If the item path is "Project/Session/File.json", then project is "Project".
+                        // Wait, our grouping uses `item.project`.
+                        // If item.project is what we grouped by, we delete `tools/extraction/<item.project>`.
+                        // BUT, if we are in a subfolder view?
+                        // The current `item.project` logic in `loadFiles` sets project = parts[0].
+                        // So deleting `item.project` deletes the whole project folder.
+                        // If that's what we want? Yes, "Delete Folder".
+                        try {
+                            const resp = await fetch('http://127.0.0.1:3001/delete', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ path: projName })
+                            });
+                            if (resp.ok) loadFiles();
+                            else alert("Failed to delete folder");
+                        } catch (err) { console.error(err); }
+
+                    } else {
+
+                        // COMPONENTS - Folder Delete (Server-Side)
+                        delGroupBtn.textContent = '...';
+                        try {
+                            const resp = await fetch('http://127.0.0.1:3001/delete-component-folder', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ folder: projName })
+                            });
+
+                            if (resp.ok) {
+                                loadComponents();
+                            } else {
+                                const err = await resp.json();
+                                alert("Failed to delete folder: " + (err.error || "Unknown error"));
+                                delGroupBtn.textContent = '×';
+                            }
+                        } catch (e) {
+                            console.error(e);
+                            alert("Network error during folder deletion");
+                            delGroupBtn.textContent = '×';
+                        }
+                    }
+                };
+
+                header.onmouseenter = () => { delGroupBtn.style.opacity = '1'; };
+                header.onmouseleave = () => { delGroupBtn.style.opacity = '0'; };
+
+                groupActions.appendChild(delGroupBtn);
+                header.appendChild(groupActions);
+
                 groupContainer.appendChild(header);
                 groupContainer.appendChild(children);
 

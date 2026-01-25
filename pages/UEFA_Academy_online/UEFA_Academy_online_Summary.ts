@@ -1,3 +1,4 @@
+import { Placeholder } from "../../components/Placeholder";
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 import { Top_bar } from "../../components/Competition_newsletters/Top_bar/Top_bar";
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
@@ -33,7 +34,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         const titleBarCTAComp = new TitleBar_withCTA();
         const searchBarComp = new search_bar();
         const cardComp = new card();
-        const sidebarComp = new sidebar();
+        const sidebarComp = new Placeholder("sidebar");
         const simpleInfoComp = new simple_info();
 
         // 2. Generate Nodes
