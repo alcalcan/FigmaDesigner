@@ -862,69 +862,71 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
             try {
-                const { folder: relativeFolder, project: projectName } = JSON.parse(body);
+                const { folder: relativeFolder, project: projectName, simplified } = JSON.parse(body);
                 if (!relativeFolder || !projectName) {
                     res.writeHead(400);
                     res.end(JSON.stringify({ error: "Missing folder or project" }));
                     return;
                 }
 
+                // ... check folders ...
                 const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
                 const fullFolderPath = path.join(extractionRoot, relativeFolder);
 
-                if (!fs.existsSync(fullFolderPath) || !fs.statSync(fullFolderPath).isDirectory()) {
+                if (!fs.existsSync(fullFolderPath)) {
                     res.writeHead(404);
                     res.end(JSON.stringify({ error: "Folder not found" }));
                     return;
                 }
 
-                const results: string[] = [];
-                const generator = new ComponentGenerator();
+                const results: { file: string, status: string, error?: string }[] = [];
 
-                // Recursively find all .json files that look like component data
-                const findJsonFiles = (dir: string) => {
-                    const items = fs.readdirSync(dir);
-                    items.forEach(item => {
-                        const fullPath = path.join(dir, item);
-                        if (fs.statSync(fullPath).isDirectory()) {
-                            findJsonFiles(fullPath);
-                        } else if (item.endsWith('.json') && !item.includes('vector') && !item.includes('icon')) {
-                            // Basic heuristic: if it's in a folder named like a component, it's likely a component data file
-                            const parentName = path.basename(path.dirname(fullPath));
-                            if (item.toLowerCase().includes(parentName.split('_')[0].toLowerCase())) {
-                                results.push(fullPath);
-                            }
+                // Recursively find all .json files in subfolders
+                const getAllJsonFiles = (dir: string): string[] => {
+                    let results: string[] = [];
+                    const list = fs.readdirSync(dir);
+                    list.forEach(file => {
+                        const filePath = path.join(dir, file);
+                        const stat = fs.statSync(filePath);
+                        if (stat && stat.isDirectory()) {
+                            results = results.concat(getAllJsonFiles(filePath));
+                        } else if (file.endsWith('.json') && !file.includes('vector') && !file.includes('icon')) {
+                            // Basic filter to avoid random assets if any
+                            results.push(filePath);
                         }
                     });
-                };
-
-                findJsonFiles(fullFolderPath);
-
-                if (results.length === 0) {
-                    res.writeHead(400);
-                    res.end(JSON.stringify({ error: "No component JSON files found in folder" }));
-                    return;
+                    return results;
                 }
 
-                console.log(`🚀 Batch generating ${results.length} components from folder: ${relativeFolder}`);
-                const generationResults: { path: string, status: string, result?: { tsPath: string; componentName: string; projectName: string; }, error?: string }[] = [];
+                const files = getAllJsonFiles(fullFolderPath);
+                console.log(`Found ${files.length} matching files in ${relativeFolder}`);
 
-                results.forEach(jsonPath => {
+                const generator = new ComponentGenerator();
+                // Dynamic Import for Refactorer
+                const refactorerPath = require.resolve('./ComponentRefactorer');
+                delete require.cache[refactorerPath];
+                const { ComponentRefactorer } = require('./ComponentRefactorer');
+                const refactorer = new ComponentRefactorer();
+
+                for (const fullPath of files) {
+                    const file = path.basename(fullPath);
                     try {
-                        const res = generator.generate(jsonPath, projectName);
-                        generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'ok', result: res });
-                    } catch (err: unknown) {
-                        generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'error', error: (err as Error).message });
-                    }
-                });
+                        // const fullPath is already absolute from getAllJsonFiles
+                        const result = generator.generate(fullPath, projectName);
 
-                // Trigger Rebuild once
-                console.log("🔨 Rebuilding Plugin Bundle (Batch)...");
-                execSync('npm run build', { stdio: 'inherit' });
-                console.log("✅ Batch Build Complete.");
+                        if (simplified !== false) {
+                            refactorer.refactor(result.tsPath);
+                        }
+
+                        results.push({ file, status: 'ok', ...result });
+                    } catch (err: any) {
+                        results.push({ file, status: 'error', error: err.message });
+                    }
+                }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ status: 'ok', results: generationResults }));
+                res.end(JSON.stringify({ status: 'ok', results }));
+
 
             } catch (e: unknown) {
                 const error = e as Error;

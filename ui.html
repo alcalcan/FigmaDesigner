@@ -448,10 +448,15 @@
             convertAllBtn.disabled = true;
 
             try {
+                const isSimplified = simplifiedCodeCheckbox.checked;
                 const response = await fetch('http://127.0.0.1:3001/generate-folder-to-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ folder: selectedFolder, project: selectedFolder.split('/')[0] })
+                    body: JSON.stringify({
+                        folder: selectedFolder,
+                        project: selectedFolder.split('/')[0],
+                        simplified: isSimplified
+                    })
                 });
 
                 const result = await response.json();
