@@ -1,7 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-
-
-
+import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 
 export class sidebar extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -9,7 +6,7 @@ export class sidebar extends BaseComponent {
     "type": "FRAME",
     "name": "sidebar",
     "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"VERTICAL","primaryAxisSizingMode":"AUTO","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":16,"paddingTop":0,"paddingRight":16,"paddingBottom":0,"paddingLeft":16,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":14},
-    "layoutProps": {"width":339,"height":696,"parentIsAutoLayout":false},
+    "layoutProps": {"width":339,"height":694,"parentIsAutoLayout":false},
     "children": [
       {
         "type": "FRAME",
@@ -33,9 +30,9 @@ export class sidebar extends BaseComponent {
                     "type": "VECTOR",
                     "shouldFlatten": true,
                     "name": "Vector (Stroke)",
-                    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":0.9999708533287048,"y":1},
+                    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":2,"strokeAlign":"CENTER","strokeCap":"ROUND","strokeJoin":"ROUND","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":0.9999708533287048,"y":1},
                     "layoutProps": {"width":22.000059127807617,"height":21.020004272460938,"relativeTransform":[[1,0,0.9999708533287048],[0,1,1]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
-                    "svgContent": "<svg width=\"22.000059127807617\" height=\"21.020004272460938\" viewBox=\"0 0 22.000059127807617 21.020004272460938\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M11 0C11.3806 0 11.7283 0.216072 11.8967 0.557375L14.7543 6.34646L21.1447 7.2805C21.5212 7.33554 21.8339 7.59955 21.9513 7.96156C22.0687 8.32357 21.9704 8.72082 21.6978 8.98635L17.0746 13.4894L18.1656 19.851C18.23 20.2261 18.0757 20.6053 17.7678 20.8291C17.4598 21.0528 17.0515 21.0823 16.7146 20.9051L11 17.8998L5.28547 20.9051C4.94855 21.0823 4.54026 21.0528 4.23229 20.8291C3.92431 20.6053 3.77006 20.2261 3.83441 19.851L4.9255 13.4894L0.302296 8.98635C0.0296782 8.72082 -0.0685945 8.32357 0.048783 7.96156C0.166161 7.59955 0.47884 7.33554 0.8554 7.2805L7.24576 6.34646L10.1033 0.557375C10.2718 0.216072 10.6194 0 11 0ZM11 3.25924L8.80673 7.70261C8.66119 7.99746 8.38 8.20192 8.05465 8.24948L3.14844 8.96659L6.69775 12.4236C6.93363 12.6534 7.04129 12.9845 6.98563 13.309L6.1482 18.1917L10.5346 15.8849C10.826 15.7317 11.1741 15.7317 11.4655 15.8849L15.8518 18.1917L15.0144 13.309C14.9588 12.9845 15.0664 12.6534 15.3023 12.4236L18.8516 8.96659L13.9454 8.24948C13.62 8.20192 13.3389 7.99746 13.1933 7.70261L11 3.25924Z\" fill=\"#1A313C\"/>\n</svg>"
+                    "svgContent": "<svg width=\"22.000059127807617\" height=\"21.020004272460938\" viewBox=\"0 0 22.000059127807617 21.020004272460938\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M11 0C11.3806 0 11.7283 0.216072 11.8967 0.557376L14.7543 6.34647L21.1447 7.28051C21.5212 7.33555 21.8339 7.59956 21.9513 7.96157C22.0687 8.32358 21.9704 8.72083 21.6978 8.98636L17.0746 13.4894L18.1656 19.851C18.23 20.2261 18.0757 20.6053 17.7678 20.8291C17.4598 21.0528 17.0515 21.0823 16.7146 20.9051L11 17.8998L5.28548 20.9051C4.94856 21.0823 4.54027 21.0528 4.2323 20.8291C3.92432 20.6053 3.77007 20.2261 3.83442 19.851L4.92551 13.4894L0.302296 8.98636C0.0296782 8.72083 -0.0685946 8.32358 0.0487831 7.96157C0.166161 7.59956 0.478841 7.33555 0.855401 7.28051L7.24577 6.34647L10.1033 0.557376C10.2718 0.216072 10.6194 0 11 0ZM11 3.25925L8.80674 7.70262C8.6612 7.99747 8.38001 8.20193 8.05466 8.24949L3.14844 8.9666L6.69776 12.4236C6.93364 12.6534 7.0413 12.9845 6.98564 13.309L6.14821 18.1917L10.5346 15.8849C10.826 15.7317 11.1741 15.7317 11.4655 15.8849L15.8518 18.1917L15.0144 13.309C14.9588 12.9845 15.0664 12.6534 15.3023 12.4236L18.8516 8.9666L13.9454 8.24949C13.62 8.20193 13.3389 7.99747 13.1933 7.70262L11 3.25925Z\" fill=\"#1A313C\"/>\n</svg>"
                   }
                 ]
               },
@@ -57,7 +54,7 @@ export class sidebar extends BaseComponent {
                 "type": "VECTOR",
                 "shouldFlatten": true,
                 "name": "Rectangle 77 Copy 7",
-                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":0,"y":0},
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"x":0,"y":0},
                 "layoutProps": {"width":42,"height":22,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
                 "svgContent": "<svg width=\"42\" height=\"22\" viewBox=\"0 0 42 22\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M0 11C0 4.92487 4.92487 0 11 0H31C37.0751 0 42 4.92487 42 11C42 17.0751 37.0751 22 31 22H11C4.92487 22 0 17.0751 0 11Z\" fill=\"#9BA8AD\"/>\n</svg>"
               },
@@ -65,7 +62,7 @@ export class sidebar extends BaseComponent {
                 "type": "VECTOR",
                 "shouldFlatten": true,
                 "name": "Oval 1 Copy 13",
-                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
                 "layoutProps": {"width":18,"height":18,"relativeTransform":[[1,0,2],[0,1,2]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
                 "svgContent": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18Z\" fill=\"white\"/>\n</svg>"
               },
@@ -73,9 +70,9 @@ export class sidebar extends BaseComponent {
                 "type": "VECTOR",
                 "shouldFlatten": true,
                 "name": "Shape",
-                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":24,"y":6},
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":24,"y":6},
                 "layoutProps": {"width":10,"height":10,"relativeTransform":[[1,0,24],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
-                "svgContent": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M5.86476 5.00039L9.82066 1.04482C10.0598 0.805562 10.0598 0.418706 9.82066 0.180999C9.58157 -0.0582614 9.19498 -0.0582614 8.95744 0.180999L4.99999 4.13501L1.04254 0.179445C0.803445 -0.059815 0.41686 -0.059815 0.17932 0.179445C-0.0597732 0.418706 -0.0597732 0.805562 0.17932 1.04327L4.13522 4.99884L0.17932 8.95595C-0.0597732 9.19522 -0.0597732 9.58207 0.17932 9.81978C0.298866 9.93941 0.455674 9.99845 0.610929 9.99845C0.767736 9.99845 0.922991 9.93941 1.04254 9.81978L4.99999 5.86421L8.95744 9.82133C9.07699 9.94096 9.23224 10 9.38905 10C9.54586 10 9.70111 9.94096 9.82066 9.82133C10.0598 9.58207 10.0598 9.19522 9.82066 8.95751L5.86476 5.00039Z\" fill=\"white\"/>\n</svg>"
+                "svgContent": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M5.86477 5.00039L9.82068 1.04482C10.0598 0.805562 10.0598 0.418706 9.82068 0.180999C9.58159 -0.0582615 9.195 -0.0582615 8.95746 0.180999L5 4.13501L1.04254 0.179445C0.803447 -0.0598151 0.416861 -0.0598151 0.17932 0.179445C-0.0597733 0.418706 -0.0597733 0.805562 0.17932 1.04327L4.13523 4.99883L0.17932 8.95595C-0.0597733 9.19522 -0.0597733 9.58207 0.17932 9.81978C0.298867 9.93941 0.455675 9.99845 0.61093 9.99845C0.767738 9.99845 0.922993 9.93941 1.04254 9.81978L5 5.86421L8.95746 9.82133C9.07701 9.94096 9.23226 10 9.38907 10C9.54588 10 9.70113 9.94096 9.82068 9.82133C10.0598 9.58207 10.0598 9.19522 9.82068 8.95751L5.86477 5.00039Z\" fill=\"white\"/>\n</svg>"
               }
             ]
           }
@@ -85,13 +82,13 @@ export class sidebar extends BaseComponent {
         "type": "LINE",
         "name": "Line 62",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[],"strokes":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.8156862854957581,"g":0.8470588326454163,"b":0.8588235378265381},"boundVariables":{}}],"strokeWeight":1,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"layoutAlign":"STRETCH","layoutGrow":0},
-        "layoutProps": {"width":307,"height":1,"relativeTransform":[[1,0,16],[0,1,41]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
+        "layoutProps": {"width":307,"height":0,"relativeTransform":[[1,0,16],[0,1,41]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
       },
       {
         "type": "FRAME",
         "name": "Frame 1713",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"AUTO","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"CENTER","itemSpacing":16,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
-        "layoutProps": {"width":307,"height":40,"relativeTransform":[[1,0,16],[0,1,58]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+        "layoutProps": {"width":307,"height":40,"relativeTransform":[[1,0,16],[0,1,57]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
         "children": [
           {
             "type": "TEXT",
@@ -143,7 +140,7 @@ export class sidebar extends BaseComponent {
                         "type": "VECTOR",
                         "name": "Path",
                         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"vectorPaths":[{"windingRule":"NONZERO","data":"M 6.057106971740723 4.642893314361572 L 1.7071068286895752 0.2928932309150696 C 1.3165825307369232 -0.0976310670375824 0.6834175288677216 -0.0976310670375824 0.2928932309150696 0.2928932309150696 C -0.0976310670375824 0.6834175288677216 -0.0976310670375824 1.3165825307369232 0.2928932309150696 1.7071068286895752 L 4.642893314361572 6.057106971740723 C 5.033417612314224 6.447631269693375 5.666582673788071 6.447631269693375 6.057106971740723 6.057106971740723 C 6.447631269693375 5.666582673788071 6.447631269693375 5.033417612314224 6.057106971740723 4.642893314361572 Z"}],"x":15.6484375,"y":15.650390625},
-                        "layoutProps": {"width":6.350000381469727,"height":6.350000381469727,"relativeTransform":[[1,0,15.6484375],[0,1,15.650390625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
+                        "layoutProps": {"width":6.349999904632568,"height":6.349999904632568,"relativeTransform":[[1,0,15.6484375],[0,1,15.650390625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
                       }
                     ]
                   }
@@ -157,7 +154,7 @@ export class sidebar extends BaseComponent {
         "type": "FRAME",
         "name": "Text Field",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"VERTICAL","primaryAxisSizingMode":"AUTO","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"CENTER","counterAxisAlignItems":"MIN","itemSpacing":8,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"INHERIT","layoutGrow":0},
-        "layoutProps": {"width":296,"height":69,"relativeTransform":[[1,0,16],[0,1,114]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+        "layoutProps": {"width":296,"height":69,"relativeTransform":[[1,0,16],[0,1,113]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
         "children": [
           {
             "type": "FRAME",
@@ -207,7 +204,7 @@ export class sidebar extends BaseComponent {
         "type": "FRAME",
         "name": "Frame 1712",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"CENTER","itemSpacing":4,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.8156862854957581,"g":0.8470588326454163,"b":0.8588235378265381},"boundVariables":{}}],"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":0,"strokeRightWeight":0,"strokeBottomWeight":1,"strokeLeftWeight":0,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
-        "layoutProps": {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,199]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+        "layoutProps": {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,198]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
         "children": [
           {
             "type": "TEXT",
@@ -225,7 +222,7 @@ export class sidebar extends BaseComponent {
                 "type": "VECTOR",
                 "shouldFlatten": true,
                 "name": "Union",
-                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"ROUND","strokeJoin":"ROUND","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
                 "layoutProps": {"width":8,"height":8,"relativeTransform":[[1,0,2],[0,1,2]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
                 "svgContent": "<svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4.5 0.5C4.5 0.223858 4.27614 0 4 0C3.72386 0 3.5 0.223858 3.5 0.5V3.5H0.5C0.223858 3.5 0 3.72386 0 4C0 4.27614 0.223858 4.5 0.5 4.5H3.5V7.5C3.5 7.77614 3.72386 8 4 8C4.27614 8 4.5 7.77614 4.5 7.5V4.5H7.5C7.77614 4.5 8 4.27614 8 4C8 3.72386 7.77614 3.5 7.5 3.5H4.5V0.5Z\" fill=\"#1A313C\"/>\n</svg>"
               }
@@ -237,7 +234,7 @@ export class sidebar extends BaseComponent {
         "type": "FRAME",
         "name": "Frame 1711",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"VERTICAL","primaryAxisSizingMode":"AUTO","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":12,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":8,"layoutAlign":"STRETCH","layoutGrow":0},
-        "layoutProps": {"width":307,"height":384,"relativeTransform":[[1,0,16],[0,1,247]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+        "layoutProps": {"width":307,"height":384,"relativeTransform":[[1,0,16],[0,1,246]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
         "children": [
           {
             "type": "FRAME",
@@ -262,15 +259,15 @@ export class sidebar extends BaseComponent {
                     "shouldFlatten": true,
                     "name": "Vector",
                     "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0.6352941393852234,"b":0.5882353186607361},"boundVariables":{}}],"strokeWeight":2,"strokeAlign":"CENTER","strokeCap":"ROUND","strokeJoin":"ROUND","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2.5,"y":6},
-                    "layoutProps": {"width":7,"height":1,"relativeTransform":[[1,0,2.5],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
-                    "svgContent": "<svg width=\"7\" height=\"1\" viewBox=\"0 0 7 1\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M1 1H8\" stroke=\"#00A296\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg>"
+                    "layoutProps": {"width":7,"height":0,"relativeTransform":[[1,0,2.5],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
+                    "svgContent": "<svg width=\"9\" height=\"2\" viewBox=\"0 0 9 2\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M1 1H8\" stroke=\"#00A296\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg>"
                   }
                 ]
               }
             ]
           },
-          ...[{"name":"UEFA Academy","isSelected":false},{"name":"UEFA Assist","isSelected":false},{"name":"UEFA Events","isSelected":false},{"name":"UEFA Football Development","isSelected":false},{"name":"UEFA Grow","fillColor":{"r":0.9450980424880981,"g":0.9529411792755127,"b":0.9725490212440491},"isSelected":true},{"name":"UEFA Hatrick","isSelected":false},{"name":"UEFA Anti-Doping and Medical","isSelected":false},{"name":"UEFA Intelligence Center","isSelected":false}].map(item => {
-            const node: NodeDefinition = {
+          ...[{"name":"UEFA Academy"},{"name":"UEFA Assist"},{"name":"UEFA Events"},{"name":"UEFA Football Development"},{"name":"UEFA Grow","isSelected":true,"fillColor":{"r":0.9450980424880981,"g":0.9529411792755127,"b":0.9725490212440491}},{"name":"UEFA Hatrick"},{"name":"UEFA Anti-Doping and Medical"},{"name":"UEFA Intelligence Center"}].map(item => {
+            const node = {
           "type": "FRAME",
           "name": "Frame 1705",
           "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"CENTER","itemSpacing":4,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":8,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":0,"strokeRightWeight":0,"strokeBottomWeight":1,"strokeLeftWeight":0,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
@@ -292,14 +289,14 @@ export class sidebar extends BaseComponent {
                     {
                       "type": "VECTOR",
                       "name": "Path",
-                      "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"vectorPaths":[{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}],"x":2.5,"y":2.5},
+                      "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"vectorPaths":[{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}],"x":2.5,"y":2.5},
                       "layoutProps": {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
                     },
                     {
                       "type": "VECTOR",
                       "name": "Path",
-                      "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"vectorPaths":[{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}],"x":4.166666507720947,"y":4.166666507720947},
-                      "layoutProps": {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666507720947],[0,1,4.166666507720947]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
+                      "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"vectorPaths":[{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}],"x":4.166666626930237,"y":4.166666626930237},
+                      "layoutProps": {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
                     }
                   ]
                 }
@@ -316,8 +313,9 @@ export class sidebar extends BaseComponent {
             
             // Apply loop overrides
             if (item.name) {
-                 const traverse = (n: NodeDefinition) => {
-                    if (n.type === 'TEXT' && n.props) {
+                 // Find text child - simplified traversal for generated code
+                 const traverse = (n: any) => {
+                    if (n.type === 'TEXT') {
                          n.props.characters = item.name;
                     }
                     if (n.children) n.children.forEach(traverse);
@@ -325,61 +323,43 @@ export class sidebar extends BaseComponent {
                  traverse(node);
             }
 
-            // Checkbox Logic: Inject checkmark and toggle visibility
-            const findCheckbox = (n: NodeDefinition): NodeDefinition | null => {
-                if (n.name === 'Checkbox' && n.children) return n;
+            // Checkbox Logic: Bind checkmark visibility to selection
+            const findShape = (n: any): any => {
+                if (n.name === 'Checkbox' && n.children) {
+                     const shape = n.children.find((c: any) => c.name === 'Shape');
+                     if (shape && shape.children && shape.children.length > 1) return shape;
+                }
                 if (n.children) {
                     for (const c of n.children) {
-                        const res = findCheckbox(c);
-                        if (res) return res;
+                        const s = findShape(c);
+                        if (s) return s;
                     }
                 }
                 return null;
             };
-
-            const checkbox = findCheckbox(node);
-            if (checkbox && checkbox.children) {
-                const shapeNode = checkbox.children.find(c => c.name === 'Shape');
-                if (shapeNode && shapeNode.children && shapeNode.children.length > 1) {
-                    // Reversed Logic: 
-                    // isSelected: true -> Solid Box (hide inner hole)
-                    // isSelected: false -> Contour/Border (show inner hole)
-                    shapeNode.children[1].props = shapeNode.children[1].props || {};
-                    shapeNode.children[1].props.visible = !item.isSelected;
-                }
-
-                // Inject checkmark if not present
-                if (!checkbox.children.find(c => c.name === 'Checkmark')) {
-                    checkbox.children.push({
-                        "type": "VECTOR",
-                        "name": "Checkmark",
-                        "props": {
-                            "visible": !!item.isSelected,
-                            "opacity": 1,
-                            "strokes": [{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 1, "g": 1, "b": 1 }, "boundVariables": {} }],
-                            "strokeWeight": 2,
-                            "strokeCap": "ROUND",
-                            "strokeJoin": "ROUND",
-                            "vectorPaths": [{ "windingRule": "NONZERO", "data": "M 0 4 L 3 7 L 8 0" }],
-                        },
-                        "layoutProps": { "width": 8, "height": 7, "relativeTransform": [[1, 0, 6], [0, 1, 6]], "parentIsAutoLayout": false, "layoutPositioning": "AUTO" }
-                    });
-                }
+            const shape = findShape(node);
+            if (shape) {
+                // The second child (index 1) is the inner checkmark path
+                // We bind its visibility to the selection state
+                shape.children[1].props.visible = !!item.isSelected;
             }
 
             if (item.isSelected) {
                 // Apply background fill
-                node.props = node.props || {};
                 node.props.fills = [{
                     type: "SOLID",
                     visible: true,
                     opacity: 1,
                     blendMode: "NORMAL",
-                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 }, // User-requested appearance
+                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 }, // Fallback to recorded color or default
                     boundVariables: {}
                 }];
+                // Also set checkbox state?
+                // The JSON shows checkboxes as squares. "Checked" usually means a specific icon or fill.
+                // In the visual, checks are outlined. Selected row is gray.
+                // We'll leave checkbox logic as is for now unless we see it varies.
             } else {
-                if (node.props) node.props.fills = [];
+                node.props.fills = [];
             }
 
             return node;
@@ -390,7 +370,7 @@ export class sidebar extends BaseComponent {
         "type": "FRAME",
         "name": "Frame 1649",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"CENTER","itemSpacing":4,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.8156862854957581,"g":0.8470588326454163,"b":0.8588235378265381},"boundVariables":{}}],"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":0,"strokeRightWeight":0,"strokeBottomWeight":1,"strokeLeftWeight":0,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
-        "layoutProps": {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,647]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+        "layoutProps": {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,646]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
         "children": [
           {
             "type": "TEXT",
@@ -408,7 +388,7 @@ export class sidebar extends BaseComponent {
                 "type": "VECTOR",
                 "shouldFlatten": true,
                 "name": "Union",
-                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"ROUND","strokeJoin":"ROUND","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
                 "layoutProps": {"width":8,"height":8,"relativeTransform":[[1,0,2],[0,1,2]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
                 "svgContent": "<svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4.5 0.5C4.5 0.223858 4.27614 0 4 0C3.72386 0 3.5 0.223858 3.5 0.5V3.5H0.5C0.223858 3.5 0 3.72386 0 4C0 4.27614 0.223858 4.5 0.5 4.5H3.5V7.5C3.5 7.77614 3.72386 8 4 8C4.27614 8 4.5 7.77614 4.5 7.5V4.5H7.5C7.77614 4.5 8 4.27614 8 4C8 3.72386 7.77614 3.5 7.5 3.5H4.5V0.5Z\" fill=\"#1A313C\"/>\n</svg>"
               }
@@ -420,17 +400,13 @@ export class sidebar extends BaseComponent {
         "type": "FRAME",
         "name": "Frame 1656",
         "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"AUTO","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":8,"paddingTop":8,"paddingRight":8,"paddingBottom":8,"paddingLeft":8,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
-        "layoutProps": {"width":307,"height":1,"relativeTransform":[[1,0,16],[0,1,695]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
+        "layoutProps": {"width":307,"height":0,"relativeTransform":[[1,0,16],[0,1,694]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
       }
     ]
   };
-
         const root = await this.renderDefinition(structure);
-        
-        // Final positioning
         root.x = props.x;
         root.y = props.y;
-
         return root;
     }
 }

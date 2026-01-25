@@ -442,6 +442,7 @@ export class ComponentRefactorer {
         return def;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     private generateDynamicAssignments(nodes: Map<string, RefactorerNode>, rootId: string): string[] {
         const assignments: string[] = [];
 
@@ -542,30 +543,44 @@ export class ComponentRefactorer {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private areNodesSimilar(a: any, b: any): boolean {
         if (a.type !== b.type) return false;
-        if (a.children?.length !== b.children?.length) return false;
 
-        // Check if children types match deeply (structural similarity)
-        // This is expensive but necessary. For now, strict type structure check.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const structureSignature = (n: any): string => {
-            let sig = n.type;
-            if (n.children) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                sig += `[${n.children.map((c: any) => structureSignature(c)).join(',')}]`;
-            }
-            return sig;
-        };
+        // If they have distinct names and they match, that's a strong signal
+        if (a.name && b.name && a.name === b.name && a.type === 'FRAME') return true;
 
-        if (structureSignature(a) !== structureSignature(b)) return false;
+        // Check if child types match partially (structural similarity)
+        const getSig = (n: any) => (n.children || []).map((c: any) => c.type).join(',');
+        const sigA = getSig(a);
+        const sigB = getSig(b);
 
-        return true;
+        if (sigA === sigB) return true;
+
+        // Allow one to be a subset of another (e.g. absent checkmark)
+        if (sigA.includes(sigB) || sigB.includes(sigA)) return true;
+
+        return false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private generateLoopCode(group: any[]): string {
-        const template = JSON.parse(JSON.stringify(group[0]));
+        const template = this.mergeNodeTrees(group);
+        const isHoleCheckbox = this.isHoleInCode(template);
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const variations: any[] = [];
+
+        // Normalize Template: Ensure all checkboxes start with an "open" border look (inner hole visible)
+        // This avoids the "blob" look when the first item in the group is unselected.
+        const normalizeCheckbox = (n: any) => {
+            if (n.name === 'Checkbox' && n.children) {
+                const shape = n.children.find((c: any) => c.name === 'Shape');
+                if (shape && shape.children && shape.children.length > 1) {
+                    shape.children[1].props = shape.children[1].props || {};
+                    shape.children[1].props.visible = true; // Always show border/hole by default
+                }
+            }
+            if (n.children) n.children.forEach(normalizeCheckbox);
+        };
+        normalizeCheckbox(template);
 
         group.forEach(node => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -585,31 +600,80 @@ export class ComponentRefactorer {
             const text = findText(node);
             if (text) variation.name = text;
 
+            // Check if selected
+            let isSelected = false;
+
+            // Heuristic for selection: 
+            // 1. Check item background fill (if it matches a "selected" color like gray/blue)
             if (node.props?.fills && node.props.fills.length > 0) {
                 const fill = node.props.fills[0];
                 if (fill.visible !== false) {
-                    variation.isSelected = true;
-                    variation.fillColor = fill.color;
-                } else {
-                    variation.isSelected = false;
+                    // Check if it's not white (usually unselected is white or transparent)
+                    const c = fill.color;
+                    if (c && (c.r < 0.99 || c.g < 0.99 || c.b < 0.99)) {
+                        isSelected = true;
+                        variation.fillColor = fill.color;
+                    }
                 }
-            } else {
-                variation.isSelected = false;
             }
 
+            // Also check checkbox children for selection
+            const findCheckboxInNode = (n: any): any => {
+                if (n.name === 'Checkbox') return n;
+                if (n.children) {
+                    for (const c of n.children) {
+                        const res = findCheckboxInNode(c);
+                        if (res) return res;
+                    }
+                }
+                return null;
+            };
+
+            const checkboxNode = findCheckboxInNode(node);
+            if (checkboxNode) {
+                variation.hasCheckbox = true;
+                if (checkboxNode.children) {
+                    const shape = checkboxNode.children.find((c: any) => c.name === 'Shape');
+                    if (shape && shape.children && shape.children.length > 1) {
+                        const base = shape.children[0];
+                        const hole = shape.children[1];
+                        const isHole = this.isContained(hole, base);
+
+                        if (isHole) {
+                            // If it's a hole, isSelected if visible is false (subtractive logic)
+                            if (hole.props?.visible === false || hole.props?.visible === 'false') {
+                                isSelected = true;
+                            }
+                        } else {
+                            // If it's not a hole (e.g. checkmark icon), isSelected if visible is true
+                            if (hole.props?.visible === true || hole.props?.visible === 'true' || hole.props?.visible === undefined) {
+                                isSelected = true;
+                            }
+                        }
+                    }
+                    if (checkboxNode.children.find((c: any) => c.name === 'Checkmark')) {
+                        isSelected = true;
+                    }
+                }
+            } else {
+                variation.hasCheckbox = false;
+            }
+
+            variation.isSelected = isSelected;
             variations.push(variation);
         });
 
         const dataStr = JSON.stringify(variations);
         const templateStr = this.serialize(template, 4);
 
-        const code = `...${dataStr}.map(item => {
-            const node: NodeDefinition = ${templateStr};
+        const code = `...${dataStr}.map((item: any) => {
+            const node = ${templateStr} as unknown as NodeDefinition;
             
             // Apply loop overrides
             if (item.name) {
-                 const traverse = (n: NodeDefinition) => {
-                    if (n.type === 'TEXT' && n.props) {
+                 const traverse = (n: any) => {
+                    if (n.type === 'TEXT') {
+                         n.props = n.props || {};
                          n.props.characters = item.name;
                     }
                     if (n.children) n.children.forEach(traverse);
@@ -617,44 +681,30 @@ export class ComponentRefactorer {
                  traverse(node);
             }
 
-            // Checkbox Logic: Inject checkmark and toggle visibility
-            const findCheckbox = (n: NodeDefinition): NodeDefinition | null => {
-                if (n.name === 'Checkbox' && n.children) return n;
+            // Checkbox Logic: Bind checkmark visibility to selection
+            const findShape = (n: any): any => {
+                if (n.name === 'Checkbox' && n.children) {
+                     const shape = n.children.find((c: any) => c.name === 'Shape');
+                     if (shape && shape.children && shape.children.length > 1) return shape;
+                }
                 if (n.children) {
                     for (const c of n.children) {
-                        const res = findCheckbox(c);
-                        if (res) return res;
+                        const s = findShape(c);
+                        if (s) return s;
                     }
                 }
                 return null;
             };
 
-            const checkbox = findCheckbox(node);
-            if (checkbox && checkbox.children) {
-                const shapeNode = checkbox.children.find(c => c.name === 'Shape');
-                if (shapeNode && shapeNode.children && shapeNode.children.length > 1) {
-                    // Reversed Logic (XOR): 
-                    // isSelected: true -> Solid Box (hide inner hole)
-                    // isSelected: false -> Contour/Border (show inner hole)
-                    shapeNode.children[1].props = shapeNode.children[1].props || {};
-                    shapeNode.children[1].props.visible = !item.isSelected;
-                }
-
-                if (!checkbox.children.find(c => c.name === 'Checkmark')) {
-                    checkbox.children.push({
-                        "type": "VECTOR",
-                        "name": "Checkmark",
-                        "props": {
-                            "visible": !!item.isSelected,
-                            "opacity": 1,
-                            "strokes": [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":1,"b":1},"boundVariables":{}}],
-                            "strokeWeight": 2,
-                            "strokeCap": "ROUND",
-                            "strokeJoin": "ROUND",
-                            "vectorPaths": [{"windingRule":"NONZERO","data":"M 0 4 L 3 7 L 8 0"}],
-                        },
-                        "layoutProps": {"width":8,"height":7,"relativeTransform":[[1,0,6],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
-                    });
+            const shape = findShape(node);
+            
+            if (shape) {
+                // The second child (index 1) is the inner checkmark path
+                // We bind its visibility to the selection state
+                if (shape.children && shape.children.length > 1) {
+                    shape.children[1].props = shape.children[1].props || {};
+                    const isHole = ${isHoleCheckbox};
+                    shape.children[1].props.visible = isHole ? !item.isSelected : !!item.isSelected;
                 }
             }
 
@@ -665,7 +715,7 @@ export class ComponentRefactorer {
                     visible: true,
                     opacity: 1,
                     blendMode: "NORMAL",
-                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 }, 
+                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 },
                     boundVariables: {}
                 }];
             } else {
@@ -680,19 +730,24 @@ export class ComponentRefactorer {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private generateFileContent(className: string, definition: any, assets: Map<string, string>, originalContent: string, nodes: Map<string, RefactorerNode>): string {
-        const imports = `import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";`;
-
-        // Extract SVG assets from original content
-        const svgLines: string[] = [];
-        const svgMatchRegex = /const (SVG_assets_icon_[a-zA-Z0-9_]+) = `([^`]+)`;/g;
-        let svgMatch;
-        while ((svgMatch = svgMatchRegex.exec(originalContent)) !== null) {
-            svgLines.push(`const ${svgMatch[1]} = \`${svgMatch[2]}\`;`);
-        }
+        const imports = `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";`;
 
         // Run post-processing to inject loops
         const processedDef = this.postProcessDefinition(definition);
         const defString = this.serialize(processedDef, 1);
+
+        // Extract SVG assets selectively from original content based on what's used in the defString
+        const svgLines: string[] = [];
+        const svgMatchRegex = /const (SVG_assets_icon_[a-zA-Z0-9_]+) = `([^`]+)`;/g;
+        let svgMatch;
+        while ((svgMatch = svgMatchRegex.exec(originalContent)) !== null) {
+            const assetName = svgMatch[1];
+            const assetContent = svgMatch[2];
+            // Only include if the asset content (or name) is found in the final definition
+            if (defString.includes(assetContent)) {
+                svgLines.push(`const ${assetName} = \`${assetContent}\`;`);
+            }
+        }
 
         return `${imports}
 
@@ -756,6 +811,175 @@ export class ${className} extends BaseComponent {
         });
 
         return `{\n${lines.join(',\n')}\n${indent}}`;
+    }
+
+    // --- Geometric Utilities ---
+
+    private isContained(inner: any, outer: any): boolean {
+        // Strategy: Use Ray Casting (Precise) if vector paths are available.
+        // Fallback to AABB (Approximate) for Frames/Rectangles.
+
+        if (this.hasVectorPaths(inner) && this.hasVectorPaths(outer)) {
+            return this.isPreciseHole(inner, outer);
+        }
+
+        return this.isAABBContained(inner, outer);
+    }
+
+    private hasVectorPaths(node: any): boolean {
+        return node.props && node.props.vectorPaths && node.props.vectorPaths.length > 0 && node.props.vectorPaths[0].data;
+    }
+
+    private isPreciseHole(inner: any, outer: any): boolean {
+        const innerPoints = this.getGlobalVertices(inner);
+        const outerPoints = this.getGlobalVertices(outer);
+
+        if (innerPoints.length === 0 || outerPoints.length === 0) return false;
+
+        // Check if ALL inner vertices are inside outer polygon
+        return innerPoints.every(p => this.isPointInPolygon(p, outerPoints));
+    }
+
+    private getGlobalVertices(node: any): { x: number, y: number }[] {
+        const transform = node.layoutProps?.relativeTransform || [[1, 0, 0], [0, 1, 0]];
+        const path = node.props.vectorPaths?.[0]?.data || "";
+
+        const vertices: { x: number, y: number }[] = [];
+
+        // Split by commands - naive parsing sufficient for simple flattened paths
+        const parts = path.split(/([MLCZ])/).filter((p: string) => p.trim());
+
+        let currentCommand = "";
+
+        for (const part of parts) {
+            if ("MLCZ".includes(part)) {
+                currentCommand = part;
+                continue;
+            }
+
+            // Parse numbers
+            const nums = part.trim().split(/[\s,]+/).map(parseFloat);
+
+            if (currentCommand === "M" || currentCommand === "L") {
+                // Pairs of x,y
+                for (let i = 0; i < nums.length; i += 2) {
+                    if (!isNaN(nums[i]) && !isNaN(nums[i + 1])) {
+                        vertices.push(this.transformPoint(nums[i], nums[i + 1], transform));
+                    }
+                }
+            }
+            if (currentCommand === "C") {
+                // Groups of 6 (cp1, cp2, dest) - we only take dest
+                for (let i = 0; i < nums.length; i += 6) {
+                    if (!isNaN(nums[i + 4]) && !isNaN(nums[i + 5])) {
+                        vertices.push(this.transformPoint(nums[i + 4], nums[i + 5], transform));
+                    }
+                }
+            }
+        }
+
+        return vertices;
+    }
+
+    private transformPoint(x: number, y: number, t: any): { x: number, y: number } {
+        // t is [[a, b, tx], [c, d, ty]]
+        return {
+            x: t[0][0] * x + t[0][1] * y + t[0][2],
+            y: t[1][0] * x + t[1][1] * y + t[1][2]
+        };
+    }
+
+    private isPointInPolygon(p: { x: number, y: number }, polygon: { x: number, y: number }[]): boolean {
+        let inside = false;
+        for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+            const xi = polygon[i].x, yi = polygon[i].y;
+            const xj = polygon[j].x, yj = polygon[j].y;
+
+            const intersect = ((yi > p.y) !== (yj > p.y))
+                && (p.x < (xj - xi) * (p.y - yi) / (yj - yi) + xi);
+
+            if (intersect) inside = !inside;
+        }
+        return inside;
+    }
+
+    private isAABBContained(inner: any, outer: any): boolean {
+        if (!inner.layoutProps || !outer.layoutProps) return false;
+
+        const b1 = this.getAbsoluteBounds(inner);
+        const b2 = this.getAbsoluteBounds(outer);
+
+        // Figma often has sub-pixel offsets, use a small epsilon
+        const epsilon = 0.5;
+
+        return (
+            b1.x >= b2.x - epsilon &&
+            b1.y >= b2.y - epsilon &&
+            (b1.x + b1.width) <= (b2.x + b2.width) + epsilon &&
+            (b1.y + b1.height) <= (b2.y + b2.height) + epsilon
+        );
+    }
+
+    private getAbsoluteBounds(node: any): { x: number, y: number, width: number, height: number } {
+        const lp = node.layoutProps;
+        const t = lp.relativeTransform; // [[1, 0, x], [0, 1, y]]
+
+        return {
+            x: t ? t[0][2] : 0,
+            y: t ? t[1][2] : 0,
+            width: lp.width || 0,
+            height: lp.height || 0
+        };
+    }
+
+    private isHoleInCode(template: any): boolean {
+        // Pre-calculate if the checkbox in this template uses a hole
+        const findShape = (n: any): any => {
+            if (n.name === 'Checkbox' && n.children) {
+                return n.children.find((c: any) => c.name === 'Shape');
+            }
+            if (n.children) {
+                for (const c of n.children) {
+                    const res = findShape(c);
+                    if (res) return res;
+                }
+            }
+            return null;
+        };
+        const shape = findShape(template);
+        if (shape && shape.children && shape.children.length > 1) {
+            return this.isContained(shape.children[1], shape.children[0]);
+        }
+        return false;
+    }
+
+    // --- Tree Merging (God JSON) ---
+
+    private mergeNodeTrees(nodes: any[]): any {
+        if (!nodes || nodes.length === 0) return null;
+        const base = JSON.parse(JSON.stringify(nodes[0]));
+        for (let i = 1; i < nodes.length; i++) {
+            this.mergeTwoTrees(base, nodes[i]);
+        }
+        return base;
+    }
+
+    private mergeTwoTrees(target: any, source: any) {
+        if (!target || !source) return;
+        if (target.type !== source.type) return;
+
+        if (source.children && target.children) {
+            for (const sChild of source.children) {
+                // Find matching child in target by Name + Type
+                const tChild = target.children.find((t: any) => t.name === sChild.name && t.type === sChild.type);
+                if (tChild) {
+                    this.mergeTwoTrees(tChild, sChild);
+                } else {
+                    // New node discovered in this instance! Add it to the superset template.
+                    target.children.push(JSON.parse(JSON.stringify(sChild)));
+                }
+            }
+        }
     }
 }
 

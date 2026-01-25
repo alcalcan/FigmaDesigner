@@ -55,6 +55,9 @@ export abstract class BaseComponent {
           node = figma.createNodeFromSvg(def.svgContent);
         } else {
           node = figma.createVector();
+          if (def.vectorPaths) {
+            (node as VectorNode).vectorPaths = def.vectorPaths;
+          }
         }
         break;
       case "BOOLEAN_OPERATION": {
@@ -125,13 +128,6 @@ export abstract class BaseComponent {
       try {
         // Flatten replaces the node with a new Vector node
         const flattened = figma.flatten([node], (parent || figma.currentPage) as BaseNode & ChildrenMixin);
-
-        // If we had a parent, figma.flatten usually handles reparenting if the target parent is specified.
-        // But we already appended 'node' to 'parent' in step 2? 
-        // Step 2 says: if (parent) parent.appendChild(node).
-
-        // If we flatten, 'node' is removed and 'flattened' is created.
-        // We should use 'flattened' for subsequent property application.
         node = flattened;
       } catch (e) {
         console.warn("Failed to flatten node", def.name, e);

@@ -1,13 +1,15 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+
+
+// SVG Assets
 
 
 
-
-export class sidebar extends BaseComponent {
+export class sidebar_generated extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         const structure: NodeDefinition = {
     "type": "FRAME",
-    "name": "sidebar",
+    "name": "sidebar_generated",
     "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"VERTICAL","primaryAxisSizingMode":"AUTO","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":16,"paddingTop":0,"paddingRight":16,"paddingBottom":0,"paddingLeft":16,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":14},
     "layoutProps": {"width":339,"height":696,"parentIsAutoLayout":false},
     "children": [
@@ -35,7 +37,7 @@ export class sidebar extends BaseComponent {
                     "name": "Vector (Stroke)",
                     "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":0.9999708533287048,"y":1},
                     "layoutProps": {"width":22.000059127807617,"height":21.020004272460938,"relativeTransform":[[1,0,0.9999708533287048],[0,1,1]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
-                    "svgContent": "<svg width=\"22.000059127807617\" height=\"21.020004272460938\" viewBox=\"0 0 22.000059127807617 21.020004272460938\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M11 0C11.3806 0 11.7283 0.216072 11.8967 0.557375L14.7543 6.34646L21.1447 7.2805C21.5212 7.33554 21.8339 7.59955 21.9513 7.96156C22.0687 8.32357 21.9704 8.72082 21.6978 8.98635L17.0746 13.4894L18.1656 19.851C18.23 20.2261 18.0757 20.6053 17.7678 20.8291C17.4598 21.0528 17.0515 21.0823 16.7146 20.9051L11 17.8998L5.28547 20.9051C4.94855 21.0823 4.54026 21.0528 4.23229 20.8291C3.92431 20.6053 3.77006 20.2261 3.83441 19.851L4.9255 13.4894L0.302296 8.98635C0.0296782 8.72082 -0.0685945 8.32357 0.048783 7.96156C0.166161 7.59955 0.47884 7.33554 0.8554 7.2805L7.24576 6.34646L10.1033 0.557375C10.2718 0.216072 10.6194 0 11 0ZM11 3.25924L8.80673 7.70261C8.66119 7.99746 8.38 8.20192 8.05465 8.24948L3.14844 8.96659L6.69775 12.4236C6.93363 12.6534 7.04129 12.9845 6.98563 13.309L6.1482 18.1917L10.5346 15.8849C10.826 15.7317 11.1741 15.7317 11.4655 15.8849L15.8518 18.1917L15.0144 13.309C14.9588 12.9845 15.0664 12.6534 15.3023 12.4236L18.8516 8.96659L13.9454 8.24948C13.62 8.20192 13.3389 7.99746 13.1933 7.70261L11 3.25924Z\" fill=\"#1A313C\"/>\n</svg>"
+                    "svgContent": "<svg width=\"22.000059127807617\" height=\"21.020004272460938\" viewBox=\"0 0 22.000059127807617 21.020004272460938\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M11 0C11.3806 0 11.7283 0.216072 11.8967 0.557374L14.7543 6.34645L21.1447 7.28049C21.5212 7.33553 21.8339 7.59954 21.9513 7.96155C22.0687 8.32356 21.9704 8.72081 21.6978 8.98634L17.0746 13.4894L18.1656 19.851C18.23 20.2261 18.0757 20.6053 17.7678 20.8291C17.4598 21.0528 17.0515 21.0823 16.7146 20.9051L11 17.8998L5.28546 20.9051C4.94854 21.0823 4.54025 21.0528 4.23228 20.8291C3.9243 20.6053 3.77005 20.2261 3.8344 19.851L4.92549 13.4894L0.302296 8.98634C0.0296782 8.72081 -0.0685944 8.32356 0.0487829 7.96155C0.166161 7.59954 0.478839 7.33553 0.855399 7.28049L7.24575 6.34645L10.1033 0.557374C10.2718 0.216072 10.6194 0 11 0ZM11 3.25923L8.80672 7.7026C8.66118 7.99745 8.37999 8.20191 8.05464 8.24947L3.14844 8.96658L6.69774 12.4236C6.93362 12.6534 7.04128 12.9845 6.98562 13.309L6.14819 18.1917L10.5346 15.8849C10.826 15.7317 11.1741 15.7317 11.4655 15.8849L15.8518 18.1917L15.0144 13.309C14.9588 12.9845 15.0664 12.6534 15.3023 12.4236L18.8516 8.96658L13.9454 8.24947C13.62 8.20191 13.3389 7.99745 13.1933 7.7026L11 3.25923Z\" fill=\"#1A313C\"/>\n</svg>"
                   }
                 ]
               },
@@ -75,7 +77,7 @@ export class sidebar extends BaseComponent {
                 "name": "Shape",
                 "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":24,"y":6},
                 "layoutProps": {"width":10,"height":10,"relativeTransform":[[1,0,24],[0,1,6]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
-                "svgContent": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M5.86476 5.00039L9.82066 1.04482C10.0598 0.805562 10.0598 0.418706 9.82066 0.180999C9.58157 -0.0582614 9.19498 -0.0582614 8.95744 0.180999L4.99999 4.13501L1.04254 0.179445C0.803445 -0.059815 0.41686 -0.059815 0.17932 0.179445C-0.0597732 0.418706 -0.0597732 0.805562 0.17932 1.04327L4.13522 4.99884L0.17932 8.95595C-0.0597732 9.19522 -0.0597732 9.58207 0.17932 9.81978C0.298866 9.93941 0.455674 9.99845 0.610929 9.99845C0.767736 9.99845 0.922991 9.93941 1.04254 9.81978L4.99999 5.86421L8.95744 9.82133C9.07699 9.94096 9.23224 10 9.38905 10C9.54586 10 9.70111 9.94096 9.82066 9.82133C10.0598 9.58207 10.0598 9.19522 9.82066 8.95751L5.86476 5.00039Z\" fill=\"white\"/>\n</svg>"
+                "svgContent": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M5.86475 5.00039L9.82065 1.04482C10.0598 0.805562 10.0598 0.418706 9.82065 0.180999C9.58156 -0.0582614 9.19497 -0.0582614 8.95743 0.180999L4.99998 4.13501L1.04254 0.179445C0.803444 -0.059815 0.416859 -0.059815 0.17932 0.179445C-0.0597732 0.418706 -0.0597732 0.805562 0.17932 1.04327L4.13521 4.99884L0.17932 8.95595C-0.0597732 9.19522 -0.0597732 9.58207 0.17932 9.81978C0.298865 9.93941 0.455673 9.99845 0.610928 9.99845C0.767735 9.99845 0.92299 9.93941 1.04254 9.81978L4.99998 5.86421L8.95743 9.82133C9.07698 9.94096 9.23223 10 9.38904 10C9.54585 10 9.7011 9.94096 9.82065 9.82133C10.0598 9.58207 10.0598 9.19522 9.82065 8.95751L5.86475 5.00039Z\" fill=\"white\"/>\n</svg>"
               }
             ]
           }
@@ -269,8 +271,8 @@ export class sidebar extends BaseComponent {
               }
             ]
           },
-          ...[{"name":"UEFA Academy","isSelected":false},{"name":"UEFA Assist","isSelected":false},{"name":"UEFA Events","isSelected":false},{"name":"UEFA Football Development","isSelected":false},{"name":"UEFA Grow","fillColor":{"r":0.9450980424880981,"g":0.9529411792755127,"b":0.9725490212440491},"isSelected":true},{"name":"UEFA Hatrick","isSelected":false},{"name":"UEFA Anti-Doping and Medical","isSelected":false},{"name":"UEFA Intelligence Center","isSelected":false}].map(item => {
-            const node: NodeDefinition = {
+          ...[{"name":"UEFA Academy","hasCheckbox":true,"isSelected":false},{"name":"UEFA Assist","hasCheckbox":true,"isSelected":false},{"name":"UEFA Events","hasCheckbox":true,"isSelected":false},{"name":"UEFA Football Development","hasCheckbox":true,"isSelected":false},{"name":"UEFA Grow","fillColor":{"r":0.9450980424880981,"g":0.9529411792755127,"b":0.9725490212440491},"hasCheckbox":true,"isSelected":true},{"name":"UEFA Hatrick","hasCheckbox":true,"isSelected":false},{"name":"UEFA Anti-Doping and Medical","hasCheckbox":true,"isSelected":false},{"name":"UEFA Intelligence Center","hasCheckbox":true,"isSelected":false}].map((item: any) => {
+            const node = {
           "type": "FRAME",
           "name": "Frame 1705",
           "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"CENTER","itemSpacing":4,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":8,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":0,"strokeRightWeight":0,"strokeBottomWeight":1,"strokeLeftWeight":0,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
@@ -312,12 +314,13 @@ export class sidebar extends BaseComponent {
               "layoutProps": {"width":275,"height":24,"relativeTransform":[[1,0,32],[0,1,4]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
             }
           ]
-        };
+        } as unknown as NodeDefinition;
             
             // Apply loop overrides
             if (item.name) {
-                 const traverse = (n: NodeDefinition) => {
-                    if (n.type === 'TEXT' && n.props) {
+                 const traverse = (n: any) => {
+                    if (n.type === 'TEXT') {
+                         n.props = n.props || {};
                          n.props.characters = item.name;
                     }
                     if (n.children) n.children.forEach(traverse);
@@ -325,57 +328,41 @@ export class sidebar extends BaseComponent {
                  traverse(node);
             }
 
-            // Checkbox Logic: Inject checkmark and toggle visibility
-            const findCheckbox = (n: NodeDefinition): NodeDefinition | null => {
-                if (n.name === 'Checkbox' && n.children) return n;
+            // Checkbox Logic: Bind checkmark visibility to selection
+            const findShape = (n: any): any => {
+                if (n.name === 'Checkbox' && n.children) {
+                     const shape = n.children.find((c: any) => c.name === 'Shape');
+                     if (shape && shape.children && shape.children.length > 1) return shape;
+                }
                 if (n.children) {
                     for (const c of n.children) {
-                        const res = findCheckbox(c);
-                        if (res) return res;
+                        const s = findShape(c);
+                        if (s) return s;
                     }
                 }
                 return null;
             };
 
-            const checkbox = findCheckbox(node);
-            if (checkbox && checkbox.children) {
-                const shapeNode = checkbox.children.find(c => c.name === 'Shape');
-                if (shapeNode && shapeNode.children && shapeNode.children.length > 1) {
-                    // Reversed Logic: 
-                    // isSelected: true -> Solid Box (hide inner hole)
-                    // isSelected: false -> Contour/Border (show inner hole)
-                    shapeNode.children[1].props = shapeNode.children[1].props || {};
-                    shapeNode.children[1].props.visible = !item.isSelected;
-                }
-
-                // Inject checkmark if not present
-                if (!checkbox.children.find(c => c.name === 'Checkmark')) {
-                    checkbox.children.push({
-                        "type": "VECTOR",
-                        "name": "Checkmark",
-                        "props": {
-                            "visible": !!item.isSelected,
-                            "opacity": 1,
-                            "strokes": [{ "type": "SOLID", "visible": true, "opacity": 1, "blendMode": "NORMAL", "color": { "r": 1, "g": 1, "b": 1 }, "boundVariables": {} }],
-                            "strokeWeight": 2,
-                            "strokeCap": "ROUND",
-                            "strokeJoin": "ROUND",
-                            "vectorPaths": [{ "windingRule": "NONZERO", "data": "M 0 4 L 3 7 L 8 0" }],
-                        },
-                        "layoutProps": { "width": 8, "height": 7, "relativeTransform": [[1, 0, 6], [0, 1, 6]], "parentIsAutoLayout": false, "layoutPositioning": "AUTO" }
-                    });
+            const shape = findShape(node);
+            
+            if (shape) {
+                // The second child (index 1) is the inner checkmark path
+                // We bind its visibility to the selection state
+                if (shape.children && shape.children.length > 1) {
+                    shape.children[1].props = shape.children[1].props || {};
+                    const isHole = true;
+                    shape.children[1].props.visible = isHole ? !item.isSelected : !!item.isSelected;
                 }
             }
 
             if (item.isSelected) {
-                // Apply background fill
                 node.props = node.props || {};
                 node.props.fills = [{
                     type: "SOLID",
                     visible: true,
                     opacity: 1,
                     blendMode: "NORMAL",
-                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 }, // User-requested appearance
+                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 },
                     boundVariables: {}
                 }];
             } else {

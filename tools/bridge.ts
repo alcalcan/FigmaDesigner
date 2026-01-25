@@ -490,7 +490,11 @@ const server = http.createServer((req, res) => {
                 // AND I need to add /refactor-code.
 
                 if (simplified !== false) {
-                    // const { ComponentRefactorer } = require('./ComponentRefactorer');
+                    // Dynamic Iport with cache busting for hot-reloading tool changes
+                    const refactorerPath = require.resolve('./ComponentRefactorer');
+                    delete require.cache[refactorerPath];
+                    const { ComponentRefactorer } = require('./ComponentRefactorer');
+
                     new ComponentRefactorer().refactor(result.tsPath);
                 }
 
@@ -538,7 +542,11 @@ const server = http.createServer((req, res) => {
                 }
 
                 console.log(`🚀 Manually triggering refactor for: ${targetPath}`);
-                // const { ComponentRefactorer } = require('./ComponentRefactorer');
+
+                const refactorerPath = require.resolve('./ComponentRefactorer');
+                delete require.cache[refactorerPath];
+                const { ComponentRefactorer } = require('./ComponentRefactorer');
+
                 new ComponentRefactorer().refactor(targetPath);
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
