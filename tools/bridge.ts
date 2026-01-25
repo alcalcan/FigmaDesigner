@@ -4,6 +4,7 @@ import * as path from 'path';
 import { execSync } from 'child_process';
 import { ComponentGenerator } from './ComponentGenerator';
 import { CleaningService } from './CleaningService';
+import { ComponentRefactorer } from './ComponentRefactorer';
 
 const PORT = 3001;
 let pendingCommand: string | null = null;
@@ -431,7 +432,7 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
             try {
-                const { path: relativePath, project: projectName } = JSON.parse(body);
+                const { path: relativePath, project: projectName, simplified } = JSON.parse(body);
                 if (!relativePath || !projectName) {
                     res.writeHead(400);
                     res.end(JSON.stringify({ error: "Missing path or project" }));
@@ -452,6 +453,47 @@ const server = http.createServer((req, res) => {
 
                 console.log(`✅ Component Generated: ${result.tsPath}`);
 
+                // Refactoring (Simplified Code) Logic
+                // If flag is true or undefined (default), run refactorer
+                if (simplified !== false) {
+                    // We need to import ComponentRefactorer at the top of file or here
+                    // It is already imported at top on line 5 (in original read)? No, I need to check import.
+                    // It is imported as ComponentGenerator. ComponentRefactorer might need import.
+                    // Checking file content: line 5 is ComponentGenerator. line 6 CleaningService.
+                    // I need to add import. But I can't add import easily with block replace.
+                    // I will assume I can instantiate or require it. 
+                    // Since I am already using ComponentGenerator via import, I should check if Refactorer is exported.
+                    // Wait, ComponentGenerator CALLS refactorer internally? 
+                    // Let's check ComponentGenerator.ts again.
+                    // Yes, ComponentGenerator lines 50-52:
+                    // console.log(`Refactoring ${tsPath}...`);
+                    // const refactorer = new ComponentRefactorer();
+                    // refactorer.refactor(tsPath);
+
+                    // ComponentGenerator DOES IT AUTOMATICALLY.
+                    // So I need to modify ComponentGenerator to accept a flag OR modify bridge to tell it?
+                    // ComponentGenerator.generate() takes (jsonPath, projectName).
+                    // I should probably modify ComponentGenerator to NOT auto-refactor, and let Bridge control it.
+                    // OR, I modify ComponentGenerator to take an optional 'refactor' boolean.
+                    // Modifying ComponentGenerator is cleaner.
+                    // BUT, for now, let's look at the plan. Plan said "Update bridge.ts... call refactorer immediately after generator".
+                    // If Generator ALREADY calls it, I'm double calling or I need to disable it in Generator.
+                    // I will disable it in Generator first, then control it here.
+                }
+
+                // Oops, I need to check ComponentGenerator code again.
+                // It unconditionally refactors.
+                // I will modify ComponentGenerator.ts to REMOVE unconditional refactoring.
+                // THEN I will add logic here in bridge.ts to call it conditionally.
+
+                // For this step, I will add the logic here, assuming I will fix Generator next.
+                // AND I need to add /refactor-code.
+
+                if (simplified !== false) {
+                    // const { ComponentRefactorer } = require('./ComponentRefactorer');
+                    new ComponentRefactorer().refactor(result.tsPath);
+                }
+
                 // Trigger Rebuild
                 console.log("🔨 Rebuilding Plugin Bundle...");
                 execSync('npm run build', { stdio: 'inherit' });
@@ -465,6 +507,47 @@ const server = http.createServer((req, res) => {
                 console.error("Error generating component code:", error.message, error.stack);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: error.message, stack: error.stack }));
+            }
+        });
+        return;
+    }
+
+    // REFACTOR CODE ENDPOINT (POST) - Manual Trigger
+    if (req.method === 'POST' && req.url === '/refactor-code') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { path: filePath } = JSON.parse(body);
+                if (!filePath) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing path" }));
+                    return;
+                }
+
+                // Allow relative paths from project root or absolute paths
+                let targetPath = filePath;
+                if (!path.isAbsolute(filePath)) {
+                    targetPath = path.join(process.cwd(), filePath);
+                }
+
+                if (!fs.existsSync(targetPath)) {
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ error: "File not found" }));
+                    return;
+                }
+
+                console.log(`🚀 Manually triggering refactor for: ${targetPath}`);
+                // const { ComponentRefactorer } = require('./ComponentRefactorer');
+                new ComponentRefactorer().refactor(targetPath);
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', message: "Refactoring complete" }));
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error refactoring:", error.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: error.message }));
             }
         });
         return;
@@ -737,14 +820,14 @@ const server = http.createServer((req, res) => {
                 }
 
                 console.log(`🚀 Batch generating ${results.length} components from folder: ${relativeFolder}`);
-                const generationResults: any[] = [];
+                const generationResults: { path: string, status: string, result?: { tsPath: string; componentName: string; projectName: string; }, error?: string }[] = [];
 
                 results.forEach(jsonPath => {
                     try {
                         const res = generator.generate(jsonPath, projectName);
                         generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'ok', result: res });
-                    } catch (err: any) {
-                        generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'error', error: err.message });
+                    } catch (err: unknown) {
+                        generationResults.push({ path: path.relative(extractionRoot, jsonPath), status: 'error', error: (err as Error).message });
                     }
                 });
 

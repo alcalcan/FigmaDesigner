@@ -1,7 +1,7 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 import { Top_bar } from "../../components/Competition_newsletters/Top_bar/Top_bar";
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
-import { Page_title } from "../../components/UEFA_Academy_online/Page_title/Page_title";
+
 import { search_bar } from "../../components/UEFA_Academy_online/search_bar/search_bar";
 import { card } from "../../components/UEFA_Academy_online/card/card";
 import { Content_container } from "../../components/UEFA_Academy_online/Content_container/Content_container";

@@ -1,0 +1,11 @@
+Loading file: components/Alex_CookBook/SubSection_generated/SubSection_generated.ts
+--- Iteration 0 ---
+Refactoring group of size 7 for root
+--- Iteration 1 ---
+Refactoring group of size 4 for Path
+--- Iteration 2 ---
+Refactoring group of size 3 for Navigation / chevron-up
+--- Iteration 3 ---
+Refactoring group of size 5 for item
+--- Iteration 4 ---
+No more groups found.

@@ -3,10 +3,8 @@ import { Top_bar } from "../../components/Competition_newsletters/Top_bar/Top_ba
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
 import { TitleBar_withCTA } from "../../components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 import { simple_info } from "../../components/UEFA_Academy_online/simple_info/simple_info";
-import { Divider } from "../../components/UEFA_Academy_online/Divider/Divider";
 import { SubSection } from "../../components/UEFA_Academy_online/SubSection/SubSection";
 import { SubSection_collapsed } from "../../components/UEFA_Academy_online/SubSection/SubSection_collapsed";
-import { button_set } from "../../components/UEFA_Academy_online/button_set/button_set";
 import { Content_container } from "../../components/UEFA_Academy_online/Content_container/Content_container";
 import { sidebar } from "../../components/UEFA_Academy_online/sidebar/sidebar";
 
@@ -32,10 +30,8 @@ export class UEFA_Academy_online_CourseDetails extends BaseComponent {
         const headerComp = new Header();
         const contentContainerComp = new Content_container();
         const titleBarCTAComp = new TitleBar_withCTA();
-        const dividerComp = new Divider();
         const subSectionComp = new SubSection();
         const subSectionCollapsedComp = new SubSection_collapsed();
-        const buttonSetComp = new button_set();
         const simpleInfoComp = new simple_info();
         const sidebarComp = new sidebar();
 

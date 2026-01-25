@@ -83,7 +83,7 @@ export class TitleBar_withCTA extends BaseComponent {
             root.itemReverseZIndex = false;
             root.strokesIncludedInLayout = false;
         }
-        (root as any).layoutAlign = "STRETCH";
+        root.layoutAlign = "STRETCH";
         root.fills = await this.hydratePaints([]);
         root.strokes = await this.hydratePaints([]);
         root.strokeWeight = 1;

@@ -1,0 +1,4 @@
+code.js
+*.js
+node_modules/
+dist/

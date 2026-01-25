@@ -6,41 +6,7 @@ const SVG_assets_icon_Vector_I3387_1517_5698_23_svg_12x7_400000095367432 = `<svg
 </svg>
 `;
 
-type T2x3 = [[number, number, number], [number, number, number]];
-function applySizeAndTransform(
-    node: SceneNode & LayoutMixin & GeometryMixin,
-    opts: {
-        width?: number;
-        height?: number;
-        relativeTransform?: T2x3;
-        parentIsAutoLayout: boolean;
-        layoutPositioning?: "AUTO" | "ABSOLUTE";
-    }
-) {
-    const { width, height, relativeTransform, parentIsAutoLayout } = opts;
-    const positioning = opts.layoutPositioning ?? "AUTO";
 
-    if (typeof width === "number" && typeof height === "number") {
-        node.resize(width, height);
-    }
-
-    if (relativeTransform) {
-        const t = relativeTransform;
-        const inFlow = parentIsAutoLayout && positioning !== "ABSOLUTE";
-
-        const tx = inFlow ? 0 : t[0][2];
-        const ty = inFlow ? 0 : t[1][2];
-
-        try {
-            node.relativeTransform = [
-                [t[0][0], t[0][1], tx],
-                [t[1][0], t[1][1], ty],
-            ];
-        } catch (e) {
-            console.warn("Failed to set relativeTransform", e);
-        }
-    }
-}
 
 export class SubSection extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -61,7 +27,7 @@ export class SubSection extends BaseComponent {
         root.paddingRight = 24;
         root.paddingBottom = 24;
         root.paddingLeft = 24;
-        (root as any).layoutAlign = "STRETCH";
+        root.layoutAlign = "STRETCH";
         root.fills = await this.hydratePaints([{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }]);
         root.effects = [{ "type": "DROP_SHADOW", "visible": true, "radius": 6, "color": { "r": 0, "g": 0, "b": 0, "a": 0.12 }, "offset": { "x": 0, "y": 2 }, "spread": 0, "blendMode": "NORMAL", "showShadowBehindNode": true }];
         root.cornerRadius = 8;
@@ -81,7 +47,7 @@ export class SubSection extends BaseComponent {
         // Subject
         const subject = figma.createText();
         subject.name = "Subject";
-        subject.characters = (props as any).name || "Subject";
+        subject.characters = props.name || "Subject";
         subject.fontSize = 20;
         subject.fills = await this.hydratePaints([{ "type": "SOLID", "color": { "r": 0.1, "g": 0.19, "b": 0.23 } }]);
         await this.setFont(subject, { family: "Open Sans", style: "SemiBold" });
@@ -111,7 +77,7 @@ export class SubSection extends BaseComponent {
         badge.appendChild(badgeLabel);
 
         const badgeCount = figma.createText();
-        const itemsList = (props as any).items || [];
+        const itemsList = props.items || [];
         badgeCount.characters = itemsList.length.toString();
         badgeCount.fontSize = 16;
         await this.setFont(badgeCount, { family: "Manrope", style: "Bold" });
@@ -146,7 +112,7 @@ export class SubSection extends BaseComponent {
         content.counterAxisSizingMode = "AUTO";
         content.itemSpacing = 32;
         content.layoutAlign = "STRETCH";
-        if ("layoutWrap" in content) (content as any).layoutWrap = "WRAP";
+        if ("layoutWrap" in content) content.layoutWrap = "WRAP";
         content.fills = [];
 
         const items = itemsList.length > 0 ? itemsList : [

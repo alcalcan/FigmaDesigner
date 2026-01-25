@@ -1,0 +1,223 @@
+Refactoring /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/SubSection_generated/SubSection_generated.ts...
+
+--- Iteration 0 ---
+Tree Structure:
+- root (ID: root, Children: 2)
+  - Header (ID: root_child_0, Children: 3)
+    - Subject (ID: root_child_0_child_0, Children: 0)
+    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
+    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
+      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
+        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
+        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
+  - Frame 1928 (ID: root_child_1, Children: 4)
+    - item (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+    - Frame 1938 (ID: root_child_1_child_2, Children: 2)
+      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 2)
+        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 1)
+          - root_child_1_child_2_child_0_child_0_child_0 (ID: root_child_1_child_2_child_0_child_0_child_0, Children: 2)
+            - Path (ID: root_child_1_child_2_child_0_child_0_child_0_child_0, Children: 0)
+            - Path (ID: root_child_1_child_2_child_0_child_0_child_0_child_1, Children: 0)
+        - Filter name (ID: root_child_1_child_2_child_0_child_1, Children: 0)
+      - Frame 1931 (ID: root_child_1_child_2_child_1, Children: 2)
+        - Checkbox (ID: root_child_1_child_2_child_1_child_0, Children: 1)
+          - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 2)
+            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_0, Children: 0)
+            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_1, Children: 0)
+        - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
+    - item (ID: item, Children: 0)
+Checking children of root (2)
+Comparing Frame 1928 (root_child_1) with Header (root_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Header (3)
+Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
+Mismatch! appending to signatures.txt
+Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
+Mismatch! appending to signatures.txt
+Checking children of Navigation / chevron-up (2)
+Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1928 (4)
+Comparing item (item) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Frame 1938 (root_child_1_child_2) with item (item)
+Mismatch! appending to signatures.txt
+Comparing item (item) with Frame 1938 (root_child_1_child_2)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1938 (2)
+Comparing Frame 1931 (root_child_1_child_2_child_1) with Frame 1930 (root_child_1_child_2_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1930 (2)
+Comparing Filter name (root_child_1_child_2_child_0_child_1) with Checkbox (root_child_1_child_2_child_0_child_0)
+Mismatch! appending to signatures.txt
+Checking children of root_child_1_child_2_child_0_child_0_child_0 (2)
+Comparing Path (root_child_1_child_2_child_0_child_0_child_0_child_1) with Path (root_child_1_child_2_child_0_child_0_child_0_child_0)
+Found group of 2 items for root_child_1_child_2_child_0_child_0_child_0
+Checking children of Frame 1931 (2)
+Comparing Filter name (root_child_1_child_2_child_1_child_1) with Checkbox (root_child_1_child_2_child_1_child_0)
+Mismatch! appending to signatures.txt
+Checking children of root_child_1_child_2_child_1_child_0_child_0 (2)
+Comparing Shape (root_child_1_child_2_child_1_child_0_child_0_child_1) with Shape (root_child_1_child_2_child_1_child_0_child_0_child_0)
+Found group of 2 items for root_child_1_child_2_child_1_child_0_child_0
+Total groups found: 2
+Refactoring group of size 2 for Path
+
+--- Iteration 1 ---
+Tree Structure:
+- root (ID: root, Children: 2)
+  - Header (ID: root_child_0, Children: 3)
+    - Subject (ID: root_child_0_child_0, Children: 0)
+    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
+    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
+      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
+        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
+        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
+  - Frame 1928 (ID: root_child_1, Children: 5)
+    - item (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+    - Frame 1938 (ID: root_child_1_child_2, Children: 2)
+      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 2)
+        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 1)
+          - root_child_1_child_2_child_0_child_0_child_0 (ID: root_child_1_child_2_child_0_child_0_child_0, Children: 0)
+        - Filter name (ID: root_child_1_child_2_child_0_child_1, Children: 0)
+      - Frame 1931 (ID: root_child_1_child_2_child_1, Children: 2)
+        - Checkbox (ID: root_child_1_child_2_child_1_child_0, Children: 1)
+          - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 2)
+            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_0, Children: 0)
+            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_1, Children: 0)
+        - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
+    - Shape (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+Checking children of root (2)
+Comparing Frame 1928 (root_child_1) with Header (root_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Header (3)
+Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
+Mismatch! appending to signatures.txt
+Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
+Mismatch! appending to signatures.txt
+Checking children of Navigation / chevron-up (2)
+Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1928 (5)
+Comparing item (item) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Frame 1938 (root_child_1_child_2) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Shape (item) with Frame 1938 (root_child_1_child_2)
+Mismatch! appending to signatures.txt
+Comparing item (item) with Shape (item)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1938 (2)
+Comparing Frame 1931 (root_child_1_child_2_child_1) with Frame 1930 (root_child_1_child_2_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1930 (2)
+Comparing Filter name (root_child_1_child_2_child_0_child_1) with Checkbox (root_child_1_child_2_child_0_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1931 (2)
+Comparing Filter name (root_child_1_child_2_child_1_child_1) with Checkbox (root_child_1_child_2_child_1_child_0)
+Mismatch! appending to signatures.txt
+Checking children of root_child_1_child_2_child_1_child_0_child_0 (2)
+Comparing Shape (root_child_1_child_2_child_1_child_0_child_0_child_1) with Shape (root_child_1_child_2_child_1_child_0_child_0_child_0)
+Found group of 2 items for root_child_1_child_2_child_1_child_0_child_0
+Total groups found: 1
+Refactoring group of size 2 for Shape
+
+--- Iteration 2 ---
+Tree Structure:
+- root (ID: root, Children: 2)
+  - Header (ID: root_child_0, Children: 3)
+    - Subject (ID: root_child_0_child_0, Children: 0)
+    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
+    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
+      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
+        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
+        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
+  - Frame 1928 (ID: root_child_1, Children: 6)
+    - item (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+    - Frame 1938 (ID: root_child_1_child_2, Children: 2)
+      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 2)
+        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 1)
+          - root_child_1_child_2_child_0_child_0_child_0 (ID: root_child_1_child_2_child_0_child_0_child_0, Children: 0)
+        - Filter name (ID: root_child_1_child_2_child_0_child_1, Children: 0)
+      - Frame 1931 (ID: root_child_1_child_2_child_1, Children: 2)
+        - Checkbox (ID: root_child_1_child_2_child_1_child_0, Children: 1)
+          - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 0)
+        - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
+    - Shape (ID: item, Children: 0)
+    - Shape (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+Checking children of root (2)
+Comparing Frame 1928 (root_child_1) with Header (root_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Header (3)
+Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
+Mismatch! appending to signatures.txt
+Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
+Mismatch! appending to signatures.txt
+Checking children of Navigation / chevron-up (2)
+Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1928 (6)
+Comparing item (item) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Frame 1938 (root_child_1_child_2) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Shape (item) with Frame 1938 (root_child_1_child_2)
+Mismatch! appending to signatures.txt
+Comparing Shape (item) with Shape (item)
+Comparing item (item) with Shape (item)
+Mismatch! appending to signatures.txt
+Found group of 2 items for Frame 1928
+Total groups found: 1
+Refactoring group of size 2 for Shape
+
+--- Iteration 3 ---
+Tree Structure:
+- root (ID: root, Children: 4)
+  - Header (ID: root_child_0, Children: 3)
+    - Subject (ID: root_child_0_child_0, Children: 0)
+    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
+    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
+      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
+        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
+        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
+  - Frame 1928 (ID: root_child_1, Children: 5)
+    - item (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+    - Frame 1938 (ID: root_child_1_child_2, Children: 1)
+      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 1)
+        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 0)
+    - Shape (ID: item, Children: 0)
+    - item (ID: item, Children: 0)
+  - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 0)
+  - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
+Checking children of root (4)
+Comparing Frame 1928 (root_child_1) with Header (root_child_0)
+Mismatch! appending to signatures.txt
+Comparing root_child_1_child_2_child_1_child_0_child_0 (root_child_1_child_2_child_1_child_0_child_0) with Frame 1928 (root_child_1)
+Mismatch! appending to signatures.txt
+Comparing Filter name (root_child_1_child_2_child_1_child_1) with root_child_1_child_2_child_1_child_0_child_0 (root_child_1_child_2_child_1_child_0_child_0)
+Mismatch! appending to signatures.txt
+Checking children of Header (3)
+Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
+Mismatch! appending to signatures.txt
+Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
+Mismatch! appending to signatures.txt
+Checking children of Navigation / chevron-up (2)
+Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
+Mismatch! appending to signatures.txt
+Checking children of Frame 1928 (5)
+Comparing item (item) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Frame 1938 (root_child_1_child_2) with item (item)
+Mismatch! appending to signatures.txt
+Comparing Shape (item) with Frame 1938 (root_child_1_child_2)
+Mismatch! appending to signatures.txt
+Comparing item (item) with Shape (item)
+Mismatch! appending to signatures.txt
+Total groups found: 0
+No repetitive groups found.
+Done.

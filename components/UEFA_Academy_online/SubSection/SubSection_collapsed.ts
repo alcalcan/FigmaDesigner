@@ -6,41 +6,7 @@ const SVG_assets_icon_Vector_chevron_down = `<svg width="12" height="7.4" viewBo
 </svg>
 `;
 
-type T2x3 = [[number, number, number], [number, number, number]];
-function applySizeAndTransform(
-    node: SceneNode & LayoutMixin & GeometryMixin,
-    opts: {
-        width?: number;
-        height?: number;
-        relativeTransform?: T2x3;
-        parentIsAutoLayout: boolean;
-        layoutPositioning?: "AUTO" | "ABSOLUTE";
-    }
-) {
-    const { width, height, relativeTransform, parentIsAutoLayout } = opts;
-    const positioning = opts.layoutPositioning ?? "AUTO";
 
-    if (typeof width === "number" && typeof height === "number") {
-        node.resize(width, height);
-    }
-
-    if (relativeTransform) {
-        const t = relativeTransform;
-        const inFlow = parentIsAutoLayout && positioning !== "ABSOLUTE";
-
-        const tx = inFlow ? 0 : t[0][2];
-        const ty = inFlow ? 0 : t[1][2];
-
-        try {
-            node.relativeTransform = [
-                [t[0][0], t[0][1], tx],
-                [t[1][0], t[1][1], ty],
-            ];
-        } catch (e) {
-            console.warn("Failed to set relativeTransform", e);
-        }
-    }
-}
 
 export class SubSection_collapsed extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -69,7 +35,7 @@ export class SubSection_collapsed extends BaseComponent {
         root.cornerRadius = 8;
 
         // Remove hardcoded resize, use layoutAlign = STRETCH from parent
-        (root as any).layoutAlign = "STRETCH";
+        root.layoutAlign = "STRETCH";
 
         // Header
         const header = figma.createFrame();
@@ -86,7 +52,7 @@ export class SubSection_collapsed extends BaseComponent {
         // Subject
         const subject = figma.createText();
         subject.name = "Subject";
-        subject.characters = (props as any).name || "Collapsed Section";
+        subject.characters = props.name || "Collapsed Section";
         subject.fontSize = 20;
         subject.fills = await this.hydratePaints([{ "type": "SOLID", "color": { "r": 0.1, "g": 0.19, "b": 0.23 } }]);
         await this.setFont(subject, { "family": "Open Sans", "style": "SemiBold" });

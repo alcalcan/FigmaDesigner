@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { SerializedNode } from '../components/JsonReconstructor';
 
+
 export class ComponentGenerator {
     private assetsToCopy: Set<string> = new Set();
     private assetsToImport: Map<string, string> = new Map(); // assetPath -> varName

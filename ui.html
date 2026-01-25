@@ -213,7 +213,12 @@
                 style="padding: 12px; border-top: 1px solid #2a2a2a; background: #252525; display: none;">
                 <button id="generate-from-selected-btn" class="success" style="font-size: 12px;">Generate
                     Selected</button>
-                <button id="convert-to-code-btn" class="secondary" style="font-size: 12px; margin-top: 8px;">Convert to
+                <div style="margin-top: 8px;">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="simplified-code-checkbox" checked> Simplified Code (Refactor)
+                    </label>
+                </div>
+                <button id="convert-to-code-btn" class="secondary" style="font-size: 12px; margin-top: 4px;">Convert to
                     Code Component</button>
                 <button id="convert-all-btn" class="secondary"
                     style="font-size: 12px; margin-top: 8px; display: none; background: #6200ee; color: white; border: none;">Convert
@@ -283,6 +288,7 @@
         const generateSelectedBtn = document.getElementById('generate-from-selected-btn');
         const convertToCodeBtn = document.getElementById('convert-to-code-btn');
         const convertAllBtn = document.getElementById('convert-all-btn');
+        const simplifiedCodeCheckbox = document.getElementById('simplified-code-checkbox');
 
         let pollInterval = null;
         let selectedFilePath = null;
@@ -405,11 +411,16 @@
             try {
                 const parts = selectedFilePath.split('/');
                 const projectName = parts[0] || "Default";
+                const isSimplified = simplifiedCodeCheckbox.checked;
 
                 const response = await fetch('http://127.0.0.1:3001/generate-to-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ path: selectedFilePath, project: projectName })
+                    body: JSON.stringify({
+                        path: selectedFilePath,
+                        project: projectName,
+                        simplified: isSimplified
+                    })
                 });
 
                 const result = await response.json();

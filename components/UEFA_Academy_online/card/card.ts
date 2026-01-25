@@ -86,7 +86,7 @@ export class card extends BaseComponent {
             root.paddingBottom = 0;
             root.paddingLeft = 0;
         }
-        (root as any).layoutAlign = "STRETCH";
+        root.layoutAlign = "STRETCH";
         root.fills = await this.hydratePaints([]);
         root.strokes = await this.hydratePaints([]);
         root.strokeWeight = 1;
