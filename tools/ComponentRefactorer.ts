@@ -567,6 +567,7 @@ export class ComponentRefactorer {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const variations: any[] = [];
+        let shouldBindCheckbox = true;
 
         // Normalize Template: Ensure all checkboxes start with an "open" border look (inner hole visible)
         // This avoids the "blob" look when the first item in the group is unselected.
@@ -617,6 +618,7 @@ export class ComponentRefactorer {
                 }
             }
 
+            let isCheckboxActive = false;
             // Also check checkbox children for selection
             const findCheckboxInNode = (n: any): any => {
                 if (n.name === 'Checkbox') return n;
@@ -642,21 +644,30 @@ export class ComponentRefactorer {
                         if (isHole) {
                             // If it's a hole, isSelected if visible is false (subtractive logic)
                             if (hole.props?.visible === false || hole.props?.visible === 'false') {
-                                isSelected = true;
+                                isCheckboxActive = true;
                             }
                         } else {
                             // If it's not a hole (e.g. checkmark icon), isSelected if visible is true
                             if (hole.props?.visible === true || hole.props?.visible === 'true' || hole.props?.visible === undefined) {
-                                isSelected = true;
+                                isCheckboxActive = true;
                             }
                         }
                     }
                     if (checkboxNode.children.find((c: any) => c.name === 'Checkmark')) {
-                        isSelected = true;
+                        isCheckboxActive = true;
                     }
                 }
             } else {
                 variation.hasCheckbox = false;
+            }
+
+            if (isCheckboxActive) isSelected = true;
+
+            // Consistency check: If the row is selected but checkbox is NOT, or vice versa, logic is flawed.
+            // Specifically, if we are going to bind check=selected, then isCheckboxActive MUST equal isSelected.
+            // If they differ (e.g. Row Selected, Checkbox Empty), then binding them will force Checkbox Checked, which is wrong.
+            if (variation.hasCheckbox && isCheckboxActive !== isSelected) {
+                shouldBindCheckbox = false;
             }
 
             variation.isSelected = isSelected;
@@ -665,6 +676,20 @@ export class ComponentRefactorer {
 
         const dataStr = JSON.stringify(variations);
         const templateStr = this.serialize(template, 4);
+
+        let checkboxLogic = '';
+        if (shouldBindCheckbox) {
+            checkboxLogic = `
+            if (shape) {
+                // The second child (index 1) is the inner checkmark path
+                // We bind its visibility to the selection state
+                if (shape.children && shape.children.length > 1) {
+                    shape.children[1].props = shape.children[1].props || {};
+                    const isHole = ${isHoleCheckbox};
+                    shape.children[1].props.visible = isHole ? !item.isSelected : !!item.isSelected;
+                }
+            }`;
+        }
 
         const code = `...${dataStr}.map((item: any) => {
             const node = ${templateStr} as unknown as NodeDefinition;
@@ -697,16 +722,7 @@ export class ComponentRefactorer {
             };
 
             const shape = findShape(node);
-            
-            if (shape) {
-                // The second child (index 1) is the inner checkmark path
-                // We bind its visibility to the selection state
-                if (shape.children && shape.children.length > 1) {
-                    shape.children[1].props = shape.children[1].props || {};
-                    const isHole = ${isHoleCheckbox};
-                    shape.children[1].props.visible = isHole ? !item.isSelected : !!item.isSelected;
-                }
-            }
+            ${checkboxLogic}
 
             if (item.isSelected) {
                 node.props = node.props || {};

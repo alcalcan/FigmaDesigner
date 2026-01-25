@@ -345,15 +345,6 @@ export class sidebar extends BaseComponent {
 
             const shape = findShape(node);
             
-            if (shape) {
-                // The second child (index 1) is the inner checkmark path
-                // We bind its visibility to the selection state
-                if (shape.children && shape.children.length > 1) {
-                    shape.children[1].props = shape.children[1].props || {};
-                    const isHole = true;
-                    shape.children[1].props.visible = isHole ? !item.isSelected : !!item.isSelected;
-                }
-            }
 
             if (item.isSelected) {
                 node.props = node.props || {};
