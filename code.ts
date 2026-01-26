@@ -396,8 +396,17 @@ figma.ui.onmessage = async (msg) => {
 
   if (msg.type === 'generate-component') {
     const name = msg.componentName;
+    const projectName = msg.projectName; // Optional
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ComponentClass = (ComponentRegistry as any)[name];
+    let ComponentClass = (ComponentRegistry as any)[name];
+
+    if (!ComponentClass && projectName) {
+      // Try aliased name: e.g. chip_expand_Alex_CookBook
+      const safeProjectName = sanitizeName(projectName);
+      const aliasedName = `${name}_${safeProjectName}`;
+      ComponentClass = (ComponentRegistry as any)[aliasedName];
+    }
 
     if (!ComponentClass) {
       figma.notify(`Component ${name} not found`, { error: true });

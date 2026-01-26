@@ -667,7 +667,7 @@
                     insBtn.style.cssText = 'font-size: 9px; background: #0d99ff; padding: 2px 6px; border-radius: 4px; opacity: 0; transition: opacity 0.2s; white-space: nowrap;';
                     insBtn.onclick = (e) => {
                         e.stopPropagation();
-                        parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: item.name } }, '*')
+                        parent.postMessage({ pluginMessage: { type: 'generate-component', componentName: item.name, projectName: item.project } }, '*')
                         insBtn.textContent = 'Sent!';
                         insBtn.style.background = '#1ed760';
                         setTimeout(() => {
@@ -677,6 +677,7 @@
                     };
                     actions.appendChild(insBtn);
                 }
+
 
                 const moveBtn = document.createElement('span');
                 moveBtn.textContent = 'Move';
