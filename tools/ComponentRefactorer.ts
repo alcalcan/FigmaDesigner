@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { CompactSerializer } from './CompactStructure';
 
 interface RefactorerNode {
     id: string; // variable name, e.g. "root", "v10"
@@ -844,37 +845,7 @@ export class ${className} extends BaseComponent {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private serialize(obj: any, indentLevel: number): string {
-        if (obj === null || obj === undefined) return 'null';
-
-        // Handle Code Marker
-        if (obj.__code) {
-            return obj.__code;
-        }
-
-        if (typeof obj !== 'object') return JSON.stringify(obj);
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const indent = "  ".repeat(indentLevel);
-        const nextIndent = "  ".repeat(indentLevel + 1);
-
-        if (Array.isArray(obj)) {
-            if (obj.length === 0) return '[]';
-
-            const items = obj.map(item => this.serialize(item, indentLevel + 1));
-            const joined = items.join(`,\n${nextIndent}`);
-            return `[\n${nextIndent}${joined}\n${indent}]`;
-        }
-
-        // Object
-        const keys = Object.keys(obj);
-        if (keys.length === 0) return '{}';
-
-        const lines = keys.map(key => {
-            const val = obj[key];
-            return `${nextIndent}"${key}": ${this.serialize(val, indentLevel + 1)}`;
-        });
-
-        return `{\n${lines.join(',\n')}\n${indent}}`;
+        return CompactSerializer.serialize(obj, indentLevel);
     }
 
     // --- Geometric Utilities ---
