@@ -1,542 +1,112 @@
-import { BaseComponent, ComponentProps } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 
 
 // SVG Assets
-const SVG_assets_icon_Vector_976_124_svg_20x20 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 7C9.4477 7 9 6.55228 9 6C9 5.44772 9.4477 5 10 5C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7ZM10 15C9.45 15 9 14.55 9 14V10C9 9.45 9.45 9 10 9C10.55 9 11 9.45 11 10V14C11 14.55 10.55 15 10 15ZM10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 2C14.4154 2 18 5.58457 18 10C18 14.4154 14.4154 18 10 18C5.58457 18 2 14.4154 2 10C2 5.58457 5.58457 2 10 2Z" fill="black"/>
-</svg>
-`;
-const SVG_assets_icon_Vector_976_133_svg_18_715295791625977x19_192251205444336 = `<svg width="18.715295791625977" height="19.192251205444336" viewBox="0 0 18.715295791625977 19.192251205444336" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2.60767 16.3846C2.39486 16.3846 2.21666 16.3128 2.07307 16.1692C1.92947 16.0256 1.85767 15.8474 1.85767 15.6346C1.85767 15.4218 1.92947 15.2436 2.07307 15.1C2.21666 14.9564 2.39486 14.8846 2.60767 14.8846H3.66537V7.42303C3.66537 6.07816 4.08044 4.88907 4.91056 3.85574C5.74069 2.82241 6.8064 2.16152 8.10768 1.87308V1.25C8.10768 0.903848 8.22947 0.608982 8.47306 0.3654C8.71664 0.121801 9.01151 0 9.35766 0C9.70381 0 9.99867 0.121801 10.2422 0.3654C10.4858 0.608982 10.6076 0.903848 10.6076 1.25V1.87308C11.9089 2.16152 12.9746 2.82241 13.8047 3.85574C14.6349 4.88907 15.0499 6.07816 15.0499 7.42303V14.8846H16.1076C16.3204 14.8846 16.4986 14.9564 16.6422 15.1C16.7858 15.2436 16.8576 15.4218 16.8576 15.6346C16.8576 15.8474 16.7858 16.0256 16.6422 16.1692C16.4986 16.3128 16.3204 16.3846 16.1076 16.3846H2.60767ZM9.35766 19.1923C8.85894 19.1923 8.43298 19.0157 8.07978 18.6625C7.72658 18.3093 7.54998 17.8833 7.54998 17.3846H11.1653C11.1653 17.8833 10.9887 18.3093 10.6355 18.6625C10.2823 19.0157 9.85637 19.1923 9.35766 19.1923ZM0.723049 7.41341C0.510249 7.41341 0.332048 7.33232 0.188448 7.17016C0.0448645 7.00797 -0.016669 6.81727 0.00384765 6.59806C0.111531 5.35447 0.445507 4.19997 1.00577 3.13459C1.56602 2.06921 2.29102 1.14935 3.18077 0.374999C3.34616 0.230132 3.53429 0.162826 3.74518 0.173076C3.95608 0.183326 4.12563 0.276275 4.25383 0.451925C4.38203 0.627557 4.42947 0.816648 4.39613 1.0192C4.3628 1.22177 4.26344 1.39741 4.09806 1.54613C3.38395 2.18202 2.80414 2.93394 2.35862 3.80189C1.91311 4.66984 1.6365 5.61087 1.5288 6.62496C1.50188 6.84419 1.41567 7.03041 1.27017 7.18361C1.12466 7.33681 0.942282 7.41341 0.723049 7.41341ZM17.9922 7.41341C17.773 7.41341 17.5906 7.33681 17.4451 7.18361C17.2996 7.03041 17.2134 6.84419 17.1865 6.62496C17.0788 5.61087 16.8022 4.66984 16.3567 3.80189C15.9112 2.93394 15.3313 2.18202 14.6172 1.54613C14.4519 1.39741 14.3525 1.22177 14.3192 1.0192C14.2858 0.816648 14.3333 0.627557 14.4615 0.451925C14.5897 0.276275 14.7592 0.183326 14.9701 0.173076C15.181 0.162826 15.3691 0.230132 15.5345 0.374999C16.4243 1.14935 17.1493 2.06921 17.7095 3.13459C18.2698 4.19997 18.6038 5.35447 18.7114 6.59806C18.732 6.81727 18.6704 7.00797 18.5268 7.17016C18.3832 7.33232 18.205 7.41341 17.9922 7.41341Z" fill="black"/>
-</svg>
-`;
 
-
-
-type T2x3 = [[number, number, number], [number, number, number]];
-function applySizeAndTransform(
-    node: SceneNode & LayoutMixin & GeometryMixin,
-    opts: {
-        width?: number;
-        height?: number;
-        relativeTransform?: T2x3;
-        parentIsAutoLayout: boolean;
-        layoutPositioning?: "AUTO" | "ABSOLUTE";
-    }
-) {
-    const { width, height, relativeTransform, parentIsAutoLayout } = opts;
-    const positioning = opts.layoutPositioning ?? "AUTO";
-
-    if (typeof width === "number" && typeof height === "number") {
-        node.resize(width, height);
-    }
-
-    if (relativeTransform) {
-        const t = relativeTransform;
-        const inFlow = parentIsAutoLayout && positioning !== "ABSOLUTE";
-
-        // Strip translation in auto-layout flow; keep axis vectors
-        const tx = inFlow ? 0 : t[0][2];
-        const ty = inFlow ? 0 : t[1][2];
-
-        try {
-            node.relativeTransform = [
-                [t[0][0], t[0][1], tx],
-                [t[1][0], t[1][1], ty],
-            ];
-        } catch (e) {
-            console.warn("Failed to set relativeTransform", e);
-        }
-    }
-}
 
 
 export class Info_raw extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
-        // Load default font
-        try {
-            await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-        } catch (e) {
-            console.warn("Failed to load Inter Regular", e);
-        }
+        const structure: NodeDefinition = {
+    "type": "FRAME",
+    "name": "Info_raw",
+    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"AUTO","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":0,"paddingTop":0,"paddingRight":120,"paddingBottom":0,"paddingLeft":120,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.7803921699523926,"g":0.9176470637321472,"b":0.9843137264251709},"boundVariables":{}}],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":4},
+    "layoutProps": {"width":1680,"height":90,"parentIsAutoLayout":false},
+    "children": [
+      {
+        "type": "FRAME",
+        "name": "AV / play-circle",
+        "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"NONE","fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutPositioning":"ABSOLUTE","layoutAlign":"INHERIT","layoutGrow":0},
+        "layoutProps": {"width":64,"height":64,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"ABSOLUTE"}
+      },
+      {
+        "type": "FRAME",
+        "name": "Frame 1615",
+        "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":true,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":16,"paddingTop":16,"paddingRight":0,"paddingBottom":16,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":1},
+        "layoutProps": {"width":1440,"height":90,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Frame 1924",
+            "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"VERTICAL","primaryAxisSizingMode":"AUTO","counterAxisSizingMode":"AUTO","primaryAxisAlignItems":"CENTER","counterAxisAlignItems":"MIN","itemSpacing":8,"paddingTop":6,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"INHERIT","layoutGrow":0},
+            "layoutProps": {"width":24,"height":30,"relativeTransform":[[1,0,0],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "Support / information",
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"NONE","fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"INHERIT","layoutGrow":0},
+                "layoutProps": {"width":24,"height":24,"relativeTransform":[[1,0,0],[0,1,6]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+                "children": [
+                  {
+                    "type": "VECTOR",
+                    "shouldFlatten": true,
+                    "name": "Vector",
+                    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2,"y":2},
+                    "layoutProps": {"width":20,"height":20,"relativeTransform":[[1,0,2],[0,1,2]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
+                    "svgContent": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M10 7C9.4477 7 9 6.55228 9 6C9 5.44772 9.4477 5 10 5C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7ZM10 15C9.45 15 9 14.55 9 14V10C9 9.45 9.45 9 10 9C10.55 9 11 9.45 11 10V14C11 14.55 10.55 15 10 15ZM10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 2C14.4154 2 18 5.58457 18 10C18 14.4154 14.4154 18 10 18C5.58457 18 2 14.4154 2 10C2 5.58457 5.58457 2 10 2Z\" fill=\"black\"/>\n</svg>"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame 1923",
+            "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"VERTICAL","primaryAxisSizingMode":"AUTO","counterAxisSizingMode":"FIXED","primaryAxisAlignItems":"CENTER","counterAxisAlignItems":"MIN","itemSpacing":4,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"INHERIT","layoutGrow":1},
+            "layoutProps": {"width":1400,"height":58,"relativeTransform":[[1,0,40],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Don’t miss out!",
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":1,"strokeAlign":"OUTSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"characters":"Don’t miss out!","fontSize":20,"textAlignHorizontal":"LEFT","textAlignVertical":"TOP","textAutoResize":"WIDTH_AND_HEIGHT","letterSpacing":{"unit":"PIXELS","value":-0.10000000149011612},"lineHeight":{"unit":"PERCENT","value":150},"textCase":"ORIGINAL","textDecoration":"NONE","paragraphSpacing":20,"paragraphIndent":0,"font":{"family":"Manrope","style":"Bold"},"layoutAlign":"INHERIT","layoutGrow":0},
+                "layoutProps": {"width":146,"height":30,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
+              },
+              {
+                "type": "FRAME",
+                "name": "Frame 1925",
+                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"HORIZONTAL","primaryAxisSizingMode":"FIXED","counterAxisSizingMode":"AUTO","primaryAxisAlignItems":"MIN","counterAxisAlignItems":"MIN","itemSpacing":4,"paddingTop":0,"paddingRight":0,"paddingBottom":0,"paddingLeft":0,"itemReverseZIndex":false,"strokesIncludedInLayout":false,"fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"STRETCH","layoutGrow":0},
+                "layoutProps": {"width":1400,"height":24,"relativeTransform":[[1,0,0],[0,1,34]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "Click on the bell icon",
+                    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":1,"strokeAlign":"OUTSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"characters":"Click on the bell icon","fontSize":16,"textAlignHorizontal":"LEFT","textAlignVertical":"TOP","textAutoResize":"WIDTH_AND_HEIGHT","letterSpacing":{"unit":"PIXELS","value":0},"lineHeight":{"unit":"PERCENT","value":129.99999523162842},"textCase":"ORIGINAL","textDecoration":"NONE","paragraphSpacing":16,"paragraphIndent":0,"font":{"family":"Manrope","style":"SemiBold"},"layoutAlign":"INHERIT","layoutGrow":0},
+                    "layoutProps": {"width":157,"height":21,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
+                  },
+                  {
+                    "type": "FRAME",
+                    "name": "Notifications / notifications-active",
+                    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","clipsContent":false,"layoutMode":"NONE","fills":[],"strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"strokeTopWeight":1,"strokeRightWeight":1,"strokeBottomWeight":1,"strokeLeftWeight":1,"effects":[],"cornerRadius":0,"layoutAlign":"INHERIT","layoutGrow":0},
+                    "layoutProps": {"width":24,"height":24,"relativeTransform":[[1,0,161],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"},
+                    "children": [
+                      {
+                        "type": "VECTOR",
+                        "shouldFlatten": true,
+                        "name": "Vector",
+                        "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":1,"strokeAlign":"INSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":2.642333984375,"y":2.5},
+                        "layoutProps": {"width":18.715295791625977,"height":19.192251205444336,"relativeTransform":[[1,0,2.642333984375],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
+                        "svgContent": "<svg width=\"18.715295791625977\" height=\"19.192251205444336\" viewBox=\"0 0 18.715295791625977 19.192251205444336\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M2.60767 16.3846C2.39486 16.3846 2.21666 16.3128 2.07307 16.1692C1.92947 16.0256 1.85767 15.8474 1.85767 15.6346C1.85767 15.4218 1.92947 15.2436 2.07307 15.1C2.21666 14.9564 2.39486 14.8846 2.60767 14.8846H3.66537V7.42303C3.66537 6.07816 4.08044 4.88907 4.91056 3.85574C5.74069 2.82241 6.8064 2.16152 8.10768 1.87308V1.25C8.10768 0.903848 8.22947 0.608982 8.47306 0.3654C8.71664 0.121801 9.01151 0 9.35766 0C9.70381 0 9.99867 0.121801 10.2422 0.3654C10.4858 0.608982 10.6076 0.903848 10.6076 1.25V1.87308C11.9089 2.16152 12.9746 2.82241 13.8047 3.85574C14.6349 4.88907 15.0499 6.07816 15.0499 7.42303V14.8846H16.1076C16.3204 14.8846 16.4986 14.9564 16.6422 15.1C16.7858 15.2436 16.8576 15.4218 16.8576 15.6346C16.8576 15.8474 16.7858 16.0256 16.6422 16.1692C16.4986 16.3128 16.3204 16.3846 16.1076 16.3846H2.60767ZM9.35766 19.1923C8.85894 19.1923 8.43298 19.0157 8.07978 18.6625C7.72658 18.3093 7.54998 17.8833 7.54998 17.3846H11.1653C11.1653 17.8833 10.9887 18.3093 10.6355 18.6625C10.2823 19.0157 9.85637 19.1923 9.35766 19.1923ZM0.723049 7.41341C0.510249 7.41341 0.332048 7.33232 0.188448 7.17016C0.0448645 7.00797 -0.016669 6.81727 0.00384765 6.59806C0.111531 5.35447 0.445507 4.19997 1.00577 3.13459C1.56602 2.06921 2.29102 1.14935 3.18077 0.374999C3.34616 0.230132 3.53429 0.162826 3.74518 0.173076C3.95608 0.183326 4.12563 0.276275 4.25383 0.451925C4.38203 0.627557 4.42947 0.816648 4.39613 1.0192C4.3628 1.22177 4.26344 1.39741 4.09806 1.54613C3.38395 2.18202 2.80414 2.93394 2.35862 3.80189C1.91311 4.66984 1.6365 5.61087 1.5288 6.62496C1.50188 6.84419 1.41567 7.03041 1.27017 7.18361C1.12466 7.33681 0.942282 7.41341 0.723049 7.41341ZM17.9922 7.41341C17.773 7.41341 17.5906 7.33681 17.4451 7.18361C17.2996 7.03041 17.2134 6.84419 17.1865 6.62496C17.0788 5.61087 16.8022 4.66984 16.3567 3.80189C15.9112 2.93394 15.3313 2.18202 14.6172 1.54613C14.4519 1.39741 14.3525 1.22177 14.3192 1.0192C14.2858 0.816648 14.3333 0.627557 14.4615 0.451925C14.5897 0.276275 14.7592 0.183326 14.9701 0.173076C15.181 0.162826 15.3691 0.230132 15.5345 0.374999C16.4243 1.14935 17.1493 2.06921 17.7095 3.13459C18.2698 4.19997 18.6038 5.35447 18.7114 6.59806C18.732 6.81727 18.6704 7.00797 18.5268 7.17016C18.3832 7.33232 18.205 7.41341 17.9922 7.41341Z\" fill=\"black\"/>\n</svg>"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TEXT",
+                    "name": "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.",
+                    "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","fills":[{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}],"strokes":[],"strokeWeight":1,"strokeAlign":"OUTSIDE","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"characters":"in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.","fontSize":16,"textAlignHorizontal":"LEFT","textAlignVertical":"TOP","textAutoResize":"HEIGHT","letterSpacing":{"unit":"PIXELS","value":0},"lineHeight":{"unit":"PERCENT","value":129.99999523162842},"textCase":"ORIGINAL","textDecoration":"NONE","paragraphSpacing":16,"paragraphIndent":0,"font":{"family":"Manrope","style":"SemiBold"},"layoutAlign":"INHERIT","layoutGrow":1},
+                    "layoutProps": {"width":1211,"height":21,"relativeTransform":[[1,0,189],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"}
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+        const root = await this.renderDefinition(structure);
         
-        const root = figma.createFrame();
-root.name = "Info_raw";
-root.visible = true;
-root.opacity = 1;
-root.locked = false;
-if ("blendMode" in root) root.blendMode = "PASS_THROUGH";
-if ("isMask" in root) root.isMask = false;
-if ("maskType" in root) root.maskType = "ALPHA";
-if ("clipsContent" in root) root.clipsContent = false;
-if ("layoutMode" in root) {
-    root.layoutMode = "HORIZONTAL";
-    root.primaryAxisSizingMode = "FIXED";
-    root.counterAxisSizingMode = "AUTO";
-    root.primaryAxisAlignItems = "MIN";
-    root.counterAxisAlignItems = "MIN";
-    root.itemSpacing = 0;
-    root.paddingTop = 0;
-    root.paddingRight = 120;
-    root.paddingBottom = 0;
-    root.paddingLeft = 120;
-    root.itemReverseZIndex = false;
-    root.strokesIncludedInLayout = false;
-}
-root.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.7803921699523926,"g":0.9176470637321472,"b":0.9843137264251709},"boundVariables":{}}]);
-root.strokes = await this.hydratePaints([]);
-root.strokeWeight = 1;
-root.strokeAlign = "INSIDE";
-if ("strokeCap" in root) root.strokeCap = "NONE";
-if ("strokeJoin" in root) root.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root) root.strokeTopWeight = 1;
-if ("strokeRightWeight" in root) root.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root) root.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root) root.strokeLeftWeight = 1;
-root.effects = [];
-if ("cornerRadius" in root) root.cornerRadius = 4;
-
-// Start Child: AV / play-circle
-const root_child_0 = figma.createFrame();
-root_child_0.name = "AV / play-circle";
-root_child_0.visible = true;
-root_child_0.opacity = 1;
-root_child_0.locked = false;
-if ("blendMode" in root_child_0) root_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_0) root_child_0.isMask = false;
-if ("maskType" in root_child_0) root_child_0.maskType = "ALPHA";
-if ("clipsContent" in root_child_0) root_child_0.clipsContent = false;
-if ("layoutMode" in root_child_0) {
-    root_child_0.layoutMode = "NONE";
-}
-root_child_0.fills = await this.hydratePaints([]);
-root_child_0.strokes = await this.hydratePaints([]);
-root_child_0.strokeWeight = 1;
-root_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_0) root_child_0.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_0) root_child_0.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_0) root_child_0.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_0) root_child_0.strokeLeftWeight = 1;
-root_child_0.effects = [];
-if ("cornerRadius" in root_child_0) root_child_0.cornerRadius = 0;
-root.appendChild(root_child_0);
-// Child Layout Props
-root_child_0.layoutPositioning = "ABSOLUTE";
-root_child_0.layoutAlign = "INHERIT";
-root_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_0, {"width":64,"height":64,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"ABSOLUTE"});
-
-// Start Child: Frame 1615
-const root_child_1 = figma.createFrame();
-root_child_1.name = "Frame 1615";
-root_child_1.visible = true;
-root_child_1.opacity = 1;
-root_child_1.locked = false;
-if ("blendMode" in root_child_1) root_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1) root_child_1.isMask = false;
-if ("maskType" in root_child_1) root_child_1.maskType = "ALPHA";
-if ("clipsContent" in root_child_1) root_child_1.clipsContent = true;
-if ("layoutMode" in root_child_1) {
-    root_child_1.layoutMode = "HORIZONTAL";
-    root_child_1.primaryAxisSizingMode = "FIXED";
-    root_child_1.counterAxisSizingMode = "FIXED";
-    root_child_1.primaryAxisAlignItems = "MIN";
-    root_child_1.counterAxisAlignItems = "MIN";
-    root_child_1.itemSpacing = 16;
-    root_child_1.paddingTop = 16;
-    root_child_1.paddingRight = 0;
-    root_child_1.paddingBottom = 16;
-    root_child_1.paddingLeft = 0;
-    root_child_1.itemReverseZIndex = false;
-    root_child_1.strokesIncludedInLayout = false;
-}
-root_child_1.fills = await this.hydratePaints([]);
-root_child_1.strokes = await this.hydratePaints([]);
-root_child_1.strokeWeight = 1;
-root_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1) root_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1) root_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1) root_child_1.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_1) root_child_1.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_1) root_child_1.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_1) root_child_1.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_1) root_child_1.strokeLeftWeight = 1;
-root_child_1.effects = [];
-if ("cornerRadius" in root_child_1) root_child_1.cornerRadius = 0;
-
-// Start Child: Frame 1924
-const root_child_1_child_0 = figma.createFrame();
-root_child_1_child_0.name = "Frame 1924";
-root_child_1_child_0.visible = true;
-root_child_1_child_0.opacity = 1;
-root_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_0) root_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_0) root_child_1_child_0.isMask = false;
-if ("maskType" in root_child_1_child_0) root_child_1_child_0.maskType = "ALPHA";
-if ("clipsContent" in root_child_1_child_0) root_child_1_child_0.clipsContent = false;
-if ("layoutMode" in root_child_1_child_0) {
-    root_child_1_child_0.layoutMode = "VERTICAL";
-    root_child_1_child_0.primaryAxisSizingMode = "AUTO";
-    root_child_1_child_0.counterAxisSizingMode = "AUTO";
-    root_child_1_child_0.primaryAxisAlignItems = "CENTER";
-    root_child_1_child_0.counterAxisAlignItems = "MIN";
-    root_child_1_child_0.itemSpacing = 8;
-    root_child_1_child_0.paddingTop = 6;
-    root_child_1_child_0.paddingRight = 0;
-    root_child_1_child_0.paddingBottom = 0;
-    root_child_1_child_0.paddingLeft = 0;
-    root_child_1_child_0.itemReverseZIndex = false;
-    root_child_1_child_0.strokesIncludedInLayout = false;
-}
-root_child_1_child_0.fills = await this.hydratePaints([]);
-root_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_0.strokeWeight = 1;
-root_child_1_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_0) root_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_0) root_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_0) root_child_1_child_0.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_1_child_0) root_child_1_child_0.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_1_child_0) root_child_1_child_0.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_1_child_0) root_child_1_child_0.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_1_child_0) root_child_1_child_0.strokeLeftWeight = 1;
-root_child_1_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_0) root_child_1_child_0.cornerRadius = 0;
-
-// Start Child: Support / information
-const root_child_1_child_0_child_0 = figma.createFrame();
-root_child_1_child_0_child_0.name = "Support / information";
-root_child_1_child_0_child_0.visible = true;
-root_child_1_child_0_child_0.opacity = 1;
-root_child_1_child_0_child_0.locked = false;
-if ("blendMode" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.isMask = false;
-if ("maskType" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.maskType = "ALPHA";
-if ("clipsContent" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.clipsContent = false;
-if ("layoutMode" in root_child_1_child_0_child_0) {
-    root_child_1_child_0_child_0.layoutMode = "NONE";
-}
-root_child_1_child_0_child_0.fills = await this.hydratePaints([]);
-root_child_1_child_0_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_0_child_0.strokeWeight = 1;
-root_child_1_child_0_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.strokeLeftWeight = 1;
-root_child_1_child_0_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.cornerRadius = 0;
-
-// Start Child: Vector
-const root_child_1_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_976_124_svg_20x20);
-root_child_1_child_0_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
-const root_child_1_child_0_child_0_child_0 = figma.flatten([root_child_1_child_0_child_0_child_0_svgContainer]);
-root_child_1_child_0_child_0_child_0.name = "Vector";
-root_child_1_child_0_child_0_child_0.visible = true;
-root_child_1_child_0_child_0_child_0.opacity = 1;
-root_child_1_child_0_child_0_child_0.locked = false;
-if ("blendMode" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.isMask = false;
-if ("maskType" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.maskType = "ALPHA";
-root_child_1_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_0_child_0_child_0.strokeWeight = 1;
-root_child_1_child_0_child_0_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.strokeMiterLimit = 4;
-root_child_1_child_0_child_0_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_0_child_0_child_0) root_child_1_child_0_child_0_child_0.cornerRadius = 0;
-root_child_1_child_0_child_0.appendChild(root_child_1_child_0_child_0_child_0);
-applySizeAndTransform(root_child_1_child_0_child_0_child_0, {"width":20,"height":20,"relativeTransform":[[1,0,2],[0,1,2]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_1_child_0_child_0_child_0.x = 2;
-root_child_1_child_0_child_0_child_0.y = 2;
-root_child_1_child_0.appendChild(root_child_1_child_0_child_0);
-// Child Layout Props
-root_child_1_child_0_child_0.layoutAlign = "INHERIT";
-root_child_1_child_0_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_0_child_0, {"width":24,"height":24,"relativeTransform":[[1,0,0],[0,1,6]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root_child_1.appendChild(root_child_1_child_0);
-// Child Layout Props
-root_child_1_child_0.layoutAlign = "INHERIT";
-root_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_0, {"width":24,"height":30,"relativeTransform":[[1,0,0],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-
-// Start Child: Frame 1923
-const root_child_1_child_1 = figma.createFrame();
-root_child_1_child_1.name = "Frame 1923";
-root_child_1_child_1.visible = true;
-root_child_1_child_1.opacity = 1;
-root_child_1_child_1.locked = false;
-if ("blendMode" in root_child_1_child_1) root_child_1_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1) root_child_1_child_1.isMask = false;
-if ("maskType" in root_child_1_child_1) root_child_1_child_1.maskType = "ALPHA";
-if ("clipsContent" in root_child_1_child_1) root_child_1_child_1.clipsContent = false;
-if ("layoutMode" in root_child_1_child_1) {
-    root_child_1_child_1.layoutMode = "VERTICAL";
-    root_child_1_child_1.primaryAxisSizingMode = "AUTO";
-    root_child_1_child_1.counterAxisSizingMode = "FIXED";
-    root_child_1_child_1.primaryAxisAlignItems = "CENTER";
-    root_child_1_child_1.counterAxisAlignItems = "MIN";
-    root_child_1_child_1.itemSpacing = 4;
-    root_child_1_child_1.paddingTop = 0;
-    root_child_1_child_1.paddingRight = 0;
-    root_child_1_child_1.paddingBottom = 0;
-    root_child_1_child_1.paddingLeft = 0;
-    root_child_1_child_1.itemReverseZIndex = false;
-    root_child_1_child_1.strokesIncludedInLayout = false;
-}
-root_child_1_child_1.fills = await this.hydratePaints([]);
-root_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_1_child_1.strokeWeight = 1;
-root_child_1_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1) root_child_1_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1) root_child_1_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1) root_child_1_child_1.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_1_child_1) root_child_1_child_1.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_1_child_1) root_child_1_child_1.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_1_child_1) root_child_1_child_1.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_1_child_1) root_child_1_child_1.strokeLeftWeight = 1;
-root_child_1_child_1.effects = [];
-if ("cornerRadius" in root_child_1_child_1) root_child_1_child_1.cornerRadius = 0;
-
-// Start Child: Don’t miss out!
-const root_child_1_child_1_child_0 = figma.createText();
-root_child_1_child_1_child_0.name = "Don’t miss out!";
-root_child_1_child_1_child_0.visible = true;
-root_child_1_child_1_child_0.opacity = 1;
-root_child_1_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.isMask = false;
-if ("maskType" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.maskType = "ALPHA";
-root_child_1_child_1_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_0.strokeWeight = 1;
-root_child_1_child_1_child_0.strokeAlign = "OUTSIDE";
-if ("strokeCap" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_1_child_0.effects = [];
-// Text Properties
-root_child_1_child_1_child_0.characters = `Don’t miss out!`;
-root_child_1_child_1_child_0.fontSize = 20;
-root_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
-root_child_1_child_1_child_0.textAlignVertical = "TOP";
-root_child_1_child_1_child_0.textAutoResize = "WIDTH_AND_HEIGHT";
-root_child_1_child_1_child_0.letterSpacing = {"unit":"PIXELS","value":-0.10000000149011612};
-root_child_1_child_1_child_0.lineHeight = {"unit":"PERCENT","value":150};
-if ("textCase" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.textCase = "ORIGINAL";
-if ("textDecoration" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.textDecoration = "NONE";
-root_child_1_child_1_child_0.paragraphSpacing = 20;
-root_child_1_child_1_child_0.paragraphIndent = 0;
-await this.setFont(root_child_1_child_1_child_0, {"family":"Manrope","style":"Bold"});
-// Styled Segments
-await this.setRangeFont(root_child_1_child_1_child_0, 0, 15, {"family":"Manrope","style":"Bold"});
-root_child_1_child_1_child_0.setRangeFills(0, 15, [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_0.setRangeFontSize(0, 15, 20);
-root_child_1_child_1.appendChild(root_child_1_child_1_child_0);
-// Child Layout Props
-root_child_1_child_1_child_0.layoutAlign = "INHERIT";
-root_child_1_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_0, {"width":146,"height":30,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-
-// Start Child: Frame 1925
-const root_child_1_child_1_child_1 = figma.createFrame();
-root_child_1_child_1_child_1.name = "Frame 1925";
-root_child_1_child_1_child_1.visible = true;
-root_child_1_child_1_child_1.opacity = 1;
-root_child_1_child_1_child_1.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.isMask = false;
-if ("maskType" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.maskType = "ALPHA";
-if ("clipsContent" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.clipsContent = false;
-if ("layoutMode" in root_child_1_child_1_child_1) {
-    root_child_1_child_1_child_1.layoutMode = "HORIZONTAL";
-    root_child_1_child_1_child_1.primaryAxisSizingMode = "FIXED";
-    root_child_1_child_1_child_1.counterAxisSizingMode = "AUTO";
-    root_child_1_child_1_child_1.primaryAxisAlignItems = "MIN";
-    root_child_1_child_1_child_1.counterAxisAlignItems = "MIN";
-    root_child_1_child_1_child_1.itemSpacing = 4;
-    root_child_1_child_1_child_1.paddingTop = 0;
-    root_child_1_child_1_child_1.paddingRight = 0;
-    root_child_1_child_1_child_1.paddingBottom = 0;
-    root_child_1_child_1_child_1.paddingLeft = 0;
-    root_child_1_child_1_child_1.itemReverseZIndex = false;
-    root_child_1_child_1_child_1.strokesIncludedInLayout = false;
-}
-root_child_1_child_1_child_1.fills = await this.hydratePaints([]);
-root_child_1_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1.strokeWeight = 1;
-root_child_1_child_1_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.strokeLeftWeight = 1;
-root_child_1_child_1_child_1.effects = [];
-if ("cornerRadius" in root_child_1_child_1_child_1) root_child_1_child_1_child_1.cornerRadius = 0;
-
-// Start Child: Click on the bell icon
-const root_child_1_child_1_child_1_child_0 = figma.createText();
-root_child_1_child_1_child_1_child_0.name = "Click on the bell icon";
-root_child_1_child_1_child_1_child_0.visible = true;
-root_child_1_child_1_child_1_child_0.opacity = 1;
-root_child_1_child_1_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.isMask = false;
-if ("maskType" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.maskType = "ALPHA";
-root_child_1_child_1_child_1_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_0.strokeWeight = 1;
-root_child_1_child_1_child_1_child_0.strokeAlign = "OUTSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_0.effects = [];
-// Text Properties
-root_child_1_child_1_child_1_child_0.characters = `Click on the bell icon`;
-root_child_1_child_1_child_1_child_0.fontSize = 16;
-root_child_1_child_1_child_1_child_0.textAlignHorizontal = "LEFT";
-root_child_1_child_1_child_1_child_0.textAlignVertical = "TOP";
-root_child_1_child_1_child_1_child_0.textAutoResize = "WIDTH_AND_HEIGHT";
-root_child_1_child_1_child_1_child_0.letterSpacing = {"unit":"PIXELS","value":0};
-root_child_1_child_1_child_1_child_0.lineHeight = {"unit":"PERCENT","value":129.99999523162842};
-if ("textCase" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.textCase = "ORIGINAL";
-if ("textDecoration" in root_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_0.textDecoration = "NONE";
-root_child_1_child_1_child_1_child_0.paragraphSpacing = 16;
-root_child_1_child_1_child_1_child_0.paragraphIndent = 0;
-await this.setFont(root_child_1_child_1_child_1_child_0, {"family":"Manrope","style":"SemiBold"});
-// Styled Segments
-await this.setRangeFont(root_child_1_child_1_child_1_child_0, 0, 22, {"family":"Manrope","style":"SemiBold"});
-root_child_1_child_1_child_1_child_0.setRangeFills(0, 22, [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_0.setRangeFontSize(0, 22, 16);
-root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_0);
-// Child Layout Props
-root_child_1_child_1_child_1_child_0.layoutAlign = "INHERIT";
-root_child_1_child_1_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_1_child_0, {"width":157,"height":21,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-
-// Start Child: Notifications / notifications-active
-const root_child_1_child_1_child_1_child_1 = figma.createFrame();
-root_child_1_child_1_child_1_child_1.name = "Notifications / notifications-active";
-root_child_1_child_1_child_1_child_1.visible = true;
-root_child_1_child_1_child_1_child_1.opacity = 1;
-root_child_1_child_1_child_1_child_1.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.isMask = false;
-if ("maskType" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.maskType = "ALPHA";
-if ("clipsContent" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.clipsContent = false;
-if ("layoutMode" in root_child_1_child_1_child_1_child_1) {
-    root_child_1_child_1_child_1_child_1.layoutMode = "NONE";
-}
-root_child_1_child_1_child_1_child_1.fills = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_1.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_1.strokeWeight = 1;
-root_child_1_child_1_child_1_child_1.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.strokeLeftWeight = 1;
-root_child_1_child_1_child_1_child_1.effects = [];
-if ("cornerRadius" in root_child_1_child_1_child_1_child_1) root_child_1_child_1_child_1_child_1.cornerRadius = 0;
-
-// Start Child: Vector
-const root_child_1_child_1_child_1_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_assets_icon_Vector_976_133_svg_18_715295791625977x19_192251205444336);
-root_child_1_child_1_child_1_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
-const root_child_1_child_1_child_1_child_1_child_0 = figma.flatten([root_child_1_child_1_child_1_child_1_child_0_svgContainer]);
-root_child_1_child_1_child_1_child_1_child_0.name = "Vector";
-root_child_1_child_1_child_1_child_1_child_0.visible = true;
-root_child_1_child_1_child_1_child_1_child_0.opacity = 1;
-root_child_1_child_1_child_1_child_1_child_0.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.isMask = false;
-if ("maskType" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.maskType = "ALPHA";
-root_child_1_child_1_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_1_child_0.strokeWeight = 1;
-root_child_1_child_1_child_1_child_1_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_1_child_0.effects = [];
-if ("cornerRadius" in root_child_1_child_1_child_1_child_1_child_0) root_child_1_child_1_child_1_child_1_child_0.cornerRadius = 0;
-root_child_1_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_1_child_0);
-applySizeAndTransform(root_child_1_child_1_child_1_child_1_child_0, {"width":18.715295791625977,"height":19.192251205444336,"relativeTransform":[[1,0,2.642333984375],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_1_child_1_child_1_child_1_child_0.x = 2.642333984375;
-root_child_1_child_1_child_1_child_1_child_0.y = 2.5;
-root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_1);
-// Child Layout Props
-root_child_1_child_1_child_1_child_1.layoutAlign = "INHERIT";
-root_child_1_child_1_child_1_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_1_child_1, {"width":24,"height":24,"relativeTransform":[[1,0,161],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-
-// Start Child: in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.
-const root_child_1_child_1_child_1_child_2 = figma.createText();
-root_child_1_child_1_child_1_child_2.name = "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.";
-root_child_1_child_1_child_1_child_2.visible = true;
-root_child_1_child_1_child_1_child_2.opacity = 1;
-root_child_1_child_1_child_1_child_2.locked = false;
-if ("blendMode" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.isMask = false;
-if ("maskType" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.maskType = "ALPHA";
-root_child_1_child_1_child_1_child_2.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_2.strokes = await this.hydratePaints([]);
-root_child_1_child_1_child_1_child_2.strokeWeight = 1;
-root_child_1_child_1_child_1_child_2.strokeAlign = "OUTSIDE";
-if ("strokeCap" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeCap = "NONE";
-if ("strokeJoin" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.strokeMiterLimit = 4;
-root_child_1_child_1_child_1_child_2.effects = [];
-// Text Properties
-root_child_1_child_1_child_1_child_2.characters = `in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.`;
-root_child_1_child_1_child_1_child_2.fontSize = 16;
-root_child_1_child_1_child_1_child_2.textAlignHorizontal = "LEFT";
-root_child_1_child_1_child_1_child_2.textAlignVertical = "TOP";
-root_child_1_child_1_child_1_child_2.textAutoResize = "HEIGHT";
-root_child_1_child_1_child_1_child_2.letterSpacing = {"unit":"PIXELS","value":0};
-root_child_1_child_1_child_1_child_2.lineHeight = {"unit":"PERCENT","value":129.99999523162842};
-if ("textCase" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.textCase = "ORIGINAL";
-if ("textDecoration" in root_child_1_child_1_child_1_child_2) root_child_1_child_1_child_1_child_2.textDecoration = "NONE";
-root_child_1_child_1_child_1_child_2.paragraphSpacing = 16;
-root_child_1_child_1_child_1_child_2.paragraphIndent = 0;
-await this.setFont(root_child_1_child_1_child_1_child_2, {"family":"Manrope","style":"SemiBold"});
-// Styled Segments
-await this.setRangeFont(root_child_1_child_1_child_1_child_2, 0, 154, {"family":"Manrope","style":"SemiBold"});
-root_child_1_child_1_child_1_child_2.setRangeFills(0, 154, [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
-root_child_1_child_1_child_1_child_2.setRangeFontSize(0, 154, 16);
-root_child_1_child_1_child_1.appendChild(root_child_1_child_1_child_1_child_2);
-// Child Layout Props
-root_child_1_child_1_child_1_child_2.layoutAlign = "INHERIT";
-root_child_1_child_1_child_1_child_2.layoutGrow = 1;
-applySizeAndTransform(root_child_1_child_1_child_1_child_2, {"width":1211,"height":21,"relativeTransform":[[1,0,189],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root_child_1_child_1.appendChild(root_child_1_child_1_child_1);
-// Child Layout Props
-root_child_1_child_1_child_1.layoutAlign = "STRETCH";
-root_child_1_child_1_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_1, {"width":1400,"height":24,"relativeTransform":[[1,0,0],[0,1,34]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root_child_1.appendChild(root_child_1_child_1);
-// Child Layout Props
-root_child_1_child_1.layoutAlign = "INHERIT";
-root_child_1_child_1.layoutGrow = 1;
-applySizeAndTransform(root_child_1_child_1, {"width":1400,"height":58,"relativeTransform":[[1,0,40],[0,1,16]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-root.appendChild(root_child_1);
-// Child Layout Props
-root_child_1.layoutAlign = "STRETCH";
-root_child_1.layoutGrow = 1;
-applySizeAndTransform(root_child_1, {"width":1440,"height":90,"relativeTransform":[[1,0,120],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
-
-
-        applySizeAndTransform(root, {"width":1680,"height":90,"parentIsAutoLayout":false});
-
+        // Final positioning
         root.x = props.x;
         root.y = props.y;
 
