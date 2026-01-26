@@ -18,3 +18,6 @@ export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBa
 export { button_set } from "./UEFA_Academy_online/button_set/button_set";
 export { UEFA_Academy_online_CourseDetails } from "../pages/UEFA_Academy_online/UEFA_Academy_online_CourseDetails";
 export { chip_expand as chip_expand_Alex_CookBook } from "./Alex_CookBook/chip_expand/chip_expand";
+export { search_bar as search_bar_Alex_CookBook } from "./Alex_CookBook/search_bar/search_bar";
+export { search_bar_expanded as search_bar_expanded_Alex_CookBook } from "./Alex_CookBook/search_bar_expanded/search_bar_expanded";
+export { checkbox_element as checkbox_element_Alex_CookBook } from "./Alex_CookBook/checkbox_element/checkbox_element";
