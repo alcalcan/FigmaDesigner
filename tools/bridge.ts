@@ -112,6 +112,7 @@ const server = http.createServer((req, res) => {
             walkFiles(extractionDir, "", (name, project, relPath) => {
                 files.push({ name, project, path: relPath });
             });
+            console.log(`[Bridge] Listing ${files.length} files. Found Info? ${files.some(f => f.name === 'Info.json')}`);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ files }));
         } catch (e) {

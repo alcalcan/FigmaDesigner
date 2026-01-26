@@ -24,3 +24,4 @@ export { Notifications___notifications_none } from "./Alex_CookBook/Notification
 export { Notifications___notifications_subscribed } from "./Alex_CookBook/Notifications___notifications_subscribed/Notifications___notifications_subscribed";
 export { SubSection_generated } from "./Alex_CookBook/SubSection_generated/SubSection_generated";
 export { sidebar } from "./Alex_CookBook/sidebar/sidebar";
+export { Info_raw } from "./Alex_CookBook/Info_raw/Info_raw";

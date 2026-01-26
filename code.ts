@@ -300,9 +300,13 @@ figma.ui.onmessage = async (msg) => {
 
   // Handle Capture request from Bridge (via UI)
   if (msg.type === 'capture-bridge') {
+    console.log("[Plugin] Received capture-bridge request");
     try {
       const selection = figma.currentPage.selection;
+      console.log(`[Plugin] Selection count: ${selection.length}`);
+
       if (selection.length === 0) {
+        console.warn("[Plugin] No selection");
         figma.notify("Please select at least one element to capture.", { error: true });
         figma.ui.postMessage({ type: 'capture-error', message: "No selection" });
         return;
@@ -310,13 +314,18 @@ figma.ui.onmessage = async (msg) => {
 
       const projectName = figma.root.name;
       const packets = await Promise.all(selection.map(async (node) => {
+        console.log(`[Plugin] Capturing node: ${node.name} (ID: ${node.id})`);
         const assetStore: AssetStore = {
           imageHashToAssetRef: new Map(),
           assets: {},
           nextId: 1
         };
         const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson);
-        if (!data) return null;
+
+        if (!data) {
+          console.warn(`[Plugin] Capture returned null for ${node.name}`);
+          return null;
+        }
 
         // Flatten for bridge
         const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
@@ -324,6 +333,8 @@ figma.ui.onmessage = async (msg) => {
           type: ref.endsWith('.svg') ? 'svg' : 'image',
           content: val.bytesBase64
         }));
+
+        console.log(`[Plugin] Node ${node.name} captured. Assets: ${assets.length}`);
 
         return {
           name: node.name,
@@ -336,9 +347,12 @@ figma.ui.onmessage = async (msg) => {
       const validPackets = packets.filter(p => p !== null);
 
       if (validPackets.length === 0) {
+        console.warn("[Plugin] Valid packets count is 0");
         figma.notify("No visible elements found to capture.", { error: true });
         return;
       }
+
+      console.log(`[Plugin] Sending ${validPackets.length} packets to UI`);
 
       figma.ui.postMessage({
         type: 'capture-bridge-result-batch',

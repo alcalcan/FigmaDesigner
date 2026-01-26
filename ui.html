@@ -264,6 +264,47 @@
     </div>
 
     <script>
+        // --- DEBUG UTILS ---
+        const originalConsoleLog = console.log;
+        const originalConsoleWarn = console.warn;
+        const originalConsoleError = console.error;
+
+        function sendLogToBridge(level, args) {
+            try {
+                // Convert args to string
+                const message = args.map(arg => {
+                    if (typeof arg === 'object') {
+                        try { return JSON.stringify(arg); } catch (e) { return String(arg); }
+                    }
+                    return String(arg);
+                }).join(' ');
+
+                fetch('http://127.0.0.1:3001/log', {
+                    method: 'POST',
+                    body: `[UI ${level.toUpperCase()}] ${message}`
+                }).catch(() => { }); // Ignore errors if bridge is down
+            } catch (e) { }
+        }
+
+        console.log = function (...args) {
+            originalConsoleLog.apply(console, args);
+            sendLogToBridge('log', args);
+        };
+        console.warn = function (...args) {
+            originalConsoleWarn.apply(console, args);
+            sendLogToBridge('warn', args);
+        };
+        console.error = function (...args) {
+            originalConsoleError.apply(console, args);
+            sendLogToBridge('error', args);
+        };
+
+        window.onerror = function (message, source, lineno, colno, error) {
+            console.error("Uncaught Error:", message, "at", source, ":", lineno);
+        };
+
+        console.log("UI Initialized");
+
         const createBtn = document.getElementById('create-btn');
         const connectBtn = document.getElementById('connect-btn');
         const syncBtn = document.getElementById('sync-btn');
@@ -325,8 +366,10 @@
         }
 
         syncBtn.onclick = () => {
+            console.log("Sync button clicked");
             const isDetailed = detailedCheckbox.checked;
             const saveVectorInJson = vectorJsonCheckbox.checked;
+            console.log(`Sending capture-bridge request. Detailed: ${isDetailed}, SaveVector: ${saveVectorInJson}`);
             parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed, saveVectorInJson: saveVectorInJson } }, '*')
             // Feedback will be triggered on result message for precision, 
             // but let's do immediate for responsiveness too
@@ -934,6 +977,7 @@
 
         window.onmessage = async (event) => {
             const msg = event.data.pluginMessage;
+            console.log("Received message from plugin:", msg.type);
 
             if (msg.type === 'capture-download') {
                 const jsonStr = JSON.stringify(msg.data, null, 2);
@@ -948,7 +992,10 @@
 
             if (msg.type === 'capture-bridge-result-batch') {
                 try {
+                    console.log("Processing capture-bridge-result-batch");
                     const packets = msg.packets || [];
+                    console.log(`Sending ${packets.length} packets to bridge`);
+
                     if (packets.length > 0) {
                         await Promise.all(packets.map(packet =>
                             fetch('http://127.0.0.1:3001/save-packet', {
@@ -974,6 +1021,7 @@
             }
 
             if (msg.type === 'capture-error') {
+                console.error("Received capture error:", msg.message);
                 alert(msg.message);
                 syncBtn.textContent = "Capture Sync (to Disk)";
                 syncBtn.style.backgroundColor = "";

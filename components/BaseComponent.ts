@@ -112,6 +112,36 @@ export abstract class BaseComponent {
 
     // Let's adjust the flow for 'shouldFlatten'.
 
+    // 1.5 Apply Container Layout Properties (Before Children)
+    // CRITICAL: We must set layoutMode and related properties on the parent BEFORE appending children.
+    // This allows children to successfully set `layoutPositioning: "ABSOLUTE"`, which requires
+    // the parent to be an Auto Layout frame.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const safeNode = node as any;
+    if (def.props) {
+      if (def.props.layoutMode && def.props.layoutMode !== "NONE") {
+        safeNode.layoutMode = def.props.layoutMode;
+
+        // Apply other AutoLayout properties immediately
+        const layoutKeys = [
+          "primaryAxisSizingMode", "counterAxisSizingMode",
+          "primaryAxisAlignItems", "counterAxisAlignItems",
+          "itemSpacing",
+          "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+          "itemReverseZIndex", "strokesIncludedInLayout",
+          "layoutWrap" // Just in case
+        ];
+
+        for (const key of layoutKeys) {
+          if (def.props[key] !== undefined) {
+            safeNode[key] = def.props[key];
+          }
+        }
+      } else if (def.props.layoutMode === "NONE") {
+        safeNode.layoutMode = "NONE";
+      }
+    }
+
     // 5. Recursion (Moved Up for Flatten Support)
     // CRITICAL: Skip recursion for BOOLEAN_OPERATION nodes because they handle their children
     // specially inside the 'renderDefinition' switch block to ensure document order.
@@ -136,50 +166,48 @@ export abstract class BaseComponent {
 
 
     // 3. Set Properties
+    // Re-assign safeNode in case node identity changed due to flattening
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const safeNode = node as any;
-    if (def.name) safeNode.name = def.name;
+    const finalNode = node as any;
+    if (def.name) finalNode.name = def.name;
 
     if (def.props) {
-      // Prioritize layoutMode to avoid errors with dependent props (e.g. itemReverseZIndex)
-      if (def.props.layoutMode) {
-        safeNode.layoutMode = def.props.layoutMode;
-      }
-
       // Pre-load font for TextNodes to avoid "unloaded font" errors when setting characters/properties
       if (def.type === "TEXT") {
         const fontProp = def.props.font;
         if (fontProp) {
-          await this.setFont(safeNode, fontProp);
+          await this.setFont(finalNode, fontProp);
         } else {
           // If no explicit font prop, ensure the default font is loaded
-          const currentFont = safeNode.fontName;
+          const currentFont = finalNode.fontName;
           if (currentFont && currentFont !== figma.mixed) {
             await figma.loadFontAsync(currentFont as FontName);
           }
         }
       }
 
+      const skippedKeys = new Set([
+        "layoutMode", "font",
+        "primaryAxisSizingMode", "counterAxisSizingMode",
+        "primaryAxisAlignItems", "counterAxisAlignItems",
+        "itemSpacing",
+        "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+        "itemReverseZIndex", "strokesIncludedInLayout",
+        "layoutWrap"
+      ]);
+
       for (const [key, value] of Object.entries(def.props)) {
-        if (key === "layoutMode") continue; // Already set
-        if (key === "font" && def.type === "TEXT") continue; // Already handled
+        if (skippedKeys.has(key)) continue;
 
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
-          safeNode[key] = await this.hydratePaints(value);
+          finalNode[key] = await this.hydratePaints(value);
         } else {
           // Check if property exists on node to avoid errors? 
           // For now, we assume the generator produced valid properties.
           try {
-            // Safety check for layout properties that require Autolayout
-            if (key === "itemReverseZIndex" || key === "strokesIncludedInLayout") {
-              // Must have layoutMode set to something other than NONE
-              if (!safeNode.layoutMode || safeNode.layoutMode === "NONE") {
-                continue;
-              }
-            }
             // Check key existence to be safe, or just assign
-            safeNode[key] = value;
+            finalNode[key] = value;
           } catch (e) {
             console.warn(`Failed to set property ${key} on ${def.name}`, e);
           }
