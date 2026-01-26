@@ -425,7 +425,12 @@ figma.ui.onmessage = async (msg) => {
         x,
         y,
         label: "Click Me",
-        primary: true
+        primary: true,
+        name: "John Doe",
+        handle: "@johndoe",
+        role: "Software Engineer",
+        bio: "Designing the future of UI with AI-powered tools.",
+        followerCount: "1,234"
       };
 
       let result: SceneNode;

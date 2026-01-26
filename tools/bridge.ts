@@ -716,7 +716,7 @@ const server = http.createServer((req, res) => {
                 // 1. Cleanup Registry (index.ts)
                 const registryPath = path.join(componentsRoot, 'index.ts');
                 if (fs.existsSync(registryPath)) {
-                    let content = fs.readFileSync(registryPath, 'utf8');
+                    const content = fs.readFileSync(registryPath, 'utf8');
                     const lines = content.split('\n');
                     // Remove lines that import from "./folder/..."
                     // folder might be "Alex_CookBook"

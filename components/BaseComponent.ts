@@ -29,6 +29,8 @@ export interface NodeDefinition {
     relativeTransform?: T2x3;
     parentIsAutoLayout: boolean;
     layoutPositioning?: "AUTO" | "ABSOLUTE";
+    layoutGrow?: 0 | 1;
+    layoutAlign?: "INHERIT" | "STRETCH" | "MIN" | "CENTER" | "MAX";
   };
   children?: NodeDefinition[];
   // For specialized nodes like Vectors where we might pass raw SVG or paths
@@ -251,12 +253,13 @@ export abstract class BaseComponent {
 
       for (const [key, value] of Object.entries(def.props)) {
         if (skippedKeys.has(key)) continue;
+        if (value === undefined) continue; // Safety: skip if dynamic prop is undefined
 
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
           finalNode[key] = await this.hydratePaints(value);
         } else if (key === "effects") {
-          finalNode[key] = Array.isArray(value) ? value : [];
+          finalNode[key] = this.hydrateEffects(value);
         } else {
           try {
             // Check key existence and skip if it's not a property or if it's a function
@@ -289,6 +292,14 @@ export abstract class BaseComponent {
         } catch (e) {
           console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name}`, e);
         }
+      }
+
+      // Apply layoutGrow and layoutAlign
+      if (def.layoutProps.layoutGrow !== undefined && "layoutGrow" in node) {
+        (node as any).layoutGrow = def.layoutProps.layoutGrow;
+      }
+      if (def.layoutProps.layoutAlign && "layoutAlign" in node) {
+        (node as any).layoutAlign = def.layoutProps.layoutAlign;
       }
     }
 
@@ -339,6 +350,21 @@ export abstract class BaseComponent {
 
       // Clean up properties that Figma rejects
       if (paint.originalImageHash) delete paint.originalImageHash;
+
+      // Sanitize color objects: Figma Paint API (fills/strokes) only accepts RGB, no 'a' (alpha).
+      // Alpha must be handled via the top-level 'opacity' property on the paint.
+      if (paint.color && typeof paint.color === 'object') {
+        // We use JSON clone because paint.color is a simple RGB(A) object.
+        // This ensures we aren't mutating the original input property data.
+        const colorClone = JSON.parse(JSON.stringify(paint.color));
+        if ('a' in colorClone) {
+          if (paint.opacity === undefined) {
+            paint.opacity = colorClone.a;
+          }
+          delete colorClone.a;
+        }
+        paint.color = colorClone;
+      }
 
       // Handle Images
       if (paint.type === "IMAGE") {
@@ -404,6 +430,51 @@ export abstract class BaseComponent {
         node.setRangeFontName(start, end, fallback);
       } catch (e2) { /* ignore */ }
     }
+  }
+
+  /**
+   * Helper to convert portable effects to Figma-ready effects
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  hydrateEffects(effects: any[]): Effect[] {
+    if (!effects || !Array.isArray(effects)) return [];
+
+    const hydrated = effects.map((e) => {
+      const effect = { ...e };
+
+      // Sanitize color in effects (Drop Shadow, Inner Shadow)
+      if (effect.color && typeof effect.color === 'object') {
+        const colorClone = JSON.parse(JSON.stringify(effect.color));
+        // Keep 'a' for effects if present, but deep clone ensures no ref mutation.
+        effect.color = colorClone;
+      }
+
+      // Strict Key Filtering for Drop Shadow to avoid "unrecognized keys"
+      if (effect.type === "DROP_SHADOW" || effect.type === "INNER_SHADOW") {
+        return {
+          type: effect.type,
+          color: effect.color,
+          offset: effect.offset,
+          radius: effect.radius,
+          spread: effect.spread,
+          visible: effect.visible !== undefined ? effect.visible : true,
+          blendMode: effect.blendMode || "NORMAL",
+          showShadowBehindNode: effect.showShadowBehindNode !== undefined ? effect.showShadowBehindNode : false
+        } as Effect;
+      }
+
+      if (effect.type === "LAYER_BLUR" || effect.type === "BACKGROUND_BLUR") {
+        return {
+          type: effect.type,
+          radius: effect.radius,
+          visible: effect.visible !== undefined ? effect.visible : true
+        } as Effect;
+      }
+
+      return effect;
+    });
+
+    return hydrated;
   }
 }
 

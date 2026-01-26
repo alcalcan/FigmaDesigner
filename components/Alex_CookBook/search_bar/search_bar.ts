@@ -12,31 +12,77 @@ export class search_bar extends BaseComponent {
     const structure: NodeDefinition = {
       "type": "FRAME",
       "name": "search_bar",
-      "props": { "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH", "clipsContent": false, "layoutMode": "HORIZONTAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO", "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER", "itemSpacing": 16, "paddingTop": 16, "paddingRight": 0, "paddingBottom": 16, "paddingLeft": 0, "fills": [], "strokes": [] },
+      "props": {
+        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+        "layoutMode": "HORIZONTAL", "itemSpacing": 16,
+        "paddingTop": 16, "paddingRight": 0, "paddingBottom": 16, "paddingLeft": 0,
+        "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+        "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER",
+        "clipsContent": false,
+        "fills": [],
+        "strokes": []
+      },
       "layoutProps": { "width": 1077, "height": 72, "parentIsAutoLayout": false },
       "children": [
         {
           "type": "FRAME",
           "name": "Text Field",
-          "props": { "layoutMode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN", "itemSpacing": 8, "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0, "layoutGrow": 1 },
+          "props": {
+            "layoutMode": "VERTICAL", "itemSpacing": 8,
+            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
+            "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
+            "layoutGrow": 1
+          },
           "layoutProps": { "width": 586, "height": 40, "parentIsAutoLayout": true },
           "children": [
             {
               "type": "FRAME",
               "name": "Compact",
-              "props": { "layoutMode": "HORIZONTAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO", "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "itemSpacing": 12, "paddingTop": 8, "paddingRight": 12, "paddingBottom": 8, "paddingLeft": 12, "fills": [], "strokes": [{ "type": "SOLID", "color": { "r": 0.70196, "g": 0.75294, "b": 0.77255 }, "opacity": 1 }], "strokeWeight": 1, "cornerRadius": 4, "layoutAlign": "STRETCH" },
+              "props": {
+                "layoutMode": "HORIZONTAL", "itemSpacing": 12,
+                "paddingTop": 8, "paddingRight": 12, "paddingBottom": 8, "paddingLeft": 12,
+                "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                "fills": [],
+                "strokes": [
+                  {
+                    "opacity": 1, "type": "SOLID",
+                    "color": { "r": 0.70196, "g": 0.75294, "b": 0.77255 }
+                  }
+                ],
+                "strokeWeight": 1,
+                "cornerRadius": 4,
+                "layoutAlign": "STRETCH"
+              },
               "layoutProps": { "width": 586, "height": 40, "parentIsAutoLayout": true },
               "children": [
                 {
                   "type": "FRAME",
                   "name": "Inner",
-                  "props": { "layoutMode": "HORIZONTAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO", "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "itemSpacing": 16, "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0, "layoutGrow": 1 },
+                  "props": {
+                    "layoutMode": "HORIZONTAL", "itemSpacing": 16,
+                    "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
+                    "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+                    "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                    "layoutGrow": 1
+                  },
                   "layoutProps": { "width": 562, "height": 24, "parentIsAutoLayout": true },
                   "children": [
                     {
                       "type": "TEXT",
                       "name": "Placeholder",
-                      "props": { "characters": "Search recipes...", "fontSize": 14, "fills": [{ "type": "SOLID", "color": { "r": 0.349, "g": 0.439, "b": 0.482 } }], "font": { "family": "Open Sans", "style": "Regular" }, "layoutGrow": 1 },
+                      "props": {
+                        "characters": "Search recipes...", "fontSize": 14,
+                        "fills": [
+                          {
+                            "type": "SOLID",
+                            "color": { "r": 0.349, "g": 0.439, "b": 0.482 }
+                          }
+                        ],
+                        "font": { "family": "Open Sans", "style": "Regular" },
+                        "layoutGrow": 1
+                      },
                       "layoutProps": { "width": 522, "height": 21, "parentIsAutoLayout": true }
                     },
                     {
@@ -55,7 +101,13 @@ export class search_bar extends BaseComponent {
         {
           "type": "FRAME",
           "name": "Chips Container",
-          "props": { "layoutMode": "HORIZONTAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO", "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER", "itemSpacing": 16, "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 16, "fills": [] },
+          "props": {
+            "layoutMode": "HORIZONTAL", "itemSpacing": 16,
+            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 16,
+            "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
+            "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER",
+            "fills": []
+          },
           "layoutProps": { "width": 491, "height": 32, "parentIsAutoLayout": true },
           "children": []
         }

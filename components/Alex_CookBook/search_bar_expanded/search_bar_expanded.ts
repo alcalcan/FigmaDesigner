@@ -26,30 +26,44 @@ export class search_bar_expanded extends BaseComponent {
 
         // Define Structure
         const structure: ExtendedNodeDefinition = {
-            type: "COMPONENT",
-            component: search_bar,
-            name: "search_bar_expanded",
-            props: props,
-            children: [
-                {
-                    type: "FRAME",
-                    name: "Dropdown Menu",
-                    props: {
-                        "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH",
-                        "layoutMode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
-                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
-                        "paddingTop": 8, "paddingRight": 8, "paddingBottom": 8, "paddingLeft": 8, "itemSpacing": 4,
-                        "fills": [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
-                        "strokes": [{ type: "SOLID", color: { r: 0.9, g: 0.92, b: 0.94 } }],
-                        "effects": [{ type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.1 }, offset: { x: 0, y: 4 }, radius: 12, visible: true, blendMode: "NORMAL" }],
-                        "cornerRadius": 12
-                    },
-                    layoutProps: {
-                        "width": 200,
-                        "layoutPositioning": "ABSOLUTE",
-                        "parentIsAutoLayout": true
-                    },
-                    children: authors.map(auth => ({
+          "type": "COMPONENT",
+          "component": search_bar,
+          "name": "search_bar_expanded",
+          "props": props,
+          "children": [
+            {
+              "type": "FRAME",
+              "name": "Dropdown Menu",
+              "props": {
+                "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH",
+                "layoutMode": "VERTICAL", "itemSpacing": 4,
+                "paddingTop": 8, "paddingRight": 8, "paddingBottom": 8, "paddingLeft": 8,
+                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": { "r": 1, "g": 1, "b": 1 }
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": { "r": 0.9, "g": 0.92, "b": 0.94 }
+                  }
+                ],
+                "effects": [
+                  {
+                    "visible": true, "blendMode": "NORMAL", "type": "DROP_SHADOW",
+                    "color": { "r": 0, "g": 0, "b": 0, "a": 0.1 },
+                    "offset": { "x": 0, "y": 4 },
+                    "radius": 12
+                  }
+                ],
+                "cornerRadius": 12
+              },
+              "layoutProps": { "width": 200, "layoutPositioning": "ABSOLUTE", "parentIsAutoLayout": true },
+              "children": authors.map(auth => ({
                         type: "COMPONENT",
                         component: checkbox_element,
                         props: {
@@ -80,10 +94,9 @@ export class search_bar_expanded extends BaseComponent {
                             }
                         }
                     }))
-                }
-            ],
-            // Post create for the root component (Search Bar) to remove background
-            postCreate: (node: SceneNode) => {
+            }
+          ],
+          "postCreate": (node: SceneNode) => {
                 (node as FrameNode).fills = [];
                 (node as FrameNode).clipsContent = false;
             }

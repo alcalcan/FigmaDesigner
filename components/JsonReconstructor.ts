@@ -292,80 +292,10 @@ export class JsonReconstructor extends BaseComponent {
             // 2. Apply Basic Properties
             if (data.name) node.name = data.name;
 
-            // --- STRICT ORDER OF OPERATIONS --- 
-            // 1. Layout Properties (Mode, Align)
-            // 2. Layout Positioning (Child props)
-            // 3. Size & Transform (Atomic application)
-
-            // Step 1: Layout Properties (Auto Layout Container)
+            // Step 1: Layout Mode (Early)
+            // We set this early so children can be created with 'ABSOLUTE' positioning if needed.
             if ("layoutMode" in node && data.layout) {
-                const frame = node as FrameNode;
-                frame.layoutMode = data.layout.mode || "NONE";
-
-                if (frame.layoutMode !== "NONE") {
-                    if (data.layout.sizing) {
-                        frame.primaryAxisSizingMode = data.layout.sizing.horizontal === "AUTO" ? "AUTO" : "FIXED";
-                        frame.counterAxisSizingMode = data.layout.sizing.vertical === "AUTO" ? "AUTO" : "FIXED";
-                    }
-                    if (data.layout.alignment) {
-                        frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
-                        frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";
-                    }
-                    frame.itemSpacing = data.layout.spacing || 0;
-                    if (data.layout.padding) {
-                        frame.paddingTop = data.layout.padding.top || 0;
-                        frame.paddingRight = data.layout.padding.right || 0;
-                        frame.paddingBottom = data.layout.padding.bottom || 0;
-                        frame.paddingLeft = data.layout.padding.left || 0;
-                    }
-                    if (data.layout.itemReverseZIndex !== undefined) frame.itemReverseZIndex = data.layout.itemReverseZIndex;
-                    if (data.layout.strokesIncludedInLayout !== undefined) frame.strokesIncludedInLayout = data.layout.strokesIncludedInLayout;
-                }
-            }
-
-            // Step 2: Layout Positioning (Child Properties)
-            if ("layoutAlign" in node && data.layoutAlign) {
-                node.layoutAlign = data.layoutAlign;
-            }
-            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
-                node.layoutGrow = data.layoutGrow;
-            }
-
-
-            // Step 3: Size & Transform (Atomic)
-            // This prevents drift by setting size before matrix, and respecting auto-layout parent
-            if ("resize" in node) {
-                const width = data.width || 1;
-                const height = data.height || 1;
-                // Use relativeTransform if we have it (preferred), otherwise use rotation fallback
-                const rTransform = data.relativeTransform as T2x3 | undefined;
-
-                if (rTransform) {
-                    applySizeAndTransform(node as SceneNode & LayoutMixin, {
-                        width,
-                        height,
-                        relativeTransform: rTransform
-                    });
-                } else {
-                    // Fallback for old captures
-                    node.resizeWithoutConstraints(width, height);
-                    node.rotation = data.rotation || 0;
-                    // Only set x/y for absolute positioning fallback
-                    if ("layoutPositioning" in node && node.layoutPositioning !== 'AUTO') {
-                        node.x = data.x !== undefined ? data.x : 0;
-                        node.y = data.y !== undefined ? data.y : 0;
-                    }
-                }
-            }
-
-            node.visible = data.visible !== undefined ? data.visible : true;
-            node.opacity = data.opacity !== undefined ? data.opacity : 1;
-
-            if ("blendMode" in node && data.blendMode) {
-                node.blendMode = data.blendMode || "PASS_THROUGH";
-            }
-            if ("locked" in node) {
-                node.locked = data.locked || false;
+                (node as FrameNode).layoutMode = data.layout.mode || "NONE";
             }
 
             // 2.5 Apply Advanced Visuals
@@ -399,7 +329,16 @@ export class JsonReconstructor extends BaseComponent {
             }
             if ("strokes" in node && !isFromSvg) {
                 if (data.strokes) {
-                    node.strokes = data.strokes;
+                    try {
+                        const hydratedStrokes = await hydrateFills(data.strokes, assetSource!);
+                        if (hydratedStrokes) {
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            node.strokes = hydratedStrokes as any;
+                        }
+                    } catch (e) {
+                        console.warn(`Failed to apply strokes to ${node.name}`, e);
+                        node.strokes = [];
+                    }
                     if ("strokeWeight" in node && typeof data.strokeWeight === 'number') node.strokeWeight = data.strokeWeight;
                     if ("strokeAlign" in node && data.strokeAlign) node.strokeAlign = data.strokeAlign;
                     if ("strokeCap" in node && data.strokeCap) node.strokeCap = data.strokeCap as StrokeCap;
@@ -417,7 +356,7 @@ export class JsonReconstructor extends BaseComponent {
                 if ("strokeLeftWeight" in node && typeof data.strokeLeftWeight === 'number') node.strokeLeftWeight = data.strokeLeftWeight;
             }
             if ("effects" in node && data.effects) {
-                node.effects = data.effects;
+                node.effects = this.hydrateEffects(data.effects);
             }
             if ("cornerRadius" in node) {
                 if (typeof data.cornerRadius === 'number') {
@@ -605,9 +544,80 @@ export class JsonReconstructor extends BaseComponent {
                 }
             }
 
+            // Step 7.5: Apply Constraints & Layout (Post-Children)
+            // CRITICAL: We apply size and layout properties AFTER children are added.
+            // This ensures that "Hug contents" works correctly because the frame has content to hug.
+
+            // 1. Size & Transform (Atomic) - Sets baseline fixed dimensions
+            // FORCE FIXED: Ensure we are in FIXED mode before resizing, otherwise resize() is ignored on Auto axes.
+            if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE") {
+                const f = node as FrameNode;
+                if (f.primaryAxisSizingMode !== "FIXED") f.primaryAxisSizingMode = "FIXED";
+                if (f.counterAxisSizingMode !== "FIXED") f.counterAxisSizingMode = "FIXED";
+            }
+
+            if ("resize" in node) {
+                const width = data.width || 1;
+                const height = data.height || 1;
+                const rTransform = data.relativeTransform as T2x3 | undefined;
+
+                if (rTransform) {
+                    applySizeAndTransform(node as SceneNode & LayoutMixin, {
+                        width,
+                        height,
+                        relativeTransform: rTransform
+                    });
+                } else {
+                    node.resizeWithoutConstraints(width, height);
+                    node.rotation = data.rotation || 0;
+                    if ("layoutPositioning" in node && node.layoutPositioning !== 'AUTO') {
+                        node.x = data.x !== undefined ? data.x : 0;
+                        node.y = data.y !== undefined ? data.y : 0;
+                    }
+                }
+            }
+
+            // 2. Layout Properties (Auto Layout Container) - Overrides Fixed size with Hug/Auto if needed
+            if ("layoutMode" in node && data.layout) {
+                const frame = node as FrameNode;
+                // layoutMode was already set to allow absolute children, but we re-apply or apply rest here
+                if (frame.layoutMode !== "NONE") {
+                    if (data.layout.sizing) {
+                        // This is where "Hug" (AUTO) is applied, overriding the Fixed size from step 1
+                        frame.primaryAxisSizingMode = data.layout.sizing.horizontal === "AUTO" ? "AUTO" : "FIXED";
+                        frame.counterAxisSizingMode = data.layout.sizing.vertical === "AUTO" ? "AUTO" : "FIXED";
+                    }
+                    if (data.layout.alignment) {
+                        frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
+                        frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";
+                    }
+                    frame.itemSpacing = data.layout.spacing || 0;
+                    if (data.layout.padding) {
+                        frame.paddingTop = data.layout.padding.top || 0;
+                        frame.paddingRight = data.layout.padding.right || 0;
+                        frame.paddingBottom = data.layout.padding.bottom || 0;
+                        frame.paddingLeft = data.layout.padding.left || 0;
+                    }
+                    if (data.layout.itemReverseZIndex !== undefined) frame.itemReverseZIndex = data.layout.itemReverseZIndex;
+                    if (data.layout.strokesIncludedInLayout !== undefined) frame.strokesIncludedInLayout = data.layout.strokesIncludedInLayout;
+                }
+            }
+
+            // 3. Layout Positioning (Child Properties)
+            if ("layoutAlign" in node && data.layoutAlign) {
+                node.layoutAlign = data.layoutAlign;
+            }
+            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
+                node.layoutGrow = data.layoutGrow;
+            }
+
             // 8. Add to parent
             if (parent) {
-                parent.appendChild(node);
+                // If the node was already appended (e.g. via boolean ops or group), we don't need to append again.
+                // But generally createFrame() makes a detached node.
+                try {
+                    parent.appendChild(node);
+                } catch (e) { /* ignore if already attached */ }
             } else {
                 // If it's the root call and no parent provided, ensure it's on the page
                 figma.currentPage.appendChild(node);

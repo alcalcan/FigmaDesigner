@@ -152,6 +152,18 @@ export async function hydrateFills(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const p: any = { ...portable };
 
+        // Sanitize color objects (Figma RGB requirement)
+        if (p.color && typeof p.color === 'object') {
+            const colorClone = JSON.parse(JSON.stringify(p.color));
+            if ('a' in colorClone) {
+                if (p.opacity === undefined) {
+                    p.opacity = colorClone.a;
+                }
+                delete colorClone.a;
+            }
+            p.color = colorClone;
+        }
+
         // IMAGE
         if (p.type === "IMAGE" && p.assetRef) {
             let imageHash = assetSource.createdImagesByAssetRef.get(p.assetRef);
