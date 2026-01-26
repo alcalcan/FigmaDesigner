@@ -1,73 +1,22 @@
-import { BaseComponent, ComponentProps } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { search_bar } from "../search_bar/search_bar";
 import { checkbox_element } from "../checkbox_element/checkbox_element";
 
+// Extended interface to support component composition
+interface ExtendedNodeDefinition extends NodeDefinition {
+    type: "FRAME" | "TEXT" | "VECTOR" | "COMPONENT" | "BOOLEAN_OPERATION" | "RECTANGLE"; // etc
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    component?: any; // Class constructor
+    // Function to run after creation
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    postCreate?: (node: SceneNode, props: any) => void | Promise<void>;
+    children?: ExtendedNodeDefinition[];
+}
+
 export class search_bar_expanded extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
-        // 1. Create the base search bar
-        const baseSearchBar = new search_bar();
-        const root = await baseSearchBar.create(props) as FrameNode;
-        root.name = "search_bar_expanded";
-        root.clipsContent = false; // Ensure dropdown is visible
 
-        // Ensure root itself has no background
-        root.fills = [];
-
-        // 2. Load necessary fonts
-        await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-        await figma.loadFontAsync({ family: "Open Sans", style: "Regular" });
-
-        // 3. Create the Dropdown Menu (Absolute Positioned)
-        const menu = figma.createFrame();
-        menu.name = "Dropdown Menu";
-        menu.layoutMode = "VERTICAL";
-        menu.primaryAxisSizingMode = "AUTO"; // Hug height
-        menu.counterAxisSizingMode = "FIXED";
-        menu.itemSpacing = 4;
-        menu.paddingTop = 8;
-        menu.paddingRight = 8;
-        menu.paddingBottom = 8;
-        menu.paddingLeft = 8;
-        menu.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
-        menu.strokes = [{ type: "SOLID", color: { r: 0.9, g: 0.92, b: 0.94 } }];
-        menu.effects = [{
-            type: "DROP_SHADOW",
-            color: { r: 0, g: 0, b: 0, a: 0.1 },
-            offset: { x: 0, y: 4 },
-            radius: 12,
-            visible: true,
-            blendMode: "NORMAL"
-        }];
-        menu.cornerRadius = 12;
-        menu.resize(200, menu.height); // Set width to 200px as suggested
-
-        // 4. Find the "Author" chip for alignment
-        const chipsContainer = root.findOne(n => n.name === "Chips Container") as FrameNode;
-        const authorChip = chipsContainer?.children.find(c => {
-            const text = (c as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
-            return text && text.characters === "Author";
-        }) as FrameNode;
-
-        // Append to root BEFORE setting absolute positioning
-        root.appendChild(menu);
-        menu.layoutPositioning = "ABSOLUTE";
-        menu.y = root.height;
-
-        if (authorChip && chipsContainer) {
-            // Right-align menu with the right edge of the chip
-            const chipAbsoluteX = chipsContainer.x + authorChip.x;
-            const chipWidth = authorChip.width;
-            menu.x = chipAbsoluteX + chipWidth - menu.width;
-
-            if (menu.x < 0) menu.x = 0;
-            if (menu.x + menu.width > root.width) menu.x = root.width - menu.width;
-        } else {
-            menu.x = root.width - menu.width;
-        }
-
-        // 5. Add Options using the Alex_CookBook checkbox_element
-        // No search bar inside per user request
-        const checkboxComp = new checkbox_element();
+        // Define Authors
         const authors = [
             { name: "Jamie Oliver", selected: true },
             { name: "Gordon Ramsay", selected: false },
@@ -75,32 +24,105 @@ export class search_bar_expanded extends BaseComponent {
             { name: "Yotam Ottolenghi", selected: true }
         ];
 
-        for (const auth of authors) {
-            const checkboxInstance = await checkboxComp.create({ x: 0, y: 0 }) as FrameNode;
-            checkboxInstance.name = `Option: ${auth.name}`;
-            checkboxInstance.layoutAlign = "STRETCH";
-            checkboxInstance.primaryAxisSizingMode = "FIXED";
-            checkboxInstance.counterAxisSizingMode = "AUTO";
-            checkboxInstance.resize(menu.width - 16, 28); // Account for menu padding
+        // Define Structure
+        const structure: ExtendedNodeDefinition = {
+            type: "COMPONENT",
+            component: search_bar,
+            name: "search_bar_expanded",
+            props: props,
+            children: [
+                {
+                    type: "FRAME",
+                    name: "Dropdown Menu",
+                    props: {
+                        "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH",
+                        "layoutMode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+                        "paddingTop": 8, "paddingRight": 8, "paddingBottom": 8, "paddingLeft": 8, "itemSpacing": 4,
+                        "fills": [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+                        "strokes": [{ type: "SOLID", color: { r: 0.9, g: 0.92, b: 0.94 } }],
+                        "effects": [{ type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.1 }, offset: { x: 0, y: 4 }, radius: 12, visible: true, blendMode: "NORMAL" }],
+                        "cornerRadius": 12
+                    },
+                    layoutProps: {
+                        "width": 200,
+                        "layoutPositioning": "ABSOLUTE",
+                        "parentIsAutoLayout": true
+                    },
+                    children: authors.map(auth => ({
+                        type: "COMPONENT",
+                        component: checkbox_element,
+                        props: {
+                            characterOverride: auth.name,
+                            checked: auth.selected
+                        },
+                        postCreate: async (node: SceneNode, _p: any) => {
+                            const frame = node as FrameNode;
+                            frame.name = `Option: ${auth.name}`;
 
-            const textNode = checkboxInstance.findOne(n => n.type === "TEXT") as TextNode;
-            if (textNode) {
-                await figma.loadFontAsync(textNode.fontName as FontName);
-                textNode.characters = auth.name;
-                textNode.fontSize = 14;
+                            // Important: Set layoutAlign to STRETCH so it fills the 200px width of the menu
+                            frame.layoutAlign = "STRETCH";
+                            frame.counterAxisSizingMode = "FIXED"; // Allow stretching along cross-axis
+
+                            // Update Text
+                            const text = frame.findOne(n => n.type === "TEXT") as TextNode;
+                            if (text) {
+                                await figma.loadFontAsync(text.fontName as FontName);
+                                text.characters = auth.name;
+                                text.fontSize = 14;
+                                text.layoutGrow = 1; // Allow text to take up remaining space
+                            }
+
+                            // Update Checkbox State
+                            const shape = frame.findOne(n => n.name === "Shape") as BooleanOperationNode;
+                            if (shape && shape.children.length >= 2) {
+                                shape.children[1].visible = !auth.selected;
+                            }
+                        }
+                    }))
+                }
+            ],
+            // Post create for the root component (Search Bar) to remove background
+            postCreate: (node: SceneNode) => {
+                (node as FrameNode).fills = [];
+                (node as FrameNode).clipsContent = false;
             }
+        };
 
-            // Correctly toggle checked state for Alex_CookBook's EXCLUDE boolean operation
-            const shape = checkboxInstance.findOne(n => n.name === "Shape") as BooleanOperationNode;
-            if (shape && shape.children.length >= 2) {
-                const hole = shape.children[1] as SceneNode;
-                hole.visible = !auth.selected;
-                shape.visible = true;
+        const root = await this.renderExtendedDefinition(structure);
+
+        // --- Post-Layout Positioning Logic ---
+        const menu = (root as FrameNode).findOne(n => n.name === "Dropdown Menu") as FrameNode;
+        // Search bar creates "Chips Container" inside
+        const chipsContainer = (root as FrameNode).findOne(n => n.name === "Chips Container") as FrameNode;
+
+        if (menu && chipsContainer) {
+            const authorChip = chipsContainer.children.find(c => {
+                const t = (c as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+                return t && t.characters === "Author";
+            });
+
+            // Re-apply absolute positioning properties just in case
+            menu.layoutPositioning = "ABSOLUTE";
+
+            if (authorChip) {
+                // Calculation matches original
+                const chipAbsoluteX = chipsContainer.x + authorChip.x;
+                menu.x = chipAbsoluteX + authorChip.width - menu.width;
+                // Clamping
+                if (menu.x < 0) menu.x = 0;
+                if (menu.x + menu.width > root.width) menu.x = root.width - menu.width;
+            } else {
+                menu.x = root.width - menu.width;
             }
-
-            menu.appendChild(checkboxInstance);
+            menu.y = root.height;
         }
 
         return root;
+    }
+
+    async renderExtendedDefinition(def: ExtendedNodeDefinition, parent?: BaseNode): Promise<SceneNode> {
+        // BaseComponent now handles COMPONENT and postCreate natively!
+        return await super.renderDefinition(def, parent);
     }
 }

@@ -125,7 +125,19 @@ export abstract class BaseComponent {
         }
         break;
       }
-      // TODO: Handle INSTANCE, COMPONENT, GROUP if needed
+      case "COMPONENT": {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const componentClass = (def as any).component;
+        if (componentClass) {
+          const instance = new componentClass();
+          node = await instance.create(def.props || {});
+        } else {
+          console.warn(`[BaseComponent] COMPONENT type used without 'component' class reference in definition for ${def.name}`);
+          node = figma.createFrame();
+        }
+        break;
+      }
+      // TODO: Handle INSTANCE, GROUP if needed
       default: node = figma.createFrame(); break;
     }
 
@@ -243,12 +255,17 @@ export abstract class BaseComponent {
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
           finalNode[key] = await this.hydratePaints(value);
+        } else if (key === "effects") {
+          finalNode[key] = Array.isArray(value) ? value : [];
         } else {
-          // Check if property exists on node to avoid errors? 
-          // For now, we assume the generator produced valid properties.
           try {
-            // Check key existence to be safe, or just assign
-            finalNode[key] = value;
+            // Check key existence and skip if it's not a property or if it's a function
+            if (key in finalNode && typeof (finalNode as any)[key] !== 'function') {
+              (finalNode as any)[key] = value;
+            } else if (!(key in finalNode)) {
+              // Optionally log or ignore custom props
+              // console.log(`Skipping non-Figma property: ${key}`);
+            }
           } catch (e) {
             console.warn(`Failed to set property ${key} on ${def.name} `, e);
           }
@@ -264,6 +281,21 @@ export abstract class BaseComponent {
     if (def.layoutProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       applySizeAndTransform(node as any, def.layoutProps as any);
+
+      // Explicitly apply layoutPositioning if requested
+      if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {
+        try {
+          (node as any).layoutPositioning = def.layoutProps.layoutPositioning;
+        } catch (e) {
+          console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name}`, e);
+        }
+      }
+    }
+
+    // 4.5 Post-Create Hook (Specialized logic)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((def as any).postCreate && typeof (def as any).postCreate === 'function') {
+      await (def as any).postCreate(node, def.props);
     }
 
     // 5. Recursion
@@ -295,7 +327,12 @@ export abstract class BaseComponent {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async hydratePaints(paints: any[]): Promise<any[]> {
-    if (!paints || !Array.isArray(paints)) return paints;
+    if (!paints || !Array.isArray(paints)) {
+      if (paints && typeof paints === 'object' && Object.keys(paints).length > 0) {
+        console.warn(`[BaseComponent] Expected array for paints, received non-empty object:`, paints);
+      }
+      return [];
+    }
 
     const hydrated = await Promise.all(paints.map(async (p) => {
       const paint = { ...p };

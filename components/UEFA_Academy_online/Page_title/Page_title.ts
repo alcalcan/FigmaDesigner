@@ -86,8 +86,8 @@ root.setRangeFontSize(0, 9, 32);
 
         applySizeAndTransform(root, {"width":154,"height":40,"parentIsAutoLayout":false});
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

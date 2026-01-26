@@ -54,8 +54,8 @@ export class checkbox_element extends BaseComponent {
         const root = await this.renderDefinition(structure);
         
         // Final positioning
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

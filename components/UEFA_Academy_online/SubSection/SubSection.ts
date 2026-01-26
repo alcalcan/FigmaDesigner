@@ -148,8 +148,8 @@ export class SubSection extends BaseComponent {
 
         root.appendChild(content);
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

@@ -98,8 +98,8 @@ export class SubSection_collapsed extends BaseComponent {
         header.appendChild(chevronContainer);
         root.appendChild(header);
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

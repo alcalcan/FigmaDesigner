@@ -212,8 +212,8 @@ applySizeAndTransform(root_child_1, {"width":32,"height":32,"relativeTransform":
 
         applySizeAndTransform(root, {"width":125,"height":32,"parentIsAutoLayout":false});
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

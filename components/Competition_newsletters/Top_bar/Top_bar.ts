@@ -781,8 +781,8 @@ root.appendChild(root_child_1);
 
         applySizeAndTransform(root, {"width":1680,"height":40,"parentIsAutoLayout":false});
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

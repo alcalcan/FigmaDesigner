@@ -760,8 +760,8 @@ of our sport.`;
         applySizeAndTransform(root_child_0, { "width": 1077, "height": 308, "relativeTransform": [[1, 0, 0], [0, 1, 0]], "parentIsAutoLayout": true, "layoutPositioning": "AUTO" });
 
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

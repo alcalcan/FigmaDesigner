@@ -72,8 +72,8 @@ root.effects = [];
 
         applySizeAndTransform(root, {"width":1440,"height":0,"parentIsAutoLayout":false});
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

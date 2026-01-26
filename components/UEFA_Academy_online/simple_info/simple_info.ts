@@ -46,8 +46,8 @@ export class simple_info extends BaseComponent {
         textNode.fills = await this.hydratePaints([{ "type": "SOLID", "color": { "r": 0, "g": 0, "b": 0 } }]);
         root.appendChild(textNode);
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

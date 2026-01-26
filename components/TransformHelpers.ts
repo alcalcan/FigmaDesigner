@@ -22,8 +22,21 @@ export function applySizeAndTransform(
     data: { width?: number; height?: number; relativeTransform?: T2x3 }
 ) {
     // 1) size first
-    if (typeof data.width === 'number' && typeof data.height === 'number') {
-        node.resizeWithoutConstraints(data.width, data.height);
+    const canResize = typeof node.resize === 'function' || typeof (node as any).resizeWithoutConstraints === 'function';
+    if (canResize && (typeof data.width === 'number' || typeof data.height === 'number')) {
+        const newW = typeof data.width === 'number' ? data.width : node.width;
+        const newH = typeof data.height === 'number' ? data.height : node.height;
+
+        // Only resize if different from current to avoid breaking "Hug" unnecessarily?
+        // Actually, Figma's AUTO sizing mode is sensitive.
+        // If the intended mode is AUTO, we should skip resizing that axis in layoutProps.
+        if (newW !== node.width || newH !== node.height) {
+            if (typeof (node as any).resizeWithoutConstraints === 'function') {
+                (node as any).resizeWithoutConstraints(newW, newH);
+            } else {
+                node.resize(newW, newH);
+            }
+        }
     }
 
     if (!data.relativeTransform) return;
