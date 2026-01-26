@@ -35,9 +35,8 @@ export class chip_dropdown extends BaseComponent {
                 "type": "VECTOR",
                 "shouldFlatten": true,
                 "name": "Shape",
-                "props": {"visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeWeight":0,"strokeAlign":"CENTER","strokeCap":"NONE","strokeJoin":"MITER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":3.3333332538604736,"y":10.666666984558105},
-                "layoutProps": {"width":5.333333492279053,"height":9.333333015441895,"relativeTransform":[[-1.8369701465288538e-16,1,3.3333332538604736],[-1,-1.8369701465288538e-16,10.666666984558105]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"},
-                "svgContent": "<svg width=\"5.333333492279053\" height=\"9.333333015441895\" viewBox=\"0 0 5.333333492279053 9.333333015441895\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M1.13807 0.195913C0.877722 -0.0644364 0.455612 -0.0644364 0.195262 0.195913C-0.0650874 0.456263 -0.0650874 0.878372 0.195262 1.13872L4.19526 5.13872C4.45561 5.39907 4.87772 5.39907 5.13807 5.13872L9.13807 1.13872C9.39842 0.878372 9.39842 0.456263 9.13807 0.195913C8.87772 -0.0644364 8.45561 -0.0644364 8.19526 0.195913L4.66667 3.72451L1.13807 0.195913Z\" fill=\"#1A313C\"/>\n</svg>"
+                "props": {"fills":[],"strokeWeight":0,"strokeCap":"NONE","strokeJoin":"MITER","visible":true,"opacity":1,"locked":false,"blendMode":"PASS_THROUGH","isMask":false,"maskType":"ALPHA","strokes":[],"strokeAlign":"CENTER","strokeMiterLimit":4,"effects":[],"cornerRadius":0,"x":3.3333332538604736,"y":10.666666984558105},
+                "layoutProps": {"width":10,"height":6,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"}
               }
             ]
           }

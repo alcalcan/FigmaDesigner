@@ -132,12 +132,21 @@ export class ComponentRefactorer {
 
     private extractAssets(content: string): Map<string, string> {
         const assets = new Map<string, string>();
-        // Match standard variable names (including those starting with SVG_)
-        const regex = /const ([\w_]+) = `(<svg[\s\S]*?<\/svg>)\n`;/g;
+
+        // 1. Match inlined SVG constants: const SVG_... = `<svg...`
+        const inlineRegex = /const ([\w_]+) = `(<svg[\s\S]*?<\/svg>)`;/g;
         let match;
-        while ((match = regex.exec(content)) !== null) {
+        while ((match = inlineRegex.exec(content)) !== null) {
             assets.set(match[1], match[2]);
         }
+
+        // 2. Match SVG imports: import SVG_... from "./assets/...svg"
+        const importRegex = /import (SVG_[\w_]+) from "([^"]+\.svg)";/g;
+        while ((match = importRegex.exec(content)) !== null) {
+            // We store the variable name as the content to signal it's an external reference
+            assets.set(match[1], `__EXTERNAL_REF__${match[1]}`);
+        }
+
         return assets;
     }
 
@@ -430,7 +439,33 @@ export class ComponentRefactorer {
         }
 
         if (node.svgContentVar) {
-            def.svgContent = assets.get(node.svgContentVar);
+            const assetContent = assets.get(node.svgContentVar);
+
+            // --- BOLD CHEVRON FIX START (Refactorer) ---
+            // Check if this node is using the problematic "thin" chevron asset
+            // We check if the asset key (var name) or content matches known signatures
+            // e.g. "SVG_assets_icon_Shape_..."
+            const isChevronAsset = node.svgContentVar.includes('assets_icon_Shape_I977_492_70_461_svg_10x6');
+
+            if (isChevronAsset) {
+                console.log(`[Refactorer] Injecting BOLD CHEVRON FIX for node ${currentId}`);
+                // Inject the Custom Bold Path (Solution A) directly into the definition
+                const boldContent = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.6 0L5 4.4L9.4 0L10 0.6L5 5.6L0 0.6L0.6 0Z" fill="#1A313C"/></svg>`;
+                def.svgContent = boldContent;
+
+                // Also reset transforms in the definition if layoutProps exist
+                if (def.layoutProps && def.layoutProps.relativeTransform) {
+                    def.layoutProps.relativeTransform = [[1, 0, 0], [0, 1, 0]];
+                    def.layoutProps.width = 10;
+                    def.layoutProps.height = 6;
+                }
+            }
+            else if (assetContent?.startsWith('__EXTERNAL_REF__')) {
+                // Use the variable reference directly via __code marker
+                def.svgContent = { __code: node.svgContentVar };
+            } else if (assetContent) {
+                def.svgContent = assetContent;
+            }
         }
 
         if (node.children.length > 0) {
@@ -754,14 +789,24 @@ export class ComponentRefactorer {
 
         // Extract SVG assets selectively from original content based on what's used in the defString
         const svgLines: string[] = [];
-        const svgMatchRegex = /const (SVG_assets_icon_[a-zA-Z0-9_]+) = `([^`]+)`;/g;
+
+        // 1. Check for inlined SVG constants
+        const svgMatchRegex = /const (SVG_[\w_]+) = `(<svg[\s\S]*?<\/svg>)`;/g;
         let svgMatch;
         while ((svgMatch = svgMatchRegex.exec(originalContent)) !== null) {
             const assetName = svgMatch[1];
-            const assetContent = svgMatch[2];
-            // Only include if the asset content (or name) is found in the final definition
-            if (defString.includes(assetContent)) {
-                svgLines.push(`const ${assetName} = \`${assetContent}\`;`);
+            // If the name is used in the definition, include it
+            if (defString.includes(assetName)) {
+                svgLines.push(svgMatch[0]);
+            }
+        }
+
+        // 2. Check for SVG imports
+        const svgImportRegex = /import (SVG_[\w_]+) from "([^"]+\.svg)";/g;
+        while ((svgMatch = svgImportRegex.exec(originalContent)) !== null) {
+            const assetName = svgMatch[1];
+            if (defString.includes(assetName)) {
+                svgLines.push(svgMatch[0]);
             }
         }
 

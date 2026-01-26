@@ -1,4 +1,9 @@
-/// <reference types="@figma/plugin-typings" />
+import { SerializedNode } from './JsonReconstructor';
+import { applySizeAndTransform, detectBakedRotation, T2x3 } from "./TransformHelpers";
+import { AssetSource, hydrateFills } from "./PaintHelpers";
+
+export { T2x3 };
+
 export interface ComponentProps {
   x: number;
   y: number;
@@ -10,7 +15,7 @@ export interface ComponentProps {
 }
 
 
-export type T2x3 = [[number, number, number], [number, number, number]];
+// T2x3 is now imported from TransformHelpers
 
 export interface NodeDefinition {
   type: "FRAME" | "TEXT" | "VECTOR" | "RECTANGLE" | "ELLIPSE" | "LINE" | "STAR" | "POLYGON" | "INSTANCE" | "COMPONENT" | "GROUP" | "BOOLEAN_OPERATION";
@@ -52,7 +57,43 @@ export abstract class BaseComponent {
       case "POLYGON": node = figma.createPolygon(); break;
       case "VECTOR":
         if (def.svgContent) {
-          node = figma.createNodeFromSvg(def.svgContent);
+          // Detect and fix baked rotations in SVG assets
+          let finalSvgContent = def.svgContent;
+          const layout = def.layoutProps;
+          if (layout && layout.width && layout.height && layout.relativeTransform) {
+            // Regex to extract SVG dimensions
+            const wMatch = finalSvgContent.match(/<svg[^>]*width=["']([\d.]+)["']/);
+            const hMatch = finalSvgContent.match(/<svg[^>]*height=["']([\d.]+)["']/);
+            if (wMatch && hMatch) {
+              const svgW = parseFloat(wMatch[1]);
+              const svgH = parseFloat(hMatch[1]);
+              const jsonW = layout.width;
+              const jsonH = layout.height;
+
+              if (detectBakedRotation(svgW, svgH, jsonW, jsonH)) {
+                console.log(`[BaseComponent] Detected baked rotation for ${def.name || 'Vector'}. Normalizing...`);
+
+                // 1. Swap dimensions in layoutProps so the node is resized to its "unrotated" shape
+                if (layout) {
+                  const tmp = layout.width;
+                  layout.width = layout.height;
+                  layout.height = tmp;
+
+                  // 2. Force identity rotation in layoutProps to prevent double-rotation
+                  layout.relativeTransform = [
+                    [1, 0, layout.relativeTransform[0][2]],
+                    [0, 1, layout.relativeTransform[1][2]]
+                  ];
+                }
+
+                // 3. Ensure SVG header matches its OWN intrinsic dimensions to prevent clipping
+                finalSvgContent = finalSvgContent.replace(/<svg[^>]*>/i,
+                  `<svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" fill="none" xmlns="http://www.w3.org/2000/svg">`
+                );
+              }
+            }
+          }
+          node = figma.createNodeFromSvg(finalSvgContent);
         } else {
           node = figma.createVector();
           if (def.vectorPaths) {
@@ -209,7 +250,7 @@ export abstract class BaseComponent {
             // Check key existence to be safe, or just assign
             finalNode[key] = value;
           } catch (e) {
-            console.warn(`Failed to set property ${key} on ${def.name}`, e);
+            console.warn(`Failed to set property ${key} on ${def.name} `, e);
           }
         }
       }
@@ -222,7 +263,7 @@ export abstract class BaseComponent {
     // 4. Transform / Layout
     if (def.layoutProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.applyLayoutProps(node as any, def.layoutProps);
+      applySizeAndTransform(node as any, def.layoutProps as any);
     }
 
     // 5. Recursion
@@ -248,41 +289,6 @@ export abstract class BaseComponent {
     return node;
   }
 
-  applyLayoutProps(
-    node: SceneNode & LayoutMixin & GeometryMixin,
-    opts: {
-      width?: number;
-      height?: number;
-      relativeTransform?: T2x3;
-      parentIsAutoLayout: boolean;
-      layoutPositioning?: "AUTO" | "ABSOLUTE";
-    }
-  ) {
-    const { width, height, relativeTransform, parentIsAutoLayout } = opts;
-    const positioning = opts.layoutPositioning ?? "AUTO";
-
-    if (typeof width === "number" && typeof height === "number") {
-      node.resize(width, height);
-    }
-
-    if (relativeTransform) {
-      const t = relativeTransform;
-      const inFlow = parentIsAutoLayout && positioning !== "ABSOLUTE";
-
-      // Strip translation in auto-layout flow; keep axis vectors
-      const tx = inFlow ? 0 : t[0][2];
-      const ty = inFlow ? 0 : t[1][2];
-
-      try {
-        node.relativeTransform = [
-          [t[0][0], t[0][1], tx],
-          [t[1][0], t[1][1], ty],
-        ];
-      } catch (e) {
-        console.warn("Failed to set relativeTransform", e);
-      }
-    }
-  }
 
   /**
    * Helper to convert portable paints (with handles/assetRefs) to Figma-ready paints

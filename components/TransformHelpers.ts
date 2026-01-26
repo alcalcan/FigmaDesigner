@@ -1,3 +1,4 @@
+/// <reference types="@figma/plugin-typings" />
 export type T2x3 = [[number, number, number], [number, number, number]];
 export type Vec = { x: number; y: number };
 
@@ -18,10 +19,14 @@ export function normalizeRelativeTransform(t: T2x3): T2x3 {
 
 export function applySizeAndTransform(
     node: SceneNode & LayoutMixin,
-    data: { width: number; height: number; relativeTransform: T2x3 }
+    data: { width?: number; height?: number; relativeTransform?: T2x3 }
 ) {
     // 1) size first
-    node.resizeWithoutConstraints(data.width, data.height);
+    if (typeof data.width === 'number' && typeof data.height === 'number') {
+        node.resizeWithoutConstraints(data.width, data.height);
+    }
+
+    if (!data.relativeTransform) return;
 
     const t = normalizeRelativeTransform(data.relativeTransform);
 
@@ -114,4 +119,31 @@ export function transformToGradientHandles(t: T2x3): [Vec, Vec, Vec] {
         { x: P[0][1], y: P[1][1] },
         { x: P[0][2], y: P[1][2] },
     ];
+}
+/**
+ * Detects if an SVG asset has a baked-in rotation compared to the JSON dimensions.
+ * This happens often with icons that were rotated in Figma during export.
+ */
+export function detectBakedRotation(
+    svgW: number,
+    svgH: number,
+    jsonW: number,
+    jsonH: number
+): boolean {
+    if (svgW === 0 || svgH === 0 || jsonW === 0 || jsonH === 0) return false;
+
+    const svgAR = svgW / svgH;
+    const jsonAR = jsonW / jsonH;
+    const swappedJsonAR = jsonH / jsonW;
+
+    // Compare original aspect ratio vs swapped aspect ratio
+    const diffOriginal = Math.abs(svgAR - jsonAR);
+    const diffSwapped = Math.abs(svgAR - swappedJsonAR);
+
+    // Sanity check: Ensure area is roughly similar (within 30%)
+    const areaRatio = (svgW * svgH) / (jsonW * jsonH);
+    const areaIsSimilar = areaRatio > 0.7 && areaRatio < 1.3;
+
+    // If swapped AR is significantly closer than original AR, it's rotated
+    return areaIsSimilar && diffSwapped < diffOriginal * 0.5;
 }

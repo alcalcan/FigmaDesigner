@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { SerializedNode } from '../components/JsonReconstructor';
+import { detectBakedRotation } from '../components/TransformHelpers';
 
 
 export class ComponentGenerator {
@@ -10,6 +11,7 @@ export class ComponentGenerator {
     private componentName: string = '';
     private projectName: string = '';
     private sourceDir: string = '';
+    private targetDir: string = '';
 
     /**
      * Main entry point to generate a component from a JSON file
@@ -22,14 +24,14 @@ export class ComponentGenerator {
 
         const data: SerializedNode = JSON.parse(fs.readFileSync(fullJsonPath, 'utf8'));
         this.projectName = projectName;
-        this.componentName = (data.name || 'GeneratedComponent').replace(/[^a-z0-9]/gi, '_');
+        this.componentName = path.basename(jsonPath, path.extname(jsonPath)).replace(/[^a-z0-9]/gi, '_');
         this.sourceDir = path.dirname(fullJsonPath);
 
-        const targetDir = path.join(process.cwd(), 'components', projectName, this.componentName);
-        const assetsTargetDir = path.join(targetDir, 'assets');
+        this.targetDir = path.join(process.cwd(), 'components', projectName, this.componentName);
+        const assetsTargetDir = path.join(this.targetDir, 'assets');
 
-        if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir, { recursive: true });
+        if (!fs.existsSync(this.targetDir)) {
+            fs.mkdirSync(this.targetDir, { recursive: true });
         }
         if (!fs.existsSync(assetsTargetDir)) {
             fs.mkdirSync(assetsTargetDir, { recursive: true });
@@ -43,7 +45,7 @@ export class ComponentGenerator {
         const code = this.generateComponentCode(data);
 
         // 2. Write the .ts file
-        const tsPath = path.join(targetDir, `${this.componentName}.ts`);
+        const tsPath = path.join(this.targetDir, `${this.componentName}.ts`);
         fs.writeFileSync(tsPath, code);
 
         // 3. Copy Assets (Images)
@@ -61,14 +63,18 @@ export class ComponentGenerator {
 
     private generateComponentCode(data: SerializedNode): string {
         const variableName = 'root';
-        const bodyContent = this.generateNodeCode(data, variableName);
+        const bodyContent = this.generateNodeCode(data, variableName, false, '');
 
-        // Include SVG strings
-        let svgCode = '// SVG Assets\n';
-        this.svgAssets.forEach((content, ref) => {
-            const safeRef = ref.replace(/[^a-z0-9]/gi, '_');
-            const safeContent = content.replace(/`/g, '\\`').replace(/\$/g, '\\$');
-            svgCode += `const SVG_${safeRef} = \`${safeContent}\`;\n`;
+        // SVG Assets (written to disk and imported)
+        let svgImports = '// SVG Imports\n';
+        this.svgAssets.forEach((content, distinctKey) => {
+            const fileName = distinctKey.replace(/[^a-z0-9]/gi, '_').replace(/_svg$/, '.svg');
+            const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
+            const assetRelPath = `./assets/${fileName}`;
+            const fullAssetPath = path.join(this.targetDir, 'assets', fileName);
+
+            fs.writeFileSync(fullAssetPath, content);
+            svgImports += `import SVG_${safeRef} from "${assetRelPath}";\n`;
         });
 
         const importPrefix = '../../';
@@ -128,10 +134,9 @@ function applySizeAndTransform(
             ? `applySizeAndTransform(${variableName}, ${JSON.stringify(rootOpts)});\n`
             : '';
 
-        return `import { BaseComponent, ComponentProps } from "${importPrefix}BaseComponent";
+        return `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "${importPrefix}BaseComponent";
 ${imageImports}
-
-${svgCode}
+${svgImports}
 
 ${applySizeAndTransformHelper}
 
@@ -156,7 +161,7 @@ export class ${this.componentName} extends BaseComponent {
 `;
     }
 
-    private generateNodeCode(data: SerializedNode, varName: string, _parentIsAutoLayout: boolean = false): string {
+    private generateNodeCode(data: SerializedNode, varName: string, _parentIsAutoLayout: boolean = false, parentName: string = ''): string {
         const type = data.type;
         const safeType = (type || '').trim();
         let code = '';
@@ -204,7 +209,7 @@ export class ${this.componentName} extends BaseComponent {
                 data.children.forEach((child, index) => {
                     const childVar = `${varName}_child_${index}`;
                     code += `\n// Boolean Child: ${child.name}\n`;
-                    code += this.generateNodeCode(child, childVar, false);
+                    code += this.generateNodeCode(child, childVar, false, data.name || '');
 
                     // Critical: Apply Transform/Size to children BEFORE they are merged into the Boolean Operation
                     // because figma.union/subtract consumes them as-is.
@@ -243,27 +248,92 @@ export class ${this.componentName} extends BaseComponent {
         } else if (safeType === 'VECTOR') {
             if (data.svgPath) {
                 const fullSvgPath = path.join(this.sourceDir, data.svgPath);
-                if (fs.existsSync(fullSvgPath)) {
+
+                // --- BOLD CHEVRON FIX START ---
+                // Detect the specific "Chevron" component using Parent Name (robust) or legacy SVG path match
+                const isChevronDown = (data.name === 'Shape' && parentName && parentName.includes('Navigation / Chevron / Down')) ||
+                    (data.svgPath && data.svgPath.includes('assets_icon_Shape_I977_492_70_461_svg_10x6'));
+
+                if (isChevronDown) {
+                    console.log(`[Generator] Applying BOLD CHEVRON FIX for ${data.name}`);
+                    // Inject the Custom Bold Path (Solution A)
+                    // We use the same variable name strategy but force the content
+                    const distinctKey = `BOLD_CHEVRON_FIX_10x6`;
+                    // Option A: Stroke-based chevron (M1 1 L5 5 L9 1)
+                    // Note: We use a slightly larger viewbox or specific path to match 10x6 perfectly with 2px stroke
+                    const boldContent = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1 L5 5 L9 1" stroke="#1A313C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                    this.svgAssets.set(distinctKey, boldContent);
+
+                    const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
+                    code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
+                    code += `${varName}_svgContainer.fills = [];\n`;
+                    // Force the stroke color and weight on the container's children (paths) or just rely on SVG?
+                    // The SVG has hardcoded stroke color. If we want it to match component props we might need to override.
+                    // But for now, let's trust the SVG injection.
+                    code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
+                    // Ensure the resulting vector has the correct properties (mirroring Option A manual fix)
+                    code += `${varName}.fills = [];\n`;
+                    code += `${varName}.strokes = [{type: 'SOLID', color: {r: 0.10196, g: 0.19216, b: 0.23529}}];\n`;
+                    code += `${varName}.strokeWeight = 2;\n`;
+                    code += `${varName}.strokeCap = "ROUND";\n`;
+                    code += `${varName}.strokeJoin = "ROUND";\n`;
+
+                    // Force Identity Transform to fix Double Rotation
+                    data.relativeTransform = [[1, 0, 0], [0, 1, 0]];
+                    data.width = 10;
+                    data.height = 6;
+
+                } else if (fs.existsSync(fullSvgPath)) {
                     let content = fs.readFileSync(fullSvgPath, 'utf8');
 
-                    // Patch SVG Header to match JSON dimensions (Fix clipping)
-                    if (data.width && data.height) {
-                        const w = data.width;
-                        const h = data.height;
+                    // Parse SVG dimensions to detect orientation mismatch (Baked rotation)
+                    let svgW = 0, svgH = 0;
+                    const wMatch = content.match(/width=["']([\d.]+)["']/);
+                    const hMatch = content.match(/height=["']([\d.]+)["']/);
+                    if (wMatch) svgW = parseFloat(wMatch[1]);
+                    if (hMatch) svgH = parseFloat(hMatch[1]);
+
+                    let useWidth = data.width;
+                    let useHeight = data.height;
+                    let overrideTransform = false;
+
+                    // Mismatch detection: If SVG is Landscape and JSON is Portrait (or vice versa)
+                    // AND they were roughly similar in area (sanity check), implies 90deg rotation was baked into path.
+                    if (detectBakedRotation(svgW, svgH, useWidth || 0, useHeight || 0)) {
+                        // Orientation swap detected.
+                        // The SVG path is likely already "unrotated" relative to the visual expectation, 
+                        // but the JSON still carries the rotation metadata.
+                        // Fix: Use dimensions from SVG asset and IDENTITY transform (no rotation).
+                        console.log(`[Generator] Fixing baked rotation for ${data.name || 'Vector'} (${data.svgPath})`);
+
+                        useWidth = svgW;
+                        useHeight = svgH;
+                        overrideTransform = true;
+                    }
+
+                    // Patch SVG Header to match target dimensions (Fix clipping)
+                    if (useWidth && useHeight) {
                         // Replace the opening <svg ...> tag entirely
                         content = content.replace(/<svg[^>]*>/i,
-                            `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" xmlns="http://www.w3.org/2000/svg">`
+                            `<svg width="${useWidth}" height="${useHeight}" viewBox="0 0 ${useWidth} ${useHeight}" fill="none" xmlns="http://www.w3.org/2000/svg">`
                         );
                     }
 
                     // Use unique key for dimensions to avoid conflicts
-                    const distinctKey = `${data.svgPath}_${data.width}x${data.height}`;
+                    const distinctKey = `${data.svgPath}_${useWidth}x${useHeight}`;
                     this.svgAssets.set(distinctKey, content);
 
                     const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
                     code += `${varName}_svgContainer.fills = []; // Ensure transparent background\n`;
                     code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
+
+                    if (overrideTransform) {
+                        data.width = useWidth;
+                        data.height = useHeight;
+                        data.relativeTransform = [[1, 0, 0], [0, 1, 0]]; // Identity
+                    }
+
                 } else {
                     code += `const ${varName} = figma.createVector();\n`;
                 }
@@ -428,7 +498,7 @@ export class ${this.componentName} extends BaseComponent {
                 code += `\n// Start Child: ${child.name}\n`;
 
                 // Recursively generate child (Phase A inside child)
-                code += this.generateNodeCode(child, childVar, isCurrentNodeAutoLayout);
+                code += this.generateNodeCode(child, childVar, isCurrentNodeAutoLayout, data.name || '');
 
                 // Phase B: Append (Now happens BEFORE Layout Props & Transform)
                 code += `${varName}.appendChild(${childVar});\n`;
@@ -571,7 +641,12 @@ export class ${this.componentName} extends BaseComponent {
     private updateRegistry() {
         const registryPath = path.join(process.cwd(), 'components', 'index.ts');
         const relativePath = `./${this.projectName}/${this.componentName}/${this.componentName}`;
-        const exportLine = `export { ${this.componentName} } from "${relativePath}";`;
+
+        // Use project name as suffix to avoid collisions (e.g. chip_dropdown_Alex_CookBook)
+        const safeProjectName = this.projectName.replace(/[^a-z0-9]/gi, '_');
+        const importAlias = `${this.componentName}_${safeProjectName}`;
+
+        const exportLine = `export { ${this.componentName} as ${importAlias} } from "${relativePath}";`;
 
         if (!fs.existsSync(registryPath)) {
             fs.writeFileSync(registryPath, exportLine + '\n');
@@ -579,9 +654,16 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         let content = fs.readFileSync(registryPath, 'utf8');
-        if (!content.includes(`${this.componentName} } from "${relativePath}"`)) {
+
+        // Robust check: Avoid duplicating the exact same exported alias
+        // We look for "as [importAlias] }" which signifies this specific aliased export
+        const regex = new RegExp(`as\\s+${importAlias}\\s*\\}`, 'g');
+
+        if (!regex.test(content)) {
             content = content.trim() + '\n' + exportLine + '\n';
             fs.writeFileSync(registryPath, content);
+        } else {
+            console.log(`[Generator] Export for ${importAlias} already exists. Skipping registry update.`);
         }
     }
 }
