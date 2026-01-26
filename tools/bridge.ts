@@ -623,7 +623,13 @@ const server = http.createServer((req, res) => {
                 if (fs.existsSync(registryPath)) {
                     const content = fs.readFileSync(registryPath, 'utf8');
                     const lines = content.split('\n');
-                    const filteredLines = lines.filter(line => !line.includes(`{ ${componentClassName} }`));
+                    // Filter out lines that export the component, either as { Name } or { Name as Alias }
+                    // We check if the line contains " { componentClassName " or " { componentClassName as "
+                    const filteredLines = lines.filter(line => {
+                        const isStandardExport = line.includes(`{ ${componentClassName} }`);
+                        const isAliasedExport = line.includes(`{ ${componentClassName} as `);
+                        return !isStandardExport && !isAliasedExport;
+                    });
                     fs.writeFileSync(registryPath, filteredLines.join('\n'));
                 }
 
@@ -639,6 +645,26 @@ const server = http.createServer((req, res) => {
                 if (fs.existsSync(componentDir)) {
                     fs.rmSync(componentDir, { recursive: true, force: true });
                     console.log(`Deleted component: ${name}`);
+                }
+
+                // 4. Cleanup Empty Parent Directories
+                // Try to delete parent folder if empty (e.g. Project folder)
+                try {
+                    const parentDir = path.dirname(componentDir);
+                    const componentsRoot = path.join(process.cwd(), 'components');
+
+                    // Ensure we don't delete the components root itself and stay within it
+                    if (parentDir !== componentsRoot && parentDir.startsWith(componentsRoot)) {
+                        if (fs.existsSync(parentDir)) {
+                            const remaining = fs.readdirSync(parentDir);
+                            if (remaining.length === 0) {
+                                fs.rmdirSync(parentDir);
+                                console.log(`Deleted empty parent folder: ${path.basename(parentDir)}`);
+                            }
+                        }
+                    }
+                } catch (cleanupErr) {
+                    console.warn("Could not cleanup parent folder:", cleanupErr);
                 }
 
                 // Rebuild plugin after deletion/cleanup

@@ -465,7 +465,16 @@ export class ComponentRefactorer {
                 def.svgContent = { __code: node.svgContentVar };
             } else if (assetContent) {
                 def.svgContent = assetContent;
+            } else {
+                console.warn(`⚠️ [Refactorer] Asset not found for var: ${node.svgContentVar}`);
             }
+        }
+
+        // Safety: If we expect to flatten an SVG node, we MUST have content.
+        // Otherwise figma.flatten() on an empty vector fails.
+        if (def.shouldFlatten && !def.svgContent && node.type === 'VECTOR') {
+            console.warn(`⚠️ [Refactorer] Missing SVG content for ${currentId} (${def.name}). Disabling flatten to prevent crash.`);
+            delete def.shouldFlatten;
         }
 
         if (node.children.length > 0) {
@@ -862,12 +871,6 @@ export class ${className} extends BaseComponent {
 
         const lines = keys.map(key => {
             const val = obj[key];
-            // Compact specific keys
-            if (key === 'props' || key === 'layoutProps') {
-                // Force single line for these objects
-                return `${nextIndent}"${key}": ${JSON.stringify(val)}`;
-            }
-
             return `${nextIndent}"${key}": ${this.serialize(val, indentLevel + 1)}`;
         });
 

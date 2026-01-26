@@ -15,7 +15,25 @@ export class CleaningService {
      */
     public cleanup(componentName: string, fullRelativePath: string): { updatedFiles: string[] } {
         const updatedFiles: string[] = [];
-        this.walkPages(this.pagesDir, (filePath) => {
+
+        // Extract Project Name from "Project/Folder/Component"
+        // We assume the first segment is the project name
+        const parts = fullRelativePath.split('/');
+        const projectName = parts.length > 0 ? parts[0] : null;
+
+        if (!projectName) {
+            console.warn(`[CleaningService] Could not determine project name from ${fullRelativePath}. Skipping page cleanup.`);
+            return { updatedFiles };
+        }
+
+        const projectPagesDir = path.join(this.pagesDir, projectName);
+
+        if (!fs.existsSync(projectPagesDir)) {
+            console.log(`[CleaningService] No pages folder found for project ${projectName} (${projectPagesDir}). Skipping cleanup.`);
+            return { updatedFiles };
+        }
+
+        this.walkPages(projectPagesDir, (filePath) => {
             if (this.processFile(filePath, componentName, fullRelativePath)) {
                 updatedFiles.push(filePath);
             }

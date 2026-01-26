@@ -68,7 +68,10 @@ export class ComponentGenerator {
         // SVG Assets (written to disk and imported)
         let svgImports = '// SVG Imports\n';
         this.svgAssets.forEach((content, distinctKey) => {
-            const fileName = distinctKey.replace(/[^a-z0-9]/gi, '_').replace(/_svg$/, '.svg');
+            let fileName = distinctKey.replace(/[^a-z0-9]/gi, '_');
+            if (!fileName.toLowerCase().endsWith('.svg')) {
+                fileName += '.svg';
+            }
             const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
             const assetRelPath = `./assets/${fileName}`;
             const fullAssetPath = path.join(this.targetDir, 'assets', fileName);
