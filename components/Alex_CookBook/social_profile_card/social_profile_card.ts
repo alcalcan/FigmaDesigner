@@ -25,14 +25,14 @@ export class social_profile_card extends BaseComponent {
                 "layoutMode": "VERTICAL", "itemSpacing": 16,
                 "paddingTop": 24, "paddingRight": 24, "paddingBottom": 24, "paddingLeft": 24,
                 "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-                "cornerRadius": 20,
+                "cornerRadius": 14,
                 "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }],
                 "effects": [
                     {
                         "type": "DROP_SHADOW",
-                        "color": { "r": 0, "g": 0, "b": 0, "a": 0.08 },
-                        "offset": { "x": 0, "y": 4 },
-                        "radius": 20,
+                        "color": { "r": 0, "g": 0, "b": 0, "a": 0.12 },
+                        "offset": { "x": 0, "y": 2 },
+                        "radius": 6,
                         "spread": 0,
                         "visible": true
                     }
@@ -46,6 +46,7 @@ export class social_profile_card extends BaseComponent {
                     "props": {
                         "layoutMode": "HORIZONTAL", "itemSpacing": 16,
                         "counterAxisAlignItems": "CENTER",
+                        "counterAxisSizingMode": "AUTO",
                         "fills": []
                     },
                     "layoutProps": { "layoutAlign": "STRETCH", "parentIsAutoLayout": true },
@@ -57,8 +58,9 @@ export class social_profile_card extends BaseComponent {
                                 "cornerRadius": 50,
                                 "fills": props.avatarUrl
                                     ? [{ "type": "IMAGE", "assetRef": props.avatarUrl, "scaleMode": "FILL" }]
-                                    : [{ "type": "SOLID", "color": { "r": 0.96, "g": 0.96, "b": 0.98 } }],
-                                "strokes": [{ "type": "SOLID", "color": { "r": 0, "g": 0, "b": 0 }, "opacity": 0.05 }]
+                                    : [{ "type": "SOLID", "color": { "r": 0.945, "g": 0.953, "b": 0.973 } }],
+                                "strokes": [{ "type": "SOLID", "color": { "r": 0.816, "g": 0.847, "b": 0.859 } }],
+                                "strokeWeight": 1
                             },
                             "layoutProps": { "width": 56, "height": 56, "parentIsAutoLayout": true }
                         },
@@ -75,9 +77,9 @@ export class social_profile_card extends BaseComponent {
                                     "type": "TEXT",
                                     "props": {
                                         "characters": props.name || "User Name", "fontSize": 18,
-                                        "font": { "family": "Inter", "style": "Bold" },
+                                        "font": { "family": "Open Sans", "style": "SemiBold" },
                                         "textAutoResize": "HEIGHT",
-                                        "fills": [{ "type": "SOLID", "color": { "r": 0.1, "g": 0.1, "b": 0.15 } }]
+                                        "fills": [{ "type": "SOLID", "color": { "r": 0.102, "g": 0.192, "b": 0.235 } }]
                                     },
                                     "layoutProps": { "layoutAlign": "STRETCH", "parentIsAutoLayout": true }
                                 },
@@ -85,7 +87,8 @@ export class social_profile_card extends BaseComponent {
                                     "type": "TEXT",
                                     "props": {
                                         "characters": props.handle || "@handle", "fontSize": 14,
-                                        "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.5 } }],
+                                        "font": { "family": "Open Sans", "style": "Regular" },
+                                        "fills": [{ "type": "SOLID", "color": { "r": 0.349, "g": 0.439, "b": 0.482 } }],
                                         "textAutoResize": "HEIGHT"
                                     },
                                     "layoutProps": { "layoutAlign": "STRETCH", "parentIsAutoLayout": true }
@@ -98,9 +101,10 @@ export class social_profile_card extends BaseComponent {
                     "type": "TEXT",
                     "props": {
                         "characters": props.bio || "No bio provided.", "fontSize": 15,
+                        "font": { "family": "Open Sans", "style": "Regular" },
                         "lineHeight": { "value": 150, "unit": "PERCENT" },
                         "textAutoResize": "HEIGHT",
-                        "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.25 } }]
+                        "fills": [{ "type": "SOLID", "color": { "r": 0.102, "g": 0.192, "b": 0.235 } }]
                     },
                     "layoutProps": { "layoutAlign": "STRETCH", "parentIsAutoLayout": true }
                 },
@@ -110,6 +114,8 @@ export class social_profile_card extends BaseComponent {
                     "props": {
                         "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER",
                         "layoutMode": "HORIZONTAL",
+                        "primaryAxisSizingMode": "FIXED",
+                        "counterAxisSizingMode": "AUTO",
                         "fills": []
                     },
                     "layoutProps": { "layoutAlign": "STRETCH", "parentIsAutoLayout": true },
@@ -118,9 +124,9 @@ export class social_profile_card extends BaseComponent {
                             "type": "TEXT",
                             "props": {
                                 "characters": `${props.followerCount} followers`, "fontSize": 13,
-                                "font": { "family": "Inter", "style": "Semi Bold" },
+                                "font": { "family": "Open Sans", "style": "SemiBold" },
                                 "textAutoResize": "WIDTH_AND_HEIGHT",
-                                "fills": [{ "type": "SOLID", "color": { "r": 0.1, "g": 0.1, "b": 0.1 } }]
+                                "fills": [{ "type": "SOLID", "color": { "r": 0.349, "g": 0.439, "b": 0.482 } }]
                             },
                             "layoutProps": { "parentIsAutoLayout": true }
                         },
@@ -129,8 +135,8 @@ export class social_profile_card extends BaseComponent {
                             "name": "Button",
                             "props": {
                                 "layoutMode": "HORIZONTAL", "paddingLeft": 20, "paddingRight": 20, "paddingTop": 10, "paddingBottom": 10,
-                                "cornerRadius": 10,
-                                "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.4, "b": 1 } }],
+                                "cornerRadius": 8,
+                                "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.635, "b": 0.588 } }],
                                 "primaryAxisSizingMode": "AUTO",
                                 "counterAxisSizingMode": "AUTO"
                             },
@@ -140,7 +146,7 @@ export class social_profile_card extends BaseComponent {
                                     "type": "TEXT",
                                     "props": {
                                         "characters": "Follow", "fontSize": 14,
-                                        "font": { "family": "Inter", "style": "Bold" },
+                                        "font": { "family": "Open Sans", "style": "Bold" },
                                         "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }],
                                         "textAutoResize": "WIDTH_AND_HEIGHT"
                                     },

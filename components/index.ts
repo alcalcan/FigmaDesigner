@@ -22,5 +22,4 @@ export { search_bar as search_bar_Alex_CookBook } from "./Alex_CookBook/search_b
 export { search_bar_expanded as search_bar_expanded_Alex_CookBook } from "./Alex_CookBook/search_bar_expanded/search_bar_expanded";
 export { checkbox_element as checkbox_element_Alex_CookBook } from "./Alex_CookBook/checkbox_element/checkbox_element";
 export { recipe_card as recipe_card_Alex_CookBook } from "./Alex_CookBook/recipe_card/recipe_card";
-export { user_profile_card as user_profile_card_Alex_CookBook } from "./Alex_CookBook/user_profile_card/user_profile_card";
 export { social_profile_card as social_profile_card_Alex_CookBook } from "./Alex_CookBook/social_profile_card/social_profile_card";
