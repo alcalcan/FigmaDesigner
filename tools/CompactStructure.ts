@@ -238,13 +238,14 @@ export class CompactStructure {
         // 4. Serialize back
         let newString = CompactSerializer.serialize(structObj, indentLevel);
 
-        // 5. Restore Protected Expressions and SVG Variables
-        newString = newString.replace(new RegExp(`"${placeholderPrefix}(SVG_[\\w_]+)"`, 'g'), '$1');
-
+        // 5. Restore Protected Expressions
         const restoreExprRegex = new RegExp(`"${exprPlaceholderPrefix}(\\d+)"`, 'g');
         newString = newString.replace(restoreExprRegex, (match, index) => {
             return expressions[parseInt(index)];
         });
+
+        // 6. Restore SVG Variables (MUST happen after expressions are restored)
+        newString = newString.replace(new RegExp(`"${placeholderPrefix}(SVG_[\\w_]+)"`, 'g'), '$1');
 
         const newContent = content.substring(0, startIndex) + newString + content.substring(endIndex);
         fs.writeFileSync(filePath, newContent);

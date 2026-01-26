@@ -150,6 +150,7 @@ Use this when you want a child to stretch and take up all available space in its
 ✅ The root Frame should usually have `primaryAxisSizingMode: "AUTO"` to grow with its content.
 ✅ Large containers should have `fills: []` (empty array).
 ✅ Internal frames (like a "Details" stack) should have `layoutAlign: "STRETCH"` if they need to fill the width.
+✅ **Flatten your structure**: Avoid deeply nested frames for simple text stacks. This makes `HUG` behavior much more predictable and easier to debug.
 
 ---
 
@@ -182,5 +183,8 @@ To create professional-looking components, follow these visual rules:
 
 ## 10. Pro Tips
 - **Use HUG vs FILL**: If you want a frame to take the size of its children, don't set a `width`/`height` in `layoutProps` and use `primaryAxisSizingMode: "AUTO"`.
-- **Absolute Positioning**: If you need a badge in the corner of an image, use `layoutPositioning: "ABSOLUTE"` in the child's `layoutProps`.
+- **Absolute Positioning**: If you need a badge in the corner of an image, use `layoutPositioning: "ABSOLUTE"` in the child's `layoutProps`. 
+    > [!IMPORTANT]
+    > **The Absolute Gotcha**: Figma's API ONLY allows Absolute Positioning for children of nodes with `layoutMode` set to `VERTICAL` or `HORIZONTAL`. If your parent frame has `layoutMode: "NONE"`, setting `layoutPositioning: "ABSOLUTE"` will trigger a crash.
+- **Text Truncation vs. AutoResize**: Be careful! Setting `textTruncation: "ENDING"` on a text node that is supposed to `HUG` its parent can sometimes cause the parent to ignore the text's actual height. If you want a truly dynamic card, remove truncation and let the text wrap naturally with `textAutoResize: "HEIGHT"`.
 - **Fonts**: Always specify the `font` property in `TEXT` nodes if it's not the default Inter.

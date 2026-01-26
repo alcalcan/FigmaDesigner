@@ -23,3 +23,4 @@ export { search_bar_expanded as search_bar_expanded_Alex_CookBook } from "./Alex
 export { checkbox_element as checkbox_element_Alex_CookBook } from "./Alex_CookBook/checkbox_element/checkbox_element";
 export { recipe_card as recipe_card_Alex_CookBook } from "./Alex_CookBook/recipe_card/recipe_card";
 export { social_profile_card as social_profile_card_Alex_CookBook } from "./Alex_CookBook/social_profile_card/social_profile_card";
+export { uefa_cards_row as uefa_cards_row_Alex_CookBook } from "./Alex_CookBook/uefa_cards_row/uefa_cards_row";
