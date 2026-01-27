@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild';
+import * as fs from 'fs';
 import { checkAndRecover } from './pre-build';
 import { registerComponents } from './RegisterComponents';
 
@@ -35,15 +36,11 @@ async function startBuild() {
                             const recoveredAny = await checkAndRecover();
                             if (recoveredAny) {
                                 console.log("🔄 Files recovered. Esbuild will detect changes and rebuild...");
-                                // No manual reboot needed as esbuild context.watch() 
-                                // will see the new files and trigger a NEW build iteration automatically.
                             }
                         });
                         build.onEnd(result => {
                             if (result.errors.length > 0) {
                                 console.error(`❌ Build failed with ${result.errors.length} errors.`);
-                                // If it failed and code.js exists, it might be old. 
-                                // If it doesn't exist, we definitely have a problem.
                             } else {
                                 const now = new Date().toLocaleTimeString();
                                 console.log(`✅ Build successful at ${now}`);
@@ -60,7 +57,6 @@ async function startBuild() {
             await context.watch();
         } else {
             // For single build, we must actually finish successfully
-            // We might need to run checkAndRecover BEFORE we even create the context for single builds
             registerComponents();
             await checkAndRecover();
             await context.rebuild();

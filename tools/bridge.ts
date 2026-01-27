@@ -1,10 +1,9 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
 import { ComponentGenerator } from './ComponentGenerator';
 import { CleaningService } from './CleaningService';
-import { ComponentRefactorer } from './ComponentRefactorer';
+import { PngExporter } from './PngExporter';
 
 const PORT = 3001;
 let pendingCommand: string | null = null;
@@ -294,6 +293,38 @@ const server = http.createServer((req, res) => {
             res.writeHead(500);
             res.end(JSON.stringify({ error: error.message }));
         }
+        return;
+    }
+
+    // SAVE PNG ENDPOINT (POST)
+    if (req.method === 'POST' && req.url === '/save-png') {
+        const chunks: Buffer[] = [];
+        req.on('data', chunk => { chunks.push(chunk); });
+        req.on('end', () => {
+            try {
+                const body = Buffer.concat(chunks).toString('utf8');
+                if (!body) throw new Error("Empty request body");
+
+                const { projectName, packets } = JSON.parse(body);
+                if (!projectName || !packets) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: "Missing projectName or packets" }));
+                    return;
+                }
+
+                console.log(`[Bridge] Using PngExporter for ${packets.length} PNGs...`);
+                const exporter = new PngExporter();
+                const files = exporter.savePackets(projectName, packets);
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', files }));
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("❌ Error saving PNG via Exporter:", error.message);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'error', error: error.message }));
+            }
+        });
         return;
     }
 
@@ -694,7 +725,6 @@ const server = http.createServer((req, res) => {
                     // folder might be "Alex_CookBook"
                     // imports look like: from "./Alex_CookBook/..."
                     const folderPrefix = `./${folder}/`;
-                    const folderPrefixWin = `.\\${folder}\\`; // Just in case, though standard imports are /
 
                     const forwardedContent = lines.filter(line => {
                         return !line.includes(`"${folderPrefix}`) && !line.includes(`'${folderPrefix}`);
@@ -904,8 +934,9 @@ const server = http.createServer((req, res) => {
                 // Dynamic Import for Refactorer
                 const refactorerPath = require.resolve('./ComponentRefactorer');
                 delete require.cache[refactorerPath];
-                const { ComponentRefactorer } = require('./ComponentRefactorer');
-                const refactorer = new ComponentRefactorer();
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                const { ComponentRefactorer: FreshRefactorer } = require('./ComponentRefactorer');
+                const refactorer = new FreshRefactorer();
 
                 for (const fullPath of files) {
                     const file = path.basename(fullPath);
@@ -918,8 +949,9 @@ const server = http.createServer((req, res) => {
                         }
 
                         results.push({ file, status: 'ok', ...result });
-                    } catch (err: any) {
-                        results.push({ file, status: 'error', error: err.message });
+                    } catch (err: unknown) {
+                        const error = err as Error;
+                        results.push({ file, status: 'error', error: error.message });
                     }
                 }
 

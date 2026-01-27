@@ -71,7 +71,7 @@ export class SubSection extends BaseComponent {
         badge.fills = await this.hydratePaints([{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }]);
 
         const badgeLabel = figma.createText();
-        badgeLabel.characters = "Subjects";
+        badgeLabel.characters = props.badgeLabel || "Subjects";
         badgeLabel.fontSize = 14;
         await this.setFont(badgeLabel, { family: "Manrope", style: "Regular" });
         badge.appendChild(badgeLabel);

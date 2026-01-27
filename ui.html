@@ -241,6 +241,7 @@
             <div id="bridge-active-tools"
                 style="display: none; margin-top: 16px; border-top: 1px solid #2a2a2a; padding-top: 16px;">
                 <button id="sync-btn" class="success">Capture Sync (to Disk)</button>
+                <button id="capture-png-btn" class="secondary" style="margin-top: 8px;">Capture PNG</button>
                 <div style="margin-top: 12px;">
                     <label class="checkbox-row">
                         <input type="checkbox" id="process-checkbox" checked> <span
@@ -312,6 +313,7 @@
         const createBtn = document.getElementById('create-btn');
         const connectBtn = document.getElementById('connect-btn');
         const syncBtn = document.getElementById('sync-btn');
+        const capturePngBtn = document.getElementById('capture-png-btn');
         const captureBtn = document.getElementById('capture-btn');
         const detailedCheckbox = document.getElementById('detailed-checkbox');
         const vectorJsonCheckbox = document.getElementById('vector-json-checkbox');
@@ -378,6 +380,12 @@
             // Feedback will be triggered on result message for precision, 
             // but let's do immediate for responsiveness too
             showFeedback(syncBtn, "Capture Sync (to Disk)");
+        }
+
+        capturePngBtn.onclick = () => {
+            console.log("Capture PNG button clicked");
+            parent.postMessage({ pluginMessage: { type: 'capture-png' } }, '*');
+            showFeedback(capturePngBtn, "Capture PNG", "Capturing...");
         }
 
         refreshFilesBtn.onclick = () => {
@@ -1045,6 +1053,43 @@
                     console.error("Failed to send data to bridge", e);
                     alert("Failed to save to bridge: " + e.message);
                     syncBtn.textContent = "Capture Sync (to Disk)";
+                }
+            }
+
+            if (msg.type === 'capture-png-result') {
+                try {
+                    console.log("Processing capture-png-result");
+                    const packets = msg.packets || [];
+                    const projectName = msg.projectName || "Default";
+
+                    showFeedback(capturePngBtn, "Capture PNG", "Saving...");
+
+                    const response = await fetch('http://127.0.0.1:3001/save-png', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            projectName: projectName,
+                            packets: packets
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error("[UI] Server error response:", errorText);
+                        throw new Error(`Server returned ${response.status}: ${errorText || "No response body"}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.status === 'ok') {
+                        console.log("PNGs saved successfully");
+                        showFeedback(capturePngBtn, "Capture PNG", "Saved!");
+                    } else {
+                        throw new Error(result.error || "Unknown error");
+                    }
+                } catch (e) {
+                    console.error("Failed to save PNG to bridge", e);
+                    alert("Failed to save PNG: " + e.message);
+                    showFeedback(capturePngBtn, "Capture PNG", "Error!");
                 }
             }
 

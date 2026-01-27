@@ -11,6 +11,7 @@
     "dev": "npm run watch",
     "verify": "ts-node tools/verify_design.ts",
     "capture": "ts-node tools/capture.ts",
+    "export-png": "ts-node tools/PngExporter.ts",
     "bridge": "ts-node tools/bridge.ts"
   },
   "author": "",

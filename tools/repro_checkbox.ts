@@ -33,7 +33,7 @@ async function run() {
     refactorer.refactor(result.tsPath);
 
     // 4. Check result
-    const declarativeContent = fs.readFileSync(result.tsPath, 'utf8');
+    // const declarativeContent = fs.readFileSync(result.tsPath, 'utf8');
     console.log("Done.");
 }
 

@@ -310,8 +310,8 @@ figma.ui.onmessage = async (msg) => {
   }
 
   // Handle Capture request from Bridge (via UI)
-  if (msg.type === 'capture-bridge') {
-    console.log("[Plugin] Received capture-bridge request");
+  if (msg.type === 'capture-bridge' || msg.type === 'capture-png') {
+    console.log(`[Plugin] Received ${msg.type} request`);
     try {
       const selection = figma.currentPage.selection;
       console.log(`[Plugin] Selection count: ${selection.length}`);
@@ -324,6 +324,40 @@ figma.ui.onmessage = async (msg) => {
       }
 
       const projectName = figma.root.name;
+
+      if (msg.type === 'capture-png') {
+        const packets = await Promise.all(selection.map(async (node) => {
+          console.log(`[Plugin] Capturing PNG for node: ${node.name} (ID: ${node.id})`);
+          try {
+            const pngBytes = await node.exportAsync({
+              format: 'PNG',
+              constraint: { type: 'SCALE', value: 2 }
+            });
+            const base64 = figma.base64Encode(pngBytes);
+            return {
+              name: node.name,
+              data: base64 // The base64 PNG data
+            };
+          } catch (e) {
+            console.warn(`Failed to export PNG for ${node.name}`, e);
+            return null;
+          }
+        }));
+
+        const validPackets = packets.filter(p => p !== null);
+        if (validPackets.length === 0) {
+          figma.notify("No visible elements found to capture PNG.", { error: true });
+          return;
+        }
+
+        figma.ui.postMessage({
+          type: 'capture-png-result',
+          projectName: projectName,
+          packets: validPackets
+        });
+        return;
+      }
+
       const packets = await Promise.all(selection.map(async (node) => {
         console.log(`[Plugin] Capturing node: ${node.name} (ID: ${node.id})`);
         const assetStore: AssetStore = {
