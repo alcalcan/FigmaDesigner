@@ -4,6 +4,8 @@ import * as path from 'path';
 import { ComponentGenerator } from './ComponentGenerator';
 import { CleaningService } from './CleaningService';
 import { PngExporter } from './PngExporter';
+import { CompactStructure } from './CompactStructure';
+import { execSync } from 'child_process';
 
 const PORT = 3001;
 let pendingCommand: string | null = null;
@@ -470,7 +472,120 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // GENERATE TO CODE ENDPOINT (POST)
+    // GENERATE PREVIEW ENDPOINT (POST) -- New Feature
+    if (req.method === 'POST' && req.url === '/generate-code-preview') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { packet, options } = JSON.parse(body);
+                // options: { compact: boolean, refactor: boolean } (defaults: compact=true, refactor=true)
+                // packet: { name, data, assets } similar to save-packet
+
+                if (!packet || !packet.name || !packet.data) {
+                    res.writeHead(400);
+                    res.end(JSON.stringify({ error: "Missing packet data" }));
+                    return;
+                }
+
+                // 1. Setup Temporary Location
+                const tempDir = path.join(process.cwd(), 'tools', 'extraction', 'temp_preview');
+                if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+                const sanitaryName = (packet.name || "Preview").replace(/[^a-z0-9]/gi, '_');
+                const uniqueId = Date.now().toString();
+                const folderName = `${sanitaryName}_${uniqueId}`;
+                const targetDir = path.join(tempDir, folderName);
+
+                if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+
+                // 2. Write JSON
+                const jsonPath = path.join(targetDir, `${sanitaryName}.json`);
+                fs.writeFileSync(jsonPath, JSON.stringify(packet.data, null, 2));
+
+                // 3. Write Assets (Required for generator to resolve paths)
+                if (packet.assets && Array.isArray(packet.assets)) {
+                    const assetsDir = path.join(targetDir, 'assets');
+                    if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir);
+
+                    packet.assets.forEach((asset: { fileName: string, content: string }) => {
+                        const assetPath = path.join(assetsDir, asset.fileName);
+                        const buffer = Buffer.from(asset.content, 'base64');
+                        fs.writeFileSync(assetPath, buffer);
+                    });
+                }
+
+                // 4. Run Generator
+                // We point generator to the temp file.
+                // Generator creates component in `components/temp_preview/Preview...`
+                // We need to capture the output path from generator.
+
+                // Reload modules to ensure freshness
+                const generatorPath = require.resolve('./ComponentGenerator');
+                const refactorerPath = require.resolve('./ComponentRefactorer');
+                delete require.cache[generatorPath];
+                delete require.cache[refactorerPath];
+
+                const { ComponentGenerator } = require('./ComponentGenerator');
+                const { ComponentRefactorer } = require('./ComponentRefactorer');
+                const { CompactStructure } = require('./CompactStructure'); // Use class directly
+
+                const generator = new ComponentGenerator();
+                // We use 'temp_preview' as project name to verify isolation
+                const result = generator.generate(jsonPath, 'temp_preview');
+
+                const tsPath = result.tsPath;
+                console.log(`[Preview] Generated at: ${tsPath}`);
+
+                // 5. Apply Refactor (Default true)
+                if (options?.refactor !== false) {
+                    console.log(`[Preview] Refactoring...`);
+                    new ComponentRefactorer().refactor(tsPath);
+                }
+
+                // 6. Apply Compact (Default true, unless explicitly false)
+                // User requirement: "copy and compact... checkbox... if it's check where we have exactly refactored code"
+                // So if "exact refactor" is checked (options.exact === true), we SKIP compact.
+                // If options.compact === true (or default), we DO it.
+                // The UI will likely send `compact: !exact_checkbox.checked`. 
+                if (options?.compact === true) {
+                    console.log(`[Preview] Compacting...`);
+                    new CompactStructure().compact(tsPath);
+                }
+
+                // 7. Read Result
+                const code = fs.readFileSync(tsPath, 'utf8');
+
+                // 8. Cleanup (Optional but good practice)
+                // We might want to keep it briefly for debugging, but typically "preview" implies ephemeral.
+                // Cleaning up 'components/temp_preview' and 'tools/extraction/temp_preview'
+                // For now, let's leave it or clean it?
+                // Given the user might spam this, cleanup is better.
+                try {
+                    // Delete extraction temp folder
+                    fs.rmSync(targetDir, { recursive: true, force: true });
+                    // Delete component output folder ??
+                    // Component output is in `components/temp_preview/Component/`
+                    // Generator returns tsPath.
+                    const compDir = path.dirname(tsPath);
+                    if (fs.existsSync(compDir)) fs.rmSync(compDir, { recursive: true, force: true });
+                } catch (cleanupErr) {
+                    console.warn("Cleanup warning:", cleanupErr);
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', code: code }));
+
+            } catch (e: unknown) {
+                const error = e as Error;
+                console.error("Error generating preview:", error.message, error.stack);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: error.message }));
+            }
+        });
+        return;
+    }
+
     if (req.method === 'POST' && req.url === '/generate-to-code') {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });

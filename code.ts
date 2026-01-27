@@ -310,7 +310,7 @@ figma.ui.onmessage = async (msg) => {
   }
 
   // Handle Capture request from Bridge (via UI)
-  if (msg.type === 'capture-bridge' || msg.type === 'capture-png') {
+  if (msg.type === 'capture-bridge' || msg.type === 'capture-png' || msg.type === 'capture-preview') {
     console.log(`[Plugin] Received ${msg.type} request`);
     try {
       const selection = figma.currentPage.selection;
@@ -399,8 +399,10 @@ figma.ui.onmessage = async (msg) => {
 
       console.log(`[Plugin] Sending ${validPackets.length} packets to UI`);
 
+      const resultType = msg.type === 'capture-preview' ? 'capture-preview-result' : 'capture-bridge-result-batch';
+
       figma.ui.postMessage({
-        type: 'capture-bridge-result-batch',
+        type: resultType,
         projectName: projectName,
         packets: validPackets
       });
