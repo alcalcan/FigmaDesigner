@@ -1,5 +1,6 @@
 import * as esbuild from 'esbuild';
 import { checkAndRecover } from './pre-build';
+import { registerComponents } from './RegisterComponents';
 
 async function startBuild() {
     const isWatch = process.argv.includes('--watch');
@@ -29,6 +30,8 @@ async function startBuild() {
                     name: 'recovery',
                     setup(build) {
                         build.onStart(async () => {
+                            // Run registration first to ensure imports exist
+                            registerComponents();
                             const recoveredAny = await checkAndRecover();
                             if (recoveredAny) {
                                 console.log("🔄 Files recovered. Esbuild will detect changes and rebuild...");
@@ -58,6 +61,7 @@ async function startBuild() {
         } else {
             // For single build, we must actually finish successfully
             // We might need to run checkAndRecover BEFORE we even create the context for single builds
+            registerComponents();
             await checkAndRecover();
             await context.rebuild();
             console.log("✨ Build complete.");
