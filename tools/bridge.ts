@@ -235,7 +235,7 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
             try {
-                const { projectName, fileName, content } = JSON.parse(body);
+                const { projectName, fileName, content, componentName } = JSON.parse(body);
                 if (!projectName || !fileName || !content) {
                     res.writeHead(400);
                     res.end(JSON.stringify({ error: "Missing required fields" }));
@@ -243,7 +243,46 @@ const server = http.createServer((req, res) => {
                 }
 
                 const sanitaryProjectName = projectName.replace(/[^a-z0-9]/gi, '_');
-                const assetDir = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName, 'assets');
+
+                // If componentName is provided, we try to find the LATEST capture folder for it
+                // OR we just create a new structure? 
+                // The problem is that /save-asset is atomic and stateless. It doesn't know about the "current packet" unless we tell it.
+                // The Plugin usually sends assets alongside the JSON in a packet now (/save-packet).
+                // But if it uses /save-asset, it's the legacy flow or specific flow.
+                // IF the user wants assets in the component folder, we should default to placing them in `assets/` relative to where the JSON ends up.
+                // But here we are in "Capture" land (tools/extraction).
+                // Let's support an optional `folderPath` or ignore it if we can't reliably determine it.
+                // BUT wait, looking at the user request: "why is placed at root level of components folder?"
+                // This usually implies `components/Project/assets` vs `components/Project/Component/assets`.
+                // I ALREADY fixed the Generator to move from Project/assets to Component/assets.
+
+                // IF the user is still seeing this, maybe they mean the EXTRACTION folder?
+                // "why when we capture to disk assets for components are not in the component directory?"
+
+                // Let's assume they mean *generated* components. 
+                // However, I will update this to be safe, creating a 'shared_assets' folder if no component specified, 
+                // or just leave it as 'assets' in project root of extraction. The Generator handles the move.
+
+                // Actually, I should probably NOT touch this unless I know the plugin sends `componentName`.
+                // If I change this without plugin change, it might break.
+                // But I can make it safe:
+
+                let assetDir = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName, 'assets');
+
+                if (componentName) {
+                    // Try to find the latest capture folder for this component to put assets in? 
+                    // Or just create a folder "Component_Assets"? 
+                    // This is messy. The "Packet" approach (/save-packet) is the correct way to bundle assets.
+                    // If the user is using the "Capture" button that hits /save-packet, then assets ARE in the folder.
+                    // If they use a method that hits /save-asset, they go to root.
+
+                    // As a quick fix/improvement, we can try to respect componentName if passed.
+                    const sanitaryCompName = componentName.replace(/[^a-z0-9]/gi, '_');
+                    // We don't have a specific timestamped folder here so we might just create one or put in a 'common' component folder?
+                    // Let's stick to the root assets for now for loose assets, as Generator fixes the final location.
+                    // But maybe I should log it?
+                    console.log(`[Bridge] Saving asset for ${componentName} to shared extraction assets.`);
+                }
 
                 if (!fs.existsSync(assetDir)) {
                     fs.mkdirSync(assetDir, { recursive: true });
@@ -459,6 +498,83 @@ const server = http.createServer((req, res) => {
                     }
                 }
 
+                // 4. Cleanup Generated Component & Registry
+                // Infer project and component name from path
+                // relativePath is likely "Project/CaptureFolder/Component.json"
+                const parts = relativePath.split('/');
+                if (parts.length >= 3) {
+                    const projectName = parts[0];
+                    const componentName = path.basename(relativePath, '.json');
+
+                    // A. Delete Generated Directory
+                    const generatedDir = path.join(process.cwd(), 'components', projectName, componentName);
+                    if (fs.existsSync(generatedDir)) {
+                        try {
+                            fs.rmSync(generatedDir, { recursive: true, force: true });
+                            console.log(`deleted generated component: ${generatedDir}`);
+                        } catch (err) {
+                            console.warn(`Failed to delete generated dir ${generatedDir}:`, err);
+                        }
+                    }
+
+                    // B. Update Registry (components/index.ts)
+                    const registryPath = path.join(process.cwd(), 'components', 'index.ts');
+                    if (fs.existsSync(registryPath)) {
+                        // Permission Check & Unlock
+                        let originalMode: number | null = null;
+                        try {
+                            const stats = fs.statSync(registryPath);
+                            if ((stats.mode & fs.constants.S_IWUSR) === 0) {
+                                console.log(`[Delete] Registry is read-only. Unlocking...`);
+                                originalMode = stats.mode;
+                                fs.chmodSync(registryPath, 0o644);
+                            }
+                        } catch (e) { console.warn("Registry perm check failed", e); }
+
+                        try {
+                            let content = fs.readFileSync(registryPath, 'utf8');
+                            const lines = content.split('\n');
+                            // Look for export matching the component alias or path
+                            // Alias format: "as componentName_projectName"
+                            const alias = `${componentName}_${projectName}`;
+                            const newLines = lines.filter(line => !line.includes(`as ${alias}`));
+
+                            if (newLines.length !== lines.length) {
+                                fs.writeFileSync(registryPath, newLines.join('\n'));
+                                console.log(`[Delete] Removed ${alias} from registry.`);
+                            }
+                        } catch (err) {
+                            console.error(`[Delete] Failed to update registry:`, err);
+                        } finally {
+                            // Restore perms
+                            if (originalMode !== null) {
+                                try { fs.chmodSync(registryPath, originalMode); }
+                                catch (e) { console.warn("Failed to restore registry perms", e); }
+                            }
+                        }
+                    }
+
+                    // C. Run CleaningService to update pages
+                    try {
+                        const servicePath = require.resolve('./CleaningService');
+                        delete require.cache[servicePath];
+                        const { CleaningService } = require('./CleaningService');
+                        const cleaningService = new CleaningService();
+                        const fullRelativePath = `${projectName}/${componentName}/${componentName}`;
+
+                        console.log(`[Delete] Running cleaning service for ${componentName}...`);
+                        const cleanResult = cleaningService.cleanup(componentName, fullRelativePath);
+                        if (cleanResult.updatedFiles.length > 0) {
+                            console.log(`[Delete] Updated ${cleanResult.updatedFiles.length} pages:`, cleanResult.updatedFiles);
+                        } else {
+                            console.log(`[Delete] No pages needed update.`);
+                        }
+                    } catch (cleanErr) {
+                        console.warn(`[Delete] CleaningService failed:`, cleanErr);
+                        // Don't fail the request if cleaning pages fails, as core deletion worked
+                    }
+                }
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok' }));
 
@@ -562,13 +678,26 @@ const server = http.createServer((req, res) => {
                 // For now, let's leave it or clean it?
                 // Given the user might spam this, cleanup is better.
                 try {
-                    // Delete extraction temp folder
-                    fs.rmSync(targetDir, { recursive: true, force: true });
-                    // Delete component output folder ??
-                    // Component output is in `components/temp_preview/Component/`
-                    // Generator returns tsPath.
-                    const compDir = path.dirname(tsPath);
-                    if (fs.existsSync(compDir)) fs.rmSync(compDir, { recursive: true, force: true });
+                    // Cleanup with delay to avoid file locking issues (EACCES/EPERM)
+                    const cleanupPath = targetDir;
+                    const cleanupCompDir = path.dirname(tsPath);
+
+                    const performCleanup = (retries = 3) => {
+                        setTimeout(() => {
+                            try {
+                                if (fs.existsSync(cleanupPath)) fs.rmSync(cleanupPath, { recursive: true, force: true });
+                                if (fs.existsSync(cleanupCompDir)) fs.rmSync(cleanupCompDir, { recursive: true, force: true });
+                            } catch (err) {
+                                if (retries > 0) {
+                                    performCleanup(retries - 1);
+                                } else {
+                                    console.warn(`[Cleanup] Failed to delete temp files after retries:`, err);
+                                }
+                            }
+                        }, 500); // Wait 500ms before cleanup
+                    };
+
+                    performCleanup();
                 } catch (cleanupErr) {
                     console.warn("Cleanup warning:", cleanupErr);
                 }
@@ -591,7 +720,24 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
             try {
-                const { path: relativePath, project: projectName, simplified } = JSON.parse(body);
+                // Allow 'refactor' as alias for 'simplified' to match UI/Convert flow
+                // Default to TRUE (simplification enabled) if undefined.
+                const requestData = JSON.parse(body);
+                console.log(`[Bridge] /generate-to-code payload:`, JSON.stringify(requestData, null, 2));
+
+                const { path: relativePath, project: projectName, simplified, refactor, compact } = requestData;
+
+                // Determine if we should simplify:
+                // If either flag is explicitly false, we don't. 
+                // If both are undefined/true, we do.
+                // Priority: explicit false > true/undefined.
+                const shouldSimplify = (simplified !== false) && (refactor !== false);
+                // Also check compact flag explicitly
+                const shouldCompact = (compact !== false); // Default to true if missing
+
+                // Log the Decision 
+                console.log(`[Bridge] Simplification Decision for ${relativePath}: Simplify=${shouldSimplify}, Compact=${shouldCompact}`);
+
                 if (!relativePath || !projectName) {
                     res.writeHead(400);
                     res.end(JSON.stringify({ error: "Missing path or project" }));
@@ -610,20 +756,32 @@ const server = http.createServer((req, res) => {
                 // Dynamic Import with cache busting for hot-reloading tool changes
                 const generatorPath = require.resolve('./ComponentGenerator');
                 const refactorerPath = require.resolve('./ComponentRefactorer');
+                const compactorPath = require.resolve('./CompactStructure');
                 delete require.cache[generatorPath];
                 delete require.cache[refactorerPath];
+                delete require.cache[compactorPath];
 
                 const { ComponentGenerator } = require('./ComponentGenerator');
                 const { ComponentRefactorer } = require('./ComponentRefactorer');
+                const { CompactStructure } = require('./CompactStructure');
 
                 const generator = new ComponentGenerator();
-                const result = generator.generate(fullPath, projectName);
-
+                // Pass previewMode = false so it UPDATES the registry (this is a permanent generation)
+                // Note: ComponentGenerator.updateRegistry now handles permissions robustly.
+                const result = generator.generate(fullPath, projectName, false);
+                const tsPath = result.tsPath;
                 console.log(`✅ Component Generated: ${result.tsPath}`);
 
-                if (simplified !== false) {
-                    console.log(`[Bridge] Simplification requested for ${result.tsPath}`);
+                if (shouldSimplify) {
+                    console.log(`[Bridge] Simplification (Refactor) requested for ${result.tsPath}`);
                     new ComponentRefactorer().refactor(result.tsPath);
+                } else {
+                    console.log(`[Bridge] Simplification skipped for ${result.tsPath}`);
+                }
+
+                if (shouldCompact) {
+                    console.log(`[Bridge] Compacting ${result.tsPath}...`);
+                    new CompactStructure().compact(result.tsPath);
                 }
 
                 // Trigger Rebuild
@@ -734,29 +892,59 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
-                // --- NORMAL DELETION + CLEANUP ---
+                // --- ROBUST DELETION + CLEANUP (Synced with /delete) ---
 
-                // 1. Remove from registry
+                // 1. Remove from registry (Robust)
                 const registryPath = path.join(process.cwd(), 'components', 'index.ts');
                 if (fs.existsSync(registryPath)) {
-                    const content = fs.readFileSync(registryPath, 'utf8');
-                    const lines = content.split('\n');
-                    // Filter out lines that export the component, either as { Name } or { Name as Alias }
-                    // We check if the line contains " { componentClassName " or " { componentClassName as "
-                    const filteredLines = lines.filter(line => {
-                        const isStandardExport = line.includes(`{ ${componentClassName} }`);
-                        const isAliasedExport = line.includes(`{ ${componentClassName} as `);
-                        return !isStandardExport && !isAliasedExport;
-                    });
-                    fs.writeFileSync(registryPath, filteredLines.join('\n'));
+                    // Permission Check & Unlock
+                    let originalMode: number | null = null;
+                    try {
+                        const stats = fs.statSync(registryPath);
+                        if ((stats.mode & fs.constants.S_IWUSR) === 0) {
+                            console.log(`[Delete] Registry is read-only. Unlocking...`);
+                            originalMode = stats.mode;
+                            fs.chmodSync(registryPath, 0o644);
+                        }
+                    } catch (e) { console.warn("Registry perm check failed", e); }
+
+                    try {
+                        let content = fs.readFileSync(registryPath, 'utf8');
+                        const lines = content.split('\n');
+                        const filteredLines = lines.filter(line => {
+                            const isStandardExport = line.includes(`{ ${componentClassName} }`);
+                            const isAliasedExport = line.includes(`{ ${componentClassName} as `);
+                            return !isStandardExport && !isAliasedExport;
+                        });
+
+                        if (filteredLines.length !== lines.length) {
+                            fs.writeFileSync(registryPath, filteredLines.join('\n'));
+                            console.log(`[Delete] Removed ${componentClassName} from registry.`);
+                        }
+                    } catch (regErr) {
+                        console.error(`[Delete] Failed to update registry:`, regErr);
+                    } finally {
+                        if (originalMode !== null) {
+                            try { fs.chmodSync(registryPath, originalMode); }
+                            catch (e) { console.warn("Failed to restore registry perms", e); }
+                        }
+                    }
                 }
 
                 // 2. Cleanup Pages using CleaningService
                 console.log(`🧹 Cleaning up pages usage for ${componentClassName}...`);
-                const cleaner = new CleaningService();
-                const { updatedFiles } = cleaner.cleanup(componentClassName, name);
-                if (updatedFiles.length > 0) {
-                    console.log(`   Updated ${updatedFiles.length} pages: ${updatedFiles.join(', ')}`);
+                try {
+                    // Dynamic import for hot-reload
+                    const servicePath = require.resolve('./CleaningService');
+                    delete require.cache[servicePath];
+                    const { CleaningService } = require('./CleaningService');
+                    const cleaner = new CleaningService();
+                    const { updatedFiles } = cleaner.cleanup(componentClassName, name);
+                    if (updatedFiles.length > 0) {
+                        console.log(`   Updated ${updatedFiles.length} pages: ${updatedFiles.join(', ')}`);
+                    }
+                } catch (cleanErr) {
+                    console.warn(`[Delete] CleaningService execution failed:`, cleanErr);
                 }
 
                 // 3. Delete the directory
@@ -766,7 +954,6 @@ const server = http.createServer((req, res) => {
                 }
 
                 // 4. Cleanup Empty Parent Directories
-                // Try to delete parent folder if empty (e.g. Project folder)
                 try {
                     const parentDir = path.dirname(componentDir);
                     const componentsRoot = path.join(process.cwd(), 'components');
@@ -781,20 +968,16 @@ const server = http.createServer((req, res) => {
                             }
                         }
                     }
-                } catch (cleanupErr) {
-                    console.warn("Could not cleanup parent folder:", cleanupErr);
+                } catch (dirErr) {
+                    console.warn("Folder cleanup warning:", dirErr);
                 }
 
-                // Rebuild plugin after deletion/cleanup
-                // console.log("🔨 Rebuilding Plugin Bundle (Post-Delete)...");
-                // execSync('npm run build', { stdio: 'inherit' });
-
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ status: 'ok', cleanup: updatedFiles.length }));
+                res.end(JSON.stringify({ status: 'ok', deleted: name }));
 
             } catch (e: unknown) {
                 const error = e as Error;
-                console.error("Error deleting/cleaning component:", error.message);
+                console.error("Error deleting component:", error.message);
                 res.writeHead(500);
                 res.end(JSON.stringify({ error: error.message }));
             }

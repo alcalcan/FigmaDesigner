@@ -16,7 +16,10 @@ export class ComponentGenerator {
     /**
      * Main entry point to generate a component from a JSON file
      */
-    public generate(jsonPath: string, projectName: string) {
+    public generate(jsonPath: string, projectName: string, previewMode: boolean = false) {
+        console.log(`[Generator] Generate called for ${jsonPath}`);
+        console.log(`[Generator] Args: projectName=${projectName}, previewMode=${previewMode}`);
+
         const fullJsonPath = path.resolve(jsonPath);
         if (!fs.existsSync(fullJsonPath)) {
             throw new Error(`JSON file not found: ${fullJsonPath}`);
@@ -30,8 +33,8 @@ export class ComponentGenerator {
         this.sourceDir = path.dirname(fullJsonPath);
 
         this.targetDir = path.join(process.cwd(), 'components', this.projectName, this.componentName);
-        // Change to SHARED assets folder (one level up from component folder)
-        const assetsTargetDir = path.join(this.targetDir, '..', 'assets');
+        // Change to LOCAL assets folder (inside component folder)
+        const assetsTargetDir = path.join(this.targetDir, 'assets');
 
         if (!fs.existsSync(this.targetDir)) {
             fs.mkdirSync(this.targetDir, { recursive: true });
@@ -54,8 +57,14 @@ export class ComponentGenerator {
         // 3. Copy Assets (Images) - Now to shared folder
         this.copyAssets(assetsTargetDir);
 
-        // 4. Update Registry
-        this.updateRegistry();
+        // 4. Update Registry (Skip in Preview Mode)
+        if (!previewMode) {
+            try {
+                this.updateRegistry();
+            } catch (err) {
+                console.warn("[Generator] Failed to update registry:", err);
+            }
+        }
 
         return {
             tsPath,
@@ -76,14 +85,14 @@ export class ComponentGenerator {
 
             // Rel Path from Component File -> Assets Folder
             // Component is in components/Project/Component/Comp.ts
-            // Assets are in components/Project/assets/
-            // So relative path is ../assets/
-            const assetRelPath = `../assets/${fileName}`;
+            // Assets are in components/Project/Component/assets/
+            // So relative path is ./assets/
+            const assetRelPath = `./assets/${fileName}`;
 
             // Target Dir is passed in copyAssets, but for SVGs we calculate it here based on assumption?
             // Wait, we defined assetsTargetDir in generate(), but generateComponentCode doesn't know it.
             // We need to construct the absolute path relative to this.targetDir (which is component folder)
-            const fullAssetPath = path.join(this.targetDir, '..', 'assets', fileName);
+            const fullAssetPath = path.join(this.targetDir, 'assets', fileName);
 
             fs.writeFileSync(fullAssetPath, content);
             svgImports += `import SVG_${safeRef} from "${assetRelPath}";\n`;
@@ -657,9 +666,9 @@ export class ${this.componentName} extends BaseComponent {
                     // We will piggyback on assetsToImport logic.
                     // assetsToImport: Map<string, string> (relPath -> varName)
                     // The 'relPath' in the map is what is written to the import statement.
-                    // So we should set the relPath to `../assets/${uniqueFileName}`
+                    // So we should set the relPath to `./assets/${uniqueFileName}`
 
-                    this.assetsToImport.set(`../assets/${uniqueFileName}`, varName);
+                    this.assetsToImport.set(`./assets/${uniqueFileName}`, varName);
 
                     // For copying, we need a map: Source -> DestFilename
                     // I will change assetsToCopy to a Map.
@@ -711,17 +720,49 @@ export class ${this.componentName} extends BaseComponent {
             return;
         }
 
-        let content = fs.readFileSync(registryPath, 'utf8');
+        // --- Permissions Check ---
+        let originalMode: number | null = null;
+        try {
+            const stats = fs.statSync(registryPath);
+            // Check if writable by owner
+            const isWritable = (stats.mode & fs.constants.S_IWUSR) !== 0;
 
-        // Robust check: Avoid duplicating the exact same exported alias
-        // We look for "as [importAlias] }" which signifies this specific aliased export
-        const regex = new RegExp(`as\\s+${importAlias}\\s*\\}`, 'g');
+            if (!isWritable) {
+                console.log(`[Generator] Registry is read-only. Temporarily unlocking: ${registryPath}`);
+                originalMode = stats.mode;
+                fs.chmodSync(registryPath, 0o644); // User Read/Write, Group/Other Read
+            }
+        } catch (permErr) {
+            console.warn(`[Generator] Failed to check/set permissions on registry:`, permErr);
+        }
 
-        if (!regex.test(content)) {
-            content = content.trim() + '\n' + exportLine + '\n';
-            fs.writeFileSync(registryPath, content);
-        } else {
-            console.log(`[Generator] Export for ${importAlias} already exists. Skipping registry update.`);
+        try {
+            let content = fs.readFileSync(registryPath, 'utf8');
+
+            // Robust check: Avoid duplicating the exact same exported alias
+            // We look for "as [importAlias] }" which signifies this specific aliased export
+            const regex = new RegExp(`as\\s+${importAlias}\\s*\\}`, 'g');
+
+            if (!regex.test(content)) {
+                content = content.trim() + '\n' + exportLine + '\n';
+                fs.writeFileSync(registryPath, content);
+                console.log(`[Generator] Updated registry with: ${importAlias}`);
+            } else {
+                console.log(`[Generator] Export for ${importAlias} already exists. Skipping registry update.`);
+            }
+        } catch (writeErr) {
+            console.error(`[Generator] Failed to write to registry:`, writeErr);
+            throw writeErr; // Re-throw to be caught by caller
+        } finally {
+            // Restore permissions if we changed them
+            if (originalMode !== null) {
+                try {
+                    console.log(`[Generator] Restoring registry permissions...`);
+                    fs.chmodSync(registryPath, originalMode);
+                } catch (restoreErr) {
+                    console.warn(`[Generator] Failed to restore registry permissions:`, restoreErr);
+                }
+            }
         }
     }
 

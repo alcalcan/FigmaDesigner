@@ -32,7 +32,8 @@ const captureNode = async (
   detailed: boolean,
   assetStore: AssetStore,
   rootName: string,
-  saveVectorInJson: boolean = false
+  saveVectorInJson: boolean = false,
+  skipAssets: boolean = false
 ): Promise<Record<string, unknown> | null> => {
 
   // Skip non-visible nodes
@@ -170,8 +171,18 @@ const captureNode = async (
 
   if (isIcon || isVectorToExport) {
     try {
-      const svgBytes = await node.exportAsync({ format: 'SVG' });
-      const base64 = figma.base64Encode(svgBytes);
+      let base64 = "";
+      if (skipAssets) {
+        // Create dummy SVG content with correct dimensions
+        const w = node.width || 1;
+        const h = node.height || 1;
+        const dummySvg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="none"/></svg>`;
+        base64 = figma.base64Encode(Uint8Array.from(dummySvg.split('').map(c => c.charCodeAt(0))));
+      } else {
+        const svgBytes = await node.exportAsync({ format: 'SVG' });
+        base64 = figma.base64Encode(svgBytes);
+      }
+
       const prefix = isIcon ? 'icon' : 'vector';
       const fileName = `${prefix}_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
       const assetRef = `assets/${fileName}`;
@@ -250,7 +261,7 @@ const captureNode = async (
   // 9. Recursion
   if (detailed && "children" in node) {
     const childPromises = (node as ChildrenMixin).children.map(child =>
-      captureNode(child, detailed, assetStore, rootName, saveVectorInJson)
+      captureNode(child, detailed, assetStore, rootName, saveVectorInJson, skipAssets)
     );
     const resolvedChildren = await Promise.all(childPromises);
     data.children = resolvedChildren.filter((c): c is Record<string, unknown> => c !== null);
@@ -283,7 +294,7 @@ figma.ui.onmessage = async (msg) => {
       nextId: 1
     };
 
-    const detailsRaw = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name)));
+    const detailsRaw = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name, false, false)));
     const details = detailsRaw.filter((d): d is Record<string, unknown> => d !== null);
 
     if (details.length === 0) {
@@ -365,7 +376,7 @@ figma.ui.onmessage = async (msg) => {
           assets: {},
           nextId: 1
         };
-        const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson);
+        const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets);
 
         if (!data) {
           console.warn(`[Plugin] Capture returned null for ${node.name}`);

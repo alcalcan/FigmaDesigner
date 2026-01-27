@@ -2,39 +2,39 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 
 // SVG Assets
-import IMG_uefa_cards_autocaptured_img_1_png from "./../assets/uefa_cards_autocaptured_img_1.png";
-import IMG_uefa_cards_autocaptured_img_2_png from "./../assets/uefa_cards_autocaptured_img_2.png";
-import IMG_uefa_cards_autocaptured_img_3_png from "./../assets/uefa_cards_autocaptured_img_3.png";
-import IMG_uefa_cards_autocaptured_img_4_png from "./../assets/uefa_cards_autocaptured_img_4.png";
-import SVG_uefa_cards_autocaptured_assets_icon_Play_Icon_1036_2210_svg_54x54 from "../assets/uefa_cards_autocaptured_assets_icon_Play_Icon_1036_2210_svg_54x54.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2221_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_1_1036_2221_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2222_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_2_1036_2222_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2223_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_3_1036_2223_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2224_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_4_1036_2224_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2225_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_5_1036_2225_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2238_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_1_1036_2238_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2239_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_2_1036_2239_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2240_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_3_1036_2240_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2241_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_4_1036_2241_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2242_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_5_1036_2242_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Play_Icon_1036_2245_svg_54x54 from "../assets/uefa_cards_autocaptured_assets_icon_Play_Icon_1036_2245_svg_54x54.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2256_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_1_1036_2256_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2257_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_2_1036_2257_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2258_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_3_1036_2258_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2259_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_4_1036_2259_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2260_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_5_1036_2260_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2273_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_1_1036_2273_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2274_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_2_1036_2274_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2275_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_3_1036_2275_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2276_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_4_1036_2276_svg_12x12.svg";
-import SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2277_svg_12x12 from "../assets/uefa_cards_autocaptured_assets_icon_Star_5_1036_2277_svg_12x12.svg";
+import IMG_uefa_cards_4x_img_1_png from "././assets/uefa_cards_4x_img_1.png";
+import IMG_uefa_cards_4x_img_2_png from "././assets/uefa_cards_4x_img_2.png";
+import IMG_uefa_cards_4x_img_3_png from "././assets/uefa_cards_4x_img_3.png";
+import IMG_uefa_cards_4x_img_4_png from "././assets/uefa_cards_4x_img_4.png";
+import SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54 from "./assets/uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54 from "./assets/uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305.svg";
 
 
-export class uefa_cards_autocaptured extends BaseComponent {
+export class uefa_cards_4x extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         const structure: NodeDefinition = {
     "type": "FRAME",
-    "name": "uefa_cards_autocaptured",
+    "name": "uefa_cards_4x",
     "props": {
       "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
       "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -99,7 +99,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "isMask": false, "maskType": "ALPHA", "clipsContent": true,
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "layoutMode": "NONE",
               "fills": [
                 {
@@ -118,7 +118,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     "shadows": 0
                   },
                   "originalImageHash": "53600b9b753bcf27aa29e70bd45039034c373525",
-                  "assetRef": IMG_uefa_cards_autocaptured_img_1_png
+                  "assetRef": IMG_uefa_cards_4x_img_1_png
                 }
               ],
               "strokes": [],
@@ -149,7 +149,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "width": 54, "height": 54,
                   "relativeTransform": [[1, 0, 144], [0, 1, 87]]
                 },
-                "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Play_Icon_1036_2210_svg_54x54
+                "svgContent": SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54
               }
             ]
           },
@@ -165,7 +165,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "fills": [],
               "strokes": [],
               "effects": [],
@@ -184,10 +184,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Refereeing in Women’s Football: Motivation.", "fontSize": 20,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -215,10 +215,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "The UEFA innovation hub is a vehicle for future-proofing UEFA and ensuring we stay one step ahead of the latest trends.", "fontSize": 14,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -251,7 +251,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                   "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                   "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "fills": [],
                   "strokes": [],
                   "effects": [],
@@ -371,7 +371,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     },
                     "layoutProps": {
                       "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                      "width": 119, "height": 14,
+                      "width": 118.99996948242188, "height": 14,
                       "relativeTransform": [[1, 0, 0], [0, 1, 23]]
                     },
                     "children": [
@@ -426,8 +426,8 @@ export class uefa_cards_autocaptured extends BaseComponent {
                         },
                         "layoutProps": {
                           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                          "width": 64, "height": 12,
-                          "relativeTransform": [[1, 0, 55], [0, 1, 1]]
+                          "width": 63.999969482421875, "height": 11.999982833862305,
+                          "relativeTransform": [[1, 0, 55], [0, 1, 1.0000085830688477]]
                         },
                         "children": [
                           {
@@ -445,10 +445,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, -1.0248015769320773e-9], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2221_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -465,10 +465,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 13], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2222_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -485,10 +485,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 26], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2223_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -505,10 +505,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 39], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2224_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -525,10 +525,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 52], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2225_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }
@@ -588,7 +588,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "isMask": false, "maskType": "ALPHA", "clipsContent": true,
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "layoutMode": "NONE",
               "fills": [
                 {
@@ -607,7 +607,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     "shadows": 0
                   },
                   "originalImageHash": "d6f3b23264dd483546de453eeef7c6782b5d923f",
-                  "assetRef": IMG_uefa_cards_autocaptured_img_2_png
+                  "assetRef": IMG_uefa_cards_4x_img_2_png
                 }
               ],
               "strokes": [],
@@ -632,7 +632,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "fills": [],
               "strokes": [],
               "effects": [],
@@ -651,10 +651,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Advanced Coaching Techniques 2026", "fontSize": 20,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -682,10 +682,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Deep dive into the latest tactical innovations from the world's most successful coaches and analysts.", "fontSize": 14,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -718,7 +718,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                   "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                   "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "fills": [],
                   "strokes": [],
                   "effects": [],
@@ -838,7 +838,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     },
                     "layoutProps": {
                       "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                      "width": 119, "height": 14,
+                      "width": 118.99996948242188, "height": 14,
                       "relativeTransform": [[1, 0, 0], [0, 1, 23]]
                     },
                     "children": [
@@ -893,8 +893,8 @@ export class uefa_cards_autocaptured extends BaseComponent {
                         },
                         "layoutProps": {
                           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                          "width": 64, "height": 12,
-                          "relativeTransform": [[1, 0, 55], [0, 1, 1]]
+                          "width": 63.999969482421875, "height": 11.999982833862305,
+                          "relativeTransform": [[1, 0, 55], [0, 1, 1.0000085830688477]]
                         },
                         "children": [
                           {
@@ -912,10 +912,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, -1.0248299986415077e-9], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2238_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -932,10 +932,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 13], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2239_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -952,10 +952,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 26], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2240_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -972,10 +972,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 39], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2241_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -992,10 +992,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 52], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2242_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }
@@ -1055,7 +1055,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "isMask": false, "maskType": "ALPHA", "clipsContent": true,
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "layoutMode": "NONE",
               "fills": [
                 {
@@ -1074,7 +1074,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     "shadows": 0
                   },
                   "originalImageHash": "707cbb62af7d9774194feffae7db7284a4719141",
-                  "assetRef": IMG_uefa_cards_autocaptured_img_3_png
+                  "assetRef": IMG_uefa_cards_4x_img_3_png
                 }
               ],
               "strokes": [],
@@ -1105,7 +1105,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "width": 54, "height": 54,
                   "relativeTransform": [[1, 0, 144], [0, 1, 87]]
                 },
-                "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Play_Icon_1036_2245_svg_54x54
+                "svgContent": SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54
               }
             ]
           },
@@ -1121,7 +1121,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "fills": [],
               "strokes": [],
               "effects": [],
@@ -1140,10 +1140,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Youth Academy Growth Strategy", "fontSize": 20,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -1171,10 +1171,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Exploring sustainable ways to develop young talent and integrate them into first-team squads effectively.", "fontSize": 14,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -1207,7 +1207,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                   "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                   "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "fills": [],
                   "strokes": [],
                   "effects": [],
@@ -1327,7 +1327,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     },
                     "layoutProps": {
                       "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                      "width": 119, "height": 14,
+                      "width": 118.99996948242188, "height": 14,
                       "relativeTransform": [[1, 0, 0], [0, 1, 23]]
                     },
                     "children": [
@@ -1382,8 +1382,8 @@ export class uefa_cards_autocaptured extends BaseComponent {
                         },
                         "layoutProps": {
                           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                          "width": 64, "height": 12,
-                          "relativeTransform": [[1, 0, 55], [0, 1, 1]]
+                          "width": 63.999969482421875, "height": 11.999982833862305,
+                          "relativeTransform": [[1, 0, 55], [0, 1, 1.0000085830688477]]
                         },
                         "children": [
                           {
@@ -1401,10 +1401,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, -1.0247731552226469e-9], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2256_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1421,10 +1421,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 13], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2257_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1441,10 +1441,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 26], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2258_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1461,10 +1461,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 39], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2259_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1481,10 +1481,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 52], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2260_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }
@@ -1544,7 +1544,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "isMask": false, "maskType": "ALPHA", "clipsContent": true,
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "layoutMode": "NONE",
               "fills": [
                 {
@@ -1563,7 +1563,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     "shadows": 0
                   },
                   "originalImageHash": "53d394c4577bd2ad4235d0666feb13b9ca37fd82",
-                  "assetRef": IMG_uefa_cards_autocaptured_img_4_png
+                  "assetRef": IMG_uefa_cards_4x_img_4_png
                 }
               ],
               "strokes": [],
@@ -1588,7 +1588,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
               "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
               "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
               "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-              "layoutAlign": "STRETCH", "layoutGrow": 0,
+              "layoutAlign": "INHERIT", "layoutGrow": 0,
               "fills": [],
               "strokes": [],
               "effects": [],
@@ -1607,10 +1607,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Sustainable Stadium Operations", "fontSize": 20,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -1638,10 +1638,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                   "isMask": false, "maskType": "ALPHA",
                   "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "characters": "Reducing carbon footprints and implementing circular economy principles in modern stadium management.", "fontSize": 14,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -1674,7 +1674,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                   "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                   "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                   "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                  "layoutAlign": "STRETCH", "layoutGrow": 0,
+                  "layoutAlign": "INHERIT", "layoutGrow": 0,
                   "fills": [],
                   "strokes": [],
                   "effects": [],
@@ -1794,7 +1794,7 @@ export class uefa_cards_autocaptured extends BaseComponent {
                     },
                     "layoutProps": {
                       "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                      "width": 119, "height": 14,
+                      "width": 118.99996948242188, "height": 14,
                       "relativeTransform": [[1, 0, 0], [0, 1, 23]]
                     },
                     "children": [
@@ -1849,8 +1849,8 @@ export class uefa_cards_autocaptured extends BaseComponent {
                         },
                         "layoutProps": {
                           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                          "width": 64, "height": 12,
-                          "relativeTransform": [[1, 0, 55], [0, 1, 1]]
+                          "width": 63.999969482421875, "height": 11.999982833862305,
+                          "relativeTransform": [[1, 0, 55], [0, 1, 1.0000085830688477]]
                         },
                         "children": [
                           {
@@ -1868,10 +1868,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, -1.0247731552226469e-9], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_1_1036_2273_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1888,10 +1888,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 13], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_2_1036_2274_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1908,10 +1908,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 26], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_3_1036_2275_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1928,10 +1928,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 39], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_4_1036_2276_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1948,10 +1948,10 @@ export class uefa_cards_autocaptured extends BaseComponent {
                             },
                             "layoutProps": {
                               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                              "width": 12, "height": 12,
-                              "relativeTransform": [[1, 0, 52], [0, 1, 0]]
+                              "width": 11.999994277954102, "height": 11.999982833862305,
+                              "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_autocaptured_assets_icon_Star_5_1036_2277_svg_12x12
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }

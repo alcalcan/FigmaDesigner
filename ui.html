@@ -416,8 +416,8 @@
                 console.log("Preview Code button clicked");
                 previewCodeBtn.disabled = true;
                 previewCodeBtn.textContent = "Generating...";
-                codePreviewArea.style.display = "none";
-                codePreviewArea.value = "";
+                // codePreviewArea.style.display = "none"; // Keep visible
+                codePreviewArea.value = "Generating..."; // Show status text instead of hiding
 
                 // Trigger capture in plugin
                 const isDetailed = detailedCheckbox.checked;
@@ -427,7 +427,8 @@
                     pluginMessage: {
                         type: 'capture-preview',
                         detailed: isDetailed,
-                        saveVectorInJson: saveVectorInJson
+                        saveVectorInJson: saveVectorInJson,
+                        skipAssets: !exactRefactorCheckbox.checked
                     }
                 }, '*');
             }
@@ -1197,6 +1198,13 @@
                 }
 
                 if (msg.type === 'capture-error') {
+                    // Ensure button also resets on capture error (e.g. no selection)
+                    if (previewCodeBtn.textContent === "Generating...") {
+                        previewCodeBtn.disabled = false;
+                        previewCodeBtn.innerHTML = '<span style="font-size: 14px;">📋</span> Copy Compact Code';
+                        codePreviewArea.value = "No selection";
+                    }
+
                     console.error("Received capture error:", msg.message);
                     alert(msg.message);
                     syncBtn.textContent = "Capture Sync (to Disk)";
