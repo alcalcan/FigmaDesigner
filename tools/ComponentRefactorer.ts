@@ -145,9 +145,9 @@ export class ComponentRefactorer {
             this.knownAssets.add(match[1]);
         }
 
-        // 2. Match SVG/Image imports: import VAR from "..."
+        // 2. Match SVG/Image imports: import VAR from "..." or '...'
         // We look for variables starting with SVG_ or IMG_
-        const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+) from "([^"]+)";/g;
+        const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+) from ["']([^"']+)["'];/g;
         while ((match = importRegex.exec(content)) !== null) {
             // We store the variable name as the content to signal it's an external reference
             const varName = match[1];
@@ -462,22 +462,12 @@ export class ComponentRefactorer {
 
             // --- BOLD CHEVRON FIX START (Refactorer) ---
             // Check if this node is using the problematic "thin" chevron asset
-            // We check if the asset key (var name) or content matches known signatures
-            // e.g. "SVG_assets_icon_Shape_..."
             const isChevronAsset = node.svgContentVar.includes('assets_icon_Shape_I977_492_70_461_svg_10x6');
 
             if (isChevronAsset) {
                 console.log(`[Refactorer] Injecting BOLD CHEVRON FIX for node ${currentId}`);
-                // Inject the Custom Bold Path (Solution A) directly into the definition
                 const boldContent = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.6 0L5 4.4L9.4 0L10 0.6L5 5.6L0 0.6L0.6 0Z" fill="#1A313C"/></svg>`;
                 def.svgContent = boldContent;
-
-                // Also reset transforms in the definition if layoutProps exist
-                if (def.layoutProps && def.layoutProps.relativeTransform) {
-                    def.layoutProps.relativeTransform = [[1, 0, 0], [0, 1, 0]];
-                    def.layoutProps.width = 10;
-                    def.layoutProps.height = 6;
-                }
             }
             else if (assetContent?.startsWith('__EXTERNAL_REF__')) {
                 // Use the variable reference directly via __code marker
@@ -491,7 +481,7 @@ export class ComponentRefactorer {
 
         // Safety: If we expect to flatten an SVG node, we MUST have content.
         // Otherwise figma.flatten() on an empty vector fails.
-        if (def.shouldFlatten && !def.svgContent && node.type === 'VECTOR') {
+        if (def.shouldFlatten && !def.svgContent && (node.type === 'VECTOR' || node.type === 'STAR' || node.type === 'POLYGON')) {
             console.warn(`⚠️ [Refactorer] Missing SVG content for ${currentId} (${def.name}). Disabling flatten to prevent crash.`);
             delete def.shouldFlatten;
         }
@@ -611,10 +601,12 @@ export class ComponentRefactorer {
 
         // Check geometry for Vectors/Boolean Ops
         // We want to prevent merging vectors that look different (e.g. checkmark vs cross vs empty)
-        if (a.type === 'VECTOR' || a.type === 'BOOLEAN_OPERATION') {
+        if (a.type === 'VECTOR' || a.type === 'STAR' || a.type === 'POLYGON' || a.type === 'BOOLEAN_OPERATION') {
             if (!this.isSizeSimilar(a, b)) return false;
             if (!this.arePathsEqual(a, b)) return false;
             if (a.svgContentVar !== b.svgContentVar) return false;
+            if (a.props?.pointCount !== b.props?.pointCount) return false;
+            if (a.props?.innerRadius !== b.props?.innerRadius) return false;
         }
 
         // Check children recursively

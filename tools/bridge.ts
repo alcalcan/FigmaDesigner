@@ -461,53 +461,22 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
+                // Dynamic Import with cache busting for hot-reloading tool changes
+                const generatorPath = require.resolve('./ComponentGenerator');
+                const refactorerPath = require.resolve('./ComponentRefactorer');
+                delete require.cache[generatorPath];
+                delete require.cache[refactorerPath];
+
+                const { ComponentGenerator } = require('./ComponentGenerator');
+                const { ComponentRefactorer } = require('./ComponentRefactorer');
+
                 const generator = new ComponentGenerator();
                 const result = generator.generate(fullPath, projectName);
 
                 console.log(`✅ Component Generated: ${result.tsPath}`);
 
-                // Refactoring (Simplified Code) Logic
-                // If flag is true or undefined (default), run refactorer
                 if (simplified !== false) {
-                    // We need to import ComponentRefactorer at the top of file or here
-                    // It is already imported at top on line 5 (in original read)? No, I need to check import.
-                    // It is imported as ComponentGenerator. ComponentRefactorer might need import.
-                    // Checking file content: line 5 is ComponentGenerator. line 6 CleaningService.
-                    // I need to add import. But I can't add import easily with block replace.
-                    // I will assume I can instantiate or require it. 
-                    // Since I am already using ComponentGenerator via import, I should check if Refactorer is exported.
-                    // Wait, ComponentGenerator CALLS refactorer internally? 
-                    // Let's check ComponentGenerator.ts again.
-                    // Yes, ComponentGenerator lines 50-52:
-                    // console.log(`Refactoring ${tsPath}...`);
-                    // const refactorer = new ComponentRefactorer();
-                    // refactorer.refactor(tsPath);
-
-                    // ComponentGenerator DOES IT AUTOMATICALLY.
-                    // So I need to modify ComponentGenerator to accept a flag OR modify bridge to tell it?
-                    // ComponentGenerator.generate() takes (jsonPath, projectName).
-                    // I should probably modify ComponentGenerator to NOT auto-refactor, and let Bridge control it.
-                    // OR, I modify ComponentGenerator to take an optional 'refactor' boolean.
-                    // Modifying ComponentGenerator is cleaner.
-                    // BUT, for now, let's look at the plan. Plan said "Update bridge.ts... call refactorer immediately after generator".
-                    // If Generator ALREADY calls it, I'm double calling or I need to disable it in Generator.
-                    // I will disable it in Generator first, then control it here.
-                }
-
-                // Oops, I need to check ComponentGenerator code again.
-                // It unconditionally refactors.
-                // I will modify ComponentGenerator.ts to REMOVE unconditional refactoring.
-                // THEN I will add logic here in bridge.ts to call it conditionally.
-
-                // For this step, I will add the logic here, assuming I will fix Generator next.
-                // AND I need to add /refactor-code.
-
-                if (simplified !== false) {
-                    // Dynamic Iport with cache busting for hot-reloading tool changes
-                    const refactorerPath = require.resolve('./ComponentRefactorer');
-                    delete require.cache[refactorerPath];
-                    const { ComponentRefactorer } = require('./ComponentRefactorer');
-
+                    console.log(`[Bridge] Simplification requested for ${result.tsPath}`);
                     new ComponentRefactorer().refactor(result.tsPath);
                 }
 

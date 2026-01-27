@@ -4,7 +4,8 @@ import { AssetSource, hydrateFills } from "./PaintHelpers";
 // import frame2609217 from "../tools/extraction/Competition_newsletters/Frame_2609217_2026-01-19_14-19-05.json";
 
 export interface SerializedNode {
-    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE" | "BOOLEAN_OPERATION" | "GROUP" | "LINE";
+    id: string;
+    type: "FRAME" | "INSTANCE" | "COMPONENT" | "TEXT" | "RECTANGLE" | "VECTOR" | "ELLIPSE" | "BOOLEAN_OPERATION" | "GROUP" | "LINE" | "STAR" | "POLYGON";
     name?: string;
     x?: number;
     y?: number;
@@ -107,6 +108,8 @@ export interface SerializedNode {
     // Vector support
     vectorPaths?: { windingRule: "NONZERO" | "EVENODD", data: string }[];
     svgPath?: string;
+    pointCount?: number;
+    innerRadius?: number;
 
     children?: SerializedNode[];
 }
@@ -124,7 +127,7 @@ export class JsonReconstructor extends BaseComponent {
         super();
         this.jsonPath = jsonPath;
         // Default initialization to avoid build errors
-        this.data = { type: "FRAME", name: "Empty Registry Result" };
+        this.data = { id: "0:0", type: "FRAME", name: "Empty Registry Result" };
 
         if (jsonPath) {
             const registryData = JsonRegistry[jsonPath as keyof typeof JsonRegistry];
@@ -181,7 +184,7 @@ export class JsonReconstructor extends BaseComponent {
                 node = figma.createText();
             } else if (safeType === "RECTANGLE") {
                 node = figma.createRectangle();
-            } else if (safeType === "VECTOR") {
+            } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON"))) {
                 if (data.svgPath && assetSource) {
                     const asset = assetSource.assets[data.svgPath];
                     if (asset) {
@@ -227,6 +230,15 @@ export class JsonReconstructor extends BaseComponent {
                 } else {
                     node = figma.createVector();
                 }
+            } else if (safeType === "STAR" && !data.svgPath) {
+                const starNode = figma.createStar();
+                if (data.pointCount !== undefined) starNode.pointCount = data.pointCount;
+                if (data.innerRadius !== undefined) starNode.innerRadius = data.innerRadius;
+                node = starNode;
+            } else if (safeType === "POLYGON" && !data.svgPath) {
+                const polyNode = figma.createPolygon();
+                if (data.pointCount !== undefined) polyNode.pointCount = data.pointCount;
+                node = polyNode;
             } else if (safeType === "ELLIPSE") {
                 node = figma.createEllipse();
             } else if (safeType === "LINE") {

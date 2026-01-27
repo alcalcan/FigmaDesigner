@@ -147,15 +147,26 @@ const captureNode = async (
     }
   }
 
+  // 5.5 Star / Polygon properties
+  if (node.type === "STAR") {
+    data.pointCount = safeGet(node, "pointCount");
+    data.innerRadius = safeGet(node, "innerRadius");
+  } else if (node.type === "POLYGON") {
+    data.pointCount = safeGet(node, "pointCount");
+  }
+
   // 6. Icon / Vector Export
-  // We keep the heuristic: Vector + Small OR name has "icon"
-  const isIcon = node.type === "VECTOR" && (
+  // We keep the heuristic: Vector/Star/Polygon + Small OR name has "icon"/"star"
+  const isVectorLike = node.type === "VECTOR" || node.type === "STAR" || node.type === "POLYGON";
+
+  const isIcon = isVectorLike && (
     (node.width <= 64 && node.height <= 64) ||
-    node.name.toLowerCase().includes("icon")
+    node.name.toLowerCase().includes("icon") ||
+    node.name.toLowerCase().includes("star")
   );
 
   // New logic: Export vectors as SVG unless explicitly asked to keep in JSON
-  const isVectorToExport = node.type === "VECTOR" && !saveVectorInJson;
+  const isVectorToExport = isVectorLike && !saveVectorInJson;
 
   if (isIcon || isVectorToExport) {
     try {

@@ -31,5 +31,6 @@ export { TableStat } from "./Newsletter/TableStat";
 export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 export { Top_bar as Top_bar_Competition_newsletters } from "./Competition_newsletters/Top_bar/Top_bar";
 export { Top_bar as Top_bar_UEFA_Academy_online } from "./UEFA_Academy_online/Top_bar/Top_bar";
+export { uefa_cards_autocaptured } from "./Alex_CookBook/uefa_cards_autocaptured/uefa_cards_autocaptured";
 export { uefa_cards_row } from "./Alex_CookBook/uefa_cards_row/uefa_cards_row";
 export { Placeholder } from "./Placeholder";

@@ -47,6 +47,7 @@ export abstract class BaseComponent {
    */
   async renderDefinition(def: NodeDefinition, parent?: BaseNode): Promise<SceneNode> {
     let node: SceneNode;
+    let isFromSvg = false;
 
     // 1. Create Node
     switch (def.type) {
@@ -55,10 +56,30 @@ export abstract class BaseComponent {
       case "RECTANGLE": node = figma.createRectangle(); break;
       case "ELLIPSE": node = figma.createEllipse(); break;
       case "LINE": node = figma.createLine(); break;
-      case "STAR": node = figma.createStar(); break;
-      case "POLYGON": node = figma.createPolygon(); break;
+      case "STAR":
+        if (def.svgContent) {
+          node = figma.createNodeFromSvg(def.svgContent);
+          isFromSvg = true;
+        } else {
+          const starNode = figma.createStar();
+          if (def.props?.pointCount !== undefined) starNode.pointCount = def.props.pointCount;
+          if (def.props?.innerRadius !== undefined) starNode.innerRadius = def.props.innerRadius;
+          node = starNode;
+        }
+        break;
+      case "POLYGON":
+        if (def.svgContent) {
+          node = figma.createNodeFromSvg(def.svgContent);
+          isFromSvg = true;
+        } else {
+          const polyNode = figma.createPolygon();
+          if (def.props?.pointCount !== undefined) polyNode.pointCount = def.props.pointCount;
+          node = polyNode;
+        }
+        break;
       case "VECTOR":
         if (def.svgContent) {
+          isFromSvg = true;
           // Detect and fix baked rotations in SVG assets
           let finalSvgContent = def.svgContent;
           const layout = def.layoutProps;
@@ -215,7 +236,7 @@ export abstract class BaseComponent {
         const flattened = figma.flatten([node], (parent || figma.currentPage) as BaseNode & ChildrenMixin);
         node = flattened;
       } catch (e) {
-        console.warn("Failed to flatten node", def.name, e);
+        console.warn(`[BaseComponent] Failed to flatten node ${def.name || 'node'}`, e);
       }
     }
 
@@ -248,7 +269,8 @@ export abstract class BaseComponent {
         "itemSpacing",
         "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
         "itemReverseZIndex", "strokesIncludedInLayout",
-        "layoutWrap"
+        "layoutWrap",
+        "pointCount", "innerRadius" // Shape specific
       ]);
 
       for (const [key, value] of Object.entries(def.props)) {
@@ -257,7 +279,9 @@ export abstract class BaseComponent {
 
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
-          finalNode[key] = await this.hydratePaints(value);
+          if (!isFromSvg) {
+            finalNode[key] = await this.hydratePaints(value);
+          }
         } else if (key === "effects") {
           finalNode[key] = this.hydrateEffects(value);
         } else {

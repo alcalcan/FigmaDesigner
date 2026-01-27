@@ -71,20 +71,8 @@ export class ComponentGenerator {
         // SVG Assets (written to disk and imported)
         let svgImports = '// SVG Imports\n';
         this.svgAssets.forEach((content, distinctKey) => {
-            let fileName = distinctKey.replace(/[^a-z0-9]/gi, '_');
-
-            // --- ASSET NAMING SAFETY ---
-            // Prepend component name to ensure unique collision-free ID in shared folder
-            // e.g. "MyComponent_vector_123.svg"
-            const safeCompName = this.componentName.replace(/[^a-z0-9]/gi, '_');
-            if (!fileName.startsWith(safeCompName)) {
-                fileName = `${safeCompName}_${fileName}`;
-            }
-
-            if (!fileName.toLowerCase().endsWith('.svg')) {
-                fileName += '.svg';
-            }
-            const safeRef = fileName.replace(/[^a-z0-9]/gi, '_'); // Ref uses full new name
+            const safeRef = this.getSvgVariableName(distinctKey);
+            const fileName = `${safeRef}.svg`;
 
             // Rel Path from Component File -> Assets Folder
             // Component is in components/Project/Component/Comp.ts
@@ -269,9 +257,17 @@ export class ${this.componentName} extends BaseComponent {
             code += `const ${varName} = figma.createEllipse();\n`;
         } else if (safeType === 'LINE') {
             code += `const ${varName} = figma.createLine();\n`;
-        } else if (safeType === 'VECTOR') {
+        } else if (safeType === 'STAR' && !data.svgPath) {
+            code += `const ${varName} = figma.createStar();\n`;
+            if (data.pointCount !== undefined) code += `${varName}.pointCount = ${data.pointCount};\n`;
+            if (data.innerRadius !== undefined) code += `${varName}.innerRadius = ${data.innerRadius};\n`;
+        } else if (safeType === 'POLYGON' && !data.svgPath) {
+            code += `const ${varName} = figma.createPolygon();\n`;
+            if (data.pointCount !== undefined) code += `${varName}.pointCount = ${data.pointCount};\n`;
+        } else if (safeType === 'VECTOR' || (data.svgPath && (safeType === 'STAR' || safeType === 'POLYGON'))) {
             if (data.svgPath) {
                 const fullSvgPath = path.join(this.sourceDir, data.svgPath);
+                console.log(`[Generator] Checking SVG: ${data.name} -> ${fullSvgPath}`);
 
                 // --- BOLD CHEVRON FIX START ---
                 // Detect the specific "Chevron" component using Parent Name (robust) or legacy SVG path match
@@ -288,7 +284,7 @@ export class ${this.componentName} extends BaseComponent {
                     const boldContent = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1 L5 5 L9 1" stroke="#1A313C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
                     this.svgAssets.set(distinctKey, boldContent);
 
-                    const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
+                    const safeRef = this.getSvgVariableName(distinctKey);
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
                     code += `${varName}_svgContainer.fills = [];\n`;
                     // Force the stroke color and weight on the container's children (paths) or just rely on SVG?
@@ -347,7 +343,7 @@ export class ${this.componentName} extends BaseComponent {
                     const distinctKey = `${data.svgPath}_${useWidth}x${useHeight}`;
                     this.svgAssets.set(distinctKey, content);
 
-                    const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
+                    const safeRef = this.getSvgVariableName(distinctKey);
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
                     code += `${varName}_svgContainer.fills = []; // Ensure transparent background\n`;
                     code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
@@ -357,9 +353,8 @@ export class ${this.componentName} extends BaseComponent {
                         data.height = useHeight;
                         data.relativeTransform = [[1, 0, 0], [0, 1, 0]]; // Identity
                     }
-
                 } else {
-                    code += `const ${varName} = figma.createVector();\n`;
+                    console.warn(`[Generator] SVG file NOT found: ${fullSvgPath}`);
                 }
             } else {
                 code += `const ${varName} = figma.createVector();\n`;
@@ -728,5 +723,14 @@ export class ${this.componentName} extends BaseComponent {
         } else {
             console.log(`[Generator] Export for ${importAlias} already exists. Skipping registry update.`);
         }
+    }
+
+    private getSvgVariableName(distinctKey: string): string {
+        const safeCompName = this.componentName.replace(/[^a-z0-9]/gi, '_');
+        let safeKey = distinctKey.replace(/[^a-z0-9]/gi, '_');
+        if (!safeKey.startsWith(safeCompName)) {
+            safeKey = `${safeCompName}_${safeKey}`;
+        }
+        return safeKey;
     }
 }
