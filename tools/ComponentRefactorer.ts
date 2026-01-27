@@ -131,21 +131,28 @@ export class ComponentRefactorer {
         console.log(`🏁 [Refactorer] Conversion complete.`);
     }
 
+    private knownAssets: Set<string> = new Set();
+
     private extractAssets(content: string): Map<string, string> {
         const assets = new Map<string, string>();
+        this.knownAssets.clear();
 
         // 1. Match inlined SVG constants: const SVG_... = `<svg...`
         const inlineRegex = /const ([\w_]+) = `(<svg[\s\S]*?<\/svg>)`;/g;
         let match;
         while ((match = inlineRegex.exec(content)) !== null) {
             assets.set(match[1], match[2]);
+            this.knownAssets.add(match[1]);
         }
 
-        // 2. Match SVG imports: import SVG_... from "./assets/...svg"
-        const importRegex = /import (SVG_[\w_]+) from "([^"]+\.svg)";/g;
+        // 2. Match SVG/Image imports: import VAR from "..."
+        // We look for variables starting with SVG_ or IMG_
+        const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+) from "([^"]+)";/g;
         while ((match = importRegex.exec(content)) !== null) {
             // We store the variable name as the content to signal it's an external reference
-            assets.set(match[1], `__EXTERNAL_REF__${match[1]}`);
+            const varName = match[1];
+            assets.set(varName, `__EXTERNAL_REF__${varName}`);
+            this.knownAssets.add(varName); // Add to known assets for sandbox parsing
         }
 
         return assets;
@@ -304,13 +311,24 @@ export class ComponentRefactorer {
                     const jsonMatch = valStr.match(/hydratePaints\((.*)\)/);
                     if (jsonMatch) {
                         try {
+                            // Try strict JSON first
                             val = JSON.parse(jsonMatch[1]);
                         } catch (e2) {
                             try {
+                                // Create a Sandbox of known assets to resolve variables
+                                // We map each known asset variable to a special object marked as code
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                const sandbox: any = {};
+                                Array.from(this.knownAssets).forEach(k => {
+                                    sandbox[k] = { __code: k };
+                                });
+
+                                // Use Function with 'with' block to resolve variables against sandbox
                                 // eslint-disable-next-line @typescript-eslint/no-implied-eval
-                                val = new Function("return " + jsonMatch[1])();
+                                const fn = new Function("sandbox", `with(sandbox) { return ${jsonMatch[1]}; }`);
+                                val = fn(sandbox);
                             } catch (e3) {
-                                // console.log(`Failed to parse hydratePaints for ${id}.${prop}:`, e2);
+                                console.warn(`Failed to parse hydratePaints for ${id}.${prop}. Missing asset var?`, e3);
                             }
                         }
                     }
@@ -923,10 +941,12 @@ export class ComponentRefactorer {
             }
         }
 
-        // 2. Check for SVG imports
-        const svgImportRegex = /import (SVG_[\w_]+) from "([^"]+\.svg)";/g;
-        while ((svgMatch = svgImportRegex.exec(originalContent)) !== null) {
+        // 2. Check for SVG/Image imports
+        const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+) from "([^"]+)";/g;
+        while ((svgMatch = importRegex.exec(originalContent)) !== null) {
             const assetName = svgMatch[1];
+            // Include if used in definition OR if it's an IMG (since fills might be deep in objects not string-matched easily?)
+            // Actually, if we use {__code: "IMG..."}, `defString` (serialized) contains "IMG..."
             if (defString.includes(assetName)) {
                 svgLines.push(svgMatch[0]);
             }

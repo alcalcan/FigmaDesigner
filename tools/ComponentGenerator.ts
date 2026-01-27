@@ -23,12 +23,15 @@ export class ComponentGenerator {
         }
 
         const data: SerializedNode = JSON.parse(fs.readFileSync(fullJsonPath, 'utf8'));
-        this.projectName = projectName;
+        // Sanitize project name to ensure consistent folder naming (e.g. "Alex_CookBook" instead of "Alex CookBook")
+        this.projectName = (projectName || 'Default').replace(/[^a-z0-9]/gi, '_');
+
         this.componentName = path.basename(jsonPath, path.extname(jsonPath)).replace(/[^a-z0-9]/gi, '_');
         this.sourceDir = path.dirname(fullJsonPath);
 
-        this.targetDir = path.join(process.cwd(), 'components', projectName, this.componentName);
-        const assetsTargetDir = path.join(this.targetDir, 'assets');
+        this.targetDir = path.join(process.cwd(), 'components', this.projectName, this.componentName);
+        // Change to SHARED assets folder (one level up from component folder)
+        const assetsTargetDir = path.join(this.targetDir, '..', 'assets');
 
         if (!fs.existsSync(this.targetDir)) {
             fs.mkdirSync(this.targetDir, { recursive: true });
@@ -48,7 +51,7 @@ export class ComponentGenerator {
         const tsPath = path.join(this.targetDir, `${this.componentName}.ts`);
         fs.writeFileSync(tsPath, code);
 
-        // 3. Copy Assets (Images)
+        // 3. Copy Assets (Images) - Now to shared folder
         this.copyAssets(assetsTargetDir);
 
         // 4. Update Registry
@@ -69,12 +72,30 @@ export class ComponentGenerator {
         let svgImports = '// SVG Imports\n';
         this.svgAssets.forEach((content, distinctKey) => {
             let fileName = distinctKey.replace(/[^a-z0-9]/gi, '_');
+
+            // --- ASSET NAMING SAFETY ---
+            // Prepend component name to ensure unique collision-free ID in shared folder
+            // e.g. "MyComponent_vector_123.svg"
+            const safeCompName = this.componentName.replace(/[^a-z0-9]/gi, '_');
+            if (!fileName.startsWith(safeCompName)) {
+                fileName = `${safeCompName}_${fileName}`;
+            }
+
             if (!fileName.toLowerCase().endsWith('.svg')) {
                 fileName += '.svg';
             }
-            const safeRef = distinctKey.replace(/[^a-z0-9]/gi, '_');
-            const assetRelPath = `./assets/${fileName}`;
-            const fullAssetPath = path.join(this.targetDir, 'assets', fileName);
+            const safeRef = fileName.replace(/[^a-z0-9]/gi, '_'); // Ref uses full new name
+
+            // Rel Path from Component File -> Assets Folder
+            // Component is in components/Project/Component/Comp.ts
+            // Assets are in components/Project/assets/
+            // So relative path is ../assets/
+            const assetRelPath = `../assets/${fileName}`;
+
+            // Target Dir is passed in copyAssets, but for SVGs we calculate it here based on assumption?
+            // Wait, we defined assetsTargetDir in generate(), but generateComponentCode doesn't know it.
+            // We need to construct the absolute path relative to this.targetDir (which is component folder)
+            const fullAssetPath = path.join(this.targetDir, '..', 'assets', fileName);
 
             fs.writeFileSync(fullAssetPath, content);
             svgImports += `import SVG_${safeRef} from "${assetRelPath}";\n`;
@@ -541,12 +562,19 @@ export class ${this.componentName} extends BaseComponent {
     }
 
     private copyAssets(targetDir: string) {
-        this.assetsToCopy.forEach(assetPath => {
+        this.assetsToCopy.forEach(entry => {
+            // Entry format: "path/to/source.png|unique_dest_name.png"
+            // Or legacy: "path/to/source.png" (if no pipe)
+            const parts = entry.split('|');
+            const assetPath = parts[0];
+            const destName = parts.length > 1 ? parts[1] : path.basename(assetPath);
+
             const sourcePath = path.join(this.sourceDir, assetPath);
-            const fileName = path.basename(assetPath);
-            const targetPath = path.join(targetDir, fileName);
+            const targetPath = path.join(targetDir, destName);
 
             if (fs.existsSync(sourcePath)) {
+                // Check if file exists to avoid unnecessary overwrite? 
+                // Creating unique names means we likely don't overwrite unless same generation.
                 fs.copyFileSync(sourcePath, targetPath);
                 console.log(`Copied asset: ${path.relative(process.cwd(), targetPath)}`);
             }
@@ -616,10 +644,42 @@ export class ${this.componentName} extends BaseComponent {
                 if (!skipBundling) {
                     const fileName = path.basename(finalAssetRef);
                     const safeName = fileName.replace(/[^a-z0-9]/gi, '_');
-                    const varName = `IMG_${safeName}`;
 
-                    this.assetsToImport.set(finalAssetRef, varName);
-                    this.assetsToCopy.add(finalAssetRef);
+                    // --- ASSET NAMING SAFETY ---
+                    // Prepend component name for uniqueness in shared folder
+                    const safeCompName = this.componentName.replace(/[^a-z0-9]/gi, '_');
+                    const uniqueFileName = `${safeCompName}_${fileName}`;
+                    const uniqueSafeName = uniqueFileName.replace(/[^a-z0-9]/gi, '_');
+
+                    const varName = `IMG_${uniqueSafeName}`;
+
+                    // We store the SOURCE path in assetsToCopy map key, but we need to track the DESTINATION name too?
+                    // assetsToCopy is Set<string> of source paths.
+                    // If we just store source path, copyAssets won't know the new name.
+                    // We need to change assetsToCopy to Map<source, destName> or handle it here.
+
+                    // Actually, let's just hack it: 
+                    // We will piggyback on assetsToImport logic.
+                    // assetsToImport: Map<string, string> (relPath -> varName)
+                    // The 'relPath' in the map is what is written to the import statement.
+                    // So we should set the relPath to `../assets/${uniqueFileName}`
+
+                    this.assetsToImport.set(`../assets/${uniqueFileName}`, varName);
+
+                    // For copying, we need a map: Source -> DestFilename
+                    // I will change assetsToCopy to a Map.
+                    // Since I can't change the Class property type easily without reading top of file again (I viewed it),
+                    // I will check if I can safely change it.
+                    // Line 8: private assetsToCopy: Set<string> = new Set();
+                    // I can use `any` cast or just use a new map if I could, but I can't add local field easily.
+                    // I will use a separate map on the instance? No, `assetsToCopy` is a field.
+                    // I will cast it to `inputs` or something?
+                    // Let's rely on `copyAssets` taking the map.
+                    // Wait, `copyAssets` iterates `this.assetsToCopy`.
+                    // I will REWRITE `copyAssets` and the field definition in a moment.
+                    // For now, I will store: "SOURCE_PATH|DEST_NAME" in the Set.
+                    this.assetsToCopy.add(`${finalAssetRef}|${uniqueFileName}`);
+
                     // placeholder for string replacement below
                     p.assetRef = `__VAR_REF__${varName}__`;
                     p.visible = true; // Ensure visible
@@ -646,7 +706,7 @@ export class ${this.componentName} extends BaseComponent {
         const relativePath = `./${this.projectName}/${this.componentName}/${this.componentName}`;
 
         // Use project name as suffix to avoid collisions (e.g. chip_dropdown_Alex_CookBook)
-        const safeProjectName = this.projectName.replace(/[^a-z0-9]/gi, '_');
+        const safeProjectName = this.projectName; // Already sanitized
         const importAlias = `${this.componentName}_${safeProjectName}`;
 
         const exportLine = `export { ${this.componentName} as ${importAlias} } from "${relativePath}";`;

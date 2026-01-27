@@ -343,7 +343,10 @@ const server = http.createServer((req, res) => {
 
                 console.log(`   Saved Packet: ${folderName}`);
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ status: 'ok' }));
+
+                // Return relative path to the JSON file so UI can trigger generation
+                const relativeJsonPath = path.join(sanitaryProjectName, folderName, `${sanitaryName}.json`);
+                res.end(JSON.stringify({ status: 'ok', savedPath: relativeJsonPath }));
 
             } catch (e: unknown) {
                 const error = e as Error;

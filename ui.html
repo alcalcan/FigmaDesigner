@@ -243,6 +243,10 @@
                 <button id="sync-btn" class="success">Capture Sync (to Disk)</button>
                 <div style="margin-top: 12px;">
                     <label class="checkbox-row">
+                        <input type="checkbox" id="process-checkbox" checked> <span
+                            style="color: #fff; font-weight: 600;">Process & Refactor (Auto)</span>
+                    </label>
+                    <label class="checkbox-row">
                         <input type="checkbox" id="detailed-checkbox" checked> Recursive (Deep Capture)
                     </label>
                     <label class="checkbox-row" style="margin-top: 4px;">
@@ -997,21 +1001,44 @@
                     const packets = msg.packets || [];
                     console.log(`Sending ${packets.length} packets to bridge`);
 
+                    const processAuto = document.getElementById('process-checkbox').checked;
+                    const rawProjectName = msg.projectName || "Default";
+                    const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
+
                     if (packets.length > 0) {
-                        await Promise.all(packets.map(packet =>
-                            fetch('http://127.0.0.1:3001/save-packet', {
+                        // Sequential processing to allow chaining
+                        for (const packet of packets) {
+                            const res = await fetch('http://127.0.0.1:3001/save-packet', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    projectName: msg.projectName,
+                                    projectName: sanitaryProjectName,
                                     name: packet.name,
                                     data: packet.data,
                                     assets: packet.assets
                                 })
-                            })
-                        ));
+                            });
+
+                            const json = await res.json();
+
+                            if (processAuto && json.savedPath) {
+                                showFeedback(syncBtn, "Capture Sync (to Disk)", "Refactoring...");
+                                console.log(`[Auto Process] Triggering generation for ${json.savedPath}`);
+
+                                await fetch('http://127.0.0.1:3001/generate-to-code', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        path: json.savedPath,
+                                        project: sanitaryProjectName,
+                                        simplified: true
+                                    })
+                                });
+                            }
+                        }
+
                         console.log(`Saved ${packets.length} packets.`);
-                        showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured!");
+                        showFeedback(syncBtn, "Capture Sync (to Disk)", processAuto ? "Captured & Processed!" : "Captured!");
                     }
                     await loadFiles();
                 } catch (e) {
