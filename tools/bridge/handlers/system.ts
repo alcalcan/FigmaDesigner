@@ -134,9 +134,9 @@ export function handleDelete(req: http.IncomingMessage, res: http.ServerResponse
 
                 // C. Run CleaningService to update pages
                 try {
-                    const servicePath = require.resolve('../../CleaningService');
+                    const servicePath = require.resolve('../server_tools/CleaningService');
                     delete require.cache[servicePath];
-                    const { CleaningService } = require('../../CleaningService');
+                    const { CleaningService } = require('../server_tools/CleaningService');
                     const cleaningService = new CleaningService();
                     const fullRelativePath = `${projectName}/${componentName}/${componentName}`;
 

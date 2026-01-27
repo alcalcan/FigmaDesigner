@@ -6,28 +6,28 @@ import IMG_uefa_cards_4x_img_1_png from "././assets/uefa_cards_4x_img_1.png";
 import IMG_uefa_cards_4x_img_2_png from "././assets/uefa_cards_4x_img_2.png";
 import IMG_uefa_cards_4x_img_3_png from "././assets/uefa_cards_4x_img_3.png";
 import IMG_uefa_cards_4x_img_4_png from "././assets/uefa_cards_4x_img_4.png";
-import SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54 from "./assets/uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54 from "./assets/uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305.svg";
-import SVG_uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Play_Icon_1058_3036_svg_54x54 from "./assets/uefa_cards_4x_assets_icon_Play_Icon_1058_3036_svg_54x54.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1058_3050_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1058_3050_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1058_3054_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1058_3054_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1058_3058_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1058_3058_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1058_3062_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1058_3062_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1058_3066_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1058_3066_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1058_3082_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1058_3082_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1058_3086_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1058_3086_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1058_3090_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1058_3090_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1058_3094_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1058_3094_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1058_3098_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1058_3098_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Play_Icon_1058_3104_svg_54x54 from "./assets/uefa_cards_4x_assets_icon_Play_Icon_1058_3104_svg_54x54.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1058_3118_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1058_3118_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1058_3122_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1058_3122_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1058_3126_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1058_3126_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1058_3130_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1058_3130_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1058_3134_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1058_3134_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_1_1058_3150_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_1_1058_3150_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_2_1058_3154_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_2_1058_3154_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_3_1058_3158_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_3_1058_3158_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_4_1058_3162_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_4_1058_3162_svg_11_999994277954102x11_999982833862305.svg";
+import SVG_uefa_cards_4x_assets_icon_Star_5_1058_3166_svg_11_999994277954102x11_999982833862305 from "./assets/uefa_cards_4x_assets_icon_Star_5_1058_3166_svg_11_999994277954102x11_999982833862305.svg";
 
 
 export class uefa_cards_4x extends BaseComponent {
@@ -149,7 +149,7 @@ export class uefa_cards_4x extends BaseComponent {
                   "width": 54, "height": 54,
                   "relativeTransform": [[1, 0, 144], [0, 1, 87]]
                 },
-                "svgContent": SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54
+                "svgContent": SVG_uefa_cards_4x_assets_icon_Play_Icon_1058_3036_svg_54x54
               }
             ]
           },
@@ -448,7 +448,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1058_3050_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -468,7 +468,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1058_3054_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -488,7 +488,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1058_3058_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -508,7 +508,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1058_3062_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -528,7 +528,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1058_3066_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }
@@ -915,7 +915,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1058_3082_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -935,7 +935,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1058_3086_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -955,7 +955,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1058_3090_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -975,7 +975,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1058_3094_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -995,7 +995,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1058_3098_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }
@@ -1105,7 +1105,7 @@ export class uefa_cards_4x extends BaseComponent {
                   "width": 54, "height": 54,
                   "relativeTransform": [[1, 0, 144], [0, 1, 87]]
                 },
-                "svgContent": SVG_uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54
+                "svgContent": SVG_uefa_cards_4x_assets_icon_Play_Icon_1058_3104_svg_54x54
               }
             ]
           },
@@ -1404,7 +1404,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1058_3118_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1424,7 +1424,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1058_3122_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1444,7 +1444,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1058_3126_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1464,7 +1464,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1058_3130_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1484,7 +1484,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1058_3134_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }
@@ -1871,7 +1871,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_1_1058_3150_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1891,7 +1891,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 12.999994277954102], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_2_1058_3154_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1911,7 +1911,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 25.999988555908203], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_3_1058_3158_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1931,7 +1931,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 38.99998474121094], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_4_1058_3162_svg_11_999994277954102x11_999982833862305
                           },
                           {
                             "type": "VECTOR",
@@ -1951,7 +1951,7 @@ export class uefa_cards_4x extends BaseComponent {
                               "width": 11.999994277954102, "height": 11.999982833862305,
                               "relativeTransform": [[1, 0, 51.999977111816406], [0, 1, 0]]
                             },
-                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305
+                            "svgContent": SVG_uefa_cards_4x_assets_icon_Star_5_1058_3166_svg_11_999994277954102x11_999982833862305
                           }
                         ]
                       }

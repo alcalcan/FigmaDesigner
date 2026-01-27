@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild';
 import * as fs from 'fs';
 import { checkAndRecover } from './pre-build';
-import { registerComponents } from './RegisterComponents';
+import { registerComponents } from './bridge/server_tools/RegisterComponents';
 
 async function startBuild() {
     const isWatch = process.argv.includes('--watch');

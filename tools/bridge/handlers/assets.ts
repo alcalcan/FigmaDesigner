@@ -2,7 +2,7 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { saveItem, stopSpinner } from '../utils';
-import { PngExporter } from '../../PngExporter';
+import { PngExporter } from '../server_tools/PngExporter';
 import { setPendingCommand } from '../state';
 
 export function handleSave(req: http.IncomingMessage, res: http.ServerResponse) {

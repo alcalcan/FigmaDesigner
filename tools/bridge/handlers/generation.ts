@@ -1,9 +1,9 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ComponentGenerator } from '../../ComponentGenerator';
-import { ComponentRefactorer } from '../../ComponentRefactorer';
-import { CompactStructure } from '../../CompactStructure';
+import { ComponentGenerator } from '../server_tools/ComponentGenerator';
+import { ComponentRefactorer } from '../server_tools/ComponentRefactorer';
+import { CompactStructure } from '../server_tools/CompactStructure';
 
 export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
@@ -47,14 +47,14 @@ export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.S
             }
 
             // 4. Run Generator
-            const generatorPath = require.resolve('../../ComponentGenerator');
-            const refactorerPath = require.resolve('../../ComponentRefactorer');
+            const generatorPath = require.resolve('../server_tools/ComponentGenerator');
+            const refactorerPath = require.resolve('../server_tools/ComponentRefactorer');
             delete require.cache[generatorPath];
             delete require.cache[refactorerPath];
 
-            const { ComponentGenerator } = require('../../ComponentGenerator');
-            const { ComponentRefactorer } = require('../../ComponentRefactorer');
-            const { CompactStructure } = require('../../CompactStructure');
+            const { ComponentGenerator } = require('../ComponentGenerator');
+            const { ComponentRefactorer } = require('../ComponentRefactorer');
+            const { CompactStructure } = require('../CompactStructure');
 
             const generator = new ComponentGenerator();
             // We use 'temp_preview' as project name to verify isolation
@@ -145,16 +145,16 @@ export function handleGenerateToCode(req: http.IncomingMessage, res: http.Server
                 return;
             }
 
-            const generatorPath = require.resolve('../../ComponentGenerator');
-            const refactorerPath = require.resolve('../../ComponentRefactorer');
-            const compactorPath = require.resolve('../../CompactStructure');
+            const generatorPath = require.resolve('../server_tools/ComponentGenerator');
+            const refactorerPath = require.resolve('../server_tools/ComponentRefactorer');
+            const compactorPath = require.resolve('../server_tools/CompactStructure');
             delete require.cache[generatorPath];
             delete require.cache[refactorerPath];
             delete require.cache[compactorPath];
 
-            const { ComponentGenerator } = require('../../ComponentGenerator');
-            const { ComponentRefactorer } = require('../../ComponentRefactorer');
-            const { CompactStructure } = require('../../CompactStructure');
+            const { ComponentGenerator } = require('../server_tools/ComponentGenerator');
+            const { ComponentRefactorer } = require('../server_tools/ComponentRefactorer');
+            const { CompactStructure } = require('../server_tools/CompactStructure');
 
             const generator = new ComponentGenerator();
             // Pass previewMode = false so it UPDATES the registry
@@ -228,10 +228,10 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
             console.log(`Found ${files.length} matching files in ${relativeFolder}`);
 
             const generator = new ComponentGenerator();
-            const refactorerPath = require.resolve('../../ComponentRefactorer');
+            const refactorerPath = require.resolve('../server_tools/ComponentRefactorer');
             delete require.cache[refactorerPath];
             // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const { ComponentRefactorer: FreshRefactorer } = require('../../ComponentRefactorer');
+            const { ComponentRefactorer: FreshRefactorer } = require('../server_tools/ComponentRefactorer');
             const refactorer = new FreshRefactorer();
 
             for (const fullPath of files) {
@@ -287,9 +287,9 @@ export function handleRefactorCode(req: http.IncomingMessage, res: http.ServerRe
 
             console.log(`🚀 Manually triggering refactor for: ${targetPath}`);
 
-            const refactorerPath = require.resolve('../../ComponentRefactorer');
+            const refactorerPath = require.resolve('../server_tools/ComponentRefactorer');
             delete require.cache[refactorerPath];
-            const { ComponentRefactorer } = require('../../ComponentRefactorer');
+            const { ComponentRefactorer } = require('../server_tools/ComponentRefactorer');
 
             new ComponentRefactorer().refactor(targetPath);
 

@@ -105,9 +105,9 @@ export function handleDeleteComponent(req: http.IncomingMessage, res: http.Serve
             console.log(`🧹 Cleaning up pages usage for ${componentClassName}...`);
             try {
                 // Dynamic import for hot-reload
-                const servicePath = require.resolve('../../CleaningService');
+                const servicePath = require.resolve('../server_tools/CleaningService');
                 delete require.cache[servicePath];
-                const { CleaningService } = require('../../CleaningService');
+                const { CleaningService } = require('../server_tools/CleaningService');
                 const cleaner = new CleaningService();
                 const { updatedFiles } = cleaner.cleanup(componentClassName, name);
                 if (updatedFiles.length > 0) {

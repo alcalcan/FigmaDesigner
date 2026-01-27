@@ -10,6 +10,7 @@ The bridge code has been refactored into a modular structure under `tools/bridge
 - **`state.ts`**: Manages shared state like the "pending command" queue and CLI spinners.
 - **`types.ts`**: Shared TypeScript interfaces.
 - **`utils.ts`**: Helper functions (file system walking, strict sanitization, etc.).
+- **`server_tools/`**: Contains core logic classes moved from the root `tools/` folder (`ComponentGenerator`, `CleaningService`, etc.).
 - **`handlers/`**: Request handlers grouped by domain:
   - **`extraction.ts`**: Endpoints for listing and reading captured JSONs (`/list`, `/read`).
   - **`components.ts`**: Endpoints for managing generated components (`/list-components`, `/delete-component`).
