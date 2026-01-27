@@ -339,6 +339,7 @@
             // State for clipboard operation
             let isClipboardCapture = false;
             const captureBtn = document.getElementById('capture-btn');
+            const processCheckbox = document.getElementById('process-checkbox');
             const detailedCheckbox = document.getElementById('detailed-checkbox');
             const vectorJsonCheckbox = document.getElementById('vector-json-checkbox');
             const statusDot = document.getElementById('status-dot');
@@ -1188,8 +1189,8 @@
                                 body: JSON.stringify({
                                     packet: packet,
                                     options: {
-                                        refactor: true,
-                                        compact: true // Default to compact
+                                        refactor: processCheckbox.checked,
+                                        compact: processCheckbox.checked ? !exactRefactorCheckbox.checked : false
                                     }
                                 })
                             });
