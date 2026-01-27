@@ -102,14 +102,21 @@ export class CompactStructure {
         }
 
         const content = fs.readFileSync(filePath, 'utf8');
+        const newContent = this.compactCode(content);
+        if (newContent !== content) {
+            fs.writeFileSync(filePath, newContent);
+            console.log(`✅ Compacted ${path.basename(filePath)}`);
+        }
+    }
 
+    public compactCode(content: string): string {
         // Find the structure definition
         const startRegex = /const\s+(\w+)\s*:\s*\w*NodeDefinition\s*=\s*\{/;
         const match = content.match(startRegex);
 
         if (!match || match.index === undefined) {
             console.error("❌ Could not find structure definition (NodeDefinition)");
-            return;
+            return content;
         }
 
         const startIndex = match.index + match[0].length - 1; // Point to the '{'
@@ -146,7 +153,7 @@ export class CompactStructure {
 
         if (endIndex === -1) {
             console.error("❌ Could not find end of structure object.");
-            return;
+            return content;
         }
 
         const objectString = content.substring(startIndex, endIndex);
@@ -225,7 +232,7 @@ export class CompactStructure {
         } catch (e) {
             console.error("❌ Failed to parse structure object.", e);
             console.log("Context:", evalStr);
-            return;
+            return content;
         }
 
         // Detect Indentation
@@ -247,9 +254,7 @@ export class CompactStructure {
         // 6. Restore SVG Variables (MUST happen after expressions are restored)
         newString = newString.replace(new RegExp(`"${placeholderPrefix}(SVG_[\\w_]+)"`, 'g'), '$1');
 
-        const newContent = content.substring(0, startIndex) + newString + content.substring(endIndex);
-        fs.writeFileSync(filePath, newContent);
-        console.log(`✅ Compacted ${path.basename(filePath)}`);
+        return content.substring(0, startIndex) + newString + content.substring(endIndex);
     }
 }
 

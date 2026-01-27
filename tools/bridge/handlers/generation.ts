@@ -303,3 +303,59 @@ export function handleRefactorCode(req: http.IncomingMessage, res: http.ServerRe
         }
     });
 }
+
+export function handleGenerateClipboard(req: http.IncomingMessage, res: http.ServerResponse) {
+    let body = '';
+    req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
+    req.on('end', () => {
+        try {
+            const { packet, options } = JSON.parse(body);
+            // options: { compact: boolean, refactor: boolean }
+
+            if (!packet || !packet.name || !packet.data) {
+                res.writeHead(400);
+                res.end(JSON.stringify({ error: "Missing packet data" }));
+                return;
+            }
+
+            // 1. Run Generator (In-Memory)
+            const generatorPath = require.resolve('../server_tools/ComponentGenerator');
+            const refactorerPath = require.resolve('../server_tools/ComponentRefactorer');
+            const compactorPath = require.resolve('../server_tools/CompactStructure');
+
+            // Force reload for dev iteration (optional, but consistent with other handlers)
+            delete require.cache[generatorPath];
+            delete require.cache[refactorerPath];
+            delete require.cache[compactorPath];
+
+            const { ComponentGenerator } = require('../server_tools/ComponentGenerator');
+            const { ComponentRefactorer } = require('../server_tools/ComponentRefactorer');
+            const { CompactStructure } = require('../server_tools/CompactStructure');
+
+            const generator = new ComponentGenerator();
+            // generateFromMemory(data, assets, projectName)
+            let code = generator.generateFromMemory(packet.data, packet.assets || [], 'Clipboard');
+
+            // 2. Apply Refactor (Default true)
+            if (options?.refactor !== false) {
+                const refactorer = new ComponentRefactorer();
+                code = refactorer.refactorCode(code, packet.name || 'Component');
+            }
+
+            // 3. Apply Compact (Default true)
+            if (options?.compact === true) {
+                const compactor = new CompactStructure();
+                code = compactor.compactCode(code);
+            }
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ status: 'ok', code: code }));
+
+        } catch (e: unknown) {
+            const error = e as Error;
+            console.error("Error generating clipboard code:", error.message);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: error.message }));
+        }
+    });
+}

@@ -242,6 +242,8 @@
                 style="display: none; margin-top: 16px; border-top: 1px solid #2a2a2a; padding-top: 16px;">
                 <button id="sync-btn" class="success">Capture Sync (to Disk)</button>
                 <button id="capture-png-btn" class="secondary" style="margin-top: 8px;">Capture PNG</button>
+                <button id="capture-clipboard-btn" class="secondary" style="margin-top: 8px;">Capture to
+                    Clipboard</button>
                 <div style="margin-top: 12px;">
                     <label class="checkbox-row">
                         <input type="checkbox" id="process-checkbox" checked> <span
@@ -332,6 +334,10 @@
             const connectBtn = document.getElementById('connect-btn');
             const syncBtn = document.getElementById('sync-btn');
             const capturePngBtn = document.getElementById('capture-png-btn');
+            const captureClipboardBtn = document.getElementById('capture-clipboard-btn');
+
+            // State for clipboard operation
+            let isClipboardCapture = false;
             const captureBtn = document.getElementById('capture-btn');
             const detailedCheckbox = document.getElementById('detailed-checkbox');
             const vectorJsonCheckbox = document.getElementById('vector-json-checkbox');
@@ -410,6 +416,25 @@
                 parent.postMessage({ pluginMessage: { type: 'capture-png' } }, '*');
                 showFeedback(capturePngBtn, "Capture PNG", "Capturing...");
                 showFeedback(capturePngBtn, "Capture PNG", "Capturing...");
+            }
+
+            captureClipboardBtn.onclick = () => {
+                console.log("Capture to Clipboard button clicked");
+                isClipboardCapture = true;
+
+                const isDetailed = detailedCheckbox.checked;
+                const saveVectorInJson = vectorJsonCheckbox.checked;
+
+                parent.postMessage({
+                    pluginMessage: {
+                        type: 'capture-preview', // Reuse preview capture logic
+                        detailed: isDetailed,
+                        saveVectorInJson: saveVectorInJson,
+                        skipAssets: false // We need assets for generation context, even if transient
+                    }
+                }, '*');
+
+                showFeedback(captureClipboardBtn, "Capture to Clipboard", "Capturing...");
             }
 
             previewCodeBtn.onclick = () => {
@@ -1151,6 +1176,43 @@
                         const doCompact = !isExact;
 
                         console.log(`[Preview] Sending to bridge. Compact: ${doCompact}`);
+
+                        // INTERCEPT FOR CLIPBOARD CAPTURE
+                        if (isClipboardCapture) {
+                            console.log("[Clipboard] Using /generate-clipboard endpoint");
+                            isClipboardCapture = false; // Reset flag
+
+                            const response = await fetch('http://127.0.0.1:3001/generate-clipboard', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    packet: packet,
+                                    options: {
+                                        refactor: true,
+                                        compact: true // Default to compact
+                                    }
+                                })
+                            });
+
+                            if (!response.ok) throw new Error(await response.text());
+                            const result = await response.json();
+
+                            if (result.status === 'ok' && result.code) {
+                                // Create temporary textarea to copy
+                                const el = document.createElement('textarea');
+                                el.value = result.code;
+                                document.body.appendChild(el);
+                                el.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(el);
+
+                                showFeedback(captureClipboardBtn, "Capture to Clipboard", "Copied!");
+                                console.log("[Clipboard] Code copied to clipboard.");
+                            } else {
+                                throw new Error(result.error || "Unknown error");
+                            }
+                            return; // Stop processing normal preview
+                        }
 
                         const response = await fetch('http://127.0.0.1:3001/generate-code-preview', {
                             method: 'POST',

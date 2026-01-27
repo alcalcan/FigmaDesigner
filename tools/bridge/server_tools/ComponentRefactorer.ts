@@ -29,7 +29,13 @@ export class ComponentRefactorer {
         }
 
         const content = fs.readFileSync(filePath, 'utf8');
+        const newContent = this.refactorCode(content, path.basename(filePath, '.ts'));
 
+        fs.writeFileSync(filePath, newContent);
+        console.log(`🏁 [Refactorer] Conversion complete.`);
+    }
+
+    public refactorCode(content: string, fileName: string = 'Component'): string {
         // Extract 'create' method body using brace counting
         let bodyContent = content;
         const createStartRegex = /async create\s*\([^)]*\)\s*:\s*Promise<SceneNode>\s*\{/;
@@ -118,17 +124,14 @@ export class ComponentRefactorer {
         const rootId = 'root'; // Convention in generated code
         if (!nodes.has(rootId)) {
             console.error("❌ Could not find 'root' node.");
-            return;
+            return content; // Return original on failure
         }
 
         // 4. Generate Definition JSON
         const definition = this.generateDefinition(nodes, rootId, assets);
 
         // 5. Generate New File Content
-        const newContent = this.generateFileContent(path.basename(filePath, '.ts'), definition, assets, content, nodes);
-
-        fs.writeFileSync(filePath, newContent);
-        console.log(`🏁 [Refactorer] Conversion complete.`);
+        return this.generateFileContent(fileName, definition, assets, content, nodes);
     }
 
     private knownAssets: Set<string> = new Set();

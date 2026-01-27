@@ -12,6 +12,7 @@ export class ComponentGenerator {
     private projectName: string = '';
     private sourceDir: string = '';
     private targetDir: string = '';
+    private inMemoryAssets: Map<string, string> | null = null;
 
     /**
      * Main entry point to generate a component from a JSON file
@@ -68,9 +69,26 @@ export class ComponentGenerator {
 
         return {
             tsPath,
-            componentName: this.componentName,
-            projectName: this.projectName
         };
+    }
+
+    /**
+     * Generate code from memory without filesystem access
+     */
+    public generateFromMemory(data: SerializedNode, assets: { name: string, data: string }[], projectName: string): string {
+        this.inMemoryAssets = new Map();
+        assets.forEach(a => this.inMemoryAssets!.set(a.name, a.data));
+
+        this.projectName = (projectName || 'Default').replace(/[^a-z0-9]/gi, '_');
+        this.componentName = (data.name || 'Component').replace(/[^a-z0-9]/gi, '_');
+        this.sourceDir = ''; // No source dir
+        this.targetDir = ''; // No target dir
+
+        this.assetsToCopy.clear();
+        this.assetsToImport.clear();
+        this.svgAssets.clear();
+
+        return this.generateComponentCode(data);
     }
 
     private generateComponentCode(data: SerializedNode): string {
@@ -93,8 +111,9 @@ export class ComponentGenerator {
             // Wait, we defined assetsTargetDir in generate(), but generateComponentCode doesn't know it.
             // We need to construct the absolute path relative to this.targetDir (which is component folder)
             const fullAssetPath = path.join(this.targetDir, 'assets', fileName);
-
-            fs.writeFileSync(fullAssetPath, content);
+            if (this.targetDir) {
+                fs.writeFileSync(fullAssetPath, content);
+            }
             svgImports += `import SVG_${safeRef} from "${assetRelPath}";\n`;
         });
 
@@ -312,8 +331,22 @@ export class ${this.componentName} extends BaseComponent {
                     data.width = 10;
                     data.height = 6;
 
-                } else if (fs.existsSync(fullSvgPath)) {
-                    let content = fs.readFileSync(fullSvgPath, 'utf8');
+                } else if ((this.inMemoryAssets && this.inMemoryAssets.has(data.svgPath || '')) || fs.existsSync(fullSvgPath)) {
+                    let content = '';
+                    if (this.inMemoryAssets && data.svgPath && this.inMemoryAssets.has(data.svgPath)) {
+                        // Decode base64 if needed, or assume utf8? Packet usually sends base64 for 'data'
+                        // If it's pure SVG text, it might be raw.
+                        // But standardized packet usually base64 encodes binary. 
+                        // Let's assume input is base64 for consistency with packet structure.
+                        const b64 = this.inMemoryAssets.get(data.svgPath)!;
+                        content = Buffer.from(b64, 'base64').toString('utf8');
+                    } else if (this.targetDir && fs.existsSync(fullSvgPath)) {
+                        content = fs.readFileSync(fullSvgPath, 'utf8');
+                    } else {
+                        console.warn(`[Generator] SVG not found in memory (and disk fallback disabled): ${data.svgPath}`);
+                        code += `const ${varName} = figma.createVector(); // Asset missing\n`;
+                        return code;
+                    }
 
                     // Parse SVG dimensions to detect orientation mismatch (Baked rotation)
                     let svgW = 0, svgH = 0;
@@ -608,11 +641,18 @@ export class ${this.componentName} extends BaseComponent {
                 let finalAssetRef = p.assetRef;
                 let skipBundling = false;
 
-                if (fs.existsSync(sourcePath)) {
-                    const stats = fs.statSync(sourcePath);
-                    const sizeMB = stats.size / (1024 * 1024);
+                if (this.targetDir && ((this.inMemoryAssets && this.inMemoryAssets.has(path.basename(p.assetRef))) || fs.existsSync(sourcePath))) {
+                    let sizeMB = 0;
+                    if (this.inMemoryAssets) {
+                        // In memory assets are base64, estimate size
+                        const b64 = this.inMemoryAssets.get(path.basename(p.assetRef)) || '';
+                        sizeMB = (b64.length * 0.75) / (1024 * 1024);
+                    } else if (fs.existsSync(sourcePath)) {
+                        const stats = fs.statSync(sourcePath);
+                        sizeMB = stats.size / (1024 * 1024);
+                    }
 
-                    if (sizeMB > 2) {
+                    if (sizeMB > 2 && !this.inMemoryAssets) { // Only optimize if on disk
                         // Optimize using sips
                         console.log(`Optimizing large asset: ${p.assetRef} (${sizeMB.toFixed(2)}MB)`);
                         const ext = path.extname(p.assetRef);
