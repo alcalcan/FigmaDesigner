@@ -282,8 +282,32 @@ export abstract class BaseComponent {
 
     // 4. Transform / Layout
     if (def.layoutProps) {
+      // Create a copy of layoutProps to safely modify
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      applySizeAndTransform(node as any, def.layoutProps as any);
+      const layoutOpts = { ...def.layoutProps } as any;
+
+      // CRITICAL FIX: If sizing mode is AUTO (Hug Contents), we must NOT hardcode the dimension via resize(),
+      // because resize() forces the node into FIXED mode. We should let the content drive the size.
+      if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE") {
+        const frame = node as FrameNode;
+        const isHorizontal = frame.layoutMode === "HORIZONTAL";
+        const isVertical = frame.layoutMode === "VERTICAL";
+
+        // Primary Axis
+        if (frame.primaryAxisSizingMode === "AUTO") {
+          if (isHorizontal) delete layoutOpts.width;
+          if (isVertical) delete layoutOpts.height;
+        }
+
+        // Counter Axis
+        if (frame.counterAxisSizingMode === "AUTO") {
+          if (isHorizontal) delete layoutOpts.height;
+          if (isVertical) delete layoutOpts.width;
+        }
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      applySizeAndTransform(node as any, layoutOpts);
 
       // Explicitly apply layoutPositioning if requested
       if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {

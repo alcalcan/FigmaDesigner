@@ -531,8 +531,7 @@ export class ComponentRefactorer {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private analyzeChildrenForLoops(children: any[]): any[] | null {
-        if (children.length < 3) return null; // Need at least 3 items to be worth looping
-
+        if (children.length < 2) return null; // Need at least 2 items to be worth looping
         // Simple heuristic: Look for sequences of "FRAME" with similar structure
         // Specifically targeting the Sidebar Filter rows for now
         // Pattern: Frame -> [Checkbox, Text]
@@ -567,7 +566,7 @@ export class ComponentRefactorer {
                 }
             }
 
-            if (group.length >= 3) {
+            if (group.length >= 2) {
                 // We found a loop group!
                 const loopCode = this.generateLoopCode(group);
                 loops.push({ __code: loopCode }); // Special marker
@@ -578,10 +577,13 @@ export class ComponentRefactorer {
                 i++;
             }
         }
-
         // If no loops found, return null to signify no change
-        if (loops.length === children.length && loops.every(l => !l.__code)) return null;
+        if (loops.length === children.length && loops.every(l => !l.__code)) {
+            console.log(`[Refactorer] No loops found in children.`);
+            return null;
+        }
 
+        console.log(`[Refactorer] Applying loop optimization.Found ${loops.filter(l => l.__code).length} loop(s).`);
         return loops;
     }
 
@@ -589,20 +591,52 @@ export class ComponentRefactorer {
     private areNodesSimilar(a: any, b: any): boolean {
         if (a.type !== b.type) return false;
 
-        // If they have distinct names and they match, that's a strong signal
-        if (a.name && b.name && a.name === b.name && a.type === 'FRAME') return true;
+        // Check geometry for Vectors/Boolean Ops
+        // We want to prevent merging vectors that look different (e.g. checkmark vs cross vs empty)
+        if (a.type === 'VECTOR' || a.type === 'BOOLEAN_OPERATION') {
+            if (!this.isSizeSimilar(a, b)) return false;
+            if (!this.arePathsEqual(a, b)) return false;
+            if (a.svgContentVar !== b.svgContentVar) return false;
+        }
 
-        // Check if child types match partially (structural similarity)
-        const getSig = (n: any) => (n.children || []).map((c: any) => c.type).join(',');
-        const sigA = getSig(a);
-        const sigB = getSig(b);
+        // Check children recursively
+        if (a.children || b.children) {
+            if (!a.children || !b.children || a.children.length !== b.children.length) return false;
+            for (let i = 0; i < a.children.length; i++) {
+                if (!this.areNodesSimilar(a.children[i], b.children[i])) return false;
+            }
+        }
 
-        if (sigA === sigB) return true;
+        return true;
+    }
 
-        // Allow one to be a subset of another (e.g. absent checkmark)
-        if (sigA.includes(sigB) || sigB.includes(sigA)) return true;
+    private isSizeSimilar(a: any, b: any): boolean {
+        const wa = a.layoutProps?.width;
+        const ha = a.layoutProps?.height;
+        const wb = b.layoutProps?.width;
+        const hb = b.layoutProps?.height;
 
-        return false;
+        // Tolerance for floating point
+        const eq = (v1: number, v2: number) => Math.abs(v1 - v2) < 0.01;
+
+        if (wa !== undefined && wb !== undefined && !eq(wa, wb)) return false;
+        if (ha !== undefined && hb !== undefined && !eq(ha, hb)) return false;
+
+        return true;
+    }
+
+    private arePathsEqual(a: any, b: any): boolean {
+        const pa = a.props?.vectorPaths;
+        const pb = b.props?.vectorPaths;
+
+        if (!pa && !pb) return true;
+        if (!pa || !pb) return false;
+        if (pa.length !== pb.length) return false;
+
+        for (let i = 0; i < pa.length; i++) {
+            if (pa[i].data !== pb[i].data) return false;
+        }
+        return true;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -628,6 +662,18 @@ export class ComponentRefactorer {
         };
         normalizeCheckbox(template);
 
+        // Normalize Layout: Ensure text inputs take up space (Fill Container)
+        const normalizeLayout = (n: any) => {
+            if (n.type === 'TEXT') {
+                n.props = n.props || {};
+                n.props.textAutoResize = "NONE";
+                n.props.layoutGrow = 1;
+                // n.layoutProps.width = ... // Let Figma or layout engine handle width based on grow
+            }
+            if (n.children) n.children.forEach(normalizeLayout);
+        };
+        normalizeLayout(template);
+
         group.forEach(node => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const variation: any = {};
@@ -645,6 +691,34 @@ export class ComponentRefactorer {
 
             const text = findText(node);
             if (text) variation.name = text;
+
+            // Extract inner code variation (e.g. for nested loops)
+            const findInnerCode = (n: any): string | null => {
+                if (n.children && n.children.length === 1 && n.children[0].__code) {
+                    return n.children[0].__code;
+                }
+                if (n.children) {
+                    for (const c of n.children) {
+                        const res = findInnerCode(c);
+                        if (res) return res;
+                    }
+                }
+                return null;
+            };
+            let innerCode = findInnerCode(node);
+            let useSpread = false;
+
+            if (innerCode) {
+                const trimmed = innerCode.trim();
+                if (trimmed.startsWith('...')) {
+                    innerCode = trimmed.substring(3).trim();
+                    useSpread = true;
+                }
+                variation.innerCode = { __code: innerCode };
+                // Using hidden property to pass spread info to the template generator?
+                // No, we collect variations. We need to deduce this later or store it.
+                variation._useSpread = useSpread;
+            }
 
             // Check if selected
             let isSelected = false;
@@ -719,43 +793,81 @@ export class ComponentRefactorer {
             variations.push(variation);
         });
 
-        const dataStr = JSON.stringify(variations);
-        const templateStr = this.serialize(template, 4);
+        const dataStr = this.serialize(variations, 12);
+
+        // Handle inner code replacement in template
+        const hasInnerCode = variations.some(v => v.innerCode);
+        if (hasInnerCode) {
+            const replaceCodeWithPlaceholder = (n: any) => {
+                if (n.children && n.children.length === 1 && n.children[0].__code) {
+                    n.children[0].__code = "%%INNER_CODE%%";
+                }
+                if (n.children) n.children.forEach(replaceCodeWithPlaceholder);
+            };
+            replaceCodeWithPlaceholder(template);
+        }
+
+        let templateStr = this.serialize(template, 4);
+
+        if (hasInnerCode) {
+            // "serialize" already unwraps __code blocks, so %%INNER_CODE%% appears raw in templateStr, not quoted.
+            const useSpread = variations.some(v => v._useSpread);
+            const replacement = useSpread ? '...item.innerCode' : 'item.innerCode';
+            templateStr = templateStr.replace(/%%INNER_CODE%%/g, replacement);
+        }
 
         let checkboxLogic = '';
         if (shouldBindCheckbox) {
             checkboxLogic = `
-            if (shape) {
-                // The second child (index 1) is the inner checkmark path
-                // We bind its visibility to the selection state
-                if (shape.children && shape.children.length > 1) {
-                    shape.children[1].props = shape.children[1].props || {};
-                    const isHole = ${isHoleCheckbox};
-                    shape.children[1].props.visible = isHole ? !item.isSelected : !!item.isSelected;
+        if (shape) {
+            // The second child (index 1) is the inner checkmark path
+            // We bind its visibility to the selection state
+            if (shape.children && shape.children.length > 1) {
+                shape.children[1].props = shape.children[1].props || {};
+                // Force checkmark visibility when selected
+                shape.children[1].props.visible = !!item.isSelected;
+
+                // Visual State Toggling: Handle Unchecked (Empty) vs Checked (Filled)
+                // The template defaults to "Filled" (Checked style).
+                shape.props = shape.props || {};
+                if (item.isSelected) {
+                    // Checked: Ensure Fill, No Stroke
+                    // (Template has fill by default, so we just ensure no stroke)
+                    shape.props.strokes = [];
+                } else {
+                    // Unchecked: No Fill, Bold Dark Stroke
+                    shape.props.fills = [];
+                    shape.props.strokes = [{
+                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                        "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 }
+                    }];
+                    shape.props.strokeWeight = 2;
+                    shape.props.strokeAlign = "INSIDE";
                 }
-            }`;
+            }
+        } `;
         }
 
         const code = `...${dataStr}.map((item: any) => {
             const node = ${templateStr} as unknown as NodeDefinition;
-            
+
             // Apply loop overrides
             if (item.name) {
-                 const traverse = (n: any) => {
+                const traverse = (n: any) => {
                     if (n.type === 'TEXT') {
-                         n.props = n.props || {};
-                         n.props.characters = item.name;
+                        n.props = n.props || {};
+                        n.props.characters = item.name;
                     }
                     if (n.children) n.children.forEach(traverse);
-                 };
-                 traverse(node);
+                };
+                traverse(node);
             }
 
             // Checkbox Logic: Bind checkmark visibility to selection
             const findShape = (n: any): any => {
                 if (n.name === 'Checkbox' && n.children) {
-                     const shape = n.children.find((c: any) => c.name === 'Shape');
-                     if (shape && shape.children && shape.children.length > 1) return shape;
+                    const shape = n.children.find((c: any) => c.name === 'Shape');
+                    if (shape && shape.children && shape.children.length > 1) return shape;
                 }
                 if (n.children) {
                     for (const c of n.children) {
@@ -791,7 +903,7 @@ export class ComponentRefactorer {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private generateFileContent(className: string, definition: any, assets: Map<string, string>, originalContent: string, nodes: Map<string, RefactorerNode>): string {
-        const imports = `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";`;
+        const imports = `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; `;
 
         // Run post-processing to inject loops
         const processedDef = this.postProcessDefinition(definition);
@@ -801,7 +913,7 @@ export class ComponentRefactorer {
         const svgLines: string[] = [];
 
         // 1. Check for inlined SVG constants
-        const svgMatchRegex = /const (SVG_[\w_]+) = `(<svg[\s\S]*?<\/svg>)`;/g;
+        const svgMatchRegex = /const (SVG_[\w_]+) = `(<svg[\s\S]*? <\/svg>)`;/g;
         let svgMatch;
         while ((svgMatch = svgMatchRegex.exec(originalContent)) !== null) {
             const assetName = svgMatch[1];
@@ -845,7 +957,18 @@ export class ${className} extends BaseComponent {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private serialize(obj: any, indentLevel: number): string {
-        return CompactSerializer.serialize(obj, indentLevel);
+        let str = CompactSerializer.serialize(obj, indentLevel);
+
+        // Unwrap { "__code": "..." } blocks to inject raw code
+        str = str.replace(/\{\s*"__code"\s*:\s*("(?:[^"\\]|\\.)*")\s*\}/g, (match, jsonString) => {
+            try {
+                return JSON.parse(jsonString);
+            } catch (e) {
+                return match;
+            }
+        });
+
+        return str;
     }
 
     // --- Geometric Utilities ---
@@ -983,7 +1106,9 @@ export class ${className} extends BaseComponent {
         };
         const shape = findShape(template);
         if (shape && shape.children && shape.children.length > 1) {
-            return this.isContained(shape.children[1], shape.children[0]);
+            // Force true for consistent subtractive logic if structure matches
+            // We assume if it has 2 children (base + mark), it uses the hole/mask technique by default in this design system.
+            return true;
         }
         return false;
     }
