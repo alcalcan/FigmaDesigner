@@ -1147,7 +1147,11 @@
                                         data: packet.data,
                                         assets: packet.assets,
                                         procedural: isProcedural,
-                                        simplified: isSimplified
+                                        simplified: isSimplified,
+                                        options: {
+                                            refactor: !generatorOnlyCheckboxCapture.checked,
+                                            compact: !generatorOnlyCheckboxCapture.checked
+                                        }
                                     })
                                 });
 

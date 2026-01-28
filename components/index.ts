@@ -26,6 +26,7 @@ export { search_bar as search_bar_UEFA_Academy_online } from "./UEFA_Academy_onl
 export { sidebar as sidebar_Alex_CookBook } from "./Alex_CookBook/sidebar/sidebar";
 export { sidebar_procedural } from "./Alex_CookBook/sidebar_procedural/sidebar_procedural";
 export { sidebar_standard_code } from "./Alex_CookBook/sidebar_standard_code/sidebar_standard_code";
+export { sidebar_standard_refactored } from "./Alex_CookBook/sidebar_standard_refactored/sidebar_standard_refactored";
 export { sidebar as sidebar_UEFA_Academy_online } from "./UEFA_Academy_online/sidebar/sidebar";
 export { simple_info } from "./UEFA_Academy_online/simple_info/simple_info";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
@@ -42,4 +43,6 @@ export { uefa_cards_4x } from "./Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
 export { uefa_cards_4x_checkProcedural } from "./Alex_CookBook/uefa_cards_4x_checkProcedural/uefa_cards_4x_checkProcedural";
 export { uefa_cards_4x_standard } from "./Alex_CookBook/uefa_cards_4x_standard/uefa_cards_4x_standard";
 export { uefa_cards_row } from "./Alex_CookBook/uefa_cards_row/uefa_cards_row";
+export { verification_test_2 } from "./Alex_CookBook/verification_test_2/verification_test_2";
+export { verification_test_3 } from "./Alex_CookBook/verification_test_3/verification_test_3";
 export { Placeholder } from "./Placeholder";

@@ -124,8 +124,9 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             if (isProcedural) {
                 console.log(`[Bridge] Auto-generating Procedural Code for ${sanitaryName}...`);
                 await FullProceduralPipeline.run(jsonPath, sanitaryProjectName, sanitaryName);
-            } else if (isSimplified || parsed.options?.refactor !== false) {
-                console.log(`[Bridge] Auto-generating Code for ${sanitaryName} (Simplified=${isSimplified})...`);
+            } else {
+                // Always generate code if not procedural (Generator Only, Simplified, or Standard)
+                console.log(`[Bridge] Auto-generating Code for ${sanitaryName} (Simplified=${isSimplified}, Refactor=${parsed.options?.refactor !== false})...`);
 
                 const generator = new ComponentGenerator();
                 const result = generator.generate(jsonPath, sanitaryProjectName, false, sanitaryName);
