@@ -113,3 +113,59 @@ export const createBooleanOperation = (name: string, booleanOperation: "UNION" |
         }
     };
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createLine = (name: string, overrides: any = {}): NodeDefinition => {
+    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
+
+    return {
+        type: "LINE",
+        name,
+        props: { ...DEFAULT_PROPS, ...restOverrides },
+        children: [],
+        layoutProps: {
+            parentIsAutoLayout: true,
+            layoutPositioning: "AUTO",
+            ...DEFAULT_LAYOUT_PROPS,
+            width: 100,
+            height: 0, // Default for line
+            ...ovrLayoutProps
+        }
+    };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createRectangle = (name: string, overrides: any = {}): NodeDefinition => {
+    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
+
+    return {
+        type: "RECTANGLE",
+        name,
+        props: { ...DEFAULT_PROPS, ...restOverrides },
+        children: [],
+        layoutProps: {
+            parentIsAutoLayout: true,
+            layoutPositioning: "AUTO",
+            ...DEFAULT_LAYOUT_PROPS,
+            ...ovrLayoutProps
+        }
+    };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createEllipse = (name: string, overrides: any = {}): NodeDefinition => {
+    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
+
+    return {
+        type: "ELLIPSE",
+        name,
+        props: { ...DEFAULT_PROPS, ...restOverrides },
+        children: [],
+        layoutProps: {
+            parentIsAutoLayout: true,
+            layoutPositioning: "AUTO",
+            ...DEFAULT_LAYOUT_PROPS,
+            ...ovrLayoutProps
+        }
+    };
+};

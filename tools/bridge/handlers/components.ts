@@ -147,7 +147,8 @@ export function handleDeleteComponent(req: http.IncomingMessage, res: http.Serve
 
         } catch (e: unknown) {
             const error = e as Error;
-            console.error("Error deleting component:", error.message);
+            console.error("Error deleting component:", error);
+            if (error.stack) console.error(error.stack);
             res.writeHead(500);
             res.end(JSON.stringify({ error: error.message }));
         }
@@ -211,7 +212,8 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
 
         } catch (e: unknown) {
             const error = e as Error;
-            console.error("Error deleting component folder:", error.message);
+            console.error("Error deleting component folder:", error);
+            if (error.stack) console.error(error.stack);
             res.writeHead(500);
             res.end(JSON.stringify({ error: error.message }));
         }

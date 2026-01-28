@@ -86,6 +86,21 @@ export class ProceduralConverter {
                         createBooleanOperation: (name: string, booleanOperation: string, props: any = {}, children: any[] = []) => {
                             const { layoutProps, ...rest } = props;
                             return { type: 'BOOLEAN_OPERATION', name, booleanOperation, props: rest, layoutProps, children };
+                        },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        createLine: (name: string, props: any = {}) => {
+                            const { layoutProps, ...rest } = props;
+                            return { type: 'LINE', name, props: rest, layoutProps, children: [] };
+                        },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        createRectangle: (name: string, props: any = {}) => {
+                            const { layoutProps, ...rest } = props;
+                            return { type: 'RECTANGLE', name, props: rest, layoutProps, children: [] };
+                        },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        createEllipse: (name: string, props: any = {}) => {
+                            const { layoutProps, ...rest } = props;
+                            return { type: 'ELLIPSE', name, props: rest, layoutProps, children: [] };
                         }
                     };
                     this.assets.forEach((val, key) => sandbox[key] = key); // Map var to its name
@@ -879,7 +894,7 @@ export class ProceduralConverter {
 
         return `
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-import { createFrame, createText, createVector, createBooleanOperation } from "../../ComponentHelpers";
+import { createFrame, createText, createVector, createBooleanOperation, createLine, createRectangle, createEllipse } from "../../ComponentHelpers";
 
 // --- Assets ---
 ${assetImports}
@@ -992,6 +1007,15 @@ export class ${className} extends BaseComponent {
                 console.log(`[ProceduralConverter] Generating code for ${node.id} (${node.name}): ${op}`);
                 return `createBooleanOperation("${cleanName}", "${op}", ${overrides}, ${childrenCode})`;
             }
+            if (node.type === 'LINE') {
+                return `createLine("${cleanName}", ${overrides})`;
+            }
+            if (node.type === 'RECTANGLE') {
+                return `createRectangle("${cleanName}", ${overrides})`;
+            }
+            if (node.type === 'ELLIPSE') {
+                return `createEllipse("${cleanName}", ${overrides})`;
+            }
             return `createFrame("${cleanName}", ${overrides}, ${childrenCode})`;
         };
 
@@ -1076,6 +1100,16 @@ export class ${className} extends BaseComponent {
             // Robust check: look in top-level or props
             const op = node.booleanOperation || node.props?.booleanOperation || "UNION";
             return `createBooleanOperation("${node.name}", "${op}", ${this.stringifyOverrides(overrides)}, ${childrenCode})`;
+        }
+
+        if (node.type === 'LINE') {
+            return `createLine("${node.name}", ${this.stringifyOverrides(overrides)})`;
+        }
+        if (node.type === 'RECTANGLE') {
+            return `createRectangle("${node.name}", ${this.stringifyOverrides(overrides)})`;
+        }
+        if (node.type === 'ELLIPSE') {
+            return `createEllipse("${node.name}", ${this.stringifyOverrides(overrides)})`;
         }
 
         // Generate Frame (Image Fill Check)

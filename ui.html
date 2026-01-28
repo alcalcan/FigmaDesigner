@@ -896,6 +896,9 @@
                                 if (result.status === 'regenerated') alert(result.message);
                                 if (item.type === 'file') loadFiles();
                                 else loadComponents();
+                            } else {
+                                const err = await resp.json();
+                                alert("Failed to delete: " + (err.error || "Unknown error"));
                             }
                         } catch (err) { console.error(err); }
                     };
@@ -1008,7 +1011,10 @@
                                     body: JSON.stringify({ path: projName })
                                 });
                                 if (resp.ok) loadFiles();
-                                else alert("Failed to delete folder");
+                                else {
+                                    const err = await resp.json();
+                                    alert("Failed to delete folder: " + (err.error || "Unknown error"));
+                                }
                             } catch (err) { console.error(err); }
 
                         } else {
