@@ -3,8 +3,8 @@ import * as fs from 'fs';
 import { checkAndRecover } from './pre-build';
 import { registerComponents } from './bridge/server_tools/RegisterComponents';
 
-async function startBuild() {
-    const isWatch = process.argv.includes('--watch');
+async function startBuild(options?: { watch?: boolean }) {
+    const isWatch = options?.watch ?? process.argv.includes('--watch');
     let context: esbuild.BuildContext | null = null;
 
     const runBuild = async () => {
@@ -68,7 +68,12 @@ async function startBuild() {
     await runBuild();
 }
 
-startBuild().catch(err => {
-    console.error("Fatal error in build script:", err);
-    process.exit(1);
-});
+
+export { startBuild };
+
+if (require.main === module) {
+    startBuild().catch(err => {
+        console.error("Fatal error in build script:", err);
+        process.exit(1);
+    });
+}

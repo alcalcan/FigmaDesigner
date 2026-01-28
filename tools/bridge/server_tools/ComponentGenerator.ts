@@ -17,9 +17,9 @@ export class ComponentGenerator {
     /**
      * Main entry point to generate a component from a JSON file
      */
-    public generate(jsonPath: string, projectName: string, previewMode: boolean = false) {
+    public generate(jsonPath: string, projectName: string, previewMode: boolean = false, componentNameOverride?: string) {
         console.log(`[Generator] Generate called for ${jsonPath}`);
-        console.log(`[Generator] Args: projectName=${projectName}, previewMode=${previewMode}`);
+        console.log(`[Generator] Args: projectName=${projectName}, previewMode=${previewMode}, override=${componentNameOverride}`);
 
         const fullJsonPath = path.resolve(jsonPath);
         if (!fs.existsSync(fullJsonPath)) {
@@ -30,7 +30,7 @@ export class ComponentGenerator {
         // Sanitize project name to ensure consistent folder naming (e.g. "Alex_CookBook" instead of "Alex CookBook")
         this.projectName = (projectName || 'Default').replace(/[^a-z0-9]/gi, '_');
 
-        this.componentName = path.basename(jsonPath, path.extname(jsonPath)).replace(/[^a-z0-9]/gi, '_');
+        this.componentName = (componentNameOverride || path.basename(jsonPath, path.extname(jsonPath))).replace(/[^a-z0-9]/gi, '_');
         this.sourceDir = path.dirname(fullJsonPath);
 
         this.targetDir = path.join(process.cwd(), 'components', this.projectName, this.componentName);
@@ -745,7 +745,7 @@ export class ${this.componentName} extends BaseComponent {
         return json;
     }
 
-    private updateRegistry() {
+    public updateRegistry() {
         const registryPath = path.join(process.cwd(), 'components', 'index.ts');
         const relativePath = `./${this.projectName}/${this.componentName}/${this.componentName}`;
 

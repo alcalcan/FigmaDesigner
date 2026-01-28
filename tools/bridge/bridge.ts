@@ -2,9 +2,15 @@ import * as http from 'http';
 import { BridgeState, setPendingCommand, setSpinnerInterval } from './state';
 import { handleList, handleRead } from './handlers/extraction';
 import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder } from './handlers/components';
-import { handleSave, handleSaveAsset, handleReadAsset, handleSavePng, handleSavePacket } from './handlers/assets';
+import { handleSave, handleSavePacket } from './handlers/assets';
 import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
 import { handlePoll, handleLog, handleDelete, handleMove } from './handlers/system';
+import { startBuild } from '../build';
+
+// START WATCHER (Runs alongside bridge)
+// This ensures code.js is always fresh when the bridge is running.
+startBuild({ watch: true }).catch(err => console.error("[Bridge] Build Watcher Error:", err));
+
 
 const PORT = 3001;
 
@@ -36,10 +42,7 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/delete-component-folder') return handleDeleteComponentFolder(req, res);
 
     if (req.method === 'POST' && req.url === '/save') return handleSave(req, res);
-    if (req.method === 'POST' && req.url === '/save-asset') return handleSaveAsset(req, res);
-    if (req.method === 'POST' && req.url === '/save-png') return handleSavePng(req, res);
     if (req.method === 'POST' && req.url === '/save-packet') return handleSavePacket(req, res);
-    if (req.method === 'GET' && req.url?.startsWith('/read-asset')) return handleReadAsset(req, res);
 
     if (req.method === 'POST' && req.url === '/generate-code-preview') return handleGenerateCodePreview(req, res);
     if (req.method === 'POST' && req.url === '/generate-clipboard') return handleGenerateClipboard(req, res);
@@ -48,8 +51,11 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/refactor-code') return handleRefactorCode(req, res);
     if (req.method === 'POST' && req.url === '/procedural-convert') return handleProceduralConvert(req, res);
 
-    if (req.method === 'POST' && req.url === '/delete') return handleDelete(req, res);
-    if (req.method === 'POST' && req.url === '/move') return handleMove(req, res);
+    if (req.method === 'GET' && req.url === '/') {
+        res.writeHead(200);
+        res.end("Bridge Server Online");
+        return;
+    }
 
     res.writeHead(404);
     res.end();

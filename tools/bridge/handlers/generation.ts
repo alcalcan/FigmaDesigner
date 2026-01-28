@@ -5,11 +5,12 @@ import { ComponentGenerator } from '../server_tools/ComponentGenerator';
 import { ComponentRefactorer } from '../server_tools/ComponentRefactorer';
 import { CompactStructure } from '../server_tools/CompactStructure';
 import { ProceduralConverter } from '../server_tools/ProceduralConverter';
+import { FullProceduralPipeline } from '../server_tools/FullProceduralPipeline';
 
 export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
             const { packet, options } = JSON.parse(body);
             // options: { compact: boolean, refactor: boolean } (defaults: compact=true, refactor=true)
@@ -62,10 +63,22 @@ export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.S
                 new ComponentRefactorer().refactor(tsPath);
             }
 
-            // 6. Apply Compact (Default true)
-            if (options?.compact === true) {
-                console.log(`[Preview] Compacting...`);
+            // 6. Apply Refactor & Compact (Prerequisites for Procedural)
+            if (options?.procedural === true || options?.compact === true) {
+                console.log(`[Preview] Simplifying & Compacting...`);
+                // CompactStructure tool internally ensures basic refactor/compacting if needed
+                // But for preview, we usually run CompactStructure which handles NodeDefinition conversion
                 new CompactStructure().compact(tsPath);
+            }
+
+            // 6.5 Apply Procedural (New)
+            if (options?.procedural === true) {
+                console.log(`[Preview] Procedural converting...`);
+                const content = fs.readFileSync(tsPath, 'utf8');
+                const converter = new ProceduralConverter();
+                const className = path.basename(tsPath, '.ts');
+                const newCode = converter.convert(content, className);
+                fs.writeFileSync(tsPath, newCode);
             }
 
             // 7. Read Result
@@ -108,20 +121,21 @@ export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.S
     });
 }
 
-export function handleGenerateToCode(req: http.IncomingMessage, res: http.ServerResponse) {
+export async function handleGenerateToCode(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
             const requestData = JSON.parse(body);
             console.log(`[Bridge] /generate-to-code payload:`, JSON.stringify(requestData, null, 2));
 
-            const { path: relativePath, project: projectName, simplified, refactor, compact } = requestData;
+            const { path: relativePath, project: projectName, simplified, refactor, compact, procedural } = requestData;
 
             const shouldSimplify = (simplified !== false) && (refactor !== false);
             const shouldCompact = (compact !== false);
+            const shouldProcedural = (procedural === true);
 
-            console.log(`[Bridge] Simplification Decision for ${relativePath}: Simplify=${shouldSimplify}, Compact=${shouldCompact}`);
+            console.log(`[Bridge] Simplification Decision for ${relativePath}: Simplify=${shouldSimplify}, Compact=${shouldCompact}, Procedural=${shouldProcedural}`);
 
             if (!relativePath || !projectName) {
                 res.writeHead(400);
@@ -138,19 +152,31 @@ export function handleGenerateToCode(req: http.IncomingMessage, res: http.Server
                 return;
             }
 
-            // NOTE: Dynamic reloading removed to fix linting/stability. Using imported classes directly.
+            const basename = path.basename(relativePath, '.json');
+            const componentName = basename; // Simplified for now, or use logic from Generator
+
+            // If procedural is requested, we run the FullProceduralPipeline
+            // This pipeline handles Generator -> Refactorer -> Compacter -> ProceduralConverter
+            // So we don't need to do standard generation first.
+            if (shouldProcedural) {
+                console.log(`[Bridge] Procedural flag TRUE. Calling FullProceduralPipeline for component: ${componentName}`);
+                const tsPath = await FullProceduralPipeline.run(fullPath, projectName, componentName);
+                console.log(`[Bridge] FullProceduralPipeline complete. Result path: ${tsPath}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', tsPath }));
+                return;
+            }
+
+            // Standard Code Generation (Non-procedural)
             const generator = new ComponentGenerator();
             // Pass previewMode = false so it UPDATES the registry
-            const result = generator.generate(fullPath, projectName, false);
+            const result = generator.generate(fullPath, projectName, false, componentName);
             console.log(`✅ Component Generated: ${result.tsPath}`);
 
             if (shouldSimplify) {
                 console.log(`[Bridge] Simplification (Refactor) requested for ${result.tsPath}`);
                 new ComponentRefactorer().refactor(result.tsPath);
-            } else {
-                console.log(`[Bridge] Simplification skipped for ${result.tsPath}`);
             }
-
             if (shouldCompact) {
                 console.log(`[Bridge] Compacting ${result.tsPath}...`);
                 new CompactStructure().compact(result.tsPath);
@@ -213,11 +239,19 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
                             let code = generator.generateFromMemory(data, [], project || folder);
 
                             if (procedural) {
+                                // Mandatory prerequisites
+                                const refactorer = new ComponentRefactorer();
+                                code = refactorer.refactorCode(code, componentName);
+                                const compactor = new CompactStructure();
+                                code = compactor.compactCode(code);
+
                                 const converter = new ProceduralConverter();
                                 code = converter.convert(code, componentName);
                             } else if (simplified) {
                                 const refactorer = new ComponentRefactorer();
                                 code = refactorer.refactorCode(code, componentName);
+                                const compactor = new CompactStructure();
+                                code = compactor.compactCode(code);
                             }
 
                             const tsPath = full.replace('.json', '.ts');
@@ -272,12 +306,21 @@ export function handleRefactorCode(req: http.IncomingMessage, res: http.ServerRe
                 let code = generator.generateFromMemory(data, [], project || "Default");
 
                 // 2. Refactor/Procedural
+                // 2. Refactor/Procedural
                 if (procedural) {
+                    // Prerequisites
+                    const refactorer = new ComponentRefactorer();
+                    code = refactorer.refactorCode(code, componentName);
+                    const compactor = new CompactStructure();
+                    code = compactor.compactCode(code);
+
                     const converter = new ProceduralConverter();
                     code = converter.convert(code, componentName);
                 } else if (simplified) {
                     const refactorer = new ComponentRefactorer();
                     code = refactorer.refactorCode(code, componentName);
+                    const compactor = new CompactStructure();
+                    code = compactor.compactCode(code);
                 }
 
                 // Save to .ts file next to json
@@ -331,8 +374,15 @@ export function handleGenerateClipboard(req: http.IncomingMessage, res: http.Ser
 
             // 2. Refactor or Procedural Convert
             if (options?.procedural) {
+                console.log(`[Clipboard] Applying Refactor & Compact prerequisites for Procedural`);
+                const refactorer = new ComponentRefactorer();
+                code = refactorer.refactorCode(unformattedCode, packet.name || 'Component');
+
+                const compactor = new CompactStructure();
+                code = compactor.compactCode(code);
+
                 const converter = new ProceduralConverter();
-                code = converter.convert(unformattedCode, packet.name);
+                code = converter.convert(code, packet.name);
             } else if (options?.refactor !== false) {
                 const refactorer = new ComponentRefactorer();
                 code = refactorer.refactorCode(unformattedCode, packet.name || 'Component');
@@ -355,10 +405,10 @@ export function handleGenerateClipboard(req: http.IncomingMessage, res: http.Ser
     });
 }
 
-export function handleProceduralConvert(req: http.IncomingMessage, res: http.ServerResponse) {
+export async function handleProceduralConvert(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
             const { path: filePath } = JSON.parse(body); // Removed unused 'project' destructuring
             if (!filePath) {
@@ -380,15 +430,13 @@ export function handleProceduralConvert(req: http.IncomingMessage, res: http.Ser
 
             console.log(`🚀 Triggering Procedural Convert for: ${targetPath}`);
 
-            // NOTE: Dynamic reloading removed to fix linting/stability. Using imported classes directly.
-            const content = fs.readFileSync(targetPath, 'utf8');
-            const converter = new ProceduralConverter();
             const className = path.basename(targetPath, '.ts');
+            // We need to find the project name. Assuming it's the parent of the folder in extraction.
+            const parts = targetPath.split(path.sep);
+            const extractionIndex = parts.indexOf('extraction');
+            const projectName = (extractionIndex !== -1 && extractionIndex + 1 < parts.length) ? parts[extractionIndex + 1] : "Default";
 
-            const newCode = converter.convert(content, className);
-
-            // Overwrite file
-            fs.writeFileSync(targetPath, newCode);
+            await FullProceduralPipeline.run(targetPath.replace('.ts', '.json'), projectName, className);
 
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ status: 'ok', message: "Procedural conversion complete" }));

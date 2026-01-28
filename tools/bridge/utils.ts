@@ -64,7 +64,7 @@ export function findLatestExtraction(componentName: string): { path: string, mti
     return bestMatch;
 }
 
-export function saveItem(item: Record<string, unknown>, projectName: string) {
+export function saveItem(item: Record<string, unknown>, projectName: string): string {
     const sanitaryProjectName = projectName.replace(/[^a-z0-9]/gi, '_');
     const projectDir = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName);
 
@@ -85,4 +85,5 @@ export function saveItem(item: Record<string, unknown>, projectName: string) {
 
     fs.writeFileSync(filePath, JSON.stringify(item, null, 2));
     console.log(`   Saved: tools/extraction/${sanitaryProjectName}/${filename}`);
+    return filePath;
 }

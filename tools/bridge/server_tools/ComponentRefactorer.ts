@@ -21,7 +21,7 @@ interface RefactorerNode {
 
 export class ComponentRefactorer {
 
-    public refactor(filePath: string) {
+    public refactor(filePath: string, options: { skipLoopDetection?: boolean } = {}) {
         console.log(`🚀 [Refactorer] Starting conversion for: ${path.basename(filePath)}`);
         if (!fs.existsSync(filePath)) {
             console.error(`❌ File not found: ${filePath}`);
@@ -29,13 +29,13 @@ export class ComponentRefactorer {
         }
 
         const content = fs.readFileSync(filePath, 'utf8');
-        const newContent = this.refactorCode(content, path.basename(filePath, '.ts'));
+        const newContent = this.refactorCode(content, path.basename(filePath, '.ts'), options);
 
         fs.writeFileSync(filePath, newContent);
         console.log(`🏁 [Refactorer] Conversion complete.`);
     }
 
-    public refactorCode(content: string, fileName: string = 'Component'): string {
+    public refactorCode(content: string, fileName: string = 'Component', options: { skipLoopDetection?: boolean } = {}): string {
         // Extract 'create' method body using brace counting
         let bodyContent = content;
         const createStartRegex = /async create\s*\([^)]*\)\s*:\s*Promise<SceneNode>\s*\{/;
@@ -128,9 +128,14 @@ export class ComponentRefactorer {
         }
 
         // 4. Generate Definition JSON
-        const definition = this.generateDefinition(nodes, rootId, assets);
+        let definition = this.generateDefinition(nodes, rootId, assets);
 
-        // 5. Generate New File Content
+        // 5. Post-process (Optimization: Loops, Conditionals)
+        if (!options.skipLoopDetection) {
+            definition = this.postProcessDefinition(definition);
+        }
+
+        // 6. Generate New File Content
         return this.generateFileContent(fileName, definition, assets, content, nodes);
     }
 

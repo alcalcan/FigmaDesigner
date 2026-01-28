@@ -1,134 +1,70 @@
-import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
-import { saveItem, stopSpinner } from '../utils';
-import { PngExporter } from '../server_tools/PngExporter';
-import { setPendingCommand } from '../state';
+import * as http from 'http';
+import { FullProceduralPipeline } from '../server_tools/FullProceduralPipeline';
+import { ComponentGenerator } from '../server_tools/ComponentGenerator';
+import { ComponentRefactorer } from '../server_tools/ComponentRefactorer';
+import { CompactStructure } from '../server_tools/CompactStructure';
 
-export function handleSave(req: http.IncomingMessage, res: http.ServerResponse) {
+export async function handleSave(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
-            const payload = JSON.parse(body);
-            const data = payload.data; // Array of items
-
-            // Process each item in the payload
-            if (Array.isArray(data)) {
-                data.forEach(item => {
-                    saveItem(item, payload.projectName || "Unknown_Project");
-                });
-            }
-
-            console.log("✅ Capture saved successfully.");
-            stopSpinner();
-            setPendingCommand(null); // Ready for next command
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ status: 'ok' }));
-        } catch (e: unknown) {
-            const error = e as Error;
-            console.error("Error saving data:", error.message);
-            res.writeHead(500);
-            res.end(JSON.stringify({ error: error.message }));
-        }
-    });
-}
-
-export function handleSaveAsset(req: http.IncomingMessage, res: http.ServerResponse) {
-    let body = '';
-    req.on('data', chunk => { body += chunk.toString(); });
-    req.on('end', () => {
-        try {
-            const { projectName, fileName, content, componentName } = JSON.parse(body);
-            if (!projectName || !fileName || !content) {
-                res.writeHead(400);
-                res.end(JSON.stringify({ error: "Missing required fields" }));
+            const parsed = JSON.parse(body);
+            const { path: relativePath, project, procedural, simplified, refactor } = parsed;
+            const fullPath = path.join(process.cwd(), 'tools', 'extraction', relativePath);
+            if (!fs.existsSync(fullPath)) {
+                res.writeHead(404);
+                res.end(JSON.stringify({ error: "File not found" }));
                 return;
             }
 
-            const sanitaryProjectName = projectName.replace(/[^a-z0-9]/gi, '_');
-            let assetDir = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName, 'assets');
+            const projectName = project || "Default";
+            const componentName = path.basename(fullPath, '.json');
+            const savedPath = fullPath;
 
-            if (componentName) {
-                console.log(`[Bridge] Saving asset for ${componentName} to shared extraction assets.`);
-            }
+            const isProcedural = procedural === true;
+            const isRefactor = refactor !== false;
+            const isCompact = simplified !== false || parsed.options?.compact === true;
 
-            if (!fs.existsSync(assetDir)) {
-                fs.mkdirSync(assetDir, { recursive: true });
-            }
-
-            const filePath = path.join(assetDir, fileName);
-            const buffer = Buffer.from(content, 'base64');
-            fs.writeFileSync(filePath, buffer);
-
-            console.log(`   Asset Saved: tools/extraction/${sanitaryProjectName}/assets/${fileName}`);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ status: 'ok', path: `assets/${fileName}` }));
-        } catch (e: unknown) {
-            const error = e as Error;
-            console.error("Error saving asset:", error.message);
-            res.writeHead(500);
-            res.end(JSON.stringify({ error: error.message }));
-        }
-    });
-}
-
-export function handleReadAsset(req: http.IncomingMessage, res: http.ServerResponse) {
-    const url = new URL(req.url!, `http://${req.headers.host}`);
-    const projectName = url.searchParams.get('project');
-    const assetPath = url.searchParams.get('path');
-
-    if (projectName === null || !assetPath) {
-        res.writeHead(400);
-        res.end(JSON.stringify({ error: "Missing project or path parameter" }));
-        return;
-    }
-
-    const fullPath = path.join(process.cwd(), 'tools', 'extraction', projectName, assetPath);
-    if (!fs.existsSync(fullPath)) {
-        res.writeHead(404);
-        res.end(JSON.stringify({ error: "Asset not found" }));
-        return;
-    }
-
-    try {
-        const content = fs.readFileSync(fullPath);
-        const base64 = content.toString('base64');
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ content: base64 }));
-    } catch (e: unknown) {
-        const error = e as Error;
-        res.writeHead(500);
-        res.end(JSON.stringify({ error: error.message }));
-    }
-}
-
-export function handleSavePng(req: http.IncomingMessage, res: http.ServerResponse) {
-    const chunks: Buffer[] = [];
-    req.on('data', chunk => { chunks.push(chunk); });
-    req.on('end', () => {
-        try {
-            const body = Buffer.concat(chunks).toString('utf8');
-            if (!body) throw new Error("Empty request body");
-
-            const { projectName, packets } = JSON.parse(body);
-            if (!projectName || !packets) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: "Missing projectName or packets" }));
+            if (isProcedural) {
+                console.log(`[Bridge] Triggering Full Procedural Pipeline for: ${componentName}`);
+                await FullProceduralPipeline.run(savedPath, projectName, componentName);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', savedPath: relativePath }));
                 return;
             }
 
-            console.log(`[Bridge] Using PngExporter for ${packets.length} PNGs...`);
-            const exporter = new PngExporter();
-            const files = exporter.savePackets(projectName, packets);
+            // Standard Code Generation (Non-procedural)
+            if (isRefactor || isCompact) {
+                console.log(`[Bridge] Simplification requested for ${savedPath}: Refactor=${isRefactor}, Compact=${isCompact}`);
+
+                // If the .ts file doesn't exist, we might need to generate it first?
+                // Usually /save is called after generation, but let's be safe.
+                const tsPath = savedPath.replace('.json', '.ts');
+                if (!fs.existsSync(tsPath)) {
+                    const generator = new ComponentGenerator();
+                    generator.generate(savedPath, projectName, false, componentName);
+                }
+
+                if (isRefactor) {
+                    new ComponentRefactorer().refactor(tsPath);
+                }
+
+                if (isCompact) {
+                    new CompactStructure().compact(tsPath);
+                }
+            }
 
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ status: 'ok', files }));
+            res.end(JSON.stringify({ status: 'ok', savedPath: relativePath }));
+
         } catch (e: unknown) {
             const error = e as Error;
-            console.error("❌ Error saving PNG via Exporter:", error.message);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ status: 'error', error: error.message }));
+            console.error("Error saving/generating:", error.message);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: error.message }));
         }
     });
 }
@@ -136,9 +72,16 @@ export function handleSavePng(req: http.IncomingMessage, res: http.ServerRespons
 export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
-            const { projectName, name, data, assets } = JSON.parse(body);
+            const parsed = JSON.parse(body);
+            const { projectName, name, data, assets, procedural, simplified } = parsed;
+
+            // Check for options or direct procedural flag. 
+            const isProcedural = procedural === true || parsed.options?.procedural === true;
+            const isSimplified = simplified === true || parsed.options?.simplified === true;
+
+            console.log(`[Bridge] handling SavePacket. Procedural? ${isProcedural}, Simplified? ${isSimplified}`);
 
             // 1. Prepare Directory: tools/extraction/[Project]/[Name]_[Timestamp]
             const sanitaryProjectName = (projectName || "Default").replace(/[^a-z0-9]/gi, '_');
@@ -175,9 +118,28 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             }
 
             console.log(`   Saved Packet: ${folderName}`);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
 
-            // Return relative path to the JSON file so UI can trigger generation
+            // 4. GENERATION
+            // If the user requested procedural or simplified generation, we do it NOW and AWAIT it.
+            if (isProcedural) {
+                console.log(`[Bridge] Auto-generating Procedural Code for ${sanitaryName}...`);
+                await FullProceduralPipeline.run(jsonPath, sanitaryProjectName, sanitaryName);
+            } else if (isSimplified || parsed.options?.refactor !== false) {
+                console.log(`[Bridge] Auto-generating Code for ${sanitaryName} (Simplified=${isSimplified})...`);
+
+                const generator = new ComponentGenerator();
+                const result = generator.generate(jsonPath, sanitaryProjectName, false, sanitaryName);
+
+                if (parsed.options?.refactor !== false) {
+                    new ComponentRefactorer().refactor(result.tsPath);
+                }
+
+                if (isSimplified) {
+                    new CompactStructure().compact(result.tsPath);
+                }
+            }
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
             const relativeJsonPath = path.join(sanitaryProjectName, folderName, `${sanitaryName}.json`);
             res.end(JSON.stringify({ status: 'ok', savedPath: relativeJsonPath }));
 

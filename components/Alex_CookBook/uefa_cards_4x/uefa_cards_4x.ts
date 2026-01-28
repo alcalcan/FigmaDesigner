@@ -1,3 +1,5 @@
+// DO NOT TOUCH THIS FILE EVER! IT IS AUTO-GENERATED!
+
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 // Assets

@@ -213,12 +213,13 @@
                 style="padding: 12px; border-top: 1px solid #2a2a2a; background: #252525; display: none;">
                 <button id="generate-from-selected-btn" class="success" style="font-size: 12px;">Generate
                     Selected</button>
-                <div style="margin-top: 8px;">
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="simplified-code-checkbox" checked> Simplified Code (Refactor)
+                <div style="margin-top: 8px; display: flex; gap: 12px; align-items: center;">
+                    <label class="checkbox-row" style="margin: 0;">
+                        <input type="radio" name="json_gen_mode" id="simplified-code-checkbox" checked> Simplified
+                        Refactor
                     </label>
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="procedural-gen-checkbox"> Procedural Generation (Beta)
+                    <label class="checkbox-row" style="margin: 0;">
+                        <input type="radio" name="json_gen_mode" id="procedural-gen-checkbox"> Procedural Gen
                     </label>
                 </div>
                 <button id="convert-to-code-btn" class="secondary" style="font-size: 12px; margin-top: 4px;">Convert to
@@ -248,18 +249,21 @@
                 <button id="capture-clipboard-btn" class="secondary" style="margin-top: 8px;">Capture to
                     Clipboard</button>
                 <div style="margin-top: 12px;">
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="process-checkbox" checked> <span
-                            style="color: #fff; font-weight: 600;">Process & Refactor (Auto)</span>
-                    </label>
+                    <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
+                        <label class="checkbox-row" style="margin: 0;">
+                            <input type="radio" name="bridge_capture_mode" id="process-checkbox" checked> <span
+                                style="color: #fff; font-weight: 600;">Process & Refactor</span>
+                        </label>
+                        <label class="checkbox-row" style="margin: 0;">
+                            <input type="radio" name="bridge_capture_mode" id="procedural-gen-checkbox-capture"> <span
+                                style="color: #fff; font-weight: 600;">Procedural Gen</span>
+                        </label>
+                    </div>
                     <label class="checkbox-row">
                         <input type="checkbox" id="detailed-checkbox" checked> Recursive (Deep Capture)
                     </label>
                     <label class="checkbox-row" style="margin-top: 4px;">
                         <input type="checkbox" id="vector-json-checkbox"> Save Vector in JSON (Slow)
-                    </label>
-                    <label class="checkbox-row" style="margin-top: 4px;">
-                        <input type="checkbox" id="procedural-gen-checkbox-capture"> Procedural Generation (Beta)
                     </label>
                 </div>
             </div>
@@ -418,8 +422,16 @@
                 console.log("Sync button clicked");
                 const isDetailed = detailedCheckbox.checked;
                 const saveVectorInJson = vectorJsonCheckbox.checked;
-                console.log(`Sending capture-bridge request. Detailed: ${isDetailed}, SaveVector: ${saveVectorInJson}`);
-                parent.postMessage({ pluginMessage: { type: 'capture-bridge', detailed: isDetailed, saveVectorInJson: saveVectorInJson } }, '*')
+                const isProcedural = proceduralGenCheckboxCapture.checked;
+                console.log(`Sending capture-bridge request. Detailed: ${isDetailed}, SaveVector: ${saveVectorInJson}, Procedural: ${isProcedural}`);
+                parent.postMessage({
+                    pluginMessage: {
+                        type: 'capture-bridge',
+                        detailed: isDetailed,
+                        saveVectorInJson: saveVectorInJson,
+                        procedural: isProcedural
+                    }
+                }, '*')
                 // Feedback will be triggered on result message for precision, 
                 // but let's do immediate for responsiveness too
                 showFeedback(syncBtn, "Capture Sync (to Disk)");
@@ -429,7 +441,6 @@
                 console.log("Capture PNG button clicked");
                 parent.postMessage({ pluginMessage: { type: 'capture-png' } }, '*');
                 showFeedback(capturePngBtn, "Capture PNG", "Capturing...");
-                showFeedback(capturePngBtn, "Capture PNG", "Capturing...");
             }
 
             captureClipboardBtn.onclick = () => {
@@ -438,12 +449,14 @@
 
                 const isDetailed = detailedCheckbox.checked;
                 const saveVectorInJson = vectorJsonCheckbox.checked;
+                const isProcedural = proceduralGenCheckboxCapture.checked;
 
                 parent.postMessage({
                     pluginMessage: {
                         type: 'capture-preview', // Reuse preview capture logic
                         detailed: isDetailed,
                         saveVectorInJson: saveVectorInJson,
+                        procedural: isProcedural,
                         skipAssets: false // We need assets for generation context, even if transient
                     }
                 }, '*');
@@ -1097,13 +1110,17 @@
                         const packets = msg.packets || [];
                         console.log(`Sending ${packets.length} packets to bridge`);
 
-                        const processAuto = document.getElementById('process-checkbox').checked;
+                        const processAuto = document.getElementById('process-checkbox').checked || document.getElementById('procedural-gen-checkbox-capture').checked;
                         const rawProjectName = msg.projectName || "Default";
                         const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
 
                         if (packets.length > 0) {
                             // Sequential processing to allow chaining
                             for (const packet of packets) {
+                                // Important: gather procedural state from the CAPTURE checkbox here
+                                const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
+                                const isSimplified = document.getElementById('process-checkbox').checked;
+
                                 const res = await fetch('http://127.0.0.1:3001/save-packet', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
@@ -1111,7 +1128,9 @@
                                         projectName: sanitaryProjectName,
                                         name: packet.name,
                                         data: packet.data,
-                                        assets: packet.assets
+                                        assets: packet.assets,
+                                        procedural: isProcedural,
+                                        simplified: isSimplified
                                     })
                                 });
 
@@ -1119,7 +1138,7 @@
 
                                 if (processAuto && json.savedPath) {
                                     showFeedback(syncBtn, "Capture Sync (to Disk)", "Refactoring...");
-                                    console.log(`[Auto Process] Triggering generation for ${json.savedPath}`);
+                                    console.log(`[Auto Process] Triggering generation for ${json.savedPath}. Procedural: ${isProcedural}`);
 
                                     await fetch('http://127.0.0.1:3001/generate-to-code', {
                                         method: 'POST',
@@ -1127,7 +1146,8 @@
                                         body: JSON.stringify({
                                             path: json.savedPath,
                                             project: sanitaryProjectName,
-                                            simplified: true
+                                            simplified: true,
+                                            procedural: isProcedural
                                         })
                                     });
                                 }
@@ -1200,6 +1220,7 @@
                             console.log("[Clipboard] Using /generate-clipboard endpoint");
                             isClipboardCapture = false; // Reset flag
 
+                            const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
                             const response = await fetch('http://127.0.0.1:3001/generate-clipboard', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -1208,7 +1229,7 @@
                                     options: {
                                         refactor: processCheckbox.checked,
                                         compact: processCheckbox.checked ? !exactRefactorCheckbox.checked : false,
-                                        procedural: proceduralGenCheckboxCapture.checked
+                                        procedural: isProcedural
                                     }
                                 })
                             });

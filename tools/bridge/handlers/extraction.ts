@@ -39,7 +39,40 @@ export function handleRead(req: http.IncomingMessage, res: http.ServerResponse) 
     }
 
     const fullPath = path.join(process.cwd(), 'tools', 'extraction', filePath);
-    if (!fs.existsSync(fullPath) || !fullPath.startsWith(path.join(process.cwd(), 'tools', 'extraction'))) {
+    const componentsPath = path.join(process.cwd(), 'components', filePath);
+
+    let targetPath = fullPath;
+    let allowed = false;
+
+    // Check if it is in extraction
+    if (fullPath.startsWith(path.join(process.cwd(), 'tools', 'extraction')) && fs.existsSync(fullPath)) {
+        targetPath = fullPath;
+        allowed = true;
+    }
+    // Check if it is in components (UI might request components/Project/Name.ts or similar)
+    // The UI likely sends the relative path from "extraction" root for extraction files,
+    // but for components it might send "Project/Component/Comp.ts".
+    // Let's verify if the filePath passed is purely relative.
+
+    // Attempt to resolve in components dir if not found in extraction
+    if (!allowed && fs.existsSync(componentsPath)) {
+        if (componentsPath.startsWith(path.join(process.cwd(), 'components'))) {
+            targetPath = componentsPath;
+            allowed = true;
+            console.log(`[Bridge] Reading component file: ${filePath}`);
+        }
+    }
+
+    if (!allowed) {
+        // One more fallback: maybe the UI sends "components/Project/..." explicitly?
+        const explicitPath = path.join(process.cwd(), filePath);
+        if (explicitPath.startsWith(path.join(process.cwd(), 'components')) && fs.existsSync(explicitPath)) {
+            targetPath = explicitPath;
+            allowed = true;
+        }
+    }
+
+    if (!allowed) {
         res.writeHead(404);
         res.end(JSON.stringify({ error: "File not found or access denied" }));
         return;
