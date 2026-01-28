@@ -67,6 +67,8 @@ export const createText = (name: string, text: string, fontSize: number, style: 
             parentIsAutoLayout: true,
             layoutPositioning: "AUTO",
             ...DEFAULT_LAYOUT_PROPS,
+            width: undefined, // Default to undefined to allow textAutoResize to control size
+            height: undefined,
             ...ovrLayoutProps
         }
     };

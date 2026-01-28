@@ -112,6 +112,8 @@ export class uefa_cards_4x_standard extends BaseComponent {
       return createFrame("Card 1", {
         layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 343, height: 441 },
         layoutMode: "VERTICAL",
+        cornerRadius: 12,
+        clipsContent: true,
         fills: [{
           visible: true,
           opacity: 1,
@@ -146,10 +148,12 @@ export class uefa_cards_4x_standard extends BaseComponent {
           paddingLeft: 16
         }, [
           createText(item.title, item.title, 20, "SemiBold", COLORS.DARK, {
-            layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 311, height: 54 }
+            layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 311, height: 54 },
+            font: { family: "Open Sans", style: "SemiBold" }
           }),
           createText(item.description, item.description, 14, "Regular", COLORS.DARK, {
-            layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 311, height: 57 }
+            layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 311, height: 57 },
+            font: { family: "Open Sans", style: "Regular" }
           }),
           createFrame("Footer", {
             layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 311, height: 37 },
@@ -157,15 +161,19 @@ export class uefa_cards_4x_standard extends BaseComponent {
             itemSpacing: 4
           }, [
             createFrame("Author Info", {
-              layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 95, height: 19 },
+              layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO" },
               layoutMode: "HORIZONTAL",
+              primaryAxisSizingMode: "AUTO",
+              counterAxisSizingMode: "AUTO",
               itemSpacing: 4
             }, [
               createText("by", "by ", 12, "Light", COLORS.GREY_TEXT, {
-                layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 13, height: 16 }
+                layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO" },
+                font: { family: "Open Sans", style: "Light" }
               }),
               createText(item.author, item.author, 14, "SemiBold", COLORS.GREY_TEXT, {
-                layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 78, height: 19 }
+                layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO" },
+                font: { family: "Open Sans", style: "SemiBold" }
               })
             ]),
             createFrame("Rating Block", {
@@ -174,7 +182,8 @@ export class uefa_cards_4x_standard extends BaseComponent {
               itemSpacing: 6
             }, [
               createText("Relevance", "Relevance", 10, "SemiBold", COLORS.RATING_TEXT, {
-                layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 49, height: 14 }
+                layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 49, height: 14 },
+                font: { family: "Open Sans", style: "SemiBold" }
               }),
               createFrame("Rating Stars", {
                 layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 64, height: 12 },
