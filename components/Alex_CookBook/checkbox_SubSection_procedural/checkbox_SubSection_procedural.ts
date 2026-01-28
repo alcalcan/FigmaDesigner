@@ -1,66 +1,47 @@
 
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-// Assets
-// External: SVG_checkbox_SubSection_procedural_assets_icon_Vector_1077_804_svg_12x7_400000095367432
+import { createFrame, createText, createVector } from "../../ComponentHelpers";
+
+// --- Assets ---
+
 
 // --- Constants & Defaults ---
 const COLORS = {
     WHITE: { r: 1, g: 1, b: 1 },
-    BLACK: { r: 0, g: 0, b: 0 }
+    BLACK: { r: 0, g: 0, b: 0 },
+    TRANSPARENT: { r: 0, g: 0, b: 0, a: 0 }
 };
 
 const DEFAULT_PROPS = {
-    visible: true, opacity: 1, locked: false, blendMode: "PASS_THROUGH",
-    isMask: false, maskType: "ALPHA",
-    strokes: [], fills: [], effects: [], cornerRadius: 0
+    visible: true, 
+    opacity: 1, 
+    locked: false, 
+    blendMode: "PASS_THROUGH",
+    isMask: false, 
+    maskType: "ALPHA",
+    strokes: [], 
+    fills: [], 
+    effects: [], 
+    cornerRadius: 0
 };
 
-
-
-
-// --- Helper Functions ---
-
-const createFrame = (name: string, overrides: any = {}, children: any[] = []) => ({
-    type: "FRAME" as const,
-    name,
-    props: { ...DEFAULT_PROPS, ...overrides },
-    children: children.filter(c => c !== null), // Filter nulls for optional children
-    layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", ...overrides.layoutProps }
-});
-
-const createText = (name: string, text: string, fontSize: number, style: string, color: any, overrides: any = {}) => ({
-    type: "TEXT" as const,
-    name,
-    props: {
-        ...DEFAULT_PROPS,
-        strokeAlign: "OUTSIDE",
-        characters: text,
-        fontSize,
-        font: { family: "Open Sans", style },
-        fills: [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color }],
-        textAlignHorizontal: "LEFT", textAlignVertical: "TOP", textAutoResize: "WIDTH_AND_HEIGHT",
-        paragraphSpacing: 0, paragraphIndent: 0,
-        ...overrides
-    },
-    layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", ...overrides.layoutProps }
-});
-
-const createVector = (name: string, svgContent: string, overrides: any = {}) => {
-    if (!svgContent) return null; // Handle missing data (optional node)
-    return {
-        type: "VECTOR" as const,
-        shouldFlatten: true,
-        name,
-        props: { ...DEFAULT_PROPS, ...overrides },
-        layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", ...overrides.layoutProps },
-        svgContent
-    };
+const DEFAULT_LAYOUT_PROPS = {
+    width: 100,
+    height: 100,
+    itemSpacing: 0,
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    counterAxisSizingMode: "FIXED",
+    primaryAxisSizingMode: "FIXED"
 };
+
 
 
 export class checkbox_SubSection_procedural extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
-        const structure: NodeDefinition = createFrame("Empty", {}, []);
+        const structure: NodeDefinition = createFrame("Empty (Conversion Failed)", {}, []);
         
         const root = await this.renderDefinition(structure);
         root.x = props.x;

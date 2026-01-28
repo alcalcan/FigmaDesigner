@@ -4,8 +4,6 @@
 export { Button } from "./Newsletter/Button";
 export { button_set } from "./UEFA_Academy_online/button_set/button_set";
 export { card } from "./UEFA_Academy_online/card/card";
-export { Card_1 } from "./Alex_CookBook/Card_1/Card_1";
-export { Card_3 } from "./Alex_CookBook/Card_3/Card_3";
 export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
 export { checkbox_element as checkbox_element_Alex_CookBook } from "./Alex_CookBook/checkbox_element/checkbox_element";
 export { checkbox_element as checkbox_element_Competition_newsletters } from "./Competition_newsletters/checkbox_element/checkbox_element";

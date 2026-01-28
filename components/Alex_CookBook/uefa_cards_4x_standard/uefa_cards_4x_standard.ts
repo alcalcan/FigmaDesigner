@@ -1,4 +1,4 @@
-
+// DO NOT MODIFY!!
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { createFrame, createText, createVector } from "../../ComponentHelpers";
 

@@ -63,11 +63,22 @@ export class ProceduralConverter {
                     const sandbox: any = {
                         COLORS: { WHITE: { r: 1, g: 1, b: 1 }, BLACK: { r: 0, g: 0, b: 0 } },
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        createFrame: (name: string, props: any = {}, children: any[] = []) => ({ type: 'FRAME', name, props, children }),
+                        createFrame: (name: string, props: any = {}, children: any[] = []) => {
+                            const { layoutProps, ...rest } = props;
+                            return { type: 'FRAME', name, props: rest, layoutProps, children };
+                        },
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        createText: (name: string, text: string, fontSize: number, style: string, color: any, props: any = {}) => ({ type: 'TEXT', name, props: { ...props, characters: text, fontSize, font: { family: 'Inter', style }, fills: [{ type: 'SOLID', color }] }, children: [] }),
+                        createText: (name: string, text: string, fontSize: number, style: string, color: any, props: any = {}) => {
+                            const { layoutProps, ...rest } = props;
+                            // Ensure font family is captured if present in rest, otherwise default to Inter
+                            const font = rest.font || { family: 'Inter', style };
+                            return { type: 'TEXT', name, props: { ...rest, characters: text, fontSize, font, fills: [{ type: 'SOLID', color }] }, layoutProps, children: [] };
+                        },
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        createVector: (name: string, svgContent: string, props: any = {}) => ({ type: 'VECTOR', name, props, children: [], svgContent })
+                        createVector: (name: string, svgContent: string, props: any = {}) => {
+                            const { layoutProps, ...rest } = props;
+                            return { type: 'VECTOR', name, props: rest, layoutProps, children: [], svgContent };
+                        }
                     };
                     this.assets.forEach((val, key) => sandbox[key] = key); // Map var to its name
 
@@ -164,7 +175,8 @@ export class ProceduralConverter {
         // Match external imports
         const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+) from ["']([^"']+)["'];/g;
         while ((match = importRegex.exec(content)) !== null) {
-            this.assets.set(match[1], `__EXTERNAL_REF__${match[1]}`);
+            // Store original path
+            this.assets.set(match[1], `__EXTERNAL_REF__${match[2]}`);
         }
     }
 
@@ -327,16 +339,38 @@ export class ProceduralConverter {
         if (target.type !== source.type) return;
 
         if (source.children && target.children) {
-            for (const sChild of source.children) {
-                // Find matching child in target by Name + Type
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const tChild = target.children.find((t: any) => t.name === sChild.name && t.type === sChild.type);
-                if (tChild) {
-                    this.mergeTwoTrees(tChild, sChild);
-                } else {
-                    // New node discovered in this instance! Add it to the superset template.
-                    target.children.push(JSON.parse(JSON.stringify(sChild)));
+            // Updated to use index-based alignment.
+            // This ensures that structurally similar nodes (like auto-named Text layers) 
+            // are merged correctly instead of being duplicated.
+            // This aligns with extractSchema which uses index-based paths.
+
+            const len = Math.max(target.children.length, source.children.length);
+
+            for (let i = 0; i < len; i++) {
+                if (i < source.children.length) {
+                    const sChild = source.children[i];
+
+                    if (i < target.children.length) {
+                        const tChild = target.children[i];
+                        // If types match, we assume they are the same node in the sequence
+                        if (tChild.type === sChild.type) {
+                            this.mergeTwoTrees(tChild, sChild);
+                        } else {
+                            // Type mismatch at this specific index. 
+                            // This implies the lists are not strictly structurally identical.
+                            // We choose NOT to merge mismatched types to avoid corrupting the template properties.
+                            // (e.g. merging a Frame into a Text node would be bad)
+                            // We implicitly leave tChild as is (from the first card).
+                            // sChild's unique data at this index might be lost to the schema if tChild doesn't support it,
+                            // but extractSchema handles variable extraction based on Item 1's structure.
+                        }
+                    } else {
+                        // Source has more items than Target (Template). Append.
+                        target.children.push(JSON.parse(JSON.stringify(sChild)));
+                    }
                 }
+                // If i >= source.length, we define that target has extra items. 
+                // We leave them alone (they remain in the template).
             }
         }
     }
@@ -804,8 +838,8 @@ export class ProceduralConverter {
             })
             .map(([k, v]) => {
                 if (v.startsWith('__EXTERNAL_REF__')) {
-                    const fileName = k.replace('SVG_', '').replace('IMG_', '') + (k.startsWith('SVG_') ? '.svg' : '.png');
-                    return `import ${k} from "./assets/${fileName}";`;
+                    const originalPath = v.replace('__EXTERNAL_REF__', '');
+                    return `import ${k} from "${originalPath}";`;
                 }
                 return `const ${k} = \`${v}\`;`;
             }).join('\n');
@@ -891,10 +925,7 @@ export class ${className} extends BaseComponent {
                     const listVar = `LIST_${lists.indexOf(listMatch)}_DATA`;
                     const itemExpr = this.generateTemplateItem(listMatch.template, listMatch.schema.variablePaths);
 
-                    // Ported State Logic (Checkbox/Selection)
-                    const checkboxLogic = this.generateStateLogic();
-
-                    const mapExpr = `${listVar}.map(item => {\n            const node = ${itemExpr} as unknown as NodeDefinition;\n${checkboxLogic}\n            return node;\n        })`;
+                    const mapExpr = `${listVar}.map(item => {\n            return ${itemExpr} as unknown as NodeDefinition;\n        })`;
                     childGroups.push(`...${mapExpr}`);
 
                     // Mark all items in this list as processed
@@ -927,46 +958,7 @@ export class ${className} extends BaseComponent {
         return `const structure: NodeDefinition = ${rootExpr};`;
     }
 
-    private generateStateLogic(): string {
-        return `
-            // Logic: Bind states to selection and checkbox
-            const shape = findShape(node);
-            if (shape) {
-                if (shape.children && shape.children.length > 1) {
-                     shape.children[1].props = shape.children[1].props || {};
-                     // Force checkmark visibility when selected
-                     shape.children[1].props.visible = !!item.isSelected || !!item.isCheckboxActive;
 
-                     // Visual State Toggling (Stroke vs Fill)
-                     shape.props = shape.props || {};
-                     if (item.isSelected || item.isCheckboxActive) {
-                         shape.props.strokes = [];
-                     } else {
-                         shape.props.fills = [];
-                         shape.props.strokes = [{
-                             "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                             "color": { "r": 0.1, "g": 0.2, "b": 0.24 }
-                         }];
-                         shape.props.strokeWeight = 2;
-                         shape.props.strokeAlign = "INSIDE";
-                     }
-                }
-            }
-
-            if (item.isSelected) {
-                node.props = node.props || {};
-                node.props.fills = [{
-                    type: "SOLID",
-                    visible: true,
-                    opacity: 1,
-                    blendMode: "NORMAL",
-                    color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 },
-                }];
-            } else {
-                if (node.props) node.props.fills = [];
-            }
-`;
-    }
 
     // Generates code from a God JSON template
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -998,7 +990,7 @@ export class ${className} extends BaseComponent {
                 textArg = `${prefix}.${key}`;
             }
 
-            return `createText("${node.name}", ${textArg}, ${node.props.fontSize || 12}, "${node.props.font?.style || "Regular"}", COLORS.BLACK, ${overrides})`;
+            return `createText("${node.name}", ${textArg}, ${node.props.fontSize || 12}, "${node.props.font?.style || "Regular"}", COLORS.BLACK, ${this.stringifyOverrides(overrides)})`;
         }
 
         // Generate Vector
@@ -1009,7 +1001,7 @@ export class ${className} extends BaseComponent {
                 const key = this.pathToName(contentPath, null, node).replace(/[^a-zA-Z0-9_]/g, '');
                 svgArg = `${prefix}.${key}`;
             }
-            return `createVector("${node.name}", ${svgArg}, ${overrides})`;
+            return `createVector("${node.name}", ${svgArg}, ${this.stringifyOverrides(overrides)})`;
         }
 
         // Generate Frame (Image Fill Check)
@@ -1019,23 +1011,34 @@ export class ${className} extends BaseComponent {
                 const key = this.pathToName(fillPath, null, node).replace(/[^a-zA-Z0-9_]/g, '');
                 const fillObj = `{ visible: true, opacity: 1, blendMode: "NORMAL", type: "IMAGE", scaleMode: "FILL", assetRef: ${prefix}.${key} }`;
 
-                // Fix: Check if overrides already has fills and replace it, otherwise append
-                let over = overrides.trim();
-                if (over.match(/"fills":/)) {
-                    over = over.replace(/"fills":\s*\[[^\]]*\]/, `"fills": [${fillObj}]`);
+                // Handle dynamic fill: Replace static fills with dynamic one
+                // Since overrides is an object, we can safely overwrite the fills array
+                // Wait, fillObj is a string "{ ... }".
+                // If we put it in overrides.fills = ["{...}"], result is fills: ["{...}"] (string).
+                // We want fills: [{...}] (object).
+                // Standard stringifyOverrides will stringify the object.
+                // If we put a string in the array, it becomes a string in JSON.
+
+                // Hack: We need to inject this RAW.
+                // So we delete fills from overrides, stringify, then append.
+                delete overrides.fills;
+                let overStr = this.stringifyOverrides(overrides);
+
+                if (overStr.trim() === "{}") {
+                    overStr = `{ fills: [${fillObj}] }`;
                 } else {
-                    over = over.replace(/\}$/, `, "fills": [${fillObj}] }`);
+                    overStr = overStr.replace(/\}$/, `, "fills": [${fillObj}] }`);
                 }
 
-                return `createFrame("${node.name}", ${over}, ${childrenCode})`;
+                return `createFrame("${node.name}", ${overStr}, ${childrenCode})`;
             }
         }
 
-        return `createFrame("${node.name}", ${overrides}, ${childrenCode})`;
+        return `createFrame("${node.name}", ${this.stringifyOverrides(overrides)}, ${childrenCode})`;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private serializePropsFromJSON(node: any): string {
+    private serializePropsFromJSON(node: any): any {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const overrides: any = {};
         if (node.layoutProps && Object.keys(node.layoutProps).length > 0) {
@@ -1052,7 +1055,15 @@ export class ${className} extends BaseComponent {
                     layoutOverrides[key] = node.layoutProps[key];
                 }
             }
-            if (Object.keys(layoutOverrides).length > 0) overrides.layoutProps = layoutOverrides;
+            if (Object.keys(layoutOverrides).length > 0) {
+                // CROPPING FIX: If textAutoResize dictates usage of content size, we should NOT enforce fixed width/height
+                const p = node.props;
+                if (node.type === 'TEXT' && (p.textAutoResize === 'WIDTH_AND_HEIGHT' || p.textAutoResize === 'HEIGHT')) {
+                    delete layoutOverrides.width;
+                    delete layoutOverrides.height;
+                }
+                overrides.layoutProps = layoutOverrides;
+            }
         }
 
         const p = node.props;
@@ -1064,6 +1075,27 @@ export class ${className} extends BaseComponent {
         if (p.paddingLeft) overrides.paddingLeft = p.paddingLeft;
         if (p.fills && p.fills.length > 0) overrides.fills = p.fills;
 
+        // Corner Radius
+        if (p.cornerRadius !== undefined && p.cornerRadius !== 0) overrides.cornerRadius = p.cornerRadius;
+        if (p.topLeftRadius !== undefined) overrides.topLeftRadius = p.topLeftRadius;
+        if (p.topRightRadius !== undefined) overrides.topRightRadius = p.topRightRadius;
+        if (p.bottomRightRadius !== undefined) overrides.bottomRightRadius = p.bottomRightRadius;
+        if (p.bottomLeftRadius !== undefined) overrides.bottomLeftRadius = p.bottomLeftRadius;
+
+        // Text Layout Props
+        if (p.textAutoResize) overrides.textAutoResize = p.textAutoResize;
+        if (p.textAlignHorizontal) overrides.textAlignHorizontal = p.textAlignHorizontal;
+        if (p.textAlignVertical) overrides.textAlignVertical = p.textAlignVertical;
+
+        // Font Props
+        if (p.font) overrides.font = p.font;
+        else if (p.fontName) overrides.font = { family: p.fontName.family, style: p.fontName.style };
+
+        return overrides;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private stringifyOverrides(overrides: any): string {
         return JSON.stringify(overrides).replace(/"([^"]+)":/g, '$1:');
     }
 
@@ -1089,6 +1121,12 @@ export class ${className} extends BaseComponent {
             }
 
             if (Object.keys(layoutOverrides).length > 0) {
+                // CROPPING FIX: If textAutoResize dictates usage of content size, we should NOT enforce fixed width/height
+                const p = node.props;
+                if (node.type === 'TEXT' && (p.textAutoResize === 'WIDTH_AND_HEIGHT' || p.textAutoResize === 'HEIGHT')) {
+                    delete layoutOverrides.width;
+                    delete layoutOverrides.height;
+                }
                 overrides.layoutProps = layoutOverrides;
             }
         }
@@ -1103,10 +1141,25 @@ export class ${className} extends BaseComponent {
         if (p.paddingLeft) overrides.paddingLeft = p.paddingLeft;
 
         // Fills (only if not a simple SOLID white/black, handled by helpers usually)
-        // Actually, for Frames we often want the fills.
         if (p.fills && p.fills.length > 0) {
             overrides.fills = p.fills;
         }
+
+        // Corner Radius
+        if (p.cornerRadius !== undefined && p.cornerRadius !== 0) overrides.cornerRadius = p.cornerRadius;
+        if (p.topLeftRadius !== undefined) overrides.topLeftRadius = p.topLeftRadius;
+        if (p.topRightRadius !== undefined) overrides.topRightRadius = p.topRightRadius;
+        if (p.bottomRightRadius !== undefined) overrides.bottomRightRadius = p.bottomRightRadius;
+        if (p.bottomLeftRadius !== undefined) overrides.bottomLeftRadius = p.bottomLeftRadius;
+
+        // Text Layout Props
+        if (p.textAutoResize) overrides.textAutoResize = p.textAutoResize;
+        if (p.textAlignHorizontal) overrides.textAlignHorizontal = p.textAlignHorizontal;
+        if (p.textAlignVertical) overrides.textAlignVertical = p.textAlignVertical;
+
+        // Font Props
+        if (p.font) overrides.font = p.font;
+        else if (p.fontName) overrides.font = { family: p.fontName.family, style: p.fontName.style };
 
         // Serialize to string
         return JSON.stringify(overrides).replace(/"([^"]+)":/g, '$1:');

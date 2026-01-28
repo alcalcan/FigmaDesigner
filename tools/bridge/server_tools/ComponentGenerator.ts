@@ -430,8 +430,12 @@ export class ${this.componentName} extends BaseComponent {
                 isCurrentNodeAutoLayout = true;
 
                 if (data.layout.sizing) {
-                    if (data.layout.sizing.horizontal) code += `    ${varName}.primaryAxisSizingMode = "${data.layout.sizing.horizontal === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
-                    if (data.layout.sizing.vertical) code += `    ${varName}.counterAxisSizingMode = "${data.layout.sizing.vertical === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
+                    const isHorizontal = data.layout.mode === "HORIZONTAL";
+                    const primarySizing = isHorizontal ? data.layout.sizing.horizontal : data.layout.sizing.vertical;
+                    const counterSizing = isHorizontal ? data.layout.sizing.vertical : data.layout.sizing.horizontal;
+
+                    if (primarySizing) code += `    ${varName}.primaryAxisSizingMode = "${primarySizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
+                    if (counterSizing) code += `    ${varName}.counterAxisSizingMode = "${counterSizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
                 }
                 if (data.layout.alignment) {
                     if (data.layout.alignment.primary) {
