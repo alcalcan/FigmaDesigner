@@ -1,12 +1,11 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
 // Standardized Intermediate Representation (SIR) Node
 export interface SIRNode {
     id: string;
     type: string;
     name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     props: Record<string, any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     layoutProps: Record<string, any>;
     children: string[];
     parent: string | null;
@@ -63,8 +62,11 @@ export class ProceduralConverter {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const sandbox: any = {
                         COLORS: { WHITE: { r: 1, g: 1, b: 1 }, BLACK: { r: 0, g: 0, b: 0 } },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         createFrame: (name: string, props: any = {}, children: any[] = []) => ({ type: 'FRAME', name, props, children }),
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         createText: (name: string, text: string, fontSize: number, style: string, color: any, props: any = {}) => ({ type: 'TEXT', name, props: { ...props, characters: text, fontSize, font: { family: 'Inter', style }, fills: [{ type: 'SOLID', color }] }, children: [] }),
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         createVector: (name: string, svgContent: string, props: any = {}) => ({ type: 'VECTOR', name, props, children: [], svgContent })
                     };
                     this.assets.forEach((val, key) => sandbox[key] = key); // Map var to its name
@@ -235,8 +237,11 @@ export class ProceduralConverter {
     /**
      * Phase 2: Pattern Recognition & Data Extraction
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public detectPatterns(): { lists: any[], composites: any[] } {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const lists: any[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const composites: any[] = [];
 
         if (!this.rootId) {
@@ -481,6 +486,7 @@ export class ProceduralConverter {
         return true;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private extractSchema(itemIds: string[]): { variablePaths: string[], data: any[] } {
         // Identify which properties vary across items
         const firstId = itemIds[0];
@@ -488,7 +494,9 @@ export class ProceduralConverter {
 
         // Traverse first item to find ALL potential variable points
         // Returns map: "children[0].props.characters" -> "Some Text"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const extractValueMap = (node: SIRNode, prefix = ""): Map<string, any> => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const map = new Map<string, any>();
             const p = prefix ? prefix + "." : "";
 
@@ -506,6 +514,7 @@ export class ProceduralConverter {
             if (node.props.fills && Array.isArray(node.props.fills)) {
                 // Simplified: Check first fill's assetRef
                 // We map specific fills by index if needed
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 node.props.fills.forEach((fill: any, i: number) => {
                     if (fill.type === 'IMAGE' && fill.assetRef) {
                         map.set(`${p}props.fills[${i}].assetRef`, fill.assetRef);
@@ -636,6 +645,7 @@ export class ProceduralConverter {
         return { variablePaths, data };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private getValueAtPath(node: SIRNode, pathStr: string): any {
         // pathStr: children[0].children[1].props.characters
         // Parse parts: children[0], props.characters
@@ -643,6 +653,7 @@ export class ProceduralConverter {
         // Then access the final property on the node struct
 
         const parts = pathStr.split('.');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let current: any = node;
 
         for (let i = 0; i < parts.length; i++) {
@@ -667,6 +678,7 @@ export class ProceduralConverter {
         return current;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private safeAccess(obj: any, path: string): any {
         return path.split('.').reduce((o, k) => {
             if (o && k.includes('[')) {
@@ -679,7 +691,8 @@ export class ProceduralConverter {
         }, obj);
     }
 
-    private pathToName(pathStr: string, sampleValue: any, nodeContext: SIRNode): string {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+    private pathToName(pathStr: string, _sampleValue: any, _nodeContext: SIRNode): string {
         // Heuristics for naming data fields
 
         const p = pathStr.trim();
@@ -717,89 +730,12 @@ export class ProceduralConverter {
     /**
      * Phase 3: Abstraction (Factory Logic)
      */
-    public generateHelperFunctions(): string {
-        return `
-// --- Helper Functions ---
+    /**
+     * Phase 3: Abstraction (Factory Logic)
+     * (Deprecated: functionality moved to shared ComponentHelpers.ts)
+     */
+    // public generateHelperFunctions(): string { ... }
 
-const createFrame = (name: string, overrides: any = {}, children: any[] = []) => {
-    // Merge nested layoutProps if they exist in overrides
-    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
-    
-    return {
-        type: "FRAME" as const,
-        name,
-        props: { ...DEFAULT_PROPS, ...restOverrides },
-        children: children.filter(c => c !== null),
-        layoutProps: { 
-            parentIsAutoLayout: true, 
-            layoutPositioning: "AUTO", 
-            ...DEFAULT_LAYOUT_PROPS,
-            ...ovrLayoutProps 
-        }
-    };
-};
-
-const createText = (name: string, text: string, fontSize: number, style: string, color: any, overrides: any = {}) => {
-    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
-    
-    return {
-        type: "TEXT" as const,
-        name,
-        props: {
-            ...DEFAULT_PROPS,
-            strokeAlign: "OUTSIDE",
-            characters: text,
-            fontSize,
-            font: { family: "Inter", style },
-            fills: [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color }],
-            textAlignHorizontal: "LEFT", 
-            textAlignVertical: "TOP", 
-            textAutoResize: "WIDTH_AND_HEIGHT",
-            ...restOverrides
-        },
-        layoutProps: { 
-            parentIsAutoLayout: true, 
-            layoutPositioning: "AUTO", 
-            ...DEFAULT_LAYOUT_PROPS,
-            ...ovrLayoutProps 
-        }
-    };
-};
-
-const createVector = (name: string, svgContent: string, overrides: any = {}) => {
-    if (!svgContent) return null;
-    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
-    
-    return {
-        type: "VECTOR" as const,
-        shouldFlatten: true,
-        name,
-        props: { ...DEFAULT_PROPS, ...restOverrides },
-        layoutProps: { 
-            parentIsAutoLayout: true, 
-            layoutPositioning: "AUTO", 
-            ...DEFAULT_LAYOUT_PROPS,
-            ...ovrLayoutProps 
-        },
-        svgContent
-    };
-};
-
-const findShape = (n: any): any => {
-    if (n.name === 'Checkbox' && n.children) {
-        const shape = n.children.find((c: any) => c.name === 'Shape');
-        if (shape && shape.children && shape.children.length > 1) return shape;
-    }
-    if (n.children) {
-        for (const c of n.children) {
-            const s = findShape(c);
-            if (s) return s;
-        }
-    }
-    return null;
-};
-`;
-    }
 
     public convert(sourceCode: string, className: string): string {
         this.componentName = className;
@@ -812,8 +748,8 @@ const findShape = (n: any): any => {
         const { lists, composites } = this.detectPatterns();
         console.log(`[ProceduralConverter] Detection complete. Lists found: ${lists.length}, Composites: ${composites.length}`);
 
-        // Phase 3: Get Helpers
-        const helpers = this.generateHelperFunctions();
+        // Phase 3: Get Helpers (Replaced by relative import)
+        // const helpers = this.generateHelperFunctions();
 
         // Phase 4: Reconstruction
         const treeCode = this.generateTreeCode(this.rootId, lists);
@@ -822,7 +758,13 @@ const findShape = (n: any): any => {
         let dataDefs = '';
         lists.forEach((list, i) => {
             const varName = `LIST_${i}_DATA`;
-            // Clean up data keys to be valid identifiers
+
+            // FILTER: Only generate this list if it's used in the treeCode
+            if (!treeCode.includes(varName)) {
+                return;
+            }
+
+            // Clean up data keys and prepare for output
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const cleanedData = list.schema.data.map((d: any) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -832,15 +774,32 @@ const findShape = (n: any): any => {
                 }
                 return newObj;
             });
-            dataDefs += `const ${varName} = ${JSON.stringify(cleanedData, null, 2)};\n`;
+
+            // Serialize with variable references instead of strings for assets
+            let jsonString = JSON.stringify(cleanedData, null, 2);
+
+            // Replace quoted asset references with variable names
+            // matches "key": "IMG_..." or "SVG_..." -> "key": IMG_...
+            this.assets.forEach((val, key) => {
+                // Be careful not to replace partial matches if names are substrings
+                // We look for "ANY_KEY": "KEY_NAME"
+                // escape key for regex
+                const safeKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`: "${safeKey}"`, 'g');
+                jsonString = jsonString.replace(regex, `: ${key}`);
+            });
+
+            dataDefs += `const ${varName} = ${jsonString};\n`;
         });
 
         // Asset imports - Only include those that are actually used in the generated code
+        // and also check if they are used in the dataDefs (since we unquoted them)
         const allGeneratedCode = treeCode + dataDefs;
         const assetImports = Array.from(this.assets.entries())
             .filter(([k, v]) => {
                 if (v.startsWith('__ALIAS__')) return false;
                 // Heuristic: check if the variable name is used in the code
+                // Now that dataDefs uses variables, this check works for both direct usage and data usage
                 return allGeneratedCode.includes(k);
             })
             .map(([k, v]) => {
@@ -853,6 +812,7 @@ const findShape = (n: any): any => {
 
         return `
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { createFrame, createText, createVector } from "../../ComponentHelpers";
 
 // --- Assets ---
 ${assetImports}
@@ -891,8 +851,6 @@ const DEFAULT_LAYOUT_PROPS = {
 
 ${dataDefs}
 
-${helpers}
-
 export class ${className} extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         ${treeCode}
@@ -906,6 +864,7 @@ export class ${className} extends BaseComponent {
         `;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private generateTreeCode(nodeId: string | null, lists: any[]): string {
         if (!nodeId) {
             console.warn("[ProceduralConverter] No rootId found during tree code generation.");
@@ -935,7 +894,7 @@ export class ${className} extends BaseComponent {
                     // Ported State Logic (Checkbox/Selection)
                     const checkboxLogic = this.generateStateLogic();
 
-                    const mapExpr = `${listVar}.map(item => {\n            const renderNode = ${itemExpr} as unknown as NodeDefinition;\n${checkboxLogic}\n            return renderNode;\n        })`;
+                    const mapExpr = `${listVar}.map(item => {\n            const node = ${itemExpr} as unknown as NodeDefinition;\n${checkboxLogic}\n            return node;\n        })`;
                     childGroups.push(`...${mapExpr}`);
 
                     // Mark all items in this list as processed
@@ -971,7 +930,7 @@ export class ${className} extends BaseComponent {
     private generateStateLogic(): string {
         return `
             // Logic: Bind states to selection and checkbox
-            const shape = findShape(renderNode);
+            const shape = findShape(node);
             if (shape) {
                 if (shape.children && shape.children.length > 1) {
                      shape.children[1].props = shape.children[1].props || {};
@@ -995,8 +954,8 @@ export class ${className} extends BaseComponent {
             }
 
             if (item.isSelected) {
-                renderNode.props = renderNode.props || {};
-                renderNode.props.fills = [{
+                node.props = node.props || {};
+                node.props.fills = [{
                     type: "SOLID",
                     visible: true,
                     opacity: 1,
@@ -1004,7 +963,7 @@ export class ${className} extends BaseComponent {
                     color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 },
                 }];
             } else {
-                if (renderNode.props) renderNode.props.fills = [];
+                if (node.props) node.props.fills = [];
             }
 `;
     }
@@ -1059,8 +1018,15 @@ export class ${className} extends BaseComponent {
             if (variablePaths.includes(fillPath)) {
                 const key = this.pathToName(fillPath, null, node).replace(/[^a-zA-Z0-9_]/g, '');
                 const fillObj = `{ visible: true, opacity: 1, blendMode: "NORMAL", type: "IMAGE", scaleMode: "FILL", assetRef: ${prefix}.${key} }`;
-                const patch = `, fills: [${fillObj}]`;
-                const over = overrides.trim().replace(/\}$/, patch + " }");
+
+                // Fix: Check if overrides already has fills and replace it, otherwise append
+                let over = overrides.trim();
+                if (over.match(/"fills":/)) {
+                    over = over.replace(/"fills":\s*\[[^\]]*\]/, `"fills": [${fillObj}]`);
+                } else {
+                    over = over.replace(/\}$/, `, "fills": [${fillObj}] }`);
+                }
+
                 return `createFrame("${node.name}", ${over}, ${childrenCode})`;
             }
         }
@@ -1081,6 +1047,7 @@ export class ${className} extends BaseComponent {
             };
 
             for (const key in node.layoutProps) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 if (node.layoutProps[key] !== (standardLayout as any)[key]) {
                     layoutOverrides[key] = node.layoutProps[key];
                 }
@@ -1115,7 +1082,7 @@ export class ${className} extends BaseComponent {
             };
 
             for (const key in node.layoutProps) {
-                // @ts-ignore
+                // @ts-expect-error standardLayout allows indexing
                 if (node.layoutProps[key] !== standardLayout[key]) {
                     layoutOverrides[key] = node.layoutProps[key];
                 }
