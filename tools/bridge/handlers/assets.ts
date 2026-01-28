@@ -152,3 +152,48 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
         }
     });
 }
+
+export function handleSavePng(req: http.IncomingMessage, res: http.ServerResponse) {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', async () => {
+        try {
+            const parsed = JSON.parse(body);
+            const { projectName, packets } = parsed;
+
+            if (!packets || !Array.isArray(packets)) {
+                throw new Error("Invalid packets data");
+            }
+
+            const sanitaryProjectName = (projectName || "Default").replace(/[^a-z0-9]/gi, '_');
+            const capturesDir = path.join(process.cwd(), 'captures');
+            const projectDir = path.join(capturesDir, sanitaryProjectName);
+
+            if (!fs.existsSync(projectDir)) {
+                fs.mkdirSync(projectDir, { recursive: true });
+            }
+
+            let savedCount = 0;
+            packets.forEach((packet: { name: string, data: string }) => {
+                const sanitaryName = (packet.name || "Untitled").replace(/[^a-z0-9]/gi, '_');
+                // Avoid overwriting if possible or just overwrite? Overwrite is fine for capture.
+                // Maybe add timestamp? UI doesn't imply history.
+                const filePath = path.join(projectDir, `${sanitaryName}.png`);
+                const buffer = Buffer.from(packet.data, 'base64');
+                fs.writeFileSync(filePath, buffer);
+                savedCount++;
+            });
+
+            console.log(`[Bridge] Saved ${savedCount} PNGs to ${projectDir}`);
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ status: 'ok', count: savedCount, path: projectDir }));
+
+        } catch (e: unknown) {
+            const error = e as Error;
+            console.error("Error saving PNG:", error.message);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: error.message }));
+        }
+    });
+}

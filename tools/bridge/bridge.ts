@@ -2,7 +2,7 @@ import * as http from 'http';
 import { BridgeState, setPendingCommand, setSpinnerInterval } from './state';
 import { handleList, handleRead } from './handlers/extraction';
 import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder } from './handlers/components';
-import { handleSave, handleSavePacket } from './handlers/assets';
+import { handleSave, handleSavePacket, handleSavePng } from './handlers/assets';
 import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
 import { handlePoll, handleLog, handleDelete, handleMove } from './handlers/system';
 import { startBuild } from '../build';
@@ -43,6 +43,7 @@ const server = http.createServer((req, res) => {
 
     if (req.method === 'POST' && req.url === '/save') return handleSave(req, res);
     if (req.method === 'POST' && req.url === '/save-packet') return handleSavePacket(req, res);
+    if (req.method === 'POST' && req.url === '/save-png') return handleSavePng(req, res);
 
     if (req.method === 'POST' && req.url === '/generate-code-preview') return handleGenerateCodePreview(req, res);
     if (req.method === 'POST' && req.url === '/generate-clipboard') return handleGenerateClipboard(req, res);
