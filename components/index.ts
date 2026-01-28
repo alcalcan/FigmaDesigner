@@ -9,7 +9,6 @@ export { checkbox_element as checkbox_element_Alex_CookBook } from "./Alex_CookB
 export { checkbox_element as checkbox_element_Competition_newsletters } from "./Competition_newsletters/checkbox_element/checkbox_element";
 export { checkbox_element as checkbox_element_UEFA_Academy_online } from "./UEFA_Academy_online/checkbox_element/checkbox_element";
 export { checkbox_SubSection } from "./Alex_CookBook/checkbox_SubSection/checkbox_SubSection";
-export { checkbox_SubSection_procedural } from "./Alex_CookBook/checkbox_SubSection_procedural/checkbox_SubSection_procedural";
 export { checkbox_SubSection_rawCode } from "./Alex_CookBook/checkbox_SubSection_rawCode/checkbox_SubSection_rawCode";
 export { chip_dropdown } from "./UEFA_Academy_online/chip_dropdown/chip_dropdown";
 export { chip_expand } from "./Alex_CookBook/chip_expand/chip_expand";

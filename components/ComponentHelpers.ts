@@ -93,3 +93,23 @@ export const createVector = (name: string, svgContent: string | undefined, overr
         svgContent
     };
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createBooleanOperation = (name: string, booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE", overrides: any = {}, children: (NodeDefinition | null | undefined)[] = []): NodeDefinition => {
+    // Merge nested layoutProps if they exist in overrides
+    const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
+
+    return {
+        type: "BOOLEAN_OPERATION",
+        booleanOperation,
+        name,
+        props: { ...DEFAULT_PROPS, ...restOverrides },
+        children: children.filter((c): c is NodeDefinition => c !== null && c !== undefined),
+        layoutProps: {
+            parentIsAutoLayout: true,
+            layoutPositioning: "AUTO",
+            ...DEFAULT_LAYOUT_PROPS,
+            ...ovrLayoutProps
+        }
+    };
+};

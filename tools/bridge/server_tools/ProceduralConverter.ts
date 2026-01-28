@@ -5,6 +5,7 @@ export interface SIRNode {
     name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     props: Record<string, any>;
+    booleanOperation?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     layoutProps: Record<string, any>;
     children: string[];
@@ -80,6 +81,11 @@ export class ProceduralConverter {
                         createVector: (name: string, svgContent: string, props: any = {}) => {
                             const { layoutProps, ...rest } = props;
                             return { type: 'VECTOR', name, props: rest, layoutProps, children: [], svgContent };
+                        },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        createBooleanOperation: (name: string, booleanOperation: string, props: any = {}, children: any[] = []) => {
+                            const { layoutProps, ...rest } = props;
+                            return { type: 'BOOLEAN_OPERATION', name, booleanOperation, props: rest, layoutProps, children };
                         }
                     };
                     this.assets.forEach((val, key) => sandbox[key] = key); // Map var to its name
@@ -190,6 +196,7 @@ export class ProceduralConverter {
         const node: SIRNode = {
             id,
             type: def.type || 'FRAME',
+            booleanOperation: def.booleanOperation,
             name: def.name || id,
             props: def.props || {},
             layoutProps: def.layoutProps || {},
@@ -197,6 +204,10 @@ export class ProceduralConverter {
             parent: parentId,
             svgContentVar: def.svgContent
         };
+
+        if (def.booleanOperation) {
+            console.log(`[ProceduralConverter] Imported BooleanOp for ${id} (${node.name}): ${def.booleanOperation}`);
+        }
 
         // Handle svgContent being a var reference from our sandbox
         // In the sandbox above, we mapped keys to keys. 
@@ -868,7 +879,7 @@ export class ProceduralConverter {
 
         return `
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-import { createFrame, createText, createVector } from "../../ComponentHelpers";
+import { createFrame, createText, createVector, createBooleanOperation } from "../../ComponentHelpers";
 
 // --- Assets ---
 ${assetImports}
@@ -976,6 +987,11 @@ export class ${className} extends BaseComponent {
                 const svgVar = node.svgContentVar || '""';
                 return `createVector("${cleanName}", ${svgVar}, ${overrides})`;
             }
+            if (node.type === 'BOOLEAN_OPERATION') {
+                const op = node.booleanOperation || node.props?.booleanOperation || "UNION";
+                console.log(`[ProceduralConverter] Generating code for ${node.id} (${node.name}): ${op}`);
+                return `createBooleanOperation("${cleanName}", "${op}", ${overrides}, ${childrenCode})`;
+            }
             return `createFrame("${cleanName}", ${overrides}, ${childrenCode})`;
         };
 
@@ -1055,6 +1071,13 @@ export class ${className} extends BaseComponent {
             return `createVector("${node.name}", ${svgArg}, ${this.stringifyOverrides(overrides)})`;
         }
 
+        // Generate Boolean Operation
+        if (node.type === 'BOOLEAN_OPERATION') {
+            // Robust check: look in top-level or props
+            const op = node.booleanOperation || node.props?.booleanOperation || "UNION";
+            return `createBooleanOperation("${node.name}", "${op}", ${this.stringifyOverrides(overrides)}, ${childrenCode})`;
+        }
+
         // Generate Frame (Image Fill Check)
         if (node.type === 'FRAME') {
             const fillPath = pathContext ? `${pathContext}.props.fills[0].assetRef` : `props.fills[0].assetRef`;
@@ -1124,7 +1147,33 @@ export class ${className} extends BaseComponent {
         if (p.paddingRight) overrides.paddingRight = p.paddingRight;
         if (p.paddingBottom) overrides.paddingBottom = p.paddingBottom;
         if (p.paddingLeft) overrides.paddingLeft = p.paddingLeft;
+
+        // AutoLayout Advanced
+        if (p.primaryAxisSizingMode && p.primaryAxisSizingMode !== 'FIXED') overrides.primaryAxisSizingMode = p.primaryAxisSizingMode;
+        if (p.counterAxisSizingMode && p.counterAxisSizingMode !== 'FIXED') overrides.counterAxisSizingMode = p.counterAxisSizingMode;
+        if (p.primaryAxisAlignItems && p.primaryAxisAlignItems !== 'MIN') overrides.primaryAxisAlignItems = p.primaryAxisAlignItems;
+        if (p.counterAxisAlignItems && p.counterAxisAlignItems !== 'MIN') overrides.counterAxisAlignItems = p.counterAxisAlignItems;
+        if (p.layoutAlign) overrides.layoutAlign = p.layoutAlign;
+        if (p.layoutGrow) overrides.layoutGrow = p.layoutGrow;
+
+        // Visuals
         if (p.fills && p.fills.length > 0) overrides.fills = p.fills;
+        if (p.strokes && p.strokes.length > 0) overrides.strokes = p.strokes;
+        if (p.effects && p.effects.length > 0) overrides.effects = p.effects;
+        if (p.visible === false) overrides.visible = false;
+
+        // Stroke Properties
+        if (p.strokeWeight && p.strokeWeight !== 0) overrides.strokeWeight = p.strokeWeight;
+        if (p.strokeAlign && p.strokeAlign !== 'INSIDE') overrides.strokeAlign = p.strokeAlign;
+        if (p.strokeCap && p.strokeCap !== 'NONE') overrides.strokeCap = p.strokeCap;
+        if (p.strokeJoin && p.strokeJoin !== 'MITER') overrides.strokeJoin = p.strokeJoin;
+        if (p.dashPattern && p.dashPattern.length > 0) overrides.dashPattern = p.dashPattern;
+
+        // Individual Strokes
+        if (p.strokeTopWeight !== undefined && p.strokeTopWeight !== p.strokeWeight) overrides.strokeTopWeight = p.strokeTopWeight;
+        if (p.strokeRightWeight !== undefined && p.strokeRightWeight !== p.strokeWeight) overrides.strokeRightWeight = p.strokeRightWeight;
+        if (p.strokeBottomWeight !== undefined && p.strokeBottomWeight !== p.strokeWeight) overrides.strokeBottomWeight = p.strokeBottomWeight;
+        if (p.strokeLeftWeight !== undefined && p.strokeLeftWeight !== p.strokeWeight) overrides.strokeLeftWeight = p.strokeLeftWeight;
 
         // Corner Radius
         if (p.cornerRadius !== undefined && p.cornerRadius !== 0) overrides.cornerRadius = p.cornerRadius;
@@ -1190,6 +1239,33 @@ export class ${className} extends BaseComponent {
         if (p.paddingRight) overrides.paddingRight = p.paddingRight;
         if (p.paddingBottom) overrides.paddingBottom = p.paddingBottom;
         if (p.paddingLeft) overrides.paddingLeft = p.paddingLeft;
+
+        // AutoLayout Advanced
+        if (p.primaryAxisSizingMode && p.primaryAxisSizingMode !== 'FIXED') overrides.primaryAxisSizingMode = p.primaryAxisSizingMode;
+        if (p.counterAxisSizingMode && p.counterAxisSizingMode !== 'FIXED') overrides.counterAxisSizingMode = p.counterAxisSizingMode;
+        if (p.primaryAxisAlignItems && p.primaryAxisAlignItems !== 'MIN') overrides.primaryAxisAlignItems = p.primaryAxisAlignItems;
+        if (p.counterAxisAlignItems && p.counterAxisAlignItems !== 'MIN') overrides.counterAxisAlignItems = p.counterAxisAlignItems;
+        if (p.layoutAlign) overrides.layoutAlign = p.layoutAlign;
+        if (p.layoutGrow) overrides.layoutGrow = p.layoutGrow;
+
+        // Visuals
+        if (p.fills && p.fills.length > 0) overrides.fills = p.fills;
+        if (p.strokes && p.strokes.length > 0) overrides.strokes = p.strokes;
+        if (p.effects && p.effects.length > 0) overrides.effects = p.effects;
+        if (p.visible === false) overrides.visible = false;
+
+        // Stroke Properties
+        if (p.strokeWeight && p.strokeWeight !== 0) overrides.strokeWeight = p.strokeWeight;
+        if (p.strokeAlign && p.strokeAlign !== 'INSIDE') overrides.strokeAlign = p.strokeAlign;
+        if (p.strokeCap && p.strokeCap !== 'NONE') overrides.strokeCap = p.strokeCap;
+        if (p.strokeJoin && p.strokeJoin !== 'MITER') overrides.strokeJoin = p.strokeJoin;
+        if (p.dashPattern && p.dashPattern.length > 0) overrides.dashPattern = p.dashPattern;
+
+        // Individual Strokes
+        if (p.strokeTopWeight !== undefined && p.strokeTopWeight !== p.strokeWeight) overrides.strokeTopWeight = p.strokeTopWeight;
+        if (p.strokeRightWeight !== undefined && p.strokeRightWeight !== p.strokeWeight) overrides.strokeRightWeight = p.strokeRightWeight;
+        if (p.strokeBottomWeight !== undefined && p.strokeBottomWeight !== p.strokeWeight) overrides.strokeBottomWeight = p.strokeBottomWeight;
+        if (p.strokeLeftWeight !== undefined && p.strokeLeftWeight !== p.strokeWeight) overrides.strokeLeftWeight = p.strokeLeftWeight;
 
         // Fills (only if not a simple SOLID white/black, handled by helpers usually)
         if (p.fills && p.fills.length > 0) {
