@@ -3,7 +3,7 @@ import { BridgeState, setPendingCommand, setSpinnerInterval } from './state';
 import { handleList, handleRead } from './handlers/extraction';
 import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder } from './handlers/components';
 import { handleSave, handleSaveAsset, handleReadAsset, handleSavePng, handleSavePacket } from './handlers/assets';
-import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard } from './handlers/generation';
+import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
 import { handlePoll, handleLog, handleDelete, handleMove } from './handlers/system';
 
 const PORT = 3001;
@@ -46,6 +46,7 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/generate-to-code') return handleGenerateToCode(req, res);
     if (req.method === 'POST' && req.url === '/generate-folder-to-code') return handleGenerateFolderToCode(req, res);
     if (req.method === 'POST' && req.url === '/refactor-code') return handleRefactorCode(req, res);
+    if (req.method === 'POST' && req.url === '/procedural-convert') return handleProceduralConvert(req, res);
 
     if (req.method === 'POST' && req.url === '/delete') return handleDelete(req, res);
     if (req.method === 'POST' && req.url === '/move') return handleMove(req, res);

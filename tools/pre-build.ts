@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ComponentGenerator } from './ComponentGenerator';
-import { CleaningService } from './CleaningService';
+import { ComponentGenerator } from './bridge/server_tools/ComponentGenerator';
+import { CleaningService } from './bridge/server_tools/CleaningService';
 
 export async function checkAndRecover() {
     console.log("🚀 Running Pre-build Cleaning & Regeneration Service...");
