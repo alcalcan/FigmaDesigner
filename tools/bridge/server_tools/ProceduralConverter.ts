@@ -1044,6 +1044,7 @@ export class ${className} extends BaseComponent {
         }
 
         const overrides = this.serializePropsFromJSON(node);
+        let finalOverridesStr = this.stringifyOverrides(overrides);
 
         // --- Logic Injection: Selection State (Fills) ---
         // Only apply to the ROOT node of the template item, and if we have selection data
@@ -1067,8 +1068,7 @@ export class ${className} extends BaseComponent {
             } else {
                 overStr = overStr.replace(/\}$/, `, "fills": ${dynamicFill} }`);
             }
-
-            return `createFrame("${node.name}", ${overStr}, ${childrenCode})`;
+            finalOverridesStr = overStr;
         }
 
         // Generate Text
@@ -1081,7 +1081,7 @@ export class ${className} extends BaseComponent {
                 textArg = `${prefix}.${key}`;
             }
 
-            return `createText("${node.name}", ${textArg}, ${node.props.fontSize || 12}, "${node.props.font?.style || "Regular"}", COLORS.BLACK, ${this.stringifyOverrides(overrides)})`;
+            return `createText("${node.name}", ${textArg}, ${node.props.fontSize || 12}, "${node.props.font?.style || "Regular"}", COLORS.BLACK, ${finalOverridesStr})`;
         }
 
         // Generate Vector
@@ -1092,24 +1092,24 @@ export class ${className} extends BaseComponent {
                 const key = this.pathToName(contentPath, null, node).replace(/[^a-zA-Z0-9_]/g, '');
                 svgArg = `${prefix}.${key}`;
             }
-            return `createVector("${node.name}", ${svgArg}, ${this.stringifyOverrides(overrides)})`;
+            return `createVector("${node.name}", ${svgArg}, ${finalOverridesStr})`;
         }
 
         // Generate Boolean Operation
         if (node.type === 'BOOLEAN_OPERATION') {
             // Robust check: look in top-level or props
             const op = node.booleanOperation || node.props?.booleanOperation || "UNION";
-            return `createBooleanOperation("${node.name}", "${op}", ${this.stringifyOverrides(overrides)}, ${childrenCode})`;
+            return `createBooleanOperation("${node.name}", "${op}", ${finalOverridesStr}, ${childrenCode})`;
         }
 
         if (node.type === 'LINE') {
-            return `createLine("${node.name}", ${this.stringifyOverrides(overrides)})`;
+            return `createLine("${node.name}", ${finalOverridesStr})`;
         }
         if (node.type === 'RECTANGLE') {
-            return `createRectangle("${node.name}", ${this.stringifyOverrides(overrides)})`;
+            return `createRectangle("${node.name}", ${finalOverridesStr})`;
         }
         if (node.type === 'ELLIPSE') {
-            return `createEllipse("${node.name}", ${this.stringifyOverrides(overrides)})`;
+            return `createEllipse("${node.name}", ${finalOverridesStr})`;
         }
 
         // Generate Frame (Image Fill Check)
@@ -1120,15 +1120,7 @@ export class ${className} extends BaseComponent {
                 const fillObj = `{ visible: true, opacity: 1, blendMode: "NORMAL", type: "IMAGE", scaleMode: "FILL", assetRef: ${prefix}.${key} }`;
 
                 // Handle dynamic fill: Replace static fills with dynamic one
-                // Since overrides is an object, we can safely overwrite the fills array
-                // Wait, fillObj is a string "{ ... }".
-                // If we put it in overrides.fills = ["{...}"], result is fills: ["{...}"] (string).
-                // We want fills: [{...}] (object).
-                // Standard stringifyOverrides will stringify the object.
-                // If we put a string in the array, it becomes a string in JSON.
-
-                // Hack: We need to inject this RAW.
-                // So we delete fills from overrides, stringify, then append.
+                // Similar injection logic for Image
                 delete overrides.fills;
                 let overStr = this.stringifyOverrides(overrides);
 
@@ -1137,12 +1129,11 @@ export class ${className} extends BaseComponent {
                 } else {
                     overStr = overStr.replace(/\}$/, `, "fills": [${fillObj}] }`);
                 }
-
-                return `createFrame("${node.name}", ${overStr}, ${childrenCode})`;
+                finalOverridesStr = overStr;
             }
         }
 
-        return `createFrame("${node.name}", ${this.stringifyOverrides(overrides)}, ${childrenCode})`;
+        return `createFrame("${node.name}", ${finalOverridesStr}, ${childrenCode})`;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

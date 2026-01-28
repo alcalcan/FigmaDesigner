@@ -22,23 +22,41 @@ export class FullProceduralPipeline {
 
         // 2. Refactor (Skip loop detection because ProceduralConverter needs static JSON)
         console.log(`[Pipeline] Step 1 / 3: Refactoring...`);
-        new ComponentRefactorer().refactor(tsPath, { skipLoopDetection: true });
+        try {
+            new ComponentRefactorer().refactor(tsPath, { skipLoopDetection: true });
+        } catch (e) {
+            console.error(`❌ [Pipeline] Refactoring FAILED:`, e);
+            // We do NOT return here, because sometimes partial refactoring might still be useful?
+            // tailored decision: If refactor fails, compact/procedure will definitely fail/produce garbage. 
+            // Better to stop or ensure we don't proceed blindly.
+            throw new Error(`Refactoring failed for ${tsPath}`);
+        }
 
         // 3. Compact (Declarative -> Compact Declarative)
         console.log(`[Pipeline] Step 2 / 3: Compacting...`);
-        new CompactStructure().compact(tsPath);
+        try {
+            new CompactStructure().compact(tsPath);
+        } catch (e) {
+            console.error(`❌ [Pipeline] Compacting FAILED:`, e);
+            throw new Error(`Compacting failed for ${tsPath}`);
+        }
 
         // 4. Procedural (Compact Declarative -> Procedural)
         console.log(`[Pipeline] Step 3 / 3: Converting to Procedural...`);
-        const content = fs.readFileSync(tsPath, 'utf8');
-        const converter = new ProceduralConverter();
-        console.log(`[Pipeline] Calling converter.convert for ${className}. Content length: ${content.length}`);
-        const finalCode = converter.convert(content, className);
-        console.log(`[Pipeline] Converter result length: ${finalCode.length}`);
+        try {
+            const content = fs.readFileSync(tsPath, 'utf8');
+            const converter = new ProceduralConverter();
+            console.log(`[Pipeline] Calling converter.convert for ${className}. Content length: ${content.length}`);
+            const finalCode = converter.convert(content, className);
+            console.log(`[Pipeline] Converter result length: ${finalCode.length}`);
 
-        // 5. Final Write
-        fs.writeFileSync(tsPath, finalCode);
-        console.log(`✅[Pipeline] Full procedural conversion complete: ${tsPath}`);
+            // 5. Final Write
+            fs.writeFileSync(tsPath, finalCode);
+            console.log(`✅[Pipeline] Full procedural conversion complete: ${tsPath}`);
+        } catch (e) {
+            console.error(`❌ [Pipeline] Procedural Conversion FAILED:`, e);
+            throw new Error(`Procedural Conversion failed for ${tsPath}`);
+        }
 
         return tsPath;
     }

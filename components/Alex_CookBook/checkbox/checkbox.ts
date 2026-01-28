@@ -2,36 +2,39 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 
 // SVG Assets
+import SVG_checkbox_Synth_Path_0 from "./assets/checkbox_Synth_Path_0.svg";
+import SVG_checkbox_Synth_Path_1 from "./assets/checkbox_Synth_Path_1.svg";
 
 
-
-export class checkbox_element extends BaseComponent {
+export class checkbox extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
     const structure: NodeDefinition = {
       "type": "FRAME",
-      "name": "checkbox_element",
+      "name": "checkbox",
       "props": {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-        "isMask": false, "clipsContent": false,
-        "layoutMode": "HORIZONTAL", "itemSpacing": 4,
-        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-        "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
+        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+        "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 8,
+        "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+        "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+        "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 1, "strokeLeftWeight": 0,
         "fills": [],
         "strokes": [],
         "effects": [],
         "cornerRadius": 0
       },
-      "layoutProps": { "width": 107, "height": 24, "parentIsAutoLayout": false },
+      "layoutProps": { "width": 296, "height": 32, "parentIsAutoLayout": false },
       "children": [
         {
           "type": "FRAME",
           "name": "Checkbox",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "clipsContent": false,
+            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
             "layoutAlign": "INHERIT", "layoutGrow": 0,
             "layoutMode": "NONE",
             "fills": [
@@ -48,7 +51,7 @@ export class checkbox_element extends BaseComponent {
           "layoutProps": {
             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
             "width": 20, "height": 20,
-            "relativeTransform": [[1, 0, 0], [0, 1, 2]]
+            "relativeTransform": [[1, 0, 8], [0, 1, 6]]
           },
           "children": [
             {
@@ -57,9 +60,9 @@ export class checkbox_element extends BaseComponent {
               "name": "Shape",
               "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "x": 2.5, "y": 2.5,
-                "isMask": false,
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -79,12 +82,13 @@ export class checkbox_element extends BaseComponent {
               "children": [
                 {
                   "type": "VECTOR",
+                  "shouldFlatten": true,
                   "name": "Path",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                    "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "x": 2.5, "y": 2.5,
-                    "isMask": false,
                     "fills": [
                       {
                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -98,7 +102,7 @@ export class checkbox_element extends BaseComponent {
                     "vectorPaths": [
                       {
                         "windingRule": "EVENODD",
-                        "data": "M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"
+                        "data": "M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"
                       }
                     ]
                   },
@@ -106,16 +110,18 @@ export class checkbox_element extends BaseComponent {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                     "width": 15, "height": 15,
                     "relativeTransform": [[1, 0, 2.5], [0, 1, 2.5]]
-                  }
+                  },
+                  "svgContent": SVG_checkbox_Synth_Path_0
                 },
                 {
                   "type": "VECTOR",
+                  "shouldFlatten": true,
                   "name": "Path",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                    "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 4.166666626930237, "y": 4.166666626930237,
-                    "isMask": false,
+                    "x": 4.166666030883789, "y": 4.166656494140625,
                     "fills": [
                       {
                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -136,8 +142,9 @@ export class checkbox_element extends BaseComponent {
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                     "width": 11.666666984558105, "height": 11.666666984558105,
-                    "relativeTransform": [[1, 0, 4.166666626930237], [0, 1, 4.166666626930237]]
-                  }
+                    "relativeTransform": [[1, 0, 4.166666030883789], [0, 1, 4.166656494140625]]
+                  },
+                  "svgContent": SVG_checkbox_Synth_Path_1
                 }
               ]
             }
@@ -148,12 +155,13 @@ export class checkbox_element extends BaseComponent {
           "name": "Filter name",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+            "isMask": false, "maskType": "ALPHA",
             "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
             "layoutAlign": "INHERIT", "layoutGrow": 0,
-            "characters": "Leadership", "fontSize": 16,
+            "characters": "UEFA Football Development", "fontSize": 16,
             "textCase": "ORIGINAL", "textDecoration": "NONE",
-            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
-            "isMask": false,
+            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
+            "paragraphSpacing": 0, "paragraphIndent": 0,
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -169,8 +177,8 @@ export class checkbox_element extends BaseComponent {
           },
           "layoutProps": {
             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 83, "height": 24,
-            "relativeTransform": [[1, 0, 24], [0, 1, 0]]
+            "width": 264, "height": 24,
+            "relativeTransform": [[1, 0, 32], [0, 1, 4]]
           }
         }
       ]
@@ -179,8 +187,8 @@ export class checkbox_element extends BaseComponent {
     const root = await this.renderDefinition(structure);
 
     // Final positioning
-    root.x = props.x ?? 0;
-    root.y = props.y ?? 0;
+    if (props.x !== undefined) root.x = props.x;
+    if (props.y !== undefined) root.y = props.y;
 
     return root;
   }

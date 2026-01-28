@@ -2,7 +2,7 @@ import { SerializedNode } from './JsonReconstructor';
 import { applySizeAndTransform, detectBakedRotation, T2x3 } from "./TransformHelpers";
 import { AssetSource, hydrateFills } from "./PaintHelpers";
 
-export { T2x3 };
+export { type T2x3 };
 
 export interface ComponentProps {
   x: number;

@@ -36,108 +36,113 @@ export class ComponentRefactorer {
     }
 
     public refactorCode(content: string, fileName: string = 'Component', options: { skipLoopDetection?: boolean } = {}): string {
-        console.log(`[Refactorer] options received:`, options);
-        // Extract 'create' method body using brace counting
-        let bodyContent = content;
-        const createStartRegex = /async create\s*\([^)]*\)\s*:\s*Promise<SceneNode>\s*\{/;
-        const match = content.match(createStartRegex);
+        try {
+            console.log(`[Refactorer] options received:`, options);
+            // Extract 'create' method body using brace counting
+            let bodyContent = content;
+            const createStartRegex = /async create\s*\([^)]*\)\s*:\s*Promise<SceneNode>\s*\{/;
+            const match = content.match(createStartRegex);
 
-        if (match && match.index !== undefined) {
-            const startIndex = match.index! + match[0].length;
-            let braceCount = 1;
-            let endIndex = startIndex;
+            if (match && match.index !== undefined) {
+                const startIndex = match.index! + match[0].length;
+                let braceCount = 1;
+                let endIndex = startIndex;
 
-            let inString = false;
-            let stringChar = '';
-            let inCommentSingle = false;
-            let inCommentMulti = false;
+                let inString = false;
+                let stringChar = '';
+                let inCommentSingle = false;
+                let inCommentMulti = false;
 
-            for (let i = startIndex; i < content.length; i++) {
-                const char = content[i];
-                const nextChar = i + 1 < content.length ? content[i + 1] : '';
-                const prevChar = i > 0 ? content[i - 1] : '';
+                for (let i = startIndex; i < content.length; i++) {
+                    const char = content[i];
+                    const nextChar = i + 1 < content.length ? content[i + 1] : '';
+                    const prevChar = i > 0 ? content[i - 1] : '';
 
-                if (inCommentSingle) {
-                    if (char === '\n') inCommentSingle = false;
-                    continue;
-                }
-
-                if (inCommentMulti) {
-                    if (char === '*' && nextChar === '/') {
-                        inCommentMulti = false;
-                        i++; // skip /
+                    if (inCommentSingle) {
+                        if (char === '\n') inCommentSingle = false;
+                        continue;
                     }
-                    continue;
-                }
 
-                if (inString) {
-                    if (char === stringChar && prevChar !== '\\') {
-                        inString = false;
+                    if (inCommentMulti) {
+                        if (char === '*' && nextChar === '/') {
+                            inCommentMulti = false;
+                            i++; // skip /
+                        }
+                        continue;
                     }
-                    continue;
+
+                    if (inString) {
+                        if (char === stringChar && prevChar !== '\\') {
+                            inString = false;
+                        }
+                        continue;
+                    }
+
+                    // Normal Mode
+                    if (char === '/' && nextChar === '/') {
+                        inCommentSingle = true;
+                        i++;
+                        continue;
+                    }
+                    if (char === '/' && nextChar === '*') {
+                        inCommentMulti = true;
+                        i++;
+                        continue;
+                    }
+
+                    if (char === '"' || char === "'" || char === '`') {
+                        inString = true;
+                        stringChar = char;
+                        continue;
+                    }
+
+                    if (char === '{') {
+                        braceCount++;
+                    }
+                    else if (char === '}') {
+                        braceCount--;
+                    }
+
+                    if (braceCount === 0) {
+                        endIndex = i;
+                        break;
+                    }
                 }
 
-                // Normal Mode
-                if (char === '/' && nextChar === '/') {
-                    inCommentSingle = true;
-                    i++;
-                    continue;
-                }
-                if (char === '/' && nextChar === '*') {
-                    inCommentMulti = true;
-                    i++;
-                    continue;
-                }
-
-                if (char === '"' || char === "'" || char === '`') {
-                    inString = true;
-                    stringChar = char;
-                    continue;
-                }
-
-                if (char === '{') {
-                    braceCount++;
-                }
-                else if (char === '}') {
-                    braceCount--;
-                }
-
-                if (braceCount === 0) {
-                    endIndex = i;
-                    break;
-                }
+                bodyContent = content.substring(startIndex, endIndex);
+            } else {
+                console.warn("⚠️ Could not find 'create' method start, parsing entire file.");
             }
 
-            bodyContent = content.substring(startIndex, endIndex);
-        } else {
-            console.warn("⚠️ Could not find 'create' method start, parsing entire file.");
+            const lines = bodyContent.split('\n');
+
+            // 1. Extract SVG Assets (globally)
+            const assets = this.extractAssets(content);
+
+            // 2. Build Node Graph
+            const nodes = this.buildNodeGraph(lines);
+
+            // 3. Find Root
+            const rootId = 'root'; // Convention in generated code
+            if (!nodes.has(rootId)) {
+                console.error("❌ Could not find 'root' node.");
+                return content; // Return original on failure
+            }
+
+            // 4. Generate Definition JSON
+            let definition = this.generateDefinition(nodes, rootId, assets);
+
+            // 5. Post-process (Optimization: Loops, Conditionals)
+            if (!options.skipLoopDetection) {
+                definition = this.postProcessDefinition(definition);
+            }
+
+            // 6. Generate New File Content
+            return this.generateFileContent(fileName, definition, assets, content, nodes);
+        } catch (e) {
+            console.error("❌ [Refactorer] Critical Error in refactorCode:", e);
+            throw e; // Re-throw to be caught by pipeline
         }
-
-        const lines = bodyContent.split('\n');
-
-        // 1. Extract SVG Assets (globally)
-        const assets = this.extractAssets(content);
-
-        // 2. Build Node Graph
-        const nodes = this.buildNodeGraph(lines);
-
-        // 3. Find Root
-        const rootId = 'root'; // Convention in generated code
-        if (!nodes.has(rootId)) {
-            console.error("❌ Could not find 'root' node.");
-            return content; // Return original on failure
-        }
-
-        // 4. Generate Definition JSON
-        let definition = this.generateDefinition(nodes, rootId, assets);
-
-        // 5. Post-process (Optimization: Loops, Conditionals)
-        if (!options.skipLoopDetection) {
-            definition = this.postProcessDefinition(definition);
-        }
-
-        // 6. Generate New File Content
-        return this.generateFileContent(fileName, definition, assets, content, nodes);
     }
 
     private knownAssets: Set<string> = new Set();
