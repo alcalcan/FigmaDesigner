@@ -7,12 +7,12 @@
     "build": "npx ts-node tools/build.ts",
     "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules .",
     "lint:fix": "eslint --ext .ts,.tsx --ignore-pattern node_modules --fix .",
-    "watch": "npx ts-node tools/build.ts --watch & nodemon --watch tools/bridge/bridge.ts --exec ts-node tools/bridge/bridge.ts",
+    "watch": "npx ts-node tools/build.ts --watch & nodemon --watch tools/bridge --exec ts-node tools/bridge/bridge.ts",
     "dev": "npm run watch",
     "verify": "ts-node tools/verify_design.ts",
     "capture": "ts-node tools/capture.ts",
     "export-png": "ts-node tools/PngExporter.ts",
-    "bridge": "nodemon --watch tools/bridge/bridge.ts --exec ts-node tools/bridge/bridge.ts"
+    "bridge": "nodemon --watch tools/bridge --exec ts-node tools/bridge/bridge.ts"
   },
   "author": "",
   "license": "",

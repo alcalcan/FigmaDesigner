@@ -36,6 +36,7 @@ export class ComponentRefactorer {
     }
 
     public refactorCode(content: string, fileName: string = 'Component', options: { skipLoopDetection?: boolean } = {}): string {
+        console.log(`[Refactorer] options received:`, options);
         // Extract 'create' method body using brace counting
         let bodyContent = content;
         const createStartRegex = /async create\s*\([^)]*\)\s*:\s*Promise<SceneNode>\s*\{/;
@@ -924,7 +925,9 @@ export class ComponentRefactorer {
         const imports = `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; `;
 
         // Run post-processing to inject loops
-        const processedDef = this.postProcessDefinition(definition);
+        // FIX: postProcessDefinition is already called in refactorCode respecting options.
+        // We should not call it again here unconditionally.
+        const processedDef = definition;
         const defString = this.serialize(processedDef, 1);
 
         // Extract SVG assets selectively from original content based on what's used in the defString

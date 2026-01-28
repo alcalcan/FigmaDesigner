@@ -398,6 +398,24 @@ export class ${this.componentName} extends BaseComponent {
                 } else {
                     console.warn(`[Generator] SVG file NOT found: ${fullSvgPath}`);
                 }
+            } else if (data.vectorPaths && data.vectorPaths.length > 0) {
+                // Synthesize SVG from vectorPaths to ensure Procedural Converter compatibility
+                let svgContent = `<svg width="${data.width || 100}" height="${data.height || 100}" viewBox="0 0 ${data.width || 100} ${data.height || 100}" fill="none" xmlns="http://www.w3.org/2000/svg">`;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (data.vectorPaths as any[]).forEach((vp: any) => {
+                    const rule = vp.windingRule === "NONZERO" ? "nonzero" : "evenodd";
+                    svgContent += `<path d="${vp.data}" fill="black" fill-rule="${rule}" clip-rule="${rule}" stroke="none" />`;
+                });
+                svgContent += `</svg>`;
+
+                const distinctKey = `Synth_${(data.name || 'Vec').replace(/[^a-zA-Z0-9]/g, '')}_${this.svgAssets.size}`;
+                this.svgAssets.set(distinctKey, svgContent);
+                const safeRef = this.getSvgVariableName(distinctKey);
+
+                code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
+                // Resize container to frame size before flattening to ensure correct bounds
+                code += `${varName}_svgContainer.resize(${data.width || 1}, ${data.height || 1});\n`;
+                code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
             } else {
                 code += `const ${varName} = figma.createVector();\n`;
             }

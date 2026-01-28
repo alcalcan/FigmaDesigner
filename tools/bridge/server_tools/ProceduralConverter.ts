@@ -55,6 +55,8 @@ export class ProceduralConverter {
 
             if (jsonStr) {
                 console.log(`[ProceduralConverter] Extracted balanced block (length: ${jsonStr.length})`);
+                console.log(`[ProceduralConverter] Start: ${jsonStr.substring(0, 200)}`);
+                console.log(`[ProceduralConverter] End: ${jsonStr.substring(jsonStr.length - 200)}`);
                 try {
                     // Safe-ish evaluation to parse the JSON object
                     // We need to provide context for variables like IMG_..., SVG_..., COLORS...
@@ -474,26 +476,34 @@ export class ProceduralConverter {
     private groupChildrenBySimilarity(childIds: string[]): string[][] {
         console.log(`[ProceduralConverter] groupChildrenBySimilarity for ${childIds.length} children`);
         const groups: string[][] = [];
-        const used = new Set<string>();
+        let i = 0;
 
-        for (let i = 0; i < childIds.length; i++) {
-            if (used.has(childIds[i])) continue;
+        while (i < childIds.length) {
             const currentGroup = [childIds[i]];
-            used.add(childIds[i]);
+            let j = i + 1;
 
-            for (let j = i + 1; j < childIds.length; j++) {
-                if (used.has(childIds[j])) continue;
-                const nodeA = this.nodes.get(childIds[i]);
+            // Look ahead for CONTIGUOUS similar items
+            while (j < childIds.length) {
+                const nodeA = this.nodes.get(childIds[i]); // Compare with leader
                 const nodeB = this.nodes.get(childIds[j]);
 
                 if (nodeA && nodeB && this.areNodesDeeplyStructurallySimilar(nodeA, nodeB)) {
                     currentGroup.push(childIds[j]);
-                    used.add(childIds[j]);
+                    j++;
+                } else {
+                    break; // similarity chain broken
                 }
             }
+
+            // Only add if it's actually a multiple-item pattern (or single if needed? Logic below says ">= 2 to form a list")
+            // We push all groups, let the caller decide if it's a list.
             groups.push(currentGroup);
+
+            // Advance i
+            i = j;
         }
-        console.log(`[ProceduralConverter] Created ${groups.length} groups`);
+
+        console.log(`[ProceduralConverter] Created ${groups.length} groups (contiguous)`);
         return groups;
     }
 
@@ -506,13 +516,13 @@ export class ProceduralConverter {
      */
     private areNodesDeeplyStructurallySimilar(a: SIRNode, b: SIRNode): boolean {
         if (a.type !== b.type) return false;
-        // if (a.children.length !== b.children.length) return false; // Relaxed: allow varied children count
+        if (a.children.length !== b.children.length) return false; // Strict check
 
         // Optimization: Check layout mode first as a quick filter
         if (a.props.layoutMode !== b.props.layoutMode) return false;
 
-        const maxChildren = Math.min(a.children.length, b.children.length);
-        for (let i = 0; i < maxChildren; i++) {
+        const count = a.children.length;
+        for (let i = 0; i < count; i++) {
             const childA = this.nodes.get(a.children[i])!;
             const childB = this.nodes.get(b.children[i])!;
             if (!this.areNodesDeeplyStructurallySimilar(childA, childB)) return false;
@@ -573,14 +583,24 @@ export class ProceduralConverter {
         const referenceMap = extractValueMap(first);
         const variablePaths: string[] = [];
 
+        console.log(`[ProceduralConverter] extractSchema: Node ${first.id} has ${referenceMap.size} potential paths.`);
+        referenceMap.forEach((v, k) => console.log(`  Path: ${k} = ${v}`));
+
         // Check if these paths vary in ANY other item
         referenceMap.forEach((baseVal, path) => {
             let isVarying = false;
             for (let i = 1; i < itemIds.length; i++) {
                 const item = this.nodes.get(itemIds[i])!;
                 const val = this.getValueAtPath(item, path);
+
+                // Debug characters check
+                if (path.includes('characters')) {
+                    console.log(`[ProceduralConverter] Check path ${path}: Item 0='${baseVal}', Item ${i}='${val}'`);
+                }
+
                 if (val !== baseVal) {
                     isVarying = true;
+                    console.log(`[ProceduralConverter] Found variation at ${path}. Base: ${baseVal} != ${val}`);
                     break;
                 }
             }
@@ -592,6 +612,8 @@ export class ProceduralConverter {
         variablePaths.forEach(p => {
             keyMap.set(p, this.pathToName(p, referenceMap.get(p), first));
         });
+
+        console.log(`[ProceduralConverter] extractSchema for list parent ${itemIds[0]}: Found ${variablePaths.length} variables. Keys: ${Array.from(keyMap.values()).join(', ')}`);
 
         // Build data objects for each item based on variable paths
         const data = itemIds.map(id => {
@@ -923,7 +945,10 @@ export class ${className} extends BaseComponent {
                 if (listMatch) {
                     // It's a list!
                     const listVar = `LIST_${lists.indexOf(listMatch)}_DATA`;
-                    const itemExpr = this.generateTemplateItem(listMatch.template, listMatch.schema.variablePaths);
+                    const allKeys = new Set<string>();
+                    listMatch.schema.data.forEach((d: any) => Object.keys(d).forEach(k => allKeys.add(k)));
+                    const availableKeys = Array.from(allKeys);
+                    const itemExpr = this.generateTemplateItem(listMatch.template, listMatch.schema.variablePaths, "item", availableKeys);
 
                     const mapExpr = `${listVar}.map(item => {\n            return ${itemExpr} as unknown as NodeDefinition;\n        })`;
                     childGroups.push(`...${mapExpr}`);
@@ -962,23 +987,49 @@ export class ${className} extends BaseComponent {
 
     // Generates code from a God JSON template
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private generateTemplateItem(template: any, variablePaths: string[], prefix = "item"): string {
-        return this.traverseTemplateJSON(template, variablePaths, "", prefix);
+    private generateTemplateItem(template: any, variablePaths: string[], prefix = "item", availableDataKeys: string[] = []): string {
+        return this.traverseTemplateJSON(template, variablePaths, "", prefix, availableDataKeys);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private traverseTemplateJSON(node: any, variablePaths: string[], pathContext: string, prefix: string): string {
+    private traverseTemplateJSON(node: any, variablePaths: string[], pathContext: string, prefix: string, availableDataKeys: string[]): string {
         // Check children
         let childrenCode = '[]';
         if (node.children && node.children.length > 0) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             childrenCode = `[\n${node.children.map((c: any, i: number) => {
                 const newContext = pathContext ? `${pathContext}.children[${i}]` : `children[${i}]`;
-                return this.traverseTemplateJSON(c, variablePaths, newContext, prefix);
+                return this.traverseTemplateJSON(c, variablePaths, newContext, prefix, availableDataKeys);
             }).join(',\n')}\n]`;
         }
 
         const overrides = this.serializePropsFromJSON(node);
+
+        // --- Logic Injection: Selection State (Fills) ---
+        // Only apply to the ROOT node of the template item, and if we have selection data
+        if (!pathContext && availableDataKeys.includes('isSelected') && availableDataKeys.includes('fillColor')) {
+            // We want to switch fills based on isSelected
+            // Logic: item.isSelected ? [{ type: 'SOLID', color: item.fillColor }] : originalFills
+            const originalFills = overrides.fills || node.props.fills || [];
+            const originalFillsStr = JSON.stringify(originalFills); // This should be safe as it's static JSON data
+
+            // Override the fills property with a raw code string
+            const dynamicFill = `${prefix}.isSelected ? [{ type: "SOLID", color: ${prefix}.fillColor }] : ${originalFillsStr}`;
+
+            // Inject into overrides string
+            // We temporarily delete fills from overrides so it doesn't get stringified normally
+            delete overrides.fills;
+
+            let overStr = this.stringifyOverrides(overrides);
+            // Manually inject the fills property
+            if (overStr.trim() === "{}") {
+                overStr = `{ fills: ${dynamicFill} }`;
+            } else {
+                overStr = overStr.replace(/\}$/, `, "fills": ${dynamicFill} }`);
+            }
+
+            return `createFrame("${node.name}", ${overStr}, ${childrenCode})`;
+        }
 
         // Generate Text
         if (node.type === 'TEXT') {
