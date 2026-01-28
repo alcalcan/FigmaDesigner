@@ -126,7 +126,6 @@ export class ComponentGenerator {
         });
 
         const applySizeAndTransformHelper = `
-type T2x3 = [[number, number, number], [number, number, number]];
 function applySizeAndTransform(
     node: SceneNode & LayoutMixin & GeometryMixin,
     opts: {

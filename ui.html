@@ -215,6 +215,9 @@
                     Selected</button>
                 <div style="margin-top: 8px; display: flex; gap: 12px; align-items: center;">
                     <label class="checkbox-row" style="margin: 0;">
+                        <input type="radio" name="json_gen_mode" id="generator-only-checkbox"> Generator Only
+                    </label>
+                    <label class="checkbox-row" style="margin: 0;">
                         <input type="radio" name="json_gen_mode" id="simplified-code-checkbox"> Simplified
                         Refactor
                     </label>
@@ -250,6 +253,10 @@
                     Clipboard</button>
                 <div style="margin-top: 12px;">
                     <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
+                        <label class="checkbox-row" style="margin: 0;">
+                            <input type="radio" name="bridge_capture_mode" id="generator-only-checkbox-capture">
+                            <span style="color: #fff; font-weight: 600;">Generator Only</span>
+                        </label>
                         <label class="checkbox-row" style="margin: 0;">
                             <input type="radio" name="bridge_capture_mode" id="process-checkbox"> <span
                                 style="color: #fff; font-weight: 600;">Process & Refactor</span>
@@ -379,8 +386,10 @@
             const generateSelectedBtn = document.getElementById('generate-from-selected-btn');
             const convertToCodeBtn = document.getElementById('convert-to-code-btn');
             const convertAllBtn = document.getElementById('convert-all-btn');
+            const generatorOnlyCheckbox = document.getElementById('generator-only-checkbox');
             const simplifiedCodeCheckbox = document.getElementById('simplified-code-checkbox');
             const proceduralGenCheckbox = document.getElementById('procedural-gen-checkbox');
+            const generatorOnlyCheckboxCapture = document.getElementById('generator-only-checkbox-capture');
             const proceduralGenCheckboxCapture = document.getElementById('procedural-gen-checkbox-capture');
             const proceduralGenCheckboxPreview = document.getElementById('procedural-gen-checkbox-preview');
 
@@ -429,7 +438,9 @@
                         type: 'capture-bridge',
                         detailed: isDetailed,
                         saveVectorInJson: saveVectorInJson,
-                        procedural: isProcedural
+                        procedural: isProcedural,
+                        refactor: !generatorOnlyCheckboxCapture.checked,
+                        compact: !generatorOnlyCheckboxCapture.checked
                     }
                 }, '*')
                 // Feedback will be triggered on result message for precision, 
@@ -457,6 +468,8 @@
                         detailed: isDetailed,
                         saveVectorInJson: saveVectorInJson,
                         procedural: isProcedural,
+                        refactor: !generatorOnlyCheckboxCapture.checked,
+                        compact: !generatorOnlyCheckboxCapture.checked,
                         skipAssets: false // We need assets for generation context, even if transient
                     }
                 }, '*');
@@ -573,7 +586,9 @@
                             path: selectedFilePath,
                             project: projectName,
                             simplified: isSimplified,
-                            procedural: isProcedural
+                            procedural: isProcedural,
+                            refactor: !generatorOnlyCheckbox.checked,
+                            compact: !generatorOnlyCheckbox.checked
                         })
                     });
 
@@ -611,7 +626,9 @@
                             folder: selectedFolder,
                             project: selectedFolder.split('/')[0],
                             simplified: isSimplified,
-                            procedural: isProcedural
+                            procedural: isProcedural,
+                            refactor: !generatorOnlyCheckbox.checked,
+                            compact: !generatorOnlyCheckbox.checked
                         })
                     });
 

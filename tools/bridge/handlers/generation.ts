@@ -199,7 +199,7 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
     req.on('end', () => {
         try {
-            const { folder, project, simplified, procedural } = JSON.parse(body);
+            const { folder, project, simplified, procedural, refactor, compact } = JSON.parse(body);
             if (!folder) throw new Error("Missing folder");
 
             // ... Logic to iterate folder files ...
@@ -247,11 +247,22 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
 
                                 const converter = new ProceduralConverter();
                                 code = converter.convert(code, componentName);
-                            } else if (simplified) {
-                                const refactorer = new ComponentRefactorer();
-                                code = refactorer.refactorCode(code, componentName);
-                                const compactor = new CompactStructure();
-                                code = compactor.compactCode(code);
+                            } else {
+                                // Granular control for standard generation
+                                const shouldRefactor = (simplified !== false) && (refactor !== false);
+                                // Default to compacting if not explicitly disabled, matching other handlers or simplified logic
+                                // However, existing logic only compacted if simplified was true.
+                                // Let's respect the explicit flags if provided, defaulting to simplified behavior if not.
+                                const shouldCompact = (compact !== false) && (simplified !== false);
+
+                                if (shouldRefactor) {
+                                    const refactorer = new ComponentRefactorer();
+                                    code = refactorer.refactorCode(code, componentName);
+                                }
+                                if (shouldCompact) {
+                                    const compactor = new CompactStructure();
+                                    code = compactor.compactCode(code);
+                                }
                             }
 
                             const tsPath = full.replace('.json', '.ts');

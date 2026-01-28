@@ -24,6 +24,7 @@ export { search_bar as search_bar_Alex_CookBook } from "./Alex_CookBook/search_b
 export { search_bar_expanded } from "./Alex_CookBook/search_bar_expanded/search_bar_expanded";
 export { search_bar as search_bar_UEFA_Academy_online } from "./UEFA_Academy_online/search_bar/search_bar";
 export { sidebar as sidebar_Alex_CookBook } from "./Alex_CookBook/sidebar/sidebar";
+export { sidebar_procedural } from "./Alex_CookBook/sidebar_procedural/sidebar_procedural";
 export { sidebar_standard_code } from "./Alex_CookBook/sidebar_standard_code/sidebar_standard_code";
 export { sidebar as sidebar_UEFA_Academy_online } from "./UEFA_Academy_online/sidebar/sidebar";
 export { simple_info } from "./UEFA_Academy_online/simple_info/simple_info";

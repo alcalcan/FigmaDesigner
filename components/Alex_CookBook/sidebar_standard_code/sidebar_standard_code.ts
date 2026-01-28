@@ -2,19 +2,19 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 
 // SVG Assets
-import SVG_sidebar_standard_code_assets_icon_Vector__Stroke__I1119_8689_3016_7769_svg_22_000059127807617x21_020004272460938 from "./assets/sidebar_standard_code_assets_icon_Vector__Stroke__I1119_8689_3016_7769_svg_22_000059127807617x21_020004272460938.svg";
-import SVG_sidebar_standard_code_assets_icon_Rectangle_77_Copy_7_I1119_8691_7466_30959_svg_42x22 from "./assets/sidebar_standard_code_assets_icon_Rectangle_77_Copy_7_I1119_8691_7466_30959_svg_42x22.svg";
-import SVG_sidebar_standard_code_assets_icon_Oval_1_Copy_13_I1119_8691_7466_30960_svg_18x18 from "./assets/sidebar_standard_code_assets_icon_Oval_1_Copy_13_I1119_8691_7466_30960_svg_18x18.svg";
-import SVG_sidebar_standard_code_assets_icon_Shape_I1119_8691_7466_30966_svg_10x10 from "./assets/sidebar_standard_code_assets_icon_Shape_I1119_8691_7466_30966_svg_10x10.svg";
+import SVG_sidebar_standard_code_assets_icon_Vector__Stroke__1124_731_svg_22_000059127807617x21_020004272460938 from "./assets/sidebar_standard_code_assets_icon_Vector__Stroke__1124_731_svg_22_000059127807617x21_020004272460938.svg";
+import SVG_sidebar_standard_code_assets_icon_Rectangle_77_Copy_7_1124_737_svg_42x22 from "./assets/sidebar_standard_code_assets_icon_Rectangle_77_Copy_7_1124_737_svg_42x22.svg";
+import SVG_sidebar_standard_code_assets_icon_Oval_1_Copy_13_1124_741_svg_18x18 from "./assets/sidebar_standard_code_assets_icon_Oval_1_Copy_13_1124_741_svg_18x18.svg";
+import SVG_sidebar_standard_code_assets_icon_Shape_1124_745_svg_10x10 from "./assets/sidebar_standard_code_assets_icon_Shape_1124_745_svg_10x10.svg";
 import SVG_sidebar_standard_code_Synth_Path_4 from "./assets/sidebar_standard_code_Synth_Path_4.svg";
 import SVG_sidebar_standard_code_Synth_Path_5 from "./assets/sidebar_standard_code_Synth_Path_5.svg";
 import SVG_sidebar_standard_code_Synth_Path_6 from "./assets/sidebar_standard_code_Synth_Path_6.svg";
 import SVG_sidebar_standard_code_Synth_Shape_7 from "./assets/sidebar_standard_code_Synth_Shape_7.svg";
-import SVG_sidebar_standard_code_assets_icon_Union_I1119_8700_5250_18144_svg_8x8 from "./assets/sidebar_standard_code_assets_icon_Union_I1119_8700_5250_18144_svg_8x8.svg";
-import SVG_sidebar_standard_code_assets_icon_Vector_I1119_8704_1914_8670_svg_7x0 from "./assets/sidebar_standard_code_assets_icon_Vector_I1119_8704_1914_8670_svg_7x0.svg";
+import SVG_sidebar_standard_code_assets_icon_Union_1124_781_svg_8x8 from "./assets/sidebar_standard_code_assets_icon_Union_1124_781_svg_8x8.svg";
+import SVG_sidebar_standard_code_assets_icon_Vector_1124_789_svg_7x0 from "./assets/sidebar_standard_code_assets_icon_Vector_1124_789_svg_7x0.svg";
 import SVG_sidebar_standard_code_Synth_Path_10 from "./assets/sidebar_standard_code_Synth_Path_10.svg";
 import SVG_sidebar_standard_code_Synth_Path_11 from "./assets/sidebar_standard_code_Synth_Path_11.svg";
-import SVG_sidebar_standard_code_assets_icon_Union_I1119_8731_5250_18144_svg_8x8 from "./assets/sidebar_standard_code_assets_icon_Union_I1119_8731_5250_18144_svg_8x8.svg";
+import SVG_sidebar_standard_code_assets_icon_Union_1124_892_svg_8x8 from "./assets/sidebar_standard_code_assets_icon_Union_1124_892_svg_8x8.svg";
 
 
 export class sidebar_standard_code extends BaseComponent {
@@ -27,7 +27,7 @@ export class sidebar_standard_code extends BaseComponent {
       "isMask": false, "maskType": "ALPHA", "clipsContent": false,
       "layoutMode": "VERTICAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
       "paddingTop": 0, "paddingRight": 16, "paddingBottom": 0, "paddingLeft": 16,
-      "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+      "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
       "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
       "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
       "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
@@ -36,7 +36,7 @@ export class sidebar_standard_code extends BaseComponent {
       "effects": [],
       "cornerRadius": 14
     },
-    "layoutProps": { "width": 339, "height": 694, "parentIsAutoLayout": false },
+    "layoutProps": { "width": 328, "height": 694, "parentIsAutoLayout": false },
     "children": [
       {
         "type": "FRAME",
@@ -58,7 +58,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 25,
+          "width": 296, "height": 25,
           "relativeTransform": [[1, 0, 16], [0, 1, 0]]
         },
         "children": [
@@ -82,7 +82,7 @@ export class sidebar_standard_code extends BaseComponent {
             },
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-              "width": 249, "height": 25,
+              "width": 238, "height": 25,
               "relativeTransform": [[1, 0, 0], [0, 1, 0]]
             },
             "children": [
@@ -131,7 +131,7 @@ export class sidebar_standard_code extends BaseComponent {
                       "width": 22.000059127807617, "height": 21.020004272460938,
                       "relativeTransform": [[1, 0, 0.9999708533287048], [0, 1, 1]]
                     },
-                    "svgContent": SVG_sidebar_standard_code_assets_icon_Vector__Stroke__I1119_8689_3016_7769_svg_22_000059127807617x21_020004272460938
+                    "svgContent": SVG_sidebar_standard_code_assets_icon_Vector__Stroke__1124_731_svg_22_000059127807617x21_020004272460938
                   }
                 ]
               },
@@ -145,7 +145,7 @@ export class sidebar_standard_code extends BaseComponent {
                   "layoutAlign": "INHERIT", "layoutGrow": 1,
                   "characters": "Favourites", "fontSize": 20,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -162,7 +162,7 @@ export class sidebar_standard_code extends BaseComponent {
                 },
                 "layoutProps": {
                   "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                  "width": 221, "height": 25,
+                  "width": 210, "height": 25,
                   "relativeTransform": [[1, 0, 28], [0, 1, 0]]
                 }
               }
@@ -186,7 +186,7 @@ export class sidebar_standard_code extends BaseComponent {
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
               "width": 42, "height": 22,
-              "relativeTransform": [[1, 0, 265], [0, 1, 1.5]]
+              "relativeTransform": [[1, 0, 254], [0, 1, 1.5]]
             },
             "children": [
               {
@@ -199,14 +199,15 @@ export class sidebar_standard_code extends BaseComponent {
                   "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                   "x": 0, "y": 0,
                   "strokes": [],
-                  "effects": []
+                  "effects": [],
+                  "cornerRadius": 0
                 },
                 "layoutProps": {
                   "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                   "width": 42, "height": 22,
                   "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                 },
-                "svgContent": SVG_sidebar_standard_code_assets_icon_Rectangle_77_Copy_7_I1119_8691_7466_30959_svg_42x22
+                "svgContent": SVG_sidebar_standard_code_assets_icon_Rectangle_77_Copy_7_1124_737_svg_42x22
               },
               {
                 "type": "VECTOR",
@@ -226,7 +227,7 @@ export class sidebar_standard_code extends BaseComponent {
                   "width": 18, "height": 18,
                   "relativeTransform": [[1, 0, 2], [0, 1, 2]]
                 },
-                "svgContent": SVG_sidebar_standard_code_assets_icon_Oval_1_Copy_13_I1119_8691_7466_30960_svg_18x18
+                "svgContent": SVG_sidebar_standard_code_assets_icon_Oval_1_Copy_13_1124_741_svg_18x18
               },
               {
                 "type": "VECTOR",
@@ -246,7 +247,7 @@ export class sidebar_standard_code extends BaseComponent {
                   "width": 10, "height": 10,
                   "relativeTransform": [[1, 0, 24], [0, 1, 6]]
                 },
-                "svgContent": SVG_sidebar_standard_code_assets_icon_Shape_I1119_8691_7466_30966_svg_10x10
+                "svgContent": SVG_sidebar_standard_code_assets_icon_Shape_1124_745_svg_10x10
               }
             ]
           }
@@ -272,7 +273,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 0,
+          "width": 296, "height": 0,
           "relativeTransform": [[1, 0, 16], [0, 1, 41]]
         }
       },
@@ -296,7 +297,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 40,
+          "width": 296, "height": 40,
           "relativeTransform": [[1, 0, 16], [0, 1, 57]]
         },
         "children": [
@@ -327,7 +328,7 @@ export class sidebar_standard_code extends BaseComponent {
             },
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-              "width": 251, "height": 25,
+              "width": 240, "height": 25,
               "relativeTransform": [[1, 0, 0], [0, 1, 7.5]]
             }
           },
@@ -358,7 +359,7 @@ export class sidebar_standard_code extends BaseComponent {
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
               "width": 40, "height": 40,
-              "relativeTransform": [[1, 0, 267], [0, 1, 0]]
+              "relativeTransform": [[1, 0, 256], [0, 1, 0]]
             },
             "children": [
               {
@@ -530,7 +531,7 @@ export class sidebar_standard_code extends BaseComponent {
                           "vectorPaths": [
                             {
                               "windingRule": "NONZERO",
-                              "data": "M 6.057106971740723 4.642893314361572 L 1.7071068286895752 0.2928932309150696 C 1.3165825307369232 -0.0976310670375824 0.6834175288677216 -0.0976310670375824 0.2928932309150696 0.2928932309150696 C -0.0976310670375824 0.6834175288677216 -0.0976310670375824 1.3165825307369232 0.2928932309150696 1.7071068286895752 L 4.642893314361572 6.057106971740723 C 5.033417612314224 6.447631269693375 5.666582673788071 6.447631269693375 6.057106971740723 6.057106971740723 C 6.447631269693375 5.666582673788071 6.447631269693375 5.033417612314224 6.057106971740723 4.642893314361572 Z"
+                              "data": "M 6.057106516897651 4.642892965715285 L 1.7071067004987217 0.29289320892099596 C 1.3165824318715005 -0.09763105970622526 0.6834174775482171 -0.09763105970622526 0.29289320892099596 0.29289320892099596 C -0.09763105970622526 0.6834174775482171 -0.09763105970622526 1.3165824318715005 0.29289320892099596 1.7071067004987217 L 4.642892965715285 6.057106516897651 C 5.033417234342506 6.447630785524872 5.66658224827043 6.447630785524872 6.057106516897651 6.057106516897651 C 6.447630785524872 5.66658224827043 6.447630785524872 5.033417234342506 6.057106516897651 4.642892965715285 Z"
                             }
                           ]
                         },
@@ -557,7 +558,7 @@ export class sidebar_standard_code extends BaseComponent {
           "isMask": false, "maskType": "ALPHA", "clipsContent": false,
           "layoutMode": "VERTICAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
           "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-          "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+          "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
           "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
           "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
           "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
@@ -703,7 +704,7 @@ export class sidebar_standard_code extends BaseComponent {
                           "fills": [
                             {
                               "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                              "color": { "r": 0.07058823853731155, "g": 0.2235294133424759, "b": 0.5215686559677124 },
+                              "color": { "r": 0, "g": 0, "b": 0 },
                               "boundVariables": {}
                             }
                           ],
@@ -786,7 +787,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 32,
+          "width": 296, "height": 32,
           "relativeTransform": [[1, 0, 16], [0, 1, 198]]
         },
         "children": [
@@ -817,7 +818,7 @@ export class sidebar_standard_code extends BaseComponent {
             },
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-              "width": 291, "height": 24,
+              "width": 280, "height": 24,
               "relativeTransform": [[1, 0, 0], [0, 1, 4]]
             }
           },
@@ -845,7 +846,7 @@ export class sidebar_standard_code extends BaseComponent {
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
               "width": 12, "height": 12,
-              "relativeTransform": [[1, 0, 295], [0, 1, 10]]
+              "relativeTransform": [[1, 0, 284], [0, 1, 10]]
             },
             "children": [
               {
@@ -866,7 +867,7 @@ export class sidebar_standard_code extends BaseComponent {
                   "width": 8, "height": 8,
                   "relativeTransform": [[1, 0, 2], [0, 1, 2]]
                 },
-                "svgContent": SVG_sidebar_standard_code_assets_icon_Union_I1119_8700_5250_18144_svg_8x8
+                "svgContent": SVG_sidebar_standard_code_assets_icon_Union_1124_781_svg_8x8
               }
             ]
           }
@@ -880,7 +881,7 @@ export class sidebar_standard_code extends BaseComponent {
           "isMask": false, "maskType": "ALPHA", "clipsContent": false,
           "layoutMode": "VERTICAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
           "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-          "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+          "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
           "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
           "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
           "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
@@ -892,7 +893,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 384,
+          "width": 296, "height": 384,
           "relativeTransform": [[1, 0, 16], [0, 1, 246]]
         },
         "children": [
@@ -922,7 +923,7 @@ export class sidebar_standard_code extends BaseComponent {
             },
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-              "width": 307, "height": 32,
+              "width": 296, "height": 32,
               "relativeTransform": [[1, 0, 0], [0, 1, 0]]
             },
             "children": [
@@ -936,7 +937,7 @@ export class sidebar_standard_code extends BaseComponent {
                   "layoutAlign": "INHERIT", "layoutGrow": 1,
                   "characters": "UEFA INITIATIVE", "fontSize": 16,
                   "textCase": "ORIGINAL", "textDecoration": "NONE",
-                  "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
+                  "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
                   "paragraphSpacing": 0, "paragraphIndent": 0,
                   "fills": [
                     {
@@ -953,7 +954,7 @@ export class sidebar_standard_code extends BaseComponent {
                 },
                 "layoutProps": {
                   "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                  "width": 291, "height": 24,
+                  "width": 280, "height": 24,
                   "relativeTransform": [[1, 0, 0], [0, 1, 4]]
                 }
               },
@@ -981,7 +982,7 @@ export class sidebar_standard_code extends BaseComponent {
                 "layoutProps": {
                   "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                   "width": 12, "height": 12,
-                  "relativeTransform": [[1, 0, 295], [0, 1, 10]]
+                  "relativeTransform": [[1, 0, 284], [0, 1, 10]]
                 },
                 "children": [
                   {
@@ -1008,7 +1009,7 @@ export class sidebar_standard_code extends BaseComponent {
                       "width": 7, "height": 0,
                       "relativeTransform": [[1, 0, 2.5], [0, 1, 6]]
                     },
-                    "svgContent": SVG_sidebar_standard_code_assets_icon_Vector_I1119_8704_1914_8670_svg_7x0
+                    "svgContent": SVG_sidebar_standard_code_assets_icon_Vector_1124_789_svg_7x0
                   }
                 ]
               }
@@ -1049,7 +1050,7 @@ export class sidebar_standard_code extends BaseComponent {
           },
           "layoutProps": {
             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 307, "height": 32,
+            "width": 296, "height": 32,
             "relativeTransform": [[1, 0, 0], [0, 1, 44]]
           },
           "children": [
@@ -1128,7 +1129,7 @@ export class sidebar_standard_code extends BaseComponent {
                         "vectorPaths": [
                           {
                             "windingRule": "EVENODD",
-                            "data": "M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"
+                            "data": "M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"
                           }
                         ]
                       },
@@ -1147,7 +1148,7 @@ export class sidebar_standard_code extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 4.166666626930237, "y": 4.166666626930237,
+                        "x": 4.166666030883789, "y": 4.166656494140625,
                         "fills": [
                           {
                             "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -1168,7 +1169,7 @@ export class sidebar_standard_code extends BaseComponent {
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                         "width": 11.666666984558105, "height": 11.666666984558105,
-                        "relativeTransform": [[1, 0, 4.166666626930237], [0, 1, 4.166666626930237]]
+                        "relativeTransform": [[1, 0, 4.166666030883789], [0, 1, 4.166656494140625]]
                       },
                       "svgContent": SVG_sidebar_standard_code_Synth_Path_11
                     }
@@ -1203,7 +1204,7 @@ export class sidebar_standard_code extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 275, "height": 24,
+                "width": 264, "height": 24,
                 "relativeTransform": [[1, 0, 32], [0, 1, 4]]
               }
             }
@@ -1284,7 +1285,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 32,
+          "width": 296, "height": 32,
           "relativeTransform": [[1, 0, 16], [0, 1, 646]]
         },
         "children": [
@@ -1298,7 +1299,7 @@ export class sidebar_standard_code extends BaseComponent {
               "layoutAlign": "INHERIT", "layoutGrow": 1,
               "characters": "ORGANISATION", "fontSize": 16,
               "textCase": "ORIGINAL", "textDecoration": "NONE",
-              "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
+              "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
               "paragraphSpacing": 0, "paragraphIndent": 0,
               "fills": [
                 {
@@ -1315,7 +1316,7 @@ export class sidebar_standard_code extends BaseComponent {
             },
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-              "width": 291, "height": 24,
+              "width": 280, "height": 24,
               "relativeTransform": [[1, 0, 0], [0, 1, 4]]
             }
           },
@@ -1343,7 +1344,7 @@ export class sidebar_standard_code extends BaseComponent {
             "layoutProps": {
               "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
               "width": 12, "height": 12,
-              "relativeTransform": [[1, 0, 295], [0, 1, 10]]
+              "relativeTransform": [[1, 0, 284], [0, 1, 10]]
             },
             "children": [
               {
@@ -1364,7 +1365,7 @@ export class sidebar_standard_code extends BaseComponent {
                   "width": 8, "height": 8,
                   "relativeTransform": [[1, 0, 2], [0, 1, 2]]
                 },
-                "svgContent": SVG_sidebar_standard_code_assets_icon_Union_I1119_8731_5250_18144_svg_8x8
+                "svgContent": SVG_sidebar_standard_code_assets_icon_Union_1124_892_svg_8x8
               }
             ]
           }
@@ -1390,7 +1391,7 @@ export class sidebar_standard_code extends BaseComponent {
         },
         "layoutProps": {
           "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-          "width": 307, "height": 0,
+          "width": 296, "height": 100,
           "relativeTransform": [[1, 0, 16], [0, 1, 694]]
         }
       }

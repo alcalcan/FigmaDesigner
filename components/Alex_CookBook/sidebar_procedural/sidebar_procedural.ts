@@ -1,33 +1,33 @@
 import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 
 // SVG Imports
-import SVG_sidebar_assets_icon_Vector__Stroke__I965_7246_3016_7769_svg_22_000059127807617x21_020004272460938 from "./assets/sidebar_assets_icon_Vector__Stroke__I965_7246_3016_7769_svg_22_000059127807617x21_020004272460938.svg";
-import SVG_sidebar_assets_icon_Rectangle_77_Copy_7_I965_7248_7466_30959_svg_42x22 from "./assets/sidebar_assets_icon_Rectangle_77_Copy_7_I965_7248_7466_30959_svg_42x22.svg";
-import SVG_sidebar_assets_icon_Oval_1_Copy_13_I965_7248_7466_30960_svg_18x18 from "./assets/sidebar_assets_icon_Oval_1_Copy_13_I965_7248_7466_30960_svg_18x18.svg";
-import SVG_sidebar_assets_icon_Shape_I965_7248_7466_30966_svg_10x10 from "./assets/sidebar_assets_icon_Shape_I965_7248_7466_30966_svg_10x10.svg";
-import SVG_sidebar_Synth_Path_4 from "./assets/sidebar_Synth_Path_4.svg";
-import SVG_sidebar_Synth_Path_5 from "./assets/sidebar_Synth_Path_5.svg";
-import SVG_sidebar_Synth_Path_6 from "./assets/sidebar_Synth_Path_6.svg";
-import SVG_sidebar_Synth_Shape_7 from "./assets/sidebar_Synth_Shape_7.svg";
-import SVG_sidebar_assets_icon_Union_I965_7257_5250_18144_svg_8x8 from "./assets/sidebar_assets_icon_Union_I965_7257_5250_18144_svg_8x8.svg";
-import SVG_sidebar_assets_icon_Vector_I965_7261_1914_8670_svg_7x0 from "./assets/sidebar_assets_icon_Vector_I965_7261_1914_8670_svg_7x0.svg";
-import SVG_sidebar_Synth_Path_10 from "./assets/sidebar_Synth_Path_10.svg";
-import SVG_sidebar_Synth_Path_11 from "./assets/sidebar_Synth_Path_11.svg";
-import SVG_sidebar_Synth_Path_12 from "./assets/sidebar_Synth_Path_12.svg";
-import SVG_sidebar_Synth_Path_13 from "./assets/sidebar_Synth_Path_13.svg";
-import SVG_sidebar_Synth_Path_14 from "./assets/sidebar_Synth_Path_14.svg";
-import SVG_sidebar_Synth_Path_15 from "./assets/sidebar_Synth_Path_15.svg";
-import SVG_sidebar_Synth_Path_16 from "./assets/sidebar_Synth_Path_16.svg";
-import SVG_sidebar_Synth_Path_17 from "./assets/sidebar_Synth_Path_17.svg";
-import SVG_sidebar_Synth_Path_18 from "./assets/sidebar_Synth_Path_18.svg";
-import SVG_sidebar_Synth_Path_19 from "./assets/sidebar_Synth_Path_19.svg";
-import SVG_sidebar_Synth_Path_20 from "./assets/sidebar_Synth_Path_20.svg";
-import SVG_sidebar_Synth_Path_21 from "./assets/sidebar_Synth_Path_21.svg";
-import SVG_sidebar_Synth_Path_22 from "./assets/sidebar_Synth_Path_22.svg";
-import SVG_sidebar_Synth_Path_23 from "./assets/sidebar_Synth_Path_23.svg";
-import SVG_sidebar_Synth_Path_24 from "./assets/sidebar_Synth_Path_24.svg";
-import SVG_sidebar_Synth_Path_25 from "./assets/sidebar_Synth_Path_25.svg";
-import SVG_sidebar_assets_icon_Union_I965_7288_5250_18144_svg_8x8 from "./assets/sidebar_assets_icon_Union_I965_7288_5250_18144_svg_8x8.svg";
+import SVG_sidebar_procedural_assets_icon_Vector__Stroke__1065_3727_svg_22_000059127807617x21_020004272460938 from "./assets/sidebar_procedural_assets_icon_Vector__Stroke__1065_3727_svg_22_000059127807617x21_020004272460938.svg";
+import SVG_sidebar_procedural_assets_icon_Rectangle_77_Copy_7_1065_3733_svg_42x22 from "./assets/sidebar_procedural_assets_icon_Rectangle_77_Copy_7_1065_3733_svg_42x22.svg";
+import SVG_sidebar_procedural_assets_icon_Oval_1_Copy_13_1065_3737_svg_18x18 from "./assets/sidebar_procedural_assets_icon_Oval_1_Copy_13_1065_3737_svg_18x18.svg";
+import SVG_sidebar_procedural_assets_icon_Shape_1065_3741_svg_10x10 from "./assets/sidebar_procedural_assets_icon_Shape_1065_3741_svg_10x10.svg";
+import SVG_sidebar_procedural_Synth_Path_4 from "./assets/sidebar_procedural_Synth_Path_4.svg";
+import SVG_sidebar_procedural_Synth_Path_5 from "./assets/sidebar_procedural_Synth_Path_5.svg";
+import SVG_sidebar_procedural_Synth_Path_6 from "./assets/sidebar_procedural_Synth_Path_6.svg";
+import SVG_sidebar_procedural_Synth_Shape_7 from "./assets/sidebar_procedural_Synth_Shape_7.svg";
+import SVG_sidebar_procedural_assets_icon_Union_1065_3765_svg_8x8 from "./assets/sidebar_procedural_assets_icon_Union_1065_3765_svg_8x8.svg";
+import SVG_sidebar_procedural_assets_icon_Vector_1065_3773_svg_7x0 from "./assets/sidebar_procedural_assets_icon_Vector_1065_3773_svg_7x0.svg";
+import SVG_sidebar_procedural_Synth_Path_10 from "./assets/sidebar_procedural_Synth_Path_10.svg";
+import SVG_sidebar_procedural_Synth_Path_11 from "./assets/sidebar_procedural_Synth_Path_11.svg";
+import SVG_sidebar_procedural_Synth_Path_12 from "./assets/sidebar_procedural_Synth_Path_12.svg";
+import SVG_sidebar_procedural_Synth_Path_13 from "./assets/sidebar_procedural_Synth_Path_13.svg";
+import SVG_sidebar_procedural_Synth_Path_14 from "./assets/sidebar_procedural_Synth_Path_14.svg";
+import SVG_sidebar_procedural_Synth_Path_15 from "./assets/sidebar_procedural_Synth_Path_15.svg";
+import SVG_sidebar_procedural_Synth_Path_16 from "./assets/sidebar_procedural_Synth_Path_16.svg";
+import SVG_sidebar_procedural_Synth_Path_17 from "./assets/sidebar_procedural_Synth_Path_17.svg";
+import SVG_sidebar_procedural_Synth_Path_18 from "./assets/sidebar_procedural_Synth_Path_18.svg";
+import SVG_sidebar_procedural_Synth_Path_19 from "./assets/sidebar_procedural_Synth_Path_19.svg";
+import SVG_sidebar_procedural_Synth_Path_20 from "./assets/sidebar_procedural_Synth_Path_20.svg";
+import SVG_sidebar_procedural_Synth_Path_21 from "./assets/sidebar_procedural_Synth_Path_21.svg";
+import SVG_sidebar_procedural_Synth_Path_22 from "./assets/sidebar_procedural_Synth_Path_22.svg";
+import SVG_sidebar_procedural_Synth_Path_23 from "./assets/sidebar_procedural_Synth_Path_23.svg";
+import SVG_sidebar_procedural_Synth_Path_24 from "./assets/sidebar_procedural_Synth_Path_24.svg";
+import SVG_sidebar_procedural_Synth_Path_25 from "./assets/sidebar_procedural_Synth_Path_25.svg";
+import SVG_sidebar_procedural_assets_icon_Union_1065_3828_svg_8x8 from "./assets/sidebar_procedural_assets_icon_Union_1065_3828_svg_8x8.svg";
 
 
 
@@ -68,7 +68,7 @@ function applySizeAndTransform(
 }
 
 
-export class sidebar extends BaseComponent {
+export class sidebar_procedural extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         // Load default font
         try {
@@ -78,7 +78,7 @@ export class sidebar extends BaseComponent {
         }
         
         const root = figma.createFrame();
-root.name = "sidebar";
+root.name = "sidebar_procedural";
 root.visible = true;
 root.opacity = 1;
 root.locked = false;
@@ -218,7 +218,7 @@ root_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.cornerRadius = 0;
 
 // Start Child: Vector (Stroke)
-const root_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Vector__Stroke__I965_7246_3016_7769_svg_22_000059127807617x21_020004272460938);
+const root_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Vector__Stroke__1065_3727_svg_22_000059127807617x21_020004272460938);
 root_child_0_child_0_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_0_child_0_child_0 = figma.flatten([root_child_0_child_0_child_0_child_0_svgContainer]);
 root_child_0_child_0_child_0_child_0.name = "Vector (Stroke)";
@@ -268,7 +268,7 @@ root_child_0_child_0_child_1.characters = `Favourites`;
 root_child_0_child_0_child_1.fontSize = 20;
 root_child_0_child_0_child_1.textAlignHorizontal = "LEFT";
 root_child_0_child_0_child_1.textAlignVertical = "CENTER";
-root_child_0_child_0_child_1.textAutoResize = "HEIGHT";
+root_child_0_child_0_child_1.textAutoResize = "NONE";
 root_child_0_child_0_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_0_child_0_child_1.lineHeight = {"unit":"PIXELS","value":25};
 if ("textCase" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.textCase = "ORIGINAL";
@@ -319,7 +319,7 @@ root_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_0_child_1) root_child_0_child_1.cornerRadius = 0;
 
 // Start Child: Rectangle 77 Copy 7
-const root_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Rectangle_77_Copy_7_I965_7248_7466_30959_svg_42x22);
+const root_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Rectangle_77_Copy_7_1065_3733_svg_42x22);
 root_child_0_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_1_child_0 = figma.flatten([root_child_0_child_1_child_0_svgContainer]);
 root_child_0_child_1_child_0.name = "Rectangle 77 Copy 7";
@@ -336,13 +336,14 @@ if ("strokeCap" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.st
 if ("strokeJoin" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.strokeMiterLimit = 4;
 root_child_0_child_1_child_0.effects = [];
+if ("cornerRadius" in root_child_0_child_1_child_0) root_child_0_child_1_child_0.cornerRadius = 0;
 root_child_0_child_1.appendChild(root_child_0_child_1_child_0);
 applySizeAndTransform(root_child_0_child_1_child_0, {"width":42,"height":22,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_0_child_1_child_0.x = 0;
 root_child_0_child_1_child_0.y = 0;
 
 // Start Child: Oval 1 Copy 13
-const root_child_0_child_1_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Oval_1_Copy_13_I965_7248_7466_30960_svg_18x18);
+const root_child_0_child_1_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Oval_1_Copy_13_1065_3737_svg_18x18);
 root_child_0_child_1_child_1_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_1_child_1 = figma.flatten([root_child_0_child_1_child_1_svgContainer]);
 root_child_0_child_1_child_1.name = "Oval 1 Copy 13";
@@ -366,7 +367,7 @@ root_child_0_child_1_child_1.x = 2;
 root_child_0_child_1_child_1.y = 2;
 
 // Start Child: Shape
-const root_child_0_child_1_child_2_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Shape_I965_7248_7466_30966_svg_10x10);
+const root_child_0_child_1_child_2_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Shape_1065_3741_svg_10x10);
 root_child_0_child_1_child_2_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_1_child_2 = figma.flatten([root_child_0_child_1_child_2_svgContainer]);
 root_child_0_child_1_child_2.name = "Shape";
@@ -570,7 +571,7 @@ if ("cornerRadius" in root_child_2_child_1_child_0) root_child_2_child_1_child_0
 // Boolean Child: Oval
 
 // Boolean Child: Path
-const root_child_2_child_1_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_4);
+const root_child_2_child_1_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_4);
 root_child_2_child_1_child_0_child_0_child_0_child_0_svgContainer.resize(16, 16);
 const root_child_2_child_1_child_0_child_0_child_0_child_0 = figma.flatten([root_child_2_child_1_child_0_child_0_child_0_child_0_svgContainer]);
 root_child_2_child_1_child_0_child_0_child_0_child_0.name = "Path";
@@ -595,7 +596,7 @@ root_child_2_child_1_child_0_child_0_child_0_child_0.x = 3;
 root_child_2_child_1_child_0_child_0_child_0_child_0.y = 3;
 
 // Boolean Child: Path
-const root_child_2_child_1_child_0_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_5);
+const root_child_2_child_1_child_0_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_5);
 root_child_2_child_1_child_0_child_0_child_0_child_1_svgContainer.resize(12, 12);
 const root_child_2_child_1_child_0_child_0_child_0_child_1 = figma.flatten([root_child_2_child_1_child_0_child_0_child_0_child_1_svgContainer]);
 root_child_2_child_1_child_0_child_0_child_0_child_1.name = "Path";
@@ -640,7 +641,7 @@ root_child_2_child_1_child_0_child_0_child_0.x = 3;
 root_child_2_child_1_child_0_child_0_child_0.y = 3;
 
 // Boolean Child: Path
-const root_child_2_child_1_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_6);
+const root_child_2_child_1_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_6);
 root_child_2_child_1_child_0_child_0_child_1_svgContainer.resize(6.349999904632568, 6.349999904632568);
 const root_child_2_child_1_child_0_child_0_child_1 = figma.flatten([root_child_2_child_1_child_0_child_0_child_1_svgContainer]);
 root_child_2_child_1_child_0_child_0_child_1.name = "Path";
@@ -659,7 +660,7 @@ if ("strokeJoin" in root_child_2_child_1_child_0_child_0_child_1) root_child_2_c
 if ("strokeMiterLimit" in root_child_2_child_1_child_0_child_0_child_1) root_child_2_child_1_child_0_child_0_child_1.strokeMiterLimit = 4;
 root_child_2_child_1_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_2_child_1_child_0_child_0_child_1) root_child_2_child_1_child_0_child_0_child_1.cornerRadius = 0;
-root_child_2_child_1_child_0_child_0_child_1.vectorPaths = [{"windingRule":"NONZERO","data":"M 6.057106971740723 4.642893314361572 L 1.7071068286895752 0.2928932309150696 C 1.3165825307369232 -0.0976310670375824 0.6834175288677216 -0.0976310670375824 0.2928932309150696 0.2928932309150696 C -0.0976310670375824 0.6834175288677216 -0.0976310670375824 1.3165825307369232 0.2928932309150696 1.7071068286895752 L 4.642893314361572 6.057106971740723 C 5.033417612314224 6.447631269693375 5.666582673788071 6.447631269693375 6.057106971740723 6.057106971740723 C 6.447631269693375 5.666582673788071 6.447631269693375 5.033417612314224 6.057106971740723 4.642893314361572 Z"}];
+root_child_2_child_1_child_0_child_0_child_1.vectorPaths = [{"windingRule":"NONZERO","data":"M 6.057106516897651 4.642892965715285 L 1.7071067004987217 0.29289320892099596 C 1.3165824318715005 -0.09763105970622526 0.6834174775482171 -0.09763105970622526 0.29289320892099596 0.29289320892099596 C -0.09763105970622526 0.6834174775482171 -0.09763105970622526 1.3165824318715005 0.29289320892099596 1.7071067004987217 L 4.642892965715285 6.057106516897651 C 5.033417234342506 6.447630785524872 5.66658224827043 6.447630785524872 6.057106516897651 6.057106516897651 C 6.447630785524872 5.66658224827043 6.447630785524872 5.033417234342506 6.057106516897651 4.642892965715285 Z"}];
 applySizeAndTransform(root_child_2_child_1_child_0_child_0_child_1, {"width":6.349999904632568,"height":6.349999904632568,"relativeTransform":[[1,0,15.6484375],[0,1,15.650390625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_2_child_1_child_0_child_0_child_1.x = 15.6484375;
 root_child_2_child_1_child_0_child_0_child_1.y = 15.650390625;
@@ -882,7 +883,7 @@ root_child_3_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_3_child_0_child_0_child_1) root_child_3_child_0_child_0_child_1.cornerRadius = 0;
 
 // Start Child: Shape
-const root_child_3_child_0_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Shape_7);
+const root_child_3_child_0_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Shape_7);
 root_child_3_child_0_child_0_child_1_child_0_svgContainer.resize(6, 10);
 const root_child_3_child_0_child_0_child_1_child_0 = figma.flatten([root_child_3_child_0_child_0_child_1_child_0_svgContainer]);
 root_child_3_child_0_child_0_child_1_child_0.name = "Shape";
@@ -1072,7 +1073,7 @@ root_child_4_child_1.effects = [];
 if ("cornerRadius" in root_child_4_child_1) root_child_4_child_1.cornerRadius = 0;
 
 // Start Child: Union
-const root_child_4_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Union_I965_7257_5250_18144_svg_8x8);
+const root_child_4_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Union_1065_3765_svg_8x8);
 root_child_4_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_4_child_1_child_0 = figma.flatten([root_child_4_child_1_child_0_svgContainer]);
 root_child_4_child_1_child_0.name = "Union";
@@ -1202,7 +1203,7 @@ root_child_5_child_0_child_0.characters = `UEFA INITIATIVE`;
 root_child_5_child_0_child_0.fontSize = 16;
 root_child_5_child_0_child_0.textAlignHorizontal = "LEFT";
 root_child_5_child_0_child_0.textAlignVertical = "CENTER";
-root_child_5_child_0_child_0.textAutoResize = "HEIGHT";
+root_child_5_child_0_child_0.textAutoResize = "NONE";
 root_child_5_child_0_child_0.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_0_child_0.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_0_child_0) root_child_5_child_0_child_0.textCase = "ORIGINAL";
@@ -1248,7 +1249,7 @@ root_child_5_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_0_child_1) root_child_5_child_0_child_1.cornerRadius = 0;
 
 // Start Child: Vector
-const root_child_5_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Vector_I965_7261_1914_8670_svg_7x0);
+const root_child_5_child_0_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Vector_1065_3773_svg_7x0);
 root_child_5_child_0_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_5_child_0_child_1_child_0 = figma.flatten([root_child_5_child_0_child_1_child_0_svgContainer]);
 root_child_5_child_0_child_1_child_0.name = "Vector";
@@ -1348,7 +1349,7 @@ if ("cornerRadius" in root_child_5_child_1_child_0) root_child_5_child_1_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_1_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_10);
+const root_child_5_child_1_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_10);
 root_child_5_child_1_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_1_child_0_child_0_child_0 = figma.flatten([root_child_5_child_1_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_1_child_0_child_0_child_0.name = "Path";
@@ -1367,13 +1368,13 @@ if ("strokeJoin" in root_child_5_child_1_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_1_child_0_child_0_child_0) root_child_5_child_1_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_1_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_1_child_0_child_0_child_0) root_child_5_child_1_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_1_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_1_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_1_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_1_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_1_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_1_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_11);
+const root_child_5_child_1_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_11);
 root_child_5_child_1_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_1_child_0_child_0_child_1 = figma.flatten([root_child_5_child_1_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_1_child_0_child_0_child_1.name = "Path";
@@ -1393,9 +1394,9 @@ if ("strokeMiterLimit" in root_child_5_child_1_child_0_child_0_child_1) root_chi
 root_child_5_child_1_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_1_child_0_child_0_child_1) root_child_5_child_1_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_1_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_1_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_1_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_1_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_1_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.166656494140625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_1_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_1_child_0_child_0_child_1.y = 4.166656494140625;
 const root_child_5_child_1_child_0_child_0 = figma.exclude([root_child_5_child_1_child_0_child_0_child_0, root_child_5_child_1_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_1_child_0_child_0.name = "Shape";
 root_child_5_child_1_child_0_child_0.visible = true;
@@ -1445,7 +1446,7 @@ root_child_5_child_1_child_1.characters = `UEFA Academy`;
 root_child_5_child_1_child_1.fontSize = 16;
 root_child_5_child_1_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_1_child_1.textAlignVertical = "CENTER";
-root_child_5_child_1_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_1_child_1.textAutoResize = "NONE";
 root_child_5_child_1_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_1_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_1_child_1) root_child_5_child_1_child_1.textCase = "ORIGINAL";
@@ -1468,9 +1469,9 @@ root_child_5_child_1.layoutAlign = "STRETCH";
 root_child_5_child_1.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_1, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,44]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1706
+// Start Child: Frame 1705
 const root_child_5_child_2 = figma.createFrame();
-root_child_5_child_2.name = "Frame 1706";
+root_child_5_child_2.name = "Frame 1705";
 root_child_5_child_2.visible = true;
 root_child_5_child_2.opacity = 1;
 root_child_5_child_2.locked = false;
@@ -1535,7 +1536,7 @@ if ("cornerRadius" in root_child_5_child_2_child_0) root_child_5_child_2_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_2_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_12);
+const root_child_5_child_2_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_12);
 root_child_5_child_2_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_2_child_0_child_0_child_0 = figma.flatten([root_child_5_child_2_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_2_child_0_child_0_child_0.name = "Path";
@@ -1554,13 +1555,13 @@ if ("strokeJoin" in root_child_5_child_2_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_2_child_0_child_0_child_0) root_child_5_child_2_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_2_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_2_child_0_child_0_child_0) root_child_5_child_2_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_2_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_2_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_2_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_2_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_2_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_2_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_13);
+const root_child_5_child_2_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_13);
 root_child_5_child_2_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_2_child_0_child_0_child_1 = figma.flatten([root_child_5_child_2_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_2_child_0_child_0_child_1.name = "Path";
@@ -1580,9 +1581,9 @@ if ("strokeMiterLimit" in root_child_5_child_2_child_0_child_0_child_1) root_chi
 root_child_5_child_2_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_2_child_0_child_0_child_1) root_child_5_child_2_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_2_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_2_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_2_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_2_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_2_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.166656494140625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_2_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_2_child_0_child_0_child_1.y = 4.166656494140625;
 const root_child_5_child_2_child_0_child_0 = figma.exclude([root_child_5_child_2_child_0_child_0_child_0, root_child_5_child_2_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_2_child_0_child_0.name = "Shape";
 root_child_5_child_2_child_0_child_0.visible = true;
@@ -1632,7 +1633,7 @@ root_child_5_child_2_child_1.characters = `UEFA Assist`;
 root_child_5_child_2_child_1.fontSize = 16;
 root_child_5_child_2_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_2_child_1.textAlignVertical = "CENTER";
-root_child_5_child_2_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_2_child_1.textAutoResize = "NONE";
 root_child_5_child_2_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_2_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_2_child_1) root_child_5_child_2_child_1.textCase = "ORIGINAL";
@@ -1655,9 +1656,9 @@ root_child_5_child_2.layoutAlign = "STRETCH";
 root_child_5_child_2.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_2, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,88]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1707
+// Start Child: Frame 1705
 const root_child_5_child_3 = figma.createFrame();
-root_child_5_child_3.name = "Frame 1707";
+root_child_5_child_3.name = "Frame 1705";
 root_child_5_child_3.visible = true;
 root_child_5_child_3.opacity = 1;
 root_child_5_child_3.locked = false;
@@ -1722,7 +1723,7 @@ if ("cornerRadius" in root_child_5_child_3_child_0) root_child_5_child_3_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_3_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_14);
+const root_child_5_child_3_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_14);
 root_child_5_child_3_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_3_child_0_child_0_child_0 = figma.flatten([root_child_5_child_3_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_3_child_0_child_0_child_0.name = "Path";
@@ -1741,13 +1742,13 @@ if ("strokeJoin" in root_child_5_child_3_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_3_child_0_child_0_child_0) root_child_5_child_3_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_3_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_3_child_0_child_0_child_0) root_child_5_child_3_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_3_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_3_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_3_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_3_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_3_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_3_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_15);
+const root_child_5_child_3_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_15);
 root_child_5_child_3_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_3_child_0_child_0_child_1 = figma.flatten([root_child_5_child_3_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_3_child_0_child_0_child_1.name = "Path";
@@ -1767,9 +1768,9 @@ if ("strokeMiterLimit" in root_child_5_child_3_child_0_child_0_child_1) root_chi
 root_child_5_child_3_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_3_child_0_child_0_child_1) root_child_5_child_3_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_3_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_3_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_3_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_3_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_3_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.166656494140625]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_3_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_3_child_0_child_0_child_1.y = 4.166656494140625;
 const root_child_5_child_3_child_0_child_0 = figma.exclude([root_child_5_child_3_child_0_child_0_child_0, root_child_5_child_3_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_3_child_0_child_0.name = "Shape";
 root_child_5_child_3_child_0_child_0.visible = true;
@@ -1819,7 +1820,7 @@ root_child_5_child_3_child_1.characters = `UEFA Events`;
 root_child_5_child_3_child_1.fontSize = 16;
 root_child_5_child_3_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_3_child_1.textAlignVertical = "CENTER";
-root_child_5_child_3_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_3_child_1.textAutoResize = "NONE";
 root_child_5_child_3_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_3_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_3_child_1) root_child_5_child_3_child_1.textCase = "ORIGINAL";
@@ -1842,9 +1843,9 @@ root_child_5_child_3.layoutAlign = "STRETCH";
 root_child_5_child_3.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_3, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,132]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1708
+// Start Child: Frame 1705
 const root_child_5_child_4 = figma.createFrame();
-root_child_5_child_4.name = "Frame 1708";
+root_child_5_child_4.name = "Frame 1705";
 root_child_5_child_4.visible = true;
 root_child_5_child_4.opacity = 1;
 root_child_5_child_4.locked = false;
@@ -1909,7 +1910,7 @@ if ("cornerRadius" in root_child_5_child_4_child_0) root_child_5_child_4_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_4_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_16);
+const root_child_5_child_4_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_16);
 root_child_5_child_4_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_4_child_0_child_0_child_0 = figma.flatten([root_child_5_child_4_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_4_child_0_child_0_child_0.name = "Path";
@@ -1928,13 +1929,13 @@ if ("strokeJoin" in root_child_5_child_4_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_4_child_0_child_0_child_0) root_child_5_child_4_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_4_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_4_child_0_child_0_child_0) root_child_5_child_4_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_4_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_4_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_4_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_4_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_4_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_4_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_17);
+const root_child_5_child_4_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_17);
 root_child_5_child_4_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_4_child_0_child_0_child_1 = figma.flatten([root_child_5_child_4_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_4_child_0_child_0_child_1.name = "Path";
@@ -1954,9 +1955,9 @@ if ("strokeMiterLimit" in root_child_5_child_4_child_0_child_0_child_1) root_chi
 root_child_5_child_4_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_4_child_0_child_0_child_1) root_child_5_child_4_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_4_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_4_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_4_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_4_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_4_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.16668701171875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_4_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_4_child_0_child_0_child_1.y = 4.16668701171875;
 const root_child_5_child_4_child_0_child_0 = figma.exclude([root_child_5_child_4_child_0_child_0_child_0, root_child_5_child_4_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_4_child_0_child_0.name = "Shape";
 root_child_5_child_4_child_0_child_0.visible = true;
@@ -2006,7 +2007,7 @@ root_child_5_child_4_child_1.characters = `UEFA Football Development`;
 root_child_5_child_4_child_1.fontSize = 16;
 root_child_5_child_4_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_4_child_1.textAlignVertical = "CENTER";
-root_child_5_child_4_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_4_child_1.textAutoResize = "NONE";
 root_child_5_child_4_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_4_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_4_child_1) root_child_5_child_4_child_1.textCase = "ORIGINAL";
@@ -2029,9 +2030,9 @@ root_child_5_child_4.layoutAlign = "STRETCH";
 root_child_5_child_4.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_4, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,176]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1709
+// Start Child: Frame 1705
 const root_child_5_child_5 = figma.createFrame();
-root_child_5_child_5.name = "Frame 1709";
+root_child_5_child_5.name = "Frame 1705";
 root_child_5_child_5.visible = true;
 root_child_5_child_5.opacity = 1;
 root_child_5_child_5.locked = false;
@@ -2096,7 +2097,7 @@ if ("cornerRadius" in root_child_5_child_5_child_0) root_child_5_child_5_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_5_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_18);
+const root_child_5_child_5_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_18);
 root_child_5_child_5_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_5_child_0_child_0_child_0 = figma.flatten([root_child_5_child_5_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_5_child_0_child_0_child_0.name = "Path";
@@ -2115,13 +2116,13 @@ if ("strokeJoin" in root_child_5_child_5_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_5_child_0_child_0_child_0) root_child_5_child_5_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_5_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_5_child_0_child_0_child_0) root_child_5_child_5_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_5_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_5_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_5_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_5_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_5_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_5_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_19);
+const root_child_5_child_5_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_19);
 root_child_5_child_5_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_5_child_0_child_0_child_1 = figma.flatten([root_child_5_child_5_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_5_child_0_child_0_child_1.name = "Path";
@@ -2141,9 +2142,9 @@ if ("strokeMiterLimit" in root_child_5_child_5_child_0_child_0_child_1) root_chi
 root_child_5_child_5_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_5_child_0_child_0_child_1) root_child_5_child_5_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_5_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_5_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_5_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_5_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_5_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.16668701171875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_5_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_5_child_0_child_0_child_1.y = 4.16668701171875;
 const root_child_5_child_5_child_0_child_0 = figma.exclude([root_child_5_child_5_child_0_child_0_child_0, root_child_5_child_5_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_5_child_0_child_0.name = "Shape";
 root_child_5_child_5_child_0_child_0.visible = true;
@@ -2193,7 +2194,7 @@ root_child_5_child_5_child_1.characters = `UEFA Grow`;
 root_child_5_child_5_child_1.fontSize = 16;
 root_child_5_child_5_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_5_child_1.textAlignVertical = "CENTER";
-root_child_5_child_5_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_5_child_1.textAutoResize = "NONE";
 root_child_5_child_5_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_5_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_5_child_1) root_child_5_child_5_child_1.textCase = "ORIGINAL";
@@ -2216,9 +2217,9 @@ root_child_5_child_5.layoutAlign = "STRETCH";
 root_child_5_child_5.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_5, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,220]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1710
+// Start Child: Frame 1705
 const root_child_5_child_6 = figma.createFrame();
-root_child_5_child_6.name = "Frame 1710";
+root_child_5_child_6.name = "Frame 1705";
 root_child_5_child_6.visible = true;
 root_child_5_child_6.opacity = 1;
 root_child_5_child_6.locked = false;
@@ -2283,7 +2284,7 @@ if ("cornerRadius" in root_child_5_child_6_child_0) root_child_5_child_6_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_6_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_20);
+const root_child_5_child_6_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_20);
 root_child_5_child_6_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_6_child_0_child_0_child_0 = figma.flatten([root_child_5_child_6_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_6_child_0_child_0_child_0.name = "Path";
@@ -2302,13 +2303,13 @@ if ("strokeJoin" in root_child_5_child_6_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_6_child_0_child_0_child_0) root_child_5_child_6_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_6_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_6_child_0_child_0_child_0) root_child_5_child_6_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_6_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_6_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_6_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_6_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_6_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_6_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_21);
+const root_child_5_child_6_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_21);
 root_child_5_child_6_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_6_child_0_child_0_child_1 = figma.flatten([root_child_5_child_6_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_6_child_0_child_0_child_1.name = "Path";
@@ -2328,9 +2329,9 @@ if ("strokeMiterLimit" in root_child_5_child_6_child_0_child_0_child_1) root_chi
 root_child_5_child_6_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_6_child_0_child_0_child_1) root_child_5_child_6_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_6_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_6_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_6_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_6_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_6_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.16668701171875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_6_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_6_child_0_child_0_child_1.y = 4.16668701171875;
 const root_child_5_child_6_child_0_child_0 = figma.exclude([root_child_5_child_6_child_0_child_0_child_0, root_child_5_child_6_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_6_child_0_child_0.name = "Shape";
 root_child_5_child_6_child_0_child_0.visible = true;
@@ -2380,7 +2381,7 @@ root_child_5_child_6_child_1.characters = `UEFA Hatrick`;
 root_child_5_child_6_child_1.fontSize = 16;
 root_child_5_child_6_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_6_child_1.textAlignVertical = "CENTER";
-root_child_5_child_6_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_6_child_1.textAutoResize = "NONE";
 root_child_5_child_6_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_6_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_6_child_1) root_child_5_child_6_child_1.textCase = "ORIGINAL";
@@ -2403,9 +2404,9 @@ root_child_5_child_6.layoutAlign = "STRETCH";
 root_child_5_child_6.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_6, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,264]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1711
+// Start Child: Frame 1705
 const root_child_5_child_7 = figma.createFrame();
-root_child_5_child_7.name = "Frame 1711";
+root_child_5_child_7.name = "Frame 1705";
 root_child_5_child_7.visible = true;
 root_child_5_child_7.opacity = 1;
 root_child_5_child_7.locked = false;
@@ -2470,7 +2471,7 @@ if ("cornerRadius" in root_child_5_child_7_child_0) root_child_5_child_7_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_7_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_22);
+const root_child_5_child_7_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_22);
 root_child_5_child_7_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_7_child_0_child_0_child_0 = figma.flatten([root_child_5_child_7_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_7_child_0_child_0_child_0.name = "Path";
@@ -2489,13 +2490,13 @@ if ("strokeJoin" in root_child_5_child_7_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_7_child_0_child_0_child_0) root_child_5_child_7_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_7_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_7_child_0_child_0_child_0) root_child_5_child_7_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_7_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_7_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_7_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_7_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_7_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_7_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_23);
+const root_child_5_child_7_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_23);
 root_child_5_child_7_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_7_child_0_child_0_child_1 = figma.flatten([root_child_5_child_7_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_7_child_0_child_0_child_1.name = "Path";
@@ -2515,9 +2516,9 @@ if ("strokeMiterLimit" in root_child_5_child_7_child_0_child_0_child_1) root_chi
 root_child_5_child_7_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_7_child_0_child_0_child_1) root_child_5_child_7_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_7_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_7_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_7_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_7_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_7_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.16668701171875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_7_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_7_child_0_child_0_child_1.y = 4.16668701171875;
 const root_child_5_child_7_child_0_child_0 = figma.exclude([root_child_5_child_7_child_0_child_0_child_0, root_child_5_child_7_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_7_child_0_child_0.name = "Shape";
 root_child_5_child_7_child_0_child_0.visible = true;
@@ -2567,7 +2568,7 @@ root_child_5_child_7_child_1.characters = `UEFA Anti-Doping and Medical`;
 root_child_5_child_7_child_1.fontSize = 16;
 root_child_5_child_7_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_7_child_1.textAlignVertical = "CENTER";
-root_child_5_child_7_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_7_child_1.textAutoResize = "NONE";
 root_child_5_child_7_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_7_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_7_child_1) root_child_5_child_7_child_1.textCase = "ORIGINAL";
@@ -2590,9 +2591,9 @@ root_child_5_child_7.layoutAlign = "STRETCH";
 root_child_5_child_7.layoutGrow = 0;
 applySizeAndTransform(root_child_5_child_7, {"width":307,"height":32,"relativeTransform":[[1,0,0],[0,1,308]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1712
+// Start Child: Frame 1705
 const root_child_5_child_8 = figma.createFrame();
-root_child_5_child_8.name = "Frame 1712";
+root_child_5_child_8.name = "Frame 1705";
 root_child_5_child_8.visible = true;
 root_child_5_child_8.opacity = 1;
 root_child_5_child_8.locked = false;
@@ -2657,7 +2658,7 @@ if ("cornerRadius" in root_child_5_child_8_child_0) root_child_5_child_8_child_0
 // Start Child: Shape
 
 // Boolean Child: Path
-const root_child_5_child_8_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_24);
+const root_child_5_child_8_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_24);
 root_child_5_child_8_child_0_child_0_child_0_svgContainer.resize(15, 15);
 const root_child_5_child_8_child_0_child_0_child_0 = figma.flatten([root_child_5_child_8_child_0_child_0_child_0_svgContainer]);
 root_child_5_child_8_child_0_child_0_child_0.name = "Path";
@@ -2676,13 +2677,13 @@ if ("strokeJoin" in root_child_5_child_8_child_0_child_0_child_0) root_child_5_c
 if ("strokeMiterLimit" in root_child_5_child_8_child_0_child_0_child_0) root_child_5_child_8_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_5_child_8_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_5_child_8_child_0_child_0_child_0) root_child_5_child_8_child_0_child_0_child_0.cornerRadius = 0;
-root_child_5_child_8_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666666666667 0 L 13.333333333333334 0 C 14.253807961940765 0 15 0.7461920380592346 15 1.6666666666666667 L 15 13.333333333333334 C 15 14.253807961940765 14.253807961940765 15 13.333333333333334 15 L 1.6666666666666667 15 C 0.7461920380592346 15 0 14.253807961940765 0 13.333333333333334 L 0 1.6666666666666667 C 0 0.7461920380592346 0.7461920380592346 0 1.6666666666666667 0 Z"}];
+root_child_5_child_8_child_0_child_0_child_0.vectorPaths = [{"windingRule":"EVENODD","data":"M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"}];
 applySizeAndTransform(root_child_5_child_8_child_0_child_0_child_0, {"width":15,"height":15,"relativeTransform":[[1,0,2.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
 root_child_5_child_8_child_0_child_0_child_0.x = 2.5;
 root_child_5_child_8_child_0_child_0_child_0.y = 2.5;
 
 // Boolean Child: Path
-const root_child_5_child_8_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_Synth_Path_25);
+const root_child_5_child_8_child_0_child_0_child_1_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_Synth_Path_25);
 root_child_5_child_8_child_0_child_0_child_1_svgContainer.resize(11.666666984558105, 11.666666984558105);
 const root_child_5_child_8_child_0_child_0_child_1 = figma.flatten([root_child_5_child_8_child_0_child_0_child_1_svgContainer]);
 root_child_5_child_8_child_0_child_0_child_1.name = "Path";
@@ -2702,9 +2703,9 @@ if ("strokeMiterLimit" in root_child_5_child_8_child_0_child_0_child_1) root_chi
 root_child_5_child_8_child_0_child_0_child_1.effects = [];
 if ("cornerRadius" in root_child_5_child_8_child_0_child_0_child_1) root_child_5_child_8_child_0_child_0_child_1.cornerRadius = 0;
 root_child_5_child_8_child_0_child_0_child_1.vectorPaths = [{"windingRule":"EVENODD","data":"M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"}];
-applySizeAndTransform(root_child_5_child_8_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666626930237],[0,1,4.166666626930237]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_5_child_8_child_0_child_0_child_1.x = 4.166666626930237;
-root_child_5_child_8_child_0_child_0_child_1.y = 4.166666626930237;
+applySizeAndTransform(root_child_5_child_8_child_0_child_0_child_1, {"width":11.666666984558105,"height":11.666666984558105,"relativeTransform":[[1,0,4.166666030883789],[0,1,4.16668701171875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
+root_child_5_child_8_child_0_child_0_child_1.x = 4.166666030883789;
+root_child_5_child_8_child_0_child_0_child_1.y = 4.16668701171875;
 const root_child_5_child_8_child_0_child_0 = figma.exclude([root_child_5_child_8_child_0_child_0_child_0, root_child_5_child_8_child_0_child_0_child_1], figma.currentPage);
 root_child_5_child_8_child_0_child_0.name = "Shape";
 root_child_5_child_8_child_0_child_0.visible = true;
@@ -2754,7 +2755,7 @@ root_child_5_child_8_child_1.characters = `UEFA Intelligence Center`;
 root_child_5_child_8_child_1.fontSize = 16;
 root_child_5_child_8_child_1.textAlignHorizontal = "LEFT";
 root_child_5_child_8_child_1.textAlignVertical = "CENTER";
-root_child_5_child_8_child_1.textAutoResize = "HEIGHT";
+root_child_5_child_8_child_1.textAutoResize = "NONE";
 root_child_5_child_8_child_1.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_5_child_8_child_1.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_5_child_8_child_1) root_child_5_child_8_child_1.textCase = "ORIGINAL";
@@ -2841,7 +2842,7 @@ root_child_6_child_0.characters = `ORGANISATION`;
 root_child_6_child_0.fontSize = 16;
 root_child_6_child_0.textAlignHorizontal = "LEFT";
 root_child_6_child_0.textAlignVertical = "CENTER";
-root_child_6_child_0.textAutoResize = "HEIGHT";
+root_child_6_child_0.textAutoResize = "NONE";
 root_child_6_child_0.letterSpacing = {"unit":"PIXELS","value":0};
 root_child_6_child_0.lineHeight = {"unit":"PIXELS","value":24};
 if ("textCase" in root_child_6_child_0) root_child_6_child_0.textCase = "ORIGINAL";
@@ -2887,7 +2888,7 @@ root_child_6_child_1.effects = [];
 if ("cornerRadius" in root_child_6_child_1) root_child_6_child_1.cornerRadius = 0;
 
 // Start Child: Union
-const root_child_6_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_assets_icon_Union_I965_7288_5250_18144_svg_8x8);
+const root_child_6_child_1_child_0_svgContainer = figma.createNodeFromSvg(SVG_sidebar_procedural_assets_icon_Union_1065_3828_svg_8x8);
 root_child_6_child_1_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_6_child_1_child_0 = figma.flatten([root_child_6_child_1_child_0_svgContainer]);
 root_child_6_child_1_child_0.name = "Union";
@@ -2920,51 +2921,8 @@ root_child_6.layoutAlign = "STRETCH";
 root_child_6.layoutGrow = 0;
 applySizeAndTransform(root_child_6, {"width":307,"height":32,"relativeTransform":[[1,0,16],[0,1,646]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-// Start Child: Frame 1656
-const root_child_7 = figma.createFrame();
-root_child_7.name = "Frame 1656";
-root_child_7.visible = true;
-root_child_7.opacity = 1;
-root_child_7.locked = false;
-if ("blendMode" in root_child_7) root_child_7.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_7) root_child_7.isMask = false;
-if ("maskType" in root_child_7) root_child_7.maskType = "ALPHA";
-if ("clipsContent" in root_child_7) root_child_7.clipsContent = false;
-if ("layoutMode" in root_child_7) {
-    root_child_7.layoutMode = "HORIZONTAL";
-    root_child_7.primaryAxisSizingMode = "FIXED";
-    root_child_7.counterAxisSizingMode = "AUTO";
-    root_child_7.primaryAxisAlignItems = "MIN";
-    root_child_7.counterAxisAlignItems = "MIN";
-    root_child_7.itemSpacing = 8;
-    root_child_7.paddingTop = 8;
-    root_child_7.paddingRight = 8;
-    root_child_7.paddingBottom = 8;
-    root_child_7.paddingLeft = 8;
-    root_child_7.itemReverseZIndex = false;
-    root_child_7.strokesIncludedInLayout = false;
-}
-root_child_7.fills = await this.hydratePaints([]);
-root_child_7.strokes = await this.hydratePaints([]);
-root_child_7.strokeWeight = 1;
-root_child_7.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_7) root_child_7.strokeCap = "NONE";
-if ("strokeJoin" in root_child_7) root_child_7.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_7) root_child_7.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root_child_7) root_child_7.strokeTopWeight = 1;
-if ("strokeRightWeight" in root_child_7) root_child_7.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root_child_7) root_child_7.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root_child_7) root_child_7.strokeLeftWeight = 1;
-root_child_7.effects = [];
-if ("cornerRadius" in root_child_7) root_child_7.cornerRadius = 0;
-root.appendChild(root_child_7);
-// Child Layout Props
-root_child_7.layoutAlign = "STRETCH";
-root_child_7.layoutGrow = 0;
-applySizeAndTransform(root_child_7, {"width":307,"height":0,"relativeTransform":[[1,0,16],[0,1,694]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
 
-
-        applySizeAndTransform(root, {"width":339,"height":694,"parentIsAutoLayout":false});
+        applySizeAndTransform(root, {"width":339,"height":678,"parentIsAutoLayout":false});
 
         root.x = props.x;
         root.y = props.y;
