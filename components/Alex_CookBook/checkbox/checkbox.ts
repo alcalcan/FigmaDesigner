@@ -15,7 +15,7 @@ export class checkbox extends BaseComponent {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
         "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 8,
+        "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
         "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
         "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
@@ -93,8 +93,8 @@ export class checkbox extends BaseComponent {
     };
 
     // Apply potential background fill (e.g. for selection rows)
-    // If checked and no fills provided, use default selection background
-    if (props.checked && (!props.fills || (Array.isArray(props.fills) && props.fills.length === 0))) {
+    // If hoverState is true and no fills provided, use default selection background
+    if (props.hoverState && (!props.fills || (Array.isArray(props.fills) && props.fills.length === 0))) {
       structure.props = {
         ...structure.props,
         fills: [{
@@ -108,6 +108,20 @@ export class checkbox extends BaseComponent {
     } else if (props.fills && Array.isArray(props.fills)) {
       structure.props = { ...structure.props, fills: props.fills };
     }
+
+    // Allow generic prop overrides (e.g. padding, spacing)
+    structure.props = { ...structure.props, ...props };
+
+    // Handle Hug Contents
+    if (props.hugContents) {
+      structure.props.primaryAxisSizingMode = "AUTO";
+      structure.props.counterAxisSizingMode = "AUTO";
+      if (structure.layoutProps) {
+        delete structure.layoutProps.width;
+        delete structure.layoutProps.height;
+      }
+    }
+
 
     const root = await this.renderDefinition(structure);
 

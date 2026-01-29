@@ -2,23 +2,22 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 // SVG Assets
 import SVG_Chevron from "./assets/SubSection_assets_icon_Vector_I1174_3092_5698_23_svg_12x7_400000095367432.svg";
-import SVG_Checkbox_Box from "./assets/SubSection_Synth_Path_1.svg";
-import SVG_Checkbox_Check from "./assets/SubSection_Synth_Path_2.svg";
+import { checkbox } from "../checkbox/checkbox";
 
 export class SubSection extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
     // Data for the list items
     const items = [
-      { name: "Anti-Doping, Medical and Health", isSelected: false },
-      { name: "Communication, PR and Media", isSelected: false },
-      { name: "Event and Volunteer Management", isSelected: false },
-      { name: "Football and Social Responsibility", isSelected: false },
-      { name: "Football Development", isSelected: false },
-      { name: "Governance, Organisation of Football and Sport", isSelected: false },
-      { name: "Innovation", isSelected: false },
-      { name: "Leadership", isSelected: false },
-      { name: "Marketing Sponsorship", isSelected: false },
-      { name: "Legal and Integrity", isSelected: false }
+      { name: "Anti-Doping, Medical and Health", isSelected: true, isHovered: false }, // Selected (Checked, No BG)
+      { name: "Communication, PR and Media", isSelected: false, isHovered: true },    // Hovered (Unchecked, Has BG)
+      { name: "Event and Volunteer Management", isSelected: false, isHovered: false },
+      { name: "Football and Social Responsibility", isSelected: false, isHovered: false },
+      { name: "Football Development", isSelected: false, isHovered: false },
+      { name: "Governance, Organisation of Football and Sport", isSelected: false, isHovered: false },
+      { name: "Innovation", isSelected: false, isHovered: false },
+      { name: "Leadership", isSelected: false, isHovered: false },
+      { name: "Marketing Sponsorship", isSelected: false, isHovered: false },
+      { name: "Legal and Integrity", isSelected: false, isHovered: false }
     ];
 
     // Chunk items into pairs for columns
@@ -186,93 +185,24 @@ export class SubSection extends BaseComponent {
     return root;
   }
 
-  createItemNode(item: { name: string, isSelected: boolean }): NodeDefinition {
-    const textColor = { "r": 0.102, "g": 0.192, "b": 0.235 };
-    const selectedFill = { "r": 0.94, "g": 0.95, "b": 0.97 };
-
+  createItemNode(item: { name: string, isSelected: boolean, isHovered: boolean }): NodeDefinition {
     return {
-      "type": "FRAME",
+      "type": "COMPONENT",
       "name": "Item Row",
+      "component": checkbox,
       "props": {
-        "layoutMode": "HORIZONTAL", "itemSpacing": 4,
-        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-        "fills": item.isSelected ? [{ "type": "SOLID", "color": selectedFill }] : [],
-        "paddingTop": 0, "paddingBottom": 0,
-        "primaryAxisSizingMode": "AUTO", // Width Auto
-        // Removed layoutAlign: STRETCH
+        "characterOverride": item.name,
+        "checked": item.isSelected,
+        "height": 24, // Force height to match original design
+        "hugContents": true,
+        "hoverState": item.isHovered
       },
-      "layoutProps": { "parentIsAutoLayout": true, "height": 24 },
-      "children": [
-        // Checkbox
-        {
-          "type": "FRAME",
-          "name": "Checkbox",
-          "props": {
-            "layoutMode": "NONE", "fills": []
-          },
-          "layoutProps": { "parentIsAutoLayout": true, "width": 20, "height": 20 },
-          "children": [
-            {
-              "type": "BOOLEAN_OPERATION",
-              "booleanOperation": "EXCLUDE",
-              "name": "Shape",
-              "props": {
-                "x": 2.5, "y": 2.5,
-                "fills": item.isSelected
-                  ? [{ "type": "SOLID", "color": textColor }] // Filled when selected
-                  : [],
-                "strokes": !item.isSelected
-                  ? [{ "type": "SOLID", "color": textColor }] // Stroked when not selected
-                  : [],
-                "strokeWeight": !item.isSelected ? 2 : 0,
-                "strokeAlign": "INSIDE"
-              },
-              "layoutProps": { "parentIsAutoLayout": false, "width": 15, "height": 15 },
-              "children": [
-                // Box path (Child 0)
-                {
-                  "type": "VECTOR",
-                  "name": "Box",
-                  "svgContent": SVG_Checkbox_Box,
-                  "props": {
-                    "fills": [{ "type": "SOLID", "color": { r: 0, g: 0, b: 0 } }],
-                    "strokeWeight": 0
-                  },
-                  "layoutProps": { "parentIsAutoLayout": false, "width": 15, "height": 15 }
-                },
-                // Checkmark path (Child 1)
-                {
-                  "type": "VECTOR",
-                  "name": "Checkmark",
-                  "svgContent": SVG_Checkbox_Check,
-                  "props": {
-                    "visible": !!item.isSelected,
-                    "fills": [{ "type": "SOLID", "color": { r: 0, g: 0, b: 0 } }],
-                    "strokeWeight": 0,
-                    "x": 1.66, "y": 1.66
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false,
-                    "width": 11.66, "height": 11.66
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        // Text
-        {
-          "type": "TEXT",
-          "name": "Label",
-          "props": {
-            "characters": item.name, "fontSize": 16,
-            "fills": [{ "type": "SOLID", "color": textColor }],
-            "font": { "family": "Open Sans", "style": "Regular" },
-            "lineHeight": { "unit": "PIXELS", "value": 24 }
-          },
-          "layoutProps": { "parentIsAutoLayout": true }
-        }
-      ]
+      "layoutProps": {
+        "parentIsAutoLayout": true,
+        "height": 24,
+        "width": undefined, // Auto width
+        "layoutAlign": "MIN"
+      }
     };
   }
 }
