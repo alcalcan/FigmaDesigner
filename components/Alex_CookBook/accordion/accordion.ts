@@ -5,7 +5,8 @@ import PLUS_ICON from "./assets/plus.svg";
 import MINUS_ICON from "./assets/minus.svg";
 
 export interface AccordionProps extends ComponentProps {
-    title: string;
+    title?: string;
+    description?: string;
     isExpanded?: boolean;
     titleColor?: { r: number, g: number, b: number };
     children?: NodeDefinition[];
@@ -15,6 +16,8 @@ export class accordion extends BaseComponent {
     async create(props: AccordionProps): Promise<SceneNode> {
         const isExpanded = props.isExpanded ?? false;
         const titleColor = props.titleColor ?? { r: 0.10196078568696976, g: 0.1921568661928177, b: 0.23529411852359772 };
+        const title = props.title ?? "Section";
+        const description = props.description ?? "Description";
 
         const structure: NodeDefinition = {
             "type": "FRAME",
@@ -76,7 +79,7 @@ export class accordion extends BaseComponent {
                                 "isMask": false, "maskType": "ALPHA",
                                 "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                 "layoutAlign": "INHERIT", "layoutGrow": 1,
-                                "characters": props.title, "fontSize": 16,
+                                "characters": title, "fontSize": 16,
                                 "textCase": "ORIGINAL", "textDecoration": "NONE",
                                 "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
                                 "paragraphSpacing": 0, "paragraphIndent": 0,
@@ -153,7 +156,40 @@ export class accordion extends BaseComponent {
                         }
                     ]
                 },
-                ...(isExpanded && props.children ? props.children : [])
+                ...(isExpanded
+                    ? (props.children && props.children.length > 0
+                        ? props.children
+                        : [{
+                            "type": "TEXT",
+                            "name": "Description",
+                            "props": {
+                                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                "isMask": false, "maskType": "ALPHA",
+                                "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                "layoutAlign": "STRETCH", "layoutGrow": 0,
+                                "characters": description, "fontSize": 14,
+                                "textCase": "ORIGINAL", "textDecoration": "NONE",
+                                "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                                "paragraphSpacing": 0, "paragraphIndent": 0,
+                                "fills": [
+                                    {
+                                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                        "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                                        "boundVariables": {}
+                                    }
+                                ],
+                                "strokes": [],
+                                "effects": [],
+                                "letterSpacing": { "unit": "PIXELS", "value": 0 },
+                                "lineHeight": { "unit": "PIXELS", "value": 20 },
+                                "font": { "family": "Open Sans", "style": "Regular" }
+                            },
+                            "layoutProps": {
+                                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+                                "width": 280, "height": 20
+                            }
+                        } as NodeDefinition])
+                    : [])
             ]
         };
 
