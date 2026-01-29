@@ -1,6 +1,8 @@
 import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 import { checkbox } from "../checkbox/checkbox";
 import { toggle } from "../toggle/toggle";
+import { accordion } from "../accordion/accordion";
+import { input_field } from "../input_field/input_field";
 
 
 // SVG Assets
@@ -26,7 +28,7 @@ export class sidebar extends BaseComponent {
         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
         "layoutMode": "VERTICAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
         "paddingTop": 0, "paddingRight": 16, "paddingBottom": 0, "paddingLeft": 16,
-        "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+        "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
@@ -35,7 +37,7 @@ export class sidebar extends BaseComponent {
         "effects": [],
         "cornerRadius": 14
       },
-      "layoutProps": { "width": 328, "height": 678, "parentIsAutoLayout": false },
+      "layoutProps": { "width": 328, "height": undefined, "parentIsAutoLayout": false },
       "children": [
         {
           "type": "FRAME",
@@ -480,484 +482,40 @@ export class sidebar extends BaseComponent {
           ]
         },
         {
-          "type": "FRAME",
-          "name": "Text Field",
+          "type": "COMPONENT",
+          "component": input_field,
           "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "VERTICAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-            "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
-            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-            "layoutAlign": "INHERIT", "layoutGrow": 0,
-            "fills": [],
-            "strokes": [],
-            "effects": [],
-            "cornerRadius": 0
-          },
-          "layoutProps": {
-            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 296, "height": 69,
-            "relativeTransform": [[1, 0, 16], [0, 1, 113]]
-          },
-          "children": [
-            {
-              "type": "FRAME",
-              "name": "input_field",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                "paddingTop": 8, "paddingRight": 12, "paddingBottom": 8, "paddingLeft": 12,
-                "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "STRETCH", "layoutGrow": 0,
-                "fills": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 1, "g": 1, "b": 1 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.7019608020782471, "g": 0.7529411911964417, "b": 0.772549033164978 },
-                    "boundVariables": {}
-                  }
-                ],
-                "effects": [],
-                "cornerRadius": 4
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 296, "height": 40,
-                "relativeTransform": [[1, 0, 0], [0, 1, 0]]
-              },
-              "children": [
-                {
-                  "type": "FRAME",
-                  "name": "Inner",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "layoutMode": "HORIZONTAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                    "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                    "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-                    "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 1,
-                    "fills": [],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 272, "height": 24,
-                    "relativeTransform": [[1, 0, 12], [0, 1, 8]]
-                  },
-                  "children": [
-                    {
-                      "type": "TEXT",
-                      "name": "Placeh❌older",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "layoutAlign": "INHERIT", "layoutGrow": 1,
-                        "characters": "Grow", "fontSize": 14,
-                        "textCase": "ORIGINAL", "textDecoration": "NONE",
-                        "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
-                        "paragraphSpacing": 0, "paragraphIndent": 0,
-                        "fills": [
-                          {
-                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                            "color": { "r": 0.3490196168422699, "g": 0.43921568989753723, "b": 0.48235294222831726 },
-                            "boundVariables": {}
-                          }
-                        ],
-                        "strokes": [],
-                        "effects": [],
-                        "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                        "lineHeight": { "unit": "PIXELS", "value": 21 },
-                        "font": { "family": "Open Sans", "style": "Regular" }
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 232, "height": 21,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 1.5]]
-                      }
-                    },
-                    {
-                      "type": "FRAME",
-                      "name": "Icon",
-                      "props": {
-                        "visible": true, "opacity": 0, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                        "layoutAlign": "INHERIT", "layoutGrow": 0,
-                        "layoutMode": "NONE",
-                        "fills": [
-                          {
-                            "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                            "color": { "r": 1, "g": 1, "b": 1 },
-                            "boundVariables": {}
-                          }
-                        ],
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 24, "height": 24,
-                        "relativeTransform": [[1, 0, 248], [0, 1, 0]]
-                      },
-                      "children": [
-                        {
-                          "type": "VECTOR",
-                          "shouldFlatten": true,
-                          "name": "Shape",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 7, "y": 16,
-                            "fills": [
-                              {
-                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0, "g": 0, "b": 0 },
-                                "boundVariables": {}
-                              }
-                            ],
-                            "strokes": [],
-                            "effects": [],
-                            "cornerRadius": 0,
-                            "vectorPaths": [
-                              { "windingRule": "EVENODD", "data": "M 0 5.161276340484619 L 6 0 L 6 10 L 0 5.161276340484619 Z" }
-                            ]
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 6, "height": 10,
-                            "relativeTransform": [[-1.8369701465288538e-16, 1, 7], [-1, -1.8369701465288538e-16, 16]]
-                          },
-                          "svgContent": SVG_sidebar_Synth_Shape_7
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "TEXT",
-              "name": "Helper",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "characters": "1 result", "fontSize": 14,
-                "textCase": "ORIGINAL", "textDecoration": "NONE",
-                "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
-                "paragraphSpacing": 0, "paragraphIndent": 0,
-                "fills": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.4000000059604645, "g": 0.4000000059604645, "b": 0.4000000059604645 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                "lineHeight": { "unit": "PIXELS", "value": 21 },
-                "font": { "family": "Open Sans", "style": "Regular" }
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 296, "height": 21,
-                "relativeTransform": [[1, 0, 0], [0, 1, 48]]
-              }
-            }
-          ]
+            "placeholder": "Grow",
+            "value": "",
+            "helperText": "1 result",
+            "type": "simple",
+            "helperType": "info"
+          }
         },
         {
-          "type": "FRAME",
-          "name": "expanded_section",
+          "type": "COMPONENT",
+          "component": accordion,
           "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-            "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-            "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 1, "strokeLeftWeight": 0,
-            "layoutAlign": "STRETCH", "layoutGrow": 0,
-            "fills": [],
-            "strokes": [
-              {
-                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.8156862854957581, "g": 0.8470588326454163, "b": 0.8588235378265381 },
-                "boundVariables": {}
-              }
-            ],
-            "effects": [],
-            "cornerRadius": 0
-          },
-          "layoutProps": {
-            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 296, "height": 32,
-            "relativeTransform": [[1, 0, 16], [0, 1, 198]]
-          },
-          "children": [
-            {
-              "type": "TEXT",
-              "name": "Text",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "layoutAlign": "INHERIT", "layoutGrow": 1,
-                "characters": "SUBJECT", "fontSize": 16,
-                "textCase": "ORIGINAL", "textDecoration": "NONE",
-                "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
-                "paragraphSpacing": 0, "paragraphIndent": 0,
-                "fills": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                "lineHeight": { "unit": "PIXELS", "value": 24 },
-                "font": { "family": "Open Sans", "style": "SemiBold" }
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 280, "height": 24,
-                "relativeTransform": [[1, 0, 0], [0, 1, 4]]
-              }
-            },
-            {
-              "type": "FRAME",
-              "name": "Actions / Add / Small",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "layoutMode": "NONE",
-                "fills": [
-                  {
-                    "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 1, "g": 1, "b": 1 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 12, "height": 12,
-                "relativeTransform": [[1, 0, 284], [0, 1, 10]]
-              },
-              "children": [
-                {
-                  "type": "VECTOR",
-                  "shouldFlatten": true,
-                  "name": "Union",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "ROUND", "strokeJoin": "ROUND", "strokeMiterLimit": 4,
-                    "x": 2, "y": 2,
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 8, "height": 8,
-                    "relativeTransform": [[1, 0, 2], [0, 1, 2]]
-                  },
-                  "svgContent": SVG_sidebar_assets_icon_Union_1142_1247_svg_8x8
-                }
-              ]
-            }
-          ]
+            "title": "SUBJECT",
+            "isExpanded": false
+          }
         },
         {
-          "type": "FRAME",
-          "name": "Frame 1711",
+          "type": "COMPONENT",
+          "component": accordion,
           "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "VERTICAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-            "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
-            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-            "layoutAlign": "STRETCH", "layoutGrow": 0,
-            "fills": [],
-            "strokes": [],
-            "effects": [],
-            "cornerRadius": 8
-          },
-          "layoutProps": {
-            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 296, "height": 384,
-            "relativeTransform": [[1, 0, 16], [0, 1, 246]]
-          },
-          "children": [
-            {
-              "type": "FRAME",
-              "name": "collapsed_section",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 1, "strokeLeftWeight": 0,
-                "layoutAlign": "STRETCH", "layoutGrow": 0,
-                "fills": [],
-                "strokes": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.8156862854957581, "g": 0.8470588326454163, "b": 0.8588235378265381 },
-                    "boundVariables": {}
-                  }
-                ],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 296, "height": 32,
-                "relativeTransform": [[1, 0, 0], [0, 1, 0]]
-              },
-              "children": [
-                {
-                  "type": "TEXT",
-                  "name": "Filter 6",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "layoutAlign": "INHERIT", "layoutGrow": 1,
-                    "characters": "UEFA INITIATIVE", "fontSize": 16,
-                    "textCase": "ORIGINAL", "textDecoration": "NONE",
-                    "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
-                    "paragraphSpacing": 0, "paragraphIndent": 0,
-                    "fills": [
-                      {
-                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 0, "g": 0.6352941393852234, "b": 0.5882353186607361 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                    "lineHeight": { "unit": "PIXELS", "value": 24 },
-                    "font": { "family": "Open Sans", "style": "SemiBold" }
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 280, "height": 24,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 4]]
-                  }
-                },
-                {
-                  "type": "FRAME",
-                  "name": "Actions / Minus / Small",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "layoutMode": "NONE",
-                    "fills": [
-                      {
-                        "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 1, "g": 1, "b": 1 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 12, "height": 12,
-                    "relativeTransform": [[1, 0, 284], [0, 1, 10]]
-                  },
-                  "children": [
-                    {
-                      "type": "VECTOR",
-                      "shouldFlatten": true,
-                      "name": "Vector",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 2, "strokeAlign": "CENTER", "strokeCap": "ROUND", "strokeJoin": "ROUND", "strokeMiterLimit": 4,
-                        "x": 2.5, "y": 6,
-                        "strokes": [
-                          {
-                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                            "color": { "r": 0, "g": 0.6352941393852234, "b": 0.5882353186607361 },
-                            "boundVariables": {}
-                          }
-                        ],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 7, "height": 0,
-                        "relativeTransform": [[1, 0, 2.5], [0, 1, 6]]
-                      },
-                      "svgContent": SVG_sidebar_assets_icon_Vector_1142_1255_svg_7x0
-                    }
-                  ]
-                }
-              ]
-            },
-            ...[
-              { "name": "UEFA Academy", "hasCheckbox": true, "isSelected": false },
-              { "name": "UEFA Assist", "hasCheckbox": true, "isSelected": false },
-              { "name": "UEFA Events", "hasCheckbox": true, "isSelected": false },
-              { "name": "UEFA Football Development", "hasCheckbox": true, "isSelected": false },
-              {
-                "name": "UEFA Grow",
-                "fillColor": { "r": 0.9450980424880981, "g": 0.9529411792755127, "b": 0.9725490212440491 },
-                "hasCheckbox": true,
-                "isSelected": true
-              },
-              { "name": "UEFA Hatrick", "hasCheckbox": true, "isSelected": false },
-              { "name": "UEFA Anti-Doping and Medical", "hasCheckbox": true, "isSelected": false },
-              { "name": "UEFA Intelligence Center", "hasCheckbox": true, "isSelected": false }
+            "title": "UEFA INITIATIVE",
+            "isExpanded": true,
+            "titleColor": { "r": 0, "g": 0.6352941393852234, "b": 0.5882353186607361 },
+            "children": [
+              { "name": "UEFA Academy", "isSelected": false },
+              { "name": "UEFA Assist", "isSelected": false },
+              { "name": "UEFA Events", "isSelected": false },
+              { "name": "UEFA Football Development", "isSelected": false },
+              { "name": "UEFA Grow", "isSelected": true },
+              { "name": "UEFA Hatrick", "isSelected": false },
+              { "name": "UEFA Anti-Doping and Medical", "isSelected": false },
+              { "name": "UEFA Intelligence Center", "isSelected": false }
             ].map((item: any) => ({
               "type": "COMPONENT",
               "component": checkbox,
@@ -966,119 +524,15 @@ export class sidebar extends BaseComponent {
                 "checked": item.isSelected
               }
             } as NodeDefinition))
-          ]
+          }
         },
         {
-          "type": "FRAME",
-          "name": "collapsed_section",
+          "type": "COMPONENT",
+          "component": accordion,
           "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-            "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-            "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 1, "strokeLeftWeight": 0,
-            "layoutAlign": "STRETCH", "layoutGrow": 0,
-            "fills": [],
-            "strokes": [
-              {
-                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.8156862854957581, "g": 0.8470588326454163, "b": 0.8588235378265381 },
-                "boundVariables": {}
-              }
-            ],
-            "effects": [],
-            "cornerRadius": 0
-          },
-          "layoutProps": {
-            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 296, "height": 32,
-            "relativeTransform": [[1, 0, 16], [0, 1, 646]]
-          },
-          "children": [
-            {
-              "type": "TEXT",
-              "name": "Text",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "layoutAlign": "INHERIT", "layoutGrow": 1,
-                "characters": "ORGANISATION", "fontSize": 16,
-                "textCase": "ORIGINAL", "textDecoration": "NONE",
-                "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
-                "paragraphSpacing": 0, "paragraphIndent": 0,
-                "fills": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                "lineHeight": { "unit": "PIXELS", "value": 24 },
-                "font": { "family": "Open Sans", "style": "SemiBold" }
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 280, "height": 24,
-                "relativeTransform": [[1, 0, 0], [0, 1, 4]]
-              }
-            },
-            {
-              "type": "FRAME",
-              "name": "Actions / Add / Small",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "layoutMode": "NONE",
-                "fills": [
-                  {
-                    "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 1, "g": 1, "b": 1 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 12, "height": 12,
-                "relativeTransform": [[1, 0, 284], [0, 1, 10]]
-              },
-              "children": [
-                {
-                  "type": "VECTOR",
-                  "shouldFlatten": true,
-                  "name": "Union",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "ROUND", "strokeJoin": "ROUND", "strokeMiterLimit": 4,
-                    "x": 2, "y": 2,
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 8, "height": 8,
-                    "relativeTransform": [[1, 0, 2], [0, 1, 2]]
-                  },
-                  "svgContent": SVG_sidebar_assets_icon_Union_1142_1358_svg_8x8
-                }
-              ]
-            }
-          ]
+            "title": "ORGANISATION",
+            "isExpanded": false
+          }
         }
       ]
     };
