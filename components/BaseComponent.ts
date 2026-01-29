@@ -5,8 +5,8 @@ import { AssetSource, hydrateFills } from "./PaintHelpers";
 export { type T2x3 };
 
 export interface ComponentProps {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   text?: string;
   subtext?: string;
   hideButtons?: boolean;
@@ -26,6 +26,8 @@ export interface NodeDefinition {
   layoutProps?: {
     width?: number;
     height?: number;
+    x?: number;
+    y?: number;
     relativeTransform?: T2x3;
     parentIsAutoLayout: boolean;
     layoutPositioning?: "AUTO" | "ABSOLUTE";
