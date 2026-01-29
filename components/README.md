@@ -152,6 +152,11 @@ Use this when you want a child to stretch and take up all available space in its
 ✅ Internal frames (like a "Details" stack) should have `layoutAlign: "STRETCH"` if they need to fill the width.
 ✅ **Flatten your structure**: Avoid deeply nested frames for simple text stacks. This makes `HUG` behavior much more predictable and easier to debug.
 
+### 4. The "Fill Container" Gotcha ⚠️
+If you set `layoutAlign: "STRETCH"` on a child node, you MUST also set the corresponding axis sizing to `"FIXED"`, NOT `"AUTO"`.
+- **Why**: Figma treats `AUTO` sizing (Hug) as higher priority. If you say "Hug Contents" (`AUTO`), Figma will ignore your "Fill Container" (`STRETCH`) instruction.
+- **Fix**: For a Header filling width: `primaryAxisSizingMode: "FIXED"`, `layoutAlign: "STRETCH"`.
+
 ---
 
 ## 7. AI Generation Rules 🤖
