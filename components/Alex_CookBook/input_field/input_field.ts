@@ -330,6 +330,8 @@ export class input_field extends BaseComponent {
         };
 
         const root = await this.renderDefinition(structure);
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
         return root;
     }
 }

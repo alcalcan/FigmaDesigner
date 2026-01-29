@@ -1,140 +1,252 @@
 
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
-import { search_bar_expanded_radio } from "../../components/Alex_CookBook/search_bar_expanded_radio/search_bar_expanded_radio";
+
+// Components
 import { Page_title } from "../../components/Alex_CookBook/Page_title/Page_title";
+import { SubSection } from "../../components/Alex_CookBook/SubSection/SubSection";
+import { accordion } from "../../components/Alex_CookBook/accordion/accordion";
+import { checkbox } from "../../components/Alex_CookBook/checkbox/checkbox";
+import { chip_expand } from "../../components/Alex_CookBook/chip_expand/chip_expand";
+import { input_field } from "../../components/Alex_CookBook/input_field/input_field";
+import { radio_button } from "../../components/Alex_CookBook/radio_button/radio_button";
+import { recipe_card } from "../../components/Alex_CookBook/recipe_card/recipe_card";
+import { search_bar } from "../../components/Alex_CookBook/search_bar/search_bar";
+import { search_bar_expanded } from "../../components/Alex_CookBook/search_bar_expanded/search_bar_expanded";
+import { search_bar_expanded_radio } from "../../components/Alex_CookBook/search_bar_expanded_radio/search_bar_expanded_radio";
+import { sidebar } from "../../components/Alex_CookBook/sidebar/sidebar";
+import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
+import { uefa_cards_4x } from "../../components/Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
+import { social_profile_card } from "../../components/Alex_CookBook/social_profile_card/social_profile_card";
 
 export class RadioSearchDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
+        // Essential fonts
+        await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
+        await figma.loadFontAsync({ family: "Open Sans", style: "SemiBold" });
+        await figma.loadFontAsync({ family: "Open Sans", style: "Regular" });
+        await figma.loadFontAsync({ family: "Open Sans", style: "Light" });
+        await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+
         const root = figma.createFrame();
-        root.name = "Radio Search Demo";
+        root.name = "Alex CookBook - Component Showcase";
         root.layoutMode = "VERTICAL";
-        root.itemSpacing = 40;
-        root.paddingTop = 60;
-        root.paddingLeft = 120; // Standard padding
-        root.paddingRight = 120; // Standard padding
-        root.paddingBottom = 60;
-        root.primaryAxisSizingMode = "AUTO"; // Allow growing vertically
-        root.counterAxisSizingMode = "FIXED"; // Standard for pages
-        root.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.98, b: 0.98 } }];
+        root.itemSpacing = 64; // Generous section spacing
+        root.paddingTop = 100;
+        root.paddingLeft = 120;
+        root.paddingRight = 120;
+        root.paddingBottom = 100;
+        root.primaryAxisSizingMode = "AUTO";
+        root.counterAxisSizingMode = "FIXED";
+        root.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.98, b: 0.99 } }];
 
-        root.resize(1680, 1050);
+        root.resize(1680, 5000); // Temporary large height, will hug later
 
-        // Page Title Component
-        const pageTitleComp = new Page_title();
-        const pageTitleNode = await pageTitleComp.create({
-            x: 0,
-            y: 0,
-            title: "Search Bar & Steppers",
-            subtitle: "Explore our components"
+        // --- IDENTITY ---
+        await this.addSection(root, "Identity", async (container) => {
+            const pageTitle = new Page_title();
+            container.appendChild(await pageTitle.create({
+                title: "Alex CookBook UI Kit",
+                subtitle: "A comprehensive showcase of all available components and their variations."
+            }));
+
+            const subSection = new SubSection();
+            // Demonstrating new props: custom header and badge
+            const subSectionNode = await subSection.create({
+                headerTitle: "Organization",
+                badgeLabel: "Departments"
+            });
+            (subSectionNode as FrameNode).layoutAlign = "STRETCH";
+            container.appendChild(subSectionNode);
         });
-        root.appendChild(pageTitleNode);
 
-        // Component
-        const searchComp = new search_bar_expanded_radio();
-        const searchNode = await searchComp.create({
-            x: 0,
-            y: 0,
-            placeholder: "Search for resources..."
+        // --- INPUTS & SEARCH ---
+        await this.addSection(root, "Inputs & Search", async (container) => {
+            const inputComp = new input_field();
+
+            // Row for simple inputs
+            const row = this.createRow();
+            row.appendChild(await inputComp.create({ placeholder: "Simple Input", type: "simple" }));
+            row.appendChild(await inputComp.create({ placeholder: "Dropdown Style", type: "dropdown" }));
+            row.appendChild(await inputComp.create({ placeholder: "With Search Icon", showSearchIcon: true, type: "simple" }));
+            container.appendChild(row);
+
+            // Search Bars
+            const searchDefault = new search_bar();
+            const searchDefaultNode = await searchDefault.create({ placeholder: "Default Search Bar" });
+            (searchDefaultNode as FrameNode).layoutAlign = "STRETCH";
+            container.appendChild(searchDefaultNode);
+
+            const searchExpanded = new search_bar_expanded();
+            const searchExpandedNode = await searchExpanded.create({ placeholder: "Expanded Search (Checkbox)" });
+            (searchExpandedNode as FrameNode).layoutAlign = "STRETCH";
+            container.appendChild(searchExpandedNode);
+
+            const searchRadio = new search_bar_expanded_radio();
+            const searchRadioNode = await searchRadio.create({ placeholder: "Expanded Search (Radio)" });
+            (searchRadioNode as FrameNode).layoutAlign = "STRETCH";
+            container.appendChild(searchRadioNode);
         });
-        (searchNode as FrameNode).layoutAlign = "STRETCH";
 
-        root.appendChild(searchNode);
+        // --- CONTROLS ---
+        await this.addSection(root, "Controls", async (container) => {
+            const row = this.createRow();
 
-        // --- Progress Stepper Demo ---
-        const progressLabel = figma.createText();
-        await figma.loadFontAsync({ family: "Inter", style: "Bold" });
-        progressLabel.characters = "Progress Stepper";
-        progressLabel.fontSize = 20;
-        root.appendChild(progressLabel);
+            // Checkboxes
+            const cb = new checkbox();
+            const cbCol = this.createStack();
+            cbCol.appendChild(await cb.create({ characterOverride: "Unchecked Checkbox", checked: false }));
+            cbCol.appendChild(await cb.create({ characterOverride: "Checked Checkbox", checked: true }));
+            cbCol.appendChild(await cb.create({ characterOverride: "Hover State Checkbox", hoverState: true }));
+            row.appendChild(cbCol);
 
-        const progressComp = new progress_stepper();
+            // Radio Buttons
+            const rb = new radio_button();
+            const rbCol = this.createStack();
+            rbCol.appendChild(await rb.create({ characterOverride: "Unselected Radio", checked: false }));
+            rbCol.appendChild(await rb.create({ characterOverride: "Selected Radio", checked: true }));
+            rbCol.appendChild(await rb.create({ characterOverride: "Hover State Radio", hoverState: true }));
+            row.appendChild(rbCol);
 
-        // Example 1: Step 1 Active
-        const prog1 = await progressComp.create({
-            steps: ["Select campaign", "Create group", "Create ad"],
-            currentStep: 0
+            // Toggles
+            const tg = new toggle();
+            const tgCol = this.createStack();
+            tgCol.appendChild(await tg.create({ isOn: false }));
+            tgCol.appendChild(await tg.create({ isOn: true }));
+            row.appendChild(tgCol);
+
+            container.appendChild(row);
         });
-        root.appendChild(prog1);
 
-        // Example 2: Step 2 Active
-        const prog2 = await progressComp.create({
-            steps: ["Select campaign", "Create group", "Create ad"],
-            currentStep: 1
-        });
-        root.appendChild(prog2);
+        // --- NAVIGATION ---
+        await this.addSection(root, "Navigation & Menus", async (container) => {
+            const row = this.createRow();
 
-        // Example 3: Finished
-        const prog3 = await progressComp.create({
-            steps: ["Select campaign", "Create group", "Create ad"],
-            currentStep: 3 // All done
-        });
-        root.appendChild(prog3);
+            // Chips
+            const chip = new chip_expand();
+            row.appendChild(await chip.create({ text: "Default Chip" }));
+            row.appendChild(await chip.create({ text: "Selected Chip", selected: true }));
+            row.appendChild(await chip.create({ text: "Expanded Chip", expanded: true }));
 
-        // Example 4: Large, Custom Font & Custom Color
-        const prog4 = await progressComp.create({
-            steps: ["Plan", "Design", "Review", "Launch"],
-            currentStep: 1,
-            indicatorSize: 32,
-            fontFamily: "Inter",
-            activeColor: { r: 0.9, g: 0.2, b: 0.2 } // Reddish
-        });
-        root.appendChild(prog4);
+            container.appendChild(row);
 
-        // Example 5: Square & Numbers for completed
-        const prog5 = await progressComp.create({
-            steps: ["Step A", "Step B", "Step C"],
-            currentStep: 2,
-            indicatorShape: "SQUARE",
-            completedStepContent: "NUMBER",
-            activeColor: { r: 0.1, g: 0.7, b: 0.4 } // Greenish
-        });
-        root.appendChild(prog5);
+            // Accordion
+            const acc = new accordion();
+            container.appendChild(await acc.create({ title: "Accordion Component (Default)" }));
+            container.appendChild(await acc.create({ title: "Accordion (Expanded)", expanded: true }));
 
-        // Example 6: Letters & Checkmark completion (SQUARE)
-        const prog6 = await progressComp.create({
-            steps: ["Intro", "Setup", "Finalize"],
-            currentStep: 1,
-            indicatorShape: "SQUARE",
-            indicatorContent: "LETTER",
-            completedStepContent: "CHECK"
+            // Sidebar (Large)
+            const sb = new sidebar();
+            const sbNode = await sb.create({});
+            container.appendChild(sbNode);
         });
-        root.appendChild(prog6);
 
-        // Example 7: Dots (Radio style) - CIRCLE
-        const prog7 = await progressComp.create({
-            steps: ["Step 1", "Step 2", "Step 3"],
-            currentStep: 1,
-            indicatorContent: "DOT",
-            completedStepContent: "DOT",
-            activeColor: { r: 1, g: 0.5, b: 0 } // Orange
+        // --- STATUS & PROGRESS ---
+        await this.addSection(root, "Status & Progress", async (container) => {
+            const ps = new progress_stepper();
+            container.appendChild(await ps.create({
+                steps: ["Research", "Design", "Develop", "Test", "Deploy"],
+                currentStep: 2
+            }));
+            container.appendChild(await ps.create({
+                steps: ["Step A", "Step B", "Step C"],
+                currentStep: 1,
+                indicatorShape: "SQUARE",
+                indicatorContent: "LETTER"
+            }));
+            container.appendChild(await ps.create({
+                steps: ["Start", "Middle", "End"],
+                currentStep: 3,
+                indicatorContent: "DOT",
+                activeColor: { r: 0, g: 0.6, b: 1 }
+            }));
         });
-        root.appendChild(prog7);
 
-        // Example 8: Dots (Radio style) - SQUARE
-        const prog8 = await progressComp.create({
-            steps: ["Small", "Medium", "Large"],
-            currentStep: 0,
-            indicatorShape: "SQUARE",
-            indicatorContent: "DOT",
-            completedStepContent: "CHECK",
-            activeColor: { r: 0.5, g: 0, b: 0.5 } // Purple
+        // --- CONTENT CARDS ---
+        await this.addSection(root, "Content Cards", async (container) => {
+            const cardRow = this.createRow();
+            cardRow.itemSpacing = 32;
+
+            const recipe = new recipe_card();
+            cardRow.appendChild(await recipe.create({
+                title: "Traditional Pesto Pasta",
+                category: "Dinner",
+                time: "20 min",
+                difficulty: "Easy"
+            }));
+
+            const profile = new social_profile_card();
+            cardRow.appendChild(await profile.create({
+                name: "Alex Calcan",
+                handle: "@alcalcan",
+                avatarUrl: "", // Added missing required prop
+                bio: "Product Designer & AI Engineer. Building the future of design tools.",
+                followerCount: "12.4k"
+            }));
+
+            container.appendChild(cardRow);
+
+            const uefa = new uefa_cards_4x();
+            const uefaNode = await uefa.create({});
+            (uefaNode as FrameNode).layoutAlign = "STRETCH";
+            container.appendChild(uefaNode);
         });
-        // Example 9: Dark / High-Contrast
-        const prog9 = await progressComp.create({
-            steps: ["Task 1", "Task 2", "Task 3"],
-            currentStep: 2,
-            indicatorShape: "CIRCLE",
-            indicatorContent: "NUMBER",
-            activeColor: { r: 0.1, g: 0.1, b: 0.1 }, // Black active
-            completedColor: { r: 0, g: 0.8, b: 0 }, // Neon Green completed
-            pendingColor: { r: 0.9, g: 0.9, b: 0.9 } // Light grey pending
-        });
-        root.appendChild(prog9);
 
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 
         return root;
+    }
+
+    private async addSection(root: FrameNode, title: string, contentBuilder: (container: FrameNode) => Promise<void>) {
+        const section = figma.createFrame();
+        section.name = `Section: ${title}`;
+        section.layoutMode = "VERTICAL";
+        section.itemSpacing = 32;
+        section.fills = [];
+        section.layoutAlign = "STRETCH";
+        section.primaryAxisSizingMode = "AUTO";
+
+        const label = figma.createText();
+        await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
+        label.characters = title.toUpperCase();
+        label.fontSize = 14;
+        label.letterSpacing = { unit: "PERCENT", value: 10 };
+        label.fills = [{ type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }];
+        section.appendChild(label);
+
+        const contentContainer = figma.createFrame();
+        contentContainer.name = "Content";
+        contentContainer.layoutMode = "VERTICAL";
+        contentContainer.itemSpacing = 24;
+        contentContainer.fills = [];
+        contentContainer.layoutAlign = "STRETCH";
+        contentContainer.primaryAxisSizingMode = "AUTO";
+
+        await contentBuilder(contentContainer);
+
+        section.appendChild(contentContainer);
+        root.appendChild(section);
+    }
+
+    private createRow(): FrameNode {
+        const row = figma.createFrame();
+        row.layoutMode = "HORIZONTAL";
+        row.itemSpacing = 24;
+        row.fills = [];
+        row.primaryAxisSizingMode = "AUTO";
+        row.counterAxisSizingMode = "AUTO";
+        row.counterAxisAlignItems = "CENTER";
+        return row;
+    }
+
+    private createStack(): FrameNode {
+        const stack = figma.createFrame();
+        stack.layoutMode = "VERTICAL";
+        stack.itemSpacing = 12;
+        stack.fills = [];
+        stack.primaryAxisSizingMode = "AUTO";
+        stack.counterAxisSizingMode = "AUTO";
+        return stack;
     }
 }

@@ -64,8 +64,8 @@ export class dropdown_options extends BaseComponent {
 
         const root = await this.renderDefinition(structure);
 
-        if (props.x !== undefined) root.x = props.x;
-        if (props.y !== undefined) root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

@@ -23,7 +23,21 @@ const COLORS = {
   STAR_EMPTY: { r: 0.82, g: 0.85, b: 0.86 }
 };
 
-const CARD_DATA = [
+export interface CardData {
+  name: string;
+  title: string;
+  description: string;
+  author: string;
+  image: string;
+  showPlayIcon: boolean;
+  rating: number;
+}
+
+export interface UefaCardsProps extends ComponentProps {
+  cards?: CardData[];
+}
+
+const CARD_DATA: CardData[] = [
   {
     name: "Card 1",
     title: "Refereeing in Women’s Football: Motivation.",
@@ -63,9 +77,11 @@ const CARD_DATA = [
 ];
 
 export class uefa_cards_4x extends BaseComponent {
-  async create(props: ComponentProps): Promise<SceneNode> {
+  async create(props: UefaCardsProps): Promise<SceneNode> {
 
-    const cards = CARD_DATA.map(data => {
+    const cardsData = props.cards || CARD_DATA;
+
+    const cards = cardsData.map((data, index) => {
       const stars = Array.from({ length: 5 }).map((_, i) =>
         createVector(`Star ${i + 1}`, i < (data.rating || 5) ? SVG_Star_Filled : SVG_Star_Empty, {
           layoutProps: { width: 12, height: 12 },
@@ -167,8 +183,8 @@ export class uefa_cards_4x extends BaseComponent {
     }, cards);
 
     const root = await this.renderDefinition(structure);
-    root.x = props.x;
-    root.y = props.y;
+    root.x = props.x ?? 0;
+    root.y = props.y ?? 0;
 
     return root;
   }

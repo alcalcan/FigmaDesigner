@@ -70,7 +70,7 @@ export class progress_stepper extends BaseComponent {
                     "type": "VECTOR",
                     "name": "CheckIcon",
                     "svgContent": `<svg width="${indicatorSize / 2}" height="${indicatorSize / 2}" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-                    "layoutProps": { "width": indicatorSize / 2, "height": indicatorSize / 2, "layoutAlign": "CENTER", "parentIsAutoLayout": true }
+                    "layoutProps": { "width": indicatorSize / 2, "height": indicatorSize / 2, "layoutAlign": "INHERIT", "parentIsAutoLayout": true }
                 };
             } else if (contentType === "DOT") {
                 content = {
@@ -79,7 +79,7 @@ export class progress_stepper extends BaseComponent {
                     "props": {
                         "fills": [{ type: "SOLID", color: white }]
                     },
-                    "layoutProps": { "width": indicatorSize / 4, "height": indicatorSize / 4, "layoutAlign": "CENTER", "parentIsAutoLayout": true }
+                    "layoutProps": { "width": indicatorSize / 4, "height": indicatorSize / 4, "layoutAlign": "INHERIT", "parentIsAutoLayout": true }
                 };
             } else if (contentType === "LETTER") {
                 const letter = String.fromCharCode(65 + index); // A, B, C...
@@ -93,7 +93,7 @@ export class progress_stepper extends BaseComponent {
                         "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
                         "font": { "family": fontFamily, "style": isActive || isCompleted ? "Bold" : "Regular" }
                     },
-                    "layoutProps": { "layoutAlign": "CENTER", "parentIsAutoLayout": true }
+                    "layoutProps": { "layoutAlign": "INHERIT", "parentIsAutoLayout": true }
                 };
             } else {
                 // Default: NUMBER
@@ -107,7 +107,7 @@ export class progress_stepper extends BaseComponent {
                         "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
                         "font": { "family": fontFamily, "style": isActive || isCompleted ? "Bold" : "Regular" }
                     },
-                    "layoutProps": { "layoutAlign": "CENTER", "parentIsAutoLayout": true }
+                    "layoutProps": { "layoutAlign": "INHERIT", "parentIsAutoLayout": true }
                 };
             }
 
@@ -121,7 +121,7 @@ export class progress_stepper extends BaseComponent {
                     "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
                     "fills": []
                 },
-                "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "MIN" }, // Don't grow, take needed space
+                "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "INHERIT" }, // Don't grow, take needed space
                 "children": [
                     // Circle/Square
                     {
@@ -171,7 +171,7 @@ export class progress_stepper extends BaseComponent {
                         "height": 2,
                         "layoutGrow": 1, // FILL SPACE between steps
                         "parentIsAutoLayout": true,
-                        "layoutAlign": "CENTER"
+                        "layoutAlign": "INHERIT"
                     }
                 });
             }
@@ -199,7 +199,14 @@ export class progress_stepper extends BaseComponent {
             "children": children
         };
 
-        structure.props = { ...structure.props, ...props };
+        structure.props = {
+            ...structure.props,
+            // Only pass visual props that FrameNode might accept or BaseComponent handles
+            visible: props.visible,
+            opacity: props.opacity,
+            layoutMode: "HORIZONTAL", // Enforce layout mode
+            // ... add other relevant props if needed, but safe to omit 'steps' etc.
+        };
         if (props.width) {
             structure.layoutProps!.width = props.width;
         }

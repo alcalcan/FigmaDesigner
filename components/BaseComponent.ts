@@ -278,7 +278,10 @@ export abstract class BaseComponent {
         "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
         "itemReverseZIndex", "strokesIncludedInLayout",
         "layoutWrap",
-        "pointCount", "innerRadius" // Shape specific
+        "pointCount", "innerRadius", // Shape specific
+        "width", "height", "x", "y", "rotation", // Read-only or handled via resize/transform
+        "relativeTransform",
+        "type", "children" // Read-only or handled explicitly
       ]);
 
       for (const [key, value] of Object.entries(def.props)) {

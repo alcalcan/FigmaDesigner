@@ -1,13 +1,25 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 // SVG Assets
 import SVG_Chevron from "./assets/SubSection_assets_icon_Vector_I1174_3092_5698_23_svg_12x7_400000095367432.svg";
 import { checkbox } from "../checkbox/checkbox";
 
+export interface SubSectionItem {
+  name: string;
+  isSelected?: boolean;
+  isHovered?: boolean;
+}
+
+export interface SubSectionProps extends ComponentProps {
+  headerTitle?: string;
+  badgeLabel?: string;
+  items?: SubSectionItem[];
+}
+
 export class SubSection extends BaseComponent {
-  async create(props: ComponentProps): Promise<SceneNode> {
+  async create(props: SubSectionProps): Promise<SceneNode> {
     // Data for the list items
-    const items = [
+    const defaultItems: SubSectionItem[] = [
       { name: "Anti-Doping, Medical and Health", isSelected: true, isHovered: false }, // Selected (Checked, No BG)
       { name: "Communication, PR and Media", isSelected: false, isHovered: true },    // Hovered (Unchecked, Has BG)
       { name: "Event and Volunteer Management", isSelected: false, isHovered: false },
@@ -20,8 +32,13 @@ export class SubSection extends BaseComponent {
       { name: "Legal and Integrity", isSelected: false, isHovered: false }
     ];
 
+    const items = props.items || defaultItems;
+    const headerTitle = props.headerTitle || "Subject";
+    const badgeLabel = props.badgeLabel || "Subjects";
+    const count = items.length;
+
     // Chunk items into pairs for columns
-    const columns: any[][] = [];
+    const columns: (typeof items)[] = [];
     for (let i = 0; i < items.length; i += 2) {
       columns.push(items.slice(i, i + 2));
     }
@@ -65,7 +82,7 @@ export class SubSection extends BaseComponent {
               "type": "TEXT",
               "name": "Subject",
               "props": {
-                "characters": "Subject", "fontSize": 20,
+                "characters": headerTitle, "fontSize": 20,
                 "fills": [{ "type": "SOLID", "color": { "r": 0.102, "g": 0.192, "b": 0.235 } }],
                 "font": { "family": "Open Sans", "style": "SemiBold" },
                 "lineHeight": { "unit": "PIXELS", "value": 25 },
@@ -92,9 +109,9 @@ export class SubSection extends BaseComponent {
                   "type": "TEXT",
                   "name": "Label",
                   "props": {
-                    "characters": "Subjects", "fontSize": 14,
+                    "characters": badgeLabel, "fontSize": 14,
                     "fills": [{ "type": "SOLID", "color": { "r": 0.102, "g": 0.192, "b": 0.235 } }],
-                    "font": { "family": "Manrope", "style": "Regular" },
+                    "font": { "family": "Open Sans", "style": "Regular" },
                     "lineHeight": { "unit": "PERCENT", "value": 130 }
                   },
                   "layoutProps": { "parentIsAutoLayout": true }
@@ -103,9 +120,9 @@ export class SubSection extends BaseComponent {
                   "type": "TEXT",
                   "name": "Count",
                   "props": {
-                    "characters": "0", "fontSize": 16,
+                    "characters": count.toString(), "fontSize": 16,
                     "fills": [{ "type": "SOLID", "color": { "r": 0.102, "g": 0.192, "b": 0.235 } }],
-                    "font": { "family": "Manrope", "style": "Bold" },
+                    "font": { "family": "Open Sans", "style": "Bold" },
                     "lineHeight": { "unit": "PERCENT", "value": 130 }
                   },
                   "layoutProps": { "parentIsAutoLayout": true }
@@ -155,7 +172,7 @@ export class SubSection extends BaseComponent {
           "name": "Items Container",
           "props": {
             "layoutMode": "HORIZONTAL", "itemSpacing": 32,
-            "layoutAlign": "MIN", // Changed/Removed STRETCH. Using MIN or INHERIT.
+            "layoutAlign": "INHERIT", // Changed from MIN to INHERIT (valid value)
             "primaryAxisSizingMode": "AUTO", // HUG Width
             "counterAxisSizingMode": "AUTO", // HUG Height
             "fills": []
@@ -185,7 +202,7 @@ export class SubSection extends BaseComponent {
     return root;
   }
 
-  createItemNode(item: { name: string, isSelected: boolean, isHovered: boolean }): NodeDefinition {
+  createItemNode(item: { name: string, isSelected?: boolean, isHovered?: boolean }): NodeDefinition {
     return {
       "type": "COMPONENT",
       "name": "Item Row",
@@ -193,7 +210,6 @@ export class SubSection extends BaseComponent {
       "props": {
         "characterOverride": item.name,
         "checked": item.isSelected,
-        "height": 24, // Force height to match original design
         "hugContents": true,
         "hoverState": item.isHovered
       },
@@ -201,7 +217,7 @@ export class SubSection extends BaseComponent {
         "parentIsAutoLayout": true,
         "height": 24,
         "width": undefined, // Auto width
-        "layoutAlign": "MIN"
+        "layoutAlign": "INHERIT"
       }
     };
   }

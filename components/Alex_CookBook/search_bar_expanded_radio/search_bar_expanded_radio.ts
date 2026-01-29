@@ -5,11 +5,9 @@ import { search_bar } from "../search_bar/search_bar";
 // Extended interface to support component composition
 interface ExtendedNodeDefinition extends NodeDefinition {
     type: "FRAME" | "TEXT" | "VECTOR" | "COMPONENT" | "BOOLEAN_OPERATION" | "RECTANGLE"; // etc
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    component?: any; // Class constructor
+    component?: new () => BaseComponent; // Correct type for class constructor
     // Function to run after creation
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    postCreate?: (node: SceneNode, props: any) => void | Promise<void>;
+    postCreate?: (node: SceneNode, props: ComponentProps) => void | Promise<void>;
     children?: ExtendedNodeDefinition[];
 }
 
@@ -31,7 +29,7 @@ export class search_bar_expanded_radio extends BaseComponent {
             "name": "search_bar_expanded_radio",
             "props": {
                 ...props,
-                chips: [
+                chips: props.chips || [
                     { label: "Sort By", dropdownOptions: sortOptions, expanded: true, selectionType: "radio" },
                     { label: "Author" },
                     { label: "Category" },
@@ -41,6 +39,8 @@ export class search_bar_expanded_radio extends BaseComponent {
         };
 
         const root = await this.renderExtendedDefinition(structure);
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

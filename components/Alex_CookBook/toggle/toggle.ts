@@ -1,7 +1,6 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 // SVG Assets
-import SVG_toggle_bg from "./assets/toggle_bg.svg";
 import SVG_toggle_knob from "./assets/toggle_knob.svg";
 
 export class toggle extends BaseComponent {
@@ -85,8 +84,8 @@ export class toggle extends BaseComponent {
         const root = await this.renderDefinition(structure);
 
         // Final positioning
-        if (props.x !== undefined) root.x = props.x;
-        if (props.y !== undefined) root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

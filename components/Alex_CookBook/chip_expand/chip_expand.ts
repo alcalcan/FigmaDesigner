@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { dropdown_options } from "../dropdown_options/dropdown_options";
 
 

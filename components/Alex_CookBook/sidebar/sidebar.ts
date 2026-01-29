@@ -1,8 +1,19 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { checkbox } from "../checkbox/checkbox";
 import { toggle } from "../toggle/toggle";
 import { accordion } from "../accordion/accordion";
 import { input_field } from "../input_field/input_field";
+
+export interface SidebarProps extends ComponentProps {
+  favouritesTitle?: string;
+  filtersTitle?: string;
+  searchPlaceholder?: string;
+  subjectsTitle?: string;
+  initiativeTitle?: string;
+  initiativeItems?: { name: string, isSelected: boolean }[];
+  organisationTitle?: string;
+  favouriteToggleIsOn?: boolean;
+}
 
 
 // SVG Assets
@@ -13,14 +24,28 @@ import SVG_sidebar_Synth_Path_6 from "./assets/sidebar_Synth_Path_6.svg";
 import SVG_sidebar_Synth_Shape_7 from "./assets/sidebar_Synth_Shape_7.svg";
 import SVG_sidebar_assets_icon_Union_1142_1247_svg_8x8 from "./assets/sidebar_assets_icon_Union_1142_1247_svg_8x8.svg";
 import SVG_sidebar_assets_icon_Vector_1142_1255_svg_7x0 from "./assets/sidebar_assets_icon_Vector_1142_1255_svg_7x0.svg";
-import SVG_sidebar_Synth_Path_10 from "./assets/sidebar_Synth_Path_10.svg";
-import SVG_sidebar_Synth_Path_11 from "./assets/sidebar_Synth_Path_11.svg";
-import SVG_sidebar_assets_icon_Union_1142_1358_svg_8x8 from "./assets/sidebar_assets_icon_Union_1142_1358_svg_8x8.svg";
 import SEARCH_ICON from "../input_field/assets/search_icon.svg";
 
 
 export class sidebar extends BaseComponent {
-  async create(props: ComponentProps): Promise<SceneNode> {
+  async create(props: SidebarProps): Promise<SceneNode> {
+    const favouritesTitle = props.favouritesTitle ?? "Favourites";
+    const filtersTitle = props.filtersTitle ?? "Filters";
+    const searchPlaceholder = props.searchPlaceholder ?? "Grow";
+    const subjectsTitle = props.subjectsTitle ?? "SUBJECT";
+    const initiativeTitle = props.initiativeTitle ?? "UEFA INITIATIVE";
+    const organisationTitle = props.organisationTitle ?? "ORGANISATION";
+    const initiativeItems = props.initiativeItems ?? [
+      { name: "UEFA Academy", isSelected: false },
+      { name: "UEFA Assist", isSelected: false },
+      { name: "UEFA Events", isSelected: false },
+      { name: "UEFA Football Development", isSelected: false },
+      { name: "UEFA Grow", isSelected: true },
+      { name: "UEFA Hatrick", isSelected: false },
+      { name: "UEFA Anti-Doping and Medical", isSelected: false },
+      { name: "UEFA Intelligence Center", isSelected: false }
+    ];
+
     const structure: NodeDefinition = {
       "type": "FRAME",
       "name": "sidebar",
@@ -145,7 +170,7 @@ export class sidebar extends BaseComponent {
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "layoutAlign": "INHERIT", "layoutGrow": 1,
-                    "characters": "Favourites", "fontSize": 20,
+                    "characters": favouritesTitle, "fontSize": 20,
                     "textCase": "ORIGINAL", "textDecoration": "NONE",
                     "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
                     "paragraphSpacing": 0, "paragraphIndent": 0,
@@ -241,7 +266,7 @@ export class sidebar extends BaseComponent {
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "layoutAlign": "INHERIT", "layoutGrow": 1,
-                "characters": "Filters", "fontSize": 20,
+                "characters": filtersTitle, "fontSize": 20,
                 "textCase": "ORIGINAL", "textDecoration": "NONE",
                 "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
                 "paragraphSpacing": 0, "paragraphIndent": 0,
@@ -302,7 +327,7 @@ export class sidebar extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "layoutAlign": "CENTER", "layoutGrow": 0,
+                    "layoutAlign": "INHERIT", "layoutGrow": 0,
                     "fills": [
                       {
                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -361,7 +386,7 @@ export class sidebar extends BaseComponent {
               { "name": "UEFA Hatrick", "isSelected": false },
               { "name": "UEFA Anti-Doping and Medical", "isSelected": false },
               { "name": "UEFA Intelligence Center", "isSelected": false }
-            ].map((item: any) => ({
+            ].map((item: { name: string, isSelected: boolean }) => ({
               "type": "COMPONENT",
               "component": checkbox,
               "props": {
@@ -385,8 +410,8 @@ export class sidebar extends BaseComponent {
     const root = await this.renderDefinition(structure);
 
     // Final positioning
-    root.x = props.x;
-    root.y = props.y;
+    root.x = props.x ?? 0;
+    root.y = props.y ?? 0;
 
     return root;
   }

@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 export class radio_button extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -11,13 +11,7 @@ export class radio_button extends BaseComponent {
                 "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                 "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
                 "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 1, "strokeLeftWeight": 0,
-                "fills": [],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 8
+                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": 296, "height": 32, "parentIsAutoLayout": false },
             "children": [
@@ -171,8 +165,8 @@ export class radio_button extends BaseComponent {
         }
 
         // Final positioning
-        if (props.x !== undefined) root.x = props.x;
-        if (props.y !== undefined) root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }
