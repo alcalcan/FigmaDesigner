@@ -27,8 +27,9 @@ export { sidebar as sidebar_Alex_CookBook } from "./Alex_CookBook/sidebar/sideba
 export { sidebar as sidebar_UEFA_Academy_online } from "./UEFA_Academy_online/sidebar/sidebar";
 export { simple_info } from "./UEFA_Academy_online/simple_info/simple_info";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
-export { SubSection } from "./UEFA_Academy_online/SubSection/SubSection";
+export { SubSection as SubSection_Alex_CookBook } from "./Alex_CookBook/SubSection/SubSection";
 export { SubSection_collapsed } from "./UEFA_Academy_online/SubSection/SubSection_collapsed";
+export { SubSection as SubSection_UEFA_Academy_online } from "./UEFA_Academy_online/SubSection/SubSection";
 export { TableStat } from "./Newsletter/TableStat";
 export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 export { toggle } from "./Alex_CookBook/toggle/toggle";
