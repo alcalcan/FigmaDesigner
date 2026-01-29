@@ -16,6 +16,7 @@ export { chip_dropdown } from "./UEFA_Academy_online/chip_dropdown/chip_dropdown
 export { chip_expand } from "./Alex_CookBook/chip_expand/chip_expand";
 export { Content_container } from "./UEFA_Academy_online/Content_container/Content_container";
 export { Divider } from "./UEFA_Academy_online/Divider/Divider";
+export { dropdown_options } from "./Alex_CookBook/dropdown_options/dropdown_options";
 export { Header } from "./UEFA_Academy_online/Header/Header";
 export { Info } from "./UEFA_Academy_online/Info/Info";
 export { JsonReconstructor } from "./JsonReconstructor";
@@ -36,6 +37,7 @@ export { SubSection } from "./UEFA_Academy_online/SubSection/SubSection";
 export { SubSection_collapsed } from "./UEFA_Academy_online/SubSection/SubSection_collapsed";
 export { TableStat } from "./Newsletter/TableStat";
 export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
+export { toggle } from "./Alex_CookBook/toggle/toggle";
 export { Top_bar as Top_bar_Competition_newsletters } from "./Competition_newsletters/Top_bar/Top_bar";
 export { Top_bar as Top_bar_UEFA_Academy_online } from "./UEFA_Academy_online/Top_bar/Top_bar";
 export { UEFA_Academy_online_CourseDetails } from "../pages/UEFA_Academy_online/UEFA_Academy_online_CourseDetails";
@@ -46,6 +48,5 @@ export { uefa_cards_4x_checkProcedural } from "./Alex_CookBook/uefa_cards_4x_che
 export { uefa_cards_4x_standard } from "./Alex_CookBook/uefa_cards_4x_standard/uefa_cards_4x_standard";
 export { uefa_cards_row } from "./Alex_CookBook/uefa_cards_row/uefa_cards_row";
 export { verification_refactor_test } from "./Alex_CookBook/verification_refactor_test/verification_refactor_test";
-export { verification_test_2 } from "./Alex_CookBook/verification_test_2/verification_test_2";
 export { verification_test_3 } from "./Alex_CookBook/verification_test_3/verification_test_3";
 export { Placeholder } from "./Placeholder";

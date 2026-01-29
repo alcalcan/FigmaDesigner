@@ -1,4 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { dropdown_options } from "../dropdown_options/dropdown_options";
 
 
 // SVG Assets
@@ -109,7 +110,63 @@ export class chip_expand extends BaseComponent {
       ]
     };
 
+    // Add Dropdown if provided in props AND is expanded
+    if (props.dropdownOptions && props.expanded) {
+      console.log(`[chip_expand] Adding dropdown for ${props.text || 'anonymous'} with ${props.dropdownOptions.length} options`);
+      const dropdownChild: any = {
+        type: "COMPONENT",
+        component: dropdown_options,
+        props: {
+          options: props.dropdownOptions
+        },
+        layoutProps: {
+          layoutPositioning: "ABSOLUTE",
+          parentIsAutoLayout: true,
+          width: 200,
+          height: 100
+        },
+        postCreate: (node: SceneNode) => {
+          // Position absolute dropdown below the chip
+          node.x = 0;
+          node.y = 36; // Adjust based on chip height
+        }
+      };
+      structure.children?.push(dropdownChild);
+    } else if (props.dropdownOptions) {
+      console.log(`[chip_expand] Skipping dropdown for ${props.text || 'anonymous'} (expanded=false)`);
+    } else {
+      console.log(`[chip_expand] No dropdownOptions for ${props.text || 'anonymous'}`);
+    }
+
     const root = await this.renderDefinition(structure);
+
+    // Update Label if provided
+    if (props.text !== undefined) {
+      const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+      if (textNode) {
+        await figma.loadFontAsync(textNode.fontName as FontName);
+        textNode.characters = props.text;
+      }
+    }
+
+    // Handle Selected state (Background Color)
+    if (props.selected !== undefined) {
+      if (props.selected) {
+        (root as FrameNode).fills = [{ type: "SOLID", color: { r: 0.1, g: 0.19, b: 0.24 } }]; // Dark theme
+        const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+        if (textNode) textNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+      }
+    }
+
+    // Handle Expanded State (Chevron Rotation)
+    if (props.expanded) {
+      const vector = (root as FrameNode).findOne(n => n.name === "Vector" && n.type === "VECTOR") as VectorNode;
+      if (vector) {
+        vector.rotation = 180;
+        vector.x = 6 + vector.width;
+        vector.y = 8 + vector.height;
+      }
+    }
 
     // Final positioning
     root.x = props.x ?? 0;

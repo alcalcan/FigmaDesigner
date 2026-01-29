@@ -106,6 +106,7 @@ export class search_bar extends BaseComponent {
             "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 16,
             "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
             "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER",
+            "clipsContent": false,
             "fills": []
           },
           "layoutProps": { "width": 491, "height": 32, "parentIsAutoLayout": true },
@@ -117,14 +118,26 @@ export class search_bar extends BaseComponent {
     const root = await this.renderDefinition(structure);
     const chipsContainer = (root as FrameNode).findOne(n => n.name === "Chips Container") as FrameNode;
 
-    // Manually add chips using the chip_expand component
-    const chipLabels = ["Newer first", "PDF", "Author", "Range date"];
-    for (const label of chipLabels) {
-      const chipNode = await chip.create({ x: 0, y: 0 });
+    // Use chips from props or defaults
+    const chipsConfig = props.chips || [
+      { label: "Newer first" },
+      { label: "PDF" },
+      { label: "Author" },
+      { label: "Range date" }
+    ];
+
+    for (const chipData of chipsConfig) {
+      const chipNode = await chip.create({
+        x: 0,
+        y: 0,
+        ...chipData, // Relay ALL properties (expanded, dropdownOptions, etc.)
+        text: chipData.label // text is used in chip_expand for some cases
+      });
+
       const textNode = (chipNode as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
       if (textNode) {
         await figma.loadFontAsync(textNode.fontName as FontName);
-        textNode.characters = label;
+        textNode.characters = chipData.label;
       }
       chipsContainer.appendChild(chipNode);
     }

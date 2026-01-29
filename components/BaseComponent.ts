@@ -37,6 +37,8 @@ export interface NodeDefinition {
   svgContent?: string;
   vectorPaths?: VectorPaths;
   shouldFlatten?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component?: any;
 }
 
 export abstract class BaseComponent {
@@ -153,7 +155,12 @@ export abstract class BaseComponent {
         const componentClass = (def as any).component;
         if (componentClass) {
           const instance = new componentClass();
-          node = await instance.create(def.props || {});
+          // Pass EVERYTHING to the nested component: props and layout properties
+          console.log(`[BaseComponent] Creating nested component: ${def.name || (componentClass as any).name}`);
+          node = await instance.create({
+            ...(def.props || {}),
+            ...(def.layoutProps || {})
+          });
         } else {
           console.warn(`[BaseComponent] COMPONENT type used without 'component' class reference in definition for ${def.name}`);
           node = figma.createFrame();
