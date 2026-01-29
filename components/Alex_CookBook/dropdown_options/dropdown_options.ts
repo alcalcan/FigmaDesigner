@@ -1,8 +1,9 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { checkbox } from "../checkbox/checkbox";
+import { radio_button } from "../radio_button/radio_button";
 
 export class dropdown_options extends BaseComponent {
-    async create(props: ComponentProps & { options?: { name: string, selected: boolean }[] }): Promise<SceneNode> {
+    async create(props: ComponentProps & { options?: { name: string, selected: boolean }[], selectionType?: "checkbox" | "radio" }): Promise<SceneNode> {
         // Default dummy options if none provided
         const defaultOptions = [
             { name: "Default Option 1", selected: false },
@@ -12,7 +13,8 @@ export class dropdown_options extends BaseComponent {
         ];
 
         const options = (props.options && props.options.length > 0) ? props.options : defaultOptions;
-        console.log(`[dropdown_options] Creating dropdown with ${options.length} options (${props.options ? 'prop-driven' : 'defaults'})`);
+        const selectionType = props.selectionType || "checkbox"; // Default to checkbox
+        console.log(`[dropdown_options] Creating dropdown with ${options.length} options (${props.options ? 'prop-driven' : 'defaults'}) as ${selectionType}`);
 
         const structure: NodeDefinition = {
             "type": "FRAME",
@@ -48,7 +50,7 @@ export class dropdown_options extends BaseComponent {
             "layoutProps": { "width": 200, "height": 100, "parentIsAutoLayout": false },
             "children": options.map(auth => ({
                 "type": "COMPONENT",
-                "component": checkbox,
+                "component": selectionType === "radio" ? radio_button : checkbox,
                 "props": {
                     "characterOverride": auth.name,
                     "checked": auth.selected

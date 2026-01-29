@@ -117,7 +117,8 @@ export class chip_expand extends BaseComponent {
         type: "COMPONENT",
         component: dropdown_options,
         props: {
-          options: props.dropdownOptions
+          options: props.dropdownOptions,
+          selectionType: props.selectionType // Pass selectionType if provided
         },
         layoutProps: {
           layoutPositioning: "ABSOLUTE",
