@@ -23,7 +23,7 @@ export class checkbox extends BaseComponent {
         "fills": [],
         "strokes": [],
         "effects": [],
-        "cornerRadius": 0
+        "cornerRadius": 8
       },
       "layoutProps": { "width": 296, "height": 32, "parentIsAutoLayout": false },
       "children": [
@@ -91,6 +91,23 @@ export class checkbox extends BaseComponent {
         }
       ]
     };
+
+    // Apply potential background fill (e.g. for selection rows)
+    // If checked and no fills provided, use default selection background
+    if (props.checked && (!props.fills || (Array.isArray(props.fills) && props.fills.length === 0))) {
+      structure.props = {
+        ...structure.props,
+        fills: [{
+          type: "SOLID",
+          visible: true,
+          opacity: 1,
+          blendMode: "NORMAL",
+          color: { r: 0.9450980424880981, g: 0.9529411792755127, b: 0.9725490212440491 }
+        }]
+      };
+    } else if (props.fills && Array.isArray(props.fills)) {
+      structure.props = { ...structure.props, fills: props.fills };
+    }
 
     const root = await this.renderDefinition(structure);
 

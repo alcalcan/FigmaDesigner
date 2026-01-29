@@ -963,15 +963,7 @@ export class sidebar extends BaseComponent {
               "component": checkbox,
               "props": {
                 "characterOverride": item.name,
-                "checked": item.isSelected,
-                // Pass selection fill to the component root if needed
-                "fills": item.isSelected ? [{
-                  type: "SOLID",
-                  visible: true,
-                  opacity: 1,
-                  blendMode: "NORMAL",
-                  color: item.fillColor || { r: 0.94, g: 0.95, b: 0.97 }
-                }] : []
+                "checked": item.isSelected
               }
             } as NodeDefinition))
           ]
