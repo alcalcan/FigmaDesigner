@@ -3,7 +3,7 @@ import { dropdown_options } from "../dropdown_options/dropdown_options";
 
 
 // SVG Assets
-import SVG_assets_icon_Vector_997_10457_svg_12x7_400000095367432 from "./assets/assets_icon_Vector_997_10457_svg_12x7_400000095367432.svg";
+import SVG_chevron_down from "./assets/chevron_down.svg";
 
 
 export class chip_expand extends BaseComponent {
@@ -103,7 +103,7 @@ export class chip_expand extends BaseComponent {
                 "width": 12, "height": 7.400000095367432,
                 "relativeTransform": [[1, 0, 6], [0, 1, 8]]
               },
-              "svgContent": SVG_assets_icon_Vector_997_10457_svg_12x7_400000095367432
+              "svgContent": SVG_chevron_down
             }
           ]
         }

@@ -1,7 +1,8 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 // SVG Assets
-import CHEVRON_LEFT from "./assets/chevron_left.svg";
+import CARET_LEFT from "./assets/caret_left.svg";
+import SEARCH_ICON from "./assets/search_icon.svg";
 
 export interface InputFieldProps extends ComponentProps {
     placeholder: string;
@@ -10,6 +11,8 @@ export interface InputFieldProps extends ComponentProps {
     type?: "simple" | "dropdown";
     frontIcon?: string;
     backIcon?: string;
+    showSearchIcon?: boolean;
+    searchIconPosition?: "front" | "back";
     helperType?: "info" | "error" | "warning";
 }
 
@@ -86,7 +89,7 @@ export class input_field extends BaseComponent {
                         "width": 296, "height": 40
                     },
                     "children": [
-                        ...(props.frontIcon ? [
+                        ...(props.frontIcon || (props.showSearchIcon && props.searchIconPosition !== "back") ? [
                             {
                                 "type": "FRAME",
                                 "name": "Front Icon",
@@ -118,14 +121,13 @@ export class input_field extends BaseComponent {
                                             "strokes": [],
                                             "effects": [],
                                             "cornerRadius": 0,
-                                            "vectorPaths": [], // Simplified, actual logic would need the SVG content
                                         },
                                         "layoutProps": {
                                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                            "width": 16, "height": 16,
-                                            "relativeTransform": [[1, 0, 4], [0, 1, 4]]
+                                            "width": 24, "height": 24,
+                                            "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                                         },
-                                        "svgContent": props.frontIcon
+                                        "svgContent": props.frontIcon || SEARCH_ICON
                                     }
                                 ]
                             } as NodeDefinition
@@ -185,7 +187,7 @@ export class input_field extends BaseComponent {
                                         "width": 232, "height": 21
                                     }
                                 },
-                                ...(props.backIcon ? [
+                                ...(props.backIcon || (props.showSearchIcon && props.searchIconPosition === "back") ? [
                                     {
                                         "type": "FRAME",
                                         "name": "Back Icon",
@@ -217,14 +219,13 @@ export class input_field extends BaseComponent {
                                                     "strokes": [],
                                                     "effects": [],
                                                     "cornerRadius": 0,
-                                                    "vectorPaths": [],
                                                 },
                                                 "layoutProps": {
                                                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                                    "width": 16, "height": 16,
-                                                    "relativeTransform": [[1, 0, 4], [0, 1, 4]]
+                                                    "width": 24, "height": 24,
+                                                    "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                                                 },
-                                                "svgContent": props.backIcon
+                                                "svgContent": props.backIcon || SEARCH_ICON
                                             }
                                         ]
                                     } as NodeDefinition
@@ -284,7 +285,7 @@ export class input_field extends BaseComponent {
                                                     "width": 6, "height": 10,
                                                     "relativeTransform": [[-1.8369701465288538e-16, 1, 7], [-1, -1.8369701465288538e-16, 16]]
                                                 },
-                                                "svgContent": CHEVRON_LEFT
+                                                "svgContent": CARET_LEFT
                                             }
                                         ]
                                     } as NodeDefinition

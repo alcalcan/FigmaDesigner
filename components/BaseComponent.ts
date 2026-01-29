@@ -252,7 +252,6 @@ export abstract class BaseComponent {
     // Re-assign safeNode in case node identity changed due to flattening
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const finalNode = node as any;
-    if (def.name) finalNode.name = def.name;
 
     if (def.props) {
       // Pre-load font for TextNodes to avoid "unloaded font" errors when setting characters/properties
@@ -286,9 +285,8 @@ export abstract class BaseComponent {
 
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
-          if (!isFromSvg) {
-            finalNode[key] = await this.hydratePaints(value);
-          }
+          // Allow overriding paints even for SVG content if explicit props are provided
+          finalNode[key] = await this.hydratePaints(value);
         } else if (key === "effects") {
           finalNode[key] = this.hydrateEffects(value);
         } else {
@@ -306,6 +304,9 @@ export abstract class BaseComponent {
         }
       }
     }
+
+    // Set explicit name from definition LAST so it overrides any generic 'name' prop
+    if (def.name) finalNode.name = def.name;
 
     // Special handling for vectors created from SVG - they are often frames containing vectors
     // If it's a Frame from SVG, we might want to flatten it or handle it as requested.

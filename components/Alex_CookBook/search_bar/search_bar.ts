@@ -1,8 +1,8 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { chip_expand } from "../chip_expand/chip_expand";
+import { input_field } from "../input_field/input_field";
 
-// SVG Assets
-import SVG_search_icon from "./assets/search_icon.svg";
+// SVG Assets - Removed SVG_search_icon as it's now in input_field
 
 export class search_bar extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
@@ -25,78 +25,21 @@ export class search_bar extends BaseComponent {
       "layoutProps": { "width": 1077, "height": 72, "parentIsAutoLayout": false },
       "children": [
         {
-          "type": "FRAME",
-          "name": "Text Field",
+          "type": "COMPONENT",
+          "component": input_field,
+          "name": "Search Input",
           "props": {
-            "layoutMode": "VERTICAL", "itemSpacing": 8,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-            "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
-            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
-            "layoutGrow": 1
+            ...props,
+            "placeholder": props.placeholder || "Search recipes...",
+            "showSearchIcon": true,
+            "searchIconPosition": "front",
+            "type": "simple"
           },
-          "layoutProps": { "width": 586, "height": 40, "parentIsAutoLayout": true },
-          "children": [
-            {
-              "type": "FRAME",
-              "name": "Compact",
-              "props": {
-                "layoutMode": "HORIZONTAL", "itemSpacing": 12,
-                "paddingTop": 8, "paddingRight": 12, "paddingBottom": 8, "paddingLeft": 12,
-                "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                "fills": [],
-                "strokes": [
-                  {
-                    "opacity": 1, "type": "SOLID",
-                    "color": { "r": 0.70196, "g": 0.75294, "b": 0.77255 }
-                  }
-                ],
-                "strokeWeight": 1,
-                "cornerRadius": 4,
-                "layoutAlign": "STRETCH"
-              },
-              "layoutProps": { "width": 586, "height": 40, "parentIsAutoLayout": true },
-              "children": [
-                {
-                  "type": "FRAME",
-                  "name": "Inner",
-                  "props": {
-                    "layoutMode": "HORIZONTAL", "itemSpacing": 16,
-                    "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                    "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-                    "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                    "layoutGrow": 1
-                  },
-                  "layoutProps": { "width": 562, "height": 24, "parentIsAutoLayout": true },
-                  "children": [
-                    {
-                      "type": "TEXT",
-                      "name": "Placeholder",
-                      "props": {
-                        "characters": "Search recipes...", "fontSize": 14,
-                        "fills": [
-                          {
-                            "type": "SOLID",
-                            "color": { "r": 0.349, "g": 0.439, "b": 0.482 }
-                          }
-                        ],
-                        "font": { "family": "Open Sans", "style": "Regular" },
-                        "layoutGrow": 1
-                      },
-                      "layoutProps": { "width": 522, "height": 21, "parentIsAutoLayout": true }
-                    },
-                    {
-                      "type": "VECTOR",
-                      "name": "Icon",
-                      "props": { "visible": true },
-                      "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true },
-                      "svgContent": SVG_search_icon
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          "layoutProps": {
+            "width": 586,
+            "parentIsAutoLayout": true,
+            "layoutGrow": 1
+          }
         },
         {
           "type": "FRAME",

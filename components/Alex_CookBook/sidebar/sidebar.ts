@@ -16,6 +16,7 @@ import SVG_sidebar_assets_icon_Vector_1142_1255_svg_7x0 from "./assets/sidebar_a
 import SVG_sidebar_Synth_Path_10 from "./assets/sidebar_Synth_Path_10.svg";
 import SVG_sidebar_Synth_Path_11 from "./assets/sidebar_Synth_Path_11.svg";
 import SVG_sidebar_assets_icon_Union_1142_1358_svg_8x8 from "./assets/sidebar_assets_icon_Union_1142_1358_svg_8x8.svg";
+import SEARCH_ICON from "../input_field/assets/search_icon.svg";
 
 
 export class sidebar extends BaseComponent {
@@ -294,19 +295,18 @@ export class sidebar extends BaseComponent {
               },
               "children": [
                 {
-                  "type": "FRAME",
-                  "name": "Actions / Search",
+                  "type": "VECTOR",
+                  "shouldFlatten": true,
+                  "name": "Search Icon",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "layoutMode": "NONE",
+                    "isMask": false, "maskType": "ALPHA",
+                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "layoutAlign": "CENTER", "layoutGrow": 0,
                     "fills": [
                       {
-                        "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 1, "g": 1, "b": 1 },
+                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                        "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
                         "boundVariables": {}
                       }
                     ],
@@ -316,166 +316,9 @@ export class sidebar extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 24, "height": 24,
-                    "relativeTransform": [[1, 0, 8], [0, 1, 8]]
+                    "width": 18, "height": 18
                   },
-                  "children": [
-                    {
-                      "type": "BOOLEAN_OPERATION",
-                      "booleanOperation": "UNION",
-                      "name": "Shape",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 3, "y": 3,
-                        "fills": [
-                          {
-                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                            "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
-                            "boundVariables": {}
-                          }
-                        ],
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 18.997970581054688, "height": 18.999923706054688,
-                        "relativeTransform": [[1, 0, 3], [0, 1, 3]]
-                      },
-                      "children": [
-                        {
-                          "type": "BOOLEAN_OPERATION",
-                          "booleanOperation": "EXCLUDE",
-                          "name": "Oval",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 3, "y": 3,
-                            "fills": [
-                              {
-                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0, "g": 0, "b": 0 },
-                                "boundVariables": {}
-                              }
-                            ],
-                            "strokes": [],
-                            "effects": [],
-                            "cornerRadius": 0
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 16, "height": 16,
-                            "relativeTransform": [[1, 0, 3], [0, 1, 3]]
-                          },
-                          "children": [
-                            {
-                              "type": "VECTOR",
-                              "shouldFlatten": true,
-                              "name": "Path",
-                              "props": {
-                                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                "isMask": false, "maskType": "ALPHA",
-                                "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                "x": 3, "y": 3,
-                                "fills": [
-                                  {
-                                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                    "color": { "r": 0, "g": 0, "b": 0 },
-                                    "boundVariables": {}
-                                  }
-                                ],
-                                "strokes": [],
-                                "effects": [],
-                                "cornerRadius": 0,
-                                "vectorPaths": [
-                                  {
-                                    "windingRule": "NONZERO",
-                                    "data": "M 8 16 C 12.418278217315674 16 16 12.418278217315674 16 8 C 16 3.581721782684326 12.418278217315674 0 8 0 C 3.581721782684326 0 0 3.581721782684326 0 8 C 0 12.418278217315674 3.581721782684326 16 8 16 Z"
-                                  }
-                                ]
-                              },
-                              "layoutProps": {
-                                "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 16, "height": 16,
-                                "relativeTransform": [[1, 0, 3], [0, 1, 3]]
-                              },
-                              "svgContent": SVG_sidebar_Synth_Path_4
-                            },
-                            {
-                              "type": "VECTOR",
-                              "shouldFlatten": true,
-                              "name": "Path",
-                              "props": {
-                                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                "isMask": false, "maskType": "ALPHA",
-                                "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                "x": 5, "y": 5,
-                                "fills": [
-                                  {
-                                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                    "color": { "r": 0, "g": 0, "b": 0 },
-                                    "boundVariables": {}
-                                  }
-                                ],
-                                "strokes": [],
-                                "effects": [],
-                                "cornerRadius": 0,
-                                "vectorPaths": [
-                                  {
-                                    "windingRule": "NONZERO",
-                                    "data": "M 6 12 C 2.686291456222534 12 0 9.313708543777466 0 6 C 0 2.686291456222534 2.686291456222534 0 6 0 C 9.313708543777466 0 12 2.686291456222534 12 6 C 12 9.313708543777466 9.313708543777466 12 6 12 Z"
-                                  }
-                                ]
-                              },
-                              "layoutProps": {
-                                "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 12, "height": 12,
-                                "relativeTransform": [[1, 0, 5], [0, 1, 5]]
-                              },
-                              "svgContent": SVG_sidebar_Synth_Path_5
-                            }
-                          ]
-                        },
-                        {
-                          "type": "VECTOR",
-                          "shouldFlatten": true,
-                          "name": "Path",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 15.6484375, "y": 15.650390625,
-                            "fills": [
-                              {
-                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0, "g": 0, "b": 0 },
-                                "boundVariables": {}
-                              }
-                            ],
-                            "strokes": [],
-                            "effects": [],
-                            "cornerRadius": 0,
-                            "vectorPaths": [
-                              {
-                                "windingRule": "NONZERO",
-                                "data": "M 6.0571064949035645 4.642892837524414 L 1.7071067094802856 0.2928932011127472 C 1.316582441329956 -0.0976310670375824 0.6834174692630768 -0.0976310670375824 0.2928932011127472 0.2928932011127472 C -0.0976310670375824 0.6834174692630768 -0.0976310670375824 1.316582441329956 0.2928932011127472 1.7071067094802856 L 4.642892837524414 6.0571064949035645 C 5.033417105674744 6.447630763053894 5.666582226753235 6.447630763053894 6.0571064949035645 6.0571064949035645 C 6.447630763053894 5.666582226753235 6.447630763053894 5.033417105674744 6.0571064949035645 4.642892837524414 Z"
-                              }
-                            ]
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 6.349999904632568, "height": 6.349999904632568,
-                            "relativeTransform": [[1, 0, 15.6484375], [0, 1, 15.650390625]]
-                          },
-                          "svgContent": SVG_sidebar_Synth_Path_6
-                        }
-                      ]
-                    }
-                  ]
+                  "svgContent": SEARCH_ICON
                 }
               ]
             }
@@ -489,6 +332,8 @@ export class sidebar extends BaseComponent {
             "value": "",
             "helperText": "1 result",
             "type": "simple",
+            "showSearchIcon": true,
+            "searchIconPosition": "front",
             "helperType": "info"
           }
         },
