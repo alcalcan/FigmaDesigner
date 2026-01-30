@@ -91,29 +91,34 @@ export class uefa_cards_4x extends BaseComponent {
 
       return createFrame(data.name, {
         cornerRadius: 12,
-        clipsContent: true,
+        clipsContent: true, // MUST be true for rounded corners
         layoutMode: "VERTICAL",
         primaryAxisSizingMode: "AUTO",
         counterAxisSizingMode: "AUTO",
+        layoutProps: { parentIsAutoLayout: true, layoutGrow: 1 }, // Fill width of parent row
         fills: [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color: COLORS.WHITE }],
         effects: [{
           visible: true, blendMode: "NORMAL", type: "DROP_SHADOW",
           radius: 6, color: COLORS.SHADOW, offset: { x: 0, y: 2 }, spread: 0, showShadowBehindNode: true
         }],
-        layoutProps: { parentIsAutoLayout: true } // Removed fixed width/height
+
       }, [
         // Image container
         createFrame("Image Container", {
           clipsContent: true,
+          layoutMode: "VERTICAL",
+          primaryAxisAlignItems: "CENTER",
+          counterAxisAlignItems: "CENTER",
+          primaryAxisSizingMode: "FIXED",
+          counterAxisSizingMode: "FIXED",
           fills: [{
             visible: true, opacity: 1, blendMode: "NORMAL", type: "IMAGE",
             scaleMode: "FILL", assetRef: data.image
           }],
           layoutProps: { width: 343, height: 229 } // Image usually stays fixed or STRETCH
         }, data.showPlayIcon ? [
-          createVector("Play Icon", SVG_Play_Icon, {
-            x: 144, y: 87,
-            layoutProps: { width: 54, height: 54, parentIsAutoLayout: false },
+          createVector("Play Icon", SVG_Play_Icon, { // Removed x, y
+            layoutProps: { width: 54, height: 54 },
             fills: [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color: COLORS.WHITE }]
           })
         ] : []),
@@ -177,9 +182,10 @@ export class uefa_cards_4x extends BaseComponent {
     const structure: NodeDefinition = createFrame("uefa_cards_4x", {
       layoutMode: "HORIZONTAL",
       itemSpacing: 24,
-      primaryAxisSizingMode: "AUTO",
+      clipsContent: false, // Root container must NOT clip
+      primaryAxisSizingMode: "FIXED",
       counterAxisSizingMode: "AUTO",
-      layoutProps: { parentIsAutoLayout: false } // Root should usually have no absolute size if hugging
+      layoutProps: { parentIsAutoLayout: false, layoutAlign: "STRETCH" } // Fill parent width
     }, cards);
 
     const root = await this.renderDefinition(structure);

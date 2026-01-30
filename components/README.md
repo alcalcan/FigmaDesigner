@@ -172,6 +172,25 @@ If you are using an AI (like ChatGPT or Gemini) to help write these components, 
 
 ---
 
+## 8. Lessons Learned: The "Fill Container" Trap 🪤
+
+We encountered a critical issue where children set to `Fill Container` (`layoutGrow: 1`) would collapse to width 0 if their parent was set to `Hug Contents` (`primaryAxisSizingMode: "AUTO"`).
+
+### The Scenario
+- **Parent**: Horizontal Frame, set to `Hug Contents` (Auto width).
+- **Children**: Cards inside, set to `Fill Container` (Grow to fill width).
+
+### The Conflict
+Figma logic crash: "Parent says 'I am as wide as my children', but Children say 'We are as wide as the Parent'." This circular dependency causes the layout to collapse.
+
+### The Fix
+If you want children to `Fill Container`, the Parent **MUST** have a fixed size on that axis (or be stretched by *its* parent).
+- **Correct Setup**:
+  - Parent: `primaryAxisSizingMode: "FIXED"` (and optionally `layoutAlign: "STRETCH"` to follow its own parent).
+  - Children: `layoutGrow: 1`.
+
+---
+
 ## 9. Design Principles 🎨
 
 To create professional-looking components, follow these visual rules:
