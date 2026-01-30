@@ -23,11 +23,6 @@ interface SidebarProps extends ComponentProps {
 ## Implementation Example
 
 ```typescript
-const sb = new sidebar();
-const navigation = await sb.create({
-    favouriteToggleIsOn: true
-});
+const sb = new sidebar_filtering();
+const navigation = await sb.create({});
 ```
-
-## Component File
-[sidebar.ts](file:///Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/sidebar/sidebar.ts)
