@@ -41,6 +41,7 @@ export class RadioSearchDemo extends BaseComponent {
         root.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.98, b: 0.99 } }];
 
         root.resize(1680, 5000); // Temporary large height, will hug later
+        root.clipsContent = false;
 
         // --- IDENTITY ---
         await this.addSection(root, "Identity", async (container) => {
@@ -206,6 +207,7 @@ export class RadioSearchDemo extends BaseComponent {
         section.fills = [];
         section.layoutAlign = "STRETCH";
         section.primaryAxisSizingMode = "AUTO";
+        section.clipsContent = false; // Allow dropdowns to overflow
 
         const label = figma.createText();
         await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
@@ -222,6 +224,8 @@ export class RadioSearchDemo extends BaseComponent {
         contentContainer.fills = [];
         contentContainer.layoutAlign = "STRETCH";
         contentContainer.primaryAxisSizingMode = "AUTO";
+        contentContainer.clipsContent = false; // Allow dropdowns to overflow
+        contentContainer.itemReverseZIndex = true; // Ensure top items (like dropdowns) stack OVER bottom items
 
         await contentBuilder(contentContainer);
 
@@ -237,6 +241,7 @@ export class RadioSearchDemo extends BaseComponent {
         row.primaryAxisSizingMode = "AUTO";
         row.counterAxisSizingMode = "AUTO";
         row.counterAxisAlignItems = "CENTER";
+        row.clipsContent = false;
         return row;
     }
 
