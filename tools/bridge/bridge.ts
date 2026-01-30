@@ -4,7 +4,7 @@ import { handleList, handleRead } from './handlers/extraction';
 import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder } from './handlers/components';
 import { handleSave, handleSavePacket, handleSavePng } from './handlers/assets';
 import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
-import { handlePoll, handleLog, handleDelete, handleMove } from './handlers/system';
+import { handlePoll, handleLog } from './handlers/system';
 import { startBuild } from '../build';
 
 // START WATCHER (Runs alongside bridge)

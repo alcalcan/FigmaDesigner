@@ -270,7 +270,7 @@ export class sidebar extends BaseComponent {
                 }
               ]
             },
-            ...[{ "name": "UEFA Academy", "isSelected": false }, { "name": "UEFA Assist", "isSelected": false }, { "name": "UEFA Events", "isSelected": false }, { "name": "UEFA Football Development", "isSelected": false }, { "name": "UEFA Grow", "fillColor": { "r": 0.9450980424880981, "g": 0.9529411792755127, "b": 0.9725490212440491 }, "isSelected": true }, { "name": "UEFA Hatrick", "isSelected": false }, { "name": "UEFA Anti-Doping and Medical", "isSelected": false }, { "name": "UEFA Intelligence Center", "isSelected": false }].map((item: any) => ({
+            ...[{ "name": "UEFA Academy", "isSelected": false }, { "name": "UEFA Assist", "isSelected": false }, { "name": "UEFA Events", "isSelected": false }, { "name": "UEFA Football Development", "isSelected": false }, { "name": "UEFA Grow", "fillColor": { "r": 0.9450980424880981, "g": 0.9529411792755127, "b": 0.9725490212440491 }, "isSelected": true }, { "name": "UEFA Hatrick", "isSelected": false }, { "name": "UEFA Anti-Doping and Medical", "isSelected": false }, { "name": "UEFA Intelligence Center", "isSelected": false }].map((item: { name: string; isSelected: boolean; fillColor?: { r: number; g: number; b: number } }) => ({
               "type": "COMPONENT",
               "component": checkbox,
               "props": {
