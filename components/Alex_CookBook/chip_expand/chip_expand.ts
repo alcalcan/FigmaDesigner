@@ -151,11 +151,35 @@ export class chip_expand extends BaseComponent {
     }
 
     // Handle Selected state (Background Color)
-    if (props.selected !== undefined) {
-      if (props.selected) {
-        (root as FrameNode).fills = [{ type: "SOLID", color: { r: 0.1, g: 0.19, b: 0.24 } }]; // Dark theme
-        const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
-        if (textNode) textNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+    // Handle Hover State (Lighter Slate Blue + White Text)
+    if (props.hover) {
+      // Updated to a lighter slate blue: approximately #455A64
+      (root as FrameNode).fills = [{ type: "SOLID", color: { r: 0.270588, g: 0.352941, b: 0.392157 } }];
+
+      const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+      if (textNode) {
+        textNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+      }
+
+      const vectorNode = (root as FrameNode).findOne(n => n.name === "Vector" && n.type === "VECTOR") as VectorNode;
+      if (vectorNode) {
+        vectorNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+      }
+    }
+    // Handle Selected State (Darker Gray + Dark Text)
+    else if (props.selected !== undefined && props.selected) {
+      // Darker Gray: #E0E4EB (approx r: 0.88, g: 0.89, b: 0.92)
+      (root as FrameNode).fills = [{ type: "SOLID", color: { r: 0.878, g: 0.894, b: 0.922 } }];
+
+      // Ensure Text/Icon are dark (default #1A313C approx { r: 0.102, g: 0.192, b: 0.235 })
+      const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+      if (textNode) {
+        textNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
+      }
+
+      const vectorNode = (root as FrameNode).findOne(n => n.name === "Vector" && n.type === "VECTOR") as VectorNode;
+      if (vectorNode) {
+        vectorNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
       }
     }
 

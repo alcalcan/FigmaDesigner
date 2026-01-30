@@ -127,6 +127,7 @@ export class RadioSearchDemo extends BaseComponent {
             const chip = new chip_expand();
             row.appendChild(await chip.create({ text: "Default Chip" }));
             row.appendChild(await chip.create({ text: "Selected Chip", selected: true }));
+            row.appendChild(await chip.create({ text: "Hover Chip", hover: true }));
             row.appendChild(await chip.create({ text: "Expanded Chip", expanded: true }));
 
             container.appendChild(row);
