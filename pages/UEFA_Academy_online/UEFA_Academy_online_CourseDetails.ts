@@ -4,10 +4,10 @@ import { Top_bar } from "../../components/Competition_newsletters/Top_bar/Top_ba
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
 import { TitleBar_withCTA } from "../../components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 import { simple_info } from "../../components/UEFA_Academy_online/simple_info/simple_info";
-import { SubSection } from "../../components/UEFA_Academy_online/SubSection/SubSection";
+import { expanded_card } from "../../components/Alex_CookBook/expanded_card/expanded_card";
+import { sidebar_filtering } from "../../components/Alex_CookBook/sidebar_filtering/sidebar_filtering";
 import { SubSection_collapsed } from "../../components/UEFA_Academy_online/SubSection/SubSection_collapsed";
 import { Content_container } from "../../components/UEFA_Academy_online/Content_container/Content_container";
-import { sidebar } from "../../components/UEFA_Academy_online/sidebar/sidebar";
 
 export class UEFA_Academy_online_CourseDetails extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -31,10 +31,10 @@ export class UEFA_Academy_online_CourseDetails extends BaseComponent {
         const headerComp = new Header();
         const contentContainerComp = new Content_container();
         const titleBarCTAComp = new TitleBar_withCTA();
-        const subSectionComp = new SubSection();
+        const subSectionComp = new expanded_card();
         const subSectionCollapsedComp = new SubSection_collapsed();
         const simpleInfoComp = new simple_info();
-        const sidebarComp = new Placeholder("sidebar");
+        const sidebarComp = new sidebar_filtering();
 
         // 2. Create Nodes
         const topBarNode = await topBarComp.create({ x: 0, y: 0 });
@@ -56,14 +56,14 @@ export class UEFA_Academy_online_CourseDetails extends BaseComponent {
         const subSectionNode1 = await subSectionComp.create({
             x: 0,
             y: 0,
-            name: "Module 1: Professional Development",
+            headerTitle: "Module 1: Professional Development",
             items: [
-                "Anti-Doping, Medical and Health",
-                "Club Licensing",
-                "Coach Education",
-                "Disciplinary and integrity",
-                "Event Management and Operations",
-                "Governance and Strategic Management"
+                { name: "Anti-Doping, Medical and Health", isSelected: false },
+                { name: "Club Licensing", isSelected: false },
+                { name: "Coach Education", isSelected: false },
+                { name: "Disciplinary and integrity", isSelected: false },
+                { name: "Event Management and Operations", isSelected: false },
+                { name: "Governance and Strategic Management", isSelected: false }
             ]
         });
 
@@ -81,11 +81,11 @@ export class UEFA_Academy_online_CourseDetails extends BaseComponent {
         const subSectionNode2 = await subSectionComp.create({
             x: 0,
             y: 0,
-            name: "Module 3: Global Impact",
+            headerTitle: "Module 3: Global Impact",
             items: [
-                "Financial Sustainability",
-                "Player Welfare",
-                "Talent Identification"
+                { name: "Financial Sustainability", isSelected: false },
+                { name: "Player Welfare", isSelected: false },
+                { name: "Talent Identification", isSelected: false }
             ]
         });
         const sidebarNode = await sidebarComp.create({ x: 0, y: 0 });
@@ -166,8 +166,8 @@ export class UEFA_Academy_online_CourseDetails extends BaseComponent {
             if ("layoutAlign" in node) (node as LayoutMixin).layoutAlign = "STRETCH";
         });
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

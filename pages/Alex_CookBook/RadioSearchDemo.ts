@@ -3,7 +3,7 @@ import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 
 // Components
 import { Page_title } from "../../components/Alex_CookBook/Page_title/Page_title";
-import { SubSection } from "../../components/Alex_CookBook/SubSection/SubSection";
+import { expanded_card } from "../../components/Alex_CookBook/expanded_card/expanded_card";
 import { accordion } from "../../components/Alex_CookBook/accordion/accordion";
 import { checkbox } from "../../components/Alex_CookBook/checkbox/checkbox";
 import { chip_expand } from "../../components/Alex_CookBook/chip_expand/chip_expand";
@@ -13,7 +13,7 @@ import { recipe_card } from "../../components/Alex_CookBook/recipe_card/recipe_c
 import { search_bar } from "../../components/Alex_CookBook/search_bar/search_bar";
 import { search_bar_expanded } from "../../components/Alex_CookBook/search_bar_expanded/search_bar_expanded";
 import { search_bar_expanded_radio } from "../../components/Alex_CookBook/search_bar_expanded_radio/search_bar_expanded_radio";
-import { sidebar } from "../../components/Alex_CookBook/sidebar/sidebar";
+import { sidebar_filtering } from "../../components/Alex_CookBook/sidebar_filtering/sidebar_filtering";
 import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
 import { uefa_cards_4x } from "../../components/Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
@@ -51,7 +51,7 @@ export class RadioSearchDemo extends BaseComponent {
                 subtitle: "A comprehensive showcase of all available components and their variations."
             }));
 
-            const subSection = new SubSection();
+            const subSection = new expanded_card();
             // Demonstrating new props: custom header and badge
             const subSectionNode = await subSection.create({
                 headerTitle: "Organization",
@@ -155,7 +155,7 @@ export class RadioSearchDemo extends BaseComponent {
             container.appendChild(await acc.create({ title: "Accordion (Expanded)", expanded: true }));
 
             // Sidebar (Large)
-            const sb = new sidebar();
+            const sb = new sidebar_filtering();
             const sbNode = await sb.create({});
             container.appendChild(sbNode);
         });

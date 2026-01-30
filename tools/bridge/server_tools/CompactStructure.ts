@@ -163,8 +163,9 @@ export class CompactStructure {
         const placeholderPrefix = "__VAR__";
         const exprPlaceholderPrefix = "__EXPR_VAR__";
 
-        // 1. Protect SVG Variables
-        let evalStr = objectString.replace(/(?<!["'])(SVG_[\w_]+)/g, `"${placeholderPrefix}$1"`);
+        // 1. Protect SVG/IMG/ICON Variables AND already existing placeholders
+        // We protect __VAR__ and __EXPR_VAR__ because they might be in the source if it was manually edited or double-processed
+        let evalStr = objectString.replace(/(?<!["'])(SVG_[\w_]+|IMG_[\w_]+|ICON_[\w_]+|__VAR__[\w_]+|__EXPR_VAR__[\w_]+)/g, `"${placeholderPrefix}$1"`);
 
         // 2. Protect Complex Expressions
         const outputParts: string[] = [];
@@ -180,6 +181,7 @@ export class CompactStructure {
 
             // Check if what follows is a JSON primitive or a nested structure
             const firstChar = evalStr[pos];
+            // If it starts with a quote, it's either a string or a placeholder we just injected
             if (firstChar === '{' || firstChar === '[' || firstChar === '"' || (firstChar >= '0' && firstChar <= '9') || firstChar === '-') {
                 lastPos = pos;
                 continue;
@@ -210,7 +212,10 @@ export class CompactStructure {
             }
 
             const trimmedExpr = capturedExpr.trim();
-            if (trimmedExpr === 'true' || trimmedExpr === 'false' || trimmedExpr === 'null') {
+            if (trimmedExpr === 'true' || trimmedExpr === 'false' || trimmedExpr === 'null' || trimmedExpr.startsWith('__EXPR_VAR__') || trimmedExpr.startsWith('__VAR__')) {
+                // If it's already a placeholder (from regex phase), just pass it.
+                // Note: regex phase replaced them with quotes, so they might be caught by the "starts with quote" check above.
+                // But let's be safe.
                 outputParts.push(capturedExpr);
             } else {
                 const index = expressions.length;
@@ -229,9 +234,11 @@ export class CompactStructure {
         try {
             const func = new Function(`return (${evalStr});`);
             structObj = func();
-        } catch (e) {
-            console.error("❌ Failed to parse structure object.", e);
-            console.log("Context:", evalStr);
+        } catch (e: any) {
+            console.error("❌ Failed to parse structure object.", e.message);
+            // Log a snippet of the problematic string for debugging
+            const snippet = evalStr.substring(0, 500);
+            console.log("Context (first 500 chars):", snippet);
             return content;
         }
 
@@ -251,8 +258,8 @@ export class CompactStructure {
             return expressions[parseInt(index)];
         });
 
-        // 6. Restore SVG Variables (MUST happen after expressions are restored)
-        newString = newString.replace(new RegExp(`"${placeholderPrefix}(SVG_[\\w_]+)"`, 'g'), '$1');
+        // 6. Restore Protected Variables (MUST happen after expressions are restored)
+        newString = newString.replace(new RegExp(`"${placeholderPrefix}((SVG_|IMG_|ICON_)[\\w_]+)"`, 'g'), '$1');
 
         return content.substring(0, startIndex) + newString + content.substring(endIndex);
     }

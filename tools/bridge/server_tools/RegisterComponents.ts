@@ -74,8 +74,8 @@ export function registerComponents() {
 
     fs.writeFileSync(indexFile, content);
 
-    // Make file READ-ONLY to prevent external reverts (like OneDrive)
-    fs.chmodSync(indexFile, 0o444);
+    // Make file writable (removed read-only flag as it caused EACCES errors in build tools)
+    fs.chmodSync(indexFile, 0o644);
 
     console.log(`✅ Registered ${sortedExports.length} components in components/index.ts`);
 }

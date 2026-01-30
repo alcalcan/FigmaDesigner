@@ -15,7 +15,7 @@ async function startBuild(options?: { watch?: boolean }) {
         context = await esbuild.context({
             entryPoints: ['code.ts'],
             bundle: true,
-            outfile: 'code.js',
+            outfile: 'code.js.tmp',
             format: 'iife',
             target: 'es6',
             sourcemap: true,
@@ -28,7 +28,7 @@ async function startBuild(options?: { watch?: boolean }) {
             },
             plugins: [
                 {
-                    name: 'recovery',
+                    name: 'atomic-write',
                     setup(build) {
                         build.onStart(async () => {
                             // Run registration first to ensure imports exist
@@ -42,8 +42,20 @@ async function startBuild(options?: { watch?: boolean }) {
                             if (result.errors.length > 0) {
                                 console.error(`❌ Build failed with ${result.errors.length} errors.`);
                             } else {
-                                const now = new Date().toLocaleTimeString();
-                                console.log(`✅ Build successful at ${now}`);
+                                try {
+                                    // Atomic move of code.js.tmp to code.js
+                                    if (fs.existsSync('code.js.tmp')) {
+                                        fs.renameSync('code.js.tmp', 'code.js');
+                                    }
+                                    // Also move sourcemap if it exists
+                                    if (fs.existsSync('code.js.tmp.map')) {
+                                        fs.renameSync('code.js.tmp.map', 'code.js.map');
+                                    }
+                                    const now = new Date().toLocaleTimeString();
+                                    console.log(`✅ Atomic Build successful at ${now}`);
+                                } catch (err: any) {
+                                    console.error(`❌ Failed to finalize atomic build: ${err.message}`);
+                                }
                             }
                         });
                     },
@@ -53,7 +65,7 @@ async function startBuild(options?: { watch?: boolean }) {
 
         console.log("🛠️ Initializing build...");
         if (isWatch) {
-            console.log("👀 Watching for changes...");
+            console.log("👀 Watching for changes (Atomic mode enabled)...");
             await context.watch();
         } else {
             // For single build, we must actually finish successfully

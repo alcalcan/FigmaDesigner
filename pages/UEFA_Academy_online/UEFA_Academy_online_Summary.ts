@@ -7,7 +7,7 @@ import { search_bar } from "../../components/UEFA_Academy_online/search_bar/sear
 import { card } from "../../components/UEFA_Academy_online/card/card";
 import { Content_container } from "../../components/UEFA_Academy_online/Content_container/Content_container";
 import { simple_info } from "../../components/UEFA_Academy_online/simple_info/simple_info";
-import { sidebar } from "../../components/UEFA_Academy_online/sidebar/sidebar";
+import { sidebar_filtering } from "../../components/Alex_CookBook/sidebar_filtering/sidebar_filtering";
 import { TitleBar_withCTA } from "../../components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 
 export class UEFA_Academy_online_Summary extends BaseComponent {
@@ -34,7 +34,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         const titleBarCTAComp = new TitleBar_withCTA();
         const searchBarComp = new search_bar();
         const cardComp = new card();
-        const sidebarComp = new Placeholder("sidebar");
+        const sidebarComp = new sidebar_filtering();
         const simpleInfoComp = new simple_info();
 
         // 2. Generate Nodes
@@ -137,8 +137,8 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
             }
         });
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

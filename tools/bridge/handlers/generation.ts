@@ -197,10 +197,11 @@ export async function handleGenerateToCode(req: http.IncomingMessage, res: http.
 export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
             const { folder, project, simplified, procedural, refactor, compact } = JSON.parse(body);
-            if (!folder) throw new Error("Missing folder");
+            // If folder is empty, we'll scan the entire extraction root
+            const targetFolder = folder || "";
 
             // ... Logic to iterate folder files ...
             // Simplified reuse of logic:
@@ -210,7 +211,7 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
             // Assume folder is project name for now or relative path
             // In current app logic, folder is the project name usually.
             const extractionRoot = path.join(process.cwd(), 'tools/extraction'); // Assuming
-            const projectPath = path.join(extractionRoot, folder); // folder is project name
+            const projectPath = path.join(extractionRoot, targetFolder);
 
             if (!fs.existsSync(projectPath)) {
                 // Try absolute
@@ -223,65 +224,55 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
             const results: { file: string, status: string, error?: string }[] = [];
 
             // Recursively find json files
-            const getFiles = (dir: string) => {
+            const getFiles = async (dir: string) => {
                 const subdirs = fs.readdirSync(dir);
-                subdirs.forEach((file: string) => {
+                for (const file of subdirs) {
                     const full = path.join(dir, file);
                     if (fs.statSync(full).isDirectory()) {
-                        getFiles(full);
-                    } else if (file.endsWith('.json') && !file.includes('vector') && !file.includes('icon')) { // Avoid asset manifests
+                        await getFiles(full);
+                    } else if (file.endsWith('.json') && !file.includes('vector') && !file.includes('icon')) {
                         try {
-                            const content = fs.readFileSync(full, 'utf8');
-                            const data = JSON.parse(content);
                             const componentName = path.basename(full, '.json');
+                            const currentProject = project || targetFolder || "Default";
 
-                            const generator = new ComponentGenerator();
-                            let code = generator.generateFromMemory(data, [], project || folder);
-
+                            console.log(`[Batch] ➡️ Processing ${componentName}...`);
                             if (procedural) {
-                                // Mandatory prerequisites
-                                const refactorer = new ComponentRefactorer();
-                                code = refactorer.refactorCode(code, componentName);
-                                const compactor = new CompactStructure();
-                                code = compactor.compactCode(code);
-
-                                const converter = new ProceduralConverter();
-                                code = converter.convert(code, componentName);
+                                await FullProceduralPipeline.run(full, currentProject, componentName);
                             } else {
-                                // Granular control for standard generation
+                                const generator = new ComponentGenerator();
+                                const result = generator.generate(full, currentProject, false, componentName);
+
                                 const shouldRefactor = (simplified !== false) && (refactor !== false);
-                                // Default to compacting if not explicitly disabled, matching other handlers or simplified logic
-                                // However, existing logic only compacted if simplified was true.
-                                // Let's respect the explicit flags if provided, defaulting to simplified behavior if not.
                                 const shouldCompact = (compact !== false) && (simplified !== false);
 
                                 if (shouldRefactor) {
-                                    const refactorer = new ComponentRefactorer();
-                                    code = refactorer.refactorCode(code, componentName);
+                                    new ComponentRefactorer().refactor(result.tsPath);
                                 }
                                 if (shouldCompact) {
-                                    const compactor = new CompactStructure();
-                                    code = compactor.compactCode(code);
+                                    new CompactStructure().compact(result.tsPath);
                                 }
                             }
-
-                            const tsPath = full.replace('.json', '.ts');
-                            fs.writeFileSync(tsPath, code);
-                            results.push({ file, status: 'ok' });
+                            results.push({ file: componentName, status: 'ok' });
                         } catch (e: unknown) {
                             const error = e as Error;
+                            console.error(`[Batch] ❌ Error processing ${file}:`, error.message);
                             results.push({ file, status: 'error', error: error.message });
                         }
                     }
-                });
+                }
             };
 
             if (fs.existsSync(projectPath)) {
-                getFiles(projectPath);
+                await getFiles(projectPath);
+                console.log(`[Batch] ✅ Processed ${results.length} files. Success: ${results.filter(r => r.status === 'ok').length}, Fail: ${results.filter(r => r.status !== 'ok').length}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'ok', results }));
+            } else {
+                console.error(`[Batch] ❌ Project folder not found: ${projectPath}`);
+                res.writeHead(404);
+                res.end(JSON.stringify({ error: "Project folder not found" }));
             }
-
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ status: 'ok', results }));
+            return;
 
         } catch (e: unknown) {
             const error = e as Error;
@@ -295,7 +286,7 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
 export function handleRefactorCode(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
         try {
             const { path: filePath, project, simplified, procedural } = JSON.parse(body);
             if (!filePath) throw new Error("Missing path");
@@ -307,39 +298,25 @@ export function handleRefactorCode(req: http.IncomingMessage, res: http.ServerRe
 
             // Check if it is a JSON file we are converting
             if (targetPath.endsWith('.json')) {
-                // Generate from JSON
-                const content = fs.readFileSync(targetPath, 'utf8');
-                const data = JSON.parse(content);
                 const componentName = path.basename(targetPath, '.json');
+                const currentProject = project || "Default";
 
-                // 1. Generate
-                const generator = new ComponentGenerator();
-                let code = generator.generateFromMemory(data, [], project || "Default");
-
-                // 2. Refactor/Procedural
-                // 2. Refactor/Procedural
+                let resultPath = "";
                 if (procedural) {
-                    // Prerequisites
-                    const refactorer = new ComponentRefactorer();
-                    code = refactorer.refactorCode(code, componentName);
-                    const compactor = new CompactStructure();
-                    code = compactor.compactCode(code);
+                    resultPath = await FullProceduralPipeline.run(targetPath, currentProject, componentName);
+                } else {
+                    const generator = new ComponentGenerator();
+                    const result = generator.generate(targetPath, currentProject, false, componentName);
+                    resultPath = result.tsPath;
 
-                    const converter = new ProceduralConverter();
-                    code = converter.convert(code, componentName);
-                } else if (simplified) {
-                    const refactorer = new ComponentRefactorer();
-                    code = refactorer.refactorCode(code, componentName);
-                    const compactor = new CompactStructure();
-                    code = compactor.compactCode(code);
+                    if (simplified) {
+                        new ComponentRefactorer().refactor(resultPath);
+                        new CompactStructure().compact(resultPath);
+                    }
                 }
 
-                // Save to .ts file next to json
-                const tsPath = targetPath.replace('.json', '.ts');
-                fs.writeFileSync(tsPath, code);
-
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ status: 'ok', tsPath }));
+                res.end(JSON.stringify({ status: 'ok', tsPath: resultPath }));
                 return;
             }
 

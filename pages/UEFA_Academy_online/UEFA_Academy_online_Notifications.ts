@@ -4,7 +4,7 @@ import { Header } from "../../components/UEFA_Academy_online/Header/Header";
 import { Info } from "../../components/UEFA_Academy_online/Info/Info";
 import { Content_container } from "../../components/UEFA_Academy_online/Content_container/Content_container";
 import { TitleBar_withCTA } from "../../components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
-import { SubSection } from "../../components/UEFA_Academy_online/SubSection/SubSection";
+import { expanded_card } from "../../components/Alex_CookBook/expanded_card/expanded_card";
 import { SubSection_collapsed } from "../../components/UEFA_Academy_online/SubSection/SubSection_collapsed";
 
 export class UEFA_Academy_online_Notifications extends BaseComponent {
@@ -30,7 +30,7 @@ export class UEFA_Academy_online_Notifications extends BaseComponent {
         const infoComp = new Info();
         const contentContainerComp = new Content_container();
         const titleBarCTAComp = new TitleBar_withCTA();
-        const subSectionComp = new SubSection();
+        const subSectionComp = new expanded_card();
         const subSectionCollapsedComp = new SubSection_collapsed();
 
         // 2. Generate Nodes
@@ -60,19 +60,19 @@ export class UEFA_Academy_online_Notifications extends BaseComponent {
         const subjectNode = await subSectionComp.create({
             x: 0,
             y: 0,
-            name: "Subject",
+            headerTitle: "Subject",
             badgeLabel: "Subjects",
             items: [
-                "Anti-Doping, Medical and Health",
-                "Communication, PR and Media",
-                "Event and Volunteer Management",
-                "Football and Social Responsibility",
-                "Football Development",
-                "Governance, Organisation of Football and Sport",
-                "Innovation",
-                "Leadership",
-                "Marketing Sponsorship",
-                "Legal and Integrity"
+                { name: "Anti-Doping, Medical and Health", isSelected: false },
+                { name: "Communication, PR and Media", isSelected: false },
+                { name: "Event and Volunteer Management", isSelected: false },
+                { name: "Football and Social Responsibility", isSelected: false },
+                { name: "Football Development", isSelected: false },
+                { name: "Governance, Organisation of Football and Sport", isSelected: false },
+                { name: "Innovation", isSelected: false },
+                { name: "Leadership", isSelected: false },
+                { name: "Marketing Sponsorship", isSelected: false },
+                { name: "Legal and Integrity", isSelected: false }
             ]
         });
 
@@ -131,8 +131,8 @@ export class UEFA_Academy_online_Notifications extends BaseComponent {
             container.resize(1680, container.height);
         }
 
-        root.x = props.x;
-        root.y = props.y;
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
 
         return root;
     }

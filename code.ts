@@ -157,8 +157,8 @@ const captureNode = async (
   }
 
   // 6. Icon / Vector Export
-  // We keep the heuristic: Vector/Star/Polygon + Small OR name has "icon"/"star"
-  const isVectorLike = node.type === "VECTOR" || node.type === "STAR" || node.type === "POLYGON";
+  // We keep the heuristic: Vector/Star/Polygon/Boolean + Small OR name has "icon"/"star"
+  const isVectorLike = node.type === "VECTOR" || node.type === "STAR" || node.type === "POLYGON" || node.type === "BOOLEAN_OPERATION";
 
   const isIcon = isVectorLike && (
     (node.width <= 64 && node.height <= 64) ||
@@ -169,27 +169,66 @@ const captureNode = async (
   // New logic: Export vectors as SVG unless explicitly asked to keep in JSON
   const isVectorToExport = isVectorLike && !saveVectorInJson;
 
-  if (isIcon || isVectorToExport) {
-    try {
-      let base64 = "";
-      if (skipAssets) {
-        // Create dummy SVG content with correct dimensions
-        const w = node.width || 1;
-        const h = node.height || 1;
-        const dummySvg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="none"/></svg>`;
-        base64 = figma.base64Encode(Uint8Array.from(dummySvg.split('').map(c => c.charCodeAt(0))));
-      } else {
-        const svgBytes = await node.exportAsync({ format: 'SVG' });
-        base64 = figma.base64Encode(svgBytes);
-      }
+  const hasVisibleContent = (node: SceneNode): boolean => {
+    // Check Dimensions (Must have some size)
+    if (node.width < 0.01 || node.height < 0.01) return false;
 
-      const prefix = isIcon ? 'icon' : 'vector';
-      const fileName = `${prefix}_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
-      const assetRef = `assets/${fileName}`;
-      assetStore.assets[assetRef] = { bytesBase64: base64 };
-      data.svgPath = assetRef;
-    } catch (e) {
-      console.warn(`Failed to export SVG for ${node.name}`, e);
+    // Check Fills
+    if ("fills" in node) {
+      const fills = safeGet(node, "fills");
+      if (fills === "mixed") return true;
+      if (Array.isArray(fills) && (fills as Paint[]).some(p => p.visible !== false && p.opacity !== 0)) return true;
+    }
+    // Check Strokes
+    if ("strokes" in node) {
+      const strokes = safeGet(node, "strokes");
+      if (strokes === "mixed") return true;
+      if (Array.isArray(strokes) && (strokes as Paint[]).some(p => p.visible !== false && p.opacity !== 0)) return true;
+    }
+    // Check Effects
+    if ("effects" in node && Array.isArray(node.effects)) {
+      if (node.effects.some(e => e.visible !== false)) return true;
+    }
+
+    // Check Children (for Containers/Boolean Ops that might have visible content inside)
+    if ("children" in node) {
+      return (node as ChildrenMixin).children.some(child => child.visible && hasVisibleContent(child));
+    }
+
+    return false;
+  };
+
+  if (isIcon || isVectorToExport) {
+    // Optimization: Skip export if the node has no visible content (avoids "node may not have any visible layers" error)
+    const hasContent = hasVisibleContent(node);
+
+    if (hasContent || skipAssets) {
+      try {
+        let base64 = "";
+        if (skipAssets) {
+          // Create dummy SVG content with correct dimensions
+          const w = node.width || 1;
+          const h = node.height || 1;
+          const dummySvg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="none"/></svg>`;
+          base64 = figma.base64Encode(Uint8Array.from(dummySvg.split('').map(c => c.charCodeAt(0))));
+        } else {
+          const svgBytes = await node.exportAsync({ format: 'SVG' });
+          base64 = figma.base64Encode(svgBytes);
+        }
+
+        const prefix = isIcon ? 'icon' : 'vector';
+        const fileName = `${prefix}_${sanitizeName(node.name)}_${node.id.replace(/:/g, '_')}.svg`;
+        const assetRef = `assets/${fileName}`;
+        assetStore.assets[assetRef] = { bytesBase64: base64 };
+        data.svgPath = assetRef;
+      } catch (e) {
+        const msg = (e as Error).message || "";
+        if (msg.includes("visible layers") || msg.includes("no visible layers")) {
+          // Ignore this specific error as it just means the node is invisible/empty, which is fine.
+        } else {
+          console.warn(`Failed to export SVG for ${node.name}`, e);
+        }
+      }
     }
   }
 
@@ -337,86 +376,120 @@ figma.ui.onmessage = async (msg) => {
       const projectName = figma.root.name;
 
       if (msg.type === 'capture-png') {
-        const packets = await Promise.all(selection.map(async (node) => {
-          console.log(`[Plugin] Capturing PNG for node: ${node.name} (ID: ${node.id})`);
+        const total = selection.length;
+        let count = 0;
+
+        for (const node of selection) {
+          count++;
+          console.log(`[Plugin] Capturing PNG ${count}/${total}: ${node.name} (ID: ${node.id})`);
+
+          figma.ui.postMessage({
+            type: 'capture-status',
+            message: `Capturing PNG ${count} / ${total}...`,
+            count,
+            total
+          });
+
           try {
             const pngBytes = await node.exportAsync({
               format: 'PNG',
               constraint: { type: 'SCALE', value: 2 }
             });
             const base64 = figma.base64Encode(pngBytes);
-            return {
-              name: node.name,
-              data: base64 // The base64 PNG data
-            };
+
+            figma.ui.postMessage({
+              type: 'capture-png-result-packet',
+              projectName: projectName,
+              packet: {
+                name: node.name,
+                data: base64
+              },
+              isLast: count === total
+            });
           } catch (e) {
             console.warn(`Failed to export PNG for ${node.name}`, e);
-            return null;
           }
-        }));
-
-        const validPackets = packets.filter(p => p !== null);
-        if (validPackets.length === 0) {
-          figma.notify("No visible elements found to capture PNG.", { error: true });
-          return;
         }
-
-        figma.ui.postMessage({
-          type: 'capture-png-result',
-          projectName: projectName,
-          packets: validPackets
-        });
         return;
       }
 
-      const packets = await Promise.all(selection.map(async (node) => {
-        console.log(`[Plugin] Capturing node: ${node.name} (ID: ${node.id})`);
+      const total = selection.length;
+      let count = 0;
+
+      for (const node of selection) {
+        count++;
+        const isLast = count === total;
+        console.log(`[Plugin] Capturing ${count}/${total}: ${node.name} (ID: ${node.id})`);
+
+        figma.ui.postMessage({
+          type: 'capture-status',
+          message: `Capturing ${count} / ${total}...`,
+          count,
+          total
+        });
+
         const assetStore: AssetStore = {
           imageHashToAssetRef: new Map(),
           assets: {},
           nextId: 1
         };
-        const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets);
 
-        if (!data) {
-          console.warn(`[Plugin] Capture returned null for ${node.name}`);
-          return null;
+        try {
+          const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets);
+
+          if (!data) {
+            console.warn(`[Plugin] Capture returned null for ${node.name}`);
+            // Report "skipped" to the UI so it knows we moved past this element
+            figma.ui.postMessage({
+              type: 'capture-bridge-result-packet',
+              projectName: projectName,
+              packet: null, // Signals skip
+              count,
+              total,
+              isLast
+            });
+            continue;
+          }
+
+          // Flatten for bridge
+          const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
+            fileName: ref.replace(/^assets\//, ''),
+            type: ref.endsWith('.svg') ? 'svg' : 'image',
+            content: val.bytesBase64
+          }));
+
+          console.log(`[Plugin] Node ${node.name} captured. Assets: ${assets.length}`);
+
+          const resultType = msg.type === 'capture-preview' ? 'capture-preview-result-packet' : 'capture-bridge-result-packet';
+
+          figma.ui.postMessage({
+            type: resultType,
+            projectName: projectName,
+            packet: {
+              name: node.name,
+              data: data,
+              assets: assets
+            },
+            count,
+            total,
+            isLast
+          });
+        } catch (e) {
+          console.error(`Capture failed for ${node.name}:`, e);
+          // Still send something to keep count on UI side
+          figma.ui.postMessage({
+            type: 'capture-bridge-result-packet',
+            projectName: projectName,
+            packet: null,
+            count,
+            total,
+            isLast
+          });
         }
-
-        // Flatten for bridge
-        const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
-          fileName: ref.replace(/^assets\//, ''),
-          type: ref.endsWith('.svg') ? 'svg' : 'image',
-          content: val.bytesBase64
-        }));
-
-        console.log(`[Plugin] Node ${node.name} captured. Assets: ${assets.length}`);
-
-        return {
-          name: node.name,
-          data: data,
-          assets: assets
-        };
-      }));
-
-      // Filter out skipped (null) results
-      const validPackets = packets.filter(p => p !== null);
-
-      if (validPackets.length === 0) {
-        console.warn("[Plugin] Valid packets count is 0");
-        figma.notify("No visible elements found to capture.", { error: true });
-        return;
       }
 
-      console.log(`[Plugin] Sending ${validPackets.length} packets to UI`);
-
-      const resultType = msg.type === 'capture-preview' ? 'capture-preview-result' : 'capture-bridge-result-batch';
-
-      figma.ui.postMessage({
-        type: resultType,
-        projectName: projectName,
-        packets: validPackets
-      });
+      console.log("[Plugin] Capture Loop Finished");
+      figma.ui.postMessage({ type: 'capture-finished' });
     } catch (e) {
       console.error("Capture failed:", e);
       figma.notify("Capture failed: " + (e as Error).message, { error: true });

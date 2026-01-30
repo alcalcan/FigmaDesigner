@@ -80,6 +80,7 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             // Check for options or direct procedural flag. 
             const isProcedural = procedural === true || parsed.options?.procedural === true;
             const isSimplified = simplified === true || parsed.options?.simplified === true;
+            const skipGeneration = parsed.options?.skipGeneration === true;
 
             console.log(`[Bridge] handling SavePacket. Procedural? ${isProcedural}, Simplified? ${isSimplified}`);
 
@@ -121,7 +122,9 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
 
             // 4. GENERATION
             // If the user requested procedural or simplified generation, we do it NOW and AWAIT it.
-            if (isProcedural) {
+            if (skipGeneration) {
+                console.log(`[Bridge] skipGeneration=true. Skipping auto-gen for ${sanitaryName}.`);
+            } else if (isProcedural) {
                 console.log(`[Bridge] Auto-generating Procedural Code for ${sanitaryName}...`);
                 await FullProceduralPipeline.run(jsonPath, sanitaryProjectName, sanitaryName);
             } else {

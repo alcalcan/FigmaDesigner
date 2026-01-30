@@ -358,7 +358,10 @@
             const captureClipboardBtn = document.getElementById('capture-clipboard-btn');
 
             // State for clipboard operation
+            let activeTab = 'tab-sync';
             let isClipboardCapture = false;
+            let lastCapturedProject = "Default";
+            let activeSaves = 0;
             const captureBtn = document.getElementById('capture-btn');
             const processCheckbox = document.getElementById('process-checkbox');
             const detailedCheckbox = document.getElementById('detailed-checkbox');
@@ -1116,131 +1119,144 @@
                 const msg = event.data.pluginMessage;
                 console.log("Received message from plugin:", msg.type);
 
-                if (msg.type === 'capture-download') {
-                    const jsonStr = JSON.stringify(msg.data, null, 2);
-                    const blob = new Blob([jsonStr], { type: "application/json" });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = msg.fileName;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                }
-
-                if (msg.type === 'capture-bridge-result-batch') {
-                    try {
-                        console.log("Processing capture-bridge-result-batch");
-                        const packets = msg.packets || [];
-                        console.log(`Sending ${packets.length} packets to bridge`);
-
-                        const processAuto = document.getElementById('process-checkbox').checked || document.getElementById('procedural-gen-checkbox-capture').checked;
-                        const rawProjectName = msg.projectName || "Default";
-                        const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
-
-                        if (packets.length > 0) {
-                            // Sequential processing to allow chaining
-                            for (const packet of packets) {
-                                // Important: gather procedural state from the CAPTURE checkbox here
-                                const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
-                                const isSimplified = document.getElementById('process-checkbox').checked;
-
-                                const res = await fetch('http://127.0.0.1:3001/save-packet', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        projectName: sanitaryProjectName,
-                                        name: packet.name,
-                                        data: packet.data,
-                                        assets: packet.assets,
-                                        procedural: isProcedural,
-                                        simplified: isSimplified,
-                                        options: {
-                                            refactor: !generatorOnlyCheckboxCapture.checked,
-                                            compact: !generatorOnlyCheckboxCapture.checked
-                                        }
-                                    })
-                                });
-
-                                const json = await res.json();
-
-                                if (processAuto && json.savedPath) {
-                                    showFeedback(syncBtn, "Capture Sync (to Disk)", "Refactoring...");
-                                    console.log(`[Auto Process] Triggering generation for ${json.savedPath}. Procedural: ${isProcedural}`);
-
-                                    await fetch('http://127.0.0.1:3001/generate-to-code', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({
-                                            path: json.savedPath,
-                                            project: sanitaryProjectName,
-                                            simplified: true,
-                                            procedural: isProcedural
-                                        })
-                                    });
-                                }
-                            }
-
-                            console.log(`Saved ${packets.length} packets.`);
-                            showFeedback(syncBtn, "Capture Sync (to Disk)", processAuto ? "Captured & Processed!" : "Captured!");
-                        }
-                        await loadFiles();
-                    } catch (e) {
-                        console.error("Failed to send data to bridge", e);
-                        alert("Failed to save to bridge: " + e.message);
-                        syncBtn.textContent = "Capture Sync (to Disk)";
+                if (msg.type === 'capture-status') {
+                    if (statusDot.className === "dot active") {
+                        statusTextSpan.textContent = msg.message;
+                    }
+                    if (syncBtn.textContent !== "Captured!" && syncBtn.textContent !== "Error!") {
+                        syncBtn.textContent = msg.message;
                     }
                 }
 
-                if (msg.type === 'capture-png-result') {
+                if (msg.type === 'capture-bridge-result-packet') {
                     try {
-                        console.log("Processing capture-png-result");
-                        const packets = msg.packets || [];
-                        const projectName = msg.projectName || "Default";
+                        if (!msg.packet) {
+                            console.log(`[UI] Packet ${msg.count}/${msg.total} skipped (empty data)`);
+                        } else {
+                            console.log(`[UI] Saving packet ${msg.count}/${msg.total}: ${msg.packet.name}`);
 
-                        showFeedback(capturePngBtn, "Capture PNG", "Saving...");
+                            const processAuto = document.getElementById('process-checkbox').checked || document.getElementById('procedural-gen-checkbox-capture').checked;
+                            const rawProjectName = msg.projectName || "Default";
+                            const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
+                            lastCapturedProject = sanitaryProjectName;
+
+                            const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
+                            const isSimplified = document.getElementById('process-checkbox').checked;
+
+                            activeSaves++;
+                            fetch('http://127.0.0.1:3001/save-packet', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    projectName: sanitaryProjectName,
+                                    name: msg.packet.name,
+                                    data: msg.packet.data,
+                                    assets: msg.packet.assets,
+                                    procedural: isProcedural,
+                                    simplified: isSimplified,
+                                    options: {
+                                        refactor: !generatorOnlyCheckboxCapture.checked,
+                                        compact: !generatorOnlyCheckboxCapture.checked,
+                                        skipGeneration: processAuto // Postpone generation until batch is done
+                                    }
+                                })
+                            }).finally(() => {
+                                activeSaves--;
+                            });
+                        }
+
+                        if (msg.isLast) {
+                            console.log(`[UI] Last packet received.`);
+                            // The final completion logic is now in capture-finished to separate data capture from processing
+                        }
+                    } catch (e) {
+                        console.error("Failed to process packet", e);
+                    }
+                }
+
+                if (msg.type === 'capture-png-result-packet') {
+                    try {
+                        console.log(`[UI] Processing PNG packet: ${msg.packet.name}`);
+                        const projectName = msg.projectName || "Default";
 
                         const response = await fetch('http://127.0.0.1:3001/save-png', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 projectName: projectName,
-                                packets: packets
+                                packets: [msg.packet]
                             })
                         });
 
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error("[UI] Server error response:", errorText);
-                            throw new Error(`Server returned ${response.status}: ${errorText || "No response body"}`);
-                        }
-
-                        const result = await response.json();
-                        if (result.status === 'ok') {
-                            console.log("PNGs saved successfully");
-                            showFeedback(capturePngBtn, "Capture PNG", "Saved!");
-                        } else {
-                            throw new Error(result.error || "Unknown error");
+                        if (msg.isLast) {
+                            showFeedback(capturePngBtn, "Capture PNG", "Saved All!");
                         }
                     } catch (e) {
-                        console.error("Failed to save PNG to bridge", e);
-                        alert("Failed to save PNG: " + e.message);
-                        showFeedback(capturePngBtn, "Capture PNG", "Error!");
+                        console.error("Failed to save PNG packet", e);
                     }
                 }
 
+                if (msg.type === 'capture-finished') {
+                    console.log("[UI] Capture operation finished signal received");
+                    const processAuto = document.getElementById('process-checkbox').checked || document.getElementById('procedural-gen-checkbox-capture').checked;
 
-                if (msg.type === 'capture-preview-result') {
+                    if (processAuto) {
+                        // Wait for any pending saves to complete
+                        const checkSaves = async () => {
+                            if (activeSaves > 0) {
+                                console.log(`[UI] Waiting for ${activeSaves} pending saves...`);
+                                setTimeout(checkSaves, 100);
+                                return;
+                            }
+
+                            try {
+                                const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
+                                syncBtn.textContent = "Processing Batch...";
+
+                                await fetch('http://127.0.0.1:3001/generate-folder-to-code', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        folder: lastCapturedProject,
+                                        project: lastCapturedProject,
+                                        simplified: true,
+                                        procedural: isProcedural,
+                                        refactor: !generatorOnlyCheckboxCapture.checked,
+                                        compact: !generatorOnlyCheckboxCapture.checked
+                                    })
+                                });
+
+                                showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured & Processed!");
+                            } catch (e) {
+                                console.error("Batch processing failed", e);
+                                showFeedback(syncBtn, "Capture Sync (to Disk)", "Save Complete");
+                            }
+
+                            if (statusDot.className === "dot active") {
+                                statusTextSpan.textContent = "Connected & Listening";
+                            }
+                            loadFiles();
+                            loadComponents();
+                        };
+
+                        checkSaves();
+                    } else {
+                        showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured!");
+                        if (statusDot.className === "dot active") {
+                            statusTextSpan.textContent = "Connected & Listening";
+                        }
+                        loadFiles();
+                        loadComponents();
+                    }
+                }
+
+                if (msg.type === 'capture-preview-result-packet') {
                     try {
-                        const packets = msg.packets || [];
-                        if (packets.length === 0) throw new Error("No data captured");
-
-                        // We only preview the first selected item for now to avoid chaos
-                        const packet = packets[0];
-
+                        const packet = msg.packet;
                         const isExact = exactRefactorCheckbox.checked;
                         const doCompact = !isExact;
 
-                        console.log(`[Preview] Sending to bridge. Compact: ${doCompact}`);
+                        console.log(`[Preview] Processing packet: ${packet.name}. Compact: ${doCompact}`);
 
                         // INTERCEPT FOR CLIPBOARD CAPTURE
                         if (isClipboardCapture) {
@@ -1278,7 +1294,7 @@
                             } else {
                                 throw new Error(result.error || "Unknown error");
                             }
-                            return; // Stop processing normal preview
+                            return;
                         }
 
                         const response = await fetch('http://127.0.0.1:3001/generate-code-preview', {
@@ -1287,28 +1303,21 @@
                             body: JSON.stringify({
                                 packet: packet,
                                 options: {
-                                    refactor: true, // Always refactor (per user request context)
+                                    refactor: true,
                                     compact: doCompact,
                                     procedural: proceduralGenCheckboxPreview.checked
                                 }
                             })
                         });
 
-                        if (!response.ok) {
-                            throw new Error(await response.text());
-                        }
+                        if (!response.ok) throw new Error(await response.text());
 
                         const result = await response.json();
                         if (result.status === 'ok' && result.code) {
                             codePreviewArea.value = result.code;
                             codePreviewArea.style.display = "block";
-
-                            // Auto Copy
                             codePreviewArea.select();
-                            document.execCommand('copy'); // Fallback usually works in plugin UI
-                            // Or utilize navigator.clipboard if available (trusted context needed)
-                            // navigator.clipboard.writeText(result.code);
-
+                            document.execCommand('copy');
                             showFeedback(previewCodeBtn, "📋 Copy Compact Code", "Copied to Clipboard!");
                         } else {
                             throw new Error(result.error || "Unknown error");
@@ -1316,15 +1325,24 @@
 
                     } catch (e) {
                         console.error("Preview failed:", e);
-                        alert("Preview failed: " + e.message);
                         showFeedback(previewCodeBtn, "📋 Copy Compact Code", "Error!");
                     } finally {
                         previewCodeBtn.disabled = false;
-                        // Reset text if it wasn't reset by feedback
                         if (previewCodeBtn.textContent === "Generating...") {
                             previewCodeBtn.innerHTML = '<span style="font-size: 14px;">📋</span> Copy Compact Code';
                         }
                     }
+                }
+
+                if (msg.type === 'capture-download') {
+                    const jsonStr = JSON.stringify(msg.data, null, 2);
+                    const blob = new Blob([jsonStr], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = msg.fileName;
+                    a.click();
+                    URL.revokeObjectURL(url);
                 }
 
                 if (msg.type === 'capture-error') {

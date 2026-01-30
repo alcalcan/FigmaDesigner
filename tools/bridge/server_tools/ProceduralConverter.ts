@@ -175,14 +175,16 @@ export class ProceduralConverter {
     }
 
     private extractAssets(content: string) {
-        // Match inlined SVG constants
-        const inlineRegex = /const ([\w_]+) = `(<svg[\s\S]*?<\/svg>)`;/g;
+        // Match inlined SVG/IMG/ICON constants
+        const inlineRegex = /const (SVG_[\w_]+|IMG_[\w_]+|ICON_[\w_]+) = [`"']([\s\S]*?)[`"'];/g;
         let match;
         const contentToVar = new Map<string, string>();
 
         while ((match = inlineRegex.exec(content)) !== null) {
             const varName = match[1];
-            const svgContent = match[2];
+            // Strip newlines and excess whitespace from asset content (especially for large base64)
+            const rawContent = match[2];
+            const svgContent = rawContent.replace(/\r?\n|\r/g, "").trim();
 
             // Asset Consolidation: Check if we already have this content
             if (contentToVar.has(svgContent)) {
@@ -196,7 +198,7 @@ export class ProceduralConverter {
         }
 
         // Match external imports
-        const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+) from ["']([^"']+)["'];/g;
+        const importRegex = /import (SVG_[\w_]+|IMG_[\w_]+|ICON_[\w_]+) from ["']([^"']+)["'];/g;
         while ((match = importRegex.exec(content)) !== null) {
             // Store original path
             this.assets.set(match[1], `__EXTERNAL_REF__${match[2]}`);
