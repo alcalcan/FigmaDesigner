@@ -65,11 +65,28 @@ export class RadioSearchDemo extends BaseComponent {
         await this.addSection(root, "Inputs & Search", async (container) => {
             const inputComp = new input_field();
 
-            // Row for simple inputs
-            const row = this.createRow();
-            row.appendChild(await inputComp.create({ placeholder: "Simple Input", type: "simple" }));
-            row.appendChild(await inputComp.create({ placeholder: "Dropdown Style", type: "dropdown" }));
-            row.appendChild(await inputComp.create({ placeholder: "With Search Icon", showSearchIcon: true, type: "simple" }));
+            // Row for simple inputs (Horizontal with layoutGrow to fill width)
+            const row = figma.createFrame();
+            row.layoutMode = "HORIZONTAL";
+            row.itemSpacing = 24;
+            row.fills = [];
+            row.primaryAxisSizingMode = "FIXED";
+            row.counterAxisSizingMode = "AUTO";
+            row.layoutAlign = "STRETCH"; // Fill parent width
+            row.clipsContent = false;
+
+            const inputs = [
+                await inputComp.create({ placeholder: "Simple Input", type: "simple", width: "fill" }),
+                await inputComp.create({ placeholder: "Dropdown Style", type: "dropdown", width: "fill" }),
+                await inputComp.create({ placeholder: "With Search Icon", showSearchIcon: true, type: "simple", width: "fill" }),
+                await inputComp.create({ placeholder: "Name", value: "Alex Calcan", type: "simple", width: "fill" }),
+                await inputComp.create({ placeholder: "Clearable", value: "Search Term", clear: true, iconSize: 16, type: "simple", width: "fill" })
+            ];
+
+            inputs.forEach(node => {
+                row.appendChild(node);
+            });
+
             container.appendChild(row);
 
             // Search Bars

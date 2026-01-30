@@ -3,6 +3,7 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 // SVG Assets
 import CARET_LEFT from "./assets/caret_left.svg";
 import SEARCH_ICON from "./assets/search_icon.svg";
+import CLOSE_ICON from "./assets/close_icon.svg";
 
 export interface InputFieldProps extends ComponentProps {
     placeholder: string;
@@ -14,6 +15,10 @@ export interface InputFieldProps extends ComponentProps {
     showSearchIcon?: boolean;
     searchIconPosition?: "front" | "back";
     helperType?: "info" | "error" | "warning";
+    width?: number | "hug" | "fill" | "auto";
+    height?: number | "auto";
+    clear?: boolean;
+    iconSize?: number;
 }
 
 export class input_field extends BaseComponent {
@@ -22,6 +27,64 @@ export class input_field extends BaseComponent {
         const isPlaceholder = !props.value;
         const type = props.type ?? "dropdown";
         const helperType = props.helperType ?? "info";
+
+        let widthProp = props.width ?? 320;
+        if (widthProp === "auto") widthProp = "hug"; // Alias auto -> hug
+
+        const heightProp = props.height ?? 40; // Default height 40
+
+        const iconSize = props.iconSize ?? 24; // Default to 24
+
+        let backIconContent = props.backIcon;
+        if (props.clear && !backIconContent) {
+            backIconContent = CLOSE_ICON;
+        }
+
+        // Layout props based on width
+        let rootLayoutAlign: "MIN" | "MAX" | "CENTER" | "STRETCH" | "INHERIT" = "INHERIT";
+        let rootWidth: number | undefined = undefined;
+        let rootCounterAxisSizingMode: "FIXED" | "AUTO" = "FIXED";
+        let inputContainerPrimaryAxisSizingMode: "FIXED" | "AUTO" = "FIXED";
+        let inputContainerLayoutAlign: "MIN" | "MAX" | "CENTER" | "STRETCH" | "INHERIT" = "STRETCH";
+        let textLayoutGrow: 0 | 1 = 1;
+        let layoutGrow = 0;
+
+        if (widthProp === "hug") {
+            rootCounterAxisSizingMode = "AUTO";
+            inputContainerPrimaryAxisSizingMode = "AUTO"; // Horizontal layout, width is primary.
+            inputContainerLayoutAlign = "MIN"; // Don't stretch, just be own size.
+            textLayoutGrow = 0; // Don't grow, be text size.
+            layoutGrow = 0;
+            // textWidth = undefined; // Auto width
+        } else if (widthProp === "fill") {
+            rootLayoutAlign = "STRETCH";
+            rootWidth = 128; // Standard base width to preventing fluctuation before grow happens
+            rootCounterAxisSizingMode = "FIXED"; // It will fill parent width
+            inputContainerPrimaryAxisSizingMode = "FIXED"; // It stretches in parent
+            inputContainerLayoutAlign = "STRETCH";
+            textLayoutGrow = 1;
+            layoutGrow = 1; // Automatically grow in flex container
+        } else {
+            // Fixed number
+            rootWidth = Math.max(widthProp as number, 128); // Enforce min width on fixed
+            rootCounterAxisSizingMode = "FIXED";
+            inputContainerPrimaryAxisSizingMode = "FIXED";
+            inputContainerLayoutAlign = "STRETCH";
+            textLayoutGrow = 1;
+            layoutGrow = 0;
+        }
+
+        // Height Logic
+        let inputHeight: number | undefined;
+        let inputContainerCounterAxisSizingMode: "FIXED" | "AUTO";
+
+        if (heightProp === "auto") {
+            inputHeight = undefined;
+            inputContainerCounterAxisSizingMode = "AUTO";
+        } else {
+            inputHeight = heightProp as number;
+            inputContainerCounterAxisSizingMode = "FIXED";
+        }
 
         const helperColors = {
             info: { r: 0.4, g: 0.4, b: 0.4 },
@@ -39,11 +102,12 @@ export class input_field extends BaseComponent {
                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
                 "layoutMode": "VERTICAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                 "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
+                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": rootCounterAxisSizingMode,
                 "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "STRETCH", "layoutGrow": 0,
+                "layoutAlign": rootLayoutAlign, "layoutGrow": layoutGrow,
+                "minWidth": 128, // Enforce min width
                 "fills": [],
                 "strokes": [],
                 "effects": [],
@@ -51,7 +115,7 @@ export class input_field extends BaseComponent {
             },
             "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 296, "height": undefined
+                "width": rootWidth, "height": undefined
             },
             "children": [
                 {
@@ -62,11 +126,11 @@ export class input_field extends BaseComponent {
                         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
                         "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                         "paddingTop": 8, "paddingRight": 12, "paddingBottom": 8, "paddingLeft": 12,
-                        "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+                        "primaryAxisSizingMode": inputContainerPrimaryAxisSizingMode, "counterAxisSizingMode": inputContainerCounterAxisSizingMode,
                         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                        "layoutAlign": "STRETCH", "layoutGrow": 0,
+                        "layoutAlign": inputContainerLayoutAlign, "layoutGrow": 0,
                         "fills": [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -86,7 +150,7 @@ export class input_field extends BaseComponent {
                     },
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 296, "height": 40
+                        "width": (widthProp === "hug" || widthProp === "fill") ? undefined : widthProp, "height": inputHeight
                     },
                     "children": [
                         ...(props.frontIcon || (props.showSearchIcon && props.searchIconPosition !== "back") ? [
@@ -100,7 +164,7 @@ export class input_field extends BaseComponent {
                                 },
                                 "layoutProps": {
                                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                    "width": 24, "height": 24
+                                    "width": iconSize, "height": iconSize
                                 },
                                 "children": [
                                     {
@@ -110,21 +174,12 @@ export class input_field extends BaseComponent {
                                         "props": {
                                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                             "isMask": false, "maskType": "ALPHA",
-                                            "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                            "fills": [
-                                                {
-                                                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                                    "color": { "r": 0, "g": 0, "b": 0 },
-                                                    "boundVariables": {}
-                                                }
-                                            ],
-                                            "strokes": [],
-                                            "effects": [],
+                                            // Removed style overrides to allow SVG to dictate own stroke/fill
                                             "cornerRadius": 0,
                                         },
                                         "layoutProps": {
                                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                            "width": 24, "height": 24,
+                                            "width": iconSize, "height": iconSize,
                                             "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                                         },
                                         "svgContent": props.frontIcon || SEARCH_ICON
@@ -140,11 +195,11 @@ export class input_field extends BaseComponent {
                                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
                                 "layoutMode": "HORIZONTAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                                 "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                                "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
+                                "primaryAxisSizingMode": inputContainerPrimaryAxisSizingMode, "counterAxisSizingMode": "AUTO",
                                 "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                                "layoutAlign": "INHERIT", "layoutGrow": 1,
+                                "layoutAlign": "INHERIT", "layoutGrow": textLayoutGrow,
                                 "fills": [],
                                 "strokes": [],
                                 "effects": [],
@@ -152,7 +207,7 @@ export class input_field extends BaseComponent {
                             },
                             "layoutProps": {
                                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                "width": 272, "height": 24
+                                "width": (widthProp === "hug" || widthProp === "fill") ? undefined : 272, "height": 24
                             },
                             "children": [
                                 {
@@ -162,7 +217,7 @@ export class input_field extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "layoutAlign": "INHERIT", "layoutGrow": 1,
+                                        "layoutAlign": "INHERIT", "layoutGrow": textLayoutGrow,
                                         "characters": displayValue, "fontSize": 14,
                                         "textCase": "ORIGINAL", "textDecoration": "NONE",
                                         "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
@@ -184,21 +239,22 @@ export class input_field extends BaseComponent {
                                     },
                                     "layoutProps": {
                                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                        "width": 232, "height": 21
+                                        "width": undefined, "height": 21
                                     }
                                 },
-                                ...(props.backIcon || (props.showSearchIcon && props.searchIconPosition === "back") ? [
+                                ...(backIconContent || (props.showSearchIcon && props.searchIconPosition === "back") ? [
                                     {
                                         "type": "FRAME",
                                         "name": "Back Icon",
                                         "props": {
                                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                             "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                                            "layoutMode": "NONE",
+                                            "layoutMode": "HORIZONTAL", // Center icon
+                                            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
                                         },
                                         "layoutProps": {
                                             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                            "width": 24, "height": 24
+                                            "width": iconSize, "height": iconSize
                                         },
                                         "children": [
                                             {
@@ -208,24 +264,14 @@ export class input_field extends BaseComponent {
                                                 "props": {
                                                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                                     "isMask": false, "maskType": "ALPHA",
-                                                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                                    "fills": [
-                                                        {
-                                                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                                            "color": { "r": 0, "g": 0, "b": 0 },
-                                                            "boundVariables": {}
-                                                        }
-                                                    ],
-                                                    "strokes": [],
-                                                    "effects": [],
                                                     "cornerRadius": 0,
                                                 },
                                                 "layoutProps": {
                                                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                                    "width": 24, "height": 24,
+                                                    "width": iconSize, "height": iconSize,
                                                     "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                                                 },
-                                                "svgContent": props.backIcon || SEARCH_ICON
+                                                "svgContent": backIconContent || SEARCH_ICON
                                             }
                                         ]
                                     } as NodeDefinition
@@ -322,7 +368,7 @@ export class input_field extends BaseComponent {
                         },
                         "layoutProps": {
                             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                            "width": 296, "height": 21
+                            "width": (widthProp === "hug" || widthProp === "fill") ? undefined : widthProp, "height": 21
                         }
                     } as NodeDefinition
                 ] : [])
