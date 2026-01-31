@@ -385,6 +385,17 @@ export class JsonReconstructor extends BaseComponent {
                 }
             }
 
+            // 4.2 Ensure Masks have visibility
+            // If a node is a mask but has no fills, it will mask out everything (invisible).
+            // We inject a default fill to ensure the mask shape is effective.
+            if ("isMask" in node && node.isMask === true && "fills" in node) {
+                const currentFills = (node as GeometryMixin).fills;
+                if (!currentFills || (Array.isArray(currentFills) && currentFills.length === 0)) {
+                    // console.warn(`[JsonReconstructor] Mask node ${node.name} has no fills. Adding default fill to ensure visibility.`);
+                    (node as GeometryMixin).fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+                }
+            }
+
             // 4.5 Apply Vector Paths
             if (node.type === "VECTOR" && data.vectorPaths && !data.svgPath) {
                 (node as VectorNode).vectorPaths = data.vectorPaths;

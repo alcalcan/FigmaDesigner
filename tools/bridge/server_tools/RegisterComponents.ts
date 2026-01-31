@@ -72,6 +72,16 @@ export function registerComponents() {
         content += `export { Placeholder } from "./Placeholder";\n`;
     }
 
+    if (fs.existsSync(indexFile)) {
+        const existingContent = fs.readFileSync(indexFile, 'utf8').replace(/\r\n/g, '\n');
+        const newContentNormalized = content.replace(/\r\n/g, '\n');
+
+        if (existingContent === newContentNormalized) {
+            console.log(`✅ components/index.ts is up to date (skipped write).`);
+            return;
+        }
+    }
+
     fs.writeFileSync(indexFile, content);
 
     // Make file writable (removed read-only flag as it caused EACCES errors in build tools)

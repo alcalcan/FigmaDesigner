@@ -33,6 +33,7 @@ export interface NodeDefinition {
     layoutPositioning?: "AUTO" | "ABSOLUTE";
     layoutGrow?: 0 | 1;
     layoutAlign?: "INHERIT" | "STRETCH" | "MIN" | "CENTER" | "MAX";
+    constraints?: Constraints;
   };
   children?: NodeDefinition[];
   // For specialized nodes like Vectors where we might pass raw SVG or paths
@@ -55,7 +56,11 @@ export abstract class BaseComponent {
 
     // 1. Create Node
     switch (def.type) {
-      case "FRAME": node = figma.createFrame(); break;
+      case "FRAME":
+        node = figma.createFrame();
+        // Default to transparent to ensure Groups converted to Frames don't result in white boxes
+        node.fills = [];
+        break;
       case "TEXT": node = figma.createText(); break;
       case "RECTANGLE": node = figma.createRectangle(); break;
       case "ELLIPSE": node = figma.createEllipse(); break;
@@ -310,6 +315,19 @@ export abstract class BaseComponent {
       }
     }
 
+    // Fix for Masks: Ensure they have a fill so they are not invisible
+    if (def.props && def.props.isMask) {
+      if ("fills" in finalNode) {
+        const n = finalNode as GeometryMixin;
+        if (!n.fills || (Array.isArray(n.fills) && n.fills.length === 0)) {
+          // Masks need a fill to be effective (opacity source). Any solid fill works.
+          n.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+          // Force ALPHA mask type so the fill constitutes the mask (ignoring vector paths if missing)
+          (n as any).maskType = "ALPHA";
+        }
+      }
+    }
+
     // Set explicit name from definition LAST so it overrides any generic 'name' prop
     if (def.name) finalNode.name = def.name;
 
@@ -371,6 +389,9 @@ export abstract class BaseComponent {
       }
       if (def.layoutProps.layoutAlign && "layoutAlign" in node) {
         (node as any).layoutAlign = def.layoutProps.layoutAlign;
+      }
+      if (def.layoutProps.constraints && "constraints" in node) {
+        (node as ConstraintMixin).constraints = def.layoutProps.constraints;
       }
     }
 

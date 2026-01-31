@@ -33,8 +33,14 @@ const captureNode = async (
   assetStore: AssetStore,
   rootName: string,
   saveVectorInJson: boolean = false,
-  skipAssets: boolean = false
+  skipAssets: boolean = false,
+  depth: number = 0
 ): Promise<Record<string, unknown> | null> => {
+
+  if (depth > 200) {
+    console.warn(`[Capture] Max recursion depth reached at node: ${node.name}`);
+    return null;
+  }
 
   // Skip non-visible nodes
   if (!node.visible) {
@@ -170,7 +176,11 @@ const captureNode = async (
   // Including GROUP allows small grouped vectors to be treated as a single SVG asset.
   const isVectorLike = node.type === "VECTOR" || node.type === "STAR" || node.type === "POLYGON" || node.type === "BOOLEAN_OPERATION" || node.type === "GROUP";
 
+  // Ensure masks are never treated as icons/assets to export as SVG
+  const isMask = safeGet(node, "isMask") === true;
+
   const isIcon = isVectorLike &&
+    !isMask &&
     node.type !== "BOOLEAN_OPERATION" && ( // Exclude Boolean Operations from automatic icon classification
       (node.width <= 64 && node.height <= 64) ||
       node.name.toLowerCase().includes("icon") ||
@@ -178,7 +188,7 @@ const captureNode = async (
     );
 
   // New logic: Export vectors as SVG unless explicitly asked to keep in JSON
-  const isVectorToExport = isVectorLike && !saveVectorInJson;
+  const isVectorToExport = isVectorLike && !saveVectorInJson && !isMask;
 
   const hasVisibleContent = (node: SceneNode): boolean => {
     // Check Dimensions (Must have some size)
@@ -314,7 +324,7 @@ const captureNode = async (
   // 9. Recursion
   if (detailed && "children" in node) {
     const childPromises = (node as ChildrenMixin).children.map(child =>
-      captureNode(child, detailed, assetStore, rootName, saveVectorInJson, skipAssets)
+      captureNode(child, detailed, assetStore, rootName, saveVectorInJson, skipAssets, depth + 1)
     );
     const resolvedChildren = await Promise.all(childPromises);
     data.children = resolvedChildren.filter((c): c is Record<string, unknown> => c !== null);
@@ -327,278 +337,287 @@ const captureNode = async (
 // calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
+// calls to "parent.postMessage" from within the HTML page will trigger this
+// callback. The callback will be passed the "pluginMessage" property of the
+// posted message.
 figma.ui.onmessage = async (msg) => {
-  if (msg.type === 'create') {
-    const pipeline = new Pipeline();
-    await pipeline.run();
-  }
-
-  // Handle Manual Capture (Download)
-  if (msg.type === 'capture') {
-    const selection = figma.currentPage.selection;
-    if (selection.length === 0) {
-      console.log("Nothing selected to capture.");
-      return;
+  try {
+    if (msg.type === 'create') {
+      const pipeline = new Pipeline();
+      await pipeline.run();
     }
 
-    const assetStore: AssetStore = {
-      imageHashToAssetRef: new Map(),
-      assets: {},
-      nextId: 1
-    };
-
-    const detailsRaw = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name, false, false)));
-    const details = detailsRaw.filter((d): d is Record<string, unknown> => d !== null);
-
-    if (details.length === 0) {
-      console.log("No visible nodes in selection to capture.");
-      return;
-    }
-
-    const projectName = figma.root.name;
-    const fileName = `${projectName}_capture.json`;
-
-    // Flatten AssetStore to AssetRecord[]
-    const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
-      fileName: ref.replace(/^assets\//, ''),
-      type: ref.endsWith('.svg') ? 'svg' : 'image',
-      content: val.bytesBase64
-    }));
-
-    figma.ui.postMessage({
-      type: 'capture-download',
-      data: details,
-      fileName: fileName,
-      assets: assets
-    });
-  }
-
-  // Handle Capture request from Bridge (via UI)
-  if (msg.type === 'capture-bridge' || msg.type === 'capture-png' || msg.type === 'capture-preview') {
-    console.log(`[Plugin] Received ${msg.type} request`);
-    try {
+    // Handle Manual Capture (Download)
+    if (msg.type === 'capture') {
       const selection = figma.currentPage.selection;
-      console.log(`[Plugin] Selection count: ${selection.length}`);
-
       if (selection.length === 0) {
-        console.warn("[Plugin] No selection");
-        figma.notify("Please select at least one element to capture.", { error: true });
-        figma.ui.postMessage({ type: 'capture-error', message: "No selection" });
+        console.log("Nothing selected to capture.");
+        return;
+      }
+
+      const assetStore: AssetStore = {
+        imageHashToAssetRef: new Map(),
+        assets: {},
+        nextId: 1
+      };
+
+      const detailsRaw = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name, false, false, 0)));
+      const details = detailsRaw.filter((d): d is Record<string, unknown> => d !== null);
+
+      if (details.length === 0) {
+        console.log("No visible nodes in selection to capture.");
         return;
       }
 
       const projectName = figma.root.name;
+      const fileName = `${projectName}_capture.json`;
 
-      if (msg.type === 'capture-png') {
+      // Flatten AssetStore to AssetRecord[]
+      const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
+        fileName: ref.replace(/^assets\//, ''),
+        type: ref.endsWith('.svg') ? 'svg' : 'image',
+        content: val.bytesBase64
+      }));
+
+      figma.ui.postMessage({
+        type: 'capture-download',
+        data: details,
+        fileName: fileName,
+        assets: assets
+      });
+    }
+
+    // Handle Capture request from Bridge (via UI)
+    if (msg.type === 'capture-bridge' || msg.type === 'capture-png' || msg.type === 'capture-preview') {
+      console.log(`[Plugin] Received ${msg.type} request`);
+      try {
+        const selection = figma.currentPage.selection;
+        console.log(`[Plugin] Selection count: ${selection.length}`);
+
+        if (selection.length === 0) {
+          console.warn("[Plugin] No selection");
+          figma.notify("Please select at least one element to capture.", { error: true });
+          figma.ui.postMessage({ type: 'capture-error', message: "No selection" });
+          return;
+        }
+
+        const projectName = figma.root.name;
+
+        if (msg.type === 'capture-png') {
+          const total = selection.length;
+          let count = 0;
+
+          for (const node of selection) {
+            count++;
+            console.log(`[Plugin] Capturing PNG ${count}/${total}: ${node.name} (ID: ${node.id})`);
+
+            figma.ui.postMessage({
+              type: 'capture-status',
+              message: `Capturing PNG ${count} / ${total}...`,
+              count,
+              total
+            });
+
+            try {
+              const pngBytes = await node.exportAsync({
+                format: 'PNG',
+                constraint: { type: 'SCALE', value: 2 }
+              });
+              const base64 = figma.base64Encode(pngBytes);
+
+              figma.ui.postMessage({
+                type: 'capture-png-result-packet',
+                projectName: projectName,
+                packet: {
+                  name: node.name,
+                  data: base64
+                },
+                isLast: count === total
+              });
+            } catch (e) {
+              console.warn(`Failed to export PNG for ${node.name}`, e);
+            }
+          }
+          return;
+        }
+
         const total = selection.length;
         let count = 0;
 
         for (const node of selection) {
           count++;
-          console.log(`[Plugin] Capturing PNG ${count}/${total}: ${node.name} (ID: ${node.id})`);
+          const isLast = count === total;
+          console.log(`[Plugin] Capturing ${count}/${total}: ${node.name} (ID: ${node.id})`);
 
           figma.ui.postMessage({
             type: 'capture-status',
-            message: `Capturing PNG ${count} / ${total}...`,
+            message: `Capturing ${count} / ${total}...`,
             count,
             total
           });
 
+          const assetStore: AssetStore = {
+            imageHashToAssetRef: new Map(),
+            assets: {},
+            nextId: 1
+          };
+
           try {
-            const pngBytes = await node.exportAsync({
-              format: 'PNG',
-              constraint: { type: 'SCALE', value: 2 }
-            });
-            const base64 = figma.base64Encode(pngBytes);
+            const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets, 0);
+
+            if (!data) {
+              console.warn(`[Plugin] Capture returned null for ${node.name}`);
+              // Report "skipped" to the UI so it knows we moved past this element
+              figma.ui.postMessage({
+                type: 'capture-bridge-result-packet',
+                projectName: projectName,
+                packet: null, // Signals skip
+                count,
+                total,
+                isLast
+              });
+              continue;
+            }
+
+            // Flatten for bridge
+            const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
+              fileName: ref.replace(/^assets\//, ''),
+              type: ref.endsWith('.svg') ? 'svg' : 'image',
+              content: val.bytesBase64
+            }));
+
+            console.log(`[Plugin] Node ${node.name} captured. Assets: ${assets.length}`);
+
+            const resultType = msg.type === 'capture-preview' ? 'capture-preview-result-packet' : 'capture-bridge-result-packet';
 
             figma.ui.postMessage({
-              type: 'capture-png-result-packet',
+              type: resultType,
               projectName: projectName,
               packet: {
                 name: node.name,
-                data: base64
+                data: data,
+                assets: assets
               },
-              isLast: count === total
-            });
-          } catch (e) {
-            console.warn(`Failed to export PNG for ${node.name}`, e);
-          }
-        }
-        return;
-      }
-
-      const total = selection.length;
-      let count = 0;
-
-      for (const node of selection) {
-        count++;
-        const isLast = count === total;
-        console.log(`[Plugin] Capturing ${count}/${total}: ${node.name} (ID: ${node.id})`);
-
-        figma.ui.postMessage({
-          type: 'capture-status',
-          message: `Capturing ${count} / ${total}...`,
-          count,
-          total
-        });
-
-        const assetStore: AssetStore = {
-          imageHashToAssetRef: new Map(),
-          assets: {},
-          nextId: 1
-        };
-
-        try {
-          const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets);
-
-          if (!data) {
-            console.warn(`[Plugin] Capture returned null for ${node.name}`);
-            // Report "skipped" to the UI so it knows we moved past this element
-            figma.ui.postMessage({
-              type: 'capture-bridge-result-packet',
-              projectName: projectName,
-              packet: null, // Signals skip
               count,
               total,
               isLast
             });
-            continue;
+          } catch (e) {
+            console.error(`Capture failed for ${node.name}:`, e);
+            // Still send something to keep count on UI side
+            figma.ui.postMessage({
+              type: 'capture-bridge-result-packet',
+              projectName: projectName,
+              packet: null,
+              count,
+              total,
+              isLast
+            });
           }
-
-          // Flatten for bridge
-          const assets: AssetRecord[] = Object.entries(assetStore.assets).map(([ref, val]) => ({
-            fileName: ref.replace(/^assets\//, ''),
-            type: ref.endsWith('.svg') ? 'svg' : 'image',
-            content: val.bytesBase64
-          }));
-
-          console.log(`[Plugin] Node ${node.name} captured. Assets: ${assets.length}`);
-
-          const resultType = msg.type === 'capture-preview' ? 'capture-preview-result-packet' : 'capture-bridge-result-packet';
-
-          figma.ui.postMessage({
-            type: resultType,
-            projectName: projectName,
-            packet: {
-              name: node.name,
-              data: data,
-              assets: assets
-            },
-            count,
-            total,
-            isLast
-          });
-        } catch (e) {
-          console.error(`Capture failed for ${node.name}:`, e);
-          // Still send something to keep count on UI side
-          figma.ui.postMessage({
-            type: 'capture-bridge-result-packet',
-            projectName: projectName,
-            packet: null,
-            count,
-            total,
-            isLast
-          });
         }
+
+        console.log("[Plugin] Capture Loop Finished");
+        figma.ui.postMessage({ type: 'capture-finished', projectName: projectName });
+      } catch (e) {
+        console.error("Capture failed:", e);
+        figma.notify("Capture failed: " + (e as Error).message, { error: true });
+        figma.ui.postMessage({ type: 'capture-error', message: (e as Error).message });
       }
-
-      console.log("[Plugin] Capture Loop Finished");
-      figma.ui.postMessage({ type: 'capture-finished', projectName: projectName });
-    } catch (e) {
-      console.error("Capture failed:", e);
-      figma.notify("Capture failed: " + (e as Error).message, { error: true });
-      figma.ui.postMessage({ type: 'capture-error', message: (e as Error).message });
     }
-  }
 
-  // Handle Dynamic Generation from JSON
-  if (msg.type === 'generate-from-json') {
-    try {
-      // Figma viewport center
-      const { x, y } = figma.viewport.center;
+    // Handle Dynamic Generation from JSON
+    if (msg.type === 'generate-from-json') {
+      try {
+        // Figma viewport center
+        const { x, y } = figma.viewport.center;
 
-      // We use a dummy path since we're passing the data directly in a slightly hacky way for now, 
-      // or we can update JsonReconstructor to accept data directly.
-      // Given JsonReconstructor currently uses a registry, I'll update it to have a static method or 
-      // handle direct data injection.
+        // We use a dummy path since we're passing the data directly in a slightly hacky way for now, 
+        // or we can update JsonReconstructor to accept data directly.
+        // Given JsonReconstructor currently uses a registry, I'll update it to have a static method or 
+        // handle direct data injection.
 
-      const reconstructor = new JsonReconstructor("");
-      // Safely set data through public method
-      reconstructor.setData(msg.data);
+        const reconstructor = new JsonReconstructor("");
+        // Safely set data through public method
+        reconstructor.setData(msg.data);
 
-      // Pass assets (image base64 content) for hydration
-      const result = await reconstructor.create({ x, y, assets: msg.assets });
+        // Pass assets (image base64 content) for hydration
+        const result = await reconstructor.create({ x, y, assets: msg.assets });
 
-      if (result) {
-        figma.currentPage.appendChild(result);
-        figma.viewport.scrollAndZoomIntoView([result]);
-        console.log("Reconstruction from JSON complete.");
+        if (result) {
+          figma.currentPage.appendChild(result);
+          figma.viewport.scrollAndZoomIntoView([result]);
+          console.log("Reconstruction from JSON complete.");
+        }
+      } catch (e) {
+        console.error("Failed to generate from JSON:", e);
       }
-    } catch (e) {
-      console.error("Failed to generate from JSON:", e);
-    }
-  }
-
-  if (msg.type === 'generate-component') {
-    const name = msg.componentName;
-    const projectName = msg.projectName; // Optional
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let ComponentClass = (ComponentRegistry as any)[name];
-
-    if (!ComponentClass && projectName) {
-      // Try aliased name: e.g. chip_expand_Alex_CookBook
-      const safeProjectName = sanitizeName(projectName);
-      const aliasedName = `${name}_${safeProjectName}`;
-      ComponentClass = (ComponentRegistry as any)[aliasedName];
     }
 
-    if (!ComponentClass) {
-      figma.notify(`Component ${name} not found`, { error: true });
-      return;
-    }
+    if (msg.type === 'generate-component') {
+      const name = msg.componentName;
+      const projectName = msg.projectName; // Optional
 
-    try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const instance = new ComponentClass() as any;
-      const { x, y } = figma.viewport.center;
+      let ComponentClass = (ComponentRegistry as any)[name];
 
-      // Default props
-      // We pass extra props 'label'/'primary' in case it's a Button.
-      // Other components will ignore them.
-      const props = {
-        x,
-        y,
-        label: "Click Me",
-        primary: true,
-        name: "John Doe",
-        handle: "@johndoe",
-        role: "Software Engineer",
-        bio: "Designing the future of UI with AI-powered tools.",
-        followerCount: "1,234"
-      };
-
-      let result: SceneNode;
-
-      // Prefer createAsync if available (used in Button.ts for font loading)
-      if (typeof instance.createAsync === 'function') {
-        result = await instance.createAsync(props);
-      } else {
-        result = await instance.create(props);
+      if (!ComponentClass && projectName) {
+        // Try aliased name: e.g. chip_expand_Alex_CookBook
+        const safeProjectName = sanitizeName(projectName);
+        const aliasedName = `${name}_${safeProjectName}`;
+        ComponentClass = (ComponentRegistry as any)[aliasedName];
       }
 
-      if (result) {
-        figma.currentPage.appendChild(result);
-        figma.viewport.scrollAndZoomIntoView([result]);
-        figma.notify(`Generated ${name}`);
+      if (!ComponentClass) {
+        figma.notify(`Component ${name} not found`, { error: true });
+        return;
       }
-    } catch (e) {
-      console.error(e);
-      figma.notify(`Failed to generate ${name}: ${(e as Error).message}`, { error: true });
+
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const instance = new ComponentClass() as any;
+        const { x, y } = figma.viewport.center;
+
+        // Default props
+        // We pass extra props 'label'/'primary' in case it's a Button.
+        // Other components will ignore them.
+        const props = {
+          x,
+          y,
+          label: "Click Me",
+          primary: true,
+          name: "John Doe",
+          handle: "@johndoe",
+          role: "Software Engineer",
+          bio: "Designing the future of UI with AI-powered tools.",
+          followerCount: "1,234"
+        };
+
+        let result: SceneNode;
+
+        // Prefer createAsync if available (used in Button.ts for font loading)
+        if (typeof instance.createAsync === 'function') {
+          result = await instance.createAsync(props);
+        } else {
+          result = await instance.create(props);
+        }
+
+        if (result) {
+          figma.currentPage.appendChild(result);
+          figma.viewport.scrollAndZoomIntoView([result]);
+          figma.notify(`Generated ${name}`);
+        }
+      } catch (e) {
+        console.error(e);
+        figma.notify(`Failed to generate ${name}: ${(e as Error).message}`, { error: true });
+      }
     }
-  }
 
-  if (msg.type === 'cancel') {
-    figma.closePlugin();
+    if (msg.type === 'cancel') {
+      figma.closePlugin();
+    }
+  } catch (e) {
+    console.error("Uncaught Plugin Error:", e);
+    figma.notify("Plugin Error: " + (e as Error).message);
+    figma.ui.postMessage({ type: 'capture-error', message: (e as Error).message || String(e) });
   }
 };

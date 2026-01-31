@@ -85,6 +85,7 @@ export { AV___sound_off } from "./UEFA_icons/AV___sound_off/AV___sound_off";
 export { AV___sound_up } from "./UEFA_icons/AV___sound_up/AV___sound_up";
 export { AV___stop } from "./UEFA_icons/AV___stop/AV___stop";
 export { AV___stop_circle_negative } from "./UEFA_icons/AV___stop_circle_negative/AV___stop_circle_negative";
+export { BookingLogo_color } from "./Alex_CookBook/BookingLogo_color/BookingLogo_color";
 export { Browser } from "./Alex_CookBook/Browser/Browser";
 export { Button } from "./Newsletter/Button";
 export { button_set } from "./UEFA_Academy_online/button_set/button_set";
