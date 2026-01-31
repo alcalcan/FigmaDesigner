@@ -169,6 +169,8 @@ export { Info_raw } from "./Alex_CookBook/Info_raw/Info_raw";
 export { input_field } from "./Alex_CookBook/input_field/input_field";
 export { JsonReconstructor } from "./JsonReconstructor";
 export { Main_Navigation } from "./Alex_CookBook/Main_Navigation/Main_Navigation";
+export { Main_Navigation_Booking } from "./Alex_CookBook/Main_Navigation_Booking/Main_Navigation_Booking";
+export { NavBookingDemo } from "../pages/Alex_CookBook/NavBookingDemo";
 export { Navigation___close } from "./UEFA_icons/Navigation___close/Navigation___close";
 export { Navigation___Expand } from "./UEFA_icons/Navigation___Expand/Navigation___Expand";
 export { Page_title as Page_title_Alex_CookBook } from "./Alex_CookBook/Page_title/Page_title";
