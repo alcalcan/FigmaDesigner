@@ -266,10 +266,13 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
                 await getFiles(projectPath);
                 console.log(`[Batch] ✅ Processed ${results.length} files. Success: ${results.filter(r => r.status === 'ok').length}, Fail: ${results.filter(r => r.status !== 'ok').length}`);
 
-                // Cleanup logic: If cleanup requested and everything (or mostly everything) succeeded
+                // Cleanup logic: If cleanup requested
                 if (cleanup === true) {
-                    console.log(`[Batch] 🧹 Cleaning up temporary folder: ${projectPath}`);
+                    console.log(`[Batch] 🧹 Cleaning up target folder: ${projectPath}`);
                     try {
+                        // For captures folder, we might want to preserve the folder itself but clear contents
+                        // but rmSync with recursive: true handles it. 
+                        // If it's the "captures" project folder, let's just delete it entirely.
                         fs.rmSync(projectPath, { recursive: true, force: true });
                     } catch (cleanupErr) {
                         console.error(`[Batch] ❌ Failed to cleanup folder: ${projectPath}`, cleanupErr);
@@ -279,9 +282,9 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', results }));
             } else {
-                console.error(`[Batch] ❌ Project folder not found: ${projectPath}`);
+                console.error(`[Batch] ❌ Target folder not found: ${projectPath}`);
                 res.writeHead(404);
-                res.end(JSON.stringify({ error: "Project folder not found" }));
+                res.end(JSON.stringify({ error: "Target folder not found" }));
             }
             return;
 

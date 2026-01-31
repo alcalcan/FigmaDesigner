@@ -1404,9 +1404,10 @@
                             const rawProjectName = msg.projectName || "Default";
                             const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
 
-                            // If multiple items are being captured, group them in a temporary folder
-                            const batchFolder = msg.total > 1 ? "to_be_converted" : null;
-                            lastCapturedProject = batchFolder || sanitaryProjectName;
+                            // ALWAYS use 'captures' as the batch folder to isolate incoming elements
+                            // This prevent regenerating the whole project folder if other files are present there.
+                            const batchFolder = "captures";
+                            lastCapturedProject = batchFolder;
 
                             const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
                             const isSimplified = document.getElementById('process-checkbox').checked;
@@ -1494,13 +1495,13 @@
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
-                                        folder: lastCapturedProject === "to_be_converted" ? "to_be_converted" : lastCapturedProject,
-                                        project: lastCapturedProject === "to_be_converted" ? "Default" : lastCapturedProject, // Fallback project name for components folder
+                                        folder: "captures",
+                                        project: (msg.projectName || "Default").replace(/[^a-z0-9]/gi, '_'), // Sanitize just in case
                                         simplified: true,
                                         procedural: isProcedural,
                                         refactor: !generatorOnlyCheckboxCapture.checked,
                                         compact: !generatorOnlyCheckboxCapture.checked,
-                                        cleanup: lastCapturedProject === "to_be_converted" // CLEANUP if it's the temp folder
+                                        cleanup: true // ALWAYS CLEANUP the captures folder
                                     })
                                 });
 

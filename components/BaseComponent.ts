@@ -343,6 +343,16 @@ export abstract class BaseComponent {
         }
       }
 
+      // TEXT Node hugging support
+      if (def.type === "TEXT") {
+        if (def.props?.textAutoResize === "WIDTH_AND_HEIGHT") {
+          delete layoutOpts.width;
+          delete layoutOpts.height;
+        } else if (def.props?.textAutoResize === "HEIGHT") {
+          delete layoutOpts.height;
+        }
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       applySizeAndTransform(node as any, layoutOpts);
 

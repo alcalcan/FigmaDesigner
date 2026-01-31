@@ -79,7 +79,7 @@ export function handleDeleteComponent(req: http.IncomingMessage, res: http.Serve
                 } catch (e) { console.warn("Registry perm check failed", e); }
 
                 try {
-                    let content = fs.readFileSync(registryPath, 'utf8');
+                    const content = fs.readFileSync(registryPath, 'utf8');
                     const lines = content.split('\n');
                     const filteredLines = lines.filter(line => {
                         const isStandardExport = line.includes(`{ ${componentClassName} }`);
@@ -286,7 +286,7 @@ export function handleBatchDeleteComponents(req: http.IncomingMessage, res: http
                         originalMode = stats.mode;
                         fs.chmodSync(registryPath, 0o644);
                     }
-                    let content = fs.readFileSync(registryPath, 'utf8');
+                    const content = fs.readFileSync(registryPath, 'utf8');
                     const lines = content.split('\n');
                     const classNamesToRemove = names.map(n => path.basename(n));
                     const filteredLines = lines.filter(line => !classNamesToRemove.some(cls => line.includes(`{ ${cls} }`) || line.includes(`{ ${cls} as `)));

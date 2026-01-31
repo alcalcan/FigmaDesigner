@@ -503,7 +503,7 @@ figma.ui.onmessage = async (msg) => {
       }
 
       console.log("[Plugin] Capture Loop Finished");
-      figma.ui.postMessage({ type: 'capture-finished' });
+      figma.ui.postMessage({ type: 'capture-finished', projectName: projectName });
     } catch (e) {
       console.error("Capture failed:", e);
       figma.notify("Capture failed: " + (e as Error).message, { error: true });

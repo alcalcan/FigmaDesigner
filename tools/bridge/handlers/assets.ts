@@ -92,9 +92,9 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             const pad = (n: number) => n.toString().padStart(2, '0');
             const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
 
-            const folderName = `${sanitaryName}_${timestamp}`;
+            const folderName = parsed.batchFolder === "captures" ? sanitaryName : `${sanitaryName}_${timestamp}`;
 
-            // If batchFolder is provided, use it as the project root (e.g. "to_be_converted")
+            // If batchFolder is provided, use it as the project root (e.g. "captures")
             const projectFolderName = parsed.batchFolder ? parsed.batchFolder.replace(/[^a-z0-9_-]/gi, '_') : sanitaryProjectName;
             const projectRoot = path.join(process.cwd(), 'tools', 'extraction', projectFolderName);
             const targetDir = path.join(projectRoot, folderName);

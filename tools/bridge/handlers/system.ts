@@ -113,7 +113,7 @@ export function handleDelete(req: http.IncomingMessage, res: http.ServerResponse
                     } catch (e) { console.warn("Registry perm check failed", e); }
 
                     try {
-                        let content = fs.readFileSync(registryPath, 'utf8');
+                        const content = fs.readFileSync(registryPath, 'utf8');
                         const lines = content.split('\n');
                         const alias = `${componentName}_${projectName}`;
                         const newLines = lines.filter(line => !line.includes(`as ${alias}`));
