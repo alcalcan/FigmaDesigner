@@ -18,6 +18,7 @@ import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
 import { uefa_cards_4x } from "../../components/Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
 import { social_profile_card } from "../../components/Alex_CookBook/social_profile_card/social_profile_card";
+import { BookingLogo_color } from "../../components/Alex_CookBook/BookingLogo_color/BookingLogo_color";
 
 export class RadioSearchDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -50,6 +51,19 @@ export class RadioSearchDemo extends BaseComponent {
                 title: "Alex CookBook UI Kit",
                 subtitle: "A comprehensive showcase of all available components and their variations."
             }));
+
+            const logoRow = this.createRow();
+            logoRow.paddingTop = 20;
+            logoRow.paddingBottom = 20;
+            logoRow.paddingLeft = 20;
+            logoRow.paddingRight = 20;
+            logoRow.fills = [{ type: 'SOLID', color: { r: 0.15, g: 0.15, b: 0.15 } }]; // Dark background for contrast
+            logoRow.cornerRadius = 8;
+
+            const logo = new BookingLogo_color();
+            logoRow.appendChild(await logo.create({ variant: 'color' }));
+            logoRow.appendChild(await logo.create({ variant: 'white' }));
+            container.appendChild(logoRow);
 
             const subSection = new expanded_card();
             // Demonstrating new props: custom header and badge

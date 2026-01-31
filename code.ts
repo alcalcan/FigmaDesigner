@@ -3,7 +3,11 @@ import { JsonReconstructor } from "./components/JsonReconstructor";
 import { AssetStore, processFills } from "./components/PaintHelpers";
 import * as ComponentRegistry from "./components/index";
 
+// Plugin Initialization Log
+console.log(`[Plugin] Starting code.ts | Time: ${Date.now()}`);
+
 // Show the HTML page in "ui.html".
+console.log("[Plugin] Calling figma.showUI");
 figma.showUI(__html__, { width: 450, height: 800 });
 
 // --- SHARED CAPTURE LOGIC ---

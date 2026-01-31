@@ -5,6 +5,7 @@ import { ComponentGenerator } from './ComponentGenerator';
 import { ComponentRefactorer } from './ComponentRefactorer';
 import { CompactStructure } from './CompactStructure';
 import { ProceduralConverter } from './ProceduralConverter';
+import { registerComponents } from './RegisterComponents';
 
 export class FullProceduralPipeline {
     /**
@@ -57,6 +58,9 @@ export class FullProceduralPipeline {
             console.error(`❌ [Pipeline] Procedural Conversion FAILED:`, e);
             throw new Error(`Procedural Conversion failed for ${tsPath}`);
         }
+
+        // 6. Update Registry (Explicit)
+        registerComponents();
 
         return tsPath;
     }

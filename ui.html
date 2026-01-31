@@ -424,7 +424,8 @@
                 console.error("Uncaught Error:", message, "at", source, ":", lineno);
             };
 
-            console.log("UI Initialized");
+            const uiSessionId = Math.random().toString(36).substring(7);
+            console.log(`[UI] UI Initialized | Session: ${uiSessionId} | Time: ${performance.now().toFixed(2)}ms`);
 
             const createBtn = document.getElementById('create-btn');
             const connectBtn = document.getElementById('connect-btn');

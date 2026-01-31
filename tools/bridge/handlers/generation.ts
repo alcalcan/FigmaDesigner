@@ -6,6 +6,7 @@ import { ComponentRefactorer } from '../server_tools/ComponentRefactorer';
 import { CompactStructure } from '../server_tools/CompactStructure';
 import { ProceduralConverter } from '../server_tools/ProceduralConverter';
 import { FullProceduralPipeline } from '../server_tools/FullProceduralPipeline';
+import { registerComponents } from '../server_tools/RegisterComponents';
 
 export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
@@ -182,6 +183,8 @@ export async function handleGenerateToCode(req: http.IncomingMessage, res: http.
                 new CompactStructure().compact(result.tsPath);
             }
 
+            registerComponents();
+
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ status: 'ok', ...result }));
 
@@ -278,6 +281,8 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
                         console.error(`[Batch] ❌ Failed to cleanup folder: ${projectPath}`, cleanupErr);
                     }
                 }
+
+                registerComponents();
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', results }));

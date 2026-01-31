@@ -58,14 +58,7 @@ export class ComponentGenerator {
         // 3. Copy Assets (Images) - Now to shared folder
         this.copyAssets(assetsTargetDir);
 
-        // 4. Update Registry (Skip in Preview Mode)
-        if (!previewMode) {
-            try {
-                this.updateRegistry();
-            } catch (err) {
-                console.warn("[Generator] Failed to update registry:", err);
-            }
-        }
+        // 4. Update Registry skipped here (Managed by build pipeline or explicit registerComponents calls)
 
         return {
             tsPath,
@@ -779,66 +772,6 @@ export class ${this.componentName} extends BaseComponent {
         return json;
     }
 
-    public updateRegistry() {
-        const registryPath = path.join(process.cwd(), 'components', 'index.ts');
-        const relativePath = `./${this.projectName}/${this.componentName}/${this.componentName}`;
-
-        // Use project name as suffix to avoid collisions (e.g. chip_dropdown_Alex_CookBook)
-        const safeProjectName = this.projectName; // Already sanitized
-        const importAlias = `${this.componentName}_${safeProjectName}`;
-
-        const exportLine = `export { ${this.componentName} as ${importAlias} } from "${relativePath}";`;
-
-        if (!fs.existsSync(registryPath)) {
-            fs.writeFileSync(registryPath, exportLine + '\n');
-            return;
-        }
-
-        // --- Permissions Check ---
-        let originalMode: number | null = null;
-        try {
-            const stats = fs.statSync(registryPath);
-            // Check if writable by owner
-            const isWritable = (stats.mode & fs.constants.S_IWUSR) !== 0;
-
-            if (!isWritable) {
-                console.log(`[Generator] Registry is read-only. Temporarily unlocking: ${registryPath}`);
-                originalMode = stats.mode;
-                fs.chmodSync(registryPath, 0o644); // User Read/Write, Group/Other Read
-            }
-        } catch (permErr) {
-            console.warn(`[Generator] Failed to check/set permissions on registry:`, permErr);
-        }
-
-        try {
-            let content = fs.readFileSync(registryPath, 'utf8');
-
-            // Robust check: Avoid duplicating the exact same exported alias
-            // We look for "as [importAlias] }" which signifies this specific aliased export
-            const regex = new RegExp(`as\\s+${importAlias}\\s*\\}`, 'g');
-
-            if (!regex.test(content)) {
-                content = content.trim() + '\n' + exportLine + '\n';
-                fs.writeFileSync(registryPath, content);
-                console.log(`[Generator] Updated registry with: ${importAlias}`);
-            } else {
-                console.log(`[Generator] Export for ${importAlias} already exists. Skipping registry update.`);
-            }
-        } catch (writeErr) {
-            console.error(`[Generator] Failed to write to registry:`, writeErr);
-            throw writeErr; // Re-throw to be caught by caller
-        } finally {
-            // Restore permissions if we changed them
-            if (originalMode !== null) {
-                try {
-                    console.log(`[Generator] Restoring registry permissions...`);
-                    fs.chmodSync(registryPath, originalMode);
-                } catch (restoreErr) {
-                    console.warn(`[Generator] Failed to restore registry permissions:`, restoreErr);
-                }
-            }
-        }
-    }
 
     private getSvgVariableName(distinctKey: string): string {
         const safeCompName = this.componentName.replace(/[^a-z0-9]/gi, '_');

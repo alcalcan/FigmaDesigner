@@ -7,9 +7,8 @@ import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderTo
 import { handlePoll, handleLog } from './handlers/system';
 import { startBuild } from '../build';
 
-// START WATCHER (Runs alongside bridge)
-// This ensures code.js is always fresh when the bridge is running.
-startBuild({ watch: true }).catch(err => console.error("[Bridge] Build Watcher Error:", err));
+// Build watcher is now managed by the parent process in npm run dev
+// startBuild({ watch: true }).catch(err => console.error("[Bridge] Build Watcher Error:", err));
 
 
 const PORT = 3001;
