@@ -59,12 +59,21 @@ const captureNode = async (
     effects: safeGet(node, "effects"),
 
     // Geometry
-    x: node.x,
-    y: node.y,
+    x: node.parent && node.parent.type === "GROUP" ? node.x - node.parent.x : node.x,
+    y: node.parent && node.parent.type === "GROUP" ? node.y - node.parent.y : node.y,
     width: node.width,
     height: node.height,
     rotation: safeGet(node, "rotation"),
-    relativeTransform: safeGet(node, "relativeTransform"),
+    relativeTransform: (() => {
+      const transform = safeGet(node, "relativeTransform");
+      if (transform && node.parent && node.parent.type === "GROUP") {
+        const t = [...transform.map((row: number[]) => [...row])] as [[number, number, number], [number, number, number]];
+        t[0][2] -= node.parent.x;
+        t[1][2] -= node.parent.y;
+        return t;
+      }
+      return transform;
+    })(),
 
     // Constraints & Layout Positioning
     constraints: safeGet(node, "constraints"),
@@ -157,14 +166,16 @@ const captureNode = async (
   }
 
   // 6. Icon / Vector Export
-  // We keep the heuristic: Vector/Star/Polygon/Boolean + Small OR name has "icon"/"star"
-  const isVectorLike = node.type === "VECTOR" || node.type === "STAR" || node.type === "POLYGON" || node.type === "BOOLEAN_OPERATION";
+  // We keep the heuristic: Vector/Star/Polygon/Group + Small OR name has "icon"/"star"
+  // Including GROUP allows small grouped vectors to be treated as a single SVG asset.
+  const isVectorLike = node.type === "VECTOR" || node.type === "STAR" || node.type === "POLYGON" || node.type === "BOOLEAN_OPERATION" || node.type === "GROUP";
 
-  const isIcon = isVectorLike && (
-    (node.width <= 64 && node.height <= 64) ||
-    node.name.toLowerCase().includes("icon") ||
-    node.name.toLowerCase().includes("star")
-  );
+  const isIcon = isVectorLike &&
+    node.type !== "BOOLEAN_OPERATION" && ( // Exclude Boolean Operations from automatic icon classification
+      (node.width <= 64 && node.height <= 64) ||
+      node.name.toLowerCase().includes("icon") ||
+      node.name.toLowerCase().includes("star")
+    );
 
   // New logic: Export vectors as SVG unless explicitly asked to keep in JSON
   const isVectorToExport = isVectorLike && !saveVectorInJson;
@@ -189,6 +200,9 @@ const captureNode = async (
     if ("effects" in node && Array.isArray(node.effects)) {
       if (node.effects.some(e => e.visible !== false)) return true;
     }
+
+    // Check if it's a mask (Masks are functional content even if they have no fills/strokes)
+    if ("isMask" in node && node.isMask === true) return true;
 
     // Check Children (for Containers/Boolean Ops that might have visible content inside)
     if ("children" in node) {
@@ -233,11 +247,11 @@ const captureNode = async (
   }
 
   // Also capture raw vector paths if available (for exact reconstruction)
-  // ONLY if not exported as SVG OR if explicitly requested
-  if ("vectorPaths" in node && (saveVectorInJson || !data.svgPath)) {
+  // ALWAYS capture if detailed mode is on to ensure procedural analysis has enough data
+  if ("vectorPaths" in node && (detailed || saveVectorInJson || !data.svgPath)) {
     data.vectorPaths = safeGet(node, "vectorPaths");
   }
-  if ("vectorNetwork" in node && (saveVectorInJson || !data.svgPath)) {
+  if ("vectorNetwork" in node && (detailed || saveVectorInJson || !data.svgPath)) {
     data.vectorNetwork = safeGet(node, "vectorNetwork");
   }
 

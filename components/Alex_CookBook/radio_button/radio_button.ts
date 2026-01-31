@@ -61,8 +61,8 @@ export class radio_button extends BaseComponent {
                     "name": "Label",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "characters": "Radio Option", "fontSize": 14,
-                        "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
+                        "characters": "Option 1", "fontSize": 14,
+                        "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
                         "fills": [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -74,7 +74,7 @@ export class radio_button extends BaseComponent {
                     },
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 264, "height": 24
+                        "height": 24
                     }
                 }
             ]

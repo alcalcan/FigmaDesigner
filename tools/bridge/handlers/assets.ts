@@ -84,7 +84,7 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
 
             console.log(`[Bridge] handling SavePacket. Procedural? ${isProcedural}, Simplified? ${isSimplified}`);
 
-            // 1. Prepare Directory: tools/extraction/[Project]/[Name]_[Timestamp]
+            // 1. Prepare Directory: tools/extraction/[Project or batchFolder]/[Name]_[Timestamp]
             const sanitaryProjectName = (projectName || "Default").replace(/[^a-z0-9]/gi, '_');
             const sanitaryName = (name || "Untitled").replace(/[^a-z0-9]/gi, '_');
 
@@ -93,7 +93,10 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
 
             const folderName = `${sanitaryName}_${timestamp}`;
-            const projectRoot = path.join(process.cwd(), 'tools', 'extraction', sanitaryProjectName);
+
+            // If batchFolder is provided, use it as the project root (e.g. "to_be_converted")
+            const projectFolderName = parsed.batchFolder ? parsed.batchFolder.replace(/[^a-z0-9_-]/gi, '_') : sanitaryProjectName;
+            const projectRoot = path.join(process.cwd(), 'tools', 'extraction', projectFolderName);
             const targetDir = path.join(projectRoot, folderName);
 
             if (!fs.existsSync(targetDir)) {

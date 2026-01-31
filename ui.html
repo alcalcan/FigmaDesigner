@@ -141,6 +141,50 @@
             cursor: pointer;
         }
 
+        .batch-bar {
+            background: #252525;
+            padding: 12px;
+            border-top: 1px solid #2a2a2a;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .edit-mode-checkbox {
+            margin-right: 10px;
+            width: 14px;
+            height: 14px;
+            accent-color: #0d99ff;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+            color: #888;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            width: auto;
+            margin: 0;
+        }
+
+        .icon-btn:hover {
+            color: #fff;
+            background: #333;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .icon-btn.active {
+            color: #0d99ff;
+            background: rgba(13, 153, 255, 0.1);
+        }
+
         code {
             background: #2a2a2a;
             padding: 2px 4px;
@@ -167,13 +211,23 @@
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Pages</span>
-                <button id="refresh-pages-btn" class="secondary"
-                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button id="edit-pages-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Edit</button>
+                    <button id="refresh-pages-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+                </div>
             </div>
             <div id="page-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see pages
                 </div>
+            </div>
+            <div id="pages-batch-bar" class="batch-bar" style="display: none;">
+                <span id="pages-selection-count" style="font-size: 10px; color: #888; margin-right: auto;">0
+                    selected</span>
+                <button id="batch-delete-pages-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; background: #3a1a1a; color: #ff4d4d; border-color: #5a2a2a;">Delete</button>
             </div>
         </div>
     </div>
@@ -184,13 +238,23 @@
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Components</span>
-                <button id="refresh-components-btn" class="secondary"
-                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button id="edit-components-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Edit</button>
+                    <button id="refresh-components-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+                </div>
             </div>
             <div id="component-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see components
                 </div>
+            </div>
+            <div id="components-batch-bar" class="batch-bar" style="display: none;">
+                <span id="components-selection-count" style="font-size: 10px; color: #888; margin-right: auto;">0
+                    selected</span>
+                <button id="batch-delete-components-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; background: #3a1a1a; color: #ff4d4d; border-color: #5a2a2a;">Delete</button>
             </div>
         </div>
     </div>
@@ -201,13 +265,24 @@
             <div id="file-browser-header"
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Extracted Files</span>
-                <button id="refresh-files-btn" class="secondary"
-                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button id="edit-files-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Edit</button>
+                    <button id="refresh-files-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
+                </div>
             </div>
             <div id="file-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see files
                 </div>
+            </div>
+            <div id="batch-actions-bar" class="batch-bar" style="display: none;">
+                <span id="selection-count" style="font-size: 10px; color: #888; margin-right: auto;">0 selected</span>
+                <button id="batch-convert-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Convert Selected</button>
+                <button id="batch-delete-btn" class="secondary"
+                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; background: #3a1a1a; color: #ff4d4d; border-color: #5a2a2a;">Delete</button>
             </div>
             <div id="file-actions"
                 style="padding: 12px; border-top: 1px solid #2a2a2a; background: #252525; display: none;">
@@ -400,6 +475,8 @@
             let selectedFilePath = null;
             let selectedFolder = null;
             let isOperationActive = false;
+            let isEditMode = false;
+            let selectedItems = new Set();
 
             function showFeedback(btn, originalText, successText = "Captured!") {
                 const prevText = btn.textContent;
@@ -428,7 +505,159 @@
                 parent.postMessage({ pluginMessage: { type: 'capture', detailed: isDetailed } }, '*')
                 // We'll trigger feedback when the download starts (approximate)
                 showFeedback(captureBtn, "Download JSON (Manual)");
+            };
+
+            const editFilesBtn = document.getElementById('edit-files-btn');
+            const editComponentsBtn = document.getElementById('edit-components-btn');
+            const editPagesBtn = document.getElementById('edit-pages-btn');
+            const batchActionsBar = document.getElementById('batch-actions-bar');
+            const selectionCountSpan = document.getElementById('selection-count');
+            const batchDeleteBtn = document.getElementById('batch-delete-btn');
+            const batchConvertBtn = document.getElementById('batch-convert-btn');
+
+            const batchDeleteComponentsBtn = document.getElementById('batch-delete-components-btn');
+            const batchDeletePagesBtn = document.getElementById('batch-delete-pages-btn');
+
+            let activeEditSection = null; // 'file', 'component', 'page'
+
+            const toggleEditMode = (section, btn) => {
+                if (activeEditSection === section) {
+                    activeEditSection = null;
+                    isEditMode = false;
+                } else {
+                    activeEditSection = section;
+                    isEditMode = true;
+                }
+
+                [editFilesBtn, editComponentsBtn, editPagesBtn].forEach(b => {
+                    const isActive = isEditMode && (
+                        (section === 'file' && b === editFilesBtn) ||
+                        (section === 'component' && b === editComponentsBtn) ||
+                        (section === 'page' && b === editPagesBtn)
+                    );
+                    b.classList.toggle('active', isActive);
+                    if (isActive) {
+                        b.style.borderColor = "#0d99ff";
+                        b.style.color = "#0d99ff";
+                    } else {
+                        b.style.borderColor = "";
+                        b.style.color = "";
+                        b.classList.remove('active');
+                    }
+                });
+                selectedItems.clear();
+                updateBatchBar();
+                loadFiles();
+                loadComponents();
+            };
+
+            editFilesBtn.onclick = () => toggleEditMode('file', editFilesBtn);
+            editComponentsBtn.onclick = () => toggleEditMode('component', editComponentsBtn);
+            editPagesBtn.onclick = () => toggleEditMode('page', editPagesBtn);
+
+            function updateBatchBar() {
+                const fileBar = document.getElementById('batch-actions-bar');
+                const compBar = document.getElementById('components-batch-bar');
+                const pageBar = document.getElementById('pages-batch-bar');
+
+                fileBar.style.display = 'none';
+                compBar.style.display = 'none';
+                pageBar.style.display = 'none';
+
+                if (isEditMode) {
+                    if (activeEditSection === 'file') {
+                        fileBar.style.display = 'flex';
+                        selectionCountSpan.textContent = `${selectedItems.size} selected`;
+                    } else if (activeEditSection === 'component') {
+                        compBar.style.display = 'flex';
+                        document.getElementById('components-selection-count').textContent = `${selectedItems.size} selected`;
+                    } else if (activeEditSection === 'page') {
+                        pageBar.style.display = 'flex';
+                        document.getElementById('pages-selection-count').textContent = `${selectedItems.size} selected`;
+                    }
+                }
             }
+
+            batchDeleteBtn.onclick = async () => {
+                if (selectedItems.size === 0) return;
+                if (!confirm(`Delete ${selectedItems.size} selected items?`)) return;
+
+                const items = Array.from(selectedItems).map(s => JSON.parse(s));
+                const files = items.filter(i => (i.t === 'file' || i.type === 'file')).map(i => i.p || i.fullPath);
+                const comps = items.filter(i => (i.t === 'component' || i.type === 'component')).map(i => i.p || i.fullPath);
+                const pages = items.filter(i => (i.t === 'page' || i.type === 'page')).map(i => i.p || i.fullPath);
+
+                try {
+                    if (files.length > 0) {
+                        await fetch('http://127.0.0.1:3001/batch-delete', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ paths: files })
+                        });
+                    }
+                    if (comps.length > 0) {
+                        await fetch('http://127.0.0.1:3001/batch-delete-components', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ names: comps })
+                        });
+                    }
+                    if (pages.length > 0) {
+                        await fetch('http://127.0.0.1:3001/batch-delete-pages', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ names: pages })
+                        });
+                    }
+                    selectedItems.clear();
+                    updateBatchBar();
+                    loadFiles();
+                    loadComponents();
+                } catch (err) { console.error(err); }
+            };
+
+            batchDeleteComponentsBtn.onclick = batchDeleteBtn.onclick;
+            batchDeletePagesBtn.onclick = batchDeleteBtn.onclick;
+
+            batchConvertBtn.onclick = async () => {
+                if (selectedItems.size === 0) return;
+                const items = Array.from(selectedItems).filter(p => !p.includes('|')); // Only files for now
+                if (items.length === 0) {
+                    alert("Please select files from the extraction list to convert.");
+                    return;
+                }
+
+                isOperationActive = true;
+                batchConvertBtn.disabled = true;
+                batchConvertBtn.textContent = "Processing...";
+
+                try {
+                    for (const itemPath of items) {
+                        const isProcedural = document.getElementById('procedural-gen-checkbox').checked;
+                        await fetch('http://127.0.0.1:3001/generate-from-json', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                path: itemPath,
+                                options: {
+                                    refactor: !generatorOnlyCheckbox.checked,
+                                    compact: !generatorOnlyCheckbox.checked,
+                                    procedural: isProcedural
+                                }
+                            })
+                        });
+                        console.log(`[Batch] Converted: ${itemPath}`);
+                    }
+                    alert(`Successfully converted ${items.length} files.`);
+                    loadComponents();
+                } catch (err) {
+                    console.error("Batch conversion failed", err);
+                } finally {
+                    isOperationActive = false;
+                    batchConvertBtn.disabled = false;
+                    batchConvertBtn.textContent = "Convert Selected";
+                }
+            };
 
             syncBtn.onclick = () => {
                 console.log("Sync button clicked");
@@ -917,7 +1146,23 @@
                         actions.querySelectorAll('span').forEach(s => s.style.opacity = '0');
                     };
 
+                    const isSectionActive = (activeEditSection === 'file' && item.type === 'file') ||
+                        (activeEditSection === 'component' && item.type === 'component') ||
+                        (activeEditSection === 'page' && item.type === 'page');
+
                     row.onclick = () => {
+                        if (isEditMode && isSectionActive) {
+                            const checkbox = row.querySelector('.edit-mode-checkbox');
+                            if (checkbox) {
+                                checkbox.checked = !checkbox.checked;
+                                const key = JSON.stringify({ p: item.fullPath, t: item.type });
+                                if (checkbox.checked) selectedItems.add(key);
+                                else selectedItems.delete(key);
+                                updateBatchBar();
+                            }
+                            return;
+                        }
+
                         if (item.type === 'file') {
                             container.querySelectorAll('.list-item').forEach(el => {
                                 el.style.background = 'transparent';
@@ -933,6 +1178,22 @@
                             convertAllBtn.style.display = "none";
                         }
                     };
+
+                    if (isEditMode && isSectionActive) {
+                        const cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.className = 'edit-mode-checkbox';
+                        const key = JSON.stringify({ p: item.fullPath, t: item.type });
+                        cb.checked = selectedItems.has(key);
+                        cb.onclick = (e) => {
+                            e.stopPropagation();
+                            if (cb.checked) selectedItems.add(key);
+                            else selectedItems.delete(key);
+                            updateBatchBar();
+                        };
+                        row.insertBefore(cb, nameSpan);
+                    }
+
                     return row;
                 }
 
@@ -1046,8 +1307,12 @@
                         }
                     };
 
-                    header.onmouseenter = () => { delGroupBtn.style.opacity = '1'; };
-                    header.onmouseleave = () => { delGroupBtn.style.opacity = '0'; };
+                    header.onmouseenter = () => {
+                        if (!isEditMode) delGroupBtn.style.opacity = '1';
+                    };
+                    header.onmouseleave = () => {
+                        delGroupBtn.style.opacity = '0';
+                    };
 
                     groupActions.appendChild(delGroupBtn);
                     header.appendChild(groupActions);
@@ -1138,7 +1403,10 @@
                             const processAuto = document.getElementById('process-checkbox').checked || document.getElementById('procedural-gen-checkbox-capture').checked;
                             const rawProjectName = msg.projectName || "Default";
                             const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
-                            lastCapturedProject = sanitaryProjectName;
+
+                            // If multiple items are being captured, group them in a temporary folder
+                            const batchFolder = msg.total > 1 ? "to_be_converted" : null;
+                            lastCapturedProject = batchFolder || sanitaryProjectName;
 
                             const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
                             const isSimplified = document.getElementById('process-checkbox').checked;
@@ -1154,6 +1422,7 @@
                                     assets: msg.packet.assets,
                                     procedural: isProcedural,
                                     simplified: isSimplified,
+                                    batchFolder: batchFolder,
                                     options: {
                                         refactor: !generatorOnlyCheckboxCapture.checked,
                                         compact: !generatorOnlyCheckboxCapture.checked,
@@ -1213,16 +1482,25 @@
                                 const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
                                 syncBtn.textContent = "Processing Batch...";
 
+                                // If we used a temporary batch folder, target that for generation and cleanup
+                                // We check if there are multiple saves or if we set lastCapturedProject to to_be_converted
+                                // Wait, lastCapturedProject is just the sanitized projectName.
+                                // Let's check how many were captured. We can't see msg.total here.
+                                // But if to_be_converted exists, it means we used it.
+                                // Actually, let's just use a more robust way to track if it was a batch.
+                                const isBatch = lastCapturedProject === "to_be_converted" || true; // Fallback to check
+
                                 await fetch('http://127.0.0.1:3001/generate-folder-to-code', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
-                                        folder: lastCapturedProject,
-                                        project: lastCapturedProject,
+                                        folder: lastCapturedProject === "to_be_converted" ? "to_be_converted" : lastCapturedProject,
+                                        project: lastCapturedProject === "to_be_converted" ? "Default" : lastCapturedProject, // Fallback project name for components folder
                                         simplified: true,
                                         procedural: isProcedural,
                                         refactor: !generatorOnlyCheckboxCapture.checked,
-                                        compact: !generatorOnlyCheckboxCapture.checked
+                                        compact: !generatorOnlyCheckboxCapture.checked,
+                                        cleanup: lastCapturedProject === "to_be_converted" // CLEANUP if it's the temp folder
                                     })
                                 });
 

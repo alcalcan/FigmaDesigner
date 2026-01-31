@@ -1,9 +1,10 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 
 
 // SVG Assets
 import SVG_checkbox_Synth_Path_0 from "./assets/checkbox_Synth_Path_0.svg";
 import SVG_checkbox_Synth_Path_1 from "./assets/checkbox_Synth_Path_1.svg";
+import SVG_Checkmark from "./assets/checkmark.svg";
 
 
 export class checkbox extends BaseComponent {
@@ -15,9 +16,15 @@ export class checkbox extends BaseComponent {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
         "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-        "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
+        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 8,
         "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+        "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+        "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 1, "strokeLeftWeight": 0,
+        "fills": [],
+        "strokes": [],
+        "effects": [],
+        "cornerRadius": 0
       },
       "layoutProps": { "width": 296, "height": 32, "parentIsAutoLayout": false },
       "children": [
@@ -26,39 +33,121 @@ export class checkbox extends BaseComponent {
           "name": "Checkbox",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
             "layoutAlign": "INHERIT", "layoutGrow": 0,
             "layoutMode": "NONE",
-            "fills": [],
+            "fills": [
+              {
+                "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                "color": { "r": 1, "g": 1, "b": 1 },
+                "boundVariables": {}
+              }
+            ],
             "strokes": [],
-            "cornerRadius": 4
+            "effects": [],
+            "cornerRadius": 0
           },
           "layoutProps": {
             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 20, "height": 20
+            "width": 20, "height": 20,
+            "relativeTransform": [[1, 0, 8], [0, 1, 6]]
           },
           "children": [
             {
-              "type": "RECTANGLE",
-              "name": "Box",
+              "type": "BOOLEAN_OPERATION",
+              "booleanOperation": "EXCLUDE",
+              "name": "Shape",
               "props": {
-                "visible": true,
-                "cornerRadius": 2,
-                "fills": [],
-                "strokes": [
+                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                "isMask": false, "maskType": "ALPHA",
+                "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                "x": 2.5, "y": 2.5,
+                "fills": [
                   {
-                    "type": "SOLID",
-                    "color": { "r": 0.10196, "g": 0.19216, "b": 0.23529 }
+                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                    "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                    "boundVariables": {}
                   }
                 ],
-                "strokeWeight": 1.5,
-                "strokeAlign": "INSIDE"
+                "strokes": [],
+                "effects": [],
+                "cornerRadius": 0
               },
               "layoutProps": {
-                "parentIsAutoLayout": false,
-                "layoutPositioning": "AUTO",
-                "width": 16, "height": 16,
-                "relativeTransform": [[1, 0, 2], [0, 1, 2]]
-              }
+                "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
+                "width": 15, "height": 15,
+                "relativeTransform": [[1, 0, 2.5], [0, 1, 2.5]]
+              },
+              "children": [
+                {
+                  "type": "VECTOR",
+                  "shouldFlatten": true,
+                  "name": "Path",
+                  "props": {
+                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                    "isMask": false, "maskType": "ALPHA",
+                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 2.5, "y": 2.5,
+                    "fills": [
+                      {
+                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                        "color": { "r": 0, "g": 0, "b": 0 },
+                        "boundVariables": {}
+                      }
+                    ],
+                    "strokes": [],
+                    "effects": [],
+                    "cornerRadius": 0,
+                    "vectorPaths": [
+                      {
+                        "windingRule": "EVENODD",
+                        "data": "M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"
+                      }
+                    ]
+                  },
+                  "layoutProps": {
+                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
+                    "width": 15, "height": 15,
+                    "relativeTransform": [[1, 0, 2.5], [0, 1, 2.5]]
+                  },
+                  "svgContent": SVG_checkbox_Synth_Path_0
+                },
+                {
+                  "type": "VECTOR",
+                  "shouldFlatten": true,
+                  "name": "Path",
+                  "props": {
+                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                    "isMask": false, "maskType": "ALPHA",
+                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 4.166666030883789, "y": 4.166656494140625,
+                    "fills": [
+                      {
+                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                        "color": { "r": 0, "g": 0, "b": 0 },
+                        "boundVariables": {}
+                      }
+                    ],
+                    "strokes": [],
+                    "effects": [],
+                    "cornerRadius": 0,
+                    "vectorPaths": [
+                      {
+                        "windingRule": "EVENODD",
+                        "data": "M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"
+                      }
+                    ]
+                  },
+                  "layoutProps": {
+                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
+                    "width": 11.666666984558105, "height": 11.666666984558105,
+                    "relativeTransform": [[1, 0, 4.166666030883789], [0, 1, 4.166656494140625]]
+                  },
+                  "svgContent": SVG_checkbox_Synth_Path_1
+                }
+              ]
             }
           ]
         },
@@ -67,27 +156,36 @@ export class checkbox extends BaseComponent {
           "name": "Filter name",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "characters": "UEFA Football Development", "fontSize": 14,
-            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
+            "isMask": false, "maskType": "ALPHA",
+            "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+            "layoutAlign": "INHERIT", "layoutGrow": 0,
+            "characters": "Item 1", "fontSize": 16,
+            "textCase": "ORIGINAL", "textDecoration": "NONE",
+            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
+            "paragraphSpacing": 0, "paragraphIndent": 0,
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.10196, "g": 0.19216, "b": 0.23529 }
+                "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                "boundVariables": {}
               }
             ],
-            "font": { "family": "Open Sans", "style": "Regular" },
-            "layoutGrow": 1
+            "strokes": [],
+            "effects": [],
+            "letterSpacing": { "unit": "PIXELS", "value": 0 },
+            "lineHeight": { "unit": "PIXELS", "value": 24 },
+            "font": { "family": "Open Sans", "style": "Regular" }
           },
           "layoutProps": {
             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 264, "height": 24
+            "height": 24,
+            "relativeTransform": [[1, 0, 32], [0, 1, 4]]
           }
         }
       ]
     };
 
     // Apply potential background fill (e.g. for selection rows)
-    // If hoverState is true and no fills provided, use default selection background
     if (props.hoverState && (!props.fills || (Array.isArray(props.fills) && props.fills.length === 0))) {
       structure.props = {
         ...structure.props,
@@ -96,14 +194,15 @@ export class checkbox extends BaseComponent {
           visible: true,
           opacity: 1,
           blendMode: "NORMAL",
-          color: { r: 0.9450980424880981, g: 0.9529411792755127, b: 0.9725490212440491 }
+          color: { r: 0.9450980424880981, g: 0.9529411792755127, b: 0.9725490212440491 },
+          boundVariables: {}
         }]
       };
     } else if (props.fills && Array.isArray(props.fills)) {
       structure.props = { ...structure.props, fills: props.fills };
     }
 
-    // Allow generic prop overrides (e.g. padding, spacing)
+    // Allow generic prop overrides
     structure.props = { ...structure.props, ...props };
 
     // Handle Hug Contents
@@ -111,11 +210,10 @@ export class checkbox extends BaseComponent {
       structure.props.primaryAxisSizingMode = "AUTO";
       structure.props.counterAxisSizingMode = "AUTO";
       if (structure.layoutProps) {
-        delete structure.layoutProps.width;
-        delete structure.layoutProps.height;
+        delete (structure.layoutProps as any).width;
+        delete (structure.layoutProps as any).height;
       }
     }
-
 
     const root = await this.renderDefinition(structure);
 
@@ -130,32 +228,60 @@ export class checkbox extends BaseComponent {
 
     // Handle Checked State
     if (props.checked !== undefined) {
-      // Use name-based search with type check
-      const box = (root as FrameNode).children.find(n => n.name === "Checkbox") as FrameNode;
-      const rect = box?.children.find(n => n.name === "Box" && n.type === "RECTANGLE") as RectangleNode;
+      const wrapper = (root as FrameNode).children.find(n => n.name === "Checkbox") as FrameNode;
+      const shape = wrapper?.findOne(n => n.name === "Shape" && n.type === "BOOLEAN_OPERATION") as BooleanOperationNode;
 
-      if (rect) {
+      if (shape && wrapper) {
         if (props.checked) {
-          // Solid fill, no stroke
-          rect.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
-          rect.strokes = [];
-        } else {
-          // No fill, solid stroke
-          rect.fills = [];
-          rect.strokes = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
-          rect.strokeWeight = 1.5;
-        }
-      } else {
-        console.warn(`[checkbox] Could not find Box rectangle in ${props.characterOverride || 'unnamed'} checkbox`);
-      }
+          // Solid background for checked state
+          shape.fills = [{
+            type: "SOLID",
+            visible: true,
+            opacity: 1,
+            blendMode: "NORMAL",
+            color: { r: 0, g: 0.635, b: 0.588 }, // Brand green
+            boundVariables: {}
+          }];
+          // Add border to fix "stroke problem"
+          shape.strokes = [{
+            type: "SOLID",
+            visible: true,
+            opacity: 1,
+            blendMode: "NORMAL",
+            color: { r: 0, g: 0.5, b: 0.45 }, // Darker green for stroke
+            boundVariables: {}
+          }];
+          shape.strokeWeight = 1;
 
-      if (props.checked && box) {
-        const checkSvg = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 4L4 6.5L8.5 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-        const checkNode = figma.createNodeFromSvg(checkSvg);
-        checkNode.name = "CheckIcon";
-        box.appendChild(checkNode);
-        checkNode.x = (box.width - checkNode.width) / 2;
-        checkNode.y = (box.height - checkNode.height) / 2;
+          // Hide the inner "hole" path (it's the second child)
+          if (shape.children.length > 1) {
+            shape.children[1].visible = false;
+          }
+
+          // Add Checkmark
+          const checkmark = figma.createNodeFromSvg(SVG_Checkmark);
+          const flatCheck = figma.flatten([checkmark]);
+          flatCheck.name = "Checkmark_Icon";
+          wrapper.appendChild(flatCheck);
+
+          // Center in 20x20 wrapper (Icon is 8x7)
+          flatCheck.x = (20 - 8) / 2;
+          flatCheck.y = (20 - 7) / 2;
+        } else {
+          // Hollow for unchecked state
+          shape.fills = [{
+            type: "SOLID",
+            visible: true,
+            opacity: 1,
+            blendMode: "NORMAL",
+            color: { r: 0.102, g: 0.192, b: 0.235 }, // Blue
+            boundVariables: {}
+          }];
+          shape.strokes = []; // No stroke for unchecked (it has the hole)
+          if (shape.children.length > 1) {
+            shape.children[1].visible = true;
+          }
+        }
       }
     }
 

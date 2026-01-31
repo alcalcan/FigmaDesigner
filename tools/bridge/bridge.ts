@@ -1,7 +1,7 @@
 import * as http from 'http';
 import { BridgeState, setPendingCommand, setSpinnerInterval } from './state';
-import { handleList, handleRead } from './handlers/extraction';
-import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder } from './handlers/components';
+import { handleList, handleRead, handleDelete, handleBatchDelete } from './handlers/extraction';
+import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder, handleBatchDeleteComponents, handleBatchDeletePages } from './handlers/components';
 import { handleSave, handleSavePacket, handleSavePng } from './handlers/assets';
 import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
 import { handlePoll, handleLog } from './handlers/system';
@@ -36,10 +36,14 @@ const server = http.createServer((req, res) => {
 
     if (req.method === 'GET' && (req.url === '/list' || req.url?.startsWith('/list?'))) return handleList(req, res);
     if (req.method === 'GET' && (req.url === '/read' || req.url?.startsWith('/read?'))) return handleRead(req, res);
+    if (req.method === 'POST' && req.url === '/delete') return handleDelete(req, res);
+    if (req.method === 'POST' && req.url === '/batch-delete') return handleBatchDelete(req, res);
 
     if (req.method === 'GET' && (req.url === '/list-components' || req.url?.startsWith('/list-components?'))) return handleListComponents(req, res);
     if (req.method === 'POST' && req.url === '/delete-component') return handleDeleteComponent(req, res);
     if (req.method === 'POST' && req.url === '/delete-component-folder') return handleDeleteComponentFolder(req, res);
+    if (req.method === 'POST' && req.url === '/batch-delete-components') return handleBatchDeleteComponents(req, res);
+    if (req.method === 'POST' && req.url === '/batch-delete-pages') return handleBatchDeletePages(req, res);
 
     if (req.method === 'POST' && req.url === '/save') return handleSave(req, res);
     if (req.method === 'POST' && req.url === '/save-packet') return handleSavePacket(req, res);

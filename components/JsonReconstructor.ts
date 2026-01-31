@@ -24,8 +24,6 @@ export interface SerializedNode {
     booleanOperation?: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
     locked?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    constraints?: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fills?: (any & { assetRef?: string })[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     strokes?: any[];
@@ -111,6 +109,9 @@ export interface SerializedNode {
     pointCount?: number;
     innerRadius?: number;
 
+    // Constraints
+    constraints?: Constraints;
+
     children?: SerializedNode[];
 }
 
@@ -159,8 +160,8 @@ export class JsonReconstructor extends BaseComponent {
 
         const result = await this.reconstruct(this.data, undefined, assetSource);
         if (result) {
-            result.x = props.x;
-            result.y = props.y;
+            result.x = props.x ?? 0;
+            result.y = props.y ?? 0;
             return result;
         }
         throw new Error("Failed to reconstruct node from JSON data");
@@ -180,11 +181,12 @@ export class JsonReconstructor extends BaseComponent {
             const safeType = (data.type || "").trim();
             if (safeType === "FRAME" || safeType === "INSTANCE" || safeType === "COMPONENT") {
                 node = figma.createFrame();
+                (node as FrameNode).fills = []; // Clear default white fill
             } else if (safeType === "TEXT") {
                 node = figma.createText();
             } else if (safeType === "RECTANGLE") {
                 node = figma.createRectangle();
-            } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON"))) {
+            } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON" || safeType === "GROUP"))) {
                 if (data.svgPath && assetSource) {
                     const asset = assetSource.assets[data.svgPath];
                     if (asset) {
@@ -263,6 +265,7 @@ export class JsonReconstructor extends BaseComponent {
                 if (!node) {
                     console.warn("Group with no children, creating empty frame placeholder");
                     node = figma.createFrame();
+                    (node as FrameNode).fills = []; // Clear default white fill
                     node.visible = false;
                 }
             } else if (safeType === "BOOLEAN_OPERATION") {
@@ -293,6 +296,7 @@ export class JsonReconstructor extends BaseComponent {
                 if (!node) {
                     console.warn("Boolean operation with no children, skipping or creating empty frame placeholder");
                     node = figma.createFrame();
+                    (node as FrameNode).fills = []; // Clear default white fill
                 }
             }
 
@@ -616,6 +620,14 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 3. Layout Positioning (Child Properties)
+            if ("constraints" in node && data.constraints) {
+                try {
+                    node.constraints = data.constraints;
+                } catch (e) {
+                    console.warn(`Failed to set constraints on ${node.name}`, e);
+                }
+            }
+
             if ("layoutAlign" in node && data.layoutAlign) {
                 node.layoutAlign = data.layoutAlign;
             }

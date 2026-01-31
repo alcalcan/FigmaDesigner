@@ -199,7 +199,7 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
     req.on('end', async () => {
         try {
-            const { folder, project, simplified, procedural, refactor, compact } = JSON.parse(body);
+            const { folder, project, simplified, procedural, refactor, compact, cleanup } = JSON.parse(body);
             // If folder is empty, we'll scan the entire extraction root
             const targetFolder = folder || "";
 
@@ -265,6 +265,17 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
             if (fs.existsSync(projectPath)) {
                 await getFiles(projectPath);
                 console.log(`[Batch] ✅ Processed ${results.length} files. Success: ${results.filter(r => r.status === 'ok').length}, Fail: ${results.filter(r => r.status !== 'ok').length}`);
+
+                // Cleanup logic: If cleanup requested and everything (or mostly everything) succeeded
+                if (cleanup === true) {
+                    console.log(`[Batch] 🧹 Cleaning up temporary folder: ${projectPath}`);
+                    try {
+                        fs.rmSync(projectPath, { recursive: true, force: true });
+                    } catch (cleanupErr) {
+                        console.error(`[Batch] ❌ Failed to cleanup folder: ${projectPath}`, cleanupErr);
+                    }
+                }
+
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ status: 'ok', results }));
             } else {

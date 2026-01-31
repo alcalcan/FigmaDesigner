@@ -134,13 +134,22 @@ function applySizeAndTransform(
         relativeTransform?: T2x3;
         parentIsAutoLayout: boolean;
         layoutPositioning?: "AUTO" | "ABSOLUTE";
+        constraints?: Constraints;
     }
 ) {
-    const { width, height, relativeTransform, parentIsAutoLayout } = opts;
+    const { width, height, relativeTransform, parentIsAutoLayout, constraints } = opts;
     const positioning = opts.layoutPositioning ?? "AUTO";
 
     if (typeof width === "number" && typeof height === "number") {
         node.resize(width, height);
+    }
+
+    if (constraints && "constraints" in node) {
+        try {
+            node.constraints = constraints;
+        } catch (e) {
+            console.warn("Failed to set constraints", e);
+        }
     }
 
     if (relativeTransform) {
@@ -191,8 +200,8 @@ export class ${this.componentName} extends BaseComponent {
         ${bodyContent}
 
         ${rootTransformCode}
-        ${variableName}.x = props.x;
-        ${variableName}.y = props.y;
+        ${variableName}.x = props.x ?? 0;
+        ${variableName}.y = props.y ?? 0;
 
         return ${variableName};
     }
@@ -211,33 +220,36 @@ export class ${this.componentName} extends BaseComponent {
         // This causes misalignment when the Group is placed in an AutoLayout frame.
         // We recalculate the bounds here to ensure the converted Frame is sized correctly.
         if (safeType === 'GROUP' && data.children && data.children.length > 0) {
-            let maxX = 0;
-            let maxY = 0;
+            let minX = Infinity;
+            let minY = Infinity;
+            let maxX = -Infinity;
+            let maxY = -Infinity;
             let hasValidChildren = false;
 
             data.children.forEach(child => {
                 if (child.visible !== false) {
                     hasValidChildren = true;
-                    // Simple bounding box addition (ignoring rotation for now as typical groups are axis-aligned)
+                    // Children are now normalized relative to the group top-left (0,0) in captureNode (code.ts)
                     const cx = child.x || 0;
                     const cy = child.y || 0;
                     const cw = child.width || 0;
                     const ch = child.height || 0;
 
-                    const right = cx + cw;
-                    const bottom = cy + ch;
-
-                    if (right > maxX) maxX = right;
-                    if (bottom > maxY) maxY = bottom;
+                    if (cx < minX) minX = cx;
+                    if (cy < minY) minY = cy;
+                    if (cx + cw > maxX) maxX = cx + cw;
+                    if (cy + ch > maxY) maxY = cy + ch;
                 }
             });
 
             if (hasValidChildren) {
-                // If calculated bounds are larger than reported, trust the calculation (content expands group)
-                // We typically don't shrink because there might be invisible spacers or reasons, 
-                // but expanding is necessary to prevent clipping/misalignment.
-                if (maxX > (data.width || 0)) data.width = maxX;
-                if (maxY > (data.height || 0)) data.height = maxY;
+                // Since children are now normalized relative to the Group top-left, 
+                // the Group's width/height must be at least the max extent of its children.
+                const calculatedWidth = Math.max(maxX, 0);
+                const calculatedHeight = Math.max(maxY, 0);
+
+                if (calculatedWidth > (data.width || 0)) data.width = calculatedWidth;
+                if (calculatedHeight > (data.height || 0)) data.height = calculatedHeight;
             }
         }
 
@@ -601,7 +613,8 @@ export class ${this.componentName} extends BaseComponent {
                     height: child.height,
                     relativeTransform: child.relativeTransform,
                     parentIsAutoLayout: isCurrentNodeAutoLayout,
-                    layoutPositioning: child.layoutPositioning
+                    layoutPositioning: child.layoutPositioning,
+                    constraints: child.constraints
                 };
 
                 if (childOpts.width !== undefined || childOpts.relativeTransform) {

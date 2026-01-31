@@ -2,8 +2,8 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 
 // SVG Assets
-import SVG_Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832 from "./assets/Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832.svg";
-import SVG_Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336 from "./assets/Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336.svg";
+import SVG_Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711 from "./assets/Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711.svg";
+import SVG_Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879 from "./assets/Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879.svg";
 import SVG_Top_bar_Synth_VectorStroke_2 from "./assets/Top_bar_Synth_VectorStroke_2.svg";
 import SVG_Top_bar_Synth_VectorStroke_3 from "./assets/Top_bar_Synth_VectorStroke_3.svg";
 import SVG_Top_bar_Synth_VectorStroke_4 from "./assets/Top_bar_Synth_VectorStroke_4.svg";
@@ -16,12 +16,13 @@ export class Top_bar extends BaseComponent {
           "name": "Top bar",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "clipsContent": false,
-            "layoutMode": "HORIZONTAL", "itemSpacing": 77,
+            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+            "layoutMode": "HORIZONTAL", "itemSpacing": 77, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
             "paddingTop": 8, "paddingRight": 40, "paddingBottom": 8, "paddingLeft": 40,
             "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
             "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER",
             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -40,12 +41,13 @@ export class Top_bar extends BaseComponent {
               "name": "Frame 1607",
               "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 23,
+                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                "layoutMode": "HORIZONTAL", "itemSpacing": 23, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                 "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                 "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
                 "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                 "layoutAlign": "INHERIT", "layoutGrow": 0,
                 "fills": [],
                 "strokes": [],
@@ -54,8 +56,9 @@ export class Top_bar extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 161, "height": 21,
-                "relativeTransform": [[1, 0, 40], [0, 1, 9.5]]
+                "width": 160, "height": 21,
+                "relativeTransform": [[1, 0, 40], [0, 1, 9.5]],
+                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
               },
               "children": [
                 {
@@ -63,12 +66,13 @@ export class Top_bar extends BaseComponent {
                   "name": "Frame 1837",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "clipsContent": false,
-                    "layoutMode": "HORIZONTAL", "itemSpacing": 12,
+                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                    "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                     "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                     "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
                     "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                     "layoutAlign": "STRETCH", "layoutGrow": 0,
                     "fills": [],
                     "strokes": [],
@@ -77,8 +81,9 @@ export class Top_bar extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 161, "height": 21,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 0]]
+                    "width": 160, "height": 21,
+                    "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                   },
                   "children": [
                     {
@@ -86,16 +91,21 @@ export class Top_bar extends BaseComponent {
                       "name": "Group 19",
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                        "strokeWeight": 0, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                        "strokeTopWeight": 0, "strokeRightWeight": 0, "strokeBottomWeight": 0, "strokeLeftWeight": 0,
                         "layoutAlign": "INHERIT", "layoutGrow": 0,
+                        "layoutMode": "NONE",
+                        "fills": [],
                         "strokes": [],
-                        "strokeWeight": 0,
-                        "isMask": false,
-                        "effects": []
+                        "effects": [],
+                        "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                         "width": 54, "height": 18.5,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 2.5]]
+                        "relativeTransform": [[1, 0, 0], [0, 1, 1.25]],
+                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                       },
                       "children": [
                         {
@@ -103,8 +113,9 @@ export class Top_bar extends BaseComponent {
                           "name": "Logos / Wordmark / UEFA.com Black",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "clipsContent": true,
+                            "isMask": false, "maskType": "ALPHA", "clipsContent": true,
                             "strokeWeight": 0.5517241358757019, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                            "strokeTopWeight": 0.5517241358757019, "strokeRightWeight": 0.5517241358757019, "strokeBottomWeight": 0.5517241358757019, "strokeLeftWeight": 0.5517241358757019,
                             "x": 0, "y": 2.5,
                             "layoutMode": "NONE",
                             "fills": [
@@ -121,7 +132,8 @@ export class Top_bar extends BaseComponent {
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                             "width": 54, "height": 16,
-                            "relativeTransform": [[1, 0, 0], [0, 1, 2.5]]
+                            "relativeTransform": [[1, 0, 0], [0, 1, 2.5]],
+                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                           },
                           "children": [
                             {
@@ -130,19 +142,20 @@ export class Top_bar extends BaseComponent {
                               "name": "UEFA.com",
                               "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                "isMask": false, "maskType": "ALPHA",
+                                "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                 "x": 0, "y": 0.0546875,
-                                "isMask": false,
                                 "strokes": [],
                                 "effects": [],
                                 "cornerRadius": 0
                               },
                               "layoutProps": {
                                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 98.46454620361328, "height": 15.945378303527832,
-                                "relativeTransform": [[1, 0, 0], [0, 1, 0.0546875]]
+                                "width": 98.4645004272461, "height": 15.94540023803711,
+                                "relativeTransform": [[1, 0, 0], [0, 1, 0.0546875]],
+                                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                               },
-                              "svgContent": SVG_Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832
+                              "svgContent": SVG_Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711
                             }
                           ]
                         }
@@ -153,9 +166,9 @@ export class Top_bar extends BaseComponent {
                       "name": "Line 39",
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                        "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "layoutAlign": "STRETCH", "layoutGrow": 0,
-                        "isMask": false,
                         "fills": [],
                         "strokes": [
                           {
@@ -168,11 +181,9 @@ export class Top_bar extends BaseComponent {
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 21, "height": 1,
-                        "relativeTransform": [
-                          [ -4.3711395392165286e-8, -1, 67 ],
-                          [ 1, -4.3711395392165286e-8, 2.1855697696082643e-8 ]
-                        ]
+                        "width": 21, "height": 0,
+                        "relativeTransform": [[-4.3711395392165286e-8, -1, 66.00000762939453], [1, -4.3711395392165286e-8, 0]],
+                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                       }
                     },
                     {
@@ -180,12 +191,13 @@ export class Top_bar extends BaseComponent {
                       "name": "Frame 1614",
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "clipsContent": false,
-                        "layoutMode": "HORIZONTAL", "itemSpacing": 4,
+                        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                        "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                         "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                         "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
                         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                         "layoutAlign": "INHERIT", "layoutGrow": 0,
                         "fills": [],
                         "strokes": [],
@@ -195,7 +207,8 @@ export class Top_bar extends BaseComponent {
                       "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                         "width": 82, "height": 21,
-                        "relativeTransform": [[1, 0, 79], [0, 1, 0]]
+                        "relativeTransform": [[1, 0, 78], [0, 1, 0]],
+                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                       },
                       "children": [
                         {
@@ -203,12 +216,13 @@ export class Top_bar extends BaseComponent {
                           "name": "Resources",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                            "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                             "layoutAlign": "INHERIT", "layoutGrow": 0,
                             "characters": "Resources", "fontSize": 16,
                             "textCase": "ORIGINAL", "textDecoration": "NONE",
                             "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
-                            "isMask": false,
+                            "paragraphSpacing": 0, "paragraphIndent": 0,
                             "fills": [
                               {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -225,7 +239,8 @@ export class Top_bar extends BaseComponent {
                           "layoutProps": {
                             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                             "width": 82, "height": 21,
-                            "relativeTransform": [[1, 0, 0], [0, 1, 0]]
+                            "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                           }
                         }
                       ]
@@ -239,12 +254,13 @@ export class Top_bar extends BaseComponent {
               "name": "Frame 1838",
               "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 24,
+                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                "layoutMode": "HORIZONTAL", "itemSpacing": 24, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                 "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                 "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
                 "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                 "layoutAlign": "STRETCH", "layoutGrow": 0,
                 "fills": [],
                 "strokes": [],
@@ -254,7 +270,8 @@ export class Top_bar extends BaseComponent {
               "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                 "width": 950.62060546875, "height": 24,
-                "relativeTransform": [[1, 0, 689.37939453125], [0, 1, 8]]
+                "relativeTransform": [[1, 0, 689.37939453125], [0, 1, 8]],
+                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
               },
               "children": [
                 {
@@ -262,8 +279,9 @@ export class Top_bar extends BaseComponent {
                   "name": "Notifications / notifications-none",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "clipsContent": true,
+                    "isMask": false, "maskType": "ALPHA", "clipsContent": true,
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                     "layoutAlign": "INHERIT", "layoutGrow": 0,
                     "layoutMode": "NONE",
                     "fills": [],
@@ -274,7 +292,8 @@ export class Top_bar extends BaseComponent {
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                     "width": 24, "height": 24,
-                    "relativeTransform": [[1, 0, 749.62060546875], [0, 1, 0]]
+                    "relativeTransform": [[1, 0, 750.62060546875], [0, 1, 0]],
+                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                   },
                   "children": [
                     {
@@ -283,19 +302,20 @@ export class Top_bar extends BaseComponent {
                       "name": "Vector",
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                        "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "x": 4.5, "y": 2.5,
-                        "isMask": false,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 14.999951362609863, "height": 19.192251205444336,
-                        "relativeTransform": [[1, 0, 4.5], [0, 1, 2.5]]
+                        "width": 15, "height": 19.19230079650879,
+                        "relativeTransform": [[1, 0, 4.5], [0, 1, 2.5]],
+                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                       },
-                      "svgContent": SVG_Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336
+                      "svgContent": SVG_Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879
                     }
                   ]
                 },
@@ -304,13 +324,14 @@ export class Top_bar extends BaseComponent {
                   "name": "Frame 1612",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "clipsContent": false,
-                    "layoutMode": "HORIZONTAL", "itemSpacing": 16,
+                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                    "layoutMode": "HORIZONTAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                     "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                     "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
                     "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "layoutAlign": "STRETCH", "layoutGrow": 0,
+                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+                    "layoutAlign": "INHERIT", "layoutGrow": 0,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
@@ -318,8 +339,9 @@ export class Top_bar extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 105, "height": 24,
-                    "relativeTransform": [[1, 0, 797.62060546875], [0, 1, 0]]
+                    "width": 104, "height": 24,
+                    "relativeTransform": [[1, 0, 798.62060546875], [0, 1, 0]],
+                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                   },
                   "children": [
                     {
@@ -327,13 +349,14 @@ export class Top_bar extends BaseComponent {
                       "name": "Frame 1612",
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "clipsContent": false,
-                        "layoutMode": "HORIZONTAL", "itemSpacing": 16,
+                        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                        "layoutMode": "HORIZONTAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                         "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                         "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
                         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "layoutAlign": "STRETCH", "layoutGrow": 0,
+                        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+                        "layoutAlign": "INHERIT", "layoutGrow": 0,
                         "fills": [],
                         "strokes": [],
                         "effects": [],
@@ -341,8 +364,9 @@ export class Top_bar extends BaseComponent {
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 105, "height": 24,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 0]]
+                        "width": 104, "height": 24,
+                        "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                       },
                       "children": [
                         {
@@ -350,12 +374,13 @@ export class Top_bar extends BaseComponent {
                           "name": "Frame 1618",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "clipsContent": false,
-                            "layoutMode": "HORIZONTAL", "itemSpacing": 4,
+                            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                            "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                             "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                             "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
                             "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                             "layoutAlign": "INHERIT", "layoutGrow": 0,
                             "fills": [],
                             "strokes": [],
@@ -365,7 +390,8 @@ export class Top_bar extends BaseComponent {
                           "layoutProps": {
                             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                             "width": 88, "height": 24,
-                            "relativeTransform": [[1, 0, 0], [0, 1, 0]]
+                            "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                           },
                           "children": [
                             {
@@ -373,8 +399,9 @@ export class Top_bar extends BaseComponent {
                               "name": "pk-avatar",
                               "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                "isMask": false, "clipsContent": false,
+                                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
                                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                                 "layoutAlign": "INHERIT", "layoutGrow": 0,
                                 "layoutMode": "NONE",
                                 "fills": [
@@ -391,7 +418,8 @@ export class Top_bar extends BaseComponent {
                               "layoutProps": {
                                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                                 "width": 24, "height": 24,
-                                "relativeTransform": [[1, 0, 0], [0, 1, 0]]
+                                "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                               },
                               "children": [
                                 {
@@ -399,9 +427,9 @@ export class Top_bar extends BaseComponent {
                                   "name": "Ellipse 22",
                                   "props": {
                                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                    "isMask": false, "maskType": "ALPHA",
                                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                     "x": 0, "y": 0,
-                                    "isMask": false,
                                     "fills": [
                                       {
                                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -416,7 +444,8 @@ export class Top_bar extends BaseComponent {
                                   "layoutProps": {
                                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                                     "width": 24, "height": 24,
-                                    "relativeTransform": [[1, 0, 0], [0, 1, 0]]
+                                    "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                                   }
                                 },
                                 {
@@ -424,12 +453,13 @@ export class Top_bar extends BaseComponent {
                                   "name": "FW",
                                   "props": {
                                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                    "isMask": false, "maskType": "ALPHA",
                                     "strokeWeight": 2.473090410232544, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                     "characters": "JD", "fontSize": 14,
                                     "textCase": "ORIGINAL", "textDecoration": "NONE",
                                     "textAlignHorizontal": "CENTER", "textAlignVertical": "TOP", "textAutoResize": "WIDTH_AND_HEIGHT",
+                                    "paragraphSpacing": 0, "paragraphIndent": 0,
                                     "x": 3.5, "y": 2,
-                                    "isMask": false,
                                     "fills": [
                                       {
                                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -446,7 +476,8 @@ export class Top_bar extends BaseComponent {
                                   "layoutProps": {
                                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                                     "width": 17, "height": 21,
-                                    "relativeTransform": [[1, 0, 3.5], [0, 1, 2]]
+                                    "relativeTransform": [[1, 0, 3.5], [0, 1, 2]],
+                                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                                   }
                                 }
                               ]
@@ -456,12 +487,13 @@ export class Top_bar extends BaseComponent {
                               "name": "John Doe",
                               "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                "isMask": false, "maskType": "ALPHA",
                                 "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                 "layoutAlign": "INHERIT", "layoutGrow": 0,
                                 "characters": "John Doe", "fontSize": 14,
                                 "textCase": "ORIGINAL", "textDecoration": "NONE",
                                 "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
-                                "isMask": false,
+                                "paragraphSpacing": 0, "paragraphIndent": 0,
                                 "fills": [
                                   {
                                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -478,7 +510,8 @@ export class Top_bar extends BaseComponent {
                               "layoutProps": {
                                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                                 "width": 60, "height": 21,
-                                "relativeTransform": [[1, 0, 28], [0, 1, 1.5]]
+                                "relativeTransform": [[1, 0, 28], [0, 1, 1.5]],
+                                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                               }
                             }
                           ]
@@ -488,9 +521,9 @@ export class Top_bar extends BaseComponent {
                           "name": "Line 43",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                            "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                             "layoutAlign": "STRETCH", "layoutGrow": 0,
-                            "isMask": false,
                             "fills": [],
                             "strokes": [
                               {
@@ -503,11 +536,9 @@ export class Top_bar extends BaseComponent {
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                            "width": 24, "height": 1,
-                            "relativeTransform": [
-                              [ -4.3711395392165286e-8, -1, 105 ],
-                              [ 1, -4.3711395392165286e-8, 2.1855697696082643e-8 ]
-                            ]
+                            "width": 24, "height": 0,
+                            "relativeTransform": [[-4.3711395392165286e-8, -1, 104], [1, -4.3711395392165286e-8, 0]],
+                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                           }
                         }
                       ]
@@ -519,8 +550,9 @@ export class Top_bar extends BaseComponent {
                   "name": "Navigation / Hamburger",
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "clipsContent": true,
+                    "isMask": false, "maskType": "ALPHA", "clipsContent": true,
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                     "layoutAlign": "INHERIT", "layoutGrow": 0,
                     "layoutMode": "NONE",
                     "fills": [
@@ -537,7 +569,8 @@ export class Top_bar extends BaseComponent {
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                     "width": 24, "height": 24,
-                    "relativeTransform": [[1, 0, 926.62060546875], [0, 1, 0]]
+                    "relativeTransform": [[1, 0, 926.62060546875], [0, 1, 0]],
+                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                   },
                   "children": [
                     {
@@ -546,9 +579,9 @@ export class Top_bar extends BaseComponent {
                       "name": "Union",
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                        "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 2, "strokeAlign": "CENTER", "strokeCap": "ROUND", "strokeJoin": "ROUND", "strokeMiterLimit": 4,
                         "x": 2, "y": 5,
-                        "isMask": false,
                         "fills": [
                           {
                             "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -572,9 +605,9 @@ export class Top_bar extends BaseComponent {
                           "name": "Vector (Stroke)",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                            "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 2, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                             "x": 2, "y": 11,
-                            "isMask": false,
                             "fills": [
                               {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -605,9 +638,9 @@ export class Top_bar extends BaseComponent {
                           "name": "Vector (Stroke)",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                            "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 2, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                             "x": 2, "y": 5,
-                            "isMask": false,
                             "fills": [
                               {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -638,9 +671,9 @@ export class Top_bar extends BaseComponent {
                           "name": "Vector (Stroke)",
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                            "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 2, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                             "x": 2, "y": 17,
-                            "isMask": false,
                             "fills": [
                               {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",

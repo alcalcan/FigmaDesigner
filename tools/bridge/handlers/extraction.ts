@@ -87,3 +87,136 @@ export function handleRead(req: http.IncomingMessage, res: http.ServerResponse) 
         res.end(JSON.stringify({ error: "Failed to read file" }));
     }
 }
+
+export function handleDelete(req: http.IncomingMessage, res: http.ServerResponse) {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+        try {
+            const { path: relPath } = JSON.parse(body);
+            if (!relPath) {
+                res.writeHead(400);
+                res.end(JSON.stringify({ error: "Missing path" }));
+                return;
+            }
+
+            const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+            const targetPath = path.join(extractionRoot, relPath);
+
+            // Security: Ensure path is within extraction root
+            if (!targetPath.startsWith(extractionRoot)) {
+                res.writeHead(403);
+                res.end(JSON.stringify({ error: "Invalid path" }));
+                return;
+            }
+
+            if (!fs.existsSync(targetPath)) {
+                res.writeHead(404);
+                res.end(JSON.stringify({ error: "File or directory not found" }));
+                return;
+            }
+
+            const stat = fs.statSync(targetPath);
+            if (stat.isDirectory()) {
+                fs.rmSync(targetPath, { recursive: true, force: true });
+                console.log(`[Bridge] Deleted folder: ${relPath}`);
+            } else {
+                // If it's a JSON file in extraction, we usually want to delete the whole session folder
+                const parentDir = path.dirname(targetPath);
+                const basename = path.basename(targetPath);
+
+                if (basename.endsWith('.json') && parentDir !== extractionRoot) {
+                    fs.rmSync(parentDir, { recursive: true, force: true });
+                    console.log(`[Bridge] Deleted session folder for: ${relPath}`);
+                } else {
+                    fs.unlinkSync(targetPath);
+                    console.log(`[Bridge] Deleted file: ${relPath}`);
+
+                    // Simple cleanup check for empty session folder
+                    if (parentDir !== extractionRoot && fs.existsSync(parentDir)) {
+                        const remaining = fs.readdirSync(parentDir);
+                        if (remaining.length === 0) {
+                            fs.rmdirSync(parentDir);
+                            console.log(`[Bridge] Cleaned up empty session folder: ${path.relative(extractionRoot, parentDir)}`);
+                        }
+                    }
+                }
+            }
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ status: 'ok' }));
+        } catch (e: any) {
+            console.error("Error in /delete:", e);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: e.message }));
+        }
+    });
+}
+
+export function handleBatchDelete(req: http.IncomingMessage, res: http.ServerResponse) {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+        try {
+            const { paths } = JSON.parse(body);
+            if (!Array.isArray(paths)) {
+                res.writeHead(400);
+                res.end(JSON.stringify({ error: "Invalid paths array" }));
+                return;
+            }
+
+            const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+            const results: any[] = [];
+
+            for (const relPath of paths) {
+                const targetPath = path.join(extractionRoot, relPath);
+
+                // Security check
+                if (!targetPath.startsWith(extractionRoot)) {
+                    results.push({ path: relPath, status: "error", error: "Invalid path" });
+                    continue;
+                }
+
+                if (!fs.existsSync(targetPath)) {
+                    results.push({ path: relPath, status: "error", error: "Not found" });
+                    continue;
+                }
+
+                try {
+                    const stat = fs.statSync(targetPath);
+                    if (stat.isDirectory()) {
+                        fs.rmSync(targetPath, { recursive: true, force: true });
+                        console.log(`[Bridge] Batch Deleted folder: ${relPath}`);
+                    } else {
+                        const parentDir = path.dirname(targetPath);
+                        const basename = path.basename(targetPath);
+
+                        if (basename.endsWith('.json') && parentDir !== extractionRoot) {
+                            fs.rmSync(parentDir, { recursive: true, force: true });
+                            console.log(`[Bridge] Batch Deleted session folder for: ${relPath}`);
+                        } else {
+                            fs.unlinkSync(targetPath);
+                            console.log(`[Bridge] Batch Deleted file: ${relPath}`);
+                            if (parentDir !== extractionRoot && fs.existsSync(parentDir)) {
+                                const remaining = fs.readdirSync(parentDir);
+                                if (remaining.length === 0) {
+                                    fs.rmdirSync(parentDir);
+                                }
+                            }
+                        }
+                    }
+                    results.push({ path: relPath, status: "ok" });
+                } catch (e: any) {
+                    results.push({ path: relPath, status: "error", error: e.message });
+                }
+            }
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ status: 'ok', results }));
+        } catch (e: any) {
+            console.error("Error in /batch-delete:", e);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: e.message }));
+        }
+    });
+}

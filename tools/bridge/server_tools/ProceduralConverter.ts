@@ -549,6 +549,10 @@ export class ProceduralConverter {
         // Optimization: Check layout mode first as a quick filter
         if (a.props.layoutMode !== b.props.layoutMode) return false;
 
+        // Masking check: Don't group masked items with unmasked ones
+        if (a.props.isMask !== b.props.isMask) return false;
+        if (a.props.maskType !== b.props.maskType) return false;
+
         const count = a.children.length;
         for (let i = 0; i < count; i++) {
             const childA = this.nodes.get(a.children[i])!;
