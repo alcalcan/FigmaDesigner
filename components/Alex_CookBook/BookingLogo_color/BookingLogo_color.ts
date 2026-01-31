@@ -10,6 +10,8 @@ export interface BookingLogoProps extends ComponentProps {
 }
 
 export class BookingLogo_color extends BaseComponent {
+  static readonly BOOKING_BLUE = { r: 0, g: 0.208, b: 0.502 }; // Official Booking.com brand blue (#003580)
+
   async create(props: BookingLogoProps): Promise<SceneNode> {
     const isWhite = props.variant === 'white';
 

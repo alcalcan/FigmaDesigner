@@ -57,7 +57,7 @@ export class RadioSearchDemo extends BaseComponent {
             logoRow.paddingBottom = 20;
             logoRow.paddingLeft = 20;
             logoRow.paddingRight = 20;
-            logoRow.fills = [{ type: 'SOLID', color: { r: 0.15, g: 0.15, b: 0.15 } }]; // Dark background for contrast
+            logoRow.fills = [{ type: 'SOLID', color: { r: 0, g: 0.067, b: 0.173 } }]; // Very dark blue for logo contrast
             logoRow.cornerRadius = 8;
 
             const logo = new BookingLogo_color();
