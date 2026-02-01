@@ -9,7 +9,7 @@ export class NavBookingDemo extends BaseComponent {
             "props": {
                 "layoutMode": "VERTICAL",
                 "primaryAxisSizingMode": "AUTO",
-                "counterAxisSizingMode": "AUTO",
+                "counterAxisSizingMode": "FIXED",
                 "itemSpacing": 40,
                 "paddingTop": 40,
                 "paddingRight": 40,
@@ -17,43 +17,49 @@ export class NavBookingDemo extends BaseComponent {
                 "paddingLeft": 40,
                 "fills": [{ "type": "SOLID", "color": { "r": 0.95, "g": 0.95, "b": 0.95 } }]
             },
-            "layoutProps": { "parentIsAutoLayout": false },
+            "layoutProps": { "parentIsAutoLayout": false, "width": 1680 },
             "children": [
                 {
                     "type": "COMPONENT",
                     "name": "LTR Gradient + Color Logo",
                     "component": Main_Navigation_Booking,
-                    "props": { "gradientDirection": "left-to-right", "logoVariant": "color" }
+                    "props": { "gradientDirection": "left-to-right", "logoVariant": "color" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 },
                 {
                     "type": "COMPONENT",
                     "name": "RTL Gradient + Color Logo",
                     "component": Main_Navigation_Booking,
-                    "props": { "gradientDirection": "right-to-left", "logoVariant": "color" }
+                    "props": { "gradientDirection": "right-to-left", "logoVariant": "color" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 },
                 {
                     "type": "COMPONENT",
                     "name": "LTR Gradient + White Logo",
                     "component": Main_Navigation_Booking,
-                    "props": { "gradientDirection": "left-to-right", "logoVariant": "white" }
+                    "props": { "gradientDirection": "left-to-right", "logoVariant": "white" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 },
                 {
                     "type": "COMPONENT",
                     "name": "RTL Gradient + White Logo",
                     "component": Main_Navigation_Booking,
-                    "props": { "gradientDirection": "right-to-left", "logoVariant": "white" }
+                    "props": { "gradientDirection": "right-to-left", "logoVariant": "white" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 },
                 {
                     "type": "COMPONENT",
                     "name": "Floating Variant + Color Logo",
                     "component": Main_Navigation_Booking,
-                    "props": { "variant": "floating", "logoVariant": "color" }
+                    "props": { "variant": "floating", "logoVariant": "color", "gradientDirection": "right-to-left" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 },
                 {
                     "type": "COMPONENT",
                     "name": "Floating Variant + White Logo",
                     "component": Main_Navigation_Booking,
-                    "props": { "variant": "floating", "logoVariant": "white" }
+                    "props": { "variant": "floating", "logoVariant": "white", "gradientDirection": "right-to-left" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 }
             ]
         };

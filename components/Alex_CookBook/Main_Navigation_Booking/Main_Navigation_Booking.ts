@@ -1,5 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
-
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 // SVG Assets
 import SVG_Main_Navigation_assets_vector_UEFA_com_I14_114603_13611_17297_9157_77872_svg_74_09954071044922x12 from "./assets/Main_Navigation_assets_vector_UEFA_com_I14_114603_13611_17297_9157_77872_svg_74_09954071044922x12.svg";
@@ -7,9 +6,7 @@ import SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77873_
 import SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22 from "./assets/Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22.svg";
 import SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469 from "./assets/Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469.svg";
 
-
 import { BookingLogo_color } from "../BookingLogo_color/BookingLogo_color";
-
 
 export interface Main_Navigation_BookingProps extends ComponentProps {
   gradientDirection?: 'left-to-right' | 'right-to-left';
@@ -18,550 +15,246 @@ export interface Main_Navigation_BookingProps extends ComponentProps {
 }
 
 export class Main_Navigation_Booking extends BaseComponent {
-
   async create(props: Main_Navigation_BookingProps): Promise<SceneNode> {
     const gradientDirection = props.gradientDirection || 'left-to-right';
     const logoVariant = props.logoVariant || 'color';
     const variant = props.variant || 'standard';
 
-    const mainColor = { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }; // Dark background (main color)
+    const mainColor = { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }; // Dark background
+
+    const blueColor = logoVariant === 'color'
+      ? { "r": 0, "g": 0.212, "b": 0.447, "a": 1 } // Darker blue for color logo
+      : { "r": 0, "g": 0.424, "b": 0.894, "a": 1 }; // Original blue for white logo
 
     const gradientStops = [
-      { "color": { "r": 0, "g": 0.424, "b": 0.894, "a": 1 }, "position": 0 },
+      { "color": blueColor, "position": 0 },
       { "color": mainColor, "position": 1 }
     ];
 
     if (gradientDirection === 'right-to-left') {
-      // Reverse positions for RTL
       gradientStops[0].position = 1;
       gradientStops[1].position = 0;
     }
 
-    const structure: NodeDefinition = {
-      "type": "FRAME",
-      "name": "Main Navigation",
-      "props": {
-        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-        "layoutMode": "HORIZONTAL", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-        "paddingTop": 0, "paddingRight": 135, "paddingBottom": 0, "paddingLeft": 135,
-        "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-        "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER",
-        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-        "fills": variant === 'floating' ? [{ "type": "SOLID", "color": mainColor }] : [
-          {
-            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "GRADIENT_LINEAR",
-            "gradientStops": gradientStops,
-            "gradientTransform": [[1, 0, 0], [0, 1, 0]]
-          }
-        ],
-        "strokes": [],
-        "effects": [],
-        "cornerRadius": 0
-      },
-      "layoutProps": { "width": 1680, "height": 40, "parentIsAutoLayout": false },
-      "children": [
-        {
-          "type": "FRAME",
-          "name": "Left area",
-          "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "HORIZONTAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-            "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-            "layoutAlign": "INHERIT", "layoutGrow": 0,
-            "fills": [],
-            "strokes": [],
-            "effects": [],
-            "cornerRadius": 0
-          },
-          "layoutProps": {
-            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 98.09954071044922, "height": 20,
-            "relativeTransform": [[1, 0, 135], [0, 1, 10]],
-            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-          },
-          "children": [
-            {
-              "type": "FRAME",
-              "name": "Logo + Dropdown icon",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "fills": [],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 98.09954071044922, "height": 20,
-                "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              },
-              "children": [
-                {
-                  "type": "VECTOR",
-                  "shouldFlatten": true,
-                  "name": "UEFA.com",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 74.09954071044922, "height": 12,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 4]],
-                    "constraints": { "horizontal": "MIN", "vertical": "CENTER" }
-                  },
-                  "svgContent": SVG_Main_Navigation_assets_vector_UEFA_com_I14_114603_13611_17297_9157_77872_svg_74_09954071044922x12
-                },
-                {
-                  "type": "FRAME",
-                  "name": "Navigation / dropdown-indicator",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "layoutMode": "NONE",
-                    "fills": [],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 20, "height": 20,
-                    "relativeTransform": [[1, 0, 78.09954071044922], [0, 1, 0]],
-                    "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                  },
-                  "children": [
-                    {
-                      "type": "VECTOR",
-                      "shouldFlatten": true,
-                      "name": "Vector",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 6.6448974609375, "y": 8.101704597473145,
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 6.710267066955566, "height": 4.968685150146484,
-                        "relativeTransform": [[1, 0, 6.6448974609375], [0, 1, 8.101704597473145]],
-                        "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                      },
-                      "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77873_1004_283_svg_6_710267066955566x4_968685150146484
-                    }
-                  ]
-                }
-              ]
-            }
-            }
-      ]
-    },
-        ...(variant === 'floating' ? [{
+    // Left Area Component
+    const leftArea: NodeDefinition = {
       "type": "FRAME" as const,
-      "name": "Gradient Backdrop",
-      "props": {
-        "fills": [
-          {
-            "type": "GRADIENT_LINEAR" as const,
-            "gradientStops": gradientStops,
-            "gradientTransform": [[1, 0, 0], [0, 1, 0]]
-          }
-        ],
-        "opacity": 0.8
-      },
-      "layoutProps": {
-        "layoutPositioning": "ABSOLUTE" as const,
-        "width": 600,
-        "height": 40,
-        "relativeTransform": [[1, 0, 135], [0, 1, 0]], // Starts before the logo area
-        "constraints": { "horizontal": "MAX", "vertical": "STRETCH" }
-      }
-    }] : []),
-    {
-      "type": "FRAME",
-      "name": "Right area",
-      "props": {
-        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-        "isMask": false, "maskType": "ALPHA", "clipsContent": (variant === 'standard'),
-        "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-        "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-        "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-        "layoutAlign": "INHERIT", "layoutGrow": 0,
-        "fills": [],
-        "strokes": [],
-        "effects": [],
-        "cornerRadius": 0
-      },
-      "layoutProps": {
-        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-        "width": variant === 'floating' ? "AUTO" : 134, "height": 40,
-        "relativeTransform": [[1, 0, 1411], [0, 1, 0]],
-        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-      },
+      "name": "Left area",
+      "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 16, "counterAxisAlignItems": "CENTER" as const },
+      "layoutProps": { "width": 98, "height": 20, "parentIsAutoLayout": true },
       "children": [
         {
-          "type": "FRAME",
-          "name": "Floating Group",
-          "props": {
-            "layoutMode": "HORIZONTAL",
-            "itemSpacing": 12,
-            "paddingLeft": 12,
-            "paddingRight": 12,
-            "cornerRadius": 20,
-            "fills": variant === 'floating' ? [{ "type": "SOLID", "color": mainColor }] : [],
-            "effects": variant === 'floating' ? [{ "type": "DROP_SHADOW", "color": { "r": 0, "g": 0, "b": 0, "a": 0.25 }, "offset": { "x": 0, "y": 4 }, "radius": 4, "spread": 0, "visible": true, "blendMode": "NORMAL" }] : []
-          },
+          "type": "FRAME" as const,
+          "name": "Logo + Dropdown icon",
+          "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 4, "counterAxisAlignItems": "CENTER" as const },
           "layoutProps": { "parentIsAutoLayout": true },
           "children": [
             {
-              "type": "FRAME",
-              "name": "pk-button",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                "paddingTop": 12, "paddingRight": 0, "paddingBottom": 12, "paddingLeft": 0,
-                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
-                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "STRETCH", "layoutGrow": 0,
-                "fills": [],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 8
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 74, "height": 40,
-                "relativeTransform": [[1, 0, 12], [0, 1, 0]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              },
-              "children": [
-                {
-                  "type": "FRAME",
-                  "name": "Leading icon",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "layoutMode": "NONE",
-                    "fills": [
-                      {
-                        "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 0.11614017188549042, "g": 0.11614017188549042, "b": 0.11614017188549042 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 24, "height": 24,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 8]],
-                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                  },
-                  "children": [
-                    {
-                      "type": "VECTOR",
-                      "shouldFlatten": true,
-                      "name": "Vector",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 1, "y": 1,
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 22, "height": 22,
-                        "relativeTransform": [[1, 0, 1], [0, 1, 1]],
-                        "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                      },
-                      "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22
-                    }
-                  ]
-                },
-                {
-                  "type": "TEXT",
-                  "name": "Label",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "characters": "Login", "fontSize": 16,
-                    "textCase": "ORIGINAL", "textDecoration": "NONE",
-                    "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
-                    "paragraphSpacing": 16, "paragraphIndent": 0,
-                    "fills": [
-                      {
-                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 1, "g": 1, "b": 1 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                    "lineHeight": { "unit": "PERCENT", "value": 150 },
-                    "font": { "family": "Manrope", "style": "SemiBold" }
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 42, "height": 24,
-                    "relativeTransform": [[1, 0, 32], [0, 1, 8]],
-                    "constraints": { "horizontal": "STRETCH", "vertical": "CENTER" }
-                  }
-                }
-              ]
+              "type": "VECTOR" as const, "shouldFlatten": true, "name": "UEFA.com",
+              "layoutProps": { "width": 74, "height": 12, "parentIsAutoLayout": true },
+              "svgContent": SVG_Main_Navigation_assets_vector_UEFA_com_I14_114603_13611_17297_9157_77872_svg_74_09954071044922x12
             },
             {
-              "type": "FRAME",
-              "name": "pk-divider",
+              "type": "FRAME" as const, "name": "Navigation / dropdown-indicator",
               "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "layoutMode": "NONE",
-                "fills": [
-                  {
-                    "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 1, "g": 1, "b": 1 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
+                "layoutMode": "HORIZONTAL" as const,
+                "primaryAxisAlignItems": "CENTER" as const,
+                "counterAxisAlignItems": "CENTER" as const
               },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 24, "height": 0,
-                "relativeTransform": [[6.123234262925839e-17, 1, 98], [-1, 6.123234262925839e-17, 32]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              },
+              "layoutProps": { "width": 20, "height": 20, "parentIsAutoLayout": true },
               "children": [
                 {
-                  "type": "LINE",
-                  "name": "Divider",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 1, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 0, "y": 0,
-                    "fills": [],
-                    "strokes": [
-                      {
-                        "visible": true, "opacity": 0.25, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 1, "g": 1, "b": 1 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "effects": []
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 24, "height": 0,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                    "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                  }
+                  "type": "VECTOR" as const, "shouldFlatten": true, "name": "Vector",
+                  "layoutProps": { "width": 6.7, "height": 5, "parentIsAutoLayout": true },
+                  "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77873_1004_283_svg_6_710267066955566x4_968685150146484
                 }
               ]
+            }
+          ]
+        }
+      ]
+    };
+
+    // Right Side Children Logic
+    const rightSideChildren: NodeDefinition[] = [];
+
+    if (variant === 'floating') {
+      rightSideChildren.push({
+        "type": "FRAME" as const,
+        "name": "Logo Gradient Wrapper",
+        "props": {
+          "layoutMode": "HORIZONTAL" as const,
+          "itemSpacing": 0,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+          "paddingTop": 4,
+          "paddingBottom": 4,
+          "cornerRadius": 8,
+          "primaryAxisAlignItems": "MIN" as const,
+          "counterAxisAlignItems": "CENTER" as const,
+          "counterAxisSizingMode": "AUTO" as const,
+          "fills": [{
+            "type": "GRADIENT_LINEAR" as const,
+            "gradientStops": gradientStops,
+            "gradientTransform": [[1, 0, 0], [0, 1, 0]]
+          }]
+        },
+        "layoutProps": { "parentIsAutoLayout": true },
+        "children": [{
+          "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
+          "layoutProps": { "parentIsAutoLayout": true }
+        }]
+      });
+    }
+
+    // Floating Group or Standard Buttons
+    const rightAreaChildren: NodeDefinition[] = [];
+    if (variant === 'floating') {
+      rightAreaChildren.push({
+        "type": "FRAME" as const,
+        "name": "Floating Group",
+        "props": {
+          "layoutMode": "HORIZONTAL" as const,
+          "itemSpacing": 12,
+          "paddingLeft": 12,
+          "paddingRight": 12,
+          "cornerRadius": 24,
+          "primaryAxisAlignItems": "MIN" as const, // Align left
+          "counterAxisAlignItems": "CENTER" as const, // Align middle
+          "counterAxisSizingMode": "AUTO" as const, // Height: HUG
+          "fills": [{ "type": "SOLID" as const, "color": mainColor }],
+          "effects": [{ "type": "DROP_SHADOW" as const, "color": { "r": 0, "g": 0, "b": 0, "a": 0.25 }, "offset": { "x": 0, "y": 4 }, "radius": 4, "visible": true, "blendMode": "NORMAL" as const }]
+        },
+        "layoutProps": { "parentIsAutoLayout": true },
+        "children": [
+          {
+            "type": "FRAME" as const, "name": "pk-button-login",
+            "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 8, "paddingTop": 12, "paddingBottom": 12, "cornerRadius": 8, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
+            "layoutProps": { "height": 40, "parentIsAutoLayout": true },
+            "children": [
+              { "type": "FRAME" as const, "name": "Leading icon", "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true }, "children": [{ "type": "VECTOR" as const, "shouldFlatten": true, "name": "Vector", "props": { "x": 1, "y": 1 }, "layoutProps": { "width": 22, "height": 22, "parentIsAutoLayout": false }, "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22 }] },
+              { "type": "TEXT" as const, "name": "Label", "props": { "characters": "Login", "fontSize": 16, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "Manrope", "style": "SemiBold" } }, "layoutProps": { "parentIsAutoLayout": true } }
+            ]
+          },
+          {
+            "type": "FRAME" as const, "name": "pk-divider-1",
+            "props": { "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.5 }] },
+            "layoutProps": { "width": 1, "height": 24, "parentIsAutoLayout": true }
+          },
+          {
+            "type": "FRAME" as const, "name": "pk-button-search",
+            "props": {
+              "layoutMode": "HORIZONTAL" as const,
+              "primaryAxisAlignItems": "CENTER" as const,
+              "counterAxisAlignItems": "CENTER" as const
             },
-            {
-              "type": "FRAME",
-              "name": "pk-button",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "strokeWeight": 2, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 2, "strokeRightWeight": 2, "strokeBottomWeight": 2, "strokeLeftWeight": 2,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "layoutMode": "NONE",
-                "fills": [],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 58
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 24, "height": 24,
-                "relativeTransform": [[1, 0, 110], [0, 1, 8]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              },
-              "children": [
-                {
-                  "type": "FRAME",
-                  "name": "Icon",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "x": 3, "y": 3,
-                    "layoutMode": "NONE",
-                    "fills": [
-                      {
-                        "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 1, "g": 1, "b": 1 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 18, "height": 18,
-                    "relativeTransform": [[1, 0, 3], [0, 1, 3]],
-                    "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                  },
-                  "children": [
-                    {
-                      "type": "VECTOR",
-                      "shouldFlatten": true,
-                      "name": "Vector",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 2.25, "y": 2.25,
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 12.807365417480469, "height": 12.807365417480469,
-                        "relativeTransform": [[1, 0, 2.25], [0, 1, 2.25]],
-                        "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                      },
-                      "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "FRAME",
-              "name": "pk-divider",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "layoutMode": "NONE",
-                "fills": [
-                  {
-                    "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 1, "g": 1, "b": 1 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 24, "height": 0,
-                "relativeTransform": [[6.123234262925839e-17, 1, 98], [-1, 6.123234262925839e-17, 32]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              },
-              "children": [
-                {
-                  "type": "LINE",
-                  "name": "Divider",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 1, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 0, "y": 0,
-                    "fills": [],
-                    "strokes": [
-                      {
-                        "visible": true, "opacity": 0.25, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 1, "g": 1, "b": 1 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "effects": []
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 24, "height": 0,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                    "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                  }
-                }
-              ]
-            },
+            "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true },
+            "children": [
+              {
+                "type": "FRAME" as const, "name": "Icon", "props": { "clipsContent": true, "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
+                "layoutProps": { "width": 18, "height": 18, "parentIsAutoLayout": true },
+                "children": [{ "type": "VECTOR" as const, "shouldFlatten": true, "name": "Vector", "layoutProps": { "width": 12.8, "height": 12.8, "parentIsAutoLayout": true }, "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469 }]
+              }
+            ]
+          }
+        ]
+      });
+    } else {
+      rightAreaChildren.push(
+        { "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant }, "layoutProps": { "parentIsAutoLayout": true } },
+        {
+          "type": "FRAME" as const, "name": "pk-button",
+          "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 8, "paddingTop": 12, "paddingBottom": 12, "cornerRadius": 8, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
+          "layoutProps": { "height": 40, "parentIsAutoLayout": true },
+          "children": [
+            { "type": "FRAME" as const, "name": "Leading icon", "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true }, "children": [{ "type": "VECTOR" as const, "shouldFlatten": true, "name": "Vector", "props": { "x": 1, "y": 1 }, "layoutProps": { "width": 22, "height": 22, "parentIsAutoLayout": false }, "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22 }] },
+            { "type": "TEXT" as const, "name": "Label", "props": { "characters": "Login", "fontSize": 16, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "Manrope", "style": "SemiBold" } }, "layoutProps": { "parentIsAutoLayout": true } }
           ]
         },
         {
-          "type": "COMPONENT",
-          "name": "BookingLogo",
-          "component": BookingLogo_color,
-          "props": { "variant": logoVariant },
-          "layoutProps": {
-            "parentIsAutoLayout": true,
-            "layoutPositioning": variant === 'floating' ? "ABSOLUTE" : "AUTO",
-            "relativeTransform": variant === 'floating' ? [[1, 0, 0], [0, 1, -40]] : undefined
+          "type": "FRAME" as const, "name": "pk-divider",
+          "props": { "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.5 }] },
+          "layoutProps": { "width": 1, "height": 24, "parentIsAutoLayout": true }
+        },
+        {
+          "type": "FRAME" as const, "name": "pk-button",
+          "props": {
+            "layoutMode": "HORIZONTAL" as const,
+            "primaryAxisAlignItems": "CENTER" as const,
+            "counterAxisAlignItems": "CENTER" as const
+          },
+          "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true },
+          "children": [
+            {
+              "type": "FRAME" as const, "name": "Icon", "props": { "clipsContent": true, "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
+              "layoutProps": { "width": 18, "height": 18, "parentIsAutoLayout": true },
+              "children": [{ "type": "VECTOR" as const, "shouldFlatten": true, "name": "Vector", "layoutProps": { "width": 12.8, "height": 12.8, "parentIsAutoLayout": true }, "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469 }]
+            }
+          ]
+        }
+      );
+    }
+
+    rightSideChildren.push({
+      "type": "FRAME" as const,
+      "name": "Right area",
+      "props": {
+        "layoutMode": "HORIZONTAL" as const,
+        "itemSpacing": 12,
+        "counterAxisAlignItems": "CENTER" as const,
+        "counterAxisSizingMode": "AUTO" as const, // Height: HUG
+        "fills": []
+      },
+      "layoutProps": { "parentIsAutoLayout": true },
+      "children": rightAreaChildren
+    });
+
+    const structure: NodeDefinition = {
+      "type": "FRAME" as const,
+      "name": "Main Navigation",
+      "props": {
+        "layoutMode": "HORIZONTAL" as const,
+        "primaryAxisAlignItems": "SPACE_BETWEEN" as const,
+        "counterAxisAlignItems": "CENTER" as const,
+        "primaryAxisSizingMode": "FIXED" as const, // Width: FIXED/FILL
+        "counterAxisSizingMode": "AUTO" as const, // Height: HUG
+        "paddingLeft": 135,
+        "paddingRight": 135,
+        "fills": variant === 'floating' ? [{ "type": "SOLID" as const, "color": mainColor }] : [
+          {
+            "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "GRADIENT_LINEAR" as const,
+            "gradientStops": gradientStops,
+            "gradientTransform": [[1, 0, 0], [0, 1, 0]]
           }
+        ]
+      },
+      "layoutProps": {
+        "width": props.width ?? 1680,
+        "parentIsAutoLayout": props.parentIsAutoLayout ?? false,
+        "layoutAlign": props.layoutAlign,
+        "layoutGrow": props.layoutGrow
+      }, // Reverted height to 40px
+      "children": [
+        leftArea,
+        {
+          "type": "FRAME" as const,
+          "name": "Right side container",
+          "props": {
+            "layoutMode": "HORIZONTAL" as const,
+            "itemSpacing": 12,
+            "counterAxisAlignItems": "CENTER" as const,
+            "counterAxisSizingMode": "AUTO" as const, // Height: HUG
+            "fills": []
+          },
+          "layoutProps": { "parentIsAutoLayout": true },
+          "children": rightSideChildren
         }
       ]
-    }
-      ]
-  };
+    };
 
-  const root = await this.renderDefinition(structure);
-
-    // Final positioning
+    const root = await this.renderDefinition(structure);
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
-
     return root;
   }
 }
