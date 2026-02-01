@@ -12,6 +12,7 @@ export interface Main_Navigation_BookingProps extends ComponentProps {
   gradientDirection?: 'left-to-right' | 'right-to-left';
   logoVariant?: 'color' | 'white';
   message?: string;
+  showMarketingIcon?: boolean;
   variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered' | 'full-width-centered-message';
 }
 
@@ -48,7 +49,7 @@ export class Main_Navigation_Booking extends BaseComponent {
         {
           "type": "FRAME" as const,
           "name": "Logo + Dropdown icon",
-          "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 4, "counterAxisAlignItems": "CENTER" as const },
+          "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 8, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
           "layoutProps": { "parentIsAutoLayout": true },
           "children": [
             {
@@ -207,6 +208,15 @@ export class Main_Navigation_Booking extends BaseComponent {
             }
           ]
         });
+
+        if (props.showMarketingIcon) {
+          pillChildren.push({
+            "type": "VECTOR" as const,
+            "name": "Marketing Icon",
+            "layoutProps": { "width": 12, "height": 12, "parentIsAutoLayout": true },
+            "svgContent": `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 3L4.5 6L7.5 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+          });
+        }
       }
       pillChildren.push({
         "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
