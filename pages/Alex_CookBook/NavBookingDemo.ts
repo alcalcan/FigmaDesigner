@@ -105,7 +105,7 @@ export class NavBookingDemo extends BaseComponent {
                     },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
-                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Strategic Marketing Entry: Introducing the 'Genius' value proposition. This variant demonstrates how a high-impact marketing message can be seamlessly integrated into the brand pill, establishing primary value before the user proceeds with their search." }, "layoutProps": { "parentIsAutoLayout": true } },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Strategic Marketing Entry: This variant focuses on the core intent of 'Introducing a marketing message' directly within the brand pill. Regardless of the specific text, this architectural choice established immediate brand value and program awareness before the user initiates their journey." }, "layoutProps": { "parentIsAutoLayout": true } },
 
                 // 11
                 {
