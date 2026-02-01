@@ -14,6 +14,7 @@ import { BookingLogo_color } from "../BookingLogo_color/BookingLogo_color";
 export interface Main_Navigation_BookingProps extends ComponentProps {
   gradientDirection?: 'left-to-right' | 'right-to-left';
   logoVariant?: 'color' | 'white';
+  variant?: 'standard' | 'floating';
 }
 
 export class Main_Navigation_Booking extends BaseComponent {
@@ -21,10 +22,13 @@ export class Main_Navigation_Booking extends BaseComponent {
   async create(props: Main_Navigation_BookingProps): Promise<SceneNode> {
     const gradientDirection = props.gradientDirection || 'left-to-right';
     const logoVariant = props.logoVariant || 'color';
+    const variant = props.variant || 'standard';
+
+    const mainColor = { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }; // Dark background (main color)
 
     const gradientStops = [
       { "color": { "r": 0, "g": 0.424, "b": 0.894, "a": 1 }, "position": 0 },
-      { "color": { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }, "position": 1 }
+      { "color": mainColor, "position": 1 }
     ];
 
     if (gradientDirection === 'right-to-left') {
@@ -45,7 +49,7 @@ export class Main_Navigation_Booking extends BaseComponent {
         "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER",
         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-        "fills": [
+        "fills": variant === 'floating' ? [{ "type": "SOLID", "color": mainColor }] : [
           {
             "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "GRADIENT_LINEAR",
             "gradientStops": gradientStops,
@@ -176,32 +180,68 @@ export class Main_Navigation_Booking extends BaseComponent {
                 }
               ]
             }
-          ]
-        },
+            }
+      ]
+    },
+        ...(variant === 'floating' ? [{
+      "type": "FRAME" as const,
+      "name": "Gradient Backdrop",
+      "props": {
+        "fills": [
+          {
+            "type": "GRADIENT_LINEAR" as const,
+            "gradientStops": gradientStops,
+            "gradientTransform": [[1, 0, 0], [0, 1, 0]]
+          }
+        ],
+        "opacity": 0.8
+      },
+      "layoutProps": {
+        "layoutPositioning": "ABSOLUTE" as const,
+        "width": 600,
+        "height": 40,
+        "relativeTransform": [[1, 0, 135], [0, 1, 0]], // Starts before the logo area
+        "constraints": { "horizontal": "MAX", "vertical": "STRETCH" }
+      }
+    }] : []),
+    {
+      "type": "FRAME",
+      "name": "Right area",
+      "props": {
+        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+        "isMask": false, "maskType": "ALPHA", "clipsContent": (variant === 'standard'),
+        "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
+        "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
+        "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+        "layoutAlign": "INHERIT", "layoutGrow": 0,
+        "fills": [],
+        "strokes": [],
+        "effects": [],
+        "cornerRadius": 0
+      },
+      "layoutProps": {
+        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+        "width": variant === 'floating' ? "AUTO" : 134, "height": 40,
+        "relativeTransform": [[1, 0, 1411], [0, 1, 0]],
+        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
+      },
+      "children": [
         {
           "type": "FRAME",
-          "name": "Right area",
+          "name": "Floating Group",
           "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-            "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 12,
-            "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
-            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-            "layoutAlign": "INHERIT", "layoutGrow": 0,
-            "fills": [],
-            "strokes": [],
-            "effects": [],
-            "cornerRadius": 0
+            "layoutMode": "HORIZONTAL",
+            "itemSpacing": 12,
+            "paddingLeft": 12,
+            "paddingRight": 12,
+            "cornerRadius": 20,
+            "fills": variant === 'floating' ? [{ "type": "SOLID", "color": mainColor }] : [],
+            "effects": variant === 'floating' ? [{ "type": "DROP_SHADOW", "color": { "r": 0, "g": 0, "b": 0, "a": 0.25 }, "offset": { "x": 0, "y": 4 }, "radius": 4, "spread": 0, "visible": true, "blendMode": "NORMAL" }] : []
           },
-          "layoutProps": {
-            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-            "width": 134, "height": 40,
-            "relativeTransform": [[1, 0, 1411], [0, 1, 0]],
-            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-          },
+          "layoutProps": { "parentIsAutoLayout": true },
           "children": [
             {
               "type": "FRAME",
@@ -498,19 +538,25 @@ export class Main_Navigation_Booking extends BaseComponent {
                 }
               ]
             },
-            {
-              "type": "COMPONENT",
-              "name": "BookingLogo",
-              "component": BookingLogo_color,
-              "props": { "variant": logoVariant },
-              "layoutProps": { "parentIsAutoLayout": true }
-            }
           ]
+        },
+        {
+          "type": "COMPONENT",
+          "name": "BookingLogo",
+          "component": BookingLogo_color,
+          "props": { "variant": logoVariant },
+          "layoutProps": {
+            "parentIsAutoLayout": true,
+            "layoutPositioning": variant === 'floating' ? "ABSOLUTE" : "AUTO",
+            "relativeTransform": variant === 'floating' ? [[1, 0, 0], [0, 1, -40]] : undefined
+          }
         }
       ]
-    };
+    }
+      ]
+  };
 
-    const root = await this.renderDefinition(structure);
+  const root = await this.renderDefinition(structure);
 
     // Final positioning
     root.x = props.x ?? 0;

@@ -42,6 +42,18 @@ export class NavBookingDemo extends BaseComponent {
                     "name": "RTL Gradient + White Logo",
                     "component": Main_Navigation_Booking,
                     "props": { "gradientDirection": "right-to-left", "logoVariant": "white" }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Floating Variant + Color Logo",
+                    "component": Main_Navigation_Booking,
+                    "props": { "variant": "floating", "logoVariant": "color" }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Floating Variant + White Logo",
+                    "component": Main_Navigation_Booking,
+                    "props": { "variant": "floating", "logoVariant": "white" }
                 }
             ]
         };
