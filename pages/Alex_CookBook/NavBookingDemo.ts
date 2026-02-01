@@ -1,7 +1,9 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../components/BaseComponent";
 import { Main_Navigation_Booking } from "../../components/Alex_CookBook/Main_Navigation_Booking/Main_Navigation_Booking";
+import { UserObservationStickyNote } from "../../components/Alex_CookBook/UserObservationStickyNote/UserObservationStickyNote";
 
 export class NavBookingDemo extends BaseComponent {
+
     async create(props: ComponentProps): Promise<SceneNode> {
         const structure: NodeDefinition = {
             "type": "FRAME",
@@ -10,82 +12,90 @@ export class NavBookingDemo extends BaseComponent {
                 "layoutMode": "VERTICAL",
                 "primaryAxisSizingMode": "AUTO",
                 "counterAxisSizingMode": "FIXED",
-                "itemSpacing": 40,
-                "paddingTop": 40,
-                "paddingRight": 40,
-                "paddingBottom": 40,
-                "paddingLeft": 40,
-                "fills": [{ "type": "SOLID", "color": { "r": 0.95, "g": 0.95, "b": 0.95 } }]
+                "itemSpacing": 24, // Tighter spacing for interleaved feel
+                "paddingTop": 60,
+                "paddingRight": 60,
+                "paddingBottom": 60,
+                "paddingLeft": 60,
+                "fills": [{ "type": "SOLID", "color": { "r": 0.92, "g": 0.92, "b": 0.92 } }]
             },
             "layoutProps": { "parentIsAutoLayout": false, "width": 1680 },
             "children": [
+                // 1
                 {
-                    "type": "COMPONENT",
-                    "name": "LTR Gradient + Color Logo",
-                    "component": Main_Navigation_Booking,
-                    "props": { "gradientDirection": "left-to-right", "logoVariant": "color" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "type": "COMPONENT", "name": "Standard (Solid Original Color)", "component": Main_Navigation_Booking,
+                    "props": { "showGradient": false, "logoVariant": "color" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Baseline Reference: This variant uses the original solid navigation background from Booking.com. UX Observation: While it provides a familiar brand context, the Color logo against the solid background highlights why a gradient or a High-Contrast White variant is often preferred for modern, high-legibility UI headers." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 2
                 {
-                    "type": "COMPONENT",
-                    "name": "RTL Gradient + Color Logo",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Standard RTL", "component": Main_Navigation_Booking,
                     "props": { "gradientDirection": "right-to-left", "logoVariant": "color" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Observation: The color logo's interaction with the inverted darker gradient further emphasizes the contrast threshold challenges. The darker gradient is a strategic attempt to replicate the primary brand color while testing the legibility limits of the standard logo." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 3
                 {
-                    "type": "COMPONENT",
-                    "name": "LTR Gradient + White Logo",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "White Logo LTR", "component": Main_Navigation_Booking,
                     "props": { "gradientDirection": "left-to-right", "logoVariant": "white" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Strategic Accessibility: This variant achieves peak cognitive fluency by combining a high-contrast white logo with an ascending diagonal scanning path. The eye naturally moves from the viewport's core toward the top-right brand anchor, where the identity is co-located with primary functional elements (Login/Search) to minimize saccadic eye movements and streamline the conversion path." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 4
                 {
-                    "type": "COMPONENT",
-                    "name": "RTL Gradient + White Logo",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "White Logo RTL", "component": Main_Navigation_Booking,
                     "props": { "gradientDirection": "right-to-left", "logoVariant": "white" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Integrated Branding Pivot: This variant explores the emphasis of the brand presence within the RTL layout. The dynamic gradient flow from right-to-left ensures a seamless integration with the functional zone, allowing the brand identity to act as a high-visibility anchor for user scanning patterns." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 5
                 {
-                    "type": "COMPONENT",
-                    "name": "Floating Variant + Color Logo",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Floating Color", "component": Main_Navigation_Booking,
                     "props": { "variant": "floating", "logoVariant": "color", "gradientDirection": "right-to-left" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Physical Button Affordance: The transition to a floating state introduces a strong tactile 'button' mental model. Despite the inherent contrast challenges of the color logo on blue, this configuration transforms the navigation from a static header into a distinct interactive element that invites direct engagement." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 6
                 {
-                    "type": "COMPONENT",
-                    "name": "Floating Variant + White Logo",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Floating White", "component": Main_Navigation_Booking,
                     "props": { "variant": "floating", "logoVariant": "white", "gradientDirection": "right-to-left" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "High-Contrast Affordance: Combines the interactive 'button' mental model with maximum legibility. This version is optimized for complex page backgrounds where the navigation must visually stand out as a primary action anchor." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 7
                 {
-                    "type": "COMPONENT",
-                    "name": "Centered Floating Variant",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Centered Floating", "component": Main_Navigation_Booking,
                     "props": { "variant": "centered-floating", "logoVariant": "color", "gradientDirection": "right-to-left" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Diagnostic Contrast Failure: This centered configuration serves as a visual benchmark for baseline contrast parity failure. Using the color logo against the primary blue gradient demonstrates why high-contrast white alternatives are a functional necessity in high-impact symmetrical layouts." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 8
                 {
-                    "type": "COMPONENT",
-                    "name": "Centered Floating + White Logo",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Centered Floating White", "component": Main_Navigation_Booking,
                     "props": { "variant": "centered-floating", "logoVariant": "white", "gradientDirection": "right-to-left" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Negative Space Optimization: By incorporating increased negative space around the brand island, we fulfill the requirement for a more 'open' and 'premium' layout. This additional breathing room emphasizes the navigation's importance and clarity." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 9
                 {
-                    "type": "COMPONENT",
-                    "name": "Full-Width Centered Variant",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Full-Width Centered", "component": Main_Navigation_Booking,
                     "props": { "variant": "full-width-centered", "logoVariant": "white", "gradientDirection": "right-to-left" },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Geometric Roundness & Entry: Introducing the Full-Width variant with softer geometric patterns. The extended branded area serves as an inviting entry point, creating a welcoming brand embrace that guides the user toward the functional edges." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 10
                 {
-                    "type": "COMPONENT",
-                    "name": "Marketing Message Variant",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Message Focused (Centered Content)", "component": Main_Navigation_Booking,
                     "props": {
                         "variant": "full-width-centered-message",
                         "logoVariant": "white",
@@ -93,12 +103,13 @@ export class NavBookingDemo extends BaseComponent {
                         "pillContentAlignment": "center",
                         "message": "Unlock huge savings – up to 15% with Genius"
                     },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Strategic Marketing Entry: Introducing the 'Genius' value proposition. This variant demonstrates how a high-impact marketing message can be seamlessly integrated into the brand pill, establishing primary value before the user proceeds with their search." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 11
                 {
-                    "type": "COMPONENT",
-                    "name": "Marketing Message + Icon Variant",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Message + Icon (Right Content)", "component": Main_Navigation_Booking,
                     "props": {
                         "variant": "full-width-centered-message",
                         "showMarketingIcon": true,
@@ -107,12 +118,13 @@ export class NavBookingDemo extends BaseComponent {
                         "pillContentAlignment": "right",
                         "message": "Unlock huge savings – up to 15% with Genius"
                     },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Interactive Conversion Anchor: By introducing a chevron (marketing icon), the message is elevated from static text to an interactive CTA. This visual cue signifies a distinct entry point for deeper program exploration, potentially supported by engaging micro-animations." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 12
                 {
-                    "type": "COMPONENT",
-                    "name": "Custom Centered Pill (800px)",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Identity Island (800px)", "component": Main_Navigation_Booking,
                     "props": {
                         "variant": "full-width-centered-message",
                         "showMarketingIcon": true,
@@ -123,12 +135,13 @@ export class NavBookingDemo extends BaseComponent {
                         "gradientDirection": "right-to-left",
                         "message": "Unlock huge savings – up to 15% with Genius"
                     },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Focused Identity Island + CTA: Combining the 800px 'Identity Island' with the marketing chevron creates a stable, high-value anchor. The chevron acts as a directional guide, inviting the user to explore the 'Genius' program while maintaining a compact, centered brand presence." }, "layoutProps": { "parentIsAutoLayout": true } },
+
+                // 13
                 {
-                    "type": "COMPONENT",
-                    "name": "Right Aligned Pill (800px)",
-                    "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Functional Pivot (800px Right)", "component": Main_Navigation_Booking,
                     "props": {
                         "variant": "full-width-centered-message",
                         "showMarketingIcon": true,
@@ -140,8 +153,9 @@ export class NavBookingDemo extends BaseComponent {
                         "gradientDirection": "right-to-left",
                         "message": "Unlock huge savings – up to 15% with Genius"
                     },
-                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
-                }
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
+                },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Functional Pivot + Interactive Marketing: This configuration pushes the interactive marketing unit toward the primary functional zone (Login/Search). This alignment reduces eye-travel for users already in a 'transactional' mindset, effectively co-locating brand value with utility." } }
             ]
         };
 
@@ -151,3 +165,4 @@ export class NavBookingDemo extends BaseComponent {
         return root;
     }
 }
+

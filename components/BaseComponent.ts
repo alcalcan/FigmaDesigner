@@ -32,7 +32,7 @@ export interface NodeDefinition {
     parentIsAutoLayout: boolean;
     layoutPositioning?: "AUTO" | "ABSOLUTE";
     layoutGrow?: 0 | 1;
-    layoutAlign?: "INHERIT" | "STRETCH" | "MIN" | "CENTER" | "MAX";
+    layoutAlign?: "INHERIT" | "STRETCH";
     constraints?: Constraints;
   };
   children?: NodeDefinition[];

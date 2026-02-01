@@ -17,6 +17,7 @@ export interface Main_Navigation_BookingProps extends ComponentProps {
   pillWidth?: number | 'hug' | 'fill';
   pillAlignment?: 'center' | 'right';
   pillContentAlignment?: 'left' | 'center' | 'right';
+  showGradient?: boolean;
   variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered' | 'full-width-centered-message';
 }
 
@@ -30,6 +31,7 @@ export class Main_Navigation_Booking extends BaseComponent {
     const pillCornerRadius = props.pillCornerRadius ?? 8;
     const pillWidth = props.pillWidth;
     const pillContentAlignment = props.pillContentAlignment;
+    const showGradient = props.showGradient !== false;
     const isFullWidthVariant = variant === 'full-width-centered' || variant === 'full-width-centered-message';
     const isPillFilling = pillWidth === 'fill' || (!pillWidth && isFullWidthVariant);
 
@@ -133,6 +135,11 @@ export class Main_Navigation_Booking extends BaseComponent {
     } else {
       rightAreaChildren.push(
         { "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant }, "layoutProps": { "parentIsAutoLayout": true } },
+        {
+          "type": "FRAME" as const, "name": "pk-divider",
+          "props": { "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.5 }] },
+          "layoutProps": { "width": 1, "height": 24, "parentIsAutoLayout": true }
+        },
         {
           "type": "FRAME" as const, "name": "pk-button",
           "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 8, "paddingTop": 12, "paddingBottom": 12, "cornerRadius": 8, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
@@ -318,7 +325,7 @@ export class Main_Navigation_Booking extends BaseComponent {
           "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "SPACE_BETWEEN" as const, "counterAxisAlignItems": "CENTER" as const,
           "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,
           "paddingLeft": 135, "paddingRight": 135,
-          "fills": variant === 'floating' ? [{ "type": "SOLID" as const, "color": mainColor }] : [
+          "fills": (variant === 'floating' || !showGradient) ? [{ "type": "SOLID" as const, "color": mainColor }] : [
             {
               "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "GRADIENT_LINEAR" as const,
               "gradientStops": gradientStops,
