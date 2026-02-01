@@ -60,6 +60,27 @@ export class NavBookingDemo extends BaseComponent {
                     "component": Main_Navigation_Booking,
                     "props": { "variant": "floating", "logoVariant": "white", "gradientDirection": "right-to-left" },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Centered Floating Variant",
+                    "component": Main_Navigation_Booking,
+                    "props": { "variant": "centered-floating", "logoVariant": "color", "gradientDirection": "right-to-left" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Centered Floating + White Logo",
+                    "component": Main_Navigation_Booking,
+                    "props": { "variant": "centered-floating", "logoVariant": "white", "gradientDirection": "right-to-left" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Full-Width Centered Variant",
+                    "component": Main_Navigation_Booking,
+                    "props": { "variant": "full-width-centered", "logoVariant": "white", "gradientDirection": "right-to-left" },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 }
             ]
         };

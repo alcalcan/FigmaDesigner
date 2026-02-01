@@ -11,7 +11,7 @@ import { BookingLogo_color } from "../BookingLogo_color/BookingLogo_color";
 export interface Main_Navigation_BookingProps extends ComponentProps {
   gradientDirection?: 'left-to-right' | 'right-to-left';
   logoVariant?: 'color' | 'white';
-  variant?: 'standard' | 'floating';
+  variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered';
 }
 
 export class Main_Navigation_Booking extends BaseComponent {
@@ -75,53 +75,15 @@ export class Main_Navigation_Booking extends BaseComponent {
       ]
     };
 
-    // Right Side Children Logic
-    const rightSideChildren: NodeDefinition[] = [];
-
-    if (variant === 'floating') {
-      rightSideChildren.push({
-        "type": "FRAME" as const,
-        "name": "Logo Gradient Wrapper",
-        "props": {
-          "layoutMode": "HORIZONTAL" as const,
-          "itemSpacing": 0,
-          "paddingLeft": 16,
-          "paddingRight": 16,
-          "paddingTop": 4,
-          "paddingBottom": 4,
-          "cornerRadius": 8,
-          "primaryAxisAlignItems": "MIN" as const,
-          "counterAxisAlignItems": "CENTER" as const,
-          "counterAxisSizingMode": "AUTO" as const,
-          "fills": [{
-            "type": "GRADIENT_LINEAR" as const,
-            "gradientStops": gradientStops,
-            "gradientTransform": [[1, 0, 0], [0, 1, 0]]
-          }]
-        },
-        "layoutProps": { "parentIsAutoLayout": true },
-        "children": [{
-          "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
-          "layoutProps": { "parentIsAutoLayout": true }
-        }]
-      });
-    }
-
-    // Floating Group or Standard Buttons
+    // Right Group Buttons (Login/Search)
     const rightAreaChildren: NodeDefinition[] = [];
-    if (variant === 'floating') {
+    if (variant === 'floating' || variant === 'centered-floating' || variant === 'full-width-centered') {
       rightAreaChildren.push({
         "type": "FRAME" as const,
         "name": "Floating Group",
         "props": {
-          "layoutMode": "HORIZONTAL" as const,
-          "itemSpacing": 12,
-          "paddingLeft": 12,
-          "paddingRight": 12,
-          "cornerRadius": 24,
-          "primaryAxisAlignItems": "MIN" as const, // Align left
-          "counterAxisAlignItems": "CENTER" as const, // Align middle
-          "counterAxisSizingMode": "AUTO" as const, // Height: HUG
+          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "paddingLeft": 12, "paddingRight": 12, "cornerRadius": 24,
+          "primaryAxisAlignItems": "MIN" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const,
           "fills": [{ "type": "SOLID" as const, "color": mainColor }],
           "effects": [{ "type": "DROP_SHADOW" as const, "color": { "r": 0, "g": 0, "b": 0, "a": 0.25 }, "offset": { "x": 0, "y": 4 }, "radius": 4, "visible": true, "blendMode": "NORMAL" as const }]
         },
@@ -143,11 +105,7 @@ export class Main_Navigation_Booking extends BaseComponent {
           },
           {
             "type": "FRAME" as const, "name": "pk-button-search",
-            "props": {
-              "layoutMode": "HORIZONTAL" as const,
-              "primaryAxisAlignItems": "CENTER" as const,
-              "counterAxisAlignItems": "CENTER" as const
-            },
+            "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
             "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true },
             "children": [
               {
@@ -178,11 +136,7 @@ export class Main_Navigation_Booking extends BaseComponent {
         },
         {
           "type": "FRAME" as const, "name": "pk-button",
-          "props": {
-            "layoutMode": "HORIZONTAL" as const,
-            "primaryAxisAlignItems": "CENTER" as const,
-            "counterAxisAlignItems": "CENTER" as const
-          },
+          "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "CENTER" as const, "counterAxisAlignItems": "CENTER" as const },
           "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true },
           "children": [
             {
@@ -195,62 +149,118 @@ export class Main_Navigation_Booking extends BaseComponent {
       );
     }
 
-    rightSideChildren.push({
+    const rightArea: NodeDefinition = {
       "type": "FRAME" as const,
       "name": "Right area",
       "props": {
-        "layoutMode": "HORIZONTAL" as const,
-        "itemSpacing": 12,
-        "counterAxisAlignItems": "CENTER" as const,
-        "counterAxisSizingMode": "AUTO" as const, // Height: HUG
-        "fills": []
+        "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const, "fills": []
       },
       "layoutProps": { "parentIsAutoLayout": true },
       "children": rightAreaChildren
-    });
+    };
 
-    const structure: NodeDefinition = {
-      "type": "FRAME" as const,
-      "name": "Main Navigation",
-      "props": {
-        "layoutMode": "HORIZONTAL" as const,
-        "primaryAxisAlignItems": "SPACE_BETWEEN" as const,
-        "counterAxisAlignItems": "CENTER" as const,
-        "primaryAxisSizingMode": "FIXED" as const, // Width: FIXED/FILL
-        "counterAxisSizingMode": "AUTO" as const, // Height: HUG
-        "paddingLeft": 135,
-        "paddingRight": 135,
-        "fills": variant === 'floating' ? [{ "type": "SOLID" as const, "color": mainColor }] : [
-          {
-            "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "GRADIENT_LINEAR" as const,
+    let structure: NodeDefinition;
+
+    if (variant === 'centered-floating' || variant === 'full-width-centered') {
+      const logoGradientWrapper: NodeDefinition = {
+        "type": "FRAME" as const,
+        "name": "Logo Gradient Wrapper",
+        "props": {
+          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 0, "paddingLeft": 16, "paddingRight": 16, "paddingTop": 4, "paddingBottom": 4, "cornerRadius": 8,
+          "primaryAxisAlignItems": (variant === 'full-width-centered') ? "MAX" as const : "MIN" as const,
+          "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const,
+          "fills": [{
+            "type": "GRADIENT_LINEAR" as const,
             "gradientStops": gradientStops,
             "gradientTransform": [[1, 0, 0], [0, 1, 0]]
+          }]
+        },
+        "layoutProps": { "layoutGrow": (variant === 'full-width-centered') ? 1 : 0, "parentIsAutoLayout": true },
+        "children": [{
+          "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
+          "layoutProps": { "parentIsAutoLayout": true }
+        }]
+      };
+
+      structure = {
+        "type": "FRAME" as const,
+        "name": "Main Navigation",
+        "props": {
+          "layoutMode": "HORIZONTAL" as const,
+          "primaryAxisAlignItems": (variant === 'full-width-centered') ? "MIN" as const : "CENTER" as const,
+          "counterAxisAlignItems": "CENTER" as const,
+          "itemSpacing": (variant === 'full-width-centered') ? 32 : 0,
+          "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,
+          "paddingLeft": 135, "paddingRight": 135, "fills": [{ "type": "SOLID" as const, "color": mainColor }]
+        },
+        "layoutProps": { "width": props.width ?? 1680, "parentIsAutoLayout": props.parentIsAutoLayout ?? false, "layoutAlign": props.layoutAlign, "layoutGrow": props.layoutGrow },
+        "children": [
+          {
+            "type": "FRAME" as const, "name": "Left Spacer",
+            "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "MIN" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
+            "layoutProps": { "layoutGrow": (variant === 'full-width-centered') ? 0 : 1, "parentIsAutoLayout": true },
+            "children": [leftArea]
+          },
+          logoGradientWrapper,
+          {
+            "type": "FRAME" as const, "name": "Right Spacer",
+            "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "MAX" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
+            "layoutProps": { "layoutGrow": (variant === 'full-width-centered') ? 0 : 1, "parentIsAutoLayout": true },
+            "children": [rightArea]
           }
         ]
-      },
-      "layoutProps": {
-        "width": props.width ?? 1680,
-        "parentIsAutoLayout": props.parentIsAutoLayout ?? false,
-        "layoutAlign": props.layoutAlign,
-        "layoutGrow": props.layoutGrow
-      }, // Reverted height to 40px
-      "children": [
-        leftArea,
-        {
+      };
+    } else {
+      const rightSideChildren: NodeDefinition[] = [];
+      if (variant === 'floating') {
+        rightSideChildren.push({
           "type": "FRAME" as const,
-          "name": "Right side container",
+          "name": "Logo Gradient Wrapper",
           "props": {
-            "layoutMode": "HORIZONTAL" as const,
-            "itemSpacing": 12,
-            "counterAxisAlignItems": "CENTER" as const,
-            "counterAxisSizingMode": "AUTO" as const, // Height: HUG
-            "fills": []
+            "layoutMode": "HORIZONTAL" as const, "itemSpacing": 0, "paddingLeft": 16, "paddingRight": 16, "paddingTop": 4, "paddingBottom": 4, "cornerRadius": 8,
+            "primaryAxisAlignItems": "MIN" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const,
+            "fills": [{
+              "type": "GRADIENT_LINEAR" as const,
+              "gradientStops": gradientStops,
+              "gradientTransform": [[1, 0, 0], [0, 1, 0]]
+            }]
           },
           "layoutProps": { "parentIsAutoLayout": true },
-          "children": rightSideChildren
-        }
-      ]
-    };
+          "children": [{
+            "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
+            "layoutProps": { "parentIsAutoLayout": true }
+          }]
+        });
+      }
+      rightSideChildren.push(rightArea);
+
+      structure = {
+        "type": "FRAME" as const,
+        "name": "Main Navigation",
+        "props": {
+          "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "SPACE_BETWEEN" as const, "counterAxisAlignItems": "CENTER" as const,
+          "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,
+          "paddingLeft": 135, "paddingRight": 135,
+          "fills": variant === 'floating' ? [{ "type": "SOLID" as const, "color": mainColor }] : [
+            {
+              "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "GRADIENT_LINEAR" as const,
+              "gradientStops": gradientStops,
+              "gradientTransform": [[1, 0, 0], [0, 1, 0]]
+            }
+          ]
+        },
+        "layoutProps": { "width": props.width ?? 1680, "parentIsAutoLayout": props.parentIsAutoLayout ?? false, "layoutAlign": props.layoutAlign, "layoutGrow": props.layoutGrow },
+        "children": [
+          leftArea,
+          {
+            "type": "FRAME" as const, "name": "Right side container",
+            "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const, "fills": [] },
+            "layoutProps": { "parentIsAutoLayout": true },
+            "children": rightSideChildren
+          }
+        ]
+      };
+    }
 
     const root = await this.renderDefinition(structure);
     root.x = props.x ?? 0;
