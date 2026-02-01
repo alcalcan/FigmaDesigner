@@ -11,7 +11,8 @@ import { BookingLogo_color } from "../BookingLogo_color/BookingLogo_color";
 export interface Main_Navigation_BookingProps extends ComponentProps {
   gradientDirection?: 'left-to-right' | 'right-to-left';
   logoVariant?: 'color' | 'white';
-  variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered';
+  message?: string;
+  variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered' | 'full-width-centered-message';
 }
 
 export class Main_Navigation_Booking extends BaseComponent {
@@ -19,6 +20,7 @@ export class Main_Navigation_Booking extends BaseComponent {
     const gradientDirection = props.gradientDirection || 'left-to-right';
     const logoVariant = props.logoVariant || 'color';
     const variant = props.variant || 'standard';
+    const message = props.message || "Unlock huge savings – up to 15% with Genius";
 
     const mainColor = { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }; // Dark background
 
@@ -77,7 +79,7 @@ export class Main_Navigation_Booking extends BaseComponent {
 
     // Right Group Buttons (Login/Search)
     const rightAreaChildren: NodeDefinition[] = [];
-    if (variant === 'floating' || variant === 'centered-floating' || variant === 'full-width-centered') {
+    if (variant === 'floating' || variant === 'centered-floating' || variant === 'full-width-centered' || variant === 'full-width-centered-message') {
       rightAreaChildren.push({
         "type": "FRAME" as const,
         "name": "Floating Group",
@@ -161,13 +163,62 @@ export class Main_Navigation_Booking extends BaseComponent {
 
     let structure: NodeDefinition;
 
-    if (variant === 'centered-floating' || variant === 'full-width-centered') {
+    const isFullWidthVariant = variant === 'full-width-centered' || variant === 'full-width-centered-message';
+
+    if (variant === 'centered-floating' || isFullWidthVariant) {
+      const pillChildren: NodeDefinition[] = [];
+      if (variant === 'full-width-centered-message') {
+        const boldPart = "Unlock huge savings";
+        const restPart = " – up to 15% with Genius";
+
+        pillChildren.push({
+          "type": "FRAME" as const,
+          "name": "Marketing Message Container",
+          "props": {
+            "layoutMode": "HORIZONTAL" as const,
+            "itemSpacing": 0,
+            "counterAxisAlignItems": "CENTER" as const,
+            "counterAxisSizingMode": "AUTO" as const,
+            "fills": []
+          },
+          "layoutProps": { "parentIsAutoLayout": true },
+          "children": [
+            {
+              "type": "TEXT" as const,
+              "name": "Marketing Message Bold",
+              "props": {
+                "characters": boldPart,
+                "fontSize": 14,
+                "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
+                "font": { "family": "Manrope", "style": "Bold" }
+              },
+              "layoutProps": { "parentIsAutoLayout": true }
+            },
+            {
+              "type": "TEXT" as const,
+              "name": "Marketing Message Regular",
+              "props": {
+                "characters": restPart,
+                "fontSize": 14,
+                "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
+                "font": { "family": "Manrope", "style": "SemiBold" }
+              },
+              "layoutProps": { "parentIsAutoLayout": true }
+            }
+          ]
+        });
+      }
+      pillChildren.push({
+        "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
+        "layoutProps": { "parentIsAutoLayout": true }
+      });
+
       const logoGradientWrapper: NodeDefinition = {
         "type": "FRAME" as const,
         "name": "Logo Gradient Wrapper",
         "props": {
-          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 0, "paddingLeft": 16, "paddingRight": 16, "paddingTop": 4, "paddingBottom": 4, "cornerRadius": 8,
-          "primaryAxisAlignItems": (variant === 'full-width-centered') ? "MAX" as const : "MIN" as const,
+          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "paddingLeft": 16, "paddingRight": 16, "paddingTop": 4, "paddingBottom": 4, "cornerRadius": 8,
+          "primaryAxisAlignItems": isFullWidthVariant ? "MAX" as const : "MIN" as const,
           "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const,
           "fills": [{
             "type": "GRADIENT_LINEAR" as const,
@@ -175,11 +226,8 @@ export class Main_Navigation_Booking extends BaseComponent {
             "gradientTransform": [[1, 0, 0], [0, 1, 0]]
           }]
         },
-        "layoutProps": { "layoutGrow": (variant === 'full-width-centered') ? 1 : 0, "parentIsAutoLayout": true },
-        "children": [{
-          "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
-          "layoutProps": { "parentIsAutoLayout": true }
-        }]
+        "layoutProps": { "layoutGrow": isFullWidthVariant ? 1 : 0, "parentIsAutoLayout": true },
+        "children": pillChildren
       };
 
       structure = {
@@ -187,9 +235,9 @@ export class Main_Navigation_Booking extends BaseComponent {
         "name": "Main Navigation",
         "props": {
           "layoutMode": "HORIZONTAL" as const,
-          "primaryAxisAlignItems": (variant === 'full-width-centered') ? "MIN" as const : "CENTER" as const,
+          "primaryAxisAlignItems": isFullWidthVariant ? "MIN" as const : "CENTER" as const,
           "counterAxisAlignItems": "CENTER" as const,
-          "itemSpacing": (variant === 'full-width-centered') ? 32 : 0,
+          "itemSpacing": isFullWidthVariant ? 32 : 0,
           "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,
           "paddingLeft": 135, "paddingRight": 135, "fills": [{ "type": "SOLID" as const, "color": mainColor }]
         },
@@ -198,14 +246,14 @@ export class Main_Navigation_Booking extends BaseComponent {
           {
             "type": "FRAME" as const, "name": "Left Spacer",
             "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "MIN" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
-            "layoutProps": { "layoutGrow": (variant === 'full-width-centered') ? 0 : 1, "parentIsAutoLayout": true },
+            "layoutProps": { "layoutGrow": isFullWidthVariant ? 0 : 1, "parentIsAutoLayout": true },
             "children": [leftArea]
           },
           logoGradientWrapper,
           {
             "type": "FRAME" as const, "name": "Right Spacer",
             "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "MAX" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
-            "layoutProps": { "layoutGrow": (variant === 'full-width-centered') ? 0 : 1, "parentIsAutoLayout": true },
+            "layoutProps": { "layoutGrow": isFullWidthVariant ? 0 : 1, "parentIsAutoLayout": true },
             "children": [rightArea]
           }
         ]

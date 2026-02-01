@@ -81,6 +81,18 @@ export class NavBookingDemo extends BaseComponent {
                     "component": Main_Navigation_Booking,
                     "props": { "variant": "full-width-centered", "logoVariant": "white", "gradientDirection": "right-to-left" },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Marketing Message Variant",
+                    "component": Main_Navigation_Booking,
+                    "props": {
+                        "variant": "full-width-centered-message",
+                        "logoVariant": "white",
+                        "gradientDirection": "right-to-left",
+                        "message": "Unlock huge savings – up to 15% with Genius"
+                    },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
                 }
             ]
         };
