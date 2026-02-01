@@ -90,6 +90,7 @@ export class NavBookingDemo extends BaseComponent {
                         "variant": "full-width-centered-message",
                         "logoVariant": "white",
                         "gradientDirection": "right-to-left",
+                        "pillContentAlignment": "center",
                         "message": "Unlock huge savings – up to 15% with Genius"
                     },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
@@ -101,6 +102,40 @@ export class NavBookingDemo extends BaseComponent {
                     "props": {
                         "variant": "full-width-centered-message",
                         "showMarketingIcon": true,
+                        "logoVariant": "white",
+                        "gradientDirection": "right-to-left",
+                        "pillContentAlignment": "right",
+                        "message": "Unlock huge savings – up to 15% with Genius"
+                    },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Custom Centered Pill (800px)",
+                    "component": Main_Navigation_Booking,
+                    "props": {
+                        "variant": "full-width-centered-message",
+                        "showMarketingIcon": true,
+                        "pillCornerRadius": 24,
+                        "pillWidth": 800,
+                        "pillContentAlignment": "right",
+                        "logoVariant": "white",
+                        "gradientDirection": "right-to-left",
+                        "message": "Unlock huge savings – up to 15% with Genius"
+                    },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "layoutGrow": 0, "width": 1680 }
+                },
+                {
+                    "type": "COMPONENT",
+                    "name": "Right Aligned Pill (800px)",
+                    "component": Main_Navigation_Booking,
+                    "props": {
+                        "variant": "full-width-centered-message",
+                        "showMarketingIcon": true,
+                        "pillCornerRadius": 24,
+                        "pillWidth": 800,
+                        "pillAlignment": "right",
+                        "pillContentAlignment": "right",
                         "logoVariant": "white",
                         "gradientDirection": "right-to-left",
                         "message": "Unlock huge savings – up to 15% with Genius"

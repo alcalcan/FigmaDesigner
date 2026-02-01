@@ -13,6 +13,10 @@ export interface Main_Navigation_BookingProps extends ComponentProps {
   logoVariant?: 'color' | 'white';
   message?: string;
   showMarketingIcon?: boolean;
+  pillCornerRadius?: number;
+  pillWidth?: number | 'hug' | 'fill';
+  pillAlignment?: 'center' | 'right';
+  pillContentAlignment?: 'left' | 'center' | 'right';
   variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered' | 'full-width-centered-message';
 }
 
@@ -22,6 +26,12 @@ export class Main_Navigation_Booking extends BaseComponent {
     const logoVariant = props.logoVariant || 'color';
     const variant = props.variant || 'standard';
     const message = props.message || "Unlock huge savings – up to 15% with Genius";
+    const pillAlignment = props.pillAlignment || 'center';
+    const pillCornerRadius = props.pillCornerRadius ?? 8;
+    const pillWidth = props.pillWidth;
+    const pillContentAlignment = props.pillContentAlignment;
+    const isFullWidthVariant = variant === 'full-width-centered' || variant === 'full-width-centered-message';
+    const isPillFilling = pillWidth === 'fill' || (!pillWidth && isFullWidthVariant);
 
     const mainColor = { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }; // Dark background
 
@@ -44,7 +54,7 @@ export class Main_Navigation_Booking extends BaseComponent {
       "type": "FRAME" as const,
       "name": "Left area",
       "props": { "layoutMode": "HORIZONTAL" as const, "itemSpacing": 16, "counterAxisAlignItems": "CENTER" as const },
-      "layoutProps": { "width": 98, "height": 20, "parentIsAutoLayout": true },
+      "layoutProps": { "height": 20, "parentIsAutoLayout": true },
       "children": [
         {
           "type": "FRAME" as const,
@@ -164,7 +174,7 @@ export class Main_Navigation_Booking extends BaseComponent {
 
     let structure: NodeDefinition;
 
-    const isFullWidthVariant = variant === 'full-width-centered' || variant === 'full-width-centered-message';
+
 
     if (variant === 'centered-floating' || isFullWidthVariant) {
       const pillChildren: NodeDefinition[] = [];
@@ -223,22 +233,31 @@ export class Main_Navigation_Booking extends BaseComponent {
         "layoutProps": { "parentIsAutoLayout": true }
       });
 
+
+
       const logoGradientWrapper: NodeDefinition = {
         "type": "FRAME" as const,
         "name": "Logo Gradient Wrapper",
         "props": {
-          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "paddingLeft": 16, "paddingRight": 16, "paddingTop": 4, "paddingBottom": 4, "cornerRadius": 8,
-          "primaryAxisAlignItems": isFullWidthVariant ? "MAX" as const : "MIN" as const,
+          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "paddingLeft": 16, "paddingRight": 16, "paddingTop": 4, "paddingBottom": 4, "cornerRadius": pillCornerRadius,
+          "primaryAxisAlignItems": pillContentAlignment === 'left' ? "MIN" as const : (pillContentAlignment === 'center' ? "CENTER" as const : (pillContentAlignment === 'right' ? "MAX" as const : (pillAlignment === 'right' ? "MAX" as const : "CENTER" as const))),
           "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const,
+          "primaryAxisSizingMode": pillWidth === 'fill' ? "FIXED" as const : (typeof pillWidth === 'number' ? "FIXED" as const : (pillWidth === 'hug' ? "AUTO" as const : (isFullWidthVariant ? "FIXED" as const : "AUTO" as const))),
           "fills": [{
             "type": "GRADIENT_LINEAR" as const,
             "gradientStops": gradientStops,
             "gradientTransform": [[1, 0, 0], [0, 1, 0]]
           }]
         },
-        "layoutProps": { "layoutGrow": isFullWidthVariant ? 1 : 0, "parentIsAutoLayout": true },
+        "layoutProps": {
+          "layoutGrow": isPillFilling ? 1 : 0,
+          "width": typeof pillWidth === 'number' ? pillWidth : undefined,
+          "parentIsAutoLayout": true
+        },
         "children": pillChildren
       };
+
+
 
       structure = {
         "type": "FRAME" as const,
@@ -256,14 +275,14 @@ export class Main_Navigation_Booking extends BaseComponent {
           {
             "type": "FRAME" as const, "name": "Left Spacer",
             "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "MIN" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
-            "layoutProps": { "layoutGrow": isFullWidthVariant ? 0 : 1, "parentIsAutoLayout": true },
+            "layoutProps": { "layoutGrow": isFullWidthVariant ? (isPillFilling ? 0 : 1) : 1, "parentIsAutoLayout": true },
             "children": [leftArea]
           },
           logoGradientWrapper,
           {
             "type": "FRAME" as const, "name": "Right Spacer",
             "props": { "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "MAX" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const },
-            "layoutProps": { "layoutGrow": isFullWidthVariant ? 0 : 1, "parentIsAutoLayout": true },
+            "layoutProps": { "layoutGrow": isFullWidthVariant ? (isPillFilling || pillAlignment === 'right' ? 0 : 1) : 1, "parentIsAutoLayout": true },
             "children": [rightArea]
           }
         ]
