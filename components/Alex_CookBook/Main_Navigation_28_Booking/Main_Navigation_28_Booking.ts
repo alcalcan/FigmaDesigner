@@ -83,7 +83,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const thirdItemName = isMobile ? "More" : (showFullMenu ? "History" : "Menu");
 
         const spacer: NodeDefinition = {
-            "type": "FRAME", "name": "Spacer", "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true }, "props": { "layoutMode": "HORIZONTAL" }
+            "type": "FRAME" as const, "name": "Spacer", "layoutProps": { "layoutGrow": 1, "layoutAlign": "STRETCH" as const, "parentIsAutoLayout": true }, "props": { "layoutMode": "HORIZONTAL" as const }
         };
 
         const euroLogoBlock: NodeDefinition = {
@@ -106,7 +106,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
             },
             "layoutProps": {
-                "parentIsAutoLayout": true
+                "parentIsAutoLayout": true,
+                "layoutAlign": "STRETCH" as const
             },
             "children": [rightLogoContent]
         };
@@ -138,7 +139,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 ...(showMarketingIcon ? [{
                     "type": "VECTOR" as const,
                     "name": "Marketing Icon",
-                    "layoutProps": { "width": 12, "height": 12, "parentIsAutoLayout": true },
+                    "layoutProps": { "width": 12, "height": 12, "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
                     "svgContent": `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 3L4.5 6L7.5 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
                 }] : [])
             ]
@@ -153,7 +154,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "counterAxisSizingMode": "AUTO", "primaryAxisSizingMode": "AUTO",
                 "fills": []
             },
-            "layoutProps": { "parentIsAutoLayout": true },
+            "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
             "children": [marketingMessageBlock, bookingLogoBlock]
         } : null;
 
