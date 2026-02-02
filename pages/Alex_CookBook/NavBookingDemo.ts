@@ -117,7 +117,7 @@ export class NavBookingDemo extends BaseComponent {
         // 1. Desktop Section
         children.push({
             "type": "TEXT",
-            "props": { "characters": "Desktop Variants (1680px)", "fontSize": 48, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0, "b": 0 } }] },
+            "props": { "characters": "Desktop Variants (1680px)", "fontSize": 48, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0, "b": 0 } }] },
             "layoutProps": { "parentIsAutoLayout": true }
         });
 
@@ -125,7 +125,7 @@ export class NavBookingDemo extends BaseComponent {
             children.push(
                 {
                     "type": "TEXT",
-                    "props": { "characters": v.title, "fontSize": 24, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] },
+                    "props": { "characters": v.title, "fontSize": 24, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] },
                     "layoutProps": { "parentIsAutoLayout": true }
                 },
                 {
@@ -141,17 +141,12 @@ export class NavBookingDemo extends BaseComponent {
             );
         });
 
-        // Spacer
-        children.push({
-            "type": "FRAME", "name": "Spacer",
-            "props": { "fills": [], "layoutMode": "VERTICAL", "height": 100 },
-            "layoutProps": { "height": 100, "width": 100, "parentIsAutoLayout": true }
-        });
+
 
         // 2. Mobile Section
         children.push({
             "type": "TEXT",
-            "props": { "characters": "Mobile Selection (375px)", "fontSize": 48, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0, "b": 0 } }] },
+            "props": { "characters": "Mobile Selection (375px)", "fontSize": 48, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0, "b": 0 } }] },
             "layoutProps": { "parentIsAutoLayout": true }
         });
 
@@ -175,7 +170,7 @@ export class NavBookingDemo extends BaseComponent {
             children.push(
                 {
                     "type": "TEXT",
-                    "props": { "characters": mobileTitle, "fontSize": 24, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] },
+                    "props": { "characters": mobileTitle, "fontSize": 24, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] },
                     "layoutProps": { "parentIsAutoLayout": true }
                 },
                 {

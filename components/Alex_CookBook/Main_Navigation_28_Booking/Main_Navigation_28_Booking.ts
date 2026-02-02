@@ -10,12 +10,16 @@ import SVG_Mobile_Menu_Icon from "../Main_Navigation_28/assets/Main_Navigation_2
 export interface Main_Navigation_28_BookingProps extends ComponentProps {
     platform?: 'desktop' | 'mobile';
     logoVariant?: 'color' | 'white';
+    showFullMenu?: boolean;
+    brandingLayout?: 'standard' | 'booking-center' | 'booking-right';
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
     async create(props: Main_Navigation_28_BookingProps): Promise<SceneNode> {
         const isMobile = props.platform === 'mobile';
         const logoVariant = props.logoVariant || 'white';
+        const showFullMenu = props.showFullMenu ?? true;
+        const brandingLayout = props.brandingLayout || 'standard';
 
         // REVERT: Using Euro 28 Blue Background
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
@@ -81,7 +85,150 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             { name: "Store", isSelected: false }
         ];
 
-        const thirdItemName = isMobile ? "More" : "History";
+        const thirdItemName = isMobile ? "More" : (showFullMenu ? "History" : "Menu");
+
+        // BLOCK DEFINITIONS
+        const spacer: NodeDefinition = {
+            "type": "FRAME", "name": "Spacer", "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true }, "props": { "layoutMode": "HORIZONTAL" }
+        };
+
+        const euroLogoBlock: NodeDefinition = {
+            "type": "FRAME" as const,
+            "name": "Left Logo Area (Euro)",
+            "props": {
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+            },
+            "layoutProps": { "width": euroLogoWidth, "height": euroLogoHeight, "parentIsAutoLayout": true },
+            "children": [leftLogoContent]
+        };
+
+        const bookingLogoBlock: NodeDefinition = {
+            "type": "FRAME" as const,
+            "name": "Right Logo Area (Booking)",
+            "props": {
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": "MAX", // Align right
+                "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
+            },
+            "layoutProps": {
+                "parentIsAutoLayout": true,
+                "minWidth": bookingLogoWidth
+            },
+            "children": [rightLogoContent]
+        };
+
+        // Determine menu block properties based on layout
+        // Standard: Grow 1, Align Min
+        // Non-Standard: Grow 0 (Compact), Align Max/Min depending on context?
+        // Actually, if we use spacers, we can just let it be Auto width.
+        const menuBlockGrow = brandingLayout === 'standard' ? 1 : 0;
+        const menuBlockAlign = brandingLayout === 'standard' ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
+
+        const menuBlock: NodeDefinition = {
+            "type": "FRAME" as const,
+            "name": "Container (Menu)",
+            "props": {
+                "layoutMode": "HORIZONTAL",
+                "itemSpacing": isMobile ? 4 : 24,
+                "primaryAxisAlignItems": menuBlockAlign, "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
+            },
+            "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": menuBlockGrow },
+            "children": [
+                {
+                    "type": "FRAME" as const,
+                    "name": "Menu item Group",
+                    "props": {
+                        "layoutMode": "HORIZONTAL",
+                        "itemSpacing": isMobile ? 4 : 24,
+                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
+                    },
+                    "layoutProps": { "parentIsAutoLayout": true },
+                    "children": [
+                        ...(showFullMenu ? navItems.map(item => ({
+                            "type": "FRAME" as const,
+                            "name": `Menuitem - ${item.name}`,
+                            "props": {
+                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                            },
+                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                            "children": [{
+                                "type": "TEXT" as const,
+                                "props": {
+                                    "characters": item.name,
+                                    "fontSize": fontSize,
+                                    "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
+                                    "font": { "family": fontFamily, "style": "Book" }
+                                },
+                                "layoutProps": { "parentIsAutoLayout": true }
+                            }]
+                        } as NodeDefinition)) : []),
+
+                        // More / History Container (Standard Euro 28 Logic)
+                        {
+                            "type": "FRAME" as const,
+                            "name": "More-History Container",
+                            "props": {
+                                "layoutMode": "HORIZONTAL",
+                                "itemSpacing": 8,
+                                "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
+                                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                            },
+                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                            "children": [
+                                {
+                                    "type": "TEXT" as const,
+                                    "props": { "characters": thirdItemName, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": fontFamily, "style": "Book" } },
+                                    "layoutProps": { "parentIsAutoLayout": true }
+                                },
+                                {
+                                    "type": "FRAME" as const,
+                                    "name": "Icon Container",
+                                    "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER" },
+                                    "layoutProps": { "width": (isMobile || !showFullMenu) ? 24 : 16, "height": (isMobile || !showFullMenu) ? 24 : 16, "parentIsAutoLayout": true },
+                                    "children": [{
+                                        "type": "VECTOR" as const,
+                                        "props": {},
+                                        "layoutProps": {
+                                            "width": (isMobile || !showFullMenu) ? 18.75 : 8.39, "height": (isMobile || !showFullMenu) ? 12.5 : 6.21, "parentIsAutoLayout": false,
+                                            "relativeTransform": (isMobile || !showFullMenu) ? [[1, 0, 2.6], [0, 1, 5.75]] : [[1, 0, 4], [0, 1, 5]] as T2x3
+                                        },
+                                        "svgContent": (isMobile || !showFullMenu) ? SVG_Mobile_Menu_Icon : SVG_Desktop_Icon
+                                    }]
+                                }
+                            ]
+                        },
+
+                        ...((!isMobile && showFullMenu) ? secondNavItems.map(item => ({
+                            "type": "FRAME" as const,
+                            "name": `Menuitem - ${item.name}`,
+                            "props": {
+                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                            },
+                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                            "children": [{
+                                "type": "TEXT" as const,
+                                "props": { "characters": item.name, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": fontFamily, "style": "Book" } },
+                                "layoutProps": { "parentIsAutoLayout": true }
+                            }]
+                        } as NodeDefinition)) : [])
+                    ]
+                }
+            ]
+        };
+
+        let navChildren: NodeDefinition[] = [];
+
+        if (brandingLayout === 'booking-center') {
+            // [Euro] [Spacer] [Booking] [Spacer] [Menu]
+            navChildren = [euroLogoBlock, spacer, bookingLogoBlock, spacer, menuBlock];
+        } else if (brandingLayout === 'booking-right') {
+            // [Euro] [Spacer] [Booking] [Menu] (Booking next to Menu)
+            navChildren = [euroLogoBlock, spacer, bookingLogoBlock, menuBlock];
+        } else {
+            // Standard: [Euro] [Menu(Grow)] [Booking]
+            navChildren = [euroLogoBlock, menuBlock, bookingLogoBlock];
+        }
 
         const structure: NodeDefinition = {
             "type": "FRAME" as const,
@@ -106,127 +253,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                     "layoutGrow": 1
                 },
                 "layoutProps": { "height": navHeight, "parentIsAutoLayout": true, "layoutGrow": 1 },
-                "children": [
-                    {
-                        "type": "FRAME" as const,
-                        "name": "Left Logo Area (Euro)",
-                        "props": {
-                            "layoutMode": "HORIZONTAL",
-                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
-                        },
-                        "layoutProps": { "width": euroLogoWidth, "height": euroLogoHeight, "parentIsAutoLayout": true },
-                        "children": [leftLogoContent]
-                    },
-                    {
-                        "type": "FRAME" as const,
-                        "name": "Container (Menu)",
-                        "props": {
-                            "layoutMode": "HORIZONTAL",
-                            "itemSpacing": isMobile ? 4 : 24,
-                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
-                        },
-                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
-                        "children": [
-                            {
-                                "type": "FRAME" as const,
-                                "name": "Menu item Group",
-                                "props": {
-                                    "layoutMode": "HORIZONTAL",
-                                    "itemSpacing": isMobile ? 4 : 24,
-                                    "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
-                                },
-                                "layoutProps": { "parentIsAutoLayout": true },
-                                "children": [
-                                    ...navItems.map(item => ({
-                                        "type": "FRAME" as const,
-                                        "name": `Menuitem - ${item.name}`,
-                                        "props": {
-                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
-                                        },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
-                                        "children": [{
-                                            "type": "TEXT" as const,
-                                            "props": {
-                                                "characters": item.name,
-                                                "fontSize": fontSize,
-                                                "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
-                                                "font": { "family": fontFamily, "style": "Book" }
-                                            },
-                                            "layoutProps": { "parentIsAutoLayout": true }
-                                        }]
-                                    } as NodeDefinition)),
-
-                                    // More / History Container (Standard Euro 28 Logic)
-                                    {
-                                        "type": "FRAME" as const,
-                                        "name": "More-History Container",
-                                        "props": {
-                                            "layoutMode": "HORIZONTAL",
-                                            "itemSpacing": 8,
-                                            "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
-                                            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
-                                        },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
-                                        "children": [
-                                            {
-                                                "type": "TEXT" as const,
-                                                "props": { "characters": thirdItemName, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": fontFamily, "style": "Book" } },
-                                                "layoutProps": { "parentIsAutoLayout": true }
-                                            },
-                                            {
-                                                "type": "FRAME" as const,
-                                                "name": "Icon Container",
-                                                "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER" },
-                                                "layoutProps": { "width": isMobile ? 24 : 16, "height": isMobile ? 24 : 16, "parentIsAutoLayout": true },
-                                                "children": [{
-                                                    "type": "VECTOR" as const,
-                                                    "props": {},
-                                                    "layoutProps": {
-                                                        "width": isMobile ? 18.75 : 8.39, "height": isMobile ? 12.5 : 6.21, "parentIsAutoLayout": false,
-                                                        "relativeTransform": isMobile ? [[1, 0, 2.6], [0, 1, 5.75]] : [[1, 0, 4], [0, 1, 5]] as T2x3
-                                                    },
-                                                    "svgContent": isMobile ? SVG_Mobile_Menu_Icon : SVG_Desktop_Icon
-                                                }]
-                                            }
-                                        ]
-                                    },
-
-                                    ...(!isMobile ? secondNavItems.map(item => ({
-                                        "type": "FRAME" as const,
-                                        "name": `Menuitem - ${item.name}`,
-                                        "props": {
-                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
-                                        },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
-                                        "children": [{
-                                            "type": "TEXT" as const,
-                                            "props": { "characters": item.name, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": fontFamily, "style": "Book" } },
-                                            "layoutProps": { "parentIsAutoLayout": true }
-                                        }]
-                                    } as NodeDefinition)) : [])
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "FRAME" as const,
-                        "name": "Right Logo Area (Booking)",
-                        "props": {
-                            "layoutMode": "HORIZONTAL",
-                            "primaryAxisAlignItems": "MAX", // Align right
-                            "counterAxisAlignItems": "CENTER"
-                        },
-                        // Important: This is a sibling of Container (Menu).
-                        // Parent Align is MIN. Spacing is 32.
-                        // [Logo] -32- [Menu(Grow=1)] -32- [RightLogo]
-                        // If Menu grows, it takes up all space, pushing RightLogo to the end.
-                        "layoutProps": {
-                            "parentIsAutoLayout": true,
-                            "minWidth": bookingLogoWidth
-                        },
-                        "children": [rightLogoContent]
-                    }
-                ]
+                "children": navChildren
             }]
         } as NodeDefinition;
 
