@@ -85,6 +85,15 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                     message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
                 },
                 note: "Booking Center Layout + Bordered Container wrapping [Message + Logo]."
+            },
+            {
+                title: "Variant 12_Desktop_Collapsed (Right - Bordered + Message)",
+                props: {
+                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right',
+                    showBorderedContainer: true,
+                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
+                },
+                note: "Booking Right Layout + Bordered Container wrapping [Message + Logo]."
             }
         ];
 
