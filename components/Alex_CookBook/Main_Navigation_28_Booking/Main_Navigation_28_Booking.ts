@@ -14,6 +14,7 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     showMarketingIcon?: boolean;
     showBorderedContainer?: boolean;
     showFilledContainer?: boolean;
+    showGradientContainer?: boolean;
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
@@ -26,6 +27,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const showMarketingIcon = props.showMarketingIcon;
         const showBorderedContainer = props.showBorderedContainer;
         const showFilledContainer = props.showFilledContainer;
+        const showGradientContainer = props.showGradientContainer;
 
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
@@ -178,7 +180,15 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "cornerRadius": 24,
                 "strokes": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
                 "strokeWeight": 1,
-                "fills": showFilledContainer ? [{ "type": "SOLID" as const, "color": { "r": 0, "g": 0.42, "b": 0.89 } }] : []
+                "fills": showFilledContainer ? [{ "type": "SOLID" as const, "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 } }] :
+                    (showGradientContainer ? [{
+                        "type": "GRADIENT_LINEAR" as const,
+                        "gradientStops": [
+                            { "color": { "r": 0, "g": 0.16, "b": 0.77, "a": 1 }, "position": 0 },
+                            { "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 }, "position": 1 }
+                        ],
+                        "gradientTransform": [[1, 0, 0], [0, 1, 0]]
+                    }] : [])
             },
             "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
             "children": [contentToWrap]
@@ -288,9 +298,29 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         let navChildren: NodeDefinition[] = [];
 
         if (brandingLayout === 'booking-center') {
-            navChildren = [euroLogoBlock, spacer, borderedLogoGroup, spacer, menuBlock];
+            // True centering: [Left (Grow:1, Min)] [Center (Fixed/Hug)] [Right (Grow:1, Max)]
+            const leftWrapper: NodeDefinition = {
+                "type": "FRAME", "name": "Left Wrapper",
+                "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "fills": [] },
+                "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
+                "children": [euroLogoBlock]
+            };
+            const rightWrapper: NodeDefinition = {
+                "type": "FRAME", "name": "Right Wrapper",
+                "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER", "fills": [] },
+                "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
+                "children": [menuBlock]
+            };
+            navChildren = [leftWrapper, borderedLogoGroup, rightWrapper];
         } else if (brandingLayout === 'booking-right') {
-            navChildren = [euroLogoBlock, spacer, borderedLogoGroup, menuBlock];
+            // [Euro (Min)] [Spacer (Grow)] [Logo + Menu (Grouped together)]
+            const rightGroup: NodeDefinition = {
+                "type": "FRAME", "name": "Right Group",
+                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": isMobile ? 12 : 32, "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER", "fills": [] },
+                "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
+                "children": [borderedLogoGroup, menuBlock]
+            };
+            navChildren = [euroLogoBlock, spacer, rightGroup];
         } else {
             // Standard
             if (isMobile) {

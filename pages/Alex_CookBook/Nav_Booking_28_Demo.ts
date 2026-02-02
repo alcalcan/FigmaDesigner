@@ -12,158 +12,100 @@ export class Nav_Booking_28_Demo extends BaseComponent {
 
     async create(props: ComponentProps): Promise<SceneNode> {
         const desktopVariants: VariantDefinition[] = [
-            // FULL MENU SECTION
-            {
-                title: "Variant 1_Desktop_Full Menu (Standard)",
-                props: { platform: "desktop", showFullMenu: true },
-                note: "Standard Desktop view (Full Menu). Layout: Euro Left, Menu Center (Grow), Booking Right."
-            },
-            {
-                title: "Variant 2_Desktop_Full Menu (Bordered)",
-                props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true },
-                note: "Desktop Full Menu with Bordered Logo."
-            },
-            {
-                title: "Variant 3_Desktop_Full Menu (Bordered + Message)",
-                props: {
-                    platform: "desktop", showFullMenu: true, showBorderedContainer: true,
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Desktop Full Menu + Marketing Message in Bordered Container."
-            },
-            {
-                title: "Variant 4_Desktop_Full Menu (Filled + Bordered)",
-                props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, showFilledContainer: true },
-                note: "Desktop Full Menu with Filled & Bordered Logo (Bright Booking Blue)."
-            },
+            // --- FULL MENU SECTION ---
+            { title: "Variant 1_Full Menu (Simple)", props: { platform: "desktop", showFullMenu: true }, note: "Full Menu - Simple Logo." },
+            { title: "Variant 2_Full Menu (Bordered)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true }, note: "Full Menu - Bordered Container." },
+            { title: "Variant 3_Full Menu (Filled)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, showFilledContainer: true }, note: "Full Menu - Filled Container." },
+            { title: "Variant 4_Full Menu (Gradient)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, showGradientContainer: true }, note: "Full Menu - Gradient Container." },
+            { title: "Variant 5_Full Menu (Bordered + Message)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Full Menu - Bordered + Message." },
+            { title: "Variant 6_Full Menu (Filled + Message)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, showFilledContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Full Menu - Filled + Message." },
+            { title: "Variant 7_Full Menu (Gradient + Message)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, showGradientContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Full Menu - Gradient + Message." },
 
-            // COLLAPSED SECTION - STANDARD LAYOUT
-            {
-                title: "Variant 5_Desktop_Collapsed (Standard)",
-                props: { platform: "desktop", showFullMenu: false },
-                note: "Collapsed Desktop (Standard Layout). Layout: Euro Left, Menu Button Center, Booking Right."
-            },
-            {
-                title: "Variant 6_Desktop_Collapsed (Standard + Bordered)",
-                props: { platform: "desktop", showFullMenu: false, showBorderedContainer: true },
-                note: "Collapsed Desktop (Standard Layout) with Bordered Logo."
-            },
+            // --- COLLAPSED SECTION - STANDARD ---
+            { title: "Variant 8_Standard (Simple)", props: { platform: "desktop", showFullMenu: false }, note: "Collapsed Standard - Simple Logo." },
+            { title: "Variant 9_Standard (Bordered)", props: { platform: "desktop", showFullMenu: false, showBorderedContainer: true }, note: "Collapsed Standard - Bordered Container." },
 
-            // COLLAPSED SECTION - BOOKING CENTER
-            {
-                title: "Variant 7_Desktop_Collapsed (Center)",
-                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center' },
-                note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
-            },
-            {
-                title: "Variant 8_Desktop_Collapsed (Center + Bordered)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center',
-                    showBorderedContainer: true
-                },
-                note: "Booking Center Layout + Bordered Logo Container."
-            },
-            {
-                title: "Variant 9_Desktop_Collapsed (Center + Bordered + Message)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center',
-                    showBorderedContainer: true,
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Booking Center Layout + Bordered Container wrapping [Message + Logo]."
-            },
-            {
-                title: "Variant 10_Desktop_Collapsed (Center + Filled + Bordered + Message)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center',
-                    showBorderedContainer: true, showFilledContainer: true,
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Booking Center Layout + Filled & Bordered Container wrapping [Message + Logo]."
-            },
+            // --- COLLAPSED SECTION - CENTER ---
+            { title: "Variant 10_Center (Simple)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center' }, note: "Collapsed Center - Simple Logo." },
+            { title: "Variant 11_Center (Bordered)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true }, note: "Collapsed Center - Bordered." },
+            { title: "Variant 12_Center (Filled)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, showFilledContainer: true }, note: "Collapsed Center - Filled." },
+            { title: "Variant 13_Center (Gradient)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, showGradientContainer: true }, note: "Collapsed Center - Gradient." },
+            { title: "Variant 14_Center (Bordered + Message)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Collapsed Center - Bordered + Message." },
+            { title: "Variant 15_Center (Filled + Message)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, showFilledContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Collapsed Center - Filled + Message." },
+            { title: "Variant 16_Center (Gradient + Message)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, showGradientContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Collapsed Center - Gradient + Message." },
 
-            // COLLAPSED SECTION - BOOKING RIGHT
-            {
-                title: "Variant 11_Desktop_Collapsed (Right)",
-                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
-                note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
-            },
-            {
-                title: "Variant 12_Desktop_Collapsed (Right + Bordered)",
-                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true },
-                note: "Booking Right Layout with Bordered Logo."
-            },
-            {
-                title: "Variant 13_Desktop_Collapsed (Right + Bordered + Message)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right',
-                    showBorderedContainer: true,
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Booking Right Layout + Bordered Container wrapping [Message + Logo]."
-            },
-            {
-                title: "Variant 14_Desktop_Collapsed (Right + Filled + Bordered + Message)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right',
-                    showBorderedContainer: true, showFilledContainer: true,
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Booking Right Layout + Filled & Bordered Container wrapping [Message + Logo]."
-            }
+            // --- COLLAPSED SECTION - RIGHT ---
+            { title: "Variant 17_Right (Simple)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' }, note: "Collapsed Right - Simple Logo." },
+            { title: "Variant 18_Right (Bordered)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true }, note: "Collapsed Right - Bordered." },
+            { title: "Variant 19_Right (Filled)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, showFilledContainer: true }, note: "Collapsed Right - Filled." },
+            { title: "Variant 20_Right (Gradient)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, showGradientContainer: true }, note: "Collapsed Right - Gradient." },
+            { title: "Variant 21_Right (Bordered + Message)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Collapsed Right - Bordered + Message." },
+            { title: "Variant 22_Right (Filled + Message)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, showFilledContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Collapsed Right - Filled + Message." },
+            { title: "Variant 23_Right (Gradient + Message)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, showGradientContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true }, note: "Collapsed Right - Gradient + Message." }
         ];
 
         const mobileVariants: VariantDefinition[] = [
-            // FULL MENU SECTION
+            // FULL MENU
             {
-                title: "Variant 1_Mobile_Full Menu (Standard)",
+                title: "Variant 1_Mobile_Full Menu (Simple)",
                 props: { platform: "mobile", showFullMenu: true },
-                note: "Standard Mobile view (Full Menu). Layout: Euro Left, Booking Left, Spacer, Menu Right."
+                note: "Mobile Full Menu - Simple Logo."
             },
             {
                 title: "Variant 2_Mobile_Full Menu (Bordered)",
                 props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true },
-                note: "Mobile Full Menu with Bordered Logo."
+                note: "Mobile Full Menu - Bordered Container."
             },
             {
-                title: "Variant 3_Mobile_Full Menu (Filled + Bordered)",
+                title: "Variant 3_Mobile_Full Menu (Filled)",
                 props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true, showFilledContainer: true },
-                note: "Mobile Full Menu with Filled & Bordered Logo."
+                note: "Mobile Full Menu - Filled Container."
+            },
+            {
+                title: "Variant 4_Mobile_Full Menu (Gradient)",
+                props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true, showGradientContainer: true },
+                note: "Mobile Full Menu - Gradient Container."
             },
 
-            // COLLAPSED SECTION
+            // COLLAPSED
             {
-                title: "Variant 4_Mobile_Collapsed (Standard)",
+                title: "Variant 5_Mobile_Standard (Simple)",
                 props: { platform: "mobile", showFullMenu: false },
-                note: "Collapsed Mobile (Standard Layout)."
+                note: "Mobile Collapsed (Standard)."
             },
             {
-                title: "Variant 5_Mobile_Collapsed (Standard + Bordered)",
-                props: { platform: "mobile", showFullMenu: false, showBorderedContainer: true },
-                note: "Collapsed Mobile (Standard Layout) with Bordered Logo."
+                title: "Variant 6_Mobile_Center (Simple)",
+                props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center' },
+                note: "Mobile Collapsed (Center) - Simple."
             },
             {
-                title: "Variant 6_Mobile_Collapsed (Center + Bordered + Message)",
+                title: "Variant 7_Mobile_Center (Bordered + Message)",
                 props: {
                     platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center',
-                    showBorderedContainer: true,
-                    message: "Unlock huge savings", showMarketingIcon: true
+                    showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true
                 },
-                note: "Mobile Centered Layout + Bordered Container."
+                note: "Mobile Centered - Bordered + Message."
             },
             {
-                title: "Variant 7_Mobile_Collapsed (Center + Filled + Bordered + Message)",
+                title: "Variant 8_Mobile_Center (Filled + Message)",
                 props: {
                     platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center',
-                    showBorderedContainer: true, showFilledContainer: true,
-                    message: "Unlock huge savings", showMarketingIcon: true
+                    showBorderedContainer: true, showFilledContainer: true, message: "Unlock huge savings", showMarketingIcon: true
                 },
-                note: "Mobile Centered Layout + Filled & Bordered Container."
+                note: "Mobile Centered - Filled + Message."
             },
             {
-                title: "Variant 8_Mobile_Collapsed (Right + Bordered)",
+                title: "Variant 9_Mobile_Center (Gradient + Message)",
+                props: {
+                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center',
+                    showBorderedContainer: true, showGradientContainer: true, message: "Unlock huge savings", showMarketingIcon: true
+                },
+                note: "Mobile Centered - Gradient + Message."
+            },
+            {
+                title: "Variant 10_Mobile_Right (Bordered)",
                 props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true },
-                note: "Booking Right Layout (Mobile) with Bordered Logo."
+                note: "Mobile Right - Bordered."
             }
         ];
 
