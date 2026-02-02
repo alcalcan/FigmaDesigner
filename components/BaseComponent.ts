@@ -21,7 +21,9 @@ export interface NodeDefinition {
   type: "FRAME" | "TEXT" | "VECTOR" | "RECTANGLE" | "ELLIPSE" | "LINE" | "STAR" | "POLYGON" | "INSTANCE" | "COMPONENT" | "GROUP" | "BOOLEAN_OPERATION";
   name?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props?: Record<string, any>;
+  props?: Record<string, any> & {
+    richTextSpans?: { start: number; end: number; font?: FontName; fills?: Paint[] }[];
+  };
   booleanOperation?: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
   layoutProps?: {
     width?: number;
@@ -311,6 +313,19 @@ export abstract class BaseComponent {
           } catch (e) {
             console.warn(`Failed to set property ${key} on ${def.name} `, e);
           }
+        }
+      }
+    }
+
+    // Handle Rich Text Spans for Text Nodes
+    if (def.props?.richTextSpans && node.type === "TEXT") {
+      const textNode = node as TextNode;
+      for (const span of def.props.richTextSpans) {
+        if (span.font) {
+          await this.setRangeFont(textNode, span.start, span.end, span.font);
+        }
+        if (span.fills) {
+          textNode.setRangeFills(span.start, span.end, span.fills);
         }
       }
     }

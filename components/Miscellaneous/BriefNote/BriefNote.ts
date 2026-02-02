@@ -74,6 +74,9 @@ export class BriefNote extends BaseComponent {
     }
 
     private renderBlock(block: BriefNoteBlock, index: number): NodeDefinition {
+        const bodyFont: FontName = { family: "Inter", style: "Regular" };
+        const boldFont: FontName = { family: "Inter", style: "Bold" };
+
         switch (block.type) {
             case "header":
                 return {
@@ -82,7 +85,7 @@ export class BriefNote extends BaseComponent {
                     "props": {
                         "layoutMode": "VERTICAL",
                         "primaryAxisSizingMode": "AUTO",
-                        "counterAxisSizingMode": "FIXED", // Width is counter axis for Vertical frame
+                        "counterAxisSizingMode": "FIXED",
                         "paddingTop": index === 0 ? 0 : 32,
                         "paddingBottom": 0
                     },
@@ -106,58 +109,24 @@ export class BriefNote extends BaseComponent {
                     "props": {
                         "layoutMode": "VERTICAL",
                         "primaryAxisSizingMode": "AUTO",
-                        "counterAxisSizingMode": "FIXED", // Width is counter axis
+                        "counterAxisSizingMode": "FIXED",
                         "itemSpacing": 6
                     },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
-                    "children": block.items.map((item, i) => ({
-                        "type": "FRAME",
-                        "name": `Bullet Item ${i}`,
-                        "props": {
-                            "layoutMode": "HORIZONTAL",
-                            "primaryAxisSizingMode": "FIXED", // Width is primary axis for Horizontal frame
-                            "counterAxisSizingMode": "AUTO",
-                            "itemSpacing": 12,
-                            "paddingLeft": 12
-                        },
-                        "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
-                        "children": (() => {
-                            const match = item.match(/^\*\*(.*?)\*\*:(.*)/);
-                            if (match) {
-                                const label = match[1];
-                                const value = match[2];
-                                return [
-                                    {
-                                        "type": "TEXT",
-                                        "props": {
-                                            "characters": "•",
-                                            "fontSize": 14,
-                                            "fills": [{ "type": "SOLID", "color": { "r": 0.3, "g": 0.3, "b": 0.3 } }]
-                                        }
-                                    },
-                                    {
-                                        "type": "TEXT",
-                                        "props": {
-                                            "characters": label + ":",
-                                            "fontSize": 14,
-                                            "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
-                                            "font": { "family": "Inter", "style": "Bold" }
-                                        }
-                                    },
-                                    {
-                                        "type": "TEXT",
-                                        "props": {
-                                            "characters": value.trim(),
-                                            "fontSize": 14,
-                                            "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
-                                            "font": { "family": "Inter", "style": "Regular" },
-                                            "textAutoResize": "HEIGHT"
-                                        },
-                                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 }
-                                    }
-                                ];
-                            }
-                            return [
+                    "children": block.items.map((item, i) => {
+                        const rich = this.parseRichText(item, bodyFont, boldFont);
+                        return {
+                            "type": "FRAME",
+                            "name": `Bullet Item ${i}`,
+                            "props": {
+                                "layoutMode": "HORIZONTAL",
+                                "primaryAxisSizingMode": "FIXED",
+                                "counterAxisSizingMode": "AUTO",
+                                "itemSpacing": 12,
+                                "paddingLeft": 12
+                            },
+                            "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
+                            "children": [
                                 {
                                     "type": "TEXT",
                                     "props": {
@@ -169,25 +138,27 @@ export class BriefNote extends BaseComponent {
                                 {
                                     "type": "TEXT",
                                     "props": {
-                                        "characters": item,
+                                        "characters": rich.characters,
+                                        "richTextSpans": rich.spans,
                                         "fontSize": 14,
                                         "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
-                                        "font": { "family": "Inter", "style": "Regular" },
+                                        "font": bodyFont,
                                         "textAutoResize": "HEIGHT"
                                     },
                                     "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 }
                                 }
-                            ];
-                        })()
-                    }))
+                            ]
+                        };
+                    })
                 };
             case "metadata":
+                const valueRich = this.parseRichText(block.value, bodyFont, boldFont);
                 return {
                     "type": "FRAME",
                     "name": "Metadata Entry",
                     "props": {
                         "layoutMode": "HORIZONTAL",
-                        "primaryAxisSizingMode": "FIXED", // Width is primary axis
+                        "primaryAxisSizingMode": "FIXED",
                         "counterAxisSizingMode": "AUTO",
                         "itemSpacing": 8
                     },
@@ -199,16 +170,17 @@ export class BriefNote extends BaseComponent {
                                 "characters": block.label + ":",
                                 "fontSize": 13,
                                 "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
-                                "font": { "family": "Inter", "style": "Bold" }
+                                "font": boldFont
                             }
                         },
                         {
                             "type": "TEXT",
                             "props": {
-                                "characters": block.value,
+                                "characters": valueRich.characters,
+                                "richTextSpans": valueRich.spans,
                                 "fontSize": 13,
                                 "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
-                                "font": { "family": "Inter", "style": "Regular" },
+                                "font": bodyFont,
                                 "textAutoResize": "HEIGHT"
                             },
                             "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 }
@@ -226,20 +198,46 @@ export class BriefNote extends BaseComponent {
                 };
             case "paragraph":
             default:
+                const paraRich = this.parseRichText(block.text, bodyFont, boldFont);
                 return {
                     "type": "TEXT",
                     "name": "Paragraph",
                     "props": {
-                        "characters": block.text,
+                        "characters": paraRich.characters,
+                        "richTextSpans": paraRich.spans,
                         "fontSize": 14,
                         "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
-                        "font": { "family": "Inter", "style": "Regular" },
+                        "font": bodyFont,
                         "textAutoResize": "HEIGHT",
                         "lineHeight": { "unit": "PERCENT", "value": 150 }
                     },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" }
                 };
         }
+    }
+
+    /**
+     * Extracts markdown-style bolding and returns plain text with spans
+     */
+    private parseRichText(text: string, defaultFont: FontName, boldFont: FontName): { characters: string, spans: any[] } {
+        const spans: any[] = [];
+        let plainText = "";
+        const parts = text.split(/\*\*/);
+
+        for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            if (i % 2 === 1) {
+                // Bold segment
+                spans.push({
+                    start: plainText.length,
+                    end: plainText.length + part.length,
+                    font: boldFont
+                });
+            }
+            plainText += part;
+        }
+
+        return { characters: plainText, spans };
     }
 
     private stripFormatting(text: string): string {
@@ -262,13 +260,7 @@ export class BriefNote extends BaseComponent {
             if (line.startsWith("* ") || line.startsWith("- ")) {
                 const bulletItems: string[] = [];
                 while (i < lines.length && (lines[i].trim().startsWith("* ") || lines[i].trim().startsWith("- "))) {
-                    let rawItem = lines[i].trim().substring(2);
-                    // Preserve **Label:** for the renderer, strip others
-                    if (rawItem.startsWith("**") && rawItem.includes(":**")) {
-                        bulletItems.push(rawItem.trim());
-                    } else {
-                        bulletItems.push(this.stripFormatting(rawItem));
-                    }
+                    bulletItems.push(lines[i].trim().substring(2));
                     i++;
                 }
                 blocks.push({ type: "bulletList", items: bulletItems });
@@ -291,7 +283,7 @@ export class BriefNote extends BaseComponent {
             else if (line.startsWith("**") && line.includes(":**")) {
                 const parts = line.split(":**");
                 const label = this.stripFormatting(parts[0]);
-                const value = this.stripFormatting(parts[1]);
+                const value = parts[1].trim();
                 blocks.push({ type: "metadata", label, value });
             }
             // Bold header simulation: **Text** (alone on line)
@@ -300,7 +292,7 @@ export class BriefNote extends BaseComponent {
             }
             // Regular paragraph
             else {
-                blocks.push({ type: "paragraph", text: this.stripFormatting(line) });
+                blocks.push({ type: "paragraph", text: line });
             }
             i++;
         }
