@@ -19,6 +19,7 @@ export interface Main_Navigation_BookingProps extends ComponentProps {
   pillContentAlignment?: 'left' | 'center' | 'right';
   showGradient?: boolean;
   variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered' | 'full-width-centered-message';
+  name?: string;
 }
 
 export class Main_Navigation_Booking extends BaseComponent {
@@ -268,7 +269,7 @@ export class Main_Navigation_Booking extends BaseComponent {
 
       structure = {
         "type": "FRAME" as const,
-        "name": "Main Navigation",
+        "name": props.name || "Main Navigation",
         "props": {
           "layoutMode": "HORIZONTAL" as const,
           "primaryAxisAlignItems": isFullWidthVariant ? "MIN" as const : "CENTER" as const,
@@ -320,7 +321,7 @@ export class Main_Navigation_Booking extends BaseComponent {
 
       structure = {
         "type": "FRAME" as const,
-        "name": "Main Navigation",
+        "name": props.name || "Main Navigation",
         "props": {
           "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "SPACE_BETWEEN" as const, "counterAxisAlignItems": "CENTER" as const,
           "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,

@@ -409,8 +409,68 @@ figma.ui.onmessage = async (msg) => {
 
         if (msg.type === 'capture-png') {
           const total = selection.length;
-          let count = 0;
 
+          // Smart Capture for Demo/Case Pages:
+          // If 1 item is selected and it is a known Demo/Case page,
+          // then we actually want to export its children (Variants)
+          if (selection.length === 1 && (selection[0].name.includes("Demo") || selection[0].name.includes("Case"))) {
+            const parent = selection[0];
+            if ("children" in parent) {
+              // Filter for likely variants (Instances/Frames/Components)
+              const variants = (parent as ChildrenMixin).children.filter(child =>
+                child.type === "INSTANCE" || child.type === "FRAME" || child.type === "COMPONENT"
+              );
+              // Note: We use the visual order (which matches children order in AutoLayout usually)
+
+              if (variants.length > 0) {
+                console.log(`[Plugin] Smart Capture: Detected Demo Page '${parent.name}'. Exporting ${variants.length} variants...`);
+                let variantIndex = 1;
+                const variantTotal = variants.length;
+
+                for (const node of variants) {
+                  figma.ui.postMessage({
+                    type: 'capture-status',
+                    message: `Capturing Variant ${variantIndex} / ${variantTotal}...`,
+                    count: variantIndex,
+                    total: variantTotal
+                  });
+
+                  try {
+                    const pngBytes = await node.exportAsync({
+                      format: 'PNG',
+                      constraint: { type: 'SCALE', value: 2 }
+                    });
+                    const base64 = figma.base64Encode(pngBytes);
+
+                    // Enforce naming convention: variant_<number>
+                    const variantName = `variant_${variantIndex}`;
+
+                    // User Request Override: If specifically NavBookingDemo, save to "BookingCase" folder
+                    let targetProjectName = projectName;
+                    if (parent.name === "NavBookingDemo") {
+                      targetProjectName = "BookingCase";
+                    }
+
+                    figma.ui.postMessage({
+                      type: 'capture-png-result-packet',
+                      projectName: targetProjectName,
+                      packet: {
+                        name: variantName,
+                        data: base64
+                      },
+                      isLast: variantIndex === variantTotal
+                    });
+                    variantIndex++;
+                  } catch (e) {
+                    console.warn(`Failed to export variant ${node.name}`, e);
+                  }
+                }
+                return; // Done with smart capture
+              }
+            }
+          }
+
+          let count = 0;
           for (const node of selection) {
             count++;
             console.log(`[Plugin] Capturing PNG ${count}/${total}: ${node.name} (ID: ${node.id})`);
