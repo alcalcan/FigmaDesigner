@@ -20,6 +20,8 @@ export interface Main_Navigation_BookingProps extends ComponentProps {
   showGradient?: boolean;
   variant?: 'standard' | 'floating' | 'centered-floating' | 'full-width-centered' | 'full-width-centered-message';
   name?: string;
+  device?: 'desktop' | 'mobile';
+  hideLoginLabel?: boolean;
 }
 
 export class Main_Navigation_Booking extends BaseComponent {
@@ -35,6 +37,10 @@ export class Main_Navigation_Booking extends BaseComponent {
     const showGradient = props.showGradient !== false;
     const isFullWidthVariant = variant === 'full-width-centered' || variant === 'full-width-centered-message';
     const isPillFilling = pillWidth === 'fill' || (!pillWidth && isFullWidthVariant);
+    const device = props.device || 'desktop';
+    const paddingX = device === 'mobile' ? 20 : 135;
+    const logoWidth = device === 'mobile' ? 72 : undefined;
+    const itemSpacing = device === 'mobile' ? 12 : 32;
 
     const mainColor = { "r": 0.0117, "g": 0.0117, "b": 0.1098, "a": 1 }; // Dark background
 
@@ -98,7 +104,7 @@ export class Main_Navigation_Booking extends BaseComponent {
         "type": "FRAME" as const,
         "name": "Floating Group",
         "props": {
-          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "paddingLeft": 12, "paddingRight": 12, "cornerRadius": 24,
+          "layoutMode": "HORIZONTAL" as const, "itemSpacing": 12, "paddingLeft": props.hideLoginLabel ? 0 : 12, "paddingRight": 12, "cornerRadius": 24,
           "primaryAxisAlignItems": "MIN" as const, "counterAxisAlignItems": "CENTER" as const, "counterAxisSizingMode": "AUTO" as const,
           "fills": [{ "type": "SOLID" as const, "color": mainColor }],
           "effects": [{ "type": "DROP_SHADOW" as const, "color": { "r": 0, "g": 0, "b": 0, "a": 0.25 }, "offset": { "x": 0, "y": 4 }, "radius": 4, "visible": true, "blendMode": "NORMAL" as const }]
@@ -111,7 +117,7 @@ export class Main_Navigation_Booking extends BaseComponent {
             "layoutProps": { "height": 40, "parentIsAutoLayout": true },
             "children": [
               { "type": "FRAME" as const, "name": "Leading icon", "layoutProps": { "width": 24, "height": 24, "parentIsAutoLayout": true }, "children": [{ "type": "VECTOR" as const, "shouldFlatten": true, "name": "Vector", "props": { "x": 1, "y": 1 }, "layoutProps": { "width": 22, "height": 22, "parentIsAutoLayout": false }, "svgContent": SVG_Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22 }] },
-              { "type": "TEXT" as const, "name": "Label", "props": { "characters": "Login", "fontSize": 16, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "Manrope", "style": "SemiBold" } }, "layoutProps": { "parentIsAutoLayout": true } }
+              ...(props.hideLoginLabel ? [] : [{ "type": "TEXT" as const, "name": "Label", "props": { "characters": "Login", "fontSize": 16, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "Manrope", "style": "SemiBold" } }, "layoutProps": { "parentIsAutoLayout": true } }])
             ]
           },
           {
@@ -135,7 +141,7 @@ export class Main_Navigation_Booking extends BaseComponent {
       });
     } else {
       rightAreaChildren.push(
-        { "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant }, "layoutProps": { "parentIsAutoLayout": true } },
+        { "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant }, "layoutProps": { "parentIsAutoLayout": true, "width": logoWidth, "height": logoWidth ? (logoWidth / 118) * 20 : undefined } },
         {
           "type": "FRAME" as const, "name": "pk-divider",
           "props": { "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.5 }] },
@@ -235,7 +241,7 @@ export class Main_Navigation_Booking extends BaseComponent {
       }
       pillChildren.push({
         "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
-        "layoutProps": { "parentIsAutoLayout": true }
+        "layoutProps": { "parentIsAutoLayout": true, "width": logoWidth, "height": logoWidth ? (logoWidth / 118) * 20 : undefined }
       });
 
 
@@ -271,9 +277,9 @@ export class Main_Navigation_Booking extends BaseComponent {
           "layoutMode": "HORIZONTAL" as const,
           "primaryAxisAlignItems": isFullWidthVariant ? "MIN" as const : "CENTER" as const,
           "counterAxisAlignItems": "CENTER" as const,
-          "itemSpacing": isFullWidthVariant ? 32 : 0,
+          "itemSpacing": isFullWidthVariant ? itemSpacing : 0,
           "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,
-          "paddingLeft": 135, "paddingRight": 135, "fills": [{ "type": "SOLID" as const, "color": mainColor }]
+          "paddingLeft": paddingX, "paddingRight": paddingX, "fills": [{ "type": "SOLID" as const, "color": mainColor }]
         },
         "layoutProps": { "width": props.width ?? 1680, "parentIsAutoLayout": props.parentIsAutoLayout ?? false, "layoutAlign": props.layoutAlign, "layoutGrow": props.layoutGrow },
         "children": [
@@ -310,7 +316,7 @@ export class Main_Navigation_Booking extends BaseComponent {
           "layoutProps": { "parentIsAutoLayout": true },
           "children": [{
             "type": "COMPONENT" as const, "name": "BookingLogo", "component": BookingLogo_color, "props": { "variant": logoVariant },
-            "layoutProps": { "parentIsAutoLayout": true }
+            "layoutProps": { "parentIsAutoLayout": true, "width": logoWidth, "height": logoWidth ? (logoWidth / 118) * 20 : undefined }
           }]
         });
       }
@@ -322,7 +328,7 @@ export class Main_Navigation_Booking extends BaseComponent {
         "props": {
           "layoutMode": "HORIZONTAL" as const, "primaryAxisAlignItems": "SPACE_BETWEEN" as const, "counterAxisAlignItems": "CENTER" as const,
           "primaryAxisSizingMode": "FIXED" as const, "counterAxisSizingMode": "AUTO" as const,
-          "paddingLeft": 135, "paddingRight": 135,
+          "paddingLeft": paddingX, "paddingRight": paddingX,
           "fills": (variant === 'floating' || !showGradient) ? [{ "type": "SOLID" as const, "color": mainColor }] : [
             {
               "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "GRADIENT_LINEAR" as const,
