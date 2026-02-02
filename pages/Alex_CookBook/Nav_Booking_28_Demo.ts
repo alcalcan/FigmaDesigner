@@ -18,27 +18,35 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 note: "Standard Desktop view. Shows all menu items. Layout: Euro Left, Menu Center (Grow), Booking Right."
             },
             {
-                title: "Variant 2_Desktop_Collapsed (Menu Only)",
+                title: "Variant 2_Desktop_Full Menu (Message)",
+                props: {
+                    platform: "desktop", showFullMenu: true,
+                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
+                },
+                note: "Standard Desktop (Full Menu) + Marketing Message. Layout: Euro Left, Menu Center, [Message + Logo] Right."
+            },
+            {
+                title: "Variant 3_Desktop_Collapsed (Menu Only)",
                 props: { platform: "desktop", showFullMenu: false },
                 note: "Collapsed Desktop view. Layout: Euro Left, Menu Button Center, Booking Right."
             },
             {
-                title: "Variant 3_Desktop_Collapsed (Booking Center)",
+                title: "Variant 4_Desktop_Collapsed (Booking Center)",
                 props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center' },
                 note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
             },
             {
-                title: "Variant 4_Desktop_Collapsed (Booking Center - Color)",
+                title: "Variant 5_Desktop_Collapsed (Booking Center - Color)",
                 props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'color' },
                 note: "Booking Logo Centered (Color Variant). Layout: Euro Left, Booking Center, Menu Button Right."
             },
             {
-                title: "Variant 5_Desktop_Collapsed (Booking Right)",
+                title: "Variant 6_Desktop_Collapsed (Booking Right)",
                 props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
                 note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
             },
             {
-                title: "Variant 6_Desktop_Collapsed (Booking Center - Message White)",
+                title: "Variant 7_Desktop_Collapsed (Booking Center - Message White)",
                 props: {
                     platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'white',
                     message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
@@ -46,7 +54,7 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 note: "Booking Logo Centered (White) + Marketing Message. Layout: Euro Left, [Booking + Message] Center, Menu Button Right."
             },
             {
-                title: "Variant 7_Desktop_Collapsed (Booking Right - Message White)",
+                title: "Variant 8_Desktop_Collapsed (Booking Right - Message White)",
                 props: {
                     platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', logoVariant: 'white',
                     message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
@@ -59,12 +67,12 @@ export class Nav_Booking_28_Demo extends BaseComponent {
             {
                 title: "Variant 1_Mobile_Full Menu (Standard)",
                 props: { platform: "mobile", showFullMenu: true },
-                note: "Standard Mobile view. Layout: Euro Left, Menu Center (Grow), Booking Right."
+                note: "Standard Mobile view. Layout: Euro Left, Booking Left, Spacer, Menu Right."
             },
             {
                 title: "Variant 2_Mobile_Collapsed (Menu Only)",
                 props: { platform: "mobile", showFullMenu: false },
-                note: "Collapsed Mobile view. Layout: Euro Left, Menu Button Center, Booking Right."
+                note: "Collapsed Mobile view. Layout: Euro Left, Booking Left, Spacer, Menu Right."
             },
             {
                 title: "Variant 3_Mobile_Collapsed (Booking Center)",

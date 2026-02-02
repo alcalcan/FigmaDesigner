@@ -144,7 +144,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             ]
         } : null;
 
-        const logoMessageGroupBlock: NodeDefinition | null = (marketingMessageBlock && (brandingLayout === 'booking-center' || brandingLayout === 'booking-right')) ? {
+        const logoMessageGroupBlock: NodeDefinition | null = (marketingMessageBlock) ? {
             "type": "FRAME",
             "name": "Logo Message Group",
             "props": {
@@ -157,8 +157,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "children": [marketingMessageBlock, bookingLogoBlock]
         } : null;
 
-        const menuBlockGrow = brandingLayout === 'standard' ? 1 : 0;
-        const menuBlockAlign = brandingLayout === 'standard' ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
+        const menuBlockGrow = (brandingLayout === 'standard' && !isMobile) ? 1 : 0;
+        const menuBlockAlign = (brandingLayout === 'standard' && !isMobile) ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
 
         const menuBlock: NodeDefinition = {
             "type": "FRAME" as const,
@@ -274,7 +274,13 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             }
         } else {
             // Standard
-            navChildren = [euroLogoBlock, menuBlock, bookingLogoBlock];
+            if (isMobile) {
+                // On Mobile: [Euro] [Booking] [Spacer] [Menu]
+                navChildren = [euroLogoBlock, logoMessageGroupBlock || bookingLogoBlock, spacer, menuBlock];
+            } else {
+                // On Desktop: [Euro] [Menu] [Booking]
+                navChildren = [euroLogoBlock, menuBlock, logoMessageGroupBlock || bookingLogoBlock];
+            }
         }
 
         const structure: NodeDefinition = {
