@@ -33,8 +33,8 @@ We need to validate the impact of this proposal and provide alternative design s
 ### **2. UI/UX Design Exploration (Alternatives)**
 
 * Create design proposals that offer "more elegant" integration than a standard banner or complete navigation removal.
-* Constraint 1: Solution must **not add extra vertical height** (must not push content below the fold).
-* Constraint 2: Branding must be **anchored/sticky** (remain visible during scroll).
+* **Constraint 1:** Solution must not add extra vertical height (must not push content below the fold).
+* **Constraint 2:** Branding must be anchored/sticky (remain visible during scroll).
 * Objective: Find a middle ground where the Booking.com brand is prominent but the site remains navigable.
 
 ## **Requirements & Constraints**

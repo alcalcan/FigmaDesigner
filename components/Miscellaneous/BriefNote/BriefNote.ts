@@ -121,27 +121,64 @@ export class BriefNote extends BaseComponent {
                             "paddingLeft": 12
                         },
                         "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
-                        "children": [
-                            {
-                                "type": "TEXT",
-                                "props": {
-                                    "characters": "•",
-                                    "fontSize": 14,
-                                    "fills": [{ "type": "SOLID", "color": { "r": 0.3, "g": 0.3, "b": 0.3 } }]
-                                }
-                            },
-                            {
-                                "type": "TEXT",
-                                "props": {
-                                    "characters": item,
-                                    "fontSize": 14,
-                                    "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
-                                    "font": { "family": "Inter", "style": "Regular" },
-                                    "textAutoResize": "HEIGHT"
-                                },
-                                "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 }
+                        "children": (() => {
+                            const match = item.match(/^\*\*(.*?)\*\*:(.*)/);
+                            if (match) {
+                                const label = match[1];
+                                const value = match[2];
+                                return [
+                                    {
+                                        "type": "TEXT",
+                                        "props": {
+                                            "characters": "•",
+                                            "fontSize": 14,
+                                            "fills": [{ "type": "SOLID", "color": { "r": 0.3, "g": 0.3, "b": 0.3 } }]
+                                        }
+                                    },
+                                    {
+                                        "type": "TEXT",
+                                        "props": {
+                                            "characters": label + ":",
+                                            "fontSize": 14,
+                                            "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
+                                            "font": { "family": "Inter", "style": "Bold" }
+                                        }
+                                    },
+                                    {
+                                        "type": "TEXT",
+                                        "props": {
+                                            "characters": value.trim(),
+                                            "fontSize": 14,
+                                            "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
+                                            "font": { "family": "Inter", "style": "Regular" },
+                                            "textAutoResize": "HEIGHT"
+                                        },
+                                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 }
+                                    }
+                                ];
                             }
-                        ]
+                            return [
+                                {
+                                    "type": "TEXT",
+                                    "props": {
+                                        "characters": "•",
+                                        "fontSize": 14,
+                                        "fills": [{ "type": "SOLID", "color": { "r": 0.3, "g": 0.3, "b": 0.3 } }]
+                                    }
+                                },
+                                {
+                                    "type": "TEXT",
+                                    "props": {
+                                        "characters": item,
+                                        "fontSize": 14,
+                                        "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.2, "b": 0.2 } }],
+                                        "font": { "family": "Inter", "style": "Regular" },
+                                        "textAutoResize": "HEIGHT"
+                                    },
+                                    "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 }
+                                }
+                            ];
+                        })()
                     }))
                 };
             case "metadata":
@@ -225,7 +262,13 @@ export class BriefNote extends BaseComponent {
             if (line.startsWith("* ") || line.startsWith("- ")) {
                 const bulletItems: string[] = [];
                 while (i < lines.length && (lines[i].trim().startsWith("* ") || lines[i].trim().startsWith("- "))) {
-                    bulletItems.push(this.stripFormatting(lines[i].trim().substring(2)));
+                    let rawItem = lines[i].trim().substring(2);
+                    // Preserve **Label:** for the renderer, strip others
+                    if (rawItem.startsWith("**") && rawItem.includes(":**")) {
+                        bulletItems.push(rawItem.trim());
+                    } else {
+                        bulletItems.push(this.stripFormatting(rawItem));
+                    }
                     i++;
                 }
                 blocks.push({ type: "bulletList", items: bulletItems });
