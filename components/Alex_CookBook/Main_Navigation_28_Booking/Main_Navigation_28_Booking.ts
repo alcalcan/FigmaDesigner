@@ -13,6 +13,7 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     message?: string;
     showMarketingIcon?: boolean;
     showBorderedContainer?: boolean;
+    showFilledContainer?: boolean;
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
@@ -24,6 +25,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const message = props.message;
         const showMarketingIcon = props.showMarketingIcon;
         const showBorderedContainer = props.showBorderedContainer;
+        const showFilledContainer = props.showFilledContainer;
 
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
@@ -176,7 +178,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "cornerRadius": 24,
                 "strokes": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
                 "strokeWeight": 1,
-                "fills": []
+                "fills": showFilledContainer ? [{ "type": "SOLID" as const, "color": { "r": 0, "g": 0.42, "b": 0.89 } }] : []
             },
             "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
             "children": [contentToWrap]

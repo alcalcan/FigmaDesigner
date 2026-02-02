@@ -12,65 +12,51 @@ export class Nav_Booking_28_Demo extends BaseComponent {
 
     async create(props: ComponentProps): Promise<SceneNode> {
         const desktopVariants: VariantDefinition[] = [
+            // FULL MENU SECTION
             {
                 title: "Variant 1_Desktop_Full Menu (Standard)",
                 props: { platform: "desktop", showFullMenu: true },
-                note: "Standard Desktop view. Shows all menu items. Layout: Euro Left, Menu Center (Grow), Booking Right."
+                note: "Standard Desktop view (Full Menu). Layout: Euro Left, Menu Center (Grow), Booking Right."
             },
             {
-                title: "Variant 2_Desktop_Full Menu (Message)",
+                title: "Variant 2_Desktop_Full Menu (Bordered)",
+                props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true },
+                note: "Desktop Full Menu with Bordered Logo."
+            },
+            {
+                title: "Variant 3_Desktop_Full Menu (Bordered + Message)",
                 props: {
-                    platform: "desktop", showFullMenu: true,
+                    platform: "desktop", showFullMenu: true, showBorderedContainer: true,
                     message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
                 },
-                note: "Standard Desktop (Full Menu) + Marketing Message. Layout: Euro Left, Menu Center, [Message + Logo] Right."
+                note: "Desktop Full Menu + Marketing Message in Bordered Container."
             },
             {
-                title: "Variant 3_Desktop_Collapsed (Menu Only)",
+                title: "Variant 4_Desktop_Full Menu (Filled + Bordered)",
+                props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true, showFilledContainer: true },
+                note: "Desktop Full Menu with Filled & Bordered Logo (Bright Booking Blue)."
+            },
+
+            // COLLAPSED SECTION - STANDARD LAYOUT
+            {
+                title: "Variant 5_Desktop_Collapsed (Standard)",
                 props: { platform: "desktop", showFullMenu: false },
-                note: "Collapsed Desktop view. Layout: Euro Left, Menu Button Center, Booking Right."
+                note: "Collapsed Desktop (Standard Layout). Layout: Euro Left, Menu Button Center, Booking Right."
             },
             {
-                title: "Variant 4_Desktop_Collapsed (Booking Center)",
+                title: "Variant 6_Desktop_Collapsed (Standard + Bordered)",
+                props: { platform: "desktop", showFullMenu: false, showBorderedContainer: true },
+                note: "Collapsed Desktop (Standard Layout) with Bordered Logo."
+            },
+
+            // COLLAPSED SECTION - BOOKING CENTER
+            {
+                title: "Variant 7_Desktop_Collapsed (Center)",
                 props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center' },
                 note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
             },
             {
-                title: "Variant 5_Desktop_Collapsed (Booking Center - Color)",
-                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'color' },
-                note: "Booking Logo Centered (Color Variant). Layout: Euro Left, Booking Center, Menu Button Right."
-            },
-            {
-                title: "Variant 6_Desktop_Collapsed (Booking Right)",
-                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
-                note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
-            },
-            {
-                title: "Variant 7_Desktop_Collapsed (Booking Center - Message White)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'white',
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Booking Logo Centered (White) + Marketing Message. Layout: Euro Left, [Booking + Message] Center, Menu Button Right."
-            },
-            {
-                title: "Variant 8_Desktop_Collapsed (Booking Right - Message White)",
-                props: {
-                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', logoVariant: 'white',
-                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
-                },
-                note: "Booking Logo Right + Marketing Message. Layout: Euro Left, Spacer, [Message + Logo] Right, Menu."
-            },
-            {
-                title: "Variant 9_Desktop_Full Menu (Bordered)",
-                props: {
-                    platform: "desktop", showFullMenu: true,
-                    showBorderedContainer: true
-                },
-                note: "Standard Desktop (Full Menu) + Bordered Logo Container."
-            },
-            {
-                title: "Variant 10_Desktop_Collapsed (Center - Bordered)",
+                title: "Variant 8_Desktop_Collapsed (Center + Bordered)",
                 props: {
                     platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center',
                     showBorderedContainer: true
@@ -78,7 +64,7 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 note: "Booking Center Layout + Bordered Logo Container."
             },
             {
-                title: "Variant 11_Desktop_Collapsed (Center - Bordered + Message)",
+                title: "Variant 9_Desktop_Collapsed (Center + Bordered + Message)",
                 props: {
                     platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center',
                     showBorderedContainer: true,
@@ -87,57 +73,97 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 note: "Booking Center Layout + Bordered Container wrapping [Message + Logo]."
             },
             {
-                title: "Variant 12_Desktop_Collapsed (Right - Bordered + Message)",
+                title: "Variant 10_Desktop_Collapsed (Center + Filled + Bordered + Message)",
+                props: {
+                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center',
+                    showBorderedContainer: true, showFilledContainer: true,
+                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
+                },
+                note: "Booking Center Layout + Filled & Bordered Container wrapping [Message + Logo]."
+            },
+
+            // COLLAPSED SECTION - BOOKING RIGHT
+            {
+                title: "Variant 11_Desktop_Collapsed (Right)",
+                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
+                note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
+            },
+            {
+                title: "Variant 12_Desktop_Collapsed (Right + Bordered)",
+                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true },
+                note: "Booking Right Layout with Bordered Logo."
+            },
+            {
+                title: "Variant 13_Desktop_Collapsed (Right + Bordered + Message)",
                 props: {
                     platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right',
                     showBorderedContainer: true,
                     message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
                 },
                 note: "Booking Right Layout + Bordered Container wrapping [Message + Logo]."
+            },
+            {
+                title: "Variant 14_Desktop_Collapsed (Right + Filled + Bordered + Message)",
+                props: {
+                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right',
+                    showBorderedContainer: true, showFilledContainer: true,
+                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
+                },
+                note: "Booking Right Layout + Filled & Bordered Container wrapping [Message + Logo]."
             }
         ];
 
         const mobileVariants: VariantDefinition[] = [
+            // FULL MENU SECTION
             {
                 title: "Variant 1_Mobile_Full Menu (Standard)",
                 props: { platform: "mobile", showFullMenu: true },
-                note: "Standard Mobile view. Layout: Euro Left, Booking Left, Spacer, Menu Right."
+                note: "Standard Mobile view (Full Menu). Layout: Euro Left, Booking Left, Spacer, Menu Right."
             },
             {
-                title: "Variant 2_Mobile_Collapsed (Menu Only)",
+                title: "Variant 2_Mobile_Full Menu (Bordered)",
+                props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true },
+                note: "Mobile Full Menu with Bordered Logo."
+            },
+            {
+                title: "Variant 3_Mobile_Full Menu (Filled + Bordered)",
+                props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true, showFilledContainer: true },
+                note: "Mobile Full Menu with Filled & Bordered Logo."
+            },
+
+            // COLLAPSED SECTION
+            {
+                title: "Variant 4_Mobile_Collapsed (Standard)",
                 props: { platform: "mobile", showFullMenu: false },
-                note: "Collapsed Mobile view. Layout: Euro Left, Booking Left, Spacer, Menu Right."
+                note: "Collapsed Mobile (Standard Layout)."
             },
             {
-                title: "Variant 3_Mobile_Collapsed (Booking Center)",
-                props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center' },
-                note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
+                title: "Variant 5_Mobile_Collapsed (Standard + Bordered)",
+                props: { platform: "mobile", showFullMenu: false, showBorderedContainer: true },
+                note: "Collapsed Mobile (Standard Layout) with Bordered Logo."
             },
             {
-                title: "Variant 4_Mobile_Collapsed (Booking Center - Color)",
-                props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'color' },
-                note: "Booking Logo Centered (Color Variant). Layout: Euro Left, Booking Center, Menu Button Right."
-            },
-            {
-                title: "Variant 5_Mobile_Collapsed (Booking Right)",
-                props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right' },
-                note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
-            },
-            {
-                title: "Variant 6_Mobile_Collapsed (Booking Center - Message White)",
+                title: "Variant 6_Mobile_Collapsed (Center + Bordered + Message)",
                 props: {
-                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'white',
+                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center',
+                    showBorderedContainer: true,
                     message: "Unlock huge savings", showMarketingIcon: true
                 },
-                note: "Booking Logo Centered (White) + Marketing Message. Mobile shortened message."
+                note: "Mobile Centered Layout + Bordered Container."
             },
             {
-                title: "Variant 7_Mobile_Collapsed (Booking Right - Message White)",
+                title: "Variant 7_Mobile_Collapsed (Center + Filled + Bordered + Message)",
                 props: {
-                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right', logoVariant: 'white',
+                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center',
+                    showBorderedContainer: true, showFilledContainer: true,
                     message: "Unlock huge savings", showMarketingIcon: true
                 },
-                note: "Booking Logo Right + Marketing Message. Mobile Layout: Euro Left, Spacer, [Message + Logo] Right."
+                note: "Mobile Centered Layout + Filled & Bordered Container."
+            },
+            {
+                title: "Variant 8_Mobile_Collapsed (Right + Bordered)",
+                props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true },
+                note: "Booking Right Layout (Mobile) with Bordered Logo."
             }
         ];
 
