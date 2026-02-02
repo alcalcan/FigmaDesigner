@@ -86,6 +86,8 @@ export { AV___sound_up } from "./UEFA_icons/AV___sound_up/AV___sound_up";
 export { AV___stop } from "./UEFA_icons/AV___stop/AV___stop";
 export { AV___stop_circle_negative } from "./UEFA_icons/AV___stop_circle_negative/AV___stop_circle_negative";
 export { BookingLogo_color } from "./Alex_CookBook/BookingLogo_color/BookingLogo_color";
+export { BriefNote } from "./Miscellaneous/BriefNote/BriefNote";
+export { BriefNoteDemo } from "../pages/Alex_CookBook/BriefNoteDemo";
 export { Browser } from "./Alex_CookBook/Browser/Browser";
 export { Button } from "./Newsletter/Button";
 export { button_set } from "./UEFA_Academy_online/button_set/button_set";
@@ -203,7 +205,7 @@ export { UEFA_Academy_online_CourseDetails } from "../pages/UEFA_Academy_online/
 export { UEFA_Academy_online_Notifications } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Notifications";
 export { UEFA_Academy_online_Summary } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Summary";
 export { uefa_cards_4x } from "./Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
-export { UserObservationStickyNote } from "./Alex_CookBook/UserObservationStickyNote/UserObservationStickyNote";
+export { UserObservationStickyNote } from "./Miscellaneous/UserObservationStickyNote/UserObservationStickyNote";
 export { VAR_progress } from "./UEFA_icons/VAR_progress/VAR_progress";
 export { VAR_resolution } from "./UEFA_icons/VAR_resolution/VAR_resolution";
 export { Placeholder } from "./Placeholder";
