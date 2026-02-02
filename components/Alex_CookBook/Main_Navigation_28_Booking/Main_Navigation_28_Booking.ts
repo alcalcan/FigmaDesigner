@@ -12,6 +12,7 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     brandingLayout?: 'standard' | 'booking-center' | 'booking-right';
     message?: string;
     showMarketingIcon?: boolean;
+    showBorderedContainer?: boolean;
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
@@ -22,6 +23,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const brandingLayout = props.brandingLayout || 'standard';
         const message = props.message;
         const showMarketingIcon = props.showMarketingIcon;
+        const showBorderedContainer = props.showBorderedContainer;
 
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
@@ -158,6 +160,28 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "children": [marketingMessageBlock, bookingLogoBlock]
         } : null;
 
+        const contentToWrap = logoMessageGroupBlock || bookingLogoBlock;
+
+        const borderedLogoGroup: NodeDefinition = showBorderedContainer ? {
+            "type": "FRAME" as const,
+            "name": "Bordered Logo Container",
+            "props": {
+                "layoutMode": "HORIZONTAL" as const,
+                "primaryAxisAlignItems": "CENTER" as const,
+                "counterAxisAlignItems": "CENTER" as const,
+                "paddingTop": isMobile ? 4 : 8,
+                "paddingBottom": isMobile ? 4 : 8,
+                "paddingLeft": 16,
+                "paddingRight": 16,
+                "cornerRadius": 24,
+                "strokes": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
+                "strokeWeight": 1,
+                "fills": []
+            },
+            "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
+            "children": [contentToWrap]
+        } : contentToWrap;
+
         const menuBlockGrow = (brandingLayout === 'standard' && !isMobile) ? 1 : 0;
         const menuBlockAlign = (brandingLayout === 'standard' && !isMobile) ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
 
@@ -262,25 +286,17 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         let navChildren: NodeDefinition[] = [];
 
         if (brandingLayout === 'booking-center') {
-            if (logoMessageGroupBlock) {
-                navChildren = [euroLogoBlock, spacer, logoMessageGroupBlock, spacer, menuBlock];
-            } else {
-                navChildren = [euroLogoBlock, spacer, bookingLogoBlock, spacer, menuBlock];
-            }
+            navChildren = [euroLogoBlock, spacer, borderedLogoGroup, spacer, menuBlock];
         } else if (brandingLayout === 'booking-right') {
-            if (logoMessageGroupBlock) {
-                navChildren = [euroLogoBlock, spacer, logoMessageGroupBlock, menuBlock];
-            } else {
-                navChildren = [euroLogoBlock, spacer, bookingLogoBlock, menuBlock];
-            }
+            navChildren = [euroLogoBlock, spacer, borderedLogoGroup, menuBlock];
         } else {
             // Standard
             if (isMobile) {
                 // On Mobile: [Euro] [Booking] [Spacer] [Menu]
-                navChildren = [euroLogoBlock, logoMessageGroupBlock || bookingLogoBlock, spacer, menuBlock];
+                navChildren = [euroLogoBlock, borderedLogoGroup, spacer, menuBlock];
             } else {
                 // On Desktop: [Euro] [Menu] [Booking]
-                navChildren = [euroLogoBlock, menuBlock, logoMessageGroupBlock || bookingLogoBlock];
+                navChildren = [euroLogoBlock, menuBlock, borderedLogoGroup];
             }
         }
 
