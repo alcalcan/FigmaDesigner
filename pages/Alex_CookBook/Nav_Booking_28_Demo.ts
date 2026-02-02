@@ -11,49 +11,47 @@ interface VariantDefinition {
 export class Nav_Booking_28_Demo extends BaseComponent {
 
     async create(props: ComponentProps): Promise<SceneNode> {
-        const variants: VariantDefinition[] = [
-            // Standard Layouts
+        const desktopVariants: VariantDefinition[] = [
             {
-                title: "Desktop - Full Menu (Standard)",
+                title: "Variant 1_Desktop_Full Menu (Standard)",
                 props: { platform: "desktop", showFullMenu: true },
                 note: "Standard Desktop view. Shows all menu items. Layout: Euro Left, Menu Center (Grow), Booking Right."
             },
             {
-                title: "Desktop - Collapsed (Menu Only)",
+                title: "Variant 2_Desktop_Collapsed (Menu Only)",
                 props: { platform: "desktop", showFullMenu: false },
                 note: "Collapsed Desktop view. Layout: Euro Left, Menu Button Center, Booking Right."
             },
             {
-                title: "Mobile - Full Menu (Standard)",
-                props: { platform: "mobile", showFullMenu: true },
-                note: "Standard Mobile view. Layout: Euro Left, Menu Center (Grow), Booking Right."
-            },
-            {
-                title: "Mobile - Collapsed (Menu Only)",
-                props: { platform: "mobile", showFullMenu: false },
-                note: "Collapsed Mobile view. Layout: Euro Left, Menu Button Center, Booking Right."
-            },
-
-            // New Layout: Booking Center, Menu Right
-            {
-                title: "Desktop - Collapsed (Booking Center)",
+                title: "Variant 3_Desktop_Collapsed (Booking Center)",
                 props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center' },
                 note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
             },
             {
-                title: "Mobile - Collapsed (Booking Center)",
+                title: "Variant 4_Desktop_Collapsed (Booking Right)",
+                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
+                note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
+            }
+        ];
+
+        const mobileVariants: VariantDefinition[] = [
+            {
+                title: "Variant 1_Mobile_Full Menu (Standard)",
+                props: { platform: "mobile", showFullMenu: true },
+                note: "Standard Mobile view. Layout: Euro Left, Menu Center (Grow), Booking Right."
+            },
+            {
+                title: "Variant 2_Mobile_Collapsed (Menu Only)",
+                props: { platform: "mobile", showFullMenu: false },
+                note: "Collapsed Mobile view. Layout: Euro Left, Menu Button Center, Booking Right."
+            },
+            {
+                title: "Variant 3_Mobile_Collapsed (Booking Center)",
                 props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center' },
                 note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
             },
-
-            // New Layout: Booking Right (Next to Menu)
             {
-                title: "Desktop - Collapsed (Booking Right)",
-                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
-                note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
-            },
-            {
-                title: "Mobile - Collapsed (Booking Right)",
+                title: "Variant 4_Mobile_Collapsed (Booking Right)",
                 props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right' },
                 note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
             }
@@ -67,9 +65,17 @@ export class Nav_Booking_28_Demo extends BaseComponent {
             "layoutProps": { "parentIsAutoLayout": true }
         });
 
-        variants.forEach(v => {
-            const isMobile = v.props.platform === 'mobile';
+        // DESKTOP SECTION
+        children.push({
+            "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+        });
+        children.push({
+            "type": "TEXT",
+            "props": { "characters": "Desktop Variants", "fontSize": 36, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0.13, "g": 0.08, "b": 0.19 } }] },
+            "layoutProps": { "parentIsAutoLayout": true }
+        });
 
+        desktopVariants.forEach(v => {
             children.push(
                 {
                     "type": "TEXT",
@@ -81,8 +87,42 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                     "props": { ...v.props, name: v.title },
                     "layoutProps": {
                         "parentIsAutoLayout": true,
-                        "layoutAlign": isMobile ? "INHERIT" : "STRETCH",
-                        "width": isMobile ? 375 : 1680
+                        "layoutAlign": "STRETCH",
+                        "width": 1680
+                    }
+                },
+                {
+                    "type": "COMPONENT", "component": UserObservationStickyNote,
+                    "props": { "text": v.note },
+                    "layoutProps": { "parentIsAutoLayout": true }
+                }
+            );
+        });
+
+        // MOBILE SECTION
+        children.push({
+            "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 80, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+        });
+        children.push({
+            "type": "TEXT",
+            "props": { "characters": "Mobile Variants", "fontSize": 36, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0.13, "g": 0.08, "b": 0.19 } }] },
+            "layoutProps": { "parentIsAutoLayout": true }
+        });
+
+        mobileVariants.forEach(v => {
+            children.push(
+                {
+                    "type": "TEXT",
+                    "props": { "characters": v.title, "fontSize": 24, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0.13, "g": 0.08, "b": 0.19 } }] },
+                    "layoutProps": { "parentIsAutoLayout": true }
+                },
+                {
+                    "type": "COMPONENT", "name": v.title, "component": Main_Navigation_28_Booking,
+                    "props": { ...v.props, name: v.title },
+                    "layoutProps": {
+                        "parentIsAutoLayout": true,
+                        "layoutAlign": "INHERIT",
+                        "width": 375
                     }
                 },
                 {
