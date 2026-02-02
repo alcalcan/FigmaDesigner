@@ -28,9 +28,30 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
             },
             {
-                title: "Variant 4_Desktop_Collapsed (Booking Right)",
+                title: "Variant 4_Desktop_Collapsed (Booking Center - Color)",
+                props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'color' },
+                note: "Booking Logo Centered (Color Variant). Layout: Euro Left, Booking Center, Menu Button Right."
+            },
+            {
+                title: "Variant 5_Desktop_Collapsed (Booking Right)",
                 props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right' },
                 note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
+            },
+            {
+                title: "Variant 6_Desktop_Collapsed (Booking Center - Message White)",
+                props: {
+                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'white',
+                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
+                },
+                note: "Booking Logo Centered (White) + Marketing Message. Layout: Euro Left, [Booking + Message] Center, Menu Button Right."
+            },
+            {
+                title: "Variant 7_Desktop_Collapsed (Booking Right - Message White)",
+                props: {
+                    platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', logoVariant: 'white',
+                    message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true
+                },
+                note: "Booking Logo Right + Marketing Message. Layout: Euro Left, Spacer, [Message + Logo] Right, Menu."
             }
         ];
 
@@ -51,9 +72,30 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 note: "Booking Logo Centered. Layout: Euro Left, Booking Center, Menu Button Right."
             },
             {
-                title: "Variant 4_Mobile_Collapsed (Booking Right)",
+                title: "Variant 4_Mobile_Collapsed (Booking Center - Color)",
+                props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'color' },
+                note: "Booking Logo Centered (Color Variant). Layout: Euro Left, Booking Center, Menu Button Right."
+            },
+            {
+                title: "Variant 5_Mobile_Collapsed (Booking Right)",
                 props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right' },
                 note: "Booking Logo Next to Menu. Layout: Euro Left, Spacer, Booking + Menu Button Right."
+            },
+            {
+                title: "Variant 6_Mobile_Collapsed (Booking Center - Message White)",
+                props: {
+                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', logoVariant: 'white',
+                    message: "Unlock huge savings", showMarketingIcon: true
+                },
+                note: "Booking Logo Centered (White) + Marketing Message. Mobile shortened message."
+            },
+            {
+                title: "Variant 7_Mobile_Collapsed (Booking Right - Message White)",
+                props: {
+                    platform: "mobile", showFullMenu: false, brandingLayout: 'booking-right', logoVariant: 'white',
+                    message: "Unlock huge savings", showMarketingIcon: true
+                },
+                note: "Booking Logo Right + Marketing Message. Mobile Layout: Euro Left, Spacer, [Message + Logo] Right."
             }
         ];
 
@@ -138,17 +180,11 @@ export class Nav_Booking_28_Demo extends BaseComponent {
             "name": "Nav_Booking_28_Demo",
             "props": {
                 "layoutMode": "VERTICAL",
-                "primaryAxisSizingMode": "AUTO",
-                "counterAxisSizingMode": "FIXED",
-                "counterAxisAlignItems": "MIN",
-                "itemSpacing": 24,
-                "paddingTop": 60,
-                "paddingRight": 60,
-                "paddingBottom": 60,
-                "paddingLeft": 60,
-                "fills": [{ "type": "SOLID", "color": { "r": 0.95, "g": 0.95, "b": 0.97 } }]
+                "itemSpacing": 32,
+                "paddingTop": 64, "paddingRight": 64, "paddingBottom": 64, "paddingLeft": 64,
+                "fills": [{ "type": "SOLID", "color": { "r": 0.96, "g": 0.96, "b": 0.96 } }]
             },
-            "layoutProps": { "parentIsAutoLayout": false, "width": 1680 },
+            "layoutProps": { "width": 1800, "parentIsAutoLayout": false },
             "children": children
         };
 

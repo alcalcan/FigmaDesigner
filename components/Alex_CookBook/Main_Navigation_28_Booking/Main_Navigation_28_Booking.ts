@@ -1,7 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 import { BookingLogo_color } from "../BookingLogo_color/BookingLogo_color";
-
-// Reuse assets from Main_Navigation_28
 import SVG_Desktop_Logo from "../Main_Navigation_28/assets/Main_Navigation_28_desktop_assets_vector_Vector_1277_36294_svg_156x23_986331939697266.svg";
 import SVG_Desktop_Icon from "../Main_Navigation_28/assets/Main_Navigation_28_desktop_assets_icon_Vector_1277_36281_svg_8_385973930358887x6_209956169128418.svg";
 import SVG_Mobile_Logo from "../Main_Navigation_28/assets/Main_Navigation_28_mobile_assets_icon_Vector_1277_37512_svg_23_699735641479492x39_999935150146484.svg";
@@ -12,6 +10,8 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     logoVariant?: 'color' | 'white';
     showFullMenu?: boolean;
     brandingLayout?: 'standard' | 'booking-center' | 'booking-right';
+    message?: string;
+    showMarketingIcon?: boolean;
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
@@ -20,16 +20,16 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const logoVariant = props.logoVariant || 'white';
         const showFullMenu = props.showFullMenu ?? true;
         const brandingLayout = props.brandingLayout || 'standard';
+        const message = props.message;
+        const showMarketingIcon = props.showMarketingIcon;
 
-        // REVERT: Using Euro 28 Blue Background
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
-        // Dynamic properties based on platform
         const width = props.width ?? (isMobile ? 375 : 1680);
         const paddingLeft = isMobile ? 12 : 24;
         const paddingRight = isMobile ? 12 : 24;
-        const paddingTop = isMobile ? 4 : 13; // Reverted padding to match Euro 28
-        const paddingBottom = isMobile ? 4 : 13; // Reverted padding to match Euro 28
+        const paddingTop = isMobile ? 4 : 13;
+        const paddingBottom = isMobile ? 4 : 13;
 
         const navHeight = isMobile ? 46 : 54;
         const euroLogoWidth = isMobile ? 44 : 204;
@@ -39,10 +39,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
 
         const menuItemHeight = 30;
         const fontSize = isMobile ? 14 : 16;
-        // REVERT: Using standard styling for font
         const fontFamily = "UEFA Euro Pro";
 
-        // LEFT LOGO: Euro 2028 (Standard)
         const leftLogoContent: NodeDefinition = isMobile ? {
             "type": "FRAME" as const,
             "name": "Link - UEFA EURO 2028",
@@ -53,7 +51,6 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                     "type": "VECTOR" as const,
                     "shouldFlatten": true,
                     "name": "Vector",
-                    "props": {},
                     "layoutProps": { "width": 23.70, "height": 40, "parentIsAutoLayout": true },
                     "svgContent": SVG_Mobile_Logo
                 }
@@ -65,7 +62,6 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "svgContent": SVG_Desktop_Logo
         };
 
-        // RIGHT LOGO: Booking.com Logo (Co-branding)
         const rightLogoContent: NodeDefinition = {
             "type": "COMPONENT",
             "name": "BookingLogo",
@@ -74,7 +70,6 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "layoutProps": { "parentIsAutoLayout": true, "width": bookingLogoWidth, "height": (bookingLogoWidth / 118) * 20 }
         };
 
-        // REVERT: Using Euro Menu Items
         const navItems = [
             { name: "Video", isSelected: false },
             { name: "News", isSelected: false }
@@ -87,7 +82,6 @@ export class Main_Navigation_28_Booking extends BaseComponent {
 
         const thirdItemName = isMobile ? "More" : (showFullMenu ? "History" : "Menu");
 
-        // BLOCK DEFINITIONS
         const spacer: NodeDefinition = {
             "type": "FRAME", "name": "Spacer", "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true }, "props": { "layoutMode": "HORIZONTAL" }
         };
@@ -108,20 +102,61 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "name": "Right Logo Area (Booking)",
             "props": {
                 "layoutMode": "HORIZONTAL",
-                "primaryAxisAlignItems": "MAX", // Align right
+                "primaryAxisAlignItems": "MAX",
                 "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
             },
             "layoutProps": {
-                "parentIsAutoLayout": true,
-                "minWidth": bookingLogoWidth
+                "parentIsAutoLayout": true
             },
             "children": [rightLogoContent]
         };
 
-        // Determine menu block properties based on layout
-        // Standard: Grow 1, Align Min
-        // Non-Standard: Grow 0 (Compact), Align Max/Min depending on context?
-        // Actually, if we use spacers, we can just let it be Auto width.
+        const marketingMessageBlock: NodeDefinition | null = message ? {
+            "type": "FRAME" as const,
+            "name": "Marketing Message Container",
+            "props": {
+                "layoutMode": "HORIZONTAL" as const,
+                "itemSpacing": 8,
+                "counterAxisAlignItems": "CENTER" as const,
+                "counterAxisSizingMode": "AUTO" as const,
+                "primaryAxisSizingMode": "AUTO" as const,
+                "fills": []
+            },
+            "layoutProps": { "parentIsAutoLayout": true },
+            "children": [
+                {
+                    "type": "TEXT" as const,
+                    "name": "Marketing Message",
+                    "props": {
+                        "characters": message,
+                        "fontSize": 14,
+                        "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
+                        "font": { "family": "Manrope", "style": "Bold" } // Using Manrope for marketing message distinctiveness
+                    },
+                    "layoutProps": { "parentIsAutoLayout": true }
+                },
+                ...(showMarketingIcon ? [{
+                    "type": "VECTOR" as const,
+                    "name": "Marketing Icon",
+                    "layoutProps": { "width": 12, "height": 12, "parentIsAutoLayout": true },
+                    "svgContent": `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 3L4.5 6L7.5 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                }] : [])
+            ]
+        } : null;
+
+        const logoMessageGroupBlock: NodeDefinition | null = (marketingMessageBlock && (brandingLayout === 'booking-center' || brandingLayout === 'booking-right')) ? {
+            "type": "FRAME",
+            "name": "Logo Message Group",
+            "props": {
+                "layoutMode": "HORIZONTAL", "itemSpacing": 16,
+                "counterAxisAlignItems": "CENTER", "primaryAxisAlignItems": "CENTER",
+                "counterAxisSizingMode": "AUTO", "primaryAxisSizingMode": "AUTO",
+                "fills": []
+            },
+            "layoutProps": { "parentIsAutoLayout": true },
+            "children": [marketingMessageBlock, bookingLogoBlock]
+        } : null;
+
         const menuBlockGrow = brandingLayout === 'standard' ? 1 : 0;
         const menuBlockAlign = brandingLayout === 'standard' ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
 
@@ -141,7 +176,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                     "props": {
                         "layoutMode": "HORIZONTAL",
                         "itemSpacing": isMobile ? 4 : 24,
-                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
+                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO",
+                        "fills": []
                     },
                     "layoutProps": { "parentIsAutoLayout": true },
                     "children": [
@@ -149,7 +185,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                             "type": "FRAME" as const,
                             "name": `Menuitem - ${item.name}`,
                             "props": {
-                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                "fills": []
                             },
                             "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
                             "children": [{
@@ -164,7 +201,6 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                             }]
                         } as NodeDefinition)) : []),
 
-                        // More / History Container (Standard Euro 28 Logic)
                         {
                             "type": "FRAME" as const,
                             "name": "More-History Container",
@@ -172,7 +208,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                                 "layoutMode": "HORIZONTAL",
                                 "itemSpacing": 8,
                                 "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
-                                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                "fills": []
                             },
                             "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
                             "children": [
@@ -184,7 +221,10 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                                 {
                                     "type": "FRAME" as const,
                                     "name": "Icon Container",
-                                    "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER" },
+                                    "props": {
+                                        "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                        "fills": []
+                                    },
                                     "layoutProps": { "width": (isMobile || !showFullMenu) ? 24 : 16, "height": (isMobile || !showFullMenu) ? 24 : 16, "parentIsAutoLayout": true },
                                     "children": [{
                                         "type": "VECTOR" as const,
@@ -203,7 +243,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                             "type": "FRAME" as const,
                             "name": `Menuitem - ${item.name}`,
                             "props": {
-                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                "fills": []
                             },
                             "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
                             "children": [{
@@ -220,13 +261,19 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         let navChildren: NodeDefinition[] = [];
 
         if (brandingLayout === 'booking-center') {
-            // [Euro] [Spacer] [Booking] [Spacer] [Menu]
-            navChildren = [euroLogoBlock, spacer, bookingLogoBlock, spacer, menuBlock];
+            if (logoMessageGroupBlock) {
+                navChildren = [euroLogoBlock, spacer, logoMessageGroupBlock, spacer, menuBlock];
+            } else {
+                navChildren = [euroLogoBlock, spacer, bookingLogoBlock, spacer, menuBlock];
+            }
         } else if (brandingLayout === 'booking-right') {
-            // [Euro] [Spacer] [Booking] [Menu] (Booking next to Menu)
-            navChildren = [euroLogoBlock, spacer, bookingLogoBlock, menuBlock];
+            if (logoMessageGroupBlock) {
+                navChildren = [euroLogoBlock, spacer, logoMessageGroupBlock, menuBlock];
+            } else {
+                navChildren = [euroLogoBlock, spacer, bookingLogoBlock, menuBlock];
+            }
         } else {
-            // Standard: [Euro] [Menu(Grow)] [Booking]
+            // Standard
             navChildren = [euroLogoBlock, menuBlock, bookingLogoBlock];
         }
 
