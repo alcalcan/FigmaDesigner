@@ -103,20 +103,21 @@ export class NavBookingDemo extends BaseComponent {
                 { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Geometric Roundness & Entry: Introducing the Full-Width variant with softer geometric patterns. The extended branded area serves as an inviting entry point, creating a welcoming brand embrace that guides the user toward the functional edges." }, "layoutProps": { "parentIsAutoLayout": true } },
 
                 // 10
-                { "type": "TEXT", "props": { "characters": "Variant10_Message Focused (Centered Content)", "fontSize": 24, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] }, "layoutProps": { "parentIsAutoLayout": true } },
+                { "type": "TEXT", "props": { "characters": "Variant10_Message + Icon (Centered Content)", "fontSize": 24, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] }, "layoutProps": { "parentIsAutoLayout": true } },
                 {
-                    "type": "COMPONENT", "name": "Variant10_Message Focused (Centered Content)", "component": Main_Navigation_Booking,
+                    "type": "COMPONENT", "name": "Variant10_Message + Icon (Centered Content)", "component": Main_Navigation_Booking,
                     "props": {
                         "variant": "full-width-centered-message",
+                        "showMarketingIcon": true,
                         "logoVariant": "white",
                         "gradientDirection": "right-to-left",
                         "pillContentAlignment": "center",
                         "message": "Unlock huge savings – up to 15% with Genius",
-                        "name": "Variant10_Message Focused (Centered Content)"
+                        "name": "Variant10_Message + Icon (Centered Content)"
                     },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "width": 1680 }
                 },
-                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Strategic Marketing Entry: This variant focuses on the core intent of 'Introducing a marketing message' directly within the brand pill. Regardless of the specific text, this architectural choice established immediate brand value and program awareness before the user initiates their journey." }, "layoutProps": { "parentIsAutoLayout": true } },
+                { "type": "COMPONENT", "component": UserObservationStickyNote, "props": { "text": "Interactive Conversion Anchor (Centered): By introducing a chevron (marketing icon), the message is elevated from static text to an interactive CTA. This centered configuration establishes brand value while inviting deeper exploration, providing a symmetrical alternative to the right-aligned Variant 11." }, "layoutProps": { "parentIsAutoLayout": true } },
 
                 // 11
                 { "type": "TEXT", "props": { "characters": "Variant11_Message + Icon (Right Content)", "fontSize": 24, "fontWeight": 700, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.33, "b": 0.72 } }] }, "layoutProps": { "parentIsAutoLayout": true } },
