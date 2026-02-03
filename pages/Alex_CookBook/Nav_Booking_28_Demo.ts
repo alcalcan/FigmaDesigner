@@ -70,34 +70,33 @@ export class Nav_Booking_28_Demo extends BaseComponent {
         ];
 
         const mobileVariants: VariantDefinition[] = [
-            // --- FULL MENU SECTION ---
-            { title: "Variant 1_Mobile_Full Menu (Simple)", props: { platform: "mobile", showFullMenu: true }, note: "Mobile Full Menu - Simple." },
-            { title: "Variant 2_Mobile_Full Menu (Bordered)", props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true }, note: "Mobile Full Menu - Bordered." },
+            // --- BASE / FULL MENU SECTION ---
+            { title: "M1_Full Menu (Simple)", props: { platform: "mobile", showFullMenu: true }, note: "Mobile Full Menu - Simple Logo." },
+            { title: "M2_Full Menu (Bordered)", props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true }, note: "Mobile Full Menu - Bordered Container." },
 
-            // --- COLLAPSED SECTION - CENTER (LOGO RIGHT) ---
-            { title: "Variant 3_Mobile_Center (Bordered + MSG + 40% Opacity)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, borderOpacity: 0.4 }, note: "Mobile Center - 40% Opacity Border." },
-            { title: "Variant 4_Mobile_Center (Filled + Message)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true }, note: "Mobile Center - Filled." },
-            { title: "Variant 5_Mobile_Center (Gradient + Message)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true }, note: "Mobile Center - Gradient." },
+            // --- GROUP A: MOBILE CENTER + MESSAGE (10 Styles) ---
+            { title: "M7_Center+MSG (Style 1: Bdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+MSG S1." },
+            { title: "M8_Center+MSG (Style 2: Bdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+MSG S2." },
+            { title: "M9_Center+MSG (Style 3: Bdr+Fill 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+MSG S3." },
+            { title: "M10_Center+MSG (Style 4: Bdr+Grad 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+MSG S4." },
+            { title: "M11_Center+MSG (Style 5: Fill NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S5." },
+            { title: "M12_Center+MSG (Style 6: Grad NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S6." },
+            { title: "M13_Center+MSG (Style 7: Grad NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S7." },
+            { title: "M14_Center+MSG (Style 8: Bdr+Fill 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+MSG S8." },
+            { title: "M15_Center+MSG (Style 9: Bdr+Grad 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+MSG S9." },
+            { title: "M16_Center+MSG (Style 10: Fill NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S10." },
 
-            // --- COLLAPSED SECTION - CENTER (LOGO LEFT) ---
-            { title: "Variant 6_Mobile_Center (Logo Left + Bordered + 40% Opacity)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left', borderOpacity: 0.4 }, note: "Mobile Center - Logo Left - 40% Opacity." },
-            { title: "Variant 7_Mobile_Center (Logo Left + Filled)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left' }, note: "Mobile Center - Logo Left - Filled." },
-            { title: "Variant 8_Mobile_Center (Logo Left + Gradient)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left' }, note: "Mobile Center - Logo Left - Gradient." },
-
-            // --- COLLAPSED SECTION - CENTER (LOGO LEFT + RADIUS 16) ---
-            { title: "Variant 9_Mobile_Center (Radius 16 + Logo Left + Bordered + 40% Opacity)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left', logoRadius: 16, borderOpacity: 0.4 }, note: "Mobile Center - Radius 16 - 40% Opacity." },
-            { title: "Variant 10_Mobile_Center (Radius 16 + Logo Left + Filled)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left', logoRadius: 16 }, note: "Mobile Center - Radius 16 - Filled." },
-            { title: "Variant 11_Mobile_Center (Radius 16 + Logo Left + Gradient)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left', logoRadius: 16 }, note: "Mobile Center - Radius 16 - Gradient." },
-
-            // --- OPACITY TEST SECTION ---
-            { title: "Variant 12_Mobile_Opacity Test (10% Border)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, borderOpacity: 0.1 }, note: "10% Border Opacity." },
-            { title: "Variant 13_Mobile_Opacity Test (100% Border)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, borderOpacity: 1.0 }, note: "100% Border Opacity." },
-
-            // --- COMBINED STYLES (FILL/GRAD + BORDER) ---
-            { title: "Variant 14_Mobile_Center (Fill + Border 40%)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, borderOpacity: 0.4 }, note: "Fill + 40% Border." },
-            { title: "Variant 15_Mobile_Center (Gradient + Border 40%)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, borderOpacity: 0.4 }, note: "Gradient + 40% Border." },
-            { title: "Variant 16_Mobile_Center (Logo Left + Fill + Border 40%)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left', borderOpacity: 0.4 }, note: "Logo Left: Fill + 40% Border." },
-            { title: "Variant 17_Mobile_Center (Logo Left + Grad + Border 40%)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoPosition: 'left', borderOpacity: 0.4 }, note: "Logo Left: Grad + 40% Border." }
+            // --- GROUP B: MOBILE CENTER + JUST LOGO (10 Styles) ---
+            { title: "M17_Center+LOGO (Style 1: Bdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+LOGO S1." },
+            { title: "M18_Center+LOGO (Style 2: Bdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+LOGO S2." },
+            { title: "M19_Center+LOGO (Style 3: Bdr+Fill 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+LOGO S3." },
+            { title: "M20_Center+LOGO (Style 4: Bdr+Grad 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+LOGO S4." },
+            { title: "M21_Center+LOGO (Style 5: Fill NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, logoRadius: 24 }, note: "Center+LOGO S5." },
+            { title: "M22_Center+LOGO (Style 6: Grad NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, logoRadius: 24 }, note: "Center+LOGO S6." },
+            { title: "M23_Center+LOGO (Style 7: Grad NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, logoRadius: 16 }, note: "Center+LOGO S7." },
+            { title: "M24_Center+LOGO (Style 8: Bdr+Fill 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+LOGO S8." },
+            { title: "M25_Center+LOGO (Style 9: Bdr+Grad 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+LOGO S9." },
+            { title: "M26_Center+LOGO (Style 10: Fill NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, logoRadius: 16 }, note: "Center+LOGO S10." }
         ];
 
         const children: NodeDefinition[] = [];
@@ -175,6 +174,23 @@ export class Nav_Booking_28_Demo extends BaseComponent {
         });
 
         mobileVariants.forEach(v => {
+            // Add Group Headers
+            let groupHeader = "";
+            if (v.title.includes("M1_")) groupHeader = "--- MOBILE BASE / FULL MENU ---";
+            if (v.title.includes("M7_")) groupHeader = "--- MOBILE GROUP A: CENTER + WITH MESSAGE (10 Styles) ---";
+            if (v.title.includes("M17_")) groupHeader = "--- MOBILE GROUP B: CENTER + JUST LOGO (10 Styles) ---";
+
+            if (groupHeader) {
+                children.push({
+                    "type": "FRAME", "name": "Divider", "layoutProps": { "height": 80, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+                });
+                children.push({
+                    "type": "TEXT",
+                    "props": { "characters": groupHeader, "fontSize": 28, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.35, "b": 1 } }] },
+                    "layoutProps": { "parentIsAutoLayout": true }
+                });
+            }
+
             children.push(
                 {
                     "type": "TEXT",
@@ -194,6 +210,9 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                     "type": "COMPONENT", "component": UserObservationStickyNote,
                     "props": { "text": v.note },
                     "layoutProps": { "parentIsAutoLayout": true }
+                },
+                {
+                    "type": "FRAME", "name": "SmallSpacer", "layoutProps": { "height": 24, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
                 }
             );
         });
