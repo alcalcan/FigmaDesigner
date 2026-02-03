@@ -9,7 +9,7 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     platform?: 'desktop' | 'mobile';
     logoVariant?: 'color' | 'white';
     showFullMenu?: boolean;
-    brandingLayout?: 'standard' | 'booking-center' | 'booking-right';
+    brandingLayout?: 'standard' | 'booking-center' | 'booking-right' | 'booking-left';
     message?: string;
     showMarketingIcon?: boolean;
     showBorderedContainer?: boolean;
@@ -332,6 +332,15 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "children": [brandingBlock, menuBlock]
             };
             navChildren = [euroLogoBlock, spacer, rightGroup];
+        } else if (brandingLayout === 'booking-left') {
+            // [Euro + Logo (Grouped)] [Spacer (Grow)] [Menu]
+            const leftGroup: NodeDefinition = {
+                "type": "FRAME", "name": "Left Group",
+                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": isMobile ? 12 : 32, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "fills": [] },
+                "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
+                "children": [euroLogoBlock, brandingBlock]
+            };
+            navChildren = [leftGroup, spacer, menuBlock];
         } else {
             // Standard
             if (isMobile) {
