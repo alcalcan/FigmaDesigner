@@ -18,6 +18,7 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     logoRadius?: number;
     showBorder?: boolean;
     logoPosition?: 'left' | 'right';
+    borderOpacity?: number;
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
@@ -34,6 +35,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const logoRadius = props.logoRadius ?? 24;
         const showBorder = props.showBorder ?? showBorderedContainer;
         const logoPosition = props.logoPosition || 'right';
+        const borderOpacity = props.borderOpacity ?? 0.4;
 
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
@@ -159,7 +161,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "paddingLeft": (showBorderedContainer || showFilledContainer || showGradientContainer) ? (isMobile ? 12 : 16) : 0,
                 "paddingRight": (showBorderedContainer || showFilledContainer || showGradientContainer) ? (isMobile ? 12 : 16) : 0,
                 "cornerRadius": logoRadius,
-                "strokes": showBorder ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.4 }] : [],
+                "strokes": showBorder ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": borderOpacity }] : [],
                 "strokeWeight": showBorder ? 1 : 0,
                 "fills": showFilledContainer ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.1 }] :
                     (showGradientContainer ? [{
