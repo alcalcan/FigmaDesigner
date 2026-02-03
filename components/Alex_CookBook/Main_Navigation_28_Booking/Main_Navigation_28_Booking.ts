@@ -15,6 +15,9 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     showBorderedContainer?: boolean;
     showFilledContainer?: boolean;
     showGradientContainer?: boolean;
+    logoRadius?: number;
+    showBorder?: boolean;
+    logoPosition?: 'left' | 'right';
 }
 
 export class Main_Navigation_28_Booking extends BaseComponent {
@@ -28,6 +31,9 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const showBorderedContainer = props.showBorderedContainer;
         const showFilledContainer = props.showFilledContainer;
         const showGradientContainer = props.showGradientContainer;
+        const logoRadius = props.logoRadius ?? 24;
+        const showBorder = props.showBorder ?? showBorderedContainer;
+        const logoPosition = props.logoPosition || 'right';
 
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
@@ -37,9 +43,9 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const paddingTop = isMobile ? 4 : 13;
         const paddingBottom = isMobile ? 4 : 13;
 
-        const navHeight = isMobile ? 46 : 54;
+        const navHeight = 54; // Enforced 54px for both desktop and mobile
         const euroLogoWidth = isMobile ? 44 : 204;
-        const euroLogoHeight = isMobile ? 40 : 24;
+        const euroLogoHeight = 24;
 
         const bookingLogoWidth = isMobile ? 80 : 120;
 
@@ -103,97 +109,84 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "children": [leftLogoContent]
         };
 
-        const bookingLogoBlock: NodeDefinition = {
+        const marketingIconWidth = isMobile ? 2 : 3;
+        const marketingIconHeight = isMobile ? 4 : 6;
+        const marketingIconSvg = isMobile ?
+            `<svg width="2" height="4" viewBox="0 0 2 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 0.5L0.5 2L1.5 3.5" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>` :
+            `<svg width="3" height="6" viewBox="0 0 3 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 0.5L0.5 3L2.5 5.5" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+        // Branding children: FLAT list of [Message, Icon, Logo]
+        const brandingChildren: NodeDefinition[] = [];
+
+        if (message) {
+            brandingChildren.push({
+                "type": "TEXT" as const,
+                "name": "Marketing Message",
+                "props": {
+                    "characters": message,
+                    "fontSize": isMobile ? 12 : 14,
+                    "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
+                    "font": { "family": "Manrope", "style": "Bold" }
+                },
+                "layoutProps": { "parentIsAutoLayout": true }
+            });
+
+            if (showMarketingIcon) {
+                brandingChildren.push({
+                    "type": "VECTOR" as const,
+                    "name": "Marketing Icon",
+                    "layoutProps": { "width": marketingIconWidth, "height": marketingIconHeight, "parentIsAutoLayout": true },
+                    "svgContent": marketingIconSvg
+                });
+            }
+        }
+
+        brandingChildren.push(rightLogoContent);
+
+        const brandingPill: NodeDefinition = {
             "type": "FRAME" as const,
-            "name": "Right Logo Area (Booking)",
+            "name": "Branding Pill",
             "props": {
                 "layoutMode": "HORIZONTAL",
-                "primaryAxisAlignItems": "MAX",
-                "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
+                "itemSpacing": isMobile ? 8 : 12,
+                "counterAxisAlignItems": "CENTER",
+                "primaryAxisSizingMode": "AUTO",
+                "counterAxisSizingMode": isMobile ? "FIXED" : "AUTO",
+                "paddingLeft": (showBorderedContainer || showFilledContainer || showGradientContainer) ? (isMobile ? 12 : 16) : 0,
+                "paddingRight": (showBorderedContainer || showFilledContainer || showGradientContainer) ? (isMobile ? 12 : 16) : 0,
+                "cornerRadius": logoRadius,
+                "strokes": showBorder ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.4 }] : [],
+                "strokeWeight": showBorder ? 1 : 0,
+                "fills": showFilledContainer ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.1 }] :
+                    (showGradientContainer ? [{
+                        "type": "GRADIENT_LINEAR",
+                        "gradientStops": [
+                            { "position": 0, "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 } }, // Brighter Light Blue (Right)
+                            { "position": 1, "color": { "r": 0, "g": 0.16, "b": 0.77, "a": 1 } }  // Main Nav Blue (Left)
+                        ],
+                        "gradientTransform": [[-1, 0, 1], [0, 1, 0]] // Horizontal Right-to-Left
+                    }] : [])
             },
             "layoutProps": {
                 "parentIsAutoLayout": true,
-                "layoutAlign": "STRETCH" as const
+                "layoutAlign": "STRETCH",
+                "height": isMobile ? 32 : undefined // Enforce 32px height on mobile
             },
-            "children": [rightLogoContent]
+            "children": brandingChildren
         };
 
-        const marketingMessageBlock: NodeDefinition | null = message ? {
+        const brandingBlock: NodeDefinition = {
             "type": "FRAME" as const,
-            "name": "Marketing Message Container",
+            "name": "Branding Area",
             "props": {
-                "layoutMode": "HORIZONTAL" as const,
-                "itemSpacing": 8,
-                "counterAxisAlignItems": "CENTER" as const,
-                "counterAxisSizingMode": "AUTO" as const,
-                "primaryAxisSizingMode": "AUTO" as const,
-                "fills": []
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": brandingLayout === 'booking-right' ? "MAX" : (brandingLayout === 'booking-center' ? "CENTER" : "MAX"),
+                "counterAxisAlignItems": "CENTER",
+                "primaryAxisSizingMode": "AUTO"
             },
-            "layoutProps": { "parentIsAutoLayout": true },
-            "children": [
-                {
-                    "type": "TEXT" as const,
-                    "name": "Marketing Message",
-                    "props": {
-                        "characters": message,
-                        "fontSize": 14,
-                        "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
-                        "font": { "family": "Manrope", "style": "Bold" } // Using Manrope for marketing message distinctiveness
-                    },
-                    "layoutProps": { "parentIsAutoLayout": true }
-                },
-                ...(showMarketingIcon ? [{
-                    "type": "VECTOR" as const,
-                    "name": "Marketing Icon",
-                    "layoutProps": { "width": 12, "height": 12, "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
-                    "svgContent": `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 3L4.5 6L7.5 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-                }] : [])
-            ]
-        } : null;
-
-        const logoMessageGroupBlock: NodeDefinition | null = (marketingMessageBlock) ? {
-            "type": "FRAME",
-            "name": "Logo Message Group",
-            "props": {
-                "layoutMode": "HORIZONTAL", "itemSpacing": 16,
-                "counterAxisAlignItems": "CENTER", "primaryAxisAlignItems": "CENTER",
-                "counterAxisSizingMode": "AUTO", "primaryAxisSizingMode": "AUTO",
-                "fills": []
-            },
-            "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
-            "children": [marketingMessageBlock, bookingLogoBlock]
-        } : null;
-
-        const contentToWrap = logoMessageGroupBlock || bookingLogoBlock;
-
-        const borderedLogoGroup: NodeDefinition = showBorderedContainer ? {
-            "type": "FRAME" as const,
-            "name": "Bordered Logo Container",
-            "props": {
-                "layoutMode": "HORIZONTAL" as const,
-                "primaryAxisAlignItems": "CENTER" as const,
-                "counterAxisAlignItems": "CENTER" as const,
-                "paddingTop": isMobile ? 4 : 8,
-                "paddingBottom": isMobile ? 4 : 8,
-                "paddingLeft": 16,
-                "paddingRight": 16,
-                "cornerRadius": 24,
-                "strokes": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }],
-                "strokeWeight": 1,
-                "fills": showFilledContainer ? [{ "type": "SOLID" as const, "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 } }] :
-                    (showGradientContainer ? [{
-                        "type": "GRADIENT_LINEAR" as const,
-                        "gradientStops": [
-                            { "color": { "r": 0, "g": 0.16, "b": 0.77, "a": 1 }, "position": 0 },
-                            { "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 }, "position": 1 }
-                        ],
-                        "gradientTransform": [[1, 0, 0], [0, 1, 0]]
-                    }] : [])
-            },
-            "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
-            "children": [contentToWrap]
-        } : contentToWrap;
-
+            "layoutProps": { "layoutGrow": 0, "layoutAlign": "STRETCH", "parentIsAutoLayout": true },
+            "children": [brandingPill]
+        };
         const menuBlockGrow = (brandingLayout === 'standard' && !isMobile) ? 1 : 0;
         const menuBlockAlign = (brandingLayout === 'standard' && !isMobile) ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
 
@@ -311,24 +304,24 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
                 "children": [menuBlock]
             };
-            navChildren = [leftWrapper, borderedLogoGroup, rightWrapper];
+            navChildren = [leftWrapper, brandingBlock, rightWrapper];
         } else if (brandingLayout === 'booking-right') {
             // [Euro (Min)] [Spacer (Grow)] [Logo + Menu (Grouped together)]
             const rightGroup: NodeDefinition = {
                 "type": "FRAME", "name": "Right Group",
                 "props": { "layoutMode": "HORIZONTAL", "itemSpacing": isMobile ? 12 : 32, "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER", "fills": [] },
                 "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
-                "children": [borderedLogoGroup, menuBlock]
+                "children": [brandingBlock, menuBlock]
             };
             navChildren = [euroLogoBlock, spacer, rightGroup];
         } else {
             // Standard
             if (isMobile) {
                 // On Mobile: [Euro] [Booking] [Spacer] [Menu]
-                navChildren = [euroLogoBlock, borderedLogoGroup, spacer, menuBlock];
+                navChildren = [euroLogoBlock, brandingBlock, spacer, menuBlock];
             } else {
                 // On Desktop: [Euro] [Menu] [Booking]
-                navChildren = [euroLogoBlock, menuBlock, borderedLogoGroup];
+                navChildren = [euroLogoBlock, menuBlock, brandingBlock];
             }
         }
 
@@ -341,7 +334,8 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "counterAxisSizingMode": "AUTO",
                 "paddingTop": paddingTop, "paddingRight": paddingRight, "paddingBottom": paddingBottom, "paddingLeft": paddingLeft,
                 "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-                "fills": [{ "type": "SOLID", "color": backgroundColor }]
+                "fills": [{ "type": "SOLID", "color": backgroundColor }],
+                "cornerRadius": 0
             },
             "layoutProps": { "width": width, "parentIsAutoLayout": false },
             "children": [{
