@@ -82,12 +82,23 @@ export class Nav_Booking_28_Demo extends BaseComponent {
         };
 
         const renderGrid = (variants: VariantDefinition[], columns: number, itemWidth: number) => {
+            const isHorizontal = columns > 1;
             const rows: NodeDefinition[] = [];
             for (let i = 0; i < variants.length; i += columns) {
                 const chunk = variants.slice(i, i + columns);
                 rows.push({
                     "type": "FRAME", "name": "Row",
-                    "props": { "layoutMode": "HORIZONTAL", "itemSpacing": 32, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN", "fills": [] },
+                    "props": {
+                        "layoutMode": isHorizontal ? "HORIZONTAL" : "VERTICAL",
+                        "itemSpacing": 32,
+                        // Horizontal (Mobile): Width Fill (FIXED+STRETCH), Height Hug (AUTO)
+                        // Vertical (Desktop): Width Fill (FIXED+STRETCH), Height Hug (AUTO)
+                        "primaryAxisSizingMode": isHorizontal ? "FIXED" : "AUTO",
+                        "counterAxisSizingMode": isHorizontal ? "AUTO" : "FIXED",
+                        "primaryAxisAlignItems": "MIN",
+                        "counterAxisAlignItems": "MIN",
+                        "fills": []
+                    },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
                     "children": chunk.map(v => ({
                         "type": "FRAME", "name": "Variant Item",

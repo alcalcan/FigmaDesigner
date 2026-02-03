@@ -352,19 +352,26 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             }
         }
 
+        const containerHeight = isMobile ? 62 : 80;
+
         const structure: NodeDefinition = {
             "type": "FRAME" as const,
             "name": "Main_Navigation_28_Booking",
             "props": {
                 "layoutMode": "HORIZONTAL",
                 "primaryAxisSizingMode": "FIXED",
-                "counterAxisSizingMode": "AUTO",
+                "counterAxisSizingMode": "FIXED",
                 "paddingTop": paddingTop, "paddingRight": paddingRight, "paddingBottom": paddingBottom, "paddingLeft": paddingLeft,
                 "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
                 "fills": [{ "type": "SOLID", "color": backgroundColor }],
                 "cornerRadius": 0
             },
-            "layoutProps": { "width": width, "parentIsAutoLayout": false },
+            "layoutProps": {
+                "width": width,
+                "height": containerHeight,
+                "parentIsAutoLayout": false,
+                ...((props as any).layoutProps || {})
+            },
             "children": [{
                 "type": "FRAME" as const,
                 "name": "Nav - Main navigation",
