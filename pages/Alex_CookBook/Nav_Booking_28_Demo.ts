@@ -11,63 +11,67 @@ interface VariantDefinition {
 export class Nav_Booking_28_Demo extends BaseComponent {
 
     async create(props: ComponentProps): Promise<SceneNode> {
+        let variantCounter = 1;
+
         const desktopVariants: VariantDefinition[] = [
-            // --- BASE / FULL MENU SECTION ---
-            { title: "V1_Full Menu (Simple)", props: { platform: "desktop", showFullMenu: true }, note: "Full Menu - Simple Logo." },
-            { title: "V2_Full Menu (Bordered)", props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true }, note: "Full Menu - Bordered Container." },
-            { title: "V3_Full Menu (Filled)", props: { platform: "desktop", showFullMenu: true, showFilledContainer: true, showBorder: false }, note: "Full Menu - Filled (No Border)." },
-            { title: "V4_Full Menu (Gradient)", props: { platform: "desktop", showFullMenu: true, showGradientContainer: true, showBorder: false }, note: "Full Menu - Gradient (No Border)." },
-            { title: "V5_Collapsed (Simple)", props: { platform: "desktop", showFullMenu: false }, note: "Collapsed Standard - Simple Logo." },
-            { title: "V6_Collapsed (Bordered)", props: { platform: "desktop", showFullMenu: false, showBorderedContainer: true }, note: "Collapsed Standard - Bordered Container." },
-
-            // --- GROUP A: CENTER + WITH MESSAGE (10 Styles) ---
-            { title: "V7_Center+MSG (Style 1: Bdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S1." },
-            { title: "V8_Center+MSG (Style 2: Bdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S2." },
-            { title: "V9_Center+MSG (Style 3: Bdr+Fill 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S3." },
-            { title: "V10_Center+MSG (Style 4: Bdr+Grad 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S4." },
-            { title: "V11_Center+MSG (Style 5: Fill NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S5." },
-            { title: "V12_Center+MSG (Style 6: Grad NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S6." },
-            { title: "V13_Center+MSG (Style 7: Grad NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S7." },
-            { title: "V14_Center+MSG (Style 8: Bdr+Fill 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S8." },
-            { title: "V15_Center+MSG (Style 9: Bdr+Grad 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S9." },
-            { title: "V16_Center+MSG (Style 10: Fill NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S10." },
-
-            // --- GROUP B: CENTER + JUST LOGO (10 Styles) ---
-            { title: "V17_Center+LOGO (Style 1: Bdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, logoRadius: 24 }, note: "Center+LOGO S1." },
-            { title: "V18_Center+LOGO (Style 2: Bdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, logoRadius: 16 }, note: "Center+LOGO S2." },
-            { title: "V19_Center+LOGO (Style 3: Bdr+Fill 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, logoRadius: 24 }, note: "Center+LOGO S3." },
-            { title: "V20_Center+LOGO (Style 4: Bdr+Grad 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, logoRadius: 24 }, note: "Center+LOGO S4." },
-            { title: "V21_Center+LOGO (Style 5: Fill NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, logoRadius: 24 }, note: "Center+LOGO S5." },
-            { title: "V22_Center+LOGO (Style 6: Grad NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, logoRadius: 24 }, note: "Center+LOGO S6." },
-            { title: "V23_Center+LOGO (Style 7: Grad NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, logoRadius: 16 }, note: "Center+LOGO S7." },
-            { title: "V24_Center+LOGO (Style 8: Bdr+Fill 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, logoRadius: 16 }, note: "Center+LOGO S8." },
-            { title: "V25_Center+LOGO (Style 9: Bdr+Grad 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, logoRadius: 16 }, note: "Center+LOGO S9." },
-            { title: "V26_Center+LOGO (Style 10: Fill NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, logoRadius: 16 }, note: "Center+LOGO S10." },
-
-            // --- GROUP C: RIGHT + WITH MESSAGE (10 Styles) ---
-            { title: "V27_Right+MSG (Style 1: Bdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Right+MSG S1." },
-            { title: "V28_Right+MSG (Style 2: Bdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Right+MSG S2." },
-            { title: "V29_Right+MSG (Style 3: Bdr+Fill 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Right+MSG S3." },
-            { title: "V30_Right+MSG (Style 4: Bdr+Grad 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Right+MSG S4." },
-            { title: "V31_Right+MSG (Style 5: Fill NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Right+MSG S5." },
-            { title: "V32_Right+MSG (Style 6: Grad NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 24 }, note: "Right+MSG S6." },
-            { title: "V33_Right+MSG (Style 7: Grad NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Right+MSG S7." },
-            { title: "V34_Right+MSG (Style 8: Bdr+Fill 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Right+MSG S8." },
-            { title: "V35_Right+MSG (Style 9: Bdr+Grad 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: true, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Right+MSG S9." },
-            { title: "V36_Right+MSG (Style 10: Fill NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: false, message: "Unlock huge savings – up to 15% with Genius", showMarketingIcon: true, logoRadius: 16 }, note: "Right+MSG S10." },
-
-            // --- GROUP D: RIGHT + JUST LOGO (10 Styles) ---
-            { title: "V37_Right+LOGO (Style 1: Bdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, logoRadius: 24 }, note: "Right+LOGO S1." },
-            { title: "V38_Right+LOGO (Style 2: Bdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showBorderedContainer: true, logoRadius: 16 }, note: "Right+LOGO S2." },
-            { title: "V39_Right+LOGO (Style 3: Bdr+Fill 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: true, logoRadius: 24 }, note: "Right+LOGO S3." },
-            { title: "V40_Right+LOGO (Style 4: Bdr+Grad 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: true, logoRadius: 24 }, note: "Right+LOGO S4." },
-            { title: "V41_Right+LOGO (Style 5: Fill NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: false, logoRadius: 24 }, note: "Right+LOGO S5." },
-            { title: "V42_Right+LOGO (Style 6: Grad NoBdr 24)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: false, logoRadius: 24 }, note: "Right+LOGO S6." },
-            { title: "V43_Right+LOGO (Style 7: Grad NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: false, logoRadius: 16 }, note: "Right+LOGO S7." },
-            { title: "V44_Right+LOGO (Style 8: Bdr+Fill 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: true, logoRadius: 16 }, note: "Right+LOGO S8." },
-            { title: "V45_Right+LOGO (Style 9: Bdr+Grad 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showGradientContainer: true, showBorder: true, logoRadius: 16 }, note: "Right+LOGO S9." },
-            { title: "V46_Right+LOGO (Style 10: Fill NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: false, logoRadius: 16 }, note: "Right+LOGO S10." }
+            // --- BASE SECTION ---
+            { title: `Variant ${variantCounter++}_D-BASE_Full Menu (Simple)`, props: { platform: "desktop", showFullMenu: true }, note: "Desktop Full Menu - Simple." },
+            { title: `Variant ${variantCounter++}_D-BASE_Full Menu (Bordered)`, props: { platform: "desktop", showFullMenu: true, showBorderedContainer: true }, note: "Desktop Full Menu - Bordered." },
+            { title: `Variant ${variantCounter++}_D-BASE_Full Menu (Filled)`, props: { platform: "desktop", showFullMenu: true, showFilledContainer: true, showBorder: false }, note: "Desktop Full Menu - Filled." },
+            { title: `Variant ${variantCounter++}_D-BASE_Full Menu (Gradient)`, props: { platform: "desktop", showFullMenu: true, showGradientContainer: true, showBorder: false }, note: "Desktop Full Menu - Gradient." },
+            { title: `Variant ${variantCounter++}_D-BASE_Full Menu (Solid Blue)`, props: { platform: "desktop", showFullMenu: true, showSolidBlueContainer: true, showBorder: false }, note: "Desktop Full Menu - Solid Blue." }
         ];
+
+        const desktopLayouts: ('standard' | 'booking-center' | 'booking-right')[] = ['standard', 'booking-center', 'booking-right'];
+        const desktopMessage = "Unlock huge savings – up to 15% with Genius";
+
+        desktopLayouts.forEach(layout => {
+            const layoutName = layout === 'standard' ? 'LEFT' : (layout === 'booking-center' ? 'CENTER' : 'RIGHT');
+
+            // 4 Sets per Layout: Full Menu+MSG, Full Menu+LOGO, Collapsed+MSG, Collapsed+LOGO
+            [
+                { menu: true, content: 'MSG' },
+                { menu: true, content: 'LOGO' },
+                { menu: false, content: 'MSG' },
+                { menu: false, content: 'LOGO' }
+            ].forEach(cfg => {
+                const isMsg = cfg.content === 'MSG';
+                const msgText = isMsg ? desktopMessage : undefined;
+                const showMkt = isMsg;
+
+                // 12 Styles per set
+                const styles = [
+                    { name: "S1: Bdr 24", props: { showBorderedContainer: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S2: Bdr 16", props: { showBorderedContainer: true, logoRadius: 16, borderOpacity: 0.4 } },
+                    { name: "S3: Bdr+Fill 24", props: { showFilledContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S4: Bdr+Grad 24", props: { showGradientContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S5: Fill NoBdr 24", props: { showFilledContainer: true, showBorder: false, logoRadius: 24 } },
+                    { name: "S6: Grad NoBdr 24", props: { showGradientContainer: true, showBorder: false, logoRadius: 24 } },
+                    { name: "S7: Solid Blue 24", props: { showSolidBlueContainer: true, showBorder: false, logoRadius: 24 } },
+                    { name: "S8: Solid Blue+Bdr 24", props: { showSolidBlueContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S9: Solid Blue 16", props: { showSolidBlueContainer: true, showBorder: false, logoRadius: 16 } },
+                    { name: "S10: Grad NoBdr 16", props: { showGradientContainer: true, showBorder: false, logoRadius: 16 } },
+                    { name: "S11: Bdr+Fill 16", props: { showFilledContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } },
+                    { name: "S12: Bdr+Grad 16", props: { showGradientContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } }
+                ];
+
+                styles.forEach((s) => {
+                    const menuLabel = cfg.menu ? "FULL" : "COLLAPSED";
+                    desktopVariants.push({
+                        title: `Variant ${variantCounter++}_D_${layoutName}_${menuLabel}_${cfg.content}_${s.name}`,
+                        props: {
+                            platform: "desktop",
+                            showFullMenu: cfg.menu,
+                            brandingLayout: layout,
+                            message: msgText,
+                            showMarketingIcon: showMkt,
+                            ...s.props
+                        },
+                        note: `${layoutName} (${menuLabel}) - ${cfg.content} ${s.name}`
+                    });
+                });
+            });
+        });
 
         // --- MOBILE SYSTEMATIC GENERATION ---
         const mobileLayouts: Array<'standard' | 'booking-center' | 'booking-right'> = ['standard', 'booking-center', 'booking-right'];
@@ -89,7 +93,7 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                 const msgText = isMsg ? "Unlock huge savings" : undefined;
                 const showMkt = isMsg;
 
-                // 10 Styles per set
+                // 12 Styles per set
                 const styles = [
                     { name: "S1: Bdr 24", props: { showBorderedContainer: true, logoRadius: 24, borderOpacity: 0.4 } },
                     { name: "S2: Bdr 16", props: { showBorderedContainer: true, logoRadius: 16, borderOpacity: 0.4 } },
@@ -97,15 +101,17 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                     { name: "S4: Bdr+Grad 24", props: { showGradientContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
                     { name: "S5: Fill NoBdr 24", props: { showFilledContainer: true, showBorder: false, logoRadius: 24 } },
                     { name: "S6: Grad NoBdr 24", props: { showGradientContainer: true, showBorder: false, logoRadius: 24 } },
-                    { name: "S7: Grad NoBdr 16", props: { showGradientContainer: true, showBorder: false, logoRadius: 16 } },
-                    { name: "S8: Bdr+Fill 16", props: { showFilledContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } },
-                    { name: "S9: Bdr+Grad 16", props: { showGradientContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } },
-                    { name: "S10: Fill NoBdr 16", props: { showFilledContainer: true, showBorder: false, logoRadius: 16 } }
+                    { name: "S7: Solid Blue 24", props: { showSolidBlueContainer: true, showBorder: false, logoRadius: 24 } },
+                    { name: "S8: Solid Blue+Bdr 24", props: { showSolidBlueContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S9: Solid Blue 16", props: { showSolidBlueContainer: true, showBorder: false, logoRadius: 16 } },
+                    { name: "S10: Grad NoBdr 16", props: { showGradientContainer: true, showBorder: false, logoRadius: 16 } },
+                    { name: "S11: Bdr+Fill 16", props: { showFilledContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } },
+                    { name: "S12: Bdr+Grad 16", props: { showGradientContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } }
                 ];
 
-                styles.forEach((s, idx) => {
+                styles.forEach((s) => {
                     mobileVariants.push({
-                        title: `M_${layoutName}_${contentType}_${s.name}`,
+                        title: `Variant ${variantCounter++}_M_${layoutName}_${contentType}_${s.name}`,
                         props: {
                             platform: "mobile",
                             showFullMenu: false,
@@ -141,11 +147,13 @@ export class Nav_Booking_28_Demo extends BaseComponent {
         desktopVariants.forEach((v, index) => {
             // Add Group Headers
             let groupHeader = "";
-            if (v.title.includes("V1_")) groupHeader = "--- BASE / FULL MENU ---";
-            if (v.title.includes("V7_")) groupHeader = "--- GROUP A: CENTER + WITH MESSAGE (10 Styles) ---";
-            if (v.title.includes("V17_")) groupHeader = "--- GROUP B: CENTER + JUST LOGO (10 Styles) ---";
-            if (v.title.includes("V27_")) groupHeader = "--- GROUP C: RIGHT + WITH MESSAGE (10 Styles) ---";
-            if (v.title.includes("V37_")) groupHeader = "--- GROUP D: RIGHT + JUST LOGO (10 Styles) ---";
+            if (v.title.includes("D-BASE_")) groupHeader = "--- DESKTOP BASE ---";
+            if (v.title.includes("D_LEFT_MSG")) groupHeader = "--- DESKTOP GROUP A: LEFT Layout (With Message - 12 Styles) ---";
+            if (v.title.includes("D_LEFT_LOGO")) groupHeader = "--- DESKTOP GROUP B: LEFT Layout (Just Logo - 12 Styles) ---";
+            if (v.title.includes("D_CENTER_MSG")) groupHeader = "--- DESKTOP GROUP C: CENTER Layout (With Message - 12 Styles) ---";
+            if (v.title.includes("D_CENTER_LOGO")) groupHeader = "--- DESKTOP GROUP D: CENTER Layout (Just Logo - 12 Styles) ---";
+            if (v.title.includes("D_RIGHT_MSG")) groupHeader = "--- DESKTOP GROUP E: RIGHT Layout (With Message - 12 Styles) ---";
+            if (v.title.includes("D_RIGHT_LOGO")) groupHeader = "--- DESKTOP GROUP F: RIGHT Layout (Just Logo - 12 Styles) ---";
 
             if (groupHeader) {
                 children.push({
@@ -198,10 +206,10 @@ export class Nav_Booking_28_Demo extends BaseComponent {
             // Add Group Headers
             let groupHeader = "";
             if (v.title.includes("M-BASE_")) groupHeader = "--- MOBILE BASE ---";
-            if (v.title.includes("M_LEFT_LOGO")) groupHeader = "--- MOBILE GROUP A: LEFT Layout (Just Logo - 10 Styles) ---";
-            if (v.title.includes("M_CENTER_MSG")) groupHeader = "--- MOBILE GROUP B: CENTER Layout (With Message - 10 Styles) ---";
-            if (v.title.includes("M_CENTER_LOGO")) groupHeader = "--- MOBILE GROUP C: CENTER Layout (Just Logo - 10 Styles) ---";
-            if (v.title.includes("M_RIGHT_LOGO")) groupHeader = "--- MOBILE GROUP D: RIGHT Layout (Just Logo - 10 Styles) ---";
+            if (v.title.includes("M_LEFT_LOGO")) groupHeader = "--- MOBILE GROUP A: LEFT Layout (Just Logo - 12 Styles) ---";
+            if (v.title.includes("M_CENTER_MSG")) groupHeader = "--- MOBILE GROUP B: CENTER Layout (With Message - 12 Styles) ---";
+            if (v.title.includes("M_CENTER_LOGO")) groupHeader = "--- MOBILE GROUP C: CENTER Layout (Just Logo - 12 Styles) ---";
+            if (v.title.includes("M_RIGHT_LOGO")) groupHeader = "--- MOBILE GROUP D: RIGHT Layout (Just Logo - 12 Styles) ---";
 
             if (groupHeader) {
                 children.push({

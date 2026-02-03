@@ -15,6 +15,7 @@ export interface Main_Navigation_28_BookingProps extends ComponentProps {
     showBorderedContainer?: boolean;
     showFilledContainer?: boolean;
     showGradientContainer?: boolean;
+    showSolidBlueContainer?: boolean;
     logoRadius?: number;
     showBorder?: boolean;
     logoPosition?: 'left' | 'right';
@@ -32,6 +33,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const showBorderedContainer = props.showBorderedContainer;
         const showFilledContainer = props.showFilledContainer;
         const showGradientContainer = props.showGradientContainer;
+        const showSolidBlueContainer = props.showSolidBlueContainer;
         const logoRadius = props.logoRadius ?? 24;
         const showBorder = props.showBorder ?? showBorderedContainer;
         const logoPosition = props.logoPosition || 'right';
@@ -158,20 +160,21 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "counterAxisAlignItems": "CENTER",
                 "primaryAxisSizingMode": "AUTO",
                 "counterAxisSizingMode": isMobile ? "FIXED" : "AUTO",
-                "paddingLeft": (showBorderedContainer || showFilledContainer || showGradientContainer) ? (isMobile ? 12 : 16) : 0,
-                "paddingRight": (showBorderedContainer || showFilledContainer || showGradientContainer) ? (isMobile ? 12 : 16) : 0,
+                "paddingLeft": (showBorderedContainer || showFilledContainer || showGradientContainer || showSolidBlueContainer) ? (isMobile ? 12 : 16) : 0,
+                "paddingRight": (showBorderedContainer || showFilledContainer || showGradientContainer || showSolidBlueContainer) ? (isMobile ? 12 : 16) : 0,
                 "cornerRadius": logoRadius,
                 "strokes": showBorder ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": borderOpacity }] : [],
                 "strokeWeight": showBorder ? 1 : 0,
-                "fills": showFilledContainer ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.1 }] :
-                    (showGradientContainer ? [{
-                        "type": "GRADIENT_LINEAR",
-                        "gradientStops": [
-                            { "position": 0, "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 } }, // Brighter Light Blue (Right)
-                            { "position": 1, "color": { "r": 0, "g": 0.16, "b": 0.77, "a": 1 } }  // Main Nav Blue (Left)
-                        ],
-                        "gradientTransform": [[-1, 0, 1], [0, 1, 0]] // Horizontal Right-to-Left
-                    }] : [])
+                "fills": showSolidBlueContainer ? [{ "type": "SOLID", "color": { "r": 0, "g": 0.42, "b": 0.89 }, "opacity": 1.0 }] :
+                    (showFilledContainer ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.1 }] :
+                        (showGradientContainer ? [{
+                            "type": "GRADIENT_LINEAR",
+                            "gradientStops": [
+                                { "position": 0, "color": { "r": 0, "g": 0.42, "b": 0.89, "a": 1 } }, // Brighter Light Blue (Right)
+                                { "position": 1, "color": { "r": 0, "g": 0.16, "b": 0.77, "a": 1 } }  // Main Nav Blue (Left)
+                            ],
+                            "gradientTransform": [[-1, 0, 1], [0, 1, 0]] // Horizontal Right-to-Left
+                        }] : []))
             },
             "layoutProps": {
                 "parentIsAutoLayout": true,
@@ -191,7 +194,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "primaryAxisSizingMode": "AUTO"
             },
             "layoutProps": {
-                "layoutGrow": (isMobile && brandingLayout === 'booking-center') ? 1 : 0,
+                "layoutGrow": 0,
                 "layoutAlign": isMobile ? "INHERIT" : "STRETCH",
                 "parentIsAutoLayout": true,
                 "height": isMobile ? 32 : undefined
