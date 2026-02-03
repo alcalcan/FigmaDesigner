@@ -254,11 +254,11 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                             },
                             "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
                             "children": [
-                                {
+                                ...((!(isMobile && message)) ? [{
                                     "type": "TEXT" as const,
                                     "props": { "characters": thirdItemName, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": fontFamily, "style": "Book" } },
                                     "layoutProps": { "parentIsAutoLayout": true }
-                                },
+                                }] : []),
                                 {
                                     "type": "FRAME" as const,
                                     "name": "Icon Container",
