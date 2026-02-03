@@ -69,35 +69,56 @@ export class Nav_Booking_28_Demo extends BaseComponent {
             { title: "V46_Right+LOGO (Style 10: Fill NoBdr 16)", props: { platform: "desktop", showFullMenu: false, brandingLayout: 'booking-right', showFilledContainer: true, showBorder: false, logoRadius: 16 }, note: "Right+LOGO S10." }
         ];
 
+        // --- MOBILE SYSTEMATIC GENERATION ---
+        const mobileLayouts: Array<'standard' | 'booking-center' | 'booking-right'> = ['standard', 'booking-center', 'booking-right'];
         const mobileVariants: VariantDefinition[] = [
-            // --- BASE / FULL MENU SECTION ---
-            { title: "M1_Full Menu (Simple)", props: { platform: "mobile", showFullMenu: true }, note: "Mobile Full Menu - Simple Logo." },
-            { title: "M2_Full Menu (Bordered)", props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true }, note: "Mobile Full Menu - Bordered Container." },
-
-            // --- GROUP A: MOBILE CENTER + MESSAGE (10 Styles) ---
-            { title: "M7_Center+MSG (Style 1: Bdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+MSG S1." },
-            { title: "M8_Center+MSG (Style 2: Bdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+MSG S2." },
-            { title: "M9_Center+MSG (Style 3: Bdr+Fill 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+MSG S3." },
-            { title: "M10_Center+MSG (Style 4: Bdr+Grad 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+MSG S4." },
-            { title: "M11_Center+MSG (Style 5: Fill NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S5." },
-            { title: "M12_Center+MSG (Style 6: Grad NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 24 }, note: "Center+MSG S6." },
-            { title: "M13_Center+MSG (Style 7: Grad NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S7." },
-            { title: "M14_Center+MSG (Style 8: Bdr+Fill 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+MSG S8." },
-            { title: "M15_Center+MSG (Style 9: Bdr+Grad 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+MSG S9." },
-            { title: "M16_Center+MSG (Style 10: Fill NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, message: "Unlock huge savings", showMarketingIcon: true, logoRadius: 16 }, note: "Center+MSG S10." },
-
-            // --- GROUP B: MOBILE CENTER + JUST LOGO (10 Styles) ---
-            { title: "M17_Center+LOGO (Style 1: Bdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+LOGO S1." },
-            { title: "M18_Center+LOGO (Style 2: Bdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showBorderedContainer: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+LOGO S2." },
-            { title: "M19_Center+LOGO (Style 3: Bdr+Fill 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+LOGO S3." },
-            { title: "M20_Center+LOGO (Style 4: Bdr+Grad 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 }, note: "Center+LOGO S4." },
-            { title: "M21_Center+LOGO (Style 5: Fill NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, logoRadius: 24 }, note: "Center+LOGO S5." },
-            { title: "M22_Center+LOGO (Style 6: Grad NoBdr 24)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, logoRadius: 24 }, note: "Center+LOGO S6." },
-            { title: "M23_Center+LOGO (Style 7: Grad NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: false, logoRadius: 16 }, note: "Center+LOGO S7." },
-            { title: "M24_Center+LOGO (Style 8: Bdr+Fill 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+LOGO S8." },
-            { title: "M25_Center+LOGO (Style 9: Bdr+Grad 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showGradientContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 }, note: "Center+LOGO S9." },
-            { title: "M26_Center+LOGO (Style 10: Fill NoBdr 16)", props: { platform: "mobile", showFullMenu: false, brandingLayout: 'booking-center', showFilledContainer: true, showBorder: false, logoRadius: 16 }, note: "Center+LOGO S10." }
+            { title: "M-BASE_Full Menu (Simple)", props: { platform: "mobile", showFullMenu: true }, note: "Mobile Full Menu - Simple." },
+            { title: "M-BASE_Full Menu (Bordered)", props: { platform: "mobile", showFullMenu: true, showBorderedContainer: true }, note: "Mobile Full Menu - Bordered." }
         ];
+
+        mobileLayouts.forEach(layout => {
+            const layoutName = layout === 'standard' ? 'LEFT' : (layout === 'booking-center' ? 'CENTER' : 'RIGHT');
+
+            // 2 Sets: With MSG (Center Only), Just Logo (All)
+            ['MSG', 'LOGO'].forEach(contentType => {
+                const isMsg = contentType === 'MSG';
+
+                // Skip LEFT/RIGHT for MSG
+                if (isMsg && layout !== 'booking-center') return;
+
+                const msgText = isMsg ? "Unlock huge savings" : undefined;
+                const showMkt = isMsg;
+
+                // 10 Styles per set
+                const styles = [
+                    { name: "S1: Bdr 24", props: { showBorderedContainer: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S2: Bdr 16", props: { showBorderedContainer: true, logoRadius: 16, borderOpacity: 0.4 } },
+                    { name: "S3: Bdr+Fill 24", props: { showFilledContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S4: Bdr+Grad 24", props: { showGradientContainer: true, showBorder: true, logoRadius: 24, borderOpacity: 0.4 } },
+                    { name: "S5: Fill NoBdr 24", props: { showFilledContainer: true, showBorder: false, logoRadius: 24 } },
+                    { name: "S6: Grad NoBdr 24", props: { showGradientContainer: true, showBorder: false, logoRadius: 24 } },
+                    { name: "S7: Grad NoBdr 16", props: { showGradientContainer: true, showBorder: false, logoRadius: 16 } },
+                    { name: "S8: Bdr+Fill 16", props: { showFilledContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } },
+                    { name: "S9: Bdr+Grad 16", props: { showGradientContainer: true, showBorder: true, logoRadius: 16, borderOpacity: 0.4 } },
+                    { name: "S10: Fill NoBdr 16", props: { showFilledContainer: true, showBorder: false, logoRadius: 16 } }
+                ];
+
+                styles.forEach((s, idx) => {
+                    mobileVariants.push({
+                        title: `M_${layoutName}_${contentType}_${s.name}`,
+                        props: {
+                            platform: "mobile",
+                            showFullMenu: false,
+                            brandingLayout: layout,
+                            message: msgText,
+                            showMarketingIcon: showMkt,
+                            ...s.props
+                        },
+                        note: `${layoutName} Layout - ${contentType} ${s.name}`
+                    });
+                });
+            });
+        });
 
         const children: NodeDefinition[] = [];
 
@@ -158,14 +179,14 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                     "layoutProps": { "parentIsAutoLayout": true }
                 },
                 {
-                    "type": "FRAME", "name": "SmallSpacer", "layoutProps": { "height": 24, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+                    "type": "FRAME", "name": "SmallSpacer", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
                 }
             );
         });
 
         // MOBILE SECTION
         children.push({
-            "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 100, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+            "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
         });
         children.push({
             "type": "TEXT",
@@ -176,13 +197,15 @@ export class Nav_Booking_28_Demo extends BaseComponent {
         mobileVariants.forEach(v => {
             // Add Group Headers
             let groupHeader = "";
-            if (v.title.includes("M1_")) groupHeader = "--- MOBILE BASE / FULL MENU ---";
-            if (v.title.includes("M7_")) groupHeader = "--- MOBILE GROUP A: CENTER + WITH MESSAGE (10 Styles) ---";
-            if (v.title.includes("M17_")) groupHeader = "--- MOBILE GROUP B: CENTER + JUST LOGO (10 Styles) ---";
+            if (v.title.includes("M-BASE_")) groupHeader = "--- MOBILE BASE ---";
+            if (v.title.includes("M_LEFT_LOGO")) groupHeader = "--- MOBILE GROUP A: LEFT Layout (Just Logo - 10 Styles) ---";
+            if (v.title.includes("M_CENTER_MSG")) groupHeader = "--- MOBILE GROUP B: CENTER Layout (With Message - 10 Styles) ---";
+            if (v.title.includes("M_CENTER_LOGO")) groupHeader = "--- MOBILE GROUP C: CENTER Layout (Just Logo - 10 Styles) ---";
+            if (v.title.includes("M_RIGHT_LOGO")) groupHeader = "--- MOBILE GROUP D: RIGHT Layout (Just Logo - 10 Styles) ---";
 
             if (groupHeader) {
                 children.push({
-                    "type": "FRAME", "name": "Divider", "layoutProps": { "height": 80, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+                    "type": "FRAME", "name": "Divider", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
                 });
                 children.push({
                     "type": "TEXT",
@@ -212,7 +235,7 @@ export class Nav_Booking_28_Demo extends BaseComponent {
                     "layoutProps": { "parentIsAutoLayout": true }
                 },
                 {
-                    "type": "FRAME", "name": "SmallSpacer", "layoutProps": { "height": 24, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
+                    "type": "FRAME", "name": "SmallSpacer", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "layoutMode": "VERTICAL" }
                 }
             );
         });

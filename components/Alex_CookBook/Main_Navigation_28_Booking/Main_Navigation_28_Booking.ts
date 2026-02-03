@@ -186,12 +186,12 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "name": "Branding Area",
             "props": {
                 "layoutMode": "HORIZONTAL",
-                "primaryAxisAlignItems": brandingLayout === 'booking-right' ? "MAX" : (brandingLayout === 'booking-center' ? "CENTER" : "MAX"),
+                "primaryAxisAlignItems": brandingLayout === 'booking-right' ? "MAX" : (brandingLayout === 'booking-center' ? "CENTER" : "MIN"),
                 "counterAxisAlignItems": "CENTER",
                 "primaryAxisSizingMode": "AUTO"
             },
             "layoutProps": {
-                "layoutGrow": 0,
+                "layoutGrow": (isMobile && brandingLayout === 'booking-center') ? 1 : 0,
                 "layoutAlign": isMobile ? "INHERIT" : "STRETCH",
                 "parentIsAutoLayout": true,
                 "height": isMobile ? 32 : undefined
@@ -307,9 +307,9 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "type": "FRAME", "name": "Left Wrapper",
                 "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "fills": [] },
                 "layoutProps": {
-                    "layoutGrow": isMobile ? 0 : 1,
+                    "layoutGrow": 1,
                     "parentIsAutoLayout": true,
-                    "layoutAlign": isMobile ? "INHERIT" : "STRETCH"
+                    "layoutAlign": "STRETCH"
                 },
                 "children": [euroLogoBlock]
             };
