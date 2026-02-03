@@ -105,7 +105,11 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "layoutMode": "HORIZONTAL",
                 "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
             },
-            "layoutProps": { "width": euroLogoWidth, "height": euroLogoHeight, "parentIsAutoLayout": true },
+            "layoutProps": {
+                "width": euroLogoWidth,
+                "height": isMobile ? undefined : euroLogoHeight,
+                "parentIsAutoLayout": true
+            },
             "children": [leftLogoContent]
         };
 
@@ -300,7 +304,11 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             const leftWrapper: NodeDefinition = {
                 "type": "FRAME", "name": "Left Wrapper",
                 "props": { "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "fills": [] },
-                "layoutProps": { "layoutGrow": 1, "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
+                "layoutProps": {
+                    "layoutGrow": isMobile ? 0 : 1,
+                    "parentIsAutoLayout": true,
+                    "layoutAlign": isMobile ? "INHERIT" : "STRETCH"
+                },
                 "children": [euroLogoBlock]
             };
             const rightWrapper: NodeDefinition = {
