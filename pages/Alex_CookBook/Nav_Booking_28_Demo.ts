@@ -160,7 +160,7 @@ export class Nav_Booking_28_Demo extends BaseComponent {
         });
         children.push({
             "type": "TEXT",
-            "props": { "characters": "Mobile Variants (Fixed 54px Header / 32px Pill)", "fontSize": 36, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0.13, "g": 0.08, "b": 0.19 } }] },
+            "props": { "characters": "Mobile Variants (Fixed 54px Header / 32px Branding Area)", "fontSize": 36, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0.13, "g": 0.08, "b": 0.19 } }] },
             "layoutProps": { "parentIsAutoLayout": true }
         });
 

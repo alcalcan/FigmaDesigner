@@ -184,7 +184,12 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "counterAxisAlignItems": "CENTER",
                 "primaryAxisSizingMode": "AUTO"
             },
-            "layoutProps": { "layoutGrow": 0, "layoutAlign": "STRETCH", "parentIsAutoLayout": true },
+            "layoutProps": {
+                "layoutGrow": 0,
+                "layoutAlign": isMobile ? "INHERIT" : "STRETCH",
+                "parentIsAutoLayout": true,
+                "height": isMobile ? 32 : undefined
+            },
             "children": [brandingPill]
         };
         const menuBlockGrow = (brandingLayout === 'standard' && !isMobile) ? 1 : 0;
