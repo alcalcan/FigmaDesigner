@@ -109,11 +109,11 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "children": [leftLogoContent]
         };
 
-        const marketingIconWidth = isMobile ? 2 : 3;
-        const marketingIconHeight = isMobile ? 4 : 6;
+        const marketingIconWidth = isMobile ? 4 : 6;
+        const marketingIconHeight = isMobile ? 8 : 12;
         const marketingIconSvg = isMobile ?
-            `<svg width="2" height="4" viewBox="0 0 2 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 0.5L0.5 2L1.5 3.5" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>` :
-            `<svg width="3" height="6" viewBox="0 0 3 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 0.5L0.5 3L2.5 5.5" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+            `<svg width="4" height="8" viewBox="0 0 4 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 1L1 4L3 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` :
+            `<svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1L1 6L5 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
         // Branding children: FLAT list of [Message, Icon, Logo]
         const brandingChildren: NodeDefinition[] = [];
