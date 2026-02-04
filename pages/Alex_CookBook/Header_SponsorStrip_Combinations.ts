@@ -98,6 +98,28 @@ export class Header_SponsorStrip_Combinations extends BaseComponent {
                 title: "V69: Mobile - Center - Msg + Icon",
                 platform: 'mobile',
                 stripProps: { stripBackground: 'light-blue', pillAlignment: 'center', message: mobileMessage, showMarketingIcon: true }
+            },
+
+            // --- BOOKING GRADIENT SET ---
+            {
+                title: "V75: Desktop - Center - Msg + Icon",
+                platform: 'desktop',
+                stripProps: { stripBackground: 'booking-gradient', pillAlignment: 'center', message: desktopMessage, showMarketingIcon: true }
+            },
+            {
+                title: "V80: Desktop - Right - Msg + Icon",
+                platform: 'desktop',
+                stripProps: { stripBackground: 'booking-gradient', pillAlignment: 'right', message: desktopMessage, showMarketingIcon: true }
+            },
+            {
+                title: "V85: Mobile - Center - Logo Only",
+                platform: 'mobile',
+                stripProps: { stripBackground: 'booking-gradient', pillAlignment: 'center', message: undefined, showMarketingIcon: false }
+            },
+            {
+                title: "V86: Mobile - Center - Msg + Icon",
+                platform: 'mobile',
+                stripProps: { stripBackground: 'booking-gradient', pillAlignment: 'center', message: mobileMessage, showMarketingIcon: true }
             }
         ];
 
@@ -107,10 +129,10 @@ export class Header_SponsorStrip_Combinations extends BaseComponent {
 
             return {
                 "type": "FRAME" as const,
-                "name": combo.title,
+                "name": `Variant Item - ${combo.title}`,
                 "props": {
                     "layoutMode": "VERTICAL" as const,
-                    "itemSpacing": 0,
+                    "itemSpacing": 8,
                     "primaryAxisSizingMode": "AUTO" as const,
                     "counterAxisSizingMode": "FIXED" as const,
                     "fills": []
@@ -118,18 +140,37 @@ export class Header_SponsorStrip_Combinations extends BaseComponent {
                 "layoutProps": { "parentIsAutoLayout": true, "width": itemWidth },
                 "children": [
                     {
-                        "type": "COMPONENT" as const,
-                        "name": "UEFA Nav",
-                        "component": Main_Navigation_28,
-                        "props": { platform: combo.platform },
-                        "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const }
+                        "type": "TEXT" as const,
+                        "props": { "characters": combo.title, "fontSize": 14, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0.13, "g": 0.08, "b": 0.19 } }] },
+                        "layoutProps": { "parentIsAutoLayout": true }
                     },
                     {
-                        "type": "COMPONENT" as const,
-                        "name": "Sponsor Strip",
-                        "component": SponsorStrip,
-                        "props": { platform: combo.platform, ...combo.stripProps },
-                        "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const }
+                        "type": "FRAME" as const,
+                        "name": combo.title,
+                        "props": {
+                            "layoutMode": "VERTICAL" as const,
+                            "itemSpacing": 0,
+                            "primaryAxisSizingMode": "AUTO" as const,
+                            "counterAxisSizingMode": "FIXED" as const,
+                            "fills": []
+                        },
+                        "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const },
+                        "children": [
+                            {
+                                "type": "COMPONENT" as const,
+                                "name": "UEFA Nav",
+                                "component": Main_Navigation_28,
+                                "props": { platform: combo.platform },
+                                "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const }
+                            },
+                            {
+                                "type": "COMPONENT" as const,
+                                "name": "Sponsor Strip",
+                                "component": SponsorStrip,
+                                "props": { platform: combo.platform, ...combo.stripProps },
+                                "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" as const }
+                            }
+                        ]
                     }
                 ]
             };
@@ -137,6 +178,7 @@ export class Header_SponsorStrip_Combinations extends BaseComponent {
 
         const darkBlueCombos = combinations.filter(c => c.stripProps.stripBackground === 'dark-blue');
         const lightBlueCombos = combinations.filter(c => c.stripProps.stripBackground === 'light-blue');
+        const bookingGradientCombos = combinations.filter(c => c.stripProps.stripBackground === 'booking-gradient');
 
         const children: NodeDefinition[] = [
             {
@@ -160,7 +202,7 @@ export class Header_SponsorStrip_Combinations extends BaseComponent {
             {
                 "type": "FRAME",
                 "name": "Mobile Row - Dark Blue",
-                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": 40, "fills": [] },
+                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": 40, "fills": [], "counterAxisSizingMode": "AUTO" },
                 "layoutProps": { "parentIsAutoLayout": true },
                 "children": darkBlueCombos.filter(c => c.platform === 'mobile').map(renderCombination)
             },
@@ -175,9 +217,24 @@ export class Header_SponsorStrip_Combinations extends BaseComponent {
             {
                 "type": "FRAME",
                 "name": "Mobile Row - Light Blue",
-                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": 40, "fills": [] },
+                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": 40, "fills": [], "counterAxisSizingMode": "AUTO" },
                 "layoutProps": { "parentIsAutoLayout": true },
                 "children": lightBlueCombos.filter(c => c.platform === 'mobile').map(renderCombination)
+            },
+
+            // --- BOOKING GRADIENT SET ---
+            {
+                "type": "TEXT",
+                "props": { "characters": "Booking Gradient Set", "fontSize": 32, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.35, "b": 1 } }], "paddingTop": 60 },
+                "layoutProps": { "parentIsAutoLayout": true }
+            },
+            ...bookingGradientCombos.filter(c => c.platform === 'desktop').map(renderCombination),
+            {
+                "type": "FRAME",
+                "name": "Mobile Row - Booking Gradient",
+                "props": { "layoutMode": "HORIZONTAL", "itemSpacing": 40, "fills": [], "counterAxisSizingMode": "AUTO" },
+                "layoutProps": { "parentIsAutoLayout": true },
+                "children": bookingGradientCombos.filter(c => c.platform === 'mobile').map(renderCombination)
             }
         ];
 

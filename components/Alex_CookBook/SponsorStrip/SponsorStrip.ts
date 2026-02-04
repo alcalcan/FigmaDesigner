@@ -5,7 +5,7 @@ export interface SponsorStripProps extends ComponentProps {
     platform?: 'desktop' | 'mobile';
     logoVariant?: 'color' | 'white';
     pillAlignment?: 'center' | 'right';
-    stripBackground?: 'euro-blue' | 'dark-blue' | 'light-blue' | 'blue-gradient' | 'booking-light-blue';
+    stripBackground?: 'euro-blue' | 'dark-blue' | 'light-blue' | 'blue-gradient' | 'booking-light-blue' | 'booking-gradient';
     message?: string;
     showMarketingIcon?: boolean;
     showBorderedContainer?: boolean;
@@ -38,7 +38,8 @@ export class SponsorStrip extends BaseComponent {
             'euro-blue': { r: 0, g: 0.16, b: 0.77 },
             'dark-blue': { r: 0.04, g: 0.05, b: 0.28 },
             'light-blue': { r: 0, g: 0.53, b: 1 },
-            'booking-light-blue': { r: 0, g: 0.42, b: 0.89 }
+            'booking-dark-blue': { r: 0.04, g: 0.05, b: 0.28 }, // #0A0D47
+            'booking-light-blue': { r: 0, g: 0.53, b: 1 }    // #0087FF
         };
 
         const width = props.width ?? (isMobile ? 375 : 1680);
@@ -131,6 +132,15 @@ export class SponsorStrip extends BaseComponent {
                     { "position": 1, "color": { ...colors['euro-blue'], a: 1 } }
                 ],
                 "gradientTransform": [[-1, 0, 1], [0, 1, 0]]
+            }];
+        } else if (stripBackground === 'booking-gradient') {
+            stripFills = [{
+                "type": "GRADIENT_LINEAR",
+                "gradientStops": [
+                    { "position": 0, "color": { ...colors['booking-dark-blue'], a: 1 } },
+                    { "position": 1, "color": { ...colors['booking-light-blue'], a: 1 } }
+                ],
+                "gradientTransform": [[1, 0, 0], [0, 1, 0]]
             }];
         } else {
             stripFills = [{ "type": "SOLID", "color": colors[stripBackground] || colors['euro-blue'] }];

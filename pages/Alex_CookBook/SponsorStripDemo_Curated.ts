@@ -35,6 +35,13 @@ export class SponsorStripDemo_Curated extends BaseComponent {
             { title: "V69: Mobile - Center - Msg + Icon", props: { platform: "mobile", stripBackground: 'light-blue', pillAlignment: 'center', message: "Unlock savings", showMarketingIcon: true }, note: "Light Blue - Center - Msg + Icon" },
         ];
 
+        const bookingGradientVariants: VariantDefinition[] = [
+            { title: "V75: Desktop - Center - Msg + Icon", props: { platform: "desktop", stripBackground: 'booking-gradient', pillAlignment: 'center', message: message, showMarketingIcon: true }, note: "Booking Gradient - Center - Msg + Icon" },
+            { title: "V80: Desktop - Right - Msg + Icon", props: { platform: "desktop", stripBackground: 'booking-gradient', pillAlignment: 'right', message: message, showMarketingIcon: true }, note: "Booking Gradient - Right - Msg + Icon" },
+            { title: "V85: Mobile - Center - Logo Only", props: { platform: "mobile", stripBackground: 'booking-gradient', pillAlignment: 'center', message: undefined, showMarketingIcon: false }, note: "Booking Gradient - Center - Logo Only" },
+            { title: "V86: Mobile - Center - Msg + Icon", props: { platform: "mobile", stripBackground: 'booking-gradient', pillAlignment: 'center', message: "Unlock savings", showMarketingIcon: true }, note: "Booking Gradient - Center - Msg + Icon" },
+        ];
+
         const renderGrid = (variants: VariantDefinition[], columns: number, itemWidth: number) => {
             const isHorizontal = columns > 1;
             const rows: NodeDefinition[] = [];
@@ -93,7 +100,14 @@ export class SponsorStripDemo_Curated extends BaseComponent {
                 "layoutProps": { "parentIsAutoLayout": true }
             },
             ...renderGrid(lightBlueVariants.filter(v => v.props.platform === "desktop"), 1, CANVAS_WIDTH),
-            ...renderGrid(lightBlueVariants.filter(v => v.props.platform === "mobile"), 1, 375)
+            ...renderGrid(lightBlueVariants.filter(v => v.props.platform === "mobile"), 1, 375),
+            {
+                "type": "TEXT",
+                "props": { "characters": "Booking Gradient Background Set", "fontSize": 32, "font": { "family": "Inter", "style": "Bold" }, "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.35, "b": 1 } }], "paddingTop": 60 },
+                "layoutProps": { "parentIsAutoLayout": true }
+            },
+            ...renderGrid(bookingGradientVariants.filter(v => v.props.platform === "desktop"), 1, CANVAS_WIDTH),
+            ...renderGrid(bookingGradientVariants.filter(v => v.props.platform === "mobile"), 1, 375)
         ];
 
         const structure: NodeDefinition = {

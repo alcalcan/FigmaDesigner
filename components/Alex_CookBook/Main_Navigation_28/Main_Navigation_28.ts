@@ -87,6 +87,7 @@ export class Main_Navigation_28 extends BaseComponent {
                     "primaryAxisAlignItems": "MIN", // Left align to enforce the 32px gap
                     "itemSpacing": isMobile ? 12 : 48,
                     "counterAxisAlignItems": "CENTER",
+                    "counterAxisSizingMode": "AUTO",
                     "layoutGrow": 1
                 },
                 "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
@@ -96,7 +97,8 @@ export class Main_Navigation_28 extends BaseComponent {
                         "name": "Logo Area",
                         "props": {
                             "layoutMode": "HORIZONTAL",
-                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                            "counterAxisSizingMode": "AUTO"
                         },
                         "layoutProps": { "width": logoWidth, "height": logoHeight, "parentIsAutoLayout": true },
                         "children": [logoContent]
@@ -117,7 +119,8 @@ export class Main_Navigation_28 extends BaseComponent {
                                 "name": "Menu item Group",
                                 "props": {
                                     "layoutMode": "HORIZONTAL",
-                                    "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER"
+                                    "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER",
+                                    "counterAxisSizingMode": "AUTO"
                                 },
                                 "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                                 "children": [
@@ -125,9 +128,10 @@ export class Main_Navigation_28 extends BaseComponent {
                                         "type": "FRAME" as const,
                                         "name": `Menuitem - ${item.name}`,
                                         "props": {
-                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                                            "counterAxisSizingMode": "AUTO"
                                         },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
+                                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                                         "children": [{
                                             "type": "TEXT" as const,
                                             "props": { "characters": item.name, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "UEFA Euro Pro", "style": "Book" } },
@@ -141,9 +145,10 @@ export class Main_Navigation_28 extends BaseComponent {
                                             "layoutMode": "HORIZONTAL",
                                             "itemSpacing": 8,
                                             "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
-                                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+                                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                                            "counterAxisSizingMode": "AUTO"
                                         },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
+                                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                                         "children": [
                                             {
                                                 "type": "TEXT" as const,
@@ -173,9 +178,10 @@ export class Main_Navigation_28 extends BaseComponent {
                                         "type": "FRAME" as const,
                                         "name": `Menuitem - ${item.name}`,
                                         "props": {
-                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                                            "counterAxisSizingMode": "AUTO"
                                         },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
+                                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                                         "children": [{
                                             "type": "TEXT" as const,
                                             "props": { "characters": item.name, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "UEFA Euro Pro", "style": "Book" } },

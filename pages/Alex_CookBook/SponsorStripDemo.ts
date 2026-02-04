@@ -20,7 +20,8 @@ export class SponsorStripDemo extends BaseComponent {
             { name: "Dark Blue", variant: 'dark-blue' },
             { name: "Light Blue", variant: 'light-blue' },
             { name: "Blue Gradient", variant: 'blue-gradient' },
-            { name: "Booking Light Blue", variant: 'booking-light-blue' }
+            { name: "Booking Light Blue", variant: 'booking-light-blue' },
+            { name: "Booking Gradient", variant: 'booking-gradient' }
         ];
 
         const pillStyles = [
