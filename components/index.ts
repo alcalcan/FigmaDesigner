@@ -165,6 +165,7 @@ export { Gaming___gaming_auto_complete } from "./UEFA_icons/Gaming___gaming_auto
 export { Gaming___gaming_bench } from "./UEFA_icons/Gaming___gaming_bench/Gaming___gaming_bench";
 export { Gaming___gaming_captain } from "./UEFA_icons/Gaming___gaming_captain/Gaming___gaming_captain";
 export { Header } from "./UEFA_Academy_online/Header/Header";
+export { Header_Sponsor_Banner_Demo } from "../pages/Alex_CookBook/Header_Sponsor_Banner_Demo";
 export { Header_SponsorStrip_Combinations } from "../pages/Alex_CookBook/Header_SponsorStrip_Combinations";
 export { Info } from "./UEFA_Academy_online/Info/Info";
 export { Info_generated } from "./Alex_CookBook/Info_generated/Info_generated";
@@ -200,6 +201,7 @@ export { Secondary_Navigation } from "./Alex_CookBook/Secondary_Navigation/Secon
 export { sidebar_filtering } from "./Alex_CookBook/sidebar_filtering/sidebar_filtering";
 export { simple_info } from "./UEFA_Academy_online/simple_info/simple_info";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
+export { SponsorBanner } from "./Alex_CookBook/SponsorBanner/SponsorBanner";
 export { SponsorStrip } from "./Alex_CookBook/SponsorStrip/SponsorStrip";
 export { SponsorStripDemo } from "../pages/Alex_CookBook/SponsorStripDemo";
 export { SponsorStripDemo_Curated } from "../pages/Alex_CookBook/SponsorStripDemo_Curated";
