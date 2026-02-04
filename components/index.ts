@@ -199,6 +199,8 @@ export { Secondary_Navigation } from "./Alex_CookBook/Secondary_Navigation/Secon
 export { sidebar_filtering } from "./Alex_CookBook/sidebar_filtering/sidebar_filtering";
 export { simple_info } from "./UEFA_Academy_online/simple_info/simple_info";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
+export { SponsorStrip } from "./Alex_CookBook/SponsorStrip/SponsorStrip";
+export { SponsorStripDemo } from "../pages/Alex_CookBook/SponsorStripDemo";
 export { SubSection_collapsed } from "./UEFA_Academy_online/SubSection/SubSection_collapsed";
 export { TableStat } from "./Newsletter/TableStat";
 export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
