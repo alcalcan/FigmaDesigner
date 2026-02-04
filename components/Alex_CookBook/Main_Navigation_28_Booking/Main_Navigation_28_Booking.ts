@@ -36,18 +36,17 @@ export class Main_Navigation_28_Booking extends BaseComponent {
         const showSolidBlueContainer = props.showSolidBlueContainer;
         const logoRadius = props.logoRadius ?? 24;
         const showBorder = props.showBorder ?? showBorderedContainer;
-        const logoPosition = props.logoPosition || 'right';
         const borderOpacity = props.borderOpacity ?? 0.4;
 
         const backgroundColor = { "r": 0, "g": 0.16, "b": 0.77 };
 
+        const containerHeight = isMobile ? 56 : 80;
         const width = props.width ?? (isMobile ? 375 : 1680);
         const paddingLeft = isMobile ? 12 : 24;
         const paddingRight = isMobile ? 12 : 24;
         const paddingTop = isMobile ? 4 : 13;
         const paddingBottom = isMobile ? 4 : 13;
 
-        const navHeight = 54; // Enforced 54px for both desktop and mobile
         const euroLogoWidth = isMobile ? 44 : 204;
         const euroLogoHeight = 24;
 
@@ -202,15 +201,13 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             "children": [brandingPill]
         };
         const menuBlockGrow = (brandingLayout === 'standard' && !isMobile) ? 1 : 0;
-        const menuBlockAlign = (brandingLayout === 'standard' && !isMobile) ? "MIN" : "MAX"; // If pushed to right, align items to right (Max)
 
         const menuBlock: NodeDefinition = {
             "type": "FRAME" as const,
             "name": "Container (Menu)",
             "props": {
                 "layoutMode": "HORIZONTAL",
-                "itemSpacing": isMobile ? 4 : 24,
-                "primaryAxisAlignItems": menuBlockAlign, "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
+                "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO"
             },
             "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": menuBlockGrow },
             "children": [
@@ -219,20 +216,19 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                     "name": "Menu item Group",
                     "props": {
                         "layoutMode": "HORIZONTAL",
-                        "itemSpacing": isMobile ? 4 : 24,
-                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO",
+                        "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER", "counterAxisSizingMode": "AUTO",
                         "fills": []
                     },
-                    "layoutProps": { "parentIsAutoLayout": true },
+                    "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                     "children": [
                         ...(showFullMenu ? navItems.map(item => ({
                             "type": "FRAME" as const,
                             "name": `Menuitem - ${item.name}`,
                             "props": {
-                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                                 "fills": []
                             },
-                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
                             "children": [{
                                 "type": "TEXT" as const,
                                 "props": {
@@ -252,10 +248,10 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                                 "layoutMode": "HORIZONTAL",
                                 "itemSpacing": 8,
                                 "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
-                                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                                 "fills": []
                             },
-                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                            "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
                             "children": [
                                 ...((!(isMobile && message)) ? [{
                                     "type": "TEXT" as const,
@@ -266,7 +262,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                                     "type": "FRAME" as const,
                                     "name": "Icon Container",
                                     "props": {
-                                        "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                                        "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                                         "fills": []
                                     },
                                     "layoutProps": { "width": (isMobile || !showFullMenu) ? 24 : 16, "height": (isMobile || !showFullMenu) ? 24 : 16, "parentIsAutoLayout": true },
@@ -352,13 +348,13 @@ export class Main_Navigation_28_Booking extends BaseComponent {
             }
         }
 
-        const containerHeight = isMobile ? 62 : 80;
 
         const structure: NodeDefinition = {
             "type": "FRAME" as const,
             "name": "Main_Navigation_28_Booking",
             "props": {
                 "layoutMode": "HORIZONTAL",
+                "itemSpacing": 0,
                 "primaryAxisSizingMode": "FIXED",
                 "counterAxisSizingMode": "FIXED",
                 "paddingTop": paddingTop, "paddingRight": paddingRight, "paddingBottom": paddingBottom, "paddingLeft": paddingLeft,
@@ -370,7 +366,7 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "width": width,
                 "height": containerHeight,
                 "parentIsAutoLayout": false,
-                ...((props as any).layoutProps || {})
+                ...((props as ComponentProps).layoutProps || {})
             },
             "children": [{
                 "type": "FRAME" as const,
@@ -378,11 +374,11 @@ export class Main_Navigation_28_Booking extends BaseComponent {
                 "props": {
                     "layoutMode": "HORIZONTAL",
                     "primaryAxisAlignItems": "MIN", // Left align
-                    "itemSpacing": isMobile ? 12 : 32,
+                    "itemSpacing": isMobile ? 12 : 48,
                     "counterAxisAlignItems": "CENTER",
                     "layoutGrow": 1
                 },
-                "layoutProps": { "height": navHeight, "parentIsAutoLayout": true, "layoutGrow": 1 },
+                "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                 "children": navChildren
             }]
         } as NodeDefinition;

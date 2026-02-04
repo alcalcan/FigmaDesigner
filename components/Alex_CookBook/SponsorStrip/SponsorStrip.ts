@@ -44,7 +44,7 @@ export class SponsorStrip extends BaseComponent {
         const width = props.width ?? (isMobile ? 375 : 1680);
         const paddingLeft = isMobile ? 12 : 24;
         const paddingRight = isMobile ? 12 : 24;
-        const containerHeight = 54;
+        const containerHeight = isMobile ? 32 : 54;
 
         const bookingLogoWidth = isMobile ? 80 : 120;
         const marketingIconWidth = isMobile ? 4 : 6;
@@ -97,13 +97,13 @@ export class SponsorStrip extends BaseComponent {
                 "counterAxisAlignItems": "CENTER",
                 "primaryAxisSizingMode": "AUTO",
                 "counterAxisSizingMode": "FIXED",
-                "paddingLeft": (showBorderedContainer || showFilledContainer || showGradientContainer || showSolidBlueContainer) ? (isMobile ? 12 : 16) : 0,
-                "paddingRight": (showBorderedContainer || showFilledContainer || showGradientContainer || showSolidBlueContainer) ? (isMobile ? 12 : 16) : 0,
+                "paddingLeft": isMobile ? 12 : 16,
+                "paddingRight": isMobile ? 12 : 16,
                 "cornerRadius": logoRadius,
                 "strokes": showBorder ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": borderOpacity }] : [],
                 "strokeWeight": showBorder ? 1 : 0,
                 "fills": showSolidBlueContainer ? [{ "type": "SOLID", "color": colors['booking-light-blue'], "opacity": 1.0 }] :
-                    (showFilledContainer ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.1 }] :
+                    (showFilledContainer ? [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "opacity": 0.24 }] :
                         (showGradientContainer ? [{
                             "type": "GRADIENT_LINEAR",
                             "gradientStops": [

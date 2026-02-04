@@ -18,13 +18,11 @@ export class Main_Navigation_28 extends BaseComponent {
 
         // Dynamic properties based on platform with prop overrides
         const width = props.width ?? (isMobile ? 375 : 1680);
-        const height = props.height ?? (isMobile ? 54 : 80);
+        const height = isMobile ? 56 : 80;
         const paddingLeft = isMobile ? 12 : 24;
         const paddingRight = isMobile ? 12 : 24;
         const paddingTop = isMobile ? 4 : 13;
         const paddingBottom = isMobile ? 4 : 13;
-        const navWidth = isMobile ? 351 : 1632; // Expanded desktop navWidth to fill more of the 1680px (minus outer padding)
-        const navHeight = isMobile ? 46 : 54;
         const logoWidth = isMobile ? 44 : 204;
         const logoHeight = isMobile ? 40 : 24;
         const menuItemHeight = 30;
@@ -69,25 +67,29 @@ export class Main_Navigation_28 extends BaseComponent {
             "name": "Main_Navigation_28",
             "props": {
                 "layoutMode": "HORIZONTAL",
-                "primaryAxisSizingMode": "FIXED", // Width: Fixed (Fill Container)
-                "counterAxisSizingMode": "AUTO",  // Height: Auto (Hug Contents)
+                "primaryAxisSizingMode": "FIXED",
+                "counterAxisSizingMode": "FIXED",
                 "paddingTop": paddingTop, "paddingRight": paddingRight, "paddingBottom": paddingBottom, "paddingLeft": paddingLeft,
                 "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
                 "fills": [{ "type": "SOLID", "color": { "r": 0, "g": 0.16, "b": 0.77 } }]
             },
-            // Width is fixed (passed from props/default), Height is undefined (Hug)
-            "layoutProps": { "width": width, "parentIsAutoLayout": false },
+            "layoutProps": {
+                "width": width,
+                "height": height,
+                "parentIsAutoLayout": false,
+                ...((props as ComponentProps).layoutProps || {})
+            },
             "children": [{
                 "type": "FRAME" as const,
                 "name": "Nav - Main navigation",
                 "props": {
                     "layoutMode": "HORIZONTAL",
                     "primaryAxisAlignItems": "MIN", // Left align to enforce the 32px gap
-                    "itemSpacing": isMobile ? 12 : 32,
+                    "itemSpacing": isMobile ? 12 : 48,
                     "counterAxisAlignItems": "CENTER",
                     "layoutGrow": 1
                 },
-                "layoutProps": { "height": navHeight, "parentIsAutoLayout": true, "layoutGrow": 1 },
+                "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                 "children": [
                     {
                         "type": "FRAME" as const,
@@ -105,27 +107,27 @@ export class Main_Navigation_28 extends BaseComponent {
                         "props": {
                             "layoutMode": "HORIZONTAL",
                             "itemSpacing": isMobile ? 4 : 24,
-                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                            "counterAxisSizingMode": "AUTO"
                         },
-                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": isMobile ? 0 : 1 },
+                        "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                         "children": [
                             {
                                 "type": "FRAME" as const,
                                 "name": "Menu item Group",
                                 "props": {
                                     "layoutMode": "HORIZONTAL",
-                                    "itemSpacing": isMobile ? 4 : 24,
-                                    "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
+                                    "primaryAxisAlignItems": "SPACE_BETWEEN", "counterAxisAlignItems": "CENTER"
                                 },
-                                "layoutProps": { "parentIsAutoLayout": true },
+                                "layoutProps": { "parentIsAutoLayout": true, "layoutGrow": 1 },
                                 "children": [
                                     ...navItems.map(item => ({
                                         "type": "FRAME" as const,
                                         "name": `Menuitem - ${item.name}`,
                                         "props": {
-                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
                                         },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
                                         "children": [{
                                             "type": "TEXT" as const,
                                             "props": { "characters": item.name, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "UEFA Euro Pro", "style": "Book" } },
@@ -139,9 +141,9 @@ export class Main_Navigation_28 extends BaseComponent {
                                             "layoutMode": "HORIZONTAL",
                                             "itemSpacing": 8,
                                             "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8,
-                                            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                                            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
                                         },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
                                         "children": [
                                             {
                                                 "type": "TEXT" as const,
@@ -171,9 +173,9 @@ export class Main_Navigation_28 extends BaseComponent {
                                         "type": "FRAME" as const,
                                         "name": `Menuitem - ${item.name}`,
                                         "props": {
-                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER"
+                                            "layoutMode": "HORIZONTAL" as const, "paddingTop": 0, "paddingRight": 8, "paddingBottom": 0, "paddingLeft": 8, "cornerRadius": 9999, "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER"
                                         },
-                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true },
+                                        "layoutProps": { "height": menuItemHeight, "parentIsAutoLayout": true, "layoutGrow": 1, "layoutAlign": "STRETCH" },
                                         "children": [{
                                             "type": "TEXT" as const,
                                             "props": { "characters": item.name, "fontSize": fontSize, "fills": [{ "type": "SOLID" as const, "color": { "r": 1, "g": 1, "b": 1 } }], "font": { "family": "UEFA Euro Pro", "style": "Book" } },

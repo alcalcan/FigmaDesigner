@@ -51,7 +51,8 @@ export class social_profile_card extends BaseComponent {
                 createFrame("User Info", {
                     layoutMode: "VERTICAL",
                     itemSpacing: 0,
-                    layoutGrow: 1
+                    layoutGrow: 1,
+                    primaryAxisSizingMode: "AUTO"
                 }, [
                     createText("Name", props.name || "User Name", 18, "SemiBold", { r: 0.102, g: 0.192, b: 0.235 }, {
                         font: { family: "Open Sans", style: "SemiBold" },

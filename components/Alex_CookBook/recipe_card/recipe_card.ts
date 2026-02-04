@@ -44,7 +44,8 @@ export class recipe_card extends BaseComponent {
       createFrame("Content Container", {
         layoutMode: "VERTICAL",
         itemSpacing: 8,
-        layoutAlign: "STRETCH"
+        layoutAlign: "STRETCH",
+        primaryAxisSizingMode: "AUTO"
       }, [
         createText("Category", (props.category || "BREAKFAST").toUpperCase(), 12, "Bold", { r: 0.36, g: 0.48, b: 0.54 }, {
           font: { family: "Open Sans", style: "Bold" },
