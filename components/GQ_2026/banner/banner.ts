@@ -34,11 +34,22 @@ export class banner extends BaseComponent {
         const subline = props.subline || "Test your knowledge. Prove your status.";
         const buttonText = props.buttonText || "Get Ready";
 
+        // Layout Logic based on Variants
+        // If shirts are shown, we switch to a Text Left / Image Right layout
+        // Otherwise, Center alignment
+        const isShirtsVariant = showShirts;
+
+        const textAlign = isShirtsVariant ? "LEFT" : "CENTER";
+        const alignItems = isShirtsVariant ? "MIN" : "CENTER";
+
+        // Typography adjustments for the split layout
+        const headlineSize = isShirtsVariant ? 32 : 56;
+        const sublineSize = isShirtsVariant ? 14 : 20;
+
         const children: NodeDefinition[] = [];
         const backgroundChildren: NodeDefinition[] = [];
 
         // 1. Hero_Base_Group (Equivalent to "Group" in hero.ts)
-        // Contains: Mesh Vector, Radial Gradient, Starball Paths
         const baseGroupChildren: NodeDefinition[] = [];
 
         if (showVectors) {
@@ -125,7 +136,7 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 2. Hero_Synth_Group_1 (Equivalent to second "Group" in hero.ts)
+        // 2. Hero_Synth_Group_1
         if (showVectors) {
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Synth_Group_1",
@@ -151,7 +162,7 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 3. Hero_Synth_Group_2 (Equivalent to "Group 104")
+        // 3. Hero_Synth_Group_2
         if (showVectors) {
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Synth_Group_2",
@@ -177,7 +188,7 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 4. Hero_Stripes_Group (Equivalent to "Group 105")
+        // 4. Hero_Stripes_Group
         if (showStripes) {
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Stripes_Group",
@@ -203,31 +214,31 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 5. Hero_Shirts_Group (Equivalent to "Frame 626600")
+        // 5. Hero_Shirts_Group
         if (showShirts) {
+            // Apply scale 0.55 and position at Right
+            // Background_Layers is offset by x: -653.
+            // We want the shirts to be visually at x approx 320 (right half of 600px width).
+            // Internal X = Visual X - Group Offset = 320 - (-653) = 973.
+            // Let's use 980 for a safe right-side placement.
+            // Visual Y target: approx 50-60 (centered vertically in 300px height).
+            // Group Y Offset is -150.
+            // Internal Y = 60 - (-150) = 210.
+            const scale = 0.55;
+            const targetX = 980;
+            const targetY = 210;
+
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Shirts_Group",
                 "props": {
                     "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH", "clipsContent": false,
                     "layoutMode": "HORIZONTAL", "itemSpacing": -199.24, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-                    "x": -4, "y": 245, "fills": []
+                    "x": targetX, "y": targetY, "fills": []
                 },
                 "layoutProps": {
                     "width": 608.4, "height": 308.3,
                     "parentIsAutoLayout": false,
-                    // Center the shirts in the banner vertically.
-                    // Original banner height is 300.
-                    // Shirts group height is ~308.
-                    // Let's position it to generally match the composition.
-                    // The background children are in an absolute group.
-                    // Let's rely on the relativeTransform from global center or top-left.
-                    // For now, mirroring Hero position relative to its frame might be a safe bet, then adjust.
-                    // Hero Frame 600x686. Banner 600x300.
-                    // In hero, Shirts are at Y=245.
-                    // In banner (300 height), Y=245 puts them very low.
-                    // Let's align them towards the bottom or center visually.
-                    // Adjusted Y to 50 for banner composition.
-                    "relativeTransform": [[1, 0, -4], [0, 1, 50]]
+                    "relativeTransform": [[scale, 0, targetX], [0, scale, targetY]]
                 },
                 "children": [
                     {
@@ -274,20 +285,20 @@ export class banner extends BaseComponent {
         children.push({
             "type": "FRAME", "name": "Banner_Content",
             "props": {
-                "visible": true, "layoutMode": "VERTICAL", "itemSpacing": 32,
-                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER", "fills": []
+                "visible": true, "layoutMode": "VERTICAL", "itemSpacing": 24, // Tighter spacing for refined layout
+                "primaryAxisAlignItems": alignItems, "counterAxisAlignItems": alignItems, "fills": []
             },
             "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH", "constraints": { "horizontal": "CENTER", "vertical": "CENTER" } },
             "children": [
                 {
                     "type": "FRAME", "name": "Text_Block",
-                    "props": { "layoutMode": "VERTICAL", "itemSpacing": 8, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER", "fills": [] },
+                    "props": { "layoutMode": "VERTICAL", "itemSpacing": 8, "primaryAxisAlignItems": alignItems, "counterAxisAlignItems": alignItems, "fills": [] },
                     "layoutProps": { "parentIsAutoLayout": true, "layoutAlign": "STRETCH" },
                     "children": [
                         {
                             "type": "TEXT", "name": "Headline",
                             "props": {
-                                "visible": true, "characters": headline, "fontSize": 56, "textAlignHorizontal": "CENTER",
+                                "visible": true, "characters": headline, "fontSize": headlineSize, "textAlignHorizontal": textAlign,
                                 "font": { "family": "Manrope", "style": "ExtraBold" }, "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }],
                                 "lineHeight": { "unit": "PERCENT", "value": 110 }
                             },
@@ -296,7 +307,7 @@ export class banner extends BaseComponent {
                         {
                             "type": "TEXT", "name": "Subline",
                             "props": {
-                                "visible": true, "opacity": 0.9, "characters": subline, "fontSize": 20, "textAlignHorizontal": "CENTER",
+                                "visible": true, "opacity": 0.9, "characters": subline, "fontSize": sublineSize, "textAlignHorizontal": textAlign,
                                 "font": { "family": "Manrope", "style": "Regular" }, "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }]
                             },
                             "layoutProps": { "layoutAlign": "STRETCH", "layoutGrow": 0, "parentIsAutoLayout": true }
