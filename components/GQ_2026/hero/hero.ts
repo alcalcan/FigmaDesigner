@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 
 // SVG Assets
@@ -60,8 +60,8 @@ export class hero extends BaseComponent {
           },
           "layoutProps": {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-            "width": 2449.06005859375, "height": 1822.543212890625,
-            "relativeTransform": [[1, 0, -653], [0, 1, -34.543190002441406]]
+            "width": 2449.06, "height": 1822.54,
+            "relativeTransform": [[1, 0, -653], [0, 1, -34.5432]]
           },
           "children": [
             {
@@ -79,7 +79,7 @@ export class hero extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 1592, "height": 805.0513916015625,
+                "width": 1592, "height": 805.0514,
                 "relativeTransform": [[1, 0, 447], [0, 1, 0]],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
               },
@@ -93,7 +93,7 @@ export class hero extends BaseComponent {
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "x": 255, "y": 34.543190002441406,
+                "x": 255, "y": 34.5432,
                 "fills": [
                   {
                     "visible": true, "opacity": 0.800000011920929, "blendMode": "NORMAL", "type": "GRADIENT_RADIAL",
@@ -122,7 +122,7 @@ export class hero extends BaseComponent {
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                 "width": 2066, "height": 1788,
-                "relativeTransform": [[1, 0, 255], [0, 1, 34.543190002441406]],
+                "relativeTransform": [[1, 0, 255], [0, 1, 34.5432]],
                 "constraints": { "horizontal": "MIN", "vertical": "MIN" }
               }
             },
@@ -169,8 +169,8 @@ export class hero extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 829.06005859375, "height": 865.6522827148438,
-                "relativeTransform": [[1, 0, 1620], [0, 1, 4.16796875]]
+                "width": 829.06, "height": 865.6523,
+                "relativeTransform": [[1, 0, 1620], [0, 1, 4.168]]
               },
               "children": [
                 {
@@ -181,7 +181,7 @@ export class hero extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 1072.03955078125, "y": 72.0622787475586,
+                    "x": 1072.0396, "y": 72.0623,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
@@ -195,8 +195,8 @@ export class hero extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 664.518310546875, "height": 455.38494873046875,
-                    "relativeTransform": [[1, 0, 1072.03955078125], [0, 1, 72.0622787475586]]
+                    "width": 664.5183, "height": 455.385,
+                    "relativeTransform": [[1, 0, 1072.0396], [0, 1, 72.0623]]
                   },
                   "svgContent": SVG_hero_Synth_Path_1
                 },
@@ -208,7 +208,7 @@ export class hero extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 967, "y": -30.375221252554848,
+                    "x": 967, "y": -30.3752,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
@@ -222,8 +222,8 @@ export class hero extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 829.06005859375, "height": 865.6521606445312,
-                    "relativeTransform": [[1, 0, 967], [0, 1, -30.375221252554848]]
+                    "width": 829.0601, "height": 865.6522,
+                    "relativeTransform": [[1, 0, 967], [0, 1, -30.3752]]
                   },
                   "svgContent": SVG_hero_Synth_Path_2
                 }
@@ -272,8 +272,8 @@ export class hero extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 829.0599975585938, "height": 865.6522827148438,
-                "relativeTransform": [[1, 0, 0], [0, 1, 4.16796875]]
+                "width": 829.06, "height": 865.6523,
+                "relativeTransform": [[1, 0, 0], [0, 1, 4.168]]
               },
               "children": [
                 {
@@ -284,7 +284,7 @@ export class hero extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": -547.96044921875, "y": 72.0622787475586,
+                    "x": -547.9604, "y": 72.0623,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
@@ -298,8 +298,8 @@ export class hero extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 664.5182495117188, "height": 455.38494873046875,
-                    "relativeTransform": [[1, 0, -547.96044921875], [0, 1, 72.0622787475586]]
+                    "width": 664.5182, "height": 455.385,
+                    "relativeTransform": [[1, 0, -547.9604], [0, 1, 72.0623]]
                   },
                   "svgContent": SVG_hero_Synth_Path_3
                 },
@@ -311,7 +311,7 @@ export class hero extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": -653, "y": -30.375221252554848,
+                    "x": -653, "y": -30.3752,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
@@ -325,8 +325,8 @@ export class hero extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 829.0599975585938, "height": 865.6521606445312,
-                    "relativeTransform": [[1, 0, -653], [0, 1, -30.375221252554848]]
+                    "width": 829.06, "height": 865.6522,
+                    "relativeTransform": [[1, 0, -653], [0, 1, -30.3752]]
                   },
                   "svgContent": SVG_hero_Synth_Path_4
                 }
@@ -340,15 +340,15 @@ export class hero extends BaseComponent {
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA",
-            "x": -455.24560546875, "y": -187.16275024414062,
+            "x": -455.2456, "y": -187.1628,
             "strokes": [],
             "strokeWeight": 0,
             "effects": []
           },
           "layoutProps": {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-            "width": 2191.05029296875, "height": 1136.0157775878906,
-            "relativeTransform": [[1, 0, -455.24560546875], [0, 1, -187.16275024414062]]
+            "width": 2191.0503, "height": 1136.0158,
+            "relativeTransform": [[1, 0, -455.2456], [0, 1, -187.1628]]
           },
           "children": [
             {
@@ -359,7 +359,7 @@ export class hero extends BaseComponent {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "OVERLAY",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 1120.60546875, "y": 1001.858154296875,
+                "x": 1120.6055, "y": 1001.8582,
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -379,10 +379,10 @@ export class hero extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 1068.51220703125, "height": 134.15762329101562,
+                "width": 1068.5122, "height": 134.1576,
                 "relativeTransform": [
-                  [0.9740638732910156, 0.22097618877887726, 1120.60546875],
-                  [-0.22645382583141327, 0.9753210544586182, 1001.858154296875]
+                  [0.9741, 0.221, 1120.6055],
+                  [-0.2265, 0.9753, 1001.8582]
                 ],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
               },
@@ -396,20 +396,20 @@ export class hero extends BaseComponent {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "OVERLAY",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 78.759765625, "y": 257.62359619140625,
+                "x": 78.7598, "y": 257.6236,
                 "strokes": [],
                 "effects": [],
                 "cornerRadius": 0
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 1068.5123291015625, "height": 134.15765380859375,
+                "width": 1068.5123, "height": 134.1577,
                 "relativeTransform": [
-                  [0.9740638732910156, 0.22097612917423248, 78.759765625],
+                  [0.9741, 0.221, 78.7598],
                   [
-                    -0.22645387053489685,
-                    0.9753211736679077,
-                    257.62359619140625
+                    -0.2265,
+                    0.9753,
+                    257.6236
                   ]
                 ],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
@@ -424,20 +424,20 @@ export class hero extends BaseComponent {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "OVERLAY",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 0, "y": 141.07290649414062,
+                "x": 0, "y": 141.0729,
                 "strokes": [],
                 "effects": [],
                 "cornerRadius": 0
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 1218.63671875, "height": 153.1599578857422,
+                "width": 1218.6367, "height": 153.16,
                 "relativeTransform": [
-                  [0.9933306574821472, 0.11285509169101715, 0],
+                  [0.9933, 0.1129, 0],
                   [
-                    -0.11576289683580399,
-                    0.9936651587486267,
-                    141.07290649414062
+                    -0.1158,
+                    0.9937,
+                    141.0729
                   ]
                 ],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
@@ -452,15 +452,15 @@ export class hero extends BaseComponent {
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA",
-            "x": -620.110595703125, "y": -306.0921630859375,
+            "x": -620.1106, "y": -306.0922,
             "strokes": [],
             "strokeWeight": 0,
             "effects": []
           },
           "layoutProps": {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-            "width": 2489.4482421875, "height": 639.2112426757812,
-            "relativeTransform": [[1, 0, -620.110595703125], [0, 1, -306.0921630859375]]
+            "width": 2489.4482, "height": 639.2112,
+            "relativeTransform": [[1, 0, -620.1106], [0, 1, -306.0922]]
           },
           "children": [
             {
@@ -471,17 +471,17 @@ export class hero extends BaseComponent {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "OVERLAY",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 1147.20703125, "y": 239.8851318359375,
+                "x": 1147.207, "y": 239.8851,
                 "strokes": [],
                 "effects": [],
                 "cornerRadius": 0
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 1068.5123291015625, "height": 134.15765380859375,
+                "width": 1068.5123, "height": 134.1577,
                 "relativeTransform": [
-                  [-0.9740638732910156, -0.22097615897655487, 1147.20703125],
-                  [0.22645387053489685, -0.9753211140632629, 239.8851318359375]
+                  [-0.9741, -0.221, 1147.207],
+                  [0.2265, -0.9753, 239.8851]
                 ],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
               },
@@ -495,7 +495,7 @@ export class hero extends BaseComponent {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "OVERLAY",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 1227.79443359375, "y": 152.1898193359375,
+                "x": 1227.7944, "y": 152.1898,
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -515,10 +515,10 @@ export class hero extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 1218.6370849609375, "height": 153.16000366210938,
+                "width": 1218.6371, "height": 153.16,
                 "relativeTransform": [
-                  [-0.9933306574821472, -0.11285512149333954, 1227.79443359375],
-                  [0.1157628744840622, -0.9936651587486267, 152.1898193359375]
+                  [-0.9933, -0.1129, 1227.7944],
+                  [0.1158, -0.9937, 152.1898]
                 ],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
               },
@@ -532,7 +532,7 @@ export class hero extends BaseComponent {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "OVERLAY",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 1269.41162109375, "y": 246.7249755859375,
+                "x": 1269.4116, "y": 246.725,
                 "strokes": [],
                 "effects": [],
                 "cornerRadius": 0
@@ -774,13 +774,13 @@ export class hero extends BaseComponent {
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "HORIZONTAL", "itemSpacing": -199.2367401123047, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+            "layoutMode": "HORIZONTAL", "itemSpacing": -199.2367, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
             "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
             "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
             "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-            "strokeWeight": 1.2937450408935547, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 1.2937450408935547, "strokeRightWeight": 1.2937450408935547, "strokeBottomWeight": 1.2937450408935547, "strokeLeftWeight": 1.2937450408935547,
-            "x": -3.9999465942382812, "y": 245,
+            "strokeWeight": 1.2937, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+            "strokeTopWeight": 1.2937, "strokeRightWeight": 1.2937, "strokeBottomWeight": 1.2937, "strokeLeftWeight": 1.2937,
+            "x": -4, "y": 245,
             "fills": [],
             "strokes": [],
             "effects": [],
@@ -788,8 +788,8 @@ export class hero extends BaseComponent {
           },
           "layoutProps": {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-            "width": 608.3612060546875, "height": 308.302001953125,
-            "relativeTransform": [[1, 0, -3.9999465942382812], [0, 1, 245]],
+            "width": 608.3612, "height": 308.302,
+            "relativeTransform": [[1, 0, -4], [0, 1, 245]],
             "constraints": { "horizontal": "CENTER", "vertical": "MIN" }
           },
           "children": [
