@@ -38,7 +38,8 @@ const captureNode = async (
   rootName: string,
   saveVectorInJson: boolean = false,
   skipAssets: boolean = false,
-  depth: number = 0
+  depth: number = 0,
+  offset: { x: number, y: number } = { x: 0, y: 0 }
 ): Promise<Record<string, unknown> | null> => {
 
   if (depth > 200) {
@@ -69,20 +70,47 @@ const captureNode = async (
     effects: safeGet(node, "effects"),
 
     // Geometry
-    x: node.parent && node.parent.type === "GROUP" ? node.x - node.parent.x : node.x,
-    y: node.parent && node.parent.type === "GROUP" ? node.y - node.parent.y : node.y,
+    x: (() => {
+      let x = node.x;
+      // Removed incorrect Group subtraction logic.
+      // Parents in Figma groups contribute to the absolute position in a way that
+      // node.x is actually relative to the Group's top-left (visually).
+      // However, our previous logic was double-subtracting or misunderstanding the API slightly.
+      // If we want 'relative to parent', node.x is ALREADY relative to parent (if Group/Frame).
+      // If we want 'relative to selection root', we subtract offset.
+
+      // Critical Fix: Do NOT subtract parent.x/y for Groups explicitly here. 
+      // Figma's node.x/y for a child of a Group is relative to the Group's bounds.
+      if (depth === 0) x -= offset.x;
+      return x;
+    })(),
+    y: (() => {
+      let y = node.y;
+      if (depth === 0) y -= offset.y;
+      return y;
+    })(),
     width: node.width,
     height: node.height,
     rotation: safeGet(node, "rotation"),
     relativeTransform: (() => {
       const transform = safeGet(node, "relativeTransform");
-      if (transform && node.parent && node.parent.type === "GROUP") {
-        const t = [...transform.map((row: number[]) => [...row])] as [[number, number, number], [number, number, number]];
+      if (!transform) return transform;
+
+      const t = [...transform.map((row: number[]) => [...row])] as [[number, number, number], [number, number, number]];
+
+      // Normalization for Groups (children are relative to root Page instead of Group)
+      if (node.parent && node.parent.type === "GROUP") {
         t[0][2] -= node.parent.x;
         t[1][2] -= node.parent.y;
-        return t;
       }
-      return transform;
+
+      // Normalization for selection root
+      if (depth === 0) {
+        t[0][2] -= offset.x;
+        t[1][2] -= offset.y;
+      }
+
+      return t;
     })(),
 
     // Constraints & Layout Positioning
@@ -249,6 +277,9 @@ const captureNode = async (
         const assetRef = `assets/${fileName}`;
         assetStore.assets[assetRef] = { bytesBase64: base64 };
         data.svgPath = assetRef;
+        // Flag to tell BaseComponent NOT to try and guess if this is a rotated icon
+        // because we are capturing it exactly as is from the source.
+        data.preventBakingAnalysis = true;
       } catch (e) {
         const msg = (e as Error).message || "";
         if (msg.includes("visible layers") || msg.includes("no visible layers")) {
@@ -365,7 +396,14 @@ figma.ui.onmessage = async (msg) => {
         nextId: 1
       };
 
-      const detailsRaw = await Promise.all(selection.map(node => captureNode(node, msg.detailed, assetStore, node.name, false, false, 0)));
+      // Calculate Bounding Box for selection to center coordinates
+      const selectionX = Math.min(...selection.map(n => n.x));
+      const selectionY = Math.min(...selection.map(n => n.y));
+      const offset = { x: selectionX, y: selectionY };
+
+      const detailsRaw = await Promise.all(selection.map(node =>
+        captureNode(node, msg.detailed, assetStore, node.name, false, false, 0, offset)
+      ));
       const details = detailsRaw.filter((d): d is Record<string, unknown> => d !== null);
 
       if (details.length === 0) {
@@ -526,8 +564,13 @@ figma.ui.onmessage = async (msg) => {
             nextId: 1
           };
 
+          // Calculate Bounding Box for selection to center coordinates
+          const selectionX = Math.min(...selection.map(n => n.x));
+          const selectionY = Math.min(...selection.map(n => n.y));
+          const selectionOffset = { x: selectionX, y: selectionY };
+
           try {
-            const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets, 0);
+            const data = await captureNode(node, msg.detailed, assetStore, node.name, msg.saveVectorInJson, msg.skipAssets, 0, selectionOffset);
 
             if (!data) {
               console.warn(`[Plugin] Capture returned null for ${node.name}`);

@@ -42,6 +42,7 @@ export interface NodeDefinition {
   svgContent?: string;
   vectorPaths?: VectorPaths;
   shouldFlatten?: boolean;
+  preventBakingAnalysis?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component?: any;
 }
@@ -104,7 +105,8 @@ export abstract class BaseComponent {
               const jsonW = layout.width;
               const jsonH = layout.height;
 
-              if (detectBakedRotation(svgW, svgH, jsonW, jsonH)) {
+              // Respect the 'preventBakingAnalysis' flag if present (from new Capture logic)
+              if (!def.preventBakingAnalysis && detectBakedRotation(svgW, svgH, jsonW, jsonH)) {
                 console.log(`[BaseComponent] Detected baked rotation for ${def.name || 'Vector'}. Normalizing...`);
 
                 // 1. Swap dimensions in layoutProps so the node is resized to its "unrotated" shape
@@ -386,10 +388,9 @@ export abstract class BaseComponent {
         }
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      applySizeAndTransform(node as any, layoutOpts);
-
-      // Explicitly apply layoutPositioning if requested
+      // Explicitly apply layoutPositioning if requested BEFORE transform
+      // This is CRITICAL because applySizeAndTransform might strip translation if Auto Layout is on
+      // but layoutPositioning is still "AUTO".
       if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {
         try {
           (node as any).layoutPositioning = def.layoutProps.layoutPositioning;
@@ -397,6 +398,9 @@ export abstract class BaseComponent {
           console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name}`, e);
         }
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      applySizeAndTransform(node as any, layoutOpts);
 
       // Apply layoutGrow and layoutAlign
       if (def.layoutProps.layoutGrow !== undefined && "layoutGrow" in node) {

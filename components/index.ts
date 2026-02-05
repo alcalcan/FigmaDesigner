@@ -167,6 +167,7 @@ export { Gaming___gaming_captain } from "./UEFA_icons/Gaming___gaming_captain/Ga
 export { Header } from "./UEFA_Academy_online/Header/Header";
 export { Header_Sponsor_Banner_Demo } from "../pages/Alex_CookBook/Header_Sponsor_Banner_Demo";
 export { Header_SponsorStrip_Combinations } from "../pages/Alex_CookBook/Header_SponsorStrip_Combinations";
+export { hero } from "./GQ_2026/hero/hero";
 export { Info } from "./UEFA_Academy_online/Info/Info";
 export { Info_generated } from "./Alex_CookBook/Info_generated/Info_generated";
 export { Info_raw } from "./Alex_CookBook/Info_raw/Info_raw";
