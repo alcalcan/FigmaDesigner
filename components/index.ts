@@ -166,6 +166,7 @@ export { Gaming___gaming_auto_complete } from "./UEFA_icons/Gaming___gaming_auto
 export { Gaming___gaming_bench } from "./UEFA_icons/Gaming___gaming_bench/Gaming___gaming_bench";
 export { Gaming___gaming_captain } from "./UEFA_icons/Gaming___gaming_captain/Gaming___gaming_captain";
 export { GQ_2026_Demo } from "../pages/GQ_2026/GQ_2026_Demo";
+export { GQ_Banner_Shirts_Aligned } from "./Alex_CookBook/GQ_Banner_Shirts_Aligned/GQ_Banner_Shirts_Aligned";
 export { Header } from "./UEFA_Academy_online/Header/Header";
 export { Header_Sponsor_Banner_Demo } from "../pages/Alex_CookBook/Header_Sponsor_Banner_Demo";
 export { Header_SponsorStrip_Combinations } from "../pages/Alex_CookBook/Header_SponsorStrip_Combinations";

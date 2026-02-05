@@ -51,7 +51,7 @@ export class GQ_2026_Demo extends BaseComponent {
             {
                 "type": "TEXT", "name": "Banner_Standard_Label",
                 "props": {
-                    "characters": "Banner - Standard",
+                    "characters": "1. Banner - Standard",
                     "fontSize": 24,
                     "fontWeight": 600,
                     "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
@@ -68,7 +68,8 @@ export class GQ_2026_Demo extends BaseComponent {
                     "showVectors": false,
                     "showStripes": false,
                     "headline": "Win a shirt signed\nby a legend!",
-                    "subline": "Pick your legend. Pick your signed shirt.*"
+                    "subline": "Pick your legend. Pick your signed shirt.*",
+                    "buttonText": "Let's go"
                 },
                 "layoutProps": { "parentIsAutoLayout": true }
             },
@@ -78,7 +79,7 @@ export class GQ_2026_Demo extends BaseComponent {
             {
                 "type": "TEXT", "name": "Banner_Gradient_Label",
                 "props": {
-                    "characters": "Banner - Hero Gradient",
+                    "characters": "2. Banner - Hero Gradient",
                     "fontSize": 24,
                     "fontWeight": 600,
                     "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
@@ -95,7 +96,8 @@ export class GQ_2026_Demo extends BaseComponent {
                     "showVectors": false,
                     "showStripes": false,
                     "headline": "Win a shirt signed\nby a legend!",
-                    "subline": "Pick your legend. Pick your signed shirt.*"
+                    "subline": "Pick your legend. Pick your signed shirt.*",
+                    "buttonText": "Let's go"
                 },
                 "layoutProps": { "parentIsAutoLayout": true }
             },
@@ -105,7 +107,7 @@ export class GQ_2026_Demo extends BaseComponent {
             {
                 "type": "TEXT", "name": "Banner_Full_Label",
                 "props": {
-                    "characters": "Banner - Full Hero",
+                    "characters": "3. Banner - Full Hero",
                     "fontSize": 24,
                     "fontWeight": 600,
                     "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
@@ -122,7 +124,8 @@ export class GQ_2026_Demo extends BaseComponent {
                     "showVectors": true,
                     "showStripes": true,
                     "headline": "Win a shirt signed\nby a legend!",
-                    "subline": "Pick your legend. Pick your signed shirt.*"
+                    "subline": "Pick your legend. Pick your signed shirt.*",
+                    "buttonText": "Let's go"
                 },
                 "layoutProps": { "parentIsAutoLayout": true }
             },
@@ -132,7 +135,7 @@ export class GQ_2026_Demo extends BaseComponent {
             {
                 "type": "TEXT", "name": "Banner_Shirts_Label",
                 "props": {
-                    "characters": "Banner - Full Hero + Shirts",
+                    "characters": "4. Banner - Full Hero + Shirts",
                     "fontSize": 24,
                     "fontWeight": 600,
                     "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
@@ -150,11 +153,70 @@ export class GQ_2026_Demo extends BaseComponent {
                     "showStripes": true,
                     "showShirts": true,
                     "headline": "Win a shirt signed\nby a legend!",
-                    "subline": "Pick your legend. Pick your signed shirt.*"
+                    "subline": "Pick your legend. Pick your signed shirt.*",
+                    "buttonText": "Let's go"
+                },
+                "layoutProps": { "parentIsAutoLayout": true }
+            },
+
+            { "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "fills": [] } },
+
+            {
+                "type": "TEXT", "name": "Banner_Shirts_Centered_Label",
+                "props": {
+                    "characters": "5. Banner - Full Hero + Shirts (Centered)",
+                    "fontSize": 24,
+                    "fontWeight": 600,
+                    "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
+                    "font": { "family": "Manrope", "style": "SemiBold" }
+                },
+                "layoutProps": { "parentIsAutoLayout": true }
+            },
+            {
+                "type": "COMPONENT",
+                "name": "GQ_Banner_Shirts_Centered",
+                "component": banner,
+                "props": {
+                    "showGradient": true,
+                    "showVectors": true,
+                    "showStripes": true,
+                    "showShirts": true,
+                    "shirtsLayout": "CENTER",
+                    "shirtsBlur": 4,
+                    "headline": "Win a shirt signed\nby a legend!",
+                    "subline": "Pick your legend. Pick your signed shirt.*",
+                    "buttonText": "Let's go"
                 },
                 "layoutProps": { "parentIsAutoLayout": true }
             },
         ];
+
+        // Add Spacer
+        children.push({ "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 40, "parentIsAutoLayout": true }, "props": { "fills": [] } });
+
+        // Add 6. Aligned Shirts Variant
+        children.push({
+            "type": "TEXT", "name": "Banner_Shirts_Aligned_Label",
+            "props": {
+                "characters": "6. Banner - Full Hero + Shirts (Right Aligned - All Visible)",
+                "fontSize": 24, "fontWeight": 600,
+                "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4 } }],
+                "font": { "family": "Manrope", "style": "SemiBold" }
+            },
+            "layoutProps": { "parentIsAutoLayout": true }
+        });
+
+        children.push({
+            "type": "COMPONENT", "name": "GQ_Banner_Shirts_Aligned", "component": banner,
+            "props": {
+                "showGradient": true, "showVectors": true, "showStripes": true, "showShirts": true,
+                "shirtsLayout": "RIGHT_ALIGNED",
+                "headline": "Win a shirt signed\nby a legend!*",
+                "subline": "*Subject to availability",
+                "buttonText": "Let's go"
+            },
+            "layoutProps": { "parentIsAutoLayout": true }
+        });
 
         const structure: NodeDefinition = {
             "type": "FRAME",

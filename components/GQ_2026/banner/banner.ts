@@ -30,26 +30,42 @@ export class banner extends BaseComponent {
         const showVectors = props.showVectors === true;
         const showStripes = props.showStripes === true;
         const showShirts = props.showShirts === true;
+        const shirtsLayout = props.shirtsLayout || 'RIGHT'; // 'RIGHT' | 'CENTER' | 'RIGHT_ALIGNED'
+        const shirtsBlur = props.shirtsBlur || 0;
+
         const headline = props.headline || "Upcoming\nGolden Questions";
         const subline = props.subline || "Test your knowledge. Prove your status.";
-        const buttonText = props.buttonText || "Get Ready";
+        const buttonText = props.buttonText || "Let's go";
 
-        // Layout Logic based on Variants
-        // If shirts are shown, we switch to a Text Left / Image Right layout
-        // Otherwise, Center alignment
-        const isShirtsVariant = showShirts;
+        let textAlign: "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED" = "CENTER";
+        let alignItems: "MIN" | "CENTER" | "MAX" | "BASELINE" = "CENTER";
+        let headlineSize = 56;
+        let sublineSize = 20;
 
-        const textAlign = isShirtsVariant ? "LEFT" : "CENTER";
-        const alignItems = isShirtsVariant ? "MIN" : "CENTER";
-
-        // Typography adjustments for the split layout
-        const headlineSize = isShirtsVariant ? 32 : 56;
-        const sublineSize = isShirtsVariant ? 14 : 20;
+        if (showShirts) {
+            if (shirtsLayout === 'RIGHT') {
+                textAlign = "LEFT";
+                alignItems = "MIN";
+                headlineSize = 32;
+                sublineSize = 14;
+            } else if (shirtsLayout === 'CENTER') {
+                textAlign = "CENTER";
+                alignItems = "CENTER";
+                headlineSize = 48; // Slightly smaller than standard 56 to fit with shirts
+                sublineSize = 16;
+            } else if (shirtsLayout === 'RIGHT_ALIGNED') {
+                textAlign = "LEFT";
+                alignItems = "MIN";
+                // Slightly smaller headline to accommodate the shirts taking up more horizontal space on the right
+                headlineSize = 32;
+                sublineSize = 14;
+            }
+        }
 
         const children: NodeDefinition[] = [];
         const backgroundChildren: NodeDefinition[] = [];
 
-        // 1. Hero_Base_Group (Equivalent to "Group" in hero.ts)
+        // 1. Hero_Base_Group
         const baseGroupChildren: NodeDefinition[] = [];
 
         if (showVectors) {
@@ -136,7 +152,7 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 2. Hero_Synth_Group_1
+        // 3. Hero_Synth_Group_1
         if (showVectors) {
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Synth_Group_1",
@@ -162,7 +178,7 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 3. Hero_Synth_Group_2
+        // 4. Hero_Synth_Group_2
         if (showVectors) {
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Synth_Group_2",
@@ -188,7 +204,7 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 4. Hero_Stripes_Group
+        // 5. Hero_Stripes_Group
         if (showStripes) {
             backgroundChildren.push({
                 "type": "FRAME", "name": "Hero_Stripes_Group",
@@ -214,30 +230,69 @@ export class banner extends BaseComponent {
             });
         }
 
-        // 5. Hero_Shirts_Group
-        if (showShirts) {
-            // Apply scale 0.55 and position at Right
-            // Background_Layers is offset by x: -653.
-            // We want the shirts to be visually at x approx 320 (right half of 600px width).
-            // Internal X = Visual X - Group Offset = 320 - (-653) = 973.
-            // Let's use 980 for a safe right-side placement.
-            // Visual Y target: approx 50-60 (centered vertically in 300px height).
-            // Group Y Offset is -150.
-            // Internal Y = 60 - (-150) = 210.
-            const scale = 0.55;
-            const targetX = 980;
-            const targetY = 210;
 
-            backgroundChildren.push({
-                "type": "FRAME", "name": "Hero_Shirts_Group",
-                "props": {
-                    "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH", "clipsContent": false,
-                    "layoutMode": "HORIZONTAL", "itemSpacing": -199.24, "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-                    "x": targetX, "y": targetY, "fills": []
-                },
+        // Wrap everything in Background_Layers
+        if (backgroundChildren.length > 0) {
+            children.push({
+                "type": "FRAME",
+                "name": "Background_Layers",
+                "props": { "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH", "strokes": [], "strokeWeight": 0 },
                 "layoutProps": {
-                    "width": 608.4, "height": 308.3,
-                    "parentIsAutoLayout": false,
+                    "parentIsAutoLayout": true, "layoutPositioning": "ABSOLUTE",
+                    "width": 2449, "height": 1822,
+                    "relativeTransform": [[1, 0, -653], [0, 1, -150]]
+                },
+                "children": backgroundChildren
+            });
+        }
+
+        // --- SHIRT GROUP MOVED OUT OF Background_Layers FOR INDEPENDENT CONTROL ---
+        // This resolves the issue of massive background bounds affecting alignment.
+        // We use absolute positioning relative to the banner frame itself.
+        if (showShirts) {
+            let scale = 0.55;
+            let targetX = 325; // Default for RIGHT variant (Visual X)
+            let targetY = 60; // Visual Y
+            let opacity = 1;
+
+            let groupWidth = 608.4;
+            let groupHeight = 308.3;
+
+            if (shirtsLayout === 'CENTER') {
+                scale = 0.4;
+                targetX = 178; // Visual X for center
+                opacity = 0.4;
+                targetY = 80;
+            } else if (shirtsLayout === 'RIGHT_ALIGNED') {
+                scale = 0.5869; // Exact scale derived from user reference
+                targetX = 300.29;
+                targetY = 63.27; // Exact Y from user reference (updated)
+            }
+
+            const groupProps: any = {
+                "visible": true, "opacity": opacity, "blendMode": "PASS_THROUGH", "clipsContent": false,
+                "layoutMode": "HORIZONTAL",
+                "itemSpacing": shirtsLayout === 'RIGHT_ALIGNED' ? -117 : -199.24,
+                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+                "fills": []
+            };
+
+            // Apply blur if requested
+            if (shirtsBlur > 0) {
+                groupProps.effects = [{
+                    "type": "LAYER_BLUR",
+                    "visible": true,
+                    "radius": shirtsBlur
+                }];
+            }
+
+            children.push({
+                "type": "FRAME", "name": "Hero_Shirts_Group_Independent",
+                "props": groupProps,
+                "layoutProps": {
+                    "width": groupWidth, "height": groupHeight,
+                    "parentIsAutoLayout": true,
+                    "layoutPositioning": "ABSOLUTE",
                     "relativeTransform": [[scale, 0, targetX], [0, scale, targetY]]
                 },
                 "children": [
@@ -266,21 +321,6 @@ export class banner extends BaseComponent {
         }
 
 
-        // Wrap everything in Background_Layers
-        if (backgroundChildren.length > 0) {
-            children.push({
-                "type": "FRAME",
-                "name": "Background_Layers",
-                "props": { "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH", "strokes": [], "strokeWeight": 0 },
-                "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "ABSOLUTE",
-                    "width": 2449, "height": 1822,
-                    "relativeTransform": [[1, 0, -653], [0, 1, -150]]
-                },
-                "children": backgroundChildren
-            });
-        }
-
         // Banner Content
         children.push({
             "type": "FRAME", "name": "Banner_Content",
@@ -302,7 +342,12 @@ export class banner extends BaseComponent {
                                 "font": { "family": "Manrope", "style": "ExtraBold" }, "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 } }],
                                 "lineHeight": { "unit": "PERCENT", "value": 110 }
                             },
-                            "layoutProps": { "layoutAlign": "STRETCH", "layoutGrow": 0, "parentIsAutoLayout": true }
+                            "layoutProps": {
+                                // Cap width for centered text so it doesn't span too wide if shirts are behind it
+                                "width": shirtsLayout === 'CENTER' ? 500 : undefined,
+                                "layoutAlign": shirtsLayout === 'CENTER' ? "INHERIT" : "STRETCH",
+                                "layoutGrow": 0, "parentIsAutoLayout": true
+                            }
                         },
                         {
                             "type": "TEXT", "name": "Subline",
