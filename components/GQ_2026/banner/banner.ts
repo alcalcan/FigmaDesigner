@@ -22,6 +22,12 @@ import IMG_hero_img_2_png from "../hero/assets/hero_img_2.png";
 import IMG_hero_img_3_png from "../hero/assets/hero_img_3.png";
 import IMG_hero_img_4_png from "../hero/assets/hero_img_4.png";
 
+// T-Shirt Images from GQ_Banner_Shirts_Aligned (Relocated)
+import IMG_Aligned_Shirt_1 from "./assets/GQ_Banner_Shirts_Aligned_img_1.png";
+import IMG_Aligned_Shirt_2 from "./assets/GQ_Banner_Shirts_Aligned_img_2.png";
+import IMG_Aligned_Shirt_3 from "./assets/GQ_Banner_Shirts_Aligned_img_3.png";
+import IMG_Aligned_Shirt_4 from "./assets/GQ_Banner_Shirts_Aligned_img_4.png";
+
 import { pk_button } from "../pk_button/pk_button";
 
 export class banner extends BaseComponent {
@@ -255,8 +261,16 @@ export class banner extends BaseComponent {
             let targetY = 60; // Visual Y
             let opacity = 1;
 
+            let shirt1 = IMG_hero_img_1_png;
+            let shirt2 = IMG_hero_img_2_png;
+            let shirt3 = IMG_hero_img_3_png;
+            let shirt4 = IMG_hero_img_4_png;
+
             let groupWidth = 608.4;
             let groupHeight = 308.3;
+            // Default shirt dimensions (Large/Hero)
+            let shirtWidth = 301.5;
+            let shirtHeight = 308.3;
 
             if (shirtsLayout === 'CENTER') {
                 scale = 0.4;
@@ -264,15 +278,28 @@ export class banner extends BaseComponent {
                 opacity = 0.4;
                 targetY = 80;
             } else if (shirtsLayout === 'RIGHT_ALIGNED') {
-                scale = 0.5869; // Exact scale derived from user reference
+                scale = 1; // Unscaled structure from cookbook
                 targetX = 300.29;
-                targetY = 63.27; // Exact Y from user reference (updated)
+                targetY = 59.27;
+
+                groupWidth = 357;
+                groupHeight = 180.94;
+
+                // Specific dimensions for aligned shirts
+                shirtWidth = 176.95;
+                shirtHeight = 180.94;
+
+                // Use specific assets for this aligned variant
+                shirt1 = IMG_Aligned_Shirt_1;
+                shirt2 = IMG_Aligned_Shirt_2;
+                shirt3 = IMG_Aligned_Shirt_3;
+                shirt4 = IMG_Aligned_Shirt_4;
             }
 
             const groupProps: any = {
                 "visible": true, "opacity": opacity, "blendMode": "PASS_THROUGH", "clipsContent": false,
                 "layoutMode": "HORIZONTAL",
-                "itemSpacing": shirtsLayout === 'RIGHT_ALIGNED' ? -117 : -199.24,
+                "itemSpacing": shirtsLayout === 'RIGHT_ALIGNED' ? -116.93 : -199.24,
                 "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
                 "fills": []
             };
@@ -298,23 +325,23 @@ export class banner extends BaseComponent {
                 "children": [
                     {
                         "type": "RECTANGLE", "name": "Shirt_1",
-                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": IMG_hero_img_1_png }] },
-                        "layoutProps": { "width": 301.5, "height": 308.3, "parentIsAutoLayout": true }
+                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": shirt1 }] },
+                        "layoutProps": { "width": shirtWidth, "height": shirtHeight, "parentIsAutoLayout": true }
                     },
                     {
                         "type": "RECTANGLE", "name": "Shirt_2",
-                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": IMG_hero_img_2_png }] },
-                        "layoutProps": { "width": 301.5, "height": 308.3, "parentIsAutoLayout": true }
+                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": shirt2 }] },
+                        "layoutProps": { "width": shirtWidth, "height": shirtHeight, "parentIsAutoLayout": true }
                     },
                     {
                         "type": "RECTANGLE", "name": "Shirt_3",
-                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": IMG_hero_img_3_png }] },
-                        "layoutProps": { "width": 301.5, "height": 308.3, "parentIsAutoLayout": true }
+                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": shirt3 }] },
+                        "layoutProps": { "width": shirtWidth, "height": shirtHeight, "parentIsAutoLayout": true }
                     },
                     {
                         "type": "RECTANGLE", "name": "Shirt_4",
-                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": IMG_hero_img_4_png }] },
-                        "layoutProps": { "width": 301.5, "height": 308.3, "parentIsAutoLayout": true }
+                        "props": { "visible": true, "fills": [{ "type": "IMAGE", "scaleMode": "FILL", "scalingFactor": 0.5, "assetRef": shirt4 }] },
+                        "layoutProps": { "width": shirtWidth, "height": shirtHeight, "parentIsAutoLayout": true }
                     }
                 ]
             });

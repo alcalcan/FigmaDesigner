@@ -212,3 +212,34 @@ To create professional-looking components, follow these visual rules:
     > **The Absolute Gotcha**: Figma's API ONLY allows Absolute Positioning for children of nodes with `layoutMode` set to `VERTICAL` or `HORIZONTAL`. If your parent frame has `layoutMode: "NONE"`, setting `layoutPositioning: "ABSOLUTE"` will trigger a crash.
 - **Text Truncation vs. AutoResize**: Be careful! Setting `textTruncation: "ENDING"` on a text node that is supposed to `HUG` its parent can sometimes cause the parent to ignore the text's actual height. If you want a truly dynamic card, remove truncation and let the text wrap naturally with `textAutoResize: "HEIGHT"`.
 - **Fonts**: Always specify the `font` property in `TEXT` nodes if it's not the default Inter.
+
+---
+
+## 11. Lessons Learned: Structural Identity vs. Visual Approximation 🏗️
+
+When replicating complex Figma components, especially those with multiple variants (like "Aligned" vs "Centered"), you might be tempted to just **scale** a shared group to visually match the target.
+
+### The Trap 🪤
+You see a group of shirts that looks 50% smaller in the "Aligned" variant. You write:
+```typescript
+// ❌ Visual Approximation
+relativeTransform: [[0.5, 0, x], [0, 0.5, y]]
+```
+This serves as a "visual guess." It might look close, but it will often drift by a few pixels, and spacing will be a nightmare to debug.
+
+### The Solution: Structural Identity ✅
+Inspect the *actual* structure of the target variant in Figma. Does the designer use a scale of 0.5? or did they resize the group and items explicitly with a scale of 1?
+
+**Always match the Reference Structure:**
+If the target variant has a group width of `357` and item width of `176.95`, use those **exact numbers** with `scale: 1`.
+
+```typescript
+// ✅ Structural Identity
+scale = 1; // Match the source scale
+groupWidth = 357; // Match the source dimensions
+shirtWidth = 176.95; // Match the source children
+```
+
+**Why?**
+1.  **Pixel Perfection**: You stop guessing scaling factors (is it 0.55? 0.5869?) and use integer/exact coordinates.
+2.  **Asset Specificity**: Sometimes a specific layout requires specific assets (e.g., pre-cropped images). Don't be afraid to import layout-specific assets to ensure the component behaves exactly as the design intended.
