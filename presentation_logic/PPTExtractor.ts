@@ -23,6 +23,7 @@ export interface PPTSlide {
 export class PPTExtractor {
 
     static async extract(slideNode: FrameNode): Promise<PPTSlide> {
+        console.log(`[PPTExtractor] Extracting slide: ${slideNode.name} (Type: ${slideNode.type}, Visible: ${slideNode.visible})`);
         const slideData: PPTSlide = {
             name: slideNode.name,
             elements: []
@@ -36,13 +37,25 @@ export class PPTExtractor {
             }
         }
 
-        await this.traverse(slideNode, slideData.elements, slideNode.x, slideNode.y);
+        // Use absolute coordinates for the root reference
+        const rootX = slideNode.absoluteTransform[0][2];
+        const rootY = slideNode.absoluteTransform[1][2];
+
+        console.log(`[PPTExtractor] Slide Absolute Root: (${rootX}, ${rootY})`);
+
+        await this.traverse(slideNode, slideData.elements, rootX, rootY);
+
+        console.log(`[PPTExtractor] Extracted ${slideData.elements.length} elements from ${slideNode.name}`);
 
         return slideData;
     }
 
     private static async traverse(node: SceneNode, elements: PPTElement[], rootX: number, rootY: number) {
-        if (!node.visible) return;
+        // console.log(`[PPTExtractor] Traversing: ${node.name} (Type: ${node.type})`);
+        if (!node.visible) {
+            // console.log(`[PPTExtractor] Skipping hidden node: ${node.name}`);
+            return;
+        }
 
         // Calculate relative position to the slide info
         // node.x/y are relative to parent. We need absolute-ish position relative to Slide Root.
@@ -65,6 +78,14 @@ export class PPTExtractor {
         const w = node.width;
         const h = node.height;
 
+        // Helper to check for visible fills
+        const hasVisibleFills = (node: GeometryMixin) => {
+            if (node.fills === figma.mixed) return true;
+            return Array.isArray(node.fills) && node.fills.length > 0 && node.fills.some(f => f.visible !== false);
+        };
+
+        // --- HANDLERS ---
+
         if (node.type === 'TEXT') {
             await figma.loadFontAsync(node.fontName as FontName); // Ensure font is loaded to read details if needed? 
             // Actually reading props doesn't always need load, but safer.
@@ -83,32 +104,44 @@ export class PPTExtractor {
                 align: node.textAlignHorizontal.toLowerCase() as any,
                 opacity: node.opacity
             });
+            console.log(`[PPTExtractor] Added Text: "${node.characters}" at (${x},${y})`);
         }
 
-        else if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE') {
-            // Treat as shape or image depending on fill
-            const fills = node.fills;
-            if (fills !== figma.mixed && Array.isArray(fills) && fills.length > 0) {
-                const fill = fills[0];
-                if (fill.type === 'IMAGE') {
-                    // Export as image
-                    try {
-                        const bytes = await node.exportAsync({ format: 'PNG', constraint: { type: 'SCALE', value: 2 } });
-                        const base64 = figma.base64Encode(bytes);
-                        elements.push({
-                            type: 'image',
-                            x, y, w, h,
-                            fill: base64, // simplified field reuse
-                            opacity: node.opacity
-                        });
-                    } catch (e) { console.warn("Failed to export image node", e) }
-                } else if (fill.type === 'SOLID') {
-                    elements.push({
-                        type: 'shape',
-                        x, y, w, h,
-                        fill: this.rgbToHex(fill.color),
-                        opacity: node.opacity
-                    });
+        else if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME' || node.type === 'INSTANCE' || node.type === 'COMPONENT') {
+            // Check if this node has fills to render (backgrounds)
+            if (hasVisibleFills(node as GeometryMixin)) {
+                // If it's a Frame/Instance/Component, we treat it as a shape for its background
+                // but we MUST continue to traverse its children later.
+
+                const fills = (node as GeometryMixin).fills;
+                if (fills !== figma.mixed && Array.isArray(fills) && fills.length > 0) {
+                    // Find the first visible fill
+                    const fill = fills.find(f => f.visible !== false);
+
+                    if (fill) {
+                        if (fill.type === 'IMAGE') {
+                            // Export as image
+                            try {
+                                const bytes = await node.exportAsync({ format: 'PNG', constraint: { type: 'SCALE', value: 2 } });
+                                const base64 = figma.base64Encode(bytes);
+                                elements.push({
+                                    type: 'image',
+                                    x, y, w, h,
+                                    fill: base64,
+                                    opacity: node.opacity
+                                });
+                                console.log(`[PPTExtractor] Added Image (from ${node.type}): ${node.name}`);
+                            } catch (e) { console.warn(`Failed to export image node ${node.name}`, e) }
+                        } else if (fill.type === 'SOLID') {
+                            elements.push({
+                                type: 'shape',
+                                x, y, w, h,
+                                fill: this.rgbToHex(fill.color),
+                                opacity: node.opacity
+                            });
+                            console.log(`[PPTExtractor] Added Shape (from ${node.type}): ${node.name}`);
+                        }
+                    }
                 }
             }
         }
@@ -124,11 +157,13 @@ export class PPTExtractor {
                     fill: base64,
                     opacity: node.opacity
                 });
+                console.log(`[PPTExtractor] Added Vector: ${node.name}`);
             } catch (e) { console.warn("Failed to export vector node", e) }
         }
 
-        // Recursion
+        // Recursion for Containers
         if ("children" in node) {
+            // For Groups, Frames, Instances, Components, etc.
             for (const child of (node as ChildrenMixin).children) {
                 // If it's a Component or Instance, we still verify visibility, which is done at start of traverse
                 await this.traverse(child, elements, rootX, rootY);

@@ -466,7 +466,24 @@
             btn.textContent = "Selecting Path...";
 
             try {
-                const defaultName = payload.length === 1 ? payload[0].presentationName : `Export_${new Date().getTime()}.pptx`;
+                // DEBUG: Check payload
+                console.log("[UI] Export Payload:", payload);
+                console.log("[UI] Payload Length:", payload.length);
+                if (payload.length > 0) console.log("[UI] First Name:", payload[0].presentationName);
+
+                const pluginMessage = event.data.pluginMessage;
+                // Use first presentation name if available, otherwise docName
+                let defaultName = (payload && payload.length > 0 && payload[0].presentationName)
+                    ? payload[0].presentationName
+                    : (pluginMessage.docName || "Presentation");
+
+                // Keep underscores as per user request ("name of the .ts file")
+                // defaultName = defaultName.replace(/_/g, ' ');
+
+                // Sanitization (allow underscores, hyphens, alphanumeric)
+                defaultName = defaultName.replace(/[^\w\s-\.]/g, ''); // Added dot for safety but usually extension added later
+
+                if (!defaultName.endsWith('.pptx')) defaultName += '.pptx';
 
                 // 1. Ask Bridge to open System Save Dialog
                 const pathResponse = await fetch('http://127.0.0.1:3001/select-save-path', {
