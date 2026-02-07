@@ -205,6 +205,7 @@ export { search_bar as search_bar_UEFA_Academy_online } from "./UEFA_Academy_onl
 export { Secondary_Navigation } from "./Alex_CookBook/Secondary_Navigation/Secondary_Navigation";
 export { sidebar_filtering } from "./Alex_CookBook/sidebar_filtering/sidebar_filtering";
 export { simple_info } from "./UEFA_Academy_online/simple_info/simple_info";
+export { Slide_Title } from "../slides/Slide_Title/Slide_Title";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
 export { SponsorBanner } from "./UEFA_Booking_Euro28/SponsorBanner/SponsorBanner";
 export { SponsorStrip } from "./UEFA_Booking_Euro28/SponsorStrip/SponsorStrip";

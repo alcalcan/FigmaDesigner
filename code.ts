@@ -10,6 +10,16 @@ console.log(`[Plugin] Starting code.ts | Time: ${Date.now()}`);
 console.log("[Plugin] Calling figma.showUI");
 figma.showUI(__html__, { width: 450, height: 800 });
 
+// Helper to log to UI (since we can't see Figma console)
+const logToUI = (msg: string) => {
+  console.log(msg);
+  if (figma.ui) {
+    figma.ui.postMessage({ type: 'log', message: msg });
+  }
+};
+
+logToUI(`[Plugin] Registry Keys: ${Object.keys(ComponentRegistry).join(", ")}`);
+
 // --- SHARED CAPTURE LOGIC ---
 interface AssetRecord {
   fileName: string;
@@ -663,6 +673,8 @@ figma.ui.onmessage = async (msg) => {
     if (msg.type === 'generate-component') {
       const name = msg.componentName;
       const projectName = msg.projectName; // Optional
+
+      logToUI(`[Plugin] Requested Component: ${name}, Project: ${projectName}`);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let ComponentClass = (ComponentRegistry as any)[name];
