@@ -697,18 +697,16 @@ figma.ui.onmessage = async (msg) => {
         const { x, y } = figma.viewport.center;
 
         // Default props
-        // We pass extra props 'label'/'primary' in case it's a Button.
-        // Other components will ignore them.
         const props = {
           x,
           y,
-          label: "Click Me",
+          name: projectName ? `${projectName}_presentation` : name,
+          label: "Insert",
           primary: true,
-          name: "John Doe",
-          handle: "@johndoe",
-          role: "Software Engineer",
-          bio: "Designing the future of UI with AI-powered tools.",
-          followerCount: "1,234"
+          handle: "@uefa",
+          role: "UEFA Presentation",
+          bio: "Auto-generated presentation container.",
+          followerCount: "0"
         };
 
         let result: SceneNode;

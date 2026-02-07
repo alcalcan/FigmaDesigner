@@ -233,6 +233,7 @@ export { UEFA_Academy_online_CourseDetails } from "../pages/UEFA_Academy_online/
 export { UEFA_Academy_online_Notifications } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Notifications";
 export { UEFA_Academy_online_Summary } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Summary";
 export { uefa_cards_4x } from "./Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
+export { UEFA_Presentation } from "../presentations/UEFA_template/UEFA_Presentation";
 export { UserObservationStickyNote } from "./Miscellaneous/UserObservationStickyNote/UserObservationStickyNote";
 export { VAR_progress } from "./UEFA_icons/VAR_progress/VAR_progress";
 export { VAR_resolution } from "./UEFA_icons/VAR_resolution/VAR_resolution";

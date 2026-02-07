@@ -22,6 +22,10 @@ A standard title slide.
 Standard slide with a title and a large body text area.
 - **Usage**: General content, descriptions.
 
+## Presentations
+
+A **Presentation** is a meta-container (transparent frame) with horizontal layout and generous padding, used to organize and display a sequence of slides. Presentation components are found in the `/presentations` root directory.
+
 ### Slide_Bullets
 Standard slide with a title and a bulleted list.
 - **Usage**: Lists, key takeaways.

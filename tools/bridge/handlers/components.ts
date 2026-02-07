@@ -7,9 +7,11 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
         const componentsDir = path.join(process.cwd(), 'components');
         const pagesDir = path.join(process.cwd(), 'pages');
         const slidesDir = path.join(process.cwd(), 'slides');
+        const presentationsDir = path.join(process.cwd(), 'presentations');
         const components: string[] = [];
         const pages: string[] = [];
         const slides: string[] = [];
+        const presentations: string[] = [];
 
         const walk = (dir: string, baseDir: string, list: string[]) => {
             if (!fs.existsSync(dir)) return;
@@ -36,9 +38,10 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
         walk(componentsDir, componentsDir, components);
         walk(pagesDir, pagesDir, pages);
         walk(slidesDir, slidesDir, slides);
+        walk(presentationsDir, presentationsDir, presentations);
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ components, pages, slides }));
+        res.end(JSON.stringify({ components, pages, slides, presentations }));
     } catch (e) {
         console.error("Error in /list-components:", e);
         res.writeHead(500);
