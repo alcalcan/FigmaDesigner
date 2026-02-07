@@ -69,8 +69,8 @@ export function registerComponents() {
             importPath = './' + importPath;
         }
 
-        if (exp.className === 'Slide_Title') {
-            console.log(`[DEBUG] Generatng export for Slide_Title. Path: ${importPath}`);
+        if (exp.className.startsWith('Slide_')) {
+            console.log(`[DEBUG] Adding Slide export: ${exp.className} from ${importPath}`);
         }
 
         if (exp.alias) {
@@ -99,6 +99,12 @@ export function registerComponents() {
 
     // Make file writable (removed read-only flag as it caused EACCES errors in build tools)
     fs.chmodSync(indexFile, 0o644);
+
+    const slideCount = (content.match(/Slide_/g) || []).length;
+    console.log(`[DEBUG] Final content length: ${content.length}`);
+    console.log(`[DEBUG] Slide exports found in content: ${slideCount}`);
+    console.log(`[DEBUG] First 100 chars: ${content.substring(0, 100)}`);
+    console.log(`[DEBUG] Last 100 chars: ${content.substring(content.length - 100)}`);
 
     console.log(`✅ Registered ${sortedExports.length} components in components/index.ts`);
 }
@@ -130,6 +136,7 @@ function processFile(filePath: string, project: string, exports: ComponentExport
 
     if (classMatch) {
         const className = classMatch[1];
+        console.log(`[DEBUG] Found class ${className} in ${filePath}`);
 
         const exportData: ComponentExport = {
             className,
@@ -148,13 +155,12 @@ function resolveCollisions(seenClasses: Map<string, ComponentExport[]>): Compone
     const finalExports: ComponentExport[] = [];
 
     for (const [className, matches] of seenClasses.entries()) {
-        if (className === 'Slide_Title') {
-            console.log(`[DEBUG] resolveCollisions found Slide_Title with ${matches.length} matches.`);
-        }
         if (matches.length === 1) {
             // Unique
+            console.log(`[DEBUG] resolveCollisions: adding unique class ${className}`);
             finalExports.push({ ...matches[0] });
         } else {
+            console.log(`[DEBUG] resolveCollisions: resolving collision for ${className} (${matches.length} matches)`);
             for (const match of matches) {
                 if (match.project) {
                     match.alias = `${className}_${match.project}`;

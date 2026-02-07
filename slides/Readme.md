@@ -18,6 +18,26 @@ A standard title slide.
     - **Title**: The main title of the presentation.
     - **Background**: Full screen image (placeholder currently).
 
+### Slide_Body
+Standard slide with a title and a large body text area.
+- **Usage**: General content, descriptions.
+
+### Slide_Bullets
+Standard slide with a title and a bulleted list.
+- **Usage**: Lists, key takeaways.
+
+### Slide_Body_Bullets
+Slide with title, introductory body text, and a bulleted list.
+- **Usage**: Detailed explanations followed by points.
+
+### Slide_2Body
+Two-column slide with a central divider.
+- **Usage**: Comparison, parallel points.
+
+### Slide_3Body
+Three-column slide for dense information layout.
+- **Usage**: Summary tables, 3-way comparisons.
+
 ## Development
 
 To add new slides:
