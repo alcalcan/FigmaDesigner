@@ -1,6 +1,6 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../components/BaseComponent";
-import { Main_Navigation_28 } from "../../components/Alex_CookBook/Main_Navigation_28/Main_Navigation_28";
-import { SponsorBanner } from "../../components/Alex_CookBook/SponsorBanner/SponsorBanner";
+import { Main_Navigation_28 } from "../../components/UEFA_Booking_Euro28/Main_Navigation_28/Main_Navigation_28";
+import { SponsorBanner } from "../../components/UEFA_Booking_Euro28/SponsorBanner/SponsorBanner";
 
 /**
  * Header_Sponsor_Banner_Demo

@@ -1,5 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../components/BaseComponent";
-import { SponsorStrip, SponsorStripProps } from "../../components/Alex_CookBook/SponsorStrip/SponsorStrip";
+import { SponsorStrip, SponsorStripProps } from "../../components/UEFA_Booking_Euro28/SponsorStrip/SponsorStrip";
 
 interface VariantDefinition {
     title: string;

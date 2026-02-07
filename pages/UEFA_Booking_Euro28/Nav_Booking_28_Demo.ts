@@ -1,5 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../components/BaseComponent";
-import { Main_Navigation_28_Booking, Main_Navigation_28_BookingProps } from "../../components/Alex_CookBook/Main_Navigation_28_Booking/Main_Navigation_28_Booking";
+import { Main_Navigation_28_Booking, Main_Navigation_28_BookingProps } from "../../components/UEFA_Booking_Euro28/Main_Navigation_28_Booking/Main_Navigation_28_Booking";
 import { UserObservationStickyNote } from "../../components/Miscellaneous/UserObservationStickyNote/UserObservationStickyNote";
 
 interface VariantDefinition {

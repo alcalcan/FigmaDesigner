@@ -1,3 +1,4 @@
+import { Placeholder } from "../../components/Placeholder";
 
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 
@@ -18,7 +19,6 @@ import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
 import { uefa_cards_4x } from "../../components/Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
 import { social_profile_card } from "../../components/Alex_CookBook/social_profile_card/social_profile_card";
-import { BookingLogo_color } from "../../components/Alex_CookBook/BookingLogo_color/BookingLogo_color";
 
 export class RadioSearchDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -60,7 +60,7 @@ export class RadioSearchDemo extends BaseComponent {
             logoRow.fills = [{ type: 'SOLID', color: { r: 0, g: 0.067, b: 0.173 } }]; // Very dark blue for logo contrast
             logoRow.cornerRadius = 8;
 
-            const logo = new BookingLogo_color();
+            const logo = new Placeholder("BookingLogo_color");
             logoRow.appendChild(await logo.create({ variant: 'color' }));
             logoRow.appendChild(await logo.create({ variant: 'white' }));
             container.appendChild(logoRow);
