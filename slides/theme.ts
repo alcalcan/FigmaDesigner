@@ -61,6 +61,20 @@ export const Layout = {
     // Simple Slide
     MARGIN_RIGHT_SIMPLE: emuToPx(691201),
 
+    // Chapter Numbering
+    CHAPTER_NUMBER: {
+        RECT_X: emuToPx(-223520),
+        RECT_Y: emuToPx(1385380),
+        RECT_WIDTH: emuToPx(796491),
+        RECT_HEIGHT: emuToPx(316725),
+        RECT_CORNER_RADIUS: 4, // "Rounded Corners 4" from Python
+
+        TEXT_X: emuToPx(47445),
+        TEXT_Y: emuToPx(1397692),
+        TEXT_WIDTH: emuToPx(430213),
+        TEXT_HEIGHT: emuToPx(292100),
+    },
+
     // Title Slide Specifics (from title_slide.py)
     TITLE_SLIDE: {
         TITLE_LEFT: emuToPx(691202),

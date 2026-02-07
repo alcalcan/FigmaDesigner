@@ -1,5 +1,6 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 import { Colors, Fonts, Layout } from "../theme";
+import { addChapterNumber } from "../utils";
 
 export class Slide_Body extends BaseComponent {
     async create(props: ComponentProps): Promise<FrameNode> {
@@ -13,8 +14,12 @@ export class Slide_Body extends BaseComponent {
         // Load Fonts
         await Promise.all([
             figma.loadFontAsync(Fonts.PRIMARY),
-            figma.loadFontAsync(Fonts.BOLD)
+            figma.loadFontAsync(Fonts.BOLD),
+            figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
+
+        // Chapter Number
+        addChapterNumber(slide, props.number || "01");
 
         // Title
         const titleText = figma.createText();

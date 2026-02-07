@@ -1,5 +1,6 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 import { Colors, Fonts, Layout } from "../theme";
+import { addChapterNumber } from "../utils";
 
 export class Slide_2Body extends BaseComponent {
     async create(props: ComponentProps): Promise<FrameNode> {
@@ -13,8 +14,12 @@ export class Slide_2Body extends BaseComponent {
         // Load Fonts
         await Promise.all([
             figma.loadFontAsync(Fonts.PRIMARY),
-            figma.loadFontAsync(Fonts.BOLD)
+            figma.loadFontAsync(Fonts.BOLD),
+            figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
+
+        // Chapter Number
+        addChapterNumber(slide, props.number || "01");
 
         const fullContentWidth = Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - (Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT);
 
@@ -31,7 +36,6 @@ export class Slide_2Body extends BaseComponent {
         titleText.resize(fullContentWidth, titleText.height);
 
         // Calculate Column Layouts
-        // Divider position is relative to slide
         const dividerX = Layout.DIVIDER_X;
         const leftColX = Layout.MARGIN_LEFT;
         const leftColWidth = dividerX - leftColX - Layout.MARGIN_RIGHT_DIVIDED;
