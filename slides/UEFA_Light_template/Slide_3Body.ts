@@ -18,7 +18,17 @@ export class Slide_3Body extends BaseComponent {
             figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
 
-        // Title
+        // 1. Auto Layout Setup for Slide
+        slide.layoutMode = "VERTICAL";
+        slide.primaryAxisSizingMode = "FIXED";
+        slide.counterAxisSizingMode = "FIXED";
+        slide.paddingLeft = Layout.MARGIN_LEFT;
+        slide.paddingRight = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
+        slide.paddingTop = Layout.MARGIN_TOP_TITLE;
+        slide.paddingBottom = Layout.MARGIN_FOOTER;
+        slide.itemSpacing = Layout.CONTENT_GAP;
+
+        // 2. Title
         const titleText = figma.createText();
         slide.appendChild(titleText);
         titleText.name = "Title";
@@ -27,37 +37,41 @@ export class Slide_3Body extends BaseComponent {
         titleText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
         titleText.characters = props.title || "Slide Title";
         titleText.textAlignHorizontal = "LEFT";
-        titleText.textAlignVertical = "TOP";
+        titleText.layoutAlign = "STRETCH";
+        titleText.textAutoResize = "HEIGHT";
 
-        titleText.x = Layout.MARGIN_LEFT;
-        titleText.y = Layout.MARGIN_TOP_TITLE;
-        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - Layout.MARGIN_RIGHT_SIMPLE, Fonts.SIZE_TITLE * 1.2);
+        // Chapter Number (Absolute)
+        const chapterInfo = addChapterNumber(slide, props.number || "01");
+        const titleCenterY = slide.paddingTop + (Fonts.SIZE_TITLE * 1.2 / 2);
+        chapterInfo.ribbon.y = titleCenterY - (Layout.CHAPTER_NUMBER.RECT_HEIGHT / 2);
+        chapterInfo.text.y = titleCenterY - (Layout.CHAPTER_NUMBER.TEXT_HEIGHT / 2);
 
-        // Chapter Number (Middle-aligned with title)
-        const titleCenterY = titleText.y + (titleText.height / 2);
-        addChapterNumber(slide, props.number || "01", titleCenterY);
+        // 3. Content Frame (Full Width Interior)
+        const contentFrame = figma.createFrame();
+        contentFrame.name = "Content";
+        contentFrame.fills = [];
+        contentFrame.layoutMode = "HORIZONTAL";
 
-        // Content Position
-        const bodyY = titleText.y + titleText.height + Layout.CONTENT_GAP;
+        // FIX: Set primaryAxisSizingMode to FIXED to allow STRETCH width to work correctly
+        contentFrame.layoutAlign = "STRETCH";
+        contentFrame.primaryAxisSizingMode = "FIXED";
 
-        const fullContentWidth = Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - (Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT);
-
-        // Split into 3 equal columns
-        const totalGap = Layout.CONTENT_GAP * 2;
-        const colWidth = (fullContentWidth - totalGap) / 3;
+        contentFrame.layoutGrow = 1;
+        contentFrame.itemSpacing = Layout.CONTENT_GAP;
+        slide.appendChild(contentFrame);
 
         for (let i = 0; i < 3; i++) {
             const col = figma.createText();
-            slide.appendChild(col);
+            contentFrame.appendChild(col);
             col.name = `Col ${i + 1}`;
             col.fontName = Fonts.PRIMARY;
             col.fontSize = Fonts.SIZE_BODY;
             col.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
             col.characters = (props as any)[`body${i + 1}`] || `Column ${i + 1} content sample.`;
 
-            col.x = Layout.MARGIN_LEFT + (i * (colWidth + Layout.CONTENT_GAP));
-            col.y = bodyY;
-            col.resize(colWidth, col.height);
+            col.layoutGrow = 1;
+            col.layoutAlign = "STRETCH";
+            col.textAutoResize = "HEIGHT";
         }
 
         return slide;

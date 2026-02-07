@@ -18,7 +18,17 @@ export class Slide_Bullets extends BaseComponent {
             figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
 
-        // Title
+        // 1. Auto Layout Setup for Slide
+        slide.layoutMode = "VERTICAL";
+        slide.primaryAxisSizingMode = "FIXED";
+        slide.counterAxisSizingMode = "FIXED";
+        slide.paddingLeft = Layout.MARGIN_LEFT;
+        slide.paddingRight = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
+        slide.paddingTop = Layout.MARGIN_TOP_TITLE;
+        slide.paddingBottom = Layout.MARGIN_FOOTER;
+        slide.itemSpacing = Layout.CONTENT_GAP;
+
+        // 2. Title
         const titleText = figma.createText();
         slide.appendChild(titleText);
         titleText.name = "Title";
@@ -26,35 +36,40 @@ export class Slide_Bullets extends BaseComponent {
         titleText.fontSize = Fonts.SIZE_TITLE;
         titleText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
         titleText.characters = props.title || "Slide Title";
-        titleText.textAlignHorizontal = "LEFT";
-        titleText.textAlignVertical = "TOP";
+        titleText.layoutAlign = "STRETCH";
+        titleText.textAutoResize = "HEIGHT";
 
-        titleText.x = Layout.MARGIN_LEFT;
-        titleText.y = Layout.MARGIN_TOP_TITLE;
-        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - Layout.MARGIN_RIGHT_SIMPLE, Fonts.SIZE_TITLE * 1.2);
+        // Chapter Number (Absolute)
+        const chapterInfo = addChapterNumber(slide, props.number || "01");
+        const titleCenterY = slide.paddingTop + (Fonts.SIZE_TITLE * 1.2 / 2);
+        chapterInfo.ribbon.y = titleCenterY - (Layout.CHAPTER_NUMBER.RECT_HEIGHT / 2);
+        chapterInfo.text.y = titleCenterY - (Layout.CHAPTER_NUMBER.TEXT_HEIGHT / 2);
 
-        // Chapter Number (Middle-aligned with title)
-        const titleCenterY = titleText.y + (titleText.height / 2);
-        addChapterNumber(slide, props.number || "01", titleCenterY);
+        // 3. Content Frame (Full Width Interior)
+        const contentFrame = figma.createFrame();
+        contentFrame.name = "Content";
+        contentFrame.fills = [];
+        contentFrame.layoutMode = "VERTICAL";
+
+        // FIX: Set counterAxisSizingMode to FIXED for full interior width
+        contentFrame.layoutAlign = "STRETCH";
+        contentFrame.counterAxisSizingMode = "FIXED";
+
+        contentFrame.layoutGrow = 1;
+        contentFrame.itemSpacing = Layout.CONTENT_GAP / 2;
+        slide.appendChild(contentFrame);
 
         // Bullets
         const bulletsText = figma.createText();
-        slide.appendChild(bulletsText);
+        contentFrame.appendChild(bulletsText);
         bulletsText.name = "Bullets";
         bulletsText.fontName = Fonts.PRIMARY;
         bulletsText.fontSize = Fonts.SIZE_BODY;
         bulletsText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
-
-        // Handle input as array or string
-        const bulletPoints = Array.isArray(props.bullets) ? props.bullets : ["Bullet 1", "Bullet 2", "Bullet 3"];
+        const bulletPoints = Array.isArray(props.bullets) ? props.bullets : ["Bullet 1", "Bullet 2"];
         bulletsText.characters = bulletPoints.map(b => `•  ${b}`).join('\n');
-
-        // Layout Bullets
-        bulletsText.x = Layout.MARGIN_LEFT;
-        bulletsText.y = titleText.y + titleText.height + Layout.CONTENT_GAP;
-
-        const rightMargin = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
-        bulletsText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - rightMargin, bulletsText.height);
+        bulletsText.layoutAlign = "STRETCH";
+        bulletsText.textAutoResize = "HEIGHT";
 
         return slide;
     }

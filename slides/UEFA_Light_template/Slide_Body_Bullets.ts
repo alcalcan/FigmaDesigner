@@ -18,10 +18,17 @@ export class Slide_Body_Bullets extends BaseComponent {
             figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
 
-        const rightMargin = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
-        const contentWidth = Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - rightMargin;
+        // 1. Auto Layout Setup for Slide
+        slide.layoutMode = "VERTICAL";
+        slide.primaryAxisSizingMode = "FIXED";
+        slide.counterAxisSizingMode = "FIXED";
+        slide.paddingLeft = Layout.MARGIN_LEFT;
+        slide.paddingRight = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
+        slide.paddingTop = Layout.MARGIN_TOP_TITLE;
+        slide.paddingBottom = Layout.MARGIN_FOOTER;
+        slide.itemSpacing = Layout.CONTENT_GAP;
 
-        // Title
+        // 2. Title
         const titleText = figma.createText();
         slide.appendChild(titleText);
         titleText.name = "Title";
@@ -29,41 +36,51 @@ export class Slide_Body_Bullets extends BaseComponent {
         titleText.fontSize = Fonts.SIZE_TITLE;
         titleText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
         titleText.characters = props.title || "Slide Title";
-        titleText.textAlignHorizontal = "LEFT";
-        titleText.textAlignVertical = "TOP";
+        titleText.layoutAlign = "STRETCH";
+        titleText.textAutoResize = "HEIGHT";
 
-        titleText.x = Layout.MARGIN_LEFT;
-        titleText.y = Layout.MARGIN_TOP_TITLE;
-        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - Layout.MARGIN_RIGHT_SIMPLE, Fonts.SIZE_TITLE * 1.2);
+        // Chapter Number (Absolute)
+        const chapterInfo = addChapterNumber(slide, props.number || "01");
+        const titleCenterY = slide.paddingTop + (Fonts.SIZE_TITLE * 1.2 / 2);
+        chapterInfo.ribbon.y = titleCenterY - (Layout.CHAPTER_NUMBER.RECT_HEIGHT / 2);
+        chapterInfo.text.y = titleCenterY - (Layout.CHAPTER_NUMBER.TEXT_HEIGHT / 2);
 
-        // Chapter Number (Middle-aligned with title)
-        const titleCenterY = titleText.y + (titleText.height / 2);
-        addChapterNumber(slide, props.number || "01", titleCenterY);
+        // 3. Content Frame (Full Width Interior)
+        const contentFrame = figma.createFrame();
+        contentFrame.name = "Content";
+        contentFrame.fills = [];
+        contentFrame.layoutMode = "VERTICAL";
+
+        // FIX: Set counterAxisSizingMode to FIXED for full interior width
+        contentFrame.layoutAlign = "STRETCH";
+        contentFrame.counterAxisSizingMode = "FIXED";
+
+        contentFrame.layoutGrow = 1;
+        contentFrame.itemSpacing = Layout.CONTENT_GAP / 2;
+        slide.appendChild(contentFrame);
 
         // Body
         const bodyText = figma.createText();
-        slide.appendChild(bodyText);
+        contentFrame.appendChild(bodyText);
         bodyText.name = "Body";
         bodyText.fontName = Fonts.PRIMARY;
         bodyText.fontSize = Fonts.SIZE_BODY;
         bodyText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
-        bodyText.characters = props.body || "Introductory body text before bullets.";
-        bodyText.x = Layout.MARGIN_LEFT;
-        bodyText.y = titleText.y + titleText.height + Layout.CONTENT_GAP;
-        bodyText.resize(contentWidth, bodyText.height);
+        bodyText.characters = props.body || "Introductory body text.";
+        bodyText.layoutAlign = "STRETCH";
+        bodyText.textAutoResize = "HEIGHT";
 
         // Bullets
         const bulletsText = figma.createText();
-        slide.appendChild(bulletsText);
+        contentFrame.appendChild(bulletsText);
         bulletsText.name = "Bullets";
         bulletsText.fontName = Fonts.PRIMARY;
         bulletsText.fontSize = Fonts.SIZE_BODY;
         bulletsText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
         const bulletPoints = Array.isArray(props.bullets) ? props.bullets : ["Bullet Detail 1", "Bullet Detail 2"];
         bulletsText.characters = bulletPoints.map(b => `•  ${b}`).join('\n');
-        bulletsText.x = Layout.MARGIN_LEFT;
-        bulletsText.y = bodyText.y + bodyText.height + (Layout.CONTENT_GAP / 2);
-        bulletsText.resize(contentWidth, bulletsText.height);
+        bulletsText.layoutAlign = "STRETCH";
+        bulletsText.textAutoResize = "HEIGHT";
 
         return slide;
     }

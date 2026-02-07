@@ -5,6 +5,10 @@ export function addChapterNumber(slide: FrameNode, number: string, centerY?: num
     const ribbon = figma.createRectangle();
     slide.appendChild(ribbon);
     ribbon.name = "Chapter Ribbon";
+
+    // Set absolute positioning before setting x/y to ensure they are relative to the frame origin (0,0)
+    ribbon.layoutPositioning = "ABSOLUTE";
+
     ribbon.resize(Layout.CHAPTER_NUMBER.RECT_WIDTH, Layout.CHAPTER_NUMBER.RECT_HEIGHT);
     ribbon.x = Layout.CHAPTER_NUMBER.RECT_X;
 
@@ -22,13 +26,16 @@ export function addChapterNumber(slide: FrameNode, number: string, centerY?: num
     const text = figma.createText();
     slide.appendChild(text);
     text.name = "Chapter Number";
+
+    // Set absolute positioning before setting x/y
+    text.layoutPositioning = "ABSOLUTE";
+
     text.fontName = Fonts.EXTRA_BOLD;
     text.fontSize = Fonts.SIZE_NUMBER;
     text.fills = [{ type: 'SOLID', color: Colors.WHITE }];
     text.characters = number;
     text.textAlignHorizontal = "RIGHT";
     text.textAlignVertical = "CENTER";
-
     text.x = Layout.CHAPTER_NUMBER.TEXT_X;
 
     // Middle-align relative to ribbon
