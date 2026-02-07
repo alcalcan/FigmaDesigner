@@ -4,7 +4,7 @@ import * as path from 'path';
 export function registerComponents() {
     console.log("🚀 Running Component Registration Service...");
 
-    const rootDir = process.cwd();
+    const rootDir = path.resolve(__dirname, '../../..');
     const componentsDir = path.join(rootDir, 'components');
     const pagesDir = path.join(rootDir, 'pages');
     const slidesDir = path.join(rootDir, 'slides');
@@ -102,13 +102,8 @@ export function registerComponents() {
     // Make file writable (removed read-only flag as it caused EACCES errors in build tools)
     fs.chmodSync(indexFile, 0o644);
 
-    const slideCount = (content.match(/Slide_/g) || []).length;
-    console.log(`[DEBUG] Final content length: ${content.length}`);
-    console.log(`[DEBUG] Slide exports found in content: ${slideCount}`);
-    console.log(`[DEBUG] First 100 chars: ${content.substring(0, 100)}`);
-    console.log(`[DEBUG] Last 100 chars: ${content.substring(content.length - 100)}`);
-
     console.log(`✅ Registered ${sortedExports.length} components in components/index.ts`);
+    console.log(`[DEBUG] Final registry includes: ${sortedExports.map(e => e.alias || e.className).join(', ')}`);
 }
 
 interface ComponentExport {

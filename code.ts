@@ -674,20 +674,23 @@ figma.ui.onmessage = async (msg) => {
       const name = msg.componentName;
       const projectName = msg.projectName; // Optional
 
-      logToUI(`[Plugin] Requested Component: ${name}, Project: ${projectName}`);
+      logToUI(`[Plugin] Requested Component: '${name}', Project: '${projectName}'`);
+      logToUI(`[Plugin] Current Registry Keys: ${Object.keys(ComponentRegistry).join(", ")}`);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let ComponentClass = (ComponentRegistry as any)[name];
+      logToUI(`[Plugin] Initial lookup for '${name}': ${ComponentClass ? 'FOUND' : 'NOT FOUND'}`);
 
       if (!ComponentClass && projectName) {
         // Try aliased name: e.g. chip_expand_Alex_CookBook
         const safeProjectName = sanitizeName(projectName);
         const aliasedName = `${name}_${safeProjectName}`;
         ComponentClass = (ComponentRegistry as any)[aliasedName];
+        logToUI(`[Plugin] Alias lookup for '${aliasedName}': ${ComponentClass ? 'FOUND' : 'NOT FOUND'}`);
       }
 
       if (!ComponentClass) {
-        figma.notify(`Component ${name} not found`, { error: true });
+        figma.notify(`Component ${name} not found in registry.`, { error: true });
         return;
       }
 
