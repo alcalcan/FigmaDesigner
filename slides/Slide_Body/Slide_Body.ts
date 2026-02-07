@@ -9,7 +9,7 @@ export class Slide_Body extends BaseComponent {
         slide.resize(Layout.SLIDE_WIDTH, Layout.SLIDE_HEIGHT);
         slide.x = props.x || 0;
         slide.y = props.y || 0;
-        slide.fills = [{ type: 'SOLID', color: Colors.BACKGROUND }];
+        slide.fills = [{ type: 'SOLID', color: Colors.WHITE }];
 
         // Load Fonts
         await Promise.all([
@@ -17,9 +17,6 @@ export class Slide_Body extends BaseComponent {
             figma.loadFontAsync(Fonts.BOLD),
             figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
-
-        // Chapter Number
-        addChapterNumber(slide, props.number || "01");
 
         // Title
         const titleText = figma.createText();
@@ -29,15 +26,16 @@ export class Slide_Body extends BaseComponent {
         titleText.fontSize = Fonts.SIZE_TITLE;
         titleText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
         titleText.characters = props.title || "Slide Title";
+        titleText.textAlignHorizontal = "LEFT";
+        titleText.textAlignVertical = "TOP";
 
-        // Layout Title
         titleText.x = Layout.MARGIN_LEFT;
         titleText.y = Layout.MARGIN_TOP_TITLE;
-        // Width is Slide Width - Left Margin - Right Margin
-        // Assuming Right Margin is same as Left for standard slides unless specified
-        // theme.ts has MARGIN_RIGHT_SIMPLE, let's use that if it exists or default to LEFT
-        const rightMargin = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
-        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - rightMargin, titleText.height);
+        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - Layout.MARGIN_RIGHT_SIMPLE, Fonts.SIZE_TITLE * 1.2);
+
+        // Chapter Number (Middle-aligned with title)
+        const titleCenterY = titleText.y + (titleText.height / 2);
+        addChapterNumber(slide, props.number || "01", titleCenterY);
 
         // Body
         const bodyText = figma.createText();
@@ -54,6 +52,7 @@ export class Slide_Body extends BaseComponent {
         bodyText.y = titleText.y + titleText.height + Layout.CONTENT_GAP;
 
         // Width
+        const rightMargin = Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT;
         bodyText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - rightMargin, bodyText.height);
 
         return slide;

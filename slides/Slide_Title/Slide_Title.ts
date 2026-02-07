@@ -11,7 +11,7 @@ export class Slide_Title extends BaseComponent {
         slide.y = props.y || 0;
 
         // Background Color
-        slide.fills = [{ type: 'SOLID', color: Colors.BACKGROUND }];
+        slide.fills = [{ type: 'SOLID', color: Colors.WHITE }];
 
         // 2. Background Image (Placeholder simulation)
         // In Python version: "assets/title_background.png" filling the slide.

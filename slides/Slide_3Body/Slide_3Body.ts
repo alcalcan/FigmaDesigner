@@ -9,7 +9,7 @@ export class Slide_3Body extends BaseComponent {
         slide.resize(Layout.SLIDE_WIDTH, Layout.SLIDE_HEIGHT);
         slide.x = props.x || 0;
         slide.y = props.y || 0;
-        slide.fills = [{ type: 'SOLID', color: Colors.BACKGROUND }];
+        slide.fills = [{ type: 'SOLID', color: Colors.WHITE }];
 
         // Load Fonts
         await Promise.all([
@@ -18,11 +18,6 @@ export class Slide_3Body extends BaseComponent {
             figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
 
-        // Chapter Number
-        addChapterNumber(slide, props.number || "01");
-
-        const fullContentWidth = Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - (Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT);
-
         // Title
         const titleText = figma.createText();
         slide.appendChild(titleText);
@@ -30,13 +25,22 @@ export class Slide_3Body extends BaseComponent {
         titleText.fontName = Fonts.BOLD;
         titleText.fontSize = Fonts.SIZE_TITLE;
         titleText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
-        titleText.characters = props.title || "Three Column Slide";
+        titleText.characters = props.title || "Slide Title";
+        titleText.textAlignHorizontal = "LEFT";
+        titleText.textAlignVertical = "TOP";
+
         titleText.x = Layout.MARGIN_LEFT;
         titleText.y = Layout.MARGIN_TOP_TITLE;
-        titleText.resize(fullContentWidth, titleText.height);
+        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - Layout.MARGIN_RIGHT_SIMPLE, Fonts.SIZE_TITLE * 1.2);
+
+        // Chapter Number (Middle-aligned with title)
+        const titleCenterY = titleText.y + (titleText.height / 2);
+        addChapterNumber(slide, props.number || "01", titleCenterY);
 
         // Content Position
         const bodyY = titleText.y + titleText.height + Layout.CONTENT_GAP;
+
+        const fullContentWidth = Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - (Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT);
 
         // Split into 3 equal columns
         const totalGap = Layout.CONTENT_GAP * 2;

@@ -9,7 +9,17 @@ export class Slide_2Body extends BaseComponent {
         slide.resize(Layout.SLIDE_WIDTH, Layout.SLIDE_HEIGHT);
         slide.x = props.x || 0;
         slide.y = props.y || 0;
-        slide.fills = [{ type: 'SOLID', color: Colors.BACKGROUND }];
+        slide.fills = [{ type: 'SOLID', color: Colors.WHITE }];
+
+        // Background (Gray Area on the right)
+        const bgRect = figma.createRectangle();
+        slide.appendChild(bgRect);
+        bgRect.name = "divider_background";
+        bgRect.x = Layout.DIVIDER_X;
+        bgRect.y = 0;
+        bgRect.resize(Layout.SLIDE_WIDTH - Layout.DIVIDER_X, Layout.SLIDE_HEIGHT);
+        bgRect.fills = [{ type: 'SOLID', color: Colors.BACKGROUND }];
+        bgRect.locked = true;
 
         // Load Fonts
         await Promise.all([
@@ -18,11 +28,6 @@ export class Slide_2Body extends BaseComponent {
             figma.loadFontAsync(Fonts.EXTRA_BOLD)
         ]);
 
-        // Chapter Number
-        addChapterNumber(slide, props.number || "01");
-
-        const fullContentWidth = Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - (Layout.MARGIN_RIGHT_SIMPLE || Layout.MARGIN_LEFT);
-
         // Title
         const titleText = figma.createText();
         slide.appendChild(titleText);
@@ -30,10 +35,17 @@ export class Slide_2Body extends BaseComponent {
         titleText.fontName = Fonts.BOLD;
         titleText.fontSize = Fonts.SIZE_TITLE;
         titleText.fills = [{ type: 'SOLID', color: Colors.TEXT_MAIN }];
-        titleText.characters = props.title || "Two Column Slide";
+        titleText.characters = props.title || "Slide Title";
+        titleText.textAlignHorizontal = "LEFT";
+        titleText.textAlignVertical = "TOP";
+
         titleText.x = Layout.MARGIN_LEFT;
         titleText.y = Layout.MARGIN_TOP_TITLE;
-        titleText.resize(fullContentWidth, titleText.height);
+        titleText.resize(Layout.SLIDE_WIDTH - Layout.MARGIN_LEFT - Layout.MARGIN_RIGHT_SIMPLE, Fonts.SIZE_TITLE * 1.2);
+
+        // Chapter Number (Middle-aligned with title)
+        const titleCenterY = titleText.y + (titleText.height / 2);
+        addChapterNumber(slide, props.number || "01", titleCenterY);
 
         // Calculate Column Layouts
         const dividerX = Layout.DIVIDER_X;

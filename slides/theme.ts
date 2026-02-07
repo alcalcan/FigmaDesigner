@@ -75,6 +75,35 @@ export const Layout = {
         TEXT_HEIGHT: emuToPx(292100),
     },
 
+    // Divider Slides
+    DIVIDER: {
+        NUMBER_X: emuToPx(6083808),
+        NUMBER_Y: 0,
+        NUMBER_WIDTH: emuToPx(6114288),
+        NUMBER_HEIGHT: emuToPx(6858000), // Fixed circular reference
+        NUMBER_SIZE: 340,
+
+        TITLE_X: emuToPx(800000),
+        TITLE_Y: emuToPx(2400000),
+        TITLE_WIDTH: emuToPx(5200000),
+        TITLE_HEIGHT: emuToPx(2000000),
+        TITLE_SIZE: 60,
+    },
+
+    DIVIDER_SUBTLE: {
+        NUMBER_X: emuToPx(691202),
+        NUMBER_Y: emuToPx(3000000),
+        NUMBER_WIDTH: emuToPx(3000000),
+        NUMBER_HEIGHT: emuToPx(1600000),
+        NUMBER_SIZE: 120,
+
+        TITLE_X: emuToPx(691202),
+        TITLE_Y: emuToPx(3810000),
+        TITLE_WIDTH: emuToPx(7926326),
+        TITLE_HEIGHT: emuToPx(2203368),
+        TITLE_SIZE: 44,
+    },
+
     // Title Slide Specifics (from title_slide.py)
     TITLE_SLIDE: {
         TITLE_LEFT: emuToPx(691202),
