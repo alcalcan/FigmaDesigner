@@ -2,6 +2,7 @@ import { Pipeline } from "./pipeline";
 import { JsonReconstructor } from "./components/JsonReconstructor";
 import { AssetStore, processFills } from "./components/PaintHelpers";
 import * as ComponentRegistry from "./components/index";
+import * as ExtractPPT from "./presentation_logic/PPTExtractor";
 
 // Plugin Initialization Log
 console.log(`[Plugin] Starting code.ts | Time: ${Date.now()}`);
@@ -730,6 +731,94 @@ figma.ui.onmessage = async (msg) => {
         console.error(e);
         figma.notify(`Failed to generate ${name}: ${(e as Error).message}`, { error: true });
       }
+    }
+
+    if (msg.type === 'export-ppt') {
+      const presentationNames = msg.presentations;
+      console.log(`[Plugin] Handling export-ppt for: ${presentationNames}`);
+
+      const payload: { presentationName: string, slides: any[] }[] = [];
+
+      for (const name of presentationNames) {
+        logToUI(`[Plugin] Extracting PPT data for '${name}'...`);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let ComponentClass = (ComponentRegistry as any)[name];
+
+        if (!ComponentClass) {
+          // Try aliased name (scan registry)
+          const found = Object.keys(ComponentRegistry).find(k => k.startsWith(name + '_'));
+          if (found) ComponentClass = (ComponentRegistry as any)[found];
+        }
+
+        if (!ComponentClass) {
+          console.warn(`[Plugin] Component ${name} not found.`);
+          continue;
+        }
+
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const instance = new ComponentClass() as any;
+          // Create hidden instance to extract data
+          // We place it far away so it doesn't interfere, or just create it and remove it.
+          // Note: create() usually appends to parent? No, it returns a Node.
+          // We need to append it to document to ensure it renders/layouts for coordinate extraction?
+          // Yes, FrameNode needs to be on page for absoluteTransform to work relative to page? 
+          // ACTUALLY: absoluteTransform works even if not detached, but layout engine needs it to be in the tree sometimes for auto-layout?
+          // Safest is to append, extract, then remove.
+
+          const props = {
+            name: name,
+            role: "Export Temp",
+          };
+
+          let rootNode: SceneNode;
+          if (typeof instance.createAsync === 'function') {
+            rootNode = await instance.createAsync(props);
+          } else {
+            rootNode = await instance.create(props);
+          }
+
+          // It might not be on the page yet depending on implementation of create.
+          // Most create implementations in this codebase seem to return the node, caller appends.
+          // Let's append to current page but hidden.
+          figma.currentPage.appendChild(rootNode);
+          rootNode.visible = false; // Layout might still work? 
+          // If visible is false, my extractor skips it! 
+          // So I must keep it visible but maybe opacity 0 or just accept it flashes?
+          // Or just put it way off screen.
+          rootNode.visible = true;
+          rootNode.x = 100000;
+          rootNode.y = 100000;
+
+          // Find Slides. Usually direct children frames of the presentation frame.
+          const slides: any[] = [];
+          if ("children" in rootNode) {
+            const children = (rootNode as FrameNode).children;
+            for (const child of children) {
+              // Verify if it's a slide (Frame/ComponentInstance)
+              if (child.type === 'FRAME' || child.type === 'INSTANCE' || child.type === 'COMPONENT') {
+                // We assume any top-level frame in the presentation component is a slide
+                const slideData = await ExtractPPT.PPTExtractor.extract(child as FrameNode);
+                slides.push(slideData);
+              }
+            }
+          }
+
+          payload.push({
+            presentationName: name,
+            slides: slides
+          });
+
+          rootNode.remove();
+
+        } catch (e) {
+          console.error(`[Plugin] Failed to extract PPT for ${name}`, e);
+          logToUI(`[Plugin] Error extracting ${name}: ${(e as Error).message}`);
+        }
+      }
+
+      figma.ui.postMessage({ type: 'export-ppt-data', payload: payload });
     }
 
     if (msg.type === 'cancel') {
