@@ -86,6 +86,7 @@ export { AV___sound_up } from "./UEFA_icons/AV___sound_up/AV___sound_up";
 export { AV___stop } from "./UEFA_icons/AV___stop/AV___stop";
 export { AV___stop_circle_negative } from "./UEFA_icons/AV___stop_circle_negative/AV___stop_circle_negative";
 export { banner } from "./GQ_2026/banner/banner";
+export { BarChartObject } from "./Slide_Objects/SlideObjectLibrary";
 export { BookingLogo_color } from "./UEFA_Booking_Euro28/BookingLogo_color/BookingLogo_color";
 export { BriefNote } from "./Miscellaneous/BriefNote/BriefNote";
 export { BriefNoteDemo } from "../pages/Alex_CookBook/BriefNoteDemo";

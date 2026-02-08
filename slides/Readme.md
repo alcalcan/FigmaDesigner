@@ -1,4 +1,3 @@
-
 # Slides Directory
 
 This directory contains components that function as "Slides" for the Figma plugin.
@@ -8,6 +7,35 @@ These are ported from the Python `PresStyle` library to allow native generation 
 
 *   `theme.ts`: Contains the ported style constants (Colors, Fonts, Layout) from `PresStyle/styles/UEFA/theme.py`. Emu units have been converted to Pixels.
 *   `Slide_*/`: Subdirectories for each specific slide type.
+
+## PresStyle Source Path
+
+The local Python source used by these slides lives at:
+`/Users/alexcalcan/Documents/Apps/PresStyle`
+
+UEFA object modules are in:
+`/Users/alexcalcan/Documents/Apps/PresStyle/styles/UEFA/objects`
+
+## Slide Object Components
+
+To mirror PresStyle objects in Figma, reusable slide objects are implemented in:
+`components/Slide_Objects/`
+
+These components are used by:
+`slides/UEFA_Light_extra/Slide_Object_System_extra.ts`
+
+Included objects:
+- `bar_chart`
+- `line_chart`
+- `area_chart`
+- `pie_chart`
+- `donut_chart`
+- `radar_chart`
+- `stat_card`
+- `timeline`
+- `stacked_timeline`
+- `image`
+- `text`
 
 ## Available Slides
 

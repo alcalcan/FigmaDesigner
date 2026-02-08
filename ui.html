@@ -870,14 +870,43 @@
                                     }
                                 } else if (el.type === 'shape') {
                                     const hasCornerRadius = typeof el.cornerRadius === 'number' && el.cornerRadius > 0.01;
+                                    const isEllipse = el.shapeType === 'ellipse';
                                     const roundRectType =
                                         (pptx.ShapeType && (pptx.ShapeType.roundRect || pptx.ShapeType.round1Rect)) ||
                                         pptx.ShapeType.rect;
-                                    const shapeType = hasCornerRadius ? roundRectType : pptx.ShapeType.rect;
+                                    const ellipseType =
+                                        (pptx.ShapeType && (pptx.ShapeType.ellipse || pptx.ShapeType.ellip)) ||
+                                        pptx.ShapeType.rect;
+                                    const shapeType = isEllipse
+                                        ? ellipseType
+                                        : (hasCornerRadius ? roundRectType : pptx.ShapeType.rect);
                                     const shapeOptions = {
-                                        x: x, y: y, w: w, h: h,
-                                        fill: { color: el.fill }
+                                        x: x, y: y, w: w, h: h
                                     };
+
+                                    if (el.fill) {
+                                        const fill = { color: el.fill };
+                                        if (typeof el.fillOpacity === 'number' && el.fillOpacity < 1) {
+                                            fill.transparency = Math.max(0, Math.min(100, (1 - el.fillOpacity) * 100));
+                                        }
+                                        shapeOptions.fill = fill;
+                                    } else {
+                                        shapeOptions.fill = { color: 'FFFFFF', transparency: 100 };
+                                    }
+
+                                    if (el.strokeColor) {
+                                        const line = {
+                                            color: el.strokeColor,
+                                            pt: pxToPt(typeof el.strokeWeight === 'number' && el.strokeWeight > 0 ? el.strokeWeight : 1)
+                                        };
+                                        if (typeof el.strokeOpacity === 'number' && el.strokeOpacity < 1) {
+                                            line.transparency = Math.max(0, Math.min(100, (1 - el.strokeOpacity) * 100));
+                                        }
+                                        if (el.strokeStyle === 'dash') {
+                                            line.dash = 'dash';
+                                        }
+                                        shapeOptions.line = line;
+                                    }
 
                                     if (hasCornerRadius) {
                                         const radiusInches = pxToInch(el.cornerRadius);

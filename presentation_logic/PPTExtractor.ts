@@ -16,6 +16,12 @@ export interface PPTElement {
     fill?: string; // hex for shape, base64 for image
     opacity?: number;
     cornerRadius?: number;
+    shapeType?: 'rect' | 'ellipse';
+    fillOpacity?: number;
+    strokeColor?: string;
+    strokeOpacity?: number;
+    strokeWeight?: number;
+    strokeStyle?: 'solid' | 'dash';
     sourceNodeId?: string;
     sourceNodeName?: string;
     textBoxX?: number;
@@ -88,6 +94,14 @@ const HARD_OWN_COMPOSITION_REASONS = new Set([
     'blend-mode',
     'rotation',
     'active-clip-overflow'
+]);
+
+const HARD_INHERITED_COMPOSITION_REASONS = new Set([
+    'descendant-active-clip-overflow',
+    'descendant-mask',
+    'descendant-effects',
+    'descendant-blend-mode',
+    'descendant-rotation'
 ]);
 
 const VECTOR_TYPES = new Set<SceneNode['type']>([
@@ -373,52 +387,89 @@ export class PPTExtractor {
         }
 
         else if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME' || node.type === 'INSTANCE' || node.type === 'COMPONENT') {
-            // Check if this node has fills to render (backgrounds)
-            if (hasVisibleFills(node as GeometryMixin)) {
-                // If it's a Frame/Instance/Component, we treat it as a shape for its background
-                // but we MUST continue to traverse its children later.
-
-                const fills = (node as GeometryMixin).fills;
-                if (fills !== figma.mixed && Array.isArray(fills) && fills.length > 0) {
-                    // Find the first visible fill
-                    const fill = this.firstVisiblePaint(fills);
-
-                    if (fill) {
-                        if (fill.type === 'IMAGE') {
-                            // If this is a container (e.g. frame with image fill and children),
-                            // rasterize once and skip children to avoid duplicate exports.
-                            const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
-                            if (flattened) {
-                                console.log(`[PPTExtractor] Added flattened IMAGE node: ${node.name}`);
-                                return;
-                            }
-                        } else if (fill.type === 'SOLID') {
-                            const shapeElement: PPTElement = {
-                                type: 'shape',
-                                x, y, w, h,
-                                fill: this.rgbToHex(fill.color),
-                                opacity: node.opacity
-                            };
-
-                            // Keep simple rounded rectangles editable. Fallback to raster only
-                            // when corner geometry is asymmetric/smoothed and likely to mismatch.
-                            if (node.type === 'RECTANGLE') {
-                                const cornerInfo = this.getRectangleCornerInfo(node);
-                                if (cornerInfo.shouldRasterize) {
-                                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
-                                    if (flattened) {
-                                        console.log(`[PPTExtractor] Added flattened rounded rectangle: ${node.name}`);
-                                        return;
-                                    }
-                                } else if (typeof cornerInfo.cornerRadius === 'number' && cornerInfo.cornerRadius > 0) {
-                                    shapeElement.cornerRadius = cornerInfo.cornerRadius;
-                                }
-                            }
-
-                            elements.push(shapeElement);
-                            console.log(`[PPTExtractor] Added Shape (from ${node.type}): ${node.name}`);
-                        }
+            const geometryNode = node as GeometryMixin;
+            const hasFill = hasVisibleFills(geometryNode);
+            const hasStroke = "strokes" in node && this.hasVisibleStrokes(node.strokes);
+            if (hasFill || hasStroke) {
+                const fill = this.firstVisiblePaint(geometryNode.fills);
+                if (fill && fill.type === 'IMAGE') {
+                    // If this is a container (e.g. frame with image fill and children),
+                    // rasterize once and skip children to avoid duplicate exports.
+                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                    if (flattened) {
+                        console.log(`[PPTExtractor] Added flattened IMAGE node: ${node.name}`);
+                        return;
                     }
+                }
+
+                if (fill && fill.type !== 'SOLID' && fill.type !== 'IMAGE') {
+                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                    if (flattened) {
+                        console.log(`[PPTExtractor] Added flattened complex-fill node: ${node.name}`);
+                        return;
+                    }
+                }
+
+                const stroke = "strokes" in node ? this.firstVisiblePaint(node.strokes) : null;
+                if (stroke && stroke.type !== 'SOLID') {
+                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                    if (flattened) {
+                        console.log(`[PPTExtractor] Added flattened complex-stroke node: ${node.name}`);
+                        return;
+                    }
+                }
+
+                if (node.type === 'ELLIPSE' && !this.isSimpleEllipse(node)) {
+                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                    if (flattened) {
+                        console.log(`[PPTExtractor] Added flattened arc ellipse: ${node.name}`);
+                        return;
+                    }
+                }
+
+                const shapeElement: PPTElement = {
+                    type: 'shape',
+                    x, y, w, h,
+                    opacity: node.opacity,
+                    shapeType: node.type === 'ELLIPSE' ? 'ellipse' : 'rect'
+                };
+
+                if (fill && fill.type === 'SOLID') {
+                    shapeElement.fill = this.rgbToHex(fill.color);
+                    shapeElement.fillOpacity = typeof fill.opacity === 'number' ? fill.opacity : 1;
+                }
+
+                if (stroke && stroke.type === 'SOLID') {
+                    shapeElement.strokeColor = this.rgbToHex(stroke.color);
+                    shapeElement.strokeOpacity = typeof stroke.opacity === 'number' ? stroke.opacity : 1;
+                    if ("strokeWeight" in node && typeof node.strokeWeight === 'number' && node.strokeWeight > 0) {
+                        shapeElement.strokeWeight = node.strokeWeight;
+                    }
+                    if ("dashPattern" in node && Array.isArray(node.dashPattern) && node.dashPattern.length > 0) {
+                        shapeElement.strokeStyle = 'dash';
+                    } else {
+                        shapeElement.strokeStyle = 'solid';
+                    }
+                }
+
+                // Keep simple rounded rectangles editable. Fallback to raster only
+                // when corner geometry is asymmetric/smoothed and likely to mismatch.
+                if (node.type === 'RECTANGLE') {
+                    const cornerInfo = this.getRectangleCornerInfo(node);
+                    if (cornerInfo.shouldRasterize) {
+                        const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                        if (flattened) {
+                            console.log(`[PPTExtractor] Added flattened rounded rectangle: ${node.name}`);
+                            return;
+                        }
+                    } else if (typeof cornerInfo.cornerRadius === 'number' && cornerInfo.cornerRadius > 0) {
+                        shapeElement.cornerRadius = cornerInfo.cornerRadius;
+                    }
+                }
+
+                if (shapeElement.fill || shapeElement.strokeColor) {
+                    elements.push(shapeElement);
+                    console.log(`[PPTExtractor] Added Shape (from ${node.type}): ${node.name}`);
                 }
             }
         }
@@ -443,20 +494,21 @@ export class PPTExtractor {
 
     private static shouldRasterizeNode(node: SceneNode): { shouldRasterize: boolean; reasons: string[] } {
         const reasons: string[] = [];
+        const isContainerNode = this.isCompositionContainerNode(node);
 
         // Preserve editability while rasterizing unsupported primitive cases.
-        if (node.type === 'ELLIPSE') reasons.push('ellipse-unsupported-shape');
+        if (node.type === 'ELLIPSE' && !this.isSimpleEllipse(node)) reasons.push('ellipse-arc');
         if (VECTOR_TYPES.has(node.type)) reasons.push('vector-type');
         if (this.hasNonZeroRotation(node)) reasons.push('rotation');
         if (this.hasVisibleEffects(node)) reasons.push('effects');
         if (this.hasNonDefaultBlend(node)) reasons.push('blend-mode');
         if (this.isMaskNode(node)) reasons.push('mask');
 
-        if ("strokes" in node && this.hasVisibleStrokes(node.strokes)) {
-            reasons.push('visible-strokes');
+        if ("strokes" in node && this.hasUnsupportedStrokes(node.strokes) && !isContainerNode) {
+            reasons.push('unsupported-strokes');
         }
 
-        if ("fills" in node && this.hasUnsupportedFills(node.fills)) {
+        if ("fills" in node && this.hasUnsupportedFills(node.fills) && !isContainerNode) {
             reasons.push('unsupported-fills');
         }
 
@@ -620,6 +672,17 @@ export class PPTExtractor {
         return strokes.some(stroke => stroke.visible !== false && (stroke.opacity ?? 1) > 0);
     }
 
+    private static hasUnsupportedStrokes(strokes: ReadonlyArray<Paint> | PluginAPI['mixed']): boolean {
+        if (strokes === figma.mixed) return true;
+        if (!Array.isArray(strokes) || strokes.length === 0) return false;
+
+        const visible = strokes.filter((stroke) => stroke.visible !== false && (stroke.opacity ?? 1) > 0);
+        if (visible.length === 0) return false;
+        if (visible.length > 1) return true;
+
+        return visible[0].type !== 'SOLID';
+    }
+
     private static hasUnsupportedFills(fills: ReadonlyArray<Paint> | PluginAPI['mixed']): boolean {
         if (fills === figma.mixed) return true;
         if (!Array.isArray(fills) || fills.length === 0) return false;
@@ -631,9 +694,8 @@ export class PPTExtractor {
         if (visible.length > 1) return true;
 
         const primary = visible[0];
-        if (primary.type === 'SOLID' || primary.type === 'IMAGE') {
-            return (primary.opacity ?? 1) < 1;
-        }
+        if (primary.type === 'SOLID') return false;
+        if (primary.type === 'IMAGE') return (primary.opacity ?? 1) < 1;
 
         // Gradients and other fills should be rasterized.
         return true;
@@ -815,9 +877,6 @@ export class PPTExtractor {
             const current = stack.pop() as SceneNode;
             descendantCount += 1;
 
-            if (this.isContainerWithClipping(current)) {
-                inheritedReasonsSet.add('descendant-clips-content');
-            }
             if (this.hasActiveClipOverflow(current)) {
                 inheritedReasonsSet.add('descendant-active-clip-overflow');
             }
@@ -833,23 +892,10 @@ export class PPTExtractor {
             if (this.hasNonZeroRotation(current)) {
                 inheritedReasonsSet.add('descendant-rotation');
             }
-            if (VECTOR_TYPES.has(current.type)) {
-                inheritedReasonsSet.add('descendant-vector-content');
-            }
-            if ("fills" in current && this.hasUnsupportedFills(current.fills)) {
-                inheritedReasonsSet.add('descendant-unsupported-fills');
-            }
-            if (this.hasNegativeAutoLayoutSpacing(current)) {
-                inheritedReasonsSet.add('descendant-negative-auto-layout-spacing');
-            }
 
             if ("children" in current) {
                 stack.push(...current.children);
             }
-        }
-
-        if (descendantCount >= 12) {
-            inheritedReasonsSet.add(`descendants>=12(${descendantCount})`);
         }
 
         const hasComplexChild = node.children.some((child) => {
@@ -866,8 +912,12 @@ export class PPTExtractor {
             return childAnalysis.shouldFlatten;
         });
 
+        const hasHardInheritedReason = Array.from(inheritedReasonsSet).some((reason) =>
+            HARD_INHERITED_COMPOSITION_REASONS.has(reason)
+        );
+
         const analysis: CompositionAnalysis = {
-            shouldFlatten: ownReasonsSet.size > 0 || inheritedReasonsSet.size > 0,
+            shouldFlatten: ownReasonsSet.size > 0 || hasHardInheritedReason,
             ownReasons: Array.from(ownReasonsSet),
             inheritedReasons: Array.from(inheritedReasonsSet),
             hasComplexChild,
@@ -1012,6 +1062,23 @@ export class PPTExtractor {
         if (value === 'CENTER') return 'mid';
         if (value === 'BOTTOM') return 'bot';
         return 'top';
+    }
+
+    private static isSimpleEllipse(node: EllipseNode): boolean {
+        const arc = node.arcData;
+        if (!arc) return true;
+
+        const epsilon = 0.001;
+        const fullTurn = Math.PI * 2;
+        const rawSweep = Math.abs(arc.endingAngle - arc.startingAngle);
+        const normalizedSweep = rawSweep % fullTurn;
+        const isFullSweep =
+            normalizedSweep <= epsilon ||
+            Math.abs(normalizedSweep - fullTurn) <= epsilon ||
+            Math.abs(rawSweep - fullTurn) <= epsilon;
+        const isDonut = Math.abs(arc.innerRadius) > epsilon;
+
+        return isFullSweep && !isDonut;
     }
 
     private static getRectangleCornerInfo(node: RectangleNode): { cornerRadius?: number; shouldRasterize: boolean } {

@@ -1,68 +1,21 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
+import { SLIDE_OBJECT_CARD_SIZE, SLIDE_OBJECT_DEFINITIONS } from "../../components/Slide_Objects";
 import { Colors, Fonts, Layout } from "../theme";
 import { addChapterNumber } from "../utils";
 
-const objectNames = [
-    "bar_chart",
-    "line_chart",
-    "area_chart",
-    "pie_chart",
-    "donut_chart",
-    "radar_chart",
-    "stat_card",
-    "timeline",
-    "stacked_timeline",
-    "image",
-    "text"
-];
+const GRID_GAP = 16;
 
-const objectDescriptions: Record<string, string> = {
-    bar_chart: "Compare category performance over time windows or groups.",
-    line_chart: "Track trend direction and momentum across matchdays.",
-    area_chart: "Show cumulative growth and relative contribution patterns.",
-    pie_chart: "Communicate proportional split of a fixed total quickly.",
-    donut_chart: "Highlight share breakdown with optional center KPI value.",
-    radar_chart: "Compare multi-metric profiles in a compact visual.",
-    stat_card: "Feature one key KPI with a short interpretation line.",
-    timeline: "Sequence milestones, events, and delivery checkpoints.",
-    stacked_timeline: "Layer parallel tracks such as teams, markets, or phases.",
-    image: "Reserve media slot for photography, artwork, or screenshots.",
-    text: "Use narrative copy block for context, caveats, and insights."
-};
+const createObjectCard = async (index: number): Promise<FrameNode> => {
+    const definition = SLIDE_OBJECT_DEFINITIONS[index];
+    const component = new definition.component();
+    const card = await component.create({
+        width: SLIDE_OBJECT_CARD_SIZE.width,
+        height: SLIDE_OBJECT_CARD_SIZE.height
+    });
 
-const createObjectCard = async (name: string): Promise<FrameNode> => {
-    const card = figma.createFrame();
-    card.name = `Object_${name}`;
-    card.layoutMode = "VERTICAL";
-    card.primaryAxisSizingMode = "FIXED";
-    card.counterAxisSizingMode = "FIXED";
-    card.primaryAxisAlignItems = "CENTER";
-    card.counterAxisAlignItems = "CENTER";
-    card.resize(240, 120);
-    card.cornerRadius = 10;
-    card.fills = [{ type: "SOLID", color: Colors.BACKGROUND }];
-    card.strokes = [{ type: "SOLID", color: Colors.TEXT_SECONDARY, opacity: 0.35 }];
-    card.strokeWeight = 1;
-
-    const label = figma.createText();
-    label.name = "Object_Name";
-    label.fontName = Fonts.BOLD;
-    label.fontSize = 16;
-    label.fills = [{ type: "SOLID", color: Colors.TEXT_MAIN }];
-    label.characters = name;
-    label.textAutoResize = "WIDTH_AND_HEIGHT";
-    card.appendChild(label);
-
-    const description = figma.createText();
-    description.name = "Object_Description";
-    description.fontName = Fonts.PRIMARY;
-    description.fontSize = 12;
-    description.fills = [{ type: "SOLID", color: Colors.TEXT_SECONDARY }];
-    description.characters = objectDescriptions[name] || "Placeholder object description.";
-    description.textAlignHorizontal = "CENTER";
-    description.textAutoResize = "HEIGHT";
-    description.resize(208, 10);
-    card.appendChild(description);
+    card.name = `Object_${definition.key}`;
+    card.setPluginData("presstyle_object", definition.key);
+    card.setPluginData("presstyle_description", definition.description);
 
     return card;
 };
@@ -90,6 +43,7 @@ export class Slide_Object_System_extra extends BaseComponent {
         slide.paddingTop = Layout.MARGIN_TOP_TITLE;
         slide.paddingBottom = Layout.MARGIN_FOOTER;
         slide.itemSpacing = Layout.CONTENT_GAP / 2;
+
         const innerWidth = Layout.SLIDE_WIDTH - slide.paddingLeft - slide.paddingRight;
 
         const title = figma.createText();
@@ -103,7 +57,7 @@ export class Slide_Object_System_extra extends BaseComponent {
         slide.appendChild(title);
 
         const chapterInfo = addChapterNumber(slide, props.number || "14");
-        const titleCenterY = slide.paddingTop + (Fonts.SIZE_TITLE * 1.2 / 2);
+        const titleCenterY = slide.paddingTop + ((Fonts.SIZE_TITLE * 1.2) / 2);
         chapterInfo.ribbon.y = titleCenterY - (Layout.CHAPTER_NUMBER.RECT_HEIGHT / 2);
         chapterInfo.text.y = titleCenterY - (Layout.CHAPTER_NUMBER.TEXT_HEIGHT / 2);
 
@@ -112,7 +66,7 @@ export class Slide_Object_System_extra extends BaseComponent {
         subtitle.fontName = Fonts.PRIMARY;
         subtitle.fontSize = Fonts.SIZE_BODY;
         subtitle.fills = [{ type: "SOLID", color: Colors.TEXT_SECONDARY }];
-        subtitle.characters = "Object types from PresStyle README and styles/UEFA/objects mapped as slide-ready placeholders.";
+        subtitle.characters = "Objects from /PresStyle/styles/UEFA/objects rendered as reusable slide components.";
         subtitle.layoutAlign = "STRETCH";
         subtitle.textAutoResize = "HEIGHT";
         slide.appendChild(subtitle);
@@ -124,19 +78,22 @@ export class Slide_Object_System_extra extends BaseComponent {
         grid.primaryAxisSizingMode = "FIXED";
         grid.counterAxisSizingMode = "FIXED";
         grid.layoutAlign = "STRETCH";
-        grid.itemSpacing = 16;
-        grid.counterAxisSpacing = 16;
+        grid.itemSpacing = GRID_GAP;
+        grid.counterAxisSpacing = GRID_GAP;
         grid.fills = [];
-        const cardWidth = 240;
-        const cardHeight = 120;
-        const cardsPerRow = Math.max(1, Math.floor((innerWidth + grid.itemSpacing) / (cardWidth + grid.itemSpacing)));
-        const rows = Math.ceil(objectNames.length / cardsPerRow);
-        const gridHeight = (rows * cardHeight) + ((rows - 1) * grid.counterAxisSpacing);
+
+        const cardsPerRow = Math.max(
+            1,
+            Math.floor((innerWidth + GRID_GAP) / (SLIDE_OBJECT_CARD_SIZE.width + GRID_GAP))
+        );
+        const rows = Math.ceil(SLIDE_OBJECT_DEFINITIONS.length / cardsPerRow);
+        const gridHeight = (rows * SLIDE_OBJECT_CARD_SIZE.height) + ((rows - 1) * GRID_GAP);
+
         grid.resize(innerWidth, gridHeight);
         slide.appendChild(grid);
 
-        for (const objectName of objectNames) {
-            const card = await createObjectCard(objectName);
+        for (let index = 0; index < SLIDE_OBJECT_DEFINITIONS.length; index += 1) {
+            const card = await createObjectCard(index);
             grid.appendChild(card);
         }
 
