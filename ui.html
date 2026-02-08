@@ -696,6 +696,30 @@
                     // Initialize PptxGenJS
                     // eslint-disable-next-line no-undef
                     const pptx = new PptxGenJS();
+                    const pxToInch = (px) => px / 96;
+
+                    // Match PPT canvas size to Figma slide dimensions to avoid scale drift/clipping.
+                    const allSlides = (payload || []).flatMap((presentation) =>
+                        Array.isArray(presentation.slides) ? presentation.slides : []
+                    );
+                    const slidesWithSize = allSlides.filter((slideData) =>
+                        typeof slideData.width === 'number' &&
+                        slideData.width > 0 &&
+                        typeof slideData.height === 'number' &&
+                        slideData.height > 0
+                    );
+
+                    if (slidesWithSize.length > 0) {
+                        const maxWidthPx = Math.max(...slidesWithSize.map((slideData) => slideData.width));
+                        const maxHeightPx = Math.max(...slidesWithSize.map((slideData) => slideData.height));
+                        const layoutName = 'FIGMA_CAPTURE';
+                        pptx.defineLayout({
+                            name: layoutName,
+                            width: pxToInch(maxWidthPx),
+                            height: pxToInch(maxHeightPx)
+                        });
+                        pptx.layout = layoutName;
+                    }
 
                     for (const presentation of payload) {
                         const presName = presentation.presentationName;
@@ -711,11 +735,6 @@
                             if (slideData.background) {
                                 slide.background = { color: slideData.background };
                             }
-
-                            // Factor to convert pixels to inches (approx 96 DPI)
-                            // PptxGenJS uses inches by default. 
-                            // 1 inch = 96px usually in web/figma context?
-                            const pxToInch = (px) => px / 96;
 
                             for (const el of slideData.elements) {
                                 const x = pxToInch(el.x);
@@ -734,8 +753,9 @@
                                     });
                                 } else if (el.type === 'image') {
                                     if (el.fill) {
+                                        const data = el.fill.startsWith('data:') ? el.fill : ("image/png;base64," + el.fill);
                                         slide.addImage({
-                                            data: "image/png;base64," + el.fill,
+                                            data: data,
                                             x: x, y: y, w: w, h: h
                                         });
                                     }
@@ -1147,7 +1167,14 @@
             activePptExportBtnOriginalText = "Build PPT (Selected Frame)";
             buildPptBtn.disabled = true;
             buildPptBtn.textContent = "Building...";
-            parent.postMessage({ pluginMessage: { type: 'export-ppt-from-selection' } }, '*');
+            parent.postMessage({
+                pluginMessage: {
+                    type: 'export-ppt-from-selection',
+                    fidelity: 'balanced',
+                    rasterScale: 3,
+                    compositionFallback: 'container'
+                }
+            }, '*');
         }
 
         previewCodeBtn.onclick = () => {

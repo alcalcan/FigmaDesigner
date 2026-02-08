@@ -792,11 +792,23 @@ figma.ui.onmessage = async (msg) => {
         return;
       }
 
+      const fidelity: ExtractPPT.PPTFidelity =
+        msg.fidelity === 'editable' || msg.fidelity === 'exact' ? msg.fidelity : 'balanced';
+      const compositionFallback: ExtractPPT.PPTCompositionFallback =
+        msg.compositionFallback === 'none' ? 'none' : 'container';
+      const rasterScale = typeof msg.rasterScale === 'number' && msg.rasterScale > 0
+        ? msg.rasterScale
+        : 3;
+
       const slides: PptSlidePayload[] = [];
       for (const slideFrame of slideFrames) {
         console.log(`[Plugin] Extracting selected slide: ${slideFrame.name} (ID: ${slideFrame.id})`);
         try {
-          const slideData = await ExtractPPT.PPTExtractor.extract(slideFrame);
+          const slideData = await ExtractPPT.PPTExtractor.extract(slideFrame, {
+            fidelity,
+            rasterScale,
+            compositionFallback
+          });
           slides.push(slideData);
         } catch (err) {
           const reason = err instanceof Error ? err.message : String(err);
