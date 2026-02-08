@@ -1,223 +1,1962 @@
-Refactoring /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/SubSection_generated/SubSection_generated.ts...
-
---- Iteration 0 ---
-Tree Structure:
-- root (ID: root, Children: 2)
-  - Header (ID: root_child_0, Children: 3)
-    - Subject (ID: root_child_0_child_0, Children: 0)
-    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
-    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
-      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
-        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
-        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
-  - Frame 1928 (ID: root_child_1, Children: 4)
-    - item (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-    - Frame 1938 (ID: root_child_1_child_2, Children: 2)
-      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 2)
-        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 1)
-          - root_child_1_child_2_child_0_child_0_child_0 (ID: root_child_1_child_2_child_0_child_0_child_0, Children: 2)
-            - Path (ID: root_child_1_child_2_child_0_child_0_child_0_child_0, Children: 0)
-            - Path (ID: root_child_1_child_2_child_0_child_0_child_0_child_1, Children: 0)
-        - Filter name (ID: root_child_1_child_2_child_0_child_1, Children: 0)
-      - Frame 1931 (ID: root_child_1_child_2_child_1, Children: 2)
-        - Checkbox (ID: root_child_1_child_2_child_1_child_0, Children: 1)
-          - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 2)
-            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_0, Children: 0)
-            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_1, Children: 0)
-        - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
-    - item (ID: item, Children: 0)
-Checking children of root (2)
-Comparing Frame 1928 (root_child_1) with Header (root_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Header (3)
-Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
-Mismatch! appending to signatures.txt
-Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
-Mismatch! appending to signatures.txt
-Checking children of Navigation / chevron-up (2)
-Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1928 (4)
-Comparing item (item) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Frame 1938 (root_child_1_child_2) with item (item)
-Mismatch! appending to signatures.txt
-Comparing item (item) with Frame 1938 (root_child_1_child_2)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1938 (2)
-Comparing Frame 1931 (root_child_1_child_2_child_1) with Frame 1930 (root_child_1_child_2_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1930 (2)
-Comparing Filter name (root_child_1_child_2_child_0_child_1) with Checkbox (root_child_1_child_2_child_0_child_0)
-Mismatch! appending to signatures.txt
-Checking children of root_child_1_child_2_child_0_child_0_child_0 (2)
-Comparing Path (root_child_1_child_2_child_0_child_0_child_0_child_1) with Path (root_child_1_child_2_child_0_child_0_child_0_child_0)
-Found group of 2 items for root_child_1_child_2_child_0_child_0_child_0
-Checking children of Frame 1931 (2)
-Comparing Filter name (root_child_1_child_2_child_1_child_1) with Checkbox (root_child_1_child_2_child_1_child_0)
-Mismatch! appending to signatures.txt
-Checking children of root_child_1_child_2_child_1_child_0_child_0 (2)
-Comparing Shape (root_child_1_child_2_child_1_child_0_child_0_child_1) with Shape (root_child_1_child_2_child_1_child_0_child_0_child_0)
-Found group of 2 items for root_child_1_child_2_child_1_child_0_child_0
-Total groups found: 2
-Refactoring group of size 2 for Path
-
---- Iteration 1 ---
-Tree Structure:
-- root (ID: root, Children: 2)
-  - Header (ID: root_child_0, Children: 3)
-    - Subject (ID: root_child_0_child_0, Children: 0)
-    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
-    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
-      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
-        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
-        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
-  - Frame 1928 (ID: root_child_1, Children: 5)
-    - item (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-    - Frame 1938 (ID: root_child_1_child_2, Children: 2)
-      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 2)
-        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 1)
-          - root_child_1_child_2_child_0_child_0_child_0 (ID: root_child_1_child_2_child_0_child_0_child_0, Children: 0)
-        - Filter name (ID: root_child_1_child_2_child_0_child_1, Children: 0)
-      - Frame 1931 (ID: root_child_1_child_2_child_1, Children: 2)
-        - Checkbox (ID: root_child_1_child_2_child_1_child_0, Children: 1)
-          - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 2)
-            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_0, Children: 0)
-            - Shape (ID: root_child_1_child_2_child_1_child_0_child_0_child_1, Children: 0)
-        - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
-    - Shape (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-Checking children of root (2)
-Comparing Frame 1928 (root_child_1) with Header (root_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Header (3)
-Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
-Mismatch! appending to signatures.txt
-Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
-Mismatch! appending to signatures.txt
-Checking children of Navigation / chevron-up (2)
-Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1928 (5)
-Comparing item (item) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Frame 1938 (root_child_1_child_2) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Shape (item) with Frame 1938 (root_child_1_child_2)
-Mismatch! appending to signatures.txt
-Comparing item (item) with Shape (item)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1938 (2)
-Comparing Frame 1931 (root_child_1_child_2_child_1) with Frame 1930 (root_child_1_child_2_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1930 (2)
-Comparing Filter name (root_child_1_child_2_child_0_child_1) with Checkbox (root_child_1_child_2_child_0_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1931 (2)
-Comparing Filter name (root_child_1_child_2_child_1_child_1) with Checkbox (root_child_1_child_2_child_1_child_0)
-Mismatch! appending to signatures.txt
-Checking children of root_child_1_child_2_child_1_child_0_child_0 (2)
-Comparing Shape (root_child_1_child_2_child_1_child_0_child_0_child_1) with Shape (root_child_1_child_2_child_1_child_0_child_0_child_0)
-Found group of 2 items for root_child_1_child_2_child_1_child_0_child_0
-Total groups found: 1
-Refactoring group of size 2 for Shape
-
---- Iteration 2 ---
-Tree Structure:
-- root (ID: root, Children: 2)
-  - Header (ID: root_child_0, Children: 3)
-    - Subject (ID: root_child_0_child_0, Children: 0)
-    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
-    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
-      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
-        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
-        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
-  - Frame 1928 (ID: root_child_1, Children: 6)
-    - item (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-    - Frame 1938 (ID: root_child_1_child_2, Children: 2)
-      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 2)
-        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 1)
-          - root_child_1_child_2_child_0_child_0_child_0 (ID: root_child_1_child_2_child_0_child_0_child_0, Children: 0)
-        - Filter name (ID: root_child_1_child_2_child_0_child_1, Children: 0)
-      - Frame 1931 (ID: root_child_1_child_2_child_1, Children: 2)
-        - Checkbox (ID: root_child_1_child_2_child_1_child_0, Children: 1)
-          - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 0)
-        - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
-    - Shape (ID: item, Children: 0)
-    - Shape (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-Checking children of root (2)
-Comparing Frame 1928 (root_child_1) with Header (root_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Header (3)
-Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
-Mismatch! appending to signatures.txt
-Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
-Mismatch! appending to signatures.txt
-Checking children of Navigation / chevron-up (2)
-Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1928 (6)
-Comparing item (item) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Frame 1938 (root_child_1_child_2) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Shape (item) with Frame 1938 (root_child_1_child_2)
-Mismatch! appending to signatures.txt
-Comparing Shape (item) with Shape (item)
-Comparing item (item) with Shape (item)
-Mismatch! appending to signatures.txt
-Found group of 2 items for Frame 1928
-Total groups found: 1
-Refactoring group of size 2 for Shape
-
---- Iteration 3 ---
-Tree Structure:
-- root (ID: root, Children: 4)
-  - Header (ID: root_child_0, Children: 3)
-    - Subject (ID: root_child_0_child_0, Children: 0)
-    - Frame 1695 (ID: root_child_0_child_1, Children: 0)
-    - Frame 1696 (ID: root_child_0_child_2, Children: 1)
-      - Navigation / chevron-up (ID: root_child_0_child_2_child_0, Children: 2)
-        - Vector (ID: root_child_0_child_2_child_0_child_0_svgContainer, Children: 0)
-        - root_child_0_child_2_child_0_child_0 (ID: root_child_0_child_2_child_0_child_0, Children: 0)
-  - Frame 1928 (ID: root_child_1, Children: 5)
-    - item (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-    - Frame 1938 (ID: root_child_1_child_2, Children: 1)
-      - Frame 1930 (ID: root_child_1_child_2_child_0, Children: 1)
-        - Checkbox (ID: root_child_1_child_2_child_0_child_0, Children: 0)
-    - Shape (ID: item, Children: 0)
-    - item (ID: item, Children: 0)
-  - root_child_1_child_2_child_1_child_0_child_0 (ID: root_child_1_child_2_child_1_child_0_child_0, Children: 0)
-  - Filter name (ID: root_child_1_child_2_child_1_child_1, Children: 0)
-Checking children of root (4)
-Comparing Frame 1928 (root_child_1) with Header (root_child_0)
-Mismatch! appending to signatures.txt
-Comparing root_child_1_child_2_child_1_child_0_child_0 (root_child_1_child_2_child_1_child_0_child_0) with Frame 1928 (root_child_1)
-Mismatch! appending to signatures.txt
-Comparing Filter name (root_child_1_child_2_child_1_child_1) with root_child_1_child_2_child_1_child_0_child_0 (root_child_1_child_2_child_1_child_0_child_0)
-Mismatch! appending to signatures.txt
-Checking children of Header (3)
-Comparing Frame 1695 (root_child_0_child_1) with Subject (root_child_0_child_0)
-Mismatch! appending to signatures.txt
-Comparing Frame 1696 (root_child_0_child_2) with Frame 1695 (root_child_0_child_1)
-Mismatch! appending to signatures.txt
-Checking children of Navigation / chevron-up (2)
-Comparing root_child_0_child_2_child_0_child_0 (root_child_0_child_2_child_0_child_0) with Vector (root_child_0_child_2_child_0_child_0_svgContainer)
-Mismatch! appending to signatures.txt
-Checking children of Frame 1928 (5)
-Comparing item (item) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Frame 1938 (root_child_1_child_2) with item (item)
-Mismatch! appending to signatures.txt
-Comparing Shape (item) with Frame 1938 (root_child_1_child_2)
-Mismatch! appending to signatures.txt
-Comparing item (item) with Shape (item)
-Mismatch! appending to signatures.txt
-Total groups found: 0
-No repetitive groups found.
-Done.
+🚀 Running Component Registration Service...
+[DEBUG] CWD: /Users/alexcalcan/Documents/Apps/FigmaDesigner
+[DEBUG] Slides Dir: /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides (Exists: true)
+[DEBUG] Skipped item: AI_COMPONENT_GUIDE.md
+[DEBUG] Entering dir: Alex_CookBook, Project: Alex_CookBook
+[DEBUG] Entering dir: Browser, Project: Alex_CookBook
+[DEBUG] Found TS file: Browser.ts
+[DEBUG] Found class Browser in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Browser/Browser.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: Browser_img_1.png
+[DEBUG] Skipped item: Browser_img_2.png
+[DEBUG] Skipped item: Browser_img_3.png
+[DEBUG] Skipped item: Browser_img_4.png
+[DEBUG] Entering dir: GQ_Banner_Shirts_Aligned, Project: Alex_CookBook
+[DEBUG] Found TS file: GQ_Banner_Shirts_Aligned.ts
+[DEBUG] Found class GQ_Banner_Shirts_Aligned in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/GQ_Banner_Shirts_Aligned/GQ_Banner_Shirts_Aligned.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Path1_1.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Path2_2.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Path3_3.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Path4_4.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_SynthVector5_5.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_SynthVector9_9.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Vector1367_7.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Vector1371_8.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_Synth_Vector1373_10.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_assets_vector_Mesh_Vector_1364_17612_svg_1592x805_0513916015625.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_assets_vector_Vector_1366_1364_17640_svg_1068_5x134_10000610351562.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_assets_vector_Vector_1375_1364_17662_svg_2291_60009765625x287_70001220703125.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_assets_vector_Vector_1376_1364_17666_svg_2613_60009765625x328_5.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_assets_vector_Vector_1377_1364_17670_svg_2616_60009765625x328_1000061035156.svg
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_1.png
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_2.png
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_3.png
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_4.png
+[DEBUG] Entering dir: Info_generated, Project: Alex_CookBook
+[DEBUG] Found TS file: Info_generated.ts
+[DEBUG] Found class Info_generated in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Info_generated/Info_generated.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: Info_generated_assets_icon_Vector_926_12320_svg_20x20.svg
+[DEBUG] Skipped item: Info_generated_assets_icon_Vector_926_12329_svg_18_715295791625977x19_192251205444336.svg
+[DEBUG] Entering dir: Info_raw, Project: Alex_CookBook
+[DEBUG] Found TS file: Info_raw.ts
+[DEBUG] Found class Info_raw in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Info_raw/Info_raw.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: Info_raw_assets_icon_Vector_976_124_svg_20x20.svg
+[DEBUG] Skipped item: Info_raw_assets_icon_Vector_976_133_svg_18_715295791625977x19_192251205444336.svg
+[DEBUG] Entering dir: Main_Navigation, Project: Alex_CookBook
+[DEBUG] Found TS file: Main_Navigation.ts
+[DEBUG] Found class Main_Navigation in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Main_Navigation/Main_Navigation.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77873_1004_283_svg_6_710267066955566x4_968685150146484.svg
+[DEBUG] Skipped item: Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22.svg
+[DEBUG] Skipped item: Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469.svg
+[DEBUG] Skipped item: Main_Navigation_assets_vector_UEFA_com_I14_114603_13611_17297_9157_77872_svg_74_09954071044922x12.svg
+[DEBUG] Entering dir: NavLink_selected_28, Project: Alex_CookBook
+[DEBUG] Found TS file: NavLink_selected_28.ts
+[DEBUG] Found class NavLink_selected_28 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/NavLink_selected_28/NavLink_selected_28.ts
+[DEBUG] Entering dir: Page_title, Project: Alex_CookBook
+[DEBUG] Found TS file: Page_title.ts
+[DEBUG] Found class Page_title in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Page_title/Page_title.ts
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: Profile_Card, Project: Alex_CookBook
+[DEBUG] Found TS file: Profile_Card.ts
+[DEBUG] Found class Profile_Card in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Profile_Card/Profile_Card.ts
+[DEBUG] Entering dir: Secondary_Navigation, Project: Alex_CookBook
+[DEBUG] Found TS file: Secondary_Navigation.ts
+[DEBUG] Found class Secondary_Navigation in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Secondary_Navigation/Secondary_Navigation.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_80889_8836_74401_1004_283_svg_6_710267066955566x4_968685150146484.svg
+[DEBUG] Skipped item: Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_80890_8836_74401_1004_283_svg_6_710267066955566x4_968685150146484.svg
+[DEBUG] Skipped item: Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_80892_8836_74401_1004_283_svg_6_710267066955566x4_968685150146484.svg
+[DEBUG] Skipped item: Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_80893_2823_14395_1004_283_svg_8_05232048034668x5_9624223709106445.svg
+[DEBUG] Skipped item: Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_80894_2823_14395_1004_12_svg_20x20.svg
+[DEBUG] Skipped item: Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_81038_8836_74401_1004_283_svg_6_710267066955566x4_968685150146484.svg
+[DEBUG] Skipped item: Secondary_Navigation_assets_vector_Logotype_I14_114603_13611_17298_9157_80883_25_2153_svg_96_66666412353516x42_5994873046875.svg
+[DEBUG] Entering dir: Top_bar, Project: Alex_CookBook
+[DEBUG] Found TS file: Top_bar.ts
+[DEBUG] Found class Top_bar in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/Top_bar/Top_bar.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: Top_bar_Synth_VectorStroke_2.svg
+[DEBUG] Skipped item: Top_bar_Synth_VectorStroke_3.svg
+[DEBUG] Skipped item: Top_bar_Synth_VectorStroke_4.svg
+[DEBUG] Skipped item: Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879.svg
+[DEBUG] Skipped item: Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336.svg
+[DEBUG] Skipped item: Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711.svg
+[DEBUG] Skipped item: Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832.svg
+[DEBUG] Entering dir: accordion, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: accordion.ts
+[DEBUG] Found class accordion in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/accordion/accordion.ts
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: minus.svg
+[DEBUG] Skipped item: plus.svg
+[DEBUG] Entering dir: checkbox, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: checkbox_Synth_Path_0.svg
+[DEBUG] Skipped item: checkbox_Synth_Path_1.svg
+[DEBUG] Skipped item: checkmark.svg
+[DEBUG] Found TS file: checkbox.ts
+[DEBUG] Found class checkbox in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/checkbox/checkbox.ts
+[DEBUG] Entering dir: chip_expand, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: chevron_down.svg
+[DEBUG] Found TS file: chip_expand.ts
+[DEBUG] Found class chip_expand in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/chip_expand/chip_expand.ts
+[DEBUG] Entering dir: dropdown_options, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: dropdown_options.ts
+[DEBUG] Found class dropdown_options in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/dropdown_options/dropdown_options.ts
+[DEBUG] Entering dir: expanded_card, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: SubSection_Synth_Path_1.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_10.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_11.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_12.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_13.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_14.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_15.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_16.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_17.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_18.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_19.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_2.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_20.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_3.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_4.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_5.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_6.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_7.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_8.svg
+[DEBUG] Skipped item: SubSection_Synth_Path_9.svg
+[DEBUG] Skipped item: SubSection_assets_icon_Vector_I1174_3092_5698_23_svg_12x7_400000095367432.svg
+[DEBUG] Found TS file: expanded_card.ts
+[DEBUG] Found class expanded_card in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/expanded_card/expanded_card.ts
+[DEBUG] Entering dir: input_field, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: caret_left.svg
+[DEBUG] Skipped item: close_icon.svg
+[DEBUG] Skipped item: search_icon.svg
+[DEBUG] Found TS file: input_field.ts
+[DEBUG] Found class input_field in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/input_field/input_field.ts
+[DEBUG] Entering dir: progress_stepper, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: progress_stepper.ts
+[DEBUG] Found class progress_stepper in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/progress_stepper/progress_stepper.ts
+[DEBUG] Entering dir: radio_button, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: radio_button.ts
+[DEBUG] Found class radio_button in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/radio_button/radio_button.ts
+[DEBUG] Entering dir: recipe_card, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: recipe_card_assets_icon_Difficulty_Icon_1023_1062_svg_18x18.svg
+[DEBUG] Skipped item: recipe_card_assets_icon_Timer_Icon_1023_1056_svg_18x18.svg
+[DEBUG] Skipped item: star_icon.svg
+[DEBUG] Skipped item: timer_icon.svg
+[DEBUG] Found TS file: recipe_card.ts
+[DEBUG] Found class recipe_card in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/recipe_card/recipe_card.ts
+[DEBUG] Entering dir: search_bar, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: search_bar.ts
+[DEBUG] Found class search_bar in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/search_bar/search_bar.ts
+[DEBUG] Entering dir: search_bar_expanded, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: search_bar_expanded.ts
+[DEBUG] Found class search_bar_expanded in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/search_bar_expanded/search_bar_expanded.ts
+[DEBUG] Entering dir: search_bar_expanded_radio, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: search_bar_expanded_radio.ts
+[DEBUG] Found class search_bar_expanded_radio in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/search_bar_expanded_radio/search_bar_expanded_radio.ts
+[DEBUG] Entering dir: sidebar_filtering, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: sidebar_Synth_Path_10.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_11.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_12.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_13.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_14.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_15.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_16.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_17.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_18.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_19.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_20.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_21.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_22.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_23.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_24.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_25.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_4.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_5.svg
+[DEBUG] Skipped item: sidebar_Synth_Path_6.svg
+[DEBUG] Skipped item: sidebar_Synth_Shape_7.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Checkmark_1077_370_svg_8x7.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Oval_1_Copy_13_1077_300_svg_18x18.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Oval_1_Copy_13_1142_1207_svg_18x18.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Oval_1_Copy_13_I1115_2457_7466_30960_svg_18x18.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Oval_1_Copy_13_I965_7248_7466_30960_svg_18x18.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Rectangle_77_Copy_7_1077_296_svg_42x22.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Rectangle_77_Copy_7_1142_1203_svg_42x22.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Rectangle_77_Copy_7_I1115_2457_7466_30959_svg_42x22.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Rectangle_77_Copy_7_I965_7248_7466_30959_svg_42x22.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Shape_1077_304_svg_10x10.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Shape_1142_1211_svg_10x10.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Shape_I1115_2457_7466_30966_svg_10x10.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Shape_I965_7248_7466_30966_svg_10x10.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_1077_328_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_1077_399_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_1142_1247_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_1142_1358_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_I1115_2466_5250_18144_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_I1115_2497_5250_18144_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_I965_7257_5250_18144_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Union_I965_7288_5250_18144_svg_8x8.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector_1077_336_svg_7x1.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector_1142_1255_svg_7x0.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector_I1115_2470_1914_8670_svg_7x0.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector_I965_7261_1914_8670_svg_7x0.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector__Stroke__1077_290_svg_22_000059127807617x21_020004272460938.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector__Stroke__1142_1197_svg_22_000059127807617x21_020004272460938.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector__Stroke__I1115_2455_3016_7769_svg_22_000059127807617x21_020004272460938.svg
+[DEBUG] Skipped item: sidebar_assets_icon_Vector__Stroke__I965_7246_3016_7769_svg_22_000059127807617x21_020004272460938.svg
+[DEBUG] Found TS file: sidebar_filtering.ts
+[DEBUG] Found class sidebar_filtering in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/sidebar_filtering/sidebar_filtering.ts
+[DEBUG] Entering dir: social_profile_card, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: social_profile_card.ts
+[DEBUG] Found class social_profile_card in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/social_profile_card/social_profile_card.ts
+[DEBUG] Entering dir: toggle, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: toggle_bg.svg
+[DEBUG] Skipped item: toggle_icon.svg
+[DEBUG] Skipped item: toggle_knob.svg
+[DEBUG] Found TS file: toggle.ts
+[DEBUG] Found class toggle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/toggle/toggle.ts
+[DEBUG] Entering dir: uefa_cards_4x, Project: Alex_CookBook
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: assets, Project: Alex_CookBook
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Play_Icon_1049_420_svg_54x54.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Play_Icon_1049_488_svg_54x54.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Play_Icon_1058_3036_svg_54x54.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Play_Icon_1058_3104_svg_54x54.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1049_434_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1049_466_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1049_502_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1049_534_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1058_3050_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1058_3082_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1058_3118_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_1_1058_3150_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1049_438_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1049_470_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1049_506_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1049_538_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1058_3054_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1058_3086_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1058_3122_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_2_1058_3154_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1049_442_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1049_474_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1049_510_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1049_542_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1058_3058_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1058_3090_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1058_3126_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_3_1058_3158_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1049_446_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1049_478_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1049_514_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1049_546_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1058_3062_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1058_3094_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1058_3130_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_4_1058_3162_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1049_450_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1049_482_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1049_518_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1049_550_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1058_3066_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1058_3098_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1058_3134_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_assets_icon_Star_5_1058_3166_svg_11_999994277954102x11_999982833862305.svg
+[DEBUG] Skipped item: uefa_cards_4x_img_1.png
+[DEBUG] Skipped item: uefa_cards_4x_img_2.png
+[DEBUG] Skipped item: uefa_cards_4x_img_3.png
+[DEBUG] Skipped item: uefa_cards_4x_img_4.png
+[DEBUG] Skipped item: uefa_cards_4x_star_empty.svg
+[DEBUG] Skipped item: uefa_cards_4x_star_filled.svg
+[DEBUG] Found TS file: uefa_cards_4x.ts
+[DEBUG] Found class uefa_cards_4x in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Alex_CookBook/uefa_cards_4x/uefa_cards_4x.ts
+[DEBUG] Found TS file: BaseComponent.ts
+[DEBUG] Entering dir: Competition_newsletters, Project: Competition_newsletters
+[DEBUG] Entering dir: Top_bar, Project: Competition_newsletters
+[DEBUG] Found TS file: Top_bar.ts
+[DEBUG] Found class Top_bar in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Competition_newsletters/Top_bar/Top_bar.ts
+[DEBUG] Entering dir: checkbox_element, Project: Competition_newsletters
+[DEBUG] Found TS file: checkbox_element.ts
+[DEBUG] Found class checkbox_element in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Competition_newsletters/checkbox_element/checkbox_element.ts
+[DEBUG] Found TS file: ComponentHelpers.ts
+[DEBUG] Entering dir: GQ_2026, Project: GQ_2026
+[DEBUG] Entering dir: banner, Project: GQ_2026
+[DEBUG] Entering dir: assets, Project: GQ_2026
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_1.png
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_2.png
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_3.png
+[DEBUG] Skipped item: GQ_Banner_Shirts_Aligned_img_4.png
+[DEBUG] Found TS file: banner.ts
+[DEBUG] Found class banner in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/GQ_2026/banner/banner.ts
+[DEBUG] Entering dir: hero, Project: GQ_2026
+[DEBUG] Entering dir: assets, Project: GQ_2026
+[DEBUG] Skipped item: hero_Synth_Path_1.svg
+[DEBUG] Skipped item: hero_Synth_Path_2.svg
+[DEBUG] Skipped item: hero_Synth_Path_3.svg
+[DEBUG] Skipped item: hero_Synth_Path_4.svg
+[DEBUG] Skipped item: hero_Synth_Vector_5.svg
+[DEBUG] Skipped item: hero_Synth_Vector_9.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11355_svg_1592x805_0513916015625.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11366_svg_1068_5123291015625x134_15765380859375.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11367_svg_1218_63671875x153_1599578857422.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11371_svg_1068_5123291015625x134_15765380859375.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11373_svg_600x334.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11375_svg_2291_601318359375x287_7232666015625.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11376_svg_2613_569091796875x328_47698974609375.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1349_11377_svg_2616_570068359375x328_1084899902344.svg
+[DEBUG] Skipped item: hero_assets_vector_Vector_1350_11491_svg_167_99998474121094x35_60811996459961.svg
+[DEBUG] Skipped item: hero_img_1.png
+[DEBUG] Skipped item: hero_img_2.png
+[DEBUG] Skipped item: hero_img_3.png
+[DEBUG] Skipped item: hero_img_4.png
+[DEBUG] Found TS file: hero.ts
+[DEBUG] Found class hero in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/GQ_2026/hero/hero.ts
+[DEBUG] Entering dir: pk_button, Project: GQ_2026
+[DEBUG] Found TS file: pk_button.ts
+[DEBUG] Found class pk_button in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/GQ_2026/pk_button/pk_button.ts
+[DEBUG] Found TS file: JsonReconstructor.ts
+[DEBUG] Found class JsonReconstructor in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/JsonReconstructor.ts
+[DEBUG] Entering dir: Miscellaneous, Project: Miscellaneous
+[DEBUG] Entering dir: BriefNote, Project: Miscellaneous
+[DEBUG] Found TS file: BriefNote.ts
+[DEBUG] Found class BriefNote in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Miscellaneous/BriefNote/BriefNote.ts
+[DEBUG] Entering dir: UserObservationStickyNote, Project: Miscellaneous
+[DEBUG] Found TS file: UserObservationStickyNote.ts
+[DEBUG] Found class UserObservationStickyNote in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Miscellaneous/UserObservationStickyNote/UserObservationStickyNote.ts
+[DEBUG] Entering dir: Newsletter, Project: Newsletter
+[DEBUG] Found TS file: Button.ts
+[DEBUG] Found class Button in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Newsletter/Button.ts
+[DEBUG] Found TS file: TableStat.ts
+[DEBUG] Found class TableStat in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Newsletter/TableStat.ts
+[DEBUG] Found TS file: PaintHelpers.ts
+[DEBUG] Found TS file: Placeholder.ts
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: Slide_Objects, Project: Slide_Objects
+[DEBUG] Skipped item: README.md
+[DEBUG] Found TS file: SlideObjectLibrary.ts
+[DEBUG] Found class BarChartObject in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/Slide_Objects/SlideObjectLibrary.ts
+[DEBUG] Found TS file: index.ts
+[DEBUG] Found TS file: TransformHelpers.ts
+[DEBUG] Entering dir: UEFA_Academy_online, Project: UEFA_Academy_online
+[DEBUG] Skipped item: .DS_Store
+[DEBUG] Entering dir: Content_container, Project: UEFA_Academy_online
+[DEBUG] Found TS file: Content_container.ts
+[DEBUG] Found class Content_container in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/Content_container/Content_container.ts
+[DEBUG] Entering dir: Divider, Project: UEFA_Academy_online
+[DEBUG] Found TS file: Divider.ts
+[DEBUG] Found class Divider in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/Divider/Divider.ts
+[DEBUG] Entering dir: Header, Project: UEFA_Academy_online
+[DEBUG] Found TS file: Header.ts
+[DEBUG] Found class Header in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/Header/Header.ts
+[DEBUG] Entering dir: assets, Project: UEFA_Academy_online
+[DEBUG] Skipped item: img_1_opt.png
+[DEBUG] Entering dir: Info, Project: UEFA_Academy_online
+[DEBUG] Found TS file: Info.ts
+[DEBUG] Found class Info in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/Info/Info.ts
+[DEBUG] Entering dir: Page_title, Project: UEFA_Academy_online
+[DEBUG] Found TS file: Page_title.ts
+[DEBUG] Found class Page_title in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/Page_title/Page_title.ts
+[DEBUG] Entering dir: SubSection, Project: UEFA_Academy_online
+[DEBUG] Found TS file: SubSection_collapsed.ts
+[DEBUG] Found class SubSection_collapsed in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/SubSection/SubSection_collapsed.ts
+[DEBUG] Entering dir: TitleBar_withCTA, Project: UEFA_Academy_online
+[DEBUG] Found TS file: TitleBar_withCTA.ts
+[DEBUG] Found class TitleBar_withCTA in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA.ts
+[DEBUG] Entering dir: Top_bar, Project: UEFA_Academy_online
+[DEBUG] Found TS file: Top_bar.ts
+[DEBUG] Found class Top_bar in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/Top_bar/Top_bar.ts
+[DEBUG] Entering dir: button_set, Project: UEFA_Academy_online
+[DEBUG] Found TS file: button_set.ts
+[DEBUG] Found class button_set in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/button_set/button_set.ts
+[DEBUG] Entering dir: card, Project: UEFA_Academy_online
+[DEBUG] Entering dir: assets, Project: UEFA_Academy_online
+[DEBUG] Skipped item: img_1.png
+[DEBUG] Skipped item: img_2_opt.png
+[DEBUG] Found TS file: card.ts
+[DEBUG] Found class card in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/card/card.ts
+[DEBUG] Entering dir: cards_row, Project: UEFA_Academy_online
+[DEBUG] Entering dir: assets, Project: UEFA_Academy_online
+[DEBUG] Skipped item: img_1.png
+[DEBUG] Skipped item: img_2.png
+[DEBUG] Skipped item: img_3.png
+[DEBUG] Skipped item: img_4.png
+[DEBUG] Found TS file: cards_row.ts
+[DEBUG] Found class cards_row in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/cards_row/cards_row.ts
+[DEBUG] Entering dir: checkbox_element, Project: UEFA_Academy_online
+[DEBUG] Found TS file: checkbox_element.ts
+[DEBUG] Found class checkbox_element in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/checkbox_element/checkbox_element.ts
+[DEBUG] Entering dir: chip_dropdown, Project: UEFA_Academy_online
+[DEBUG] Found TS file: chip_dropdown.ts
+[DEBUG] Found class chip_dropdown in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/chip_dropdown/chip_dropdown.ts
+[DEBUG] Entering dir: search_bar, Project: UEFA_Academy_online
+[DEBUG] Found TS file: search_bar.ts
+[DEBUG] Found class search_bar in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/search_bar/search_bar.ts
+[DEBUG] Entering dir: simple_info, Project: UEFA_Academy_online
+[DEBUG] Found TS file: simple_info.ts
+[DEBUG] Found class simple_info in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Academy_online/simple_info/simple_info.ts
+[DEBUG] Entering dir: UEFA_Booking_Euro28, Project: UEFA_Booking_Euro28
+[DEBUG] Entering dir: BookingLogo_color, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: BookingLogo_color.ts
+[DEBUG] Found class BookingLogo_color in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Booking_Euro28/BookingLogo_color/BookingLogo_color.ts
+[DEBUG] Entering dir: assets, Project: UEFA_Booking_Euro28
+[DEBUG] Skipped item: BookingLogo_color_assets_vector_BookingLogo_color_1248_21813_svg_118_09945678710938x19_648025512695312.svg
+[DEBUG] Entering dir: Main_Navigation_28, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: Main_Navigation_28.ts
+[DEBUG] Found class Main_Navigation_28 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Booking_Euro28/Main_Navigation_28/Main_Navigation_28.ts
+[DEBUG] Entering dir: assets, Project: UEFA_Booking_Euro28
+[DEBUG] Skipped item: Main_Navigation_28_desktop_assets_icon_Vector_1277_36281_svg_8_385973930358887x6_209956169128418.svg
+[DEBUG] Skipped item: Main_Navigation_28_desktop_assets_vector_Vector_1277_36294_svg_156x23_986331939697266.svg
+[DEBUG] Skipped item: Main_Navigation_28_mobile_Synth_Vector_1.svg
+[DEBUG] Skipped item: Main_Navigation_28_mobile_assets_icon_Vector_1277_37330_svg_9_13321304321289x22_405445098876953.svg
+[DEBUG] Skipped item: Main_Navigation_28_mobile_assets_icon_Vector_1277_37367_svg_18_75x12_5.svg
+[DEBUG] Skipped item: Main_Navigation_28_mobile_assets_icon_Vector_1277_37512_svg_23_699735641479492x39_999935150146484.svg
+[DEBUG] Entering dir: Main_Navigation_28_Booking, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: Main_Navigation_28_Booking.ts
+[DEBUG] Found class Main_Navigation_28_Booking in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Booking_Euro28/Main_Navigation_28_Booking/Main_Navigation_28_Booking.ts
+[DEBUG] Entering dir: Main_Navigation_Booking, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: Main_Navigation_Booking.ts
+[DEBUG] Found class Main_Navigation_Booking in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Booking_Euro28/Main_Navigation_Booking/Main_Navigation_Booking.ts
+[DEBUG] Entering dir: assets, Project: UEFA_Booking_Euro28
+[DEBUG] Skipped item: Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77873_1004_283_svg_6_710267066955566x4_968685150146484.svg
+[DEBUG] Skipped item: Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77875_2823_14227_1004_31_svg_22x22.svg
+[DEBUG] Skipped item: Main_Navigation_assets_icon_Vector_I14_114603_13611_17297_9157_77877_2204_3_1004_18_svg_12_807365417480469x12_807365417480469.svg
+[DEBUG] Skipped item: Main_Navigation_assets_vector_UEFA_com_I14_114603_13611_17297_9157_77872_svg_74_09954071044922x12.svg
+[DEBUG] Entering dir: SponsorBanner, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: SponsorBanner.ts
+[DEBUG] Found class SponsorBanner in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Booking_Euro28/SponsorBanner/SponsorBanner.ts
+[DEBUG] Entering dir: SponsorStrip, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: SponsorStrip.ts
+[DEBUG] Found class SponsorStrip in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_Booking_Euro28/SponsorStrip/SponsorStrip.ts
+[DEBUG] Entering dir: UEFA_icons, Project: UEFA_icons
+[DEBUG] Entering dir: AV___airplay, Project: UEFA_icons
+[DEBUG] Found TS file: AV___airplay.ts
+[DEBUG] Found class AV___airplay in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___airplay/AV___airplay.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___airplay_assets_icon_Vector_I92_670724_2836_2337_svg_20_00686264038086x16_54624366760254.svg
+[DEBUG] Entering dir: AV___android_forward_10, Project: UEFA_icons
+[DEBUG] Found TS file: AV___android_forward_10.ts
+[DEBUG] Found class AV___android_forward_10 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___android_forward_10/AV___android_forward_10.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___android_forward_10_assets_icon_Vector_I92_670729_4789_28_svg_18_734800338745117x21_738073348999023.svg
+[DEBUG] Entering dir: AV___android_replay_10, Project: UEFA_icons
+[DEBUG] Found TS file: AV___android_replay_10.ts
+[DEBUG] Found class AV___android_replay_10 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___android_replay_10/AV___android_replay_10.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___android_replay_10_assets_icon_Vector_I92_670733_4789_23_svg_18_734800338745117x21_738073348999023.svg
+[DEBUG] Entering dir: AV___autoplay, Project: UEFA_icons
+[DEBUG] Found TS file: AV___autoplay.ts
+[DEBUG] Found class AV___autoplay in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___autoplay/AV___autoplay.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___autoplay_assets_icon_Vector_I92_670737_5100_18_svg_20_832244873046875x20_83196258544922.svg
+[DEBUG] Entering dir: AV___backward, Project: UEFA_icons
+[DEBUG] Found TS file: AV___backward.ts
+[DEBUG] Found class AV___backward in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___backward/AV___backward.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___backward_assets_icon_Vector_I92_670741_1004_98_svg_16_765993118286133x10_143634796142578.svg
+[DEBUG] Entering dir: AV___chromecast, Project: UEFA_icons
+[DEBUG] Found TS file: AV___chromecast.ts
+[DEBUG] Found class AV___chromecast in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___chromecast/AV___chromecast.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___chromecast_assets_icon_Vector_I92_670747_2836_2315_svg_22x18.svg
+[DEBUG] Entering dir: AV___forward, Project: UEFA_icons
+[DEBUG] Found TS file: AV___forward.ts
+[DEBUG] Found class AV___forward in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___forward/AV___forward.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___forward_assets_icon_Vector_I92_670753_1004_99_svg_16_765974044799805x10_143634796142578.svg
+[DEBUG] Entering dir: AV___fullscreen, Project: UEFA_icons
+[DEBUG] Found TS file: AV___fullscreen.ts
+[DEBUG] Found class AV___fullscreen in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___fullscreen/AV___fullscreen.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___fullscreen_assets_icon_Vector_I92_670755_1004_100_svg_14x14.svg
+[DEBUG] Entering dir: AV___fullscreen_exit, Project: UEFA_icons
+[DEBUG] Found TS file: AV___fullscreen_exit.ts
+[DEBUG] Found class AV___fullscreen_exit in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___fullscreen_exit/AV___fullscreen_exit.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___fullscreen_exit_assets_icon_Vector_I92_670760_4765_15_svg_14_805475234985352x14_805475234985352.svg
+[DEBUG] Entering dir: AV___ios_backward_10, Project: UEFA_icons
+[DEBUG] Found TS file: AV___ios_backward_10.ts
+[DEBUG] Found class AV___ios_backward_10 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___ios_backward_10/AV___ios_backward_10.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___ios_backward_10_assets_icon____I92_670765_4799_67_svg_19_871980667114258x21_510000228881836.svg
+[DEBUG] Entering dir: AV___ios_forward_10, Project: UEFA_icons
+[DEBUG] Found TS file: AV___ios_forward_10.ts
+[DEBUG] Found class AV___ios_forward_10 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___ios_forward_10/AV___ios_forward_10.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___ios_forward_10_assets_icon____I92_670771_4789_37_svg_19_87939453125x21_50802230834961.svg
+[DEBUG] Entering dir: AV___ios_go_to_end, Project: UEFA_icons
+[DEBUG] Found TS file: AV___ios_go_to_end.ts
+[DEBUG] Found class AV___ios_go_to_end in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___ios_go_to_end/AV___ios_go_to_end.ts
+[DEBUG] Entering dir: AV___ios_next, Project: UEFA_icons
+[DEBUG] Found TS file: AV___ios_next.ts
+[DEBUG] Found class AV___ios_next in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___ios_next/AV___ios_next.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___ios_next_assets_icon____I92_670781_4854_18_svg_12_0703125x12_90625.svg
+[DEBUG] Entering dir: AV___ios_previous, Project: UEFA_icons
+[DEBUG] Found TS file: AV___ios_previous.ts
+[DEBUG] Found class AV___ios_previous in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___ios_previous/AV___ios_previous.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___ios_previous_assets_icon____I92_670785_4854_16_svg_12_0703125x12_90625.svg
+[DEBUG] Entering dir: AV___pause, Project: UEFA_icons
+[DEBUG] Found TS file: AV___pause.ts
+[DEBUG] Found class AV___pause in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___pause/AV___pause.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___pause_assets_icon_Vector_I92_670789_1004_95_svg_10_285715103149414x12.svg
+[DEBUG] Entering dir: AV___pause_circle, Project: UEFA_icons
+[DEBUG] Found TS file: AV___pause_circle.ts
+[DEBUG] Found class AV___pause_circle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___pause_circle/AV___pause_circle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___pause_circle_assets_icon_Vector_I92_670793_1004_96_svg_20x20.svg
+[DEBUG] Entering dir: AV___pause_circle_negative, Project: UEFA_icons
+[DEBUG] Found TS file: AV___pause_circle_negative.ts
+[DEBUG] Found class AV___pause_circle_negative in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___pause_circle_negative/AV___pause_circle_negative.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___pause_circle_negative_assets_icon_Vector_I92_670797_2073_800_svg_20x20.svg
+[DEBUG] Entering dir: AV___play, Project: UEFA_icons
+[DEBUG] Found TS file: AV___play.ts
+[DEBUG] Found class AV___play in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___play/AV___play.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___play_assets_icon_Vector_I92_670799_1004_103_svg_10_137325286865234x12_359896659851074.svg
+[DEBUG] Entering dir: AV___play_circle, Project: UEFA_icons
+[DEBUG] Found TS file: AV___play_circle.ts
+[DEBUG] Found class AV___play_circle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___play_circle/AV___play_circle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___play_circle_assets_icon_Vector_I105_47028_1004_91_svg_20x20.svg
+[DEBUG] Skipped item: AV___play_circle_assets_icon_Vector_I92_670803_1004_91_svg_20x20.svg
+[DEBUG] Entering dir: AV___play_circle_negative, Project: UEFA_icons
+[DEBUG] Found TS file: AV___play_circle_negative.ts
+[DEBUG] Found class AV___play_circle_negative in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___play_circle_negative/AV___play_circle_negative.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___play_circle_negative_assets_icon_Vector_I92_670805_1004_90_svg_20x20.svg
+[DEBUG] Entering dir: AV___play_video_off_2, Project: UEFA_icons
+[DEBUG] Found TS file: AV___play_video_off_2.ts
+[DEBUG] Found class AV___play_video_off_2 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___play_video_off_2/AV___play_video_off_2.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___play_video_off_2_assets_icon_Vector_I92_670810_6378_26_svg_20x20.svg
+[DEBUG] Entering dir: AV___sound_down, Project: UEFA_icons
+[DEBUG] Found TS file: AV___sound_down.ts
+[DEBUG] Found class AV___sound_down in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___sound_down/AV___sound_down.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___sound_down_assets_icon_Vector_I92_670815_2099_793_svg_9x13_1755952835083.svg
+[DEBUG] Entering dir: AV___sound_off, Project: UEFA_icons
+[DEBUG] Found TS file: AV___sound_off.ts
+[DEBUG] Found class AV___sound_off in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___sound_off/AV___sound_off.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___sound_off_assets_icon_Vector_I92_670819_1004_102_svg_18x17_31501007080078.svg
+[DEBUG] Entering dir: AV___sound_up, Project: UEFA_icons
+[DEBUG] Found TS file: AV___sound_up.ts
+[DEBUG] Found class AV___sound_up in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___sound_up/AV___sound_up.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___sound_up_assets_icon_Vector_I92_670823_1004_101_svg_18x16_91045570373535.svg
+[DEBUG] Entering dir: AV___stop, Project: UEFA_icons
+[DEBUG] Found TS file: AV___stop.ts
+[DEBUG] Found class AV___stop in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___stop/AV___stop.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___stop_assets_icon_Vector_I92_670827_1543_114_svg_12x12.svg
+[DEBUG] Entering dir: AV___stop_circle_negative, Project: UEFA_icons
+[DEBUG] Found TS file: AV___stop_circle_negative.ts
+[DEBUG] Found class AV___stop_circle_negative in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/AV___stop_circle_negative/AV___stop_circle_negative.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: AV___stop_circle_negative_Synth_Vector_0.svg
+[DEBUG] Skipped item: AV___stop_circle_negative_Synth_Vector_1.svg
+[DEBUG] Entering dir: Action___Collapse_All, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Collapse_All.ts
+[DEBUG] Found class Action___Collapse_All in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Collapse_All/Action___Collapse_All.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Collapse_All_assets_icon_Vector_I92_670523_5131_31_svg_12x20.svg
+[DEBUG] Entering dir: Action___Description, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Description.ts
+[DEBUG] Found class Action___Description in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Description/Action___Description.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Description_assets_icon_Vector_I92_670536_6340_16_svg_15x19.svg
+[DEBUG] Entering dir: Action___Drag_horizontal, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Drag_horizontal.ts
+[DEBUG] Found class Action___Drag_horizontal in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Drag_horizontal/Action___Drag_horizontal.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Drag_horizontal_assets_icon_Union_I92_670558_4538_10851_svg_5x16.svg
+[DEBUG] Entering dir: Action___Drag_horizontal_Alt, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Drag_horizontal_Alt.ts
+[DEBUG] Found class Action___Drag_horizontal_Alt in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Drag_horizontal_Alt/Action___Drag_horizontal_Alt.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Drag_horizontal_Alt_assets_icon_Union_I92_670562_4538_10873_svg_14x16.svg
+[DEBUG] Entering dir: Action___Drag_vertical, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Drag_vertical.ts
+[DEBUG] Found class Action___Drag_vertical in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Drag_vertical/Action___Drag_vertical.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Drag_vertical_assets_icon_Union_I92_670566_4538_10847_svg_16x5.svg
+[DEBUG] Entering dir: Action___Drag_vertical_Alt, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Drag_vertical_Alt.ts
+[DEBUG] Found class Action___Drag_vertical_Alt in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Drag_vertical_Alt/Action___Drag_vertical_Alt.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Drag_vertical_Alt_assets_icon_Vector_I92_670570_4538_10874_svg_16x14.svg
+[DEBUG] Entering dir: Action___Expand_All, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Expand_All.ts
+[DEBUG] Found class Action___Expand_All in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Expand_All/Action___Expand_All.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Expand_All_assets_icon_Vector_I92_670596_5131_19_svg_12x20.svg
+[DEBUG] Entering dir: Action___Microphone, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Microphone.ts
+[DEBUG] Found class Action___Microphone in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Microphone/Action___Microphone.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Microphone_assets_icon_mic_on_icon_I92_670647_3656_10833_svg_12x20.svg
+[DEBUG] Entering dir: Action___Open_in_full, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Open_in_full.ts
+[DEBUG] Found class Action___Open_in_full in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Open_in_full/Action___Open_in_full.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Open_in_full_assets_icon_Vector_I92_670651_3341_6710_svg_18x18.svg
+[DEBUG] Entering dir: Action___Print, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Print.ts
+[DEBUG] Found class Action___Print in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Print/Action___Print.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Print_assets_icon_Vector_I92_670655_2963_2333_svg_20x18.svg
+[DEBUG] Entering dir: Action___Restart, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Restart.ts
+[DEBUG] Found class Action___Restart in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Restart/Action___Restart.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Restart_assets_icon_Vector_I92_670669_6428_19_svg_16x18_450000762939453.svg
+[DEBUG] Entering dir: Action___Swap_horizontal, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Swap_horizontal.ts
+[DEBUG] Found class Action___Swap_horizontal in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Swap_horizontal/Action___Swap_horizontal.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Swap_horizontal_assets_icon_Vector_I92_670699_4343_10843_svg_20x16.svg
+[DEBUG] Entering dir: Action___Swap_vertical, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Swap_vertical.ts
+[DEBUG] Found class Action___Swap_vertical in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Swap_vertical/Action___Swap_vertical.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Swap_vertical_assets_icon_Vector_I92_670703_4343_10836_svg_16x20.svg
+[DEBUG] Entering dir: Action___Sync, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Sync.ts
+[DEBUG] Found class Action___Sync in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Sync/Action___Sync.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Sync_assets_icon_Vector_I92_670707_6692_11_svg_16x22.svg
+[DEBUG] Entering dir: Action___Tune, Project: UEFA_icons
+[DEBUG] Found TS file: Action___Tune.ts
+[DEBUG] Found class Action___Tune in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___Tune/Action___Tune.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___Tune_assets_icon_Vector_I92_670711_4342_10825_svg_18x18.svg
+[DEBUG] Entering dir: Action___action_copy, Project: UEFA_icons
+[DEBUG] Found TS file: Action___action_copy.ts
+[DEBUG] Found class Action___action_copy in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___action_copy/Action___action_copy.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___action_copy_assets_icon_icon_copy_I92_670499_2058_795_svg_17_27273178100586x20.svg
+[DEBUG] Entering dir: Action___action_delete, Project: UEFA_icons
+[DEBUG] Found TS file: Action___action_delete.ts
+[DEBUG] Found class Action___action_delete in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___action_delete/Action___action_delete.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___action_delete_assets_icon_Delete_I92_670503_2047_812_svg_18x19_799997329711914.svg
+[DEBUG] Entering dir: Action___add, Project: UEFA_icons
+[DEBUG] Found TS file: Action___add.ts
+[DEBUG] Found class Action___add in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___add/Action___add.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___add_assets_icon_Vector_I92_670509_1004_9_svg_14x14.svg
+[DEBUG] Entering dir: Action___add_circle, Project: UEFA_icons
+[DEBUG] Found TS file: Action___add_circle.ts
+[DEBUG] Found class Action___add_circle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___add_circle/Action___add_circle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___add_circle_assets_icon_Vector_I92_670511_1004_12_svg_20x20.svg
+[DEBUG] Entering dir: Action___add_to_calendar, Project: UEFA_icons
+[DEBUG] Found TS file: Action___add_to_calendar.ts
+[DEBUG] Found class Action___add_to_calendar in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___add_to_calendar/Action___add_to_calendar.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___add_to_calendar_assets_icon_Vector_I92_670513_4247_10861_svg_18x20.svg
+[DEBUG] Entering dir: Action___check, Project: UEFA_icons
+[DEBUG] Found TS file: Action___check.ts
+[DEBUG] Found class Action___check in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___check/Action___check.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___check_assets_icon_Vector_I92_670515_1004_3_svg_16_760000228881836x12_583032608032227.svg
+[DEBUG] Entering dir: Action___check_circle, Project: UEFA_icons
+[DEBUG] Found TS file: Action___check_circle.ts
+[DEBUG] Found class Action___check_circle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___check_circle/Action___check_circle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___check_circle_assets_icon_Vector_I92_670519_1004_6_svg_20x20.svg
+[DEBUG] Entering dir: Action___compare, Project: UEFA_icons
+[DEBUG] Found TS file: Action___compare.ts
+[DEBUG] Found class Action___compare in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___compare/Action___compare.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___compare_assets_icon_Vector_I92_670531_7359_27_svg_19_932737350463867x16_039247512817383.svg
+[DEBUG] Entering dir: Action___directions, Project: UEFA_icons
+[DEBUG] Found TS file: Action___directions.ts
+[DEBUG] Found class Action___directions in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___directions/Action___directions.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___directions_assets_icon_Vector_I92_670541_2662_2210_svg_21_99509620666504x21_96625518798828.svg
+[DEBUG] Entering dir: Action___dislike, Project: UEFA_icons
+[DEBUG] Found TS file: Action___dislike.ts
+[DEBUG] Found class Action___dislike in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___dislike/Action___dislike.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___dislike_assets_icon_Vector_I92_670543_3945_10828_svg_21_30138397216797x19_06560516357422.svg
+[DEBUG] Entering dir: Action___dislike_filled, Project: UEFA_icons
+[DEBUG] Found TS file: Action___dislike_filled.ts
+[DEBUG] Found class Action___dislike_filled in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___dislike_filled/Action___dislike_filled.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___dislike_filled_assets_icon_Vector_I92_670549_3870_10837_svg_21_341978073120117x19_38385772705078.svg
+[DEBUG] Entering dir: Action___download, Project: UEFA_icons
+[DEBUG] Found TS file: Action___download.ts
+[DEBUG] Found class Action___download in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___download/Action___download.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___download_assets_icon_Vector_I92_670554_1004_67_svg_22x18.svg
+[DEBUG] Entering dir: Action___edit, Project: UEFA_icons
+[DEBUG] Found TS file: Action___edit.ts
+[DEBUG] Found class Action___edit in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___edit/Action___edit.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___edit_assets_icon_Rectangle_289_I92_670577_1825_12_svg_4_5x18.svg
+[DEBUG] Skipped item: Action___edit_assets_icon_Rectangle_290_I92_670577_1825_13_svg_4_5x3_8125.svg
+[DEBUG] Entering dir: Action___edit_filled, Project: UEFA_icons
+[DEBUG] Found TS file: Action___edit_filled.ts
+[DEBUG] Found class Action___edit_filled in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___edit_filled/Action___edit_filled.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___edit_filled_assets_icon_icon_edit_I92_670584_2066_805_svg_17_617008209228516x17_617008209228516.svg
+[DEBUG] Entering dir: Action___equal, Project: UEFA_icons
+[DEBUG] Found TS file: Action___equal.ts
+[DEBUG] Found class Action___equal in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___equal/Action___equal.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___equal_assets_icon_Vector_I92_670588_6733_27_svg_16x6.svg
+[DEBUG] Entering dir: Action___equal_Alt, Project: UEFA_icons
+[DEBUG] Found TS file: Action___equal_Alt.ts
+[DEBUG] Found class Action___equal_Alt in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___equal_Alt/Action___equal_Alt.ts
+[DEBUG] Entering dir: Action___favourite, Project: UEFA_icons
+[DEBUG] Found TS file: Action___favourite.ts
+[DEBUG] Found class Action___favourite in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___favourite/Action___favourite.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___favourite_assets_icon_Subtract_I92_670598_2256_2213_svg_18x15_876090049743652.svg
+[DEBUG] Entering dir: Action___favourite_active, Project: UEFA_icons
+[DEBUG] Found TS file: Action___favourite_active.ts
+[DEBUG] Found class Action___favourite_active in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___favourite_active/Action___favourite_active.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___favourite_active_assets_icon_Vector_I92_670600_1004_64_svg_18x15_876140594482422.svg
+[DEBUG] Entering dir: Action___filter, Project: UEFA_icons
+[DEBUG] Found TS file: Action___filter.ts
+[DEBUG] Found class Action___filter in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___filter/Action___filter.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___filter_assets_icon_Vector_I92_670602_1004_43_svg_14x10.svg
+[DEBUG] Entering dir: Action___filter_circle, Project: UEFA_icons
+[DEBUG] Found TS file: Action___filter_circle.ts
+[DEBUG] Found class Action___filter_circle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___filter_circle/Action___filter_circle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___filter_circle_assets_icon_Vector_I92_670606_1004_48_svg_20_00143051147461x20_00143051147461.svg
+[DEBUG] Entering dir: Action___filter_circle_filled, Project: UEFA_icons
+[DEBUG] Found TS file: Action___filter_circle_filled.ts
+[DEBUG] Found class Action___filter_circle_filled in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___filter_circle_filled/Action___filter_circle_filled.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___filter_circle_filled_assets_icon_Vector_I92_670610_1004_49_svg_20_004398345947266x20_004398345947266.svg
+[DEBUG] Entering dir: Action___followed, Project: UEFA_icons
+[DEBUG] Found TS file: Action___followed.ts
+[DEBUG] Found class Action___followed in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___followed/Action___followed.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___followed_assets_icon_Vector_I92_670614_1004_55_svg_17_116867065429688x16_365814208984375.svg
+[DEBUG] Entering dir: Action___followed_active, Project: UEFA_icons
+[DEBUG] Found TS file: Action___followed_active.ts
+[DEBUG] Found class Action___followed_active in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___followed_active/Action___followed_active.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___followed_active_assets_icon_Vector_I92_670618_1004_58_svg_17_113935470581055x16_35581398010254.svg
+[DEBUG] Entering dir: Action___ios_close_full, Project: UEFA_icons
+[DEBUG] Found TS file: Action___ios_close_full.ts
+[DEBUG] Found class Action___ios_close_full in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___ios_close_full/Action___ios_close_full.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___ios_close_full_assets_icon____I92_670622_4799_41_svg_13_364729881286621x13_680000305175781.svg
+[DEBUG] Entering dir: Action___language, Project: UEFA_icons
+[DEBUG] Found TS file: Action___language.ts
+[DEBUG] Found class Action___language in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___language/Action___language.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___language_assets_icon_Vector_I92_670631_5086_61_svg_18_99995231628418x18_99995231628418.svg
+[DEBUG] Entering dir: Action___like, Project: UEFA_icons
+[DEBUG] Found TS file: Action___like.ts
+[DEBUG] Found class Action___like in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___like/Action___like.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___like_assets_icon_Vector_I92_670634_2869_2355_svg_21_30138397216797x19_06560516357422.svg
+[DEBUG] Entering dir: Action___like_filled, Project: UEFA_icons
+[DEBUG] Found TS file: Action___like_filled.ts
+[DEBUG] Found class Action___like_filled in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___like_filled/Action___like_filled.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___like_filled_assets_icon_Vector_I92_670640_2869_2352_svg_21_341978073120117x19_38385772705078.svg
+[DEBUG] Entering dir: Action___map, Project: UEFA_icons
+[DEBUG] Found TS file: Action___map.ts
+[DEBUG] Found class Action___map in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___map/Action___map.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___map_assets_icon_Vector_I92_670645_2662_2204_svg_18x18.svg
+[DEBUG] Entering dir: Action___profile, Project: UEFA_icons
+[DEBUG] Found TS file: Action___profile.ts
+[DEBUG] Found class Action___profile in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___profile/Action___profile.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___profile_assets_icon_Vector_I92_670657_1004_31_svg_22x22.svg
+[DEBUG] Entering dir: Action___qr_code, Project: UEFA_icons
+[DEBUG] Found TS file: Action___qr_code.ts
+[DEBUG] Found class Action___qr_code in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___qr_code/Action___qr_code.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___qr_code_assets_icon_Vector_I92_670661_4147_10829_svg_17x17.svg
+[DEBUG] Entering dir: Action___remove, Project: UEFA_icons
+[DEBUG] Found TS file: Action___remove.ts
+[DEBUG] Found class Action___remove in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___remove/Action___remove.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___remove_assets_icon_Vector_I92_670663_6450_13_svg_14x2.svg
+[DEBUG] Entering dir: Action___remove_circle, Project: UEFA_icons
+[DEBUG] Found TS file: Action___remove_circle.ts
+[DEBUG] Found class Action___remove_circle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___remove_circle/Action___remove_circle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___remove_circle_assets_icon_Vector_I92_670667_7258_21_svg_20x20.svg
+[DEBUG] Entering dir: Action___save, Project: UEFA_icons
+[DEBUG] Found TS file: Action___save.ts
+[DEBUG] Found class Action___save in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___save/Action___save.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___save_assets_icon_Vector_I92_670673_2662_2186_svg_14x18.svg
+[DEBUG] Entering dir: Action___scan, Project: UEFA_icons
+[DEBUG] Found TS file: Action___scan.ts
+[DEBUG] Found class Action___scan in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___scan/Action___scan.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___scan_assets_icon_Vector_I92_670677_4147_10831_svg_19x19.svg
+[DEBUG] Entering dir: Action___search, Project: UEFA_icons
+[DEBUG] Found TS file: Action___search.ts
+[DEBUG] Found class Action___search in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___search/Action___search.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___search_assets_icon_Vector_I92_670679_1004_18_svg_17_076486587524414x17_076486587524414.svg
+[DEBUG] Entering dir: Action___settings, Project: UEFA_icons
+[DEBUG] Found TS file: Action___settings.ts
+[DEBUG] Found class Action___settings in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___settings/Action___settings.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___settings_assets_icon_Vector_I92_670683_1004_28_svg_22_003387451171875x22.svg
+[DEBUG] Entering dir: Action___share_android, Project: UEFA_icons
+[DEBUG] Found TS file: Action___share_android.ts
+[DEBUG] Found class Action___share_android in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___share_android/Action___share_android.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___share_android_assets_icon_Vector_I92_670687_1004_37_svg_18x19_920000076293945.svg
+[DEBUG] Entering dir: Action___share_android_filled, Project: UEFA_icons
+[DEBUG] Found TS file: Action___share_android_filled.ts
+[DEBUG] Found class Action___share_android_filled in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___share_android_filled/Action___share_android_filled.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___share_android_filled_assets_icon_Vector_I92_670689_5194_15_svg_18x19_920000076293945.svg
+[DEBUG] Entering dir: Action___share_ios, Project: UEFA_icons
+[DEBUG] Found TS file: Action___share_ios.ts
+[DEBUG] Found class Action___share_ios in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___share_ios/Action___share_ios.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___share_ios_assets_icon_Vector_I92_670691_2613_2205_svg_17x20_5703125.svg
+[DEBUG] Entering dir: Action___sorting, Project: UEFA_icons
+[DEBUG] Found TS file: Action___sorting.ts
+[DEBUG] Found class Action___sorting in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___sorting/Action___sorting.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___sorting_assets_icon_Vector_I92_670695_2542_2312_svg_14x20.svg
+[DEBUG] Entering dir: Action___unfollow, Project: UEFA_icons
+[DEBUG] Found TS file: Action___unfollow.ts
+[DEBUG] Found class Action___unfollow in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action___unfollow/Action___unfollow.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action___unfollow_Synth_Subtract_1.svg
+[DEBUG] Skipped item: Action___unfollow_Synth_Vector_0.svg
+[DEBUG] Entering dir: Action__actions_language, Project: UEFA_icons
+[DEBUG] Found TS file: Action__actions_language.ts
+[DEBUG] Found class Action__actions_language in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Action__actions_language/Action__actions_language.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Action__actions_language_assets_icon_Vector_I92_670507_2949_2317_svg_21_590055465698242x20.svg
+[DEBUG] Entering dir: Card_1, Project: UEFA_icons
+[DEBUG] Found TS file: Card_1.ts
+[DEBUG] Found class Card_1 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Card_1/Card_1.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Card_1_assets_icon_Play_Icon_1077_152_svg_54x54.svg
+[DEBUG] Skipped item: Card_1_assets_icon_Star_1_1077_166_svg_12x12.svg
+[DEBUG] Skipped item: Card_1_assets_icon_Star_2_1077_170_svg_12x12.svg
+[DEBUG] Skipped item: Card_1_assets_icon_Star_3_1077_174_svg_12x12.svg
+[DEBUG] Skipped item: Card_1_assets_icon_Star_4_1077_178_svg_12x12.svg
+[DEBUG] Skipped item: Card_1_assets_icon_Star_5_1077_182_svg_12x12.svg
+[DEBUG] Skipped item: Card_1_img_1.png
+[DEBUG] Entering dir: Card_3, Project: UEFA_icons
+[DEBUG] Found TS file: Card_3.ts
+[DEBUG] Found class Card_3 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Card_3/Card_3.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Card_3_assets_icon_Play_Icon_1077_220_svg_54x54.svg
+[DEBUG] Skipped item: Card_3_assets_icon_Star_1_1077_234_svg_12x12.svg
+[DEBUG] Skipped item: Card_3_assets_icon_Star_2_1077_238_svg_12x12.svg
+[DEBUG] Skipped item: Card_3_assets_icon_Star_3_1077_242_svg_12x12.svg
+[DEBUG] Skipped item: Card_3_assets_icon_Star_4_1077_246_svg_12x12.svg
+[DEBUG] Skipped item: Card_3_assets_icon_Star_5_1077_250_svg_12x12.svg
+[DEBUG] Skipped item: Card_3_img_1.png
+[DEBUG] Entering dir: Card__Single_Card_Red, Project: UEFA_icons
+[DEBUG] Found TS file: Card__Single_Card_Red.ts
+[DEBUG] Found class Card__Single_Card_Red in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Card__Single_Card_Red/Card__Single_Card_Red.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Card__Single_Card_Red_assets_icon_Card_I105_47001_955_136_svg_14x20.svg
+[DEBUG] Entering dir: Features___Simulator_tool_standings_ALT, Project: UEFA_icons
+[DEBUG] Found TS file: Features___Simulator_tool_standings_ALT.ts
+[DEBUG] Found class Features___Simulator_tool_standings_ALT in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___Simulator_tool_standings_ALT/Features___Simulator_tool_standings_ALT.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___Simulator_tool_standings_ALT_assets_icon_Path__Stroke__I92_670904_6799_29_svg_15x18.svg
+[DEBUG] Skipped item: Features___Simulator_tool_standings_ALT_assets_icon_Vector_I92_670904_6797_14_svg_6_390163898468018x12_085493087768555.svg
+[DEBUG] Entering dir: Features___euro_2020, Project: UEFA_icons
+[DEBUG] Found TS file: Features___euro_2020.ts
+[DEBUG] Found class Features___euro_2020 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___euro_2020/Features___euro_2020.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___euro_2020_assets_icon_Vector_I92_670839_1004_140_svg_19_944089889526367x18_889970779418945.svg
+[DEBUG] Entering dir: Features___event_companion, Project: UEFA_icons
+[DEBUG] Found TS file: Features___event_companion.ts
+[DEBUG] Found class Features___event_companion in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___event_companion/Features___event_companion.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___event_companion_assets_icon_Vector_I92_670843_3154_6565_svg_20x19.svg
+[DEBUG] Entering dir: Features___games, Project: UEFA_icons
+[DEBUG] Found TS file: Features___games.ts
+[DEBUG] Found class Features___games in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___games/Features___games.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___games_assets_icon_Games_icon_I92_670847_1983_813_svg_21_99993133544922x9_999996185302734.svg
+[DEBUG] Entering dir: Features___gott, Project: UEFA_icons
+[DEBUG] Found TS file: Features___gott.ts
+[DEBUG] Found class Features___gott in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___gott/Features___gott.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___gott_assets_icon_Vector_I92_670851_1004_146_svg_18_00242042541504x18_00242042541504.svg
+[DEBUG] Entering dir: Features___history, Project: UEFA_icons
+[DEBUG] Found TS file: Features___history.ts
+[DEBUG] Found class Features___history in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___history/Features___history.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___history_assets_icon_Union_I92_670855_1715_61_svg_19_758098602294922x18_016216278076172.svg
+[DEBUG] Entering dir: Features___hospitality, Project: UEFA_icons
+[DEBUG] Found TS file: Features___hospitality.ts
+[DEBUG] Found class Features___hospitality in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___hospitality/Features___hospitality.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___hospitality_assets_icon_Vector_I92_670859_1004_141_svg_16x19_75.svg
+[DEBUG] Entering dir: Features___in_the_zone, Project: UEFA_icons
+[DEBUG] Found TS file: Features___in_the_zone.ts
+[DEBUG] Found class Features___in_the_zone in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___in_the_zone/Features___in_the_zone.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___in_the_zone_assets_icon_Vector_I92_670863_6468_29_svg_16_693283081054688x17_70574951171875.svg
+[DEBUG] Entering dir: Features___ko_bracket, Project: UEFA_icons
+[DEBUG] Found TS file: Features___ko_bracket.ts
+[DEBUG] Found class Features___ko_bracket in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___ko_bracket/Features___ko_bracket.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___ko_bracket_assets_icon_Vector_I92_670867_1715_54_svg_17_998037338256836x17_50584602355957.svg
+[DEBUG] Entering dir: Features___moments, Project: UEFA_icons
+[DEBUG] Found TS file: Features___moments.ts
+[DEBUG] Found class Features___moments in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___moments/Features___moments.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___moments_assets_icon_Union_I92_670871_6795_45_svg_18_99995231628418x16_99995231628418.svg
+[DEBUG] Entering dir: Features___panini_virtual_album, Project: UEFA_icons
+[DEBUG] Found TS file: Features___panini_virtual_album.ts
+[DEBUG] Found class Features___panini_virtual_album in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___panini_virtual_album/Features___panini_virtual_album.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___panini_virtual_album_assets_icon_Vector_I92_670875_1715_56_svg_17x20.svg
+[DEBUG] Entering dir: Features___player_ranking, Project: UEFA_icons
+[DEBUG] Found TS file: Features___player_ranking.ts
+[DEBUG] Found class Features___player_ranking in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___player_ranking/Features___player_ranking.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___player_ranking_assets_icon_Vector_I92_670879_1004_142_svg_18x19.svg
+[DEBUG] Entering dir: Features___podcast, Project: UEFA_icons
+[DEBUG] Found TS file: Features___podcast.ts
+[DEBUG] Found class Features___podcast in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___podcast/Features___podcast.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___podcast_assets_icon_Vector_I92_670883_1715_53_svg_19_997041702270508x19_760896682739258.svg
+[DEBUG] Entering dir: Features___predictor, Project: UEFA_icons
+[DEBUG] Found TS file: Features___predictor.ts
+[DEBUG] Found class Features___predictor in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___predictor/Features___predictor.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___predictor_assets_icon_Icon__Stroke__I92_670887_1715_55_svg_22_005268096923828x15_499998092651367.svg
+[DEBUG] Entering dir: Features___quiz, Project: UEFA_icons
+[DEBUG] Found TS file: Features___quiz.ts
+[DEBUG] Found class Features___quiz in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___quiz/Features___quiz.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___quiz_assets_icon_Union_I92_670891_6795_44_svg_18_49989891052246x18_499900817871094.svg
+[DEBUG] Entering dir: Features___radio, Project: UEFA_icons
+[DEBUG] Found TS file: Features___radio.ts
+[DEBUG] Found class Features___radio in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___radio/Features___radio.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___radio_assets_icon_Vector_I92_670895_1715_49_svg_20x20_814855575561523.svg
+[DEBUG] Entering dir: Features___simulator, Project: UEFA_icons
+[DEBUG] Found TS file: Features___simulator.ts
+[DEBUG] Found class Features___simulator in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___simulator/Features___simulator.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___simulator_assets_icon_Vector_I92_670899_6795_81_svg_19_5x18.svg
+[DEBUG] Entering dir: Features___skills, Project: UEFA_icons
+[DEBUG] Found TS file: Features___skills.ts
+[DEBUG] Found class Features___skills in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___skills/Features___skills.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___skills_assets_icon_Vector_I92_670909_1004_147_svg_16_439329147338867x16_53554916381836.svg
+[DEBUG] Entering dir: Features___stats, Project: UEFA_icons
+[DEBUG] Found TS file: Features___stats.ts
+[DEBUG] Found class Features___stats in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___stats/Features___stats.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___stats_assets_icon_Vector_I92_670913_1715_28_svg_14x14.svg
+[DEBUG] Entering dir: Features___store, Project: UEFA_icons
+[DEBUG] Found TS file: Features___store.ts
+[DEBUG] Found class Features___store in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___store/Features___store.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___store_assets_icon_Vector_I92_670917_1715_69_svg_18_000072479248047x20_75.svg
+[DEBUG] Entering dir: Features___teams, Project: UEFA_icons
+[DEBUG] Found TS file: Features___teams.ts
+[DEBUG] Found class Features___teams in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___teams/Features___teams.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___teams_assets_icon_Vector_I92_670921_2501_2196_svg_18x21_620777130126953.svg
+[DEBUG] Entering dir: Features___tickets, Project: UEFA_icons
+[DEBUG] Found TS file: Features___tickets.ts
+[DEBUG] Found class Features___tickets in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___tickets/Features___tickets.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___tickets_assets_icon_Vector_I92_670925_1715_45_svg_21_790618896484375x21_794143676757812.svg
+[DEBUG] Entering dir: Features___top_scorer, Project: UEFA_icons
+[DEBUG] Found TS file: Features___top_scorer.ts
+[DEBUG] Found class Features___top_scorer in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___top_scorer/Features___top_scorer.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___top_scorer_assets_icon_Shape_I92_670929_1715_44_svg_17_44775390625x19_083194732666016.svg
+[DEBUG] Entering dir: Features___tournament_bracket, Project: UEFA_icons
+[DEBUG] Found TS file: Features___tournament_bracket.ts
+[DEBUG] Found class Features___tournament_bracket in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___tournament_bracket/Features___tournament_bracket.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___tournament_bracket_assets_icon_Vector_I92_670933_5662_146_svg_19x18.svg
+[DEBUG] Entering dir: Features___uefa_rankings, Project: UEFA_icons
+[DEBUG] Found TS file: Features___uefa_rankings.ts
+[DEBUG] Found class Features___uefa_rankings in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___uefa_rankings/Features___uefa_rankings.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___uefa_rankings_assets_icon_Union_I92_670937_6795_43_svg_19x19.svg
+[DEBUG] Entering dir: Features___uefa_tv, Project: UEFA_icons
+[DEBUG] Found TS file: Features___uefa_tv.ts
+[DEBUG] Found class Features___uefa_tv in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___uefa_tv/Features___uefa_tv.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___uefa_tv_Synth_Vector_0.svg
+[DEBUG] Skipped item: Features___uefa_tv_Synth_Vector_1.svg
+[DEBUG] Entering dir: Features___unl, Project: UEFA_icons
+[DEBUG] Found TS file: Features___unl.ts
+[DEBUG] Found class Features___unl in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___unl/Features___unl.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___unl_assets_icon_Vector_I92_670951_1004_157_svg_19_171550750732422x19_17158317565918.svg
+[DEBUG] Entering dir: Features___w2021, Project: UEFA_icons
+[DEBUG] Found TS file: Features___w2021.ts
+[DEBUG] Found class Features___w2021 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Features___w2021/Features___w2021.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Features___w2021_assets_icon_Vector_I92_670955_1628_589_svg_20x21_148645401000977.svg
+[DEBUG] Entering dir: Football___away, Project: UEFA_icons
+[DEBUG] Found TS file: Football___away.ts
+[DEBUG] Found class Football___away in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___away/Football___away.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___away_assets_icon_Vector_I92_670960_6517_55_svg_6_650000095367432x5_783333778381348.svg
+[DEBUG] Entering dir: Football___card_single_card_red, Project: UEFA_icons
+[DEBUG] Found TS file: Football___card_single_card_red.ts
+[DEBUG] Found class Football___card_single_card_red in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___card_single_card_red/Football___card_single_card_red.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___card_single_card_red_assets_icon_Card_I92_670967_385_315_955_136_svg_14x20.svg
+[DEBUG] Entering dir: Football___card_single_card_yellow, Project: UEFA_icons
+[DEBUG] Found TS file: Football___card_single_card_yellow.ts
+[DEBUG] Found class Football___card_single_card_yellow in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___card_single_card_yellow/Football___card_single_card_yellow.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___card_single_card_yellow_assets_icon_Card_I92_670971_955_136_svg_14x20.svg
+[DEBUG] Entering dir: Football___card_yellow_to_red, Project: UEFA_icons
+[DEBUG] Found TS file: Football___card_yellow_to_red.ts
+[DEBUG] Found class Football___card_yellow_to_red in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___card_yellow_to_red/Football___card_yellow_to_red.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___card_yellow_to_red_assets_icon_Red_Card_I92_670976_955_142_svg_9_59999942779541x13_440000534057617.svg
+[DEBUG] Skipped item: Football___card_yellow_to_red_assets_icon_Yellow_card_I92_670976_836_237_svg_9_599998474121094x14_399999618530273.svg
+[DEBUG] Entering dir: Football___doubtful, Project: UEFA_icons
+[DEBUG] Found TS file: Football___doubtful.ts
+[DEBUG] Found class Football___doubtful in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___doubtful/Football___doubtful.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___doubtful_assets_icon_injured_icon_I92_670981_836_356_svg_18x15_75.svg
+[DEBUG] Entering dir: Football___eliminated, Project: UEFA_icons
+[DEBUG] Found TS file: Football___eliminated.ts
+[DEBUG] Found class Football___eliminated in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___eliminated/Football___eliminated.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___eliminated_assets_icon_Shape_I92_670985_836_361_svg_20x20.svg
+[DEBUG] Entering dir: Football___goal_extra_time, Project: UEFA_icons
+[DEBUG] Found TS file: Football___goal_extra_time.ts
+[DEBUG] Found class Football___goal_extra_time in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___goal_extra_time/Football___goal_extra_time.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___goal_extra_time_assets_icon_Extra_time_I92_670995_1506_265_svg_3_200000047683716x4_400000095367432.svg
+[DEBUG] Skipped item: Football___goal_extra_time_assets_icon_Vector_I92_670995_1506_259_svg_18_00242042541504x18_00242042541504.svg
+[DEBUG] Skipped item: Football___goal_extra_time_assets_icon_background_I92_670995_1506_261_svg_8x8.svg
+[DEBUG] Entering dir: Football___goal_own_goal, Project: UEFA_icons
+[DEBUG] Found TS file: Football___goal_own_goal.ts
+[DEBUG] Found class Football___goal_own_goal in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___goal_own_goal/Football___goal_own_goal.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___goal_own_goal_assets_icon_Vector_I92_671005_1506_244_svg_18_00242042541504x18_00242042541504.svg
+[DEBUG] Entering dir: Football___goal_penalty, Project: UEFA_icons
+[DEBUG] Found TS file: Football___goal_penalty.ts
+[DEBUG] Found class Football___goal_penalty in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___goal_penalty/Football___goal_penalty.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___goal_penalty_Synth_Path_2.svg
+[DEBUG] Skipped item: Football___goal_penalty_Synth_Path_3.svg
+[DEBUG] Skipped item: Football___goal_penalty_assets_icon_Vector_I92_671017_1506_270_svg_18_00242042541504x18_00242042541504.svg
+[DEBUG] Skipped item: Football___goal_penalty_assets_icon_background_I92_671017_1506_272_svg_8x8.svg
+[DEBUG] Entering dir: Football___goal_penalty_missed, Project: UEFA_icons
+[DEBUG] Found TS file: Football___goal_penalty_missed.ts
+[DEBUG] Found class Football___goal_penalty_missed in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___goal_penalty_missed/Football___goal_penalty_missed.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___goal_penalty_missed_Synth_Path_2.svg
+[DEBUG] Skipped item: Football___goal_penalty_missed_Synth_Path_3.svg
+[DEBUG] Skipped item: Football___goal_penalty_missed_assets_icon_Vector_I92_671026_1506_281_svg_18_00242042541504x18_00242042541504.svg
+[DEBUG] Skipped item: Football___goal_penalty_missed_assets_icon_background_I92_671026_1506_283_svg_8x8.svg
+[DEBUG] Entering dir: Football___goal_regular, Project: UEFA_icons
+[DEBUG] Found TS file: Football___goal_regular.ts
+[DEBUG] Found class Football___goal_regular in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___goal_regular/Football___goal_regular.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___goal_regular_assets_icon_Vector_I92_671036_1506_291_svg_18_00242042541504x18_00242042541504.svg
+[DEBUG] Entering dir: Football___home, Project: UEFA_icons
+[DEBUG] Found TS file: Football___home.ts
+[DEBUG] Found class Football___home in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___home/Football___home.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___home_assets_icon_Vector_I92_671044_6517_36_1715_101_svg_6x6_666667461395264.svg
+[DEBUG] Entering dir: Football___injured, Project: UEFA_icons
+[DEBUG] Found TS file: Football___injured.ts
+[DEBUG] Found class Football___injured in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___injured/Football___injured.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___injured_assets_icon_injured_icon_I92_671051_836_357_svg_18x15_75.svg
+[DEBUG] Entering dir: Football___penalty_shootout, Project: UEFA_icons
+[DEBUG] Found TS file: Football___penalty_shootout.ts
+[DEBUG] Found class Football___penalty_shootout in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___penalty_shootout/Football___penalty_shootout.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___penalty_shootout_assets_icon_Vector_I92_671055_1506_253_svg_19x20.svg
+[DEBUG] Entering dir: Football___substitution_both, Project: UEFA_icons
+[DEBUG] Found TS file: Football___substitution_both.ts
+[DEBUG] Found class Football___substitution_both in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___substitution_both/Football___substitution_both.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___substitution_both_assets_icon_player_IN_I92_671060_955_139_svg_13_519195556640625x10_414121627807617.svg
+[DEBUG] Skipped item: Football___substitution_both_assets_icon_player_OUT_I92_671060_955_138_svg_13_519195556640625x10_414121627807617.svg
+[DEBUG] Entering dir: Football___substitution_in, Project: UEFA_icons
+[DEBUG] Found TS file: Football___substitution_in.ts
+[DEBUG] Found class Football___substitution_in in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___substitution_in/Football___substitution_in.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___substitution_in_assets_icon_player_IN_I92_671065_955_140_svg_14_457684516906738x11_285821914672852.svg
+[DEBUG] Entering dir: Football___substitution_out, Project: UEFA_icons
+[DEBUG] Found TS file: Football___substitution_out.ts
+[DEBUG] Found class Football___substitution_out in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___substitution_out/Football___substitution_out.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___substitution_out_assets_icon_player_IN_I92_671069_955_141_svg_14_457684516906738x11_285822868347168.svg
+[DEBUG] Entering dir: Football___suspended, Project: UEFA_icons
+[DEBUG] Found TS file: Football___suspended.ts
+[DEBUG] Found class Football___suspended in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___suspended/Football___suspended.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___suspended_assets_icon_Shape_I92_671073_836_360_svg_20x20.svg
+[DEBUG] Entering dir: Football___time_additional_time, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_additional_time.ts
+[DEBUG] Found class Football___time_additional_time in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_additional_time/Football___time_additional_time.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_additional_time_Synth_Vector_0.svg
+[DEBUG] Entering dir: Football___time_break, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_break.ts
+[DEBUG] Found class Football___time_break in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_break/Football___time_break.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_break_assets_icon_Vector_I92_671094_1506_250_svg_20x20.svg
+[DEBUG] Entering dir: Football___time_end, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_end.ts
+[DEBUG] Found class Football___time_end in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_end/Football___time_end.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_end_Synth_Vector_0.svg
+[DEBUG] Skipped item: Football___time_end_assets_icon_Status_I92_671102_160_160_svg_8x6.svg
+[DEBUG] Entering dir: Football___time_extra_time, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_extra_time.ts
+[DEBUG] Found class Football___time_extra_time in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_extra_time/Football___time_extra_time.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_extra_time_Synth_Vector_1.svg
+[DEBUG] Skipped item: Football___time_extra_time_assets_icon_Time_I92_671114_160_176_svg_6x2.svg
+[DEBUG] Skipped item: Football___time_extra_time_assets_icon_background_I92_671114_160_172_svg_6x6.svg
+[DEBUG] Entering dir: Football___time_resume, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_resume.ts
+[DEBUG] Found class Football___time_resume in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_resume/Football___time_resume.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_resume_assets_icon_Vector_I92_671122_551_1815_1004_91_svg_20x20.svg
+[DEBUG] Entering dir: Football___time_start, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_start.ts
+[DEBUG] Found class Football___time_start in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_start/Football___time_start.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_start_assets_icon_Vector_I92_671128_1506_247_svg_18x21.svg
+[DEBUG] Entering dir: Football___time_whistle, Project: UEFA_icons
+[DEBUG] Found TS file: Football___time_whistle.ts
+[DEBUG] Found class Football___time_whistle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___time_whistle/Football___time_whistle.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___time_whistle_assets_icon_Icon_I92_671132_179_265_svg_20x20.svg
+[DEBUG] Entering dir: Football___var, Project: UEFA_icons
+[DEBUG] Found TS file: Football___var.ts
+[DEBUG] Found class Football___var in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___var/Football___var.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___var_assets_icon_Union_I92_671136_836_353_svg_20x15_384614944458008.svg
+[DEBUG] Entering dir: Football___var_progress, Project: UEFA_icons
+[DEBUG] Found TS file: Football___var_progress.ts
+[DEBUG] Found class Football___var_progress in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___var_progress/Football___var_progress.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___var_progress_assets_icon_Union_I92_671140_385_319_836_353_svg_20x15_384614944458008.svg
+[DEBUG] Entering dir: Football___var_resolution, Project: UEFA_icons
+[DEBUG] Found TS file: Football___var_resolution.ts
+[DEBUG] Found class Football___var_resolution in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Football___var_resolution/Football___var_resolution.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Football___var_resolution_assets_icon_Union_I92_671146_385_324_836_353_svg_20x15_384614944458008.svg
+[DEBUG] Entering dir: Gaming___gaming_auto_complete, Project: UEFA_icons
+[DEBUG] Found TS file: Gaming___gaming_auto_complete.ts
+[DEBUG] Found class Gaming___gaming_auto_complete in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Gaming___gaming_auto_complete/Gaming___gaming_auto_complete.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Gaming___gaming_auto_complete_assets_icon_Vector_I92_671152_1495_41_svg_16_800024032592773x16_800024032592773.svg
+[DEBUG] Entering dir: Gaming___gaming_bench, Project: UEFA_icons
+[DEBUG] Found TS file: Gaming___gaming_bench.ts
+[DEBUG] Found class Gaming___gaming_bench in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Gaming___gaming_bench/Gaming___gaming_bench.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Gaming___gaming_bench_assets_icon_Vector_I92_671156_1495_35_svg_19_199979782104492x11_500299453735352.svg
+[DEBUG] Entering dir: Gaming___gaming_captain, Project: UEFA_icons
+[DEBUG] Found TS file: Gaming___gaming_captain.ts
+[DEBUG] Found class Gaming___gaming_captain in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Gaming___gaming_captain/Gaming___gaming_captain.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Gaming___gaming_captain_assets_icon_Vector_I92_671160_1495_43_svg_10_153879165649414x15_567399978637695.svg
+[DEBUG] Entering dir: Navigation___Expand, Project: UEFA_icons
+[DEBUG] Found TS file: Navigation___Expand.ts
+[DEBUG] Found class Navigation___Expand in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Navigation___Expand/Navigation___Expand.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Navigation___Expand_assets_icon_Vector_I92_671427_5698_14_svg_12x7_400000095367432.svg
+[DEBUG] Entering dir: Navigation___close, Project: UEFA_icons
+[DEBUG] Found TS file: Navigation___close.ts
+[DEBUG] Found class Navigation___close in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Navigation___close/Navigation___close.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Navigation___close_assets_icon_Vector_I92_671413_1004_276_svg_13_185029029846191x13_185029029846191.svg
+[DEBUG] Entering dir: Product___Flat___Competitions, Project: UEFA_icons
+[DEBUG] Found TS file: Product___Flat___Competitions.ts
+[DEBUG] Found class Product___Flat___Competitions in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Product___Flat___Competitions/Product___Flat___Competitions.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Product___Flat___Competitions_assets_icon_Vector_I92_669369_5879_4571_svg_26x25_797523498535156.svg
+[DEBUG] Entering dir: Product___Flat___Football, Project: UEFA_icons
+[DEBUG] Found TS file: Product___Flat___Football.ts
+[DEBUG] Found class Product___Flat___Football in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Product___Flat___Football/Product___Flat___Football.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Product___Flat___Football_assets_icon_Accent_I92_669561_1595_632_svg_10_475932121276855x13_84919548034668.svg
+[DEBUG] Skipped item: Product___Flat___Football_assets_icon_Subtract_I92_669561_1595_668_svg_24_882408142089844x26_550939559936523.svg
+[DEBUG] Entering dir: Product___Flat___Support, Project: UEFA_icons
+[DEBUG] Found TS file: Product___Flat___Support.ts
+[DEBUG] Found class Product___Flat___Support in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Product___Flat___Support/Product___Flat___Support.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Product___Flat___Support_assets_icon_Background_I92_669583_3036_2313_svg_20x24.svg
+[DEBUG] Skipped item: Product___Flat___Support_assets_icon_Corner_I92_669583_3036_2314_svg_6x6.svg
+[DEBUG] Entering dir: Product___Flat___Trophy, Project: UEFA_icons
+[DEBUG] Found TS file: Product___Flat___Trophy.ts
+[DEBUG] Found class Product___Flat___Trophy in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/Product___Flat___Trophy/Product___Flat___Trophy.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: Product___Flat___Trophy_img_1_opt.png
+[DEBUG] Entering dir: VAR_progress, Project: UEFA_icons
+[DEBUG] Found TS file: VAR_progress.ts
+[DEBUG] Found class VAR_progress in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/VAR_progress/VAR_progress.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: VAR_progress_assets_icon_Union_I105_47035_836_353_svg_20x15_384614944458008.svg
+[DEBUG] Entering dir: VAR_resolution, Project: UEFA_icons
+[DEBUG] Found TS file: VAR_resolution.ts
+[DEBUG] Found class VAR_resolution in /Users/alexcalcan/Documents/Apps/FigmaDesigner/components/UEFA_icons/VAR_resolution/VAR_resolution.ts
+[DEBUG] Entering dir: assets, Project: UEFA_icons
+[DEBUG] Skipped item: VAR_resolution_assets_icon_Union_I105_47039_836_353_svg_20x15_384614944458008.svg
+[DEBUG] Found TS file: index.ts
+[DEBUG] Skipped item: index.ts.bak
+[DEBUG] Entering dir: temp_preview, Project: temp_preview
+[DEBUG] Entering dir: Alex_CookBook, Project: Alex_CookBook
+[DEBUG] Found TS file: BriefNoteDemo.ts
+[DEBUG] Found class BriefNoteDemo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/Alex_CookBook/BriefNoteDemo.ts
+[DEBUG] Found TS file: Nav_Euro_28_Demo.ts
+[DEBUG] Found class Nav_Euro_28_Demo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/Alex_CookBook/Nav_Euro_28_Demo.ts
+[DEBUG] Found TS file: RadioSearchDemo.ts
+[DEBUG] Found class RadioSearchDemo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/Alex_CookBook/RadioSearchDemo.ts
+[DEBUG] Entering dir: GQ_2026, Project: GQ_2026
+[DEBUG] Found TS file: GQ_2026_Demo.ts
+[DEBUG] Found class GQ_2026_Demo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/GQ_2026/GQ_2026_Demo.ts
+[DEBUG] Skipped item: README.md
+[DEBUG] Entering dir: UEFA_Academy_online, Project: UEFA_Academy_online
+[DEBUG] Found TS file: UEFA_Academy_online_CourseDetails.ts
+[DEBUG] Found class UEFA_Academy_online_CourseDetails in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Academy_online/UEFA_Academy_online_CourseDetails.ts
+[DEBUG] Found TS file: UEFA_Academy_online_Notifications.ts
+[DEBUG] Found class UEFA_Academy_online_Notifications in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Academy_online/UEFA_Academy_online_Notifications.ts
+[DEBUG] Found TS file: UEFA_Academy_online_Summary.ts
+[DEBUG] Found class UEFA_Academy_online_Summary in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Academy_online/UEFA_Academy_online_Summary.ts
+[DEBUG] Entering dir: UEFA_Booking_Euro28, Project: UEFA_Booking_Euro28
+[DEBUG] Found TS file: Header_SponsorStrip_Combinations.ts
+[DEBUG] Found class Header_SponsorStrip_Combinations in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Booking_Euro28/Header_SponsorStrip_Combinations.ts
+[DEBUG] Found TS file: Header_Sponsor_Banner_Demo.ts
+[DEBUG] Found class Header_Sponsor_Banner_Demo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Booking_Euro28/Header_Sponsor_Banner_Demo.ts
+[DEBUG] Found TS file: NavBookingDemo.ts
+[DEBUG] Found class NavBookingDemo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Booking_Euro28/NavBookingDemo.ts
+[DEBUG] Found TS file: Nav_Booking_28_Demo.ts
+[DEBUG] Found class Nav_Booking_28_Demo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Booking_Euro28/Nav_Booking_28_Demo.ts
+[DEBUG] Found TS file: SponsorStripDemo.ts
+[DEBUG] Found class SponsorStripDemo in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Booking_Euro28/SponsorStripDemo.ts
+[DEBUG] Found TS file: SponsorStripDemo_Curated.ts
+[DEBUG] Found class SponsorStripDemo_Curated in /Users/alexcalcan/Documents/Apps/FigmaDesigner/pages/UEFA_Booking_Euro28/SponsorStripDemo_Curated.ts
+[DEBUG] Skipped item: Readme.md
+[DEBUG] Entering dir: UEFA_Light_extra, Project: UEFA_Light_extra
+[DEBUG] Found TS file: Slide_2Body.ts
+[DEBUG] Found class Slide_Content_2Column_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_2Body.ts
+[DEBUG] Found TS file: Slide_3Body.ts
+[DEBUG] Found class Slide_Content_3Column_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_3Body.ts
+[DEBUG] Found TS file: Slide_Body.ts
+[DEBUG] Found class Slide_Content_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Body.ts
+[DEBUG] Found TS file: Slide_Body_Bullets.ts
+[DEBUG] Found class Slide_Content_Bullets_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Body_Bullets.ts
+[DEBUG] Found TS file: Slide_Bullets.ts
+[DEBUG] Found class Slide_Bullets_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Bullets.ts
+[DEBUG] Found TS file: Slide_Divider.ts
+[DEBUG] Found class Slide_Divider_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Divider.ts
+[DEBUG] Found TS file: Slide_Divider_Blue.ts
+[DEBUG] Found class Slide_Divider_Blue_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Divider_Blue.ts
+[DEBUG] Found TS file: Slide_Divider_Gray.ts
+[DEBUG] Found class Slide_Divider_Gray_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Divider_Gray.ts
+[DEBUG] Found TS file: Slide_Divider_Subtle.ts
+[DEBUG] Found class Slide_Divider_Subtle_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Divider_Subtle.ts
+[DEBUG] Found TS file: Slide_Divider_Subtle_Blue.ts
+[DEBUG] Found class Slide_Divider_Subtle_Blue_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Divider_Subtle_Blue.ts
+[DEBUG] Found TS file: Slide_Divider_Subtle_Gray.ts
+[DEBUG] Found class Slide_Divider_Subtle_Gray_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Divider_Subtle_Gray.ts
+[DEBUG] Found TS file: Slide_MetricCards_4up_extra.ts
+[DEBUG] Found class Slide_MetricCards_4up_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_MetricCards_4up_extra.ts
+[DEBUG] Found TS file: Slide_Object_System_extra.ts
+[DEBUG] Found class Slide_Object_System_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Object_System_extra.ts
+[DEBUG] Found TS file: Slide_Picture_BeforeAfter_extra.ts
+[DEBUG] Found class Slide_Picture_BeforeAfter_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Picture_BeforeAfter_extra.ts
+[DEBUG] Found TS file: Slide_Picture_FullBleed_extra.ts
+[DEBUG] Found class Slide_Picture_FullBleed_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Picture_FullBleed_extra.ts
+[DEBUG] Found TS file: Slide_Picture_Layouts_extra.ts
+[DEBUG] Found class Slide_Picture_Layouts_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Picture_Layouts_extra.ts
+[DEBUG] Found TS file: Slide_Picture_ThreeColumn_extra.ts
+[DEBUG] Found class Slide_Picture_ThreeColumn_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Picture_ThreeColumn_extra.ts
+[DEBUG] Found TS file: Slide_Statistics_Story_extra.ts
+[DEBUG] Found class Slide_Statistics_Story_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Statistics_Story_extra.ts
+[DEBUG] Found TS file: Slide_TextLeft_ImageRight_Padded_extra.ts
+[DEBUG] Found class Slide_TextLeft_ImageRight_Padded_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_Padded_extra.ts
+[DEBUG] Found TS file: Slide_TextLeft_ImageRight_extra.ts
+[DEBUG] Found class Slide_TextLeft_ImageRight_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_extra.ts
+[DEBUG] Found TS file: Slide_TextLeft_ObjectsRight_extra.ts
+[DEBUG] Found class Slide_TextLeft_ObjectsRight_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_TextLeft_ObjectsRight_extra.ts
+[DEBUG] Found TS file: Slide_Title.ts
+[DEBUG] processing Slide_Title.ts
+[DEBUG] Content snippet: import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
+import { Colors, Fon...
+[DEBUG] Match result: Slide_Title_extra
+[DEBUG] Found class Slide_Title_extra in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra/Slide_Title.ts
+[DEBUG] Entering dir: UEFA_Light_extra_presentation_2026-02-08_20-13-23, Project: UEFA_Light_extra_presentation_2026-02-08_20-13-23
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_001.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_001 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_001.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_002.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_002 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_002.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_003.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_003 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_003.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_004.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_004 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_004.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_005.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_005 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_005.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_006.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_006 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_006.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_007.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_007 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_007.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_008.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_008 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_008.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_009.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_009 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_009.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_010.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_010 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_010.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_011.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_011 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_011.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_012.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_012 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_012.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_013.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_013 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_013.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_014.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_014 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_014.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_015.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_015 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_015.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_016.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_016 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_016.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_017.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_017 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_017.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_018.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_018 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_018.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_019.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_019 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_019.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_020.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_020 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_020.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_021.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_021 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_021.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_022.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_022 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Slide_022.ts
+[DEBUG] Entering dir: assets, Project: UEFA_Light_extra_presentation_2026-02-08_20-13-23
+[DEBUG] Skipped item: img_0001.png
+[DEBUG] Skipped item: img_0002.png
+[DEBUG] Skipped item: img_0003.png
+[DEBUG] Skipped item: img_0004.png
+[DEBUG] Skipped item: img_0005.png
+[DEBUG] Skipped item: img_0006.png
+[DEBUG] Skipped item: img_0007.png
+[DEBUG] Skipped item: img_0008.png
+[DEBUG] Skipped item: img_0009.png
+[DEBUG] Skipped item: img_0010.png
+[DEBUG] Skipped item: img_0011.png
+[DEBUG] Skipped item: img_0012.png
+[DEBUG] Skipped item: img_0013.png
+[DEBUG] Skipped item: img_0014.png
+[DEBUG] Skipped item: img_0015.png
+[DEBUG] Skipped item: img_0016.png
+[DEBUG] Skipped item: img_0017.png
+[DEBUG] Skipped item: img_0018.png
+[DEBUG] Skipped item: img_0019.png
+[DEBUG] Skipped item: img_0020.png
+[DEBUG] Skipped item: img_0021.png
+[DEBUG] Skipped item: img_0022.png
+[DEBUG] Skipped item: img_0023.png
+[DEBUG] Skipped item: img_0024.png
+[DEBUG] Skipped item: img_0025.png
+[DEBUG] Skipped item: img_0026.png
+[DEBUG] Skipped item: img_0027.png
+[DEBUG] Skipped item: img_0028.png
+[DEBUG] Skipped item: img_0029.png
+[DEBUG] Skipped item: img_0030.png
+[DEBUG] Skipped item: img_0031.png
+[DEBUG] Skipped item: img_0032.png
+[DEBUG] Skipped item: img_0033.png
+[DEBUG] Skipped item: img_0034.png
+[DEBUG] Skipped item: img_0035.png
+[DEBUG] Skipped item: img_0036.png
+[DEBUG] Skipped item: img_0037.png
+[DEBUG] Skipped item: img_0038.png
+[DEBUG] Skipped item: img_0039.png
+[DEBUG] Skipped item: img_0040.png
+[DEBUG] Entering dir: elements, Project: UEFA_Light_extra_presentation_2026-02-08_20-13-23
+[DEBUG] Skipped item: slide_001.json
+[DEBUG] Skipped item: slide_002.json
+[DEBUG] Skipped item: slide_003.json
+[DEBUG] Skipped item: slide_004.json
+[DEBUG] Skipped item: slide_005.json
+[DEBUG] Skipped item: slide_006.json
+[DEBUG] Skipped item: slide_007.json
+[DEBUG] Skipped item: slide_008.json
+[DEBUG] Skipped item: slide_009.json
+[DEBUG] Skipped item: slide_010.json
+[DEBUG] Skipped item: slide_011.json
+[DEBUG] Skipped item: slide_012.json
+[DEBUG] Skipped item: slide_013.json
+[DEBUG] Skipped item: slide_014.json
+[DEBUG] Skipped item: slide_015.json
+[DEBUG] Skipped item: slide_016.json
+[DEBUG] Skipped item: slide_017.json
+[DEBUG] Skipped item: slide_018.json
+[DEBUG] Skipped item: slide_019.json
+[DEBUG] Skipped item: slide_020.json
+[DEBUG] Skipped item: slide_021.json
+[DEBUG] Skipped item: slide_022.json
+[DEBUG] Entering dir: UEFA_Light_extra_presentation_2026-02-08_20-15-50, Project: UEFA_Light_extra_presentation_2026-02-08_20-15-50
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_001.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_001 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_001.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_002.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_002 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_002.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_003.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_003 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_003.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_004.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_004 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_004.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_005.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_005 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_005.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_006.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_006 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_006.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_007.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_007 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_007.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_008.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_008 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_008.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_009.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_009 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_009.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_010.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_010 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_010.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_011.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_011 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_011.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_012.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_012 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_012.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_013.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_013 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_013.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_014.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_014 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_014.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_015.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_015 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_015.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_016.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_016 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_016.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_017.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_017 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_017.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_018.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_018 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_018.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_019.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_019 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_019.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_020.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_020 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_020.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_021.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_021 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_021.ts
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Slide_022.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Slide_022 in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Slide_022.ts
+[DEBUG] Entering dir: assets, Project: UEFA_Light_extra_presentation_2026-02-08_20-15-50
+[DEBUG] Skipped item: img_0001.png
+[DEBUG] Skipped item: img_0002.png
+[DEBUG] Skipped item: img_0003.png
+[DEBUG] Skipped item: img_0004.png
+[DEBUG] Skipped item: img_0005.png
+[DEBUG] Skipped item: img_0006.png
+[DEBUG] Skipped item: img_0007.png
+[DEBUG] Skipped item: img_0008.png
+[DEBUG] Skipped item: img_0009.png
+[DEBUG] Skipped item: img_0010.png
+[DEBUG] Skipped item: img_0011.png
+[DEBUG] Skipped item: img_0012.png
+[DEBUG] Skipped item: img_0013.png
+[DEBUG] Skipped item: img_0014.png
+[DEBUG] Skipped item: img_0015.png
+[DEBUG] Skipped item: img_0016.png
+[DEBUG] Skipped item: img_0017.png
+[DEBUG] Skipped item: img_0018.png
+[DEBUG] Skipped item: img_0019.png
+[DEBUG] Skipped item: img_0020.png
+[DEBUG] Skipped item: img_0021.png
+[DEBUG] Skipped item: img_0022.png
+[DEBUG] Skipped item: img_0023.png
+[DEBUG] Skipped item: img_0024.png
+[DEBUG] Skipped item: img_0025.png
+[DEBUG] Skipped item: img_0026.png
+[DEBUG] Skipped item: img_0027.png
+[DEBUG] Skipped item: img_0028.png
+[DEBUG] Skipped item: img_0029.png
+[DEBUG] Skipped item: img_0030.png
+[DEBUG] Skipped item: img_0031.png
+[DEBUG] Skipped item: img_0032.png
+[DEBUG] Skipped item: img_0033.png
+[DEBUG] Skipped item: img_0034.png
+[DEBUG] Skipped item: img_0035.png
+[DEBUG] Skipped item: img_0036.png
+[DEBUG] Skipped item: img_0037.png
+[DEBUG] Skipped item: img_0038.png
+[DEBUG] Skipped item: img_0039.png
+[DEBUG] Skipped item: img_0040.png
+[DEBUG] Entering dir: elements, Project: UEFA_Light_extra_presentation_2026-02-08_20-15-50
+[DEBUG] Skipped item: slide_001.json
+[DEBUG] Skipped item: slide_002.json
+[DEBUG] Skipped item: slide_003.json
+[DEBUG] Skipped item: slide_004.json
+[DEBUG] Skipped item: slide_005.json
+[DEBUG] Skipped item: slide_006.json
+[DEBUG] Skipped item: slide_007.json
+[DEBUG] Skipped item: slide_008.json
+[DEBUG] Skipped item: slide_009.json
+[DEBUG] Skipped item: slide_010.json
+[DEBUG] Skipped item: slide_011.json
+[DEBUG] Skipped item: slide_012.json
+[DEBUG] Skipped item: slide_013.json
+[DEBUG] Skipped item: slide_014.json
+[DEBUG] Skipped item: slide_015.json
+[DEBUG] Skipped item: slide_016.json
+[DEBUG] Skipped item: slide_017.json
+[DEBUG] Skipped item: slide_018.json
+[DEBUG] Skipped item: slide_019.json
+[DEBUG] Skipped item: slide_020.json
+[DEBUG] Skipped item: slide_021.json
+[DEBUG] Skipped item: slide_022.json
+[DEBUG] Entering dir: UEFA_Light_template, Project: UEFA_Light_template
+[DEBUG] Found TS file: Slide_2Body.ts
+[DEBUG] Found class Slide_2Body in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_2Body.ts
+[DEBUG] Found TS file: Slide_3Body.ts
+[DEBUG] Found class Slide_3Body in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_3Body.ts
+[DEBUG] Found TS file: Slide_Body.ts
+[DEBUG] Found class Slide_Body in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Body.ts
+[DEBUG] Found TS file: Slide_Body_Bullets.ts
+[DEBUG] Found class Slide_Body_Bullets in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Body_Bullets.ts
+[DEBUG] Found TS file: Slide_Bullets.ts
+[DEBUG] Found class Slide_Bullets in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Bullets.ts
+[DEBUG] Found TS file: Slide_Divider.ts
+[DEBUG] Found class Slide_Divider in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Divider.ts
+[DEBUG] Found TS file: Slide_Divider_Blue.ts
+[DEBUG] Found class Slide_Divider_Blue in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Divider_Blue.ts
+[DEBUG] Found TS file: Slide_Divider_Gray.ts
+[DEBUG] Found class Slide_Divider_Gray in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Divider_Gray.ts
+[DEBUG] Found TS file: Slide_Divider_Subtle.ts
+[DEBUG] Found class Slide_Divider_Subtle in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Divider_Subtle.ts
+[DEBUG] Found TS file: Slide_Divider_Subtle_Blue.ts
+[DEBUG] Found class Slide_Divider_Subtle_Blue in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Divider_Subtle_Blue.ts
+[DEBUG] Found TS file: Slide_Divider_Subtle_Gray.ts
+[DEBUG] Found class Slide_Divider_Subtle_Gray in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Divider_Subtle_Gray.ts
+[DEBUG] Found TS file: Slide_Title.ts
+[DEBUG] processing Slide_Title.ts
+[DEBUG] Content snippet: import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
+import { Colors, Fon...
+[DEBUG] Match result: Slide_Title
+[DEBUG] Found class Slide_Title in /Users/alexcalcan/Documents/Apps/FigmaDesigner/slides/UEFA_Light_template/Slide_Title.ts
+[DEBUG] Found TS file: theme.ts
+[DEBUG] Found TS file: utils.ts
+[DEBUG] Entering dir: UEFA_Light_extra_presentation_2026-02-08_20-13-23, Project: UEFA_Light_extra_presentation_2026-02-08_20-13-23
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Presentation.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Presentation in /Users/alexcalcan/Documents/Apps/FigmaDesigner/presentations/UEFA_Light_extra_presentation_2026-02-08_20-13-23/PPT_UefaLightExtraPresentation_Presentation.ts
+[DEBUG] Entering dir: UEFA_Light_extra_presentation_2026-02-08_20-15-50, Project: UEFA_Light_extra_presentation_2026-02-08_20-15-50
+[DEBUG] Found TS file: PPT_UefaLightExtraPresentation_Presentation.ts
+[DEBUG] Found class PPT_UefaLightExtraPresentation_Presentation in /Users/alexcalcan/Documents/Apps/FigmaDesigner/presentations/UEFA_Light_extra_presentation_2026-02-08_20-15-50/PPT_UefaLightExtraPresentation_Presentation.ts
+[DEBUG] Entering dir: UEFA_extra, Project: UEFA_extra
+[DEBUG] Found TS file: UEFA_Light_Extra_Presentation.ts
+[DEBUG] Found class UEFA_Light_Extra_Presentation in /Users/alexcalcan/Documents/Apps/FigmaDesigner/presentations/UEFA_extra/UEFA_Light_Extra_Presentation.ts
+[DEBUG] Entering dir: UEFA_template, Project: UEFA_template
+[DEBUG] Found TS file: UEFA_Light_Presentation.ts
+[DEBUG] Found class UEFA_Light_Presentation in /Users/alexcalcan/Documents/Apps/FigmaDesigner/presentations/UEFA_template/UEFA_Light_Presentation.ts
+[DEBUG] resolveCollisions: adding unique class Browser
+[DEBUG] resolveCollisions: adding unique class GQ_Banner_Shirts_Aligned
+[DEBUG] resolveCollisions: adding unique class Info_generated
+[DEBUG] resolveCollisions: adding unique class Info_raw
+[DEBUG] resolveCollisions: adding unique class Main_Navigation
+[DEBUG] resolveCollisions: adding unique class NavLink_selected_28
+[DEBUG] resolveCollisions: resolving collision for Page_title (2 matches)
+[DEBUG] Sanitizing: 'Alex_CookBook' -> 'Alex_CookBook'
+[DEBUG] Sanitizing: 'UEFA_Academy_online' -> 'UEFA_Academy_online'
+[DEBUG] resolveCollisions: adding unique class Profile_Card
+[DEBUG] resolveCollisions: adding unique class Secondary_Navigation
+[DEBUG] resolveCollisions: resolving collision for Top_bar (3 matches)
+[DEBUG] Sanitizing: 'Alex_CookBook' -> 'Alex_CookBook'
+[DEBUG] Sanitizing: 'Competition_newsletters' -> 'Competition_newsletters'
+[DEBUG] Sanitizing: 'UEFA_Academy_online' -> 'UEFA_Academy_online'
+[DEBUG] resolveCollisions: adding unique class accordion
+[DEBUG] resolveCollisions: adding unique class checkbox
+[DEBUG] resolveCollisions: adding unique class chip_expand
+[DEBUG] resolveCollisions: adding unique class dropdown_options
+[DEBUG] resolveCollisions: adding unique class expanded_card
+[DEBUG] resolveCollisions: adding unique class input_field
+[DEBUG] resolveCollisions: adding unique class progress_stepper
+[DEBUG] resolveCollisions: adding unique class radio_button
+[DEBUG] resolveCollisions: adding unique class recipe_card
+[DEBUG] resolveCollisions: resolving collision for search_bar (2 matches)
+[DEBUG] Sanitizing: 'Alex_CookBook' -> 'Alex_CookBook'
+[DEBUG] Sanitizing: 'UEFA_Academy_online' -> 'UEFA_Academy_online'
+[DEBUG] resolveCollisions: adding unique class search_bar_expanded
+[DEBUG] resolveCollisions: adding unique class search_bar_expanded_radio
+[DEBUG] resolveCollisions: adding unique class sidebar_filtering
+[DEBUG] resolveCollisions: adding unique class social_profile_card
+[DEBUG] resolveCollisions: adding unique class toggle
+[DEBUG] resolveCollisions: adding unique class uefa_cards_4x
+[DEBUG] resolveCollisions: resolving collision for checkbox_element (2 matches)
+[DEBUG] Sanitizing: 'Competition_newsletters' -> 'Competition_newsletters'
+[DEBUG] Sanitizing: 'UEFA_Academy_online' -> 'UEFA_Academy_online'
+[DEBUG] resolveCollisions: adding unique class banner
+[DEBUG] resolveCollisions: adding unique class hero
+[DEBUG] resolveCollisions: adding unique class pk_button
+[DEBUG] resolveCollisions: adding unique class JsonReconstructor
+[DEBUG] resolveCollisions: adding unique class BriefNote
+[DEBUG] resolveCollisions: adding unique class UserObservationStickyNote
+[DEBUG] resolveCollisions: adding unique class Button
+[DEBUG] resolveCollisions: adding unique class TableStat
+[DEBUG] resolveCollisions: adding unique class BarChartObject
+[DEBUG] resolveCollisions: adding unique class Content_container
+[DEBUG] resolveCollisions: adding unique class Divider
+[DEBUG] resolveCollisions: adding unique class Header
+[DEBUG] resolveCollisions: adding unique class Info
+[DEBUG] resolveCollisions: adding unique class SubSection_collapsed
+[DEBUG] resolveCollisions: adding unique class TitleBar_withCTA
+[DEBUG] resolveCollisions: adding unique class button_set
+[DEBUG] resolveCollisions: adding unique class card
+[DEBUG] resolveCollisions: adding unique class cards_row
+[DEBUG] resolveCollisions: adding unique class chip_dropdown
+[DEBUG] resolveCollisions: adding unique class simple_info
+[DEBUG] resolveCollisions: adding unique class BookingLogo_color
+[DEBUG] resolveCollisions: adding unique class Main_Navigation_28
+[DEBUG] resolveCollisions: adding unique class Main_Navigation_28_Booking
+[DEBUG] resolveCollisions: adding unique class Main_Navigation_Booking
+[DEBUG] resolveCollisions: adding unique class SponsorBanner
+[DEBUG] resolveCollisions: adding unique class SponsorStrip
+[DEBUG] resolveCollisions: adding unique class AV___airplay
+[DEBUG] resolveCollisions: adding unique class AV___android_forward_10
+[DEBUG] resolveCollisions: adding unique class AV___android_replay_10
+[DEBUG] resolveCollisions: adding unique class AV___autoplay
+[DEBUG] resolveCollisions: adding unique class AV___backward
+[DEBUG] resolveCollisions: adding unique class AV___chromecast
+[DEBUG] resolveCollisions: adding unique class AV___forward
+[DEBUG] resolveCollisions: adding unique class AV___fullscreen
+[DEBUG] resolveCollisions: adding unique class AV___fullscreen_exit
+[DEBUG] resolveCollisions: adding unique class AV___ios_backward_10
+[DEBUG] resolveCollisions: adding unique class AV___ios_forward_10
+[DEBUG] resolveCollisions: adding unique class AV___ios_go_to_end
+[DEBUG] resolveCollisions: adding unique class AV___ios_next
+[DEBUG] resolveCollisions: adding unique class AV___ios_previous
+[DEBUG] resolveCollisions: adding unique class AV___pause
+[DEBUG] resolveCollisions: adding unique class AV___pause_circle
+[DEBUG] resolveCollisions: adding unique class AV___pause_circle_negative
+[DEBUG] resolveCollisions: adding unique class AV___play
+[DEBUG] resolveCollisions: adding unique class AV___play_circle
+[DEBUG] resolveCollisions: adding unique class AV___play_circle_negative
+[DEBUG] resolveCollisions: adding unique class AV___play_video_off_2
+[DEBUG] resolveCollisions: adding unique class AV___sound_down
+[DEBUG] resolveCollisions: adding unique class AV___sound_off
+[DEBUG] resolveCollisions: adding unique class AV___sound_up
+[DEBUG] resolveCollisions: adding unique class AV___stop
+[DEBUG] resolveCollisions: adding unique class AV___stop_circle_negative
+[DEBUG] resolveCollisions: adding unique class Action___Collapse_All
+[DEBUG] resolveCollisions: adding unique class Action___Description
+[DEBUG] resolveCollisions: adding unique class Action___Drag_horizontal
+[DEBUG] resolveCollisions: adding unique class Action___Drag_horizontal_Alt
+[DEBUG] resolveCollisions: adding unique class Action___Drag_vertical
+[DEBUG] resolveCollisions: adding unique class Action___Drag_vertical_Alt
+[DEBUG] resolveCollisions: adding unique class Action___Expand_All
+[DEBUG] resolveCollisions: adding unique class Action___Microphone
+[DEBUG] resolveCollisions: adding unique class Action___Open_in_full
+[DEBUG] resolveCollisions: adding unique class Action___Print
+[DEBUG] resolveCollisions: adding unique class Action___Restart
+[DEBUG] resolveCollisions: adding unique class Action___Swap_horizontal
+[DEBUG] resolveCollisions: adding unique class Action___Swap_vertical
+[DEBUG] resolveCollisions: adding unique class Action___Sync
+[DEBUG] resolveCollisions: adding unique class Action___Tune
+[DEBUG] resolveCollisions: adding unique class Action___action_copy
+[DEBUG] resolveCollisions: adding unique class Action___action_delete
+[DEBUG] resolveCollisions: adding unique class Action___add
+[DEBUG] resolveCollisions: adding unique class Action___add_circle
+[DEBUG] resolveCollisions: adding unique class Action___add_to_calendar
+[DEBUG] resolveCollisions: adding unique class Action___check
+[DEBUG] resolveCollisions: adding unique class Action___check_circle
+[DEBUG] resolveCollisions: adding unique class Action___compare
+[DEBUG] resolveCollisions: adding unique class Action___directions
+[DEBUG] resolveCollisions: adding unique class Action___dislike
+[DEBUG] resolveCollisions: adding unique class Action___dislike_filled
+[DEBUG] resolveCollisions: adding unique class Action___download
+[DEBUG] resolveCollisions: adding unique class Action___edit
+[DEBUG] resolveCollisions: adding unique class Action___edit_filled
+[DEBUG] resolveCollisions: adding unique class Action___equal
+[DEBUG] resolveCollisions: adding unique class Action___equal_Alt
+[DEBUG] resolveCollisions: adding unique class Action___favourite
+[DEBUG] resolveCollisions: adding unique class Action___favourite_active
+[DEBUG] resolveCollisions: adding unique class Action___filter
+[DEBUG] resolveCollisions: adding unique class Action___filter_circle
+[DEBUG] resolveCollisions: adding unique class Action___filter_circle_filled
+[DEBUG] resolveCollisions: adding unique class Action___followed
+[DEBUG] resolveCollisions: adding unique class Action___followed_active
+[DEBUG] resolveCollisions: adding unique class Action___ios_close_full
+[DEBUG] resolveCollisions: adding unique class Action___language
+[DEBUG] resolveCollisions: adding unique class Action___like
+[DEBUG] resolveCollisions: adding unique class Action___like_filled
+[DEBUG] resolveCollisions: adding unique class Action___map
+[DEBUG] resolveCollisions: adding unique class Action___profile
+[DEBUG] resolveCollisions: adding unique class Action___qr_code
+[DEBUG] resolveCollisions: adding unique class Action___remove
+[DEBUG] resolveCollisions: adding unique class Action___remove_circle
+[DEBUG] resolveCollisions: adding unique class Action___save
+[DEBUG] resolveCollisions: adding unique class Action___scan
+[DEBUG] resolveCollisions: adding unique class Action___search
+[DEBUG] resolveCollisions: adding unique class Action___settings
+[DEBUG] resolveCollisions: adding unique class Action___share_android
+[DEBUG] resolveCollisions: adding unique class Action___share_android_filled
+[DEBUG] resolveCollisions: adding unique class Action___share_ios
+[DEBUG] resolveCollisions: adding unique class Action___sorting
+[DEBUG] resolveCollisions: adding unique class Action___unfollow
+[DEBUG] resolveCollisions: adding unique class Action__actions_language
+[DEBUG] resolveCollisions: adding unique class Card_1
+[DEBUG] resolveCollisions: adding unique class Card_3
+[DEBUG] resolveCollisions: adding unique class Card__Single_Card_Red
+[DEBUG] resolveCollisions: adding unique class Features___Simulator_tool_standings_ALT
+[DEBUG] resolveCollisions: adding unique class Features___euro_2020
+[DEBUG] resolveCollisions: adding unique class Features___event_companion
+[DEBUG] resolveCollisions: adding unique class Features___games
+[DEBUG] resolveCollisions: adding unique class Features___gott
+[DEBUG] resolveCollisions: adding unique class Features___history
+[DEBUG] resolveCollisions: adding unique class Features___hospitality
+[DEBUG] resolveCollisions: adding unique class Features___in_the_zone
+[DEBUG] resolveCollisions: adding unique class Features___ko_bracket
+[DEBUG] resolveCollisions: adding unique class Features___moments
+[DEBUG] resolveCollisions: adding unique class Features___panini_virtual_album
+[DEBUG] resolveCollisions: adding unique class Features___player_ranking
+[DEBUG] resolveCollisions: adding unique class Features___podcast
+[DEBUG] resolveCollisions: adding unique class Features___predictor
+[DEBUG] resolveCollisions: adding unique class Features___quiz
+[DEBUG] resolveCollisions: adding unique class Features___radio
+[DEBUG] resolveCollisions: adding unique class Features___simulator
+[DEBUG] resolveCollisions: adding unique class Features___skills
+[DEBUG] resolveCollisions: adding unique class Features___stats
+[DEBUG] resolveCollisions: adding unique class Features___store
+[DEBUG] resolveCollisions: adding unique class Features___teams
+[DEBUG] resolveCollisions: adding unique class Features___tickets
+[DEBUG] resolveCollisions: adding unique class Features___top_scorer
+[DEBUG] resolveCollisions: adding unique class Features___tournament_bracket
+[DEBUG] resolveCollisions: adding unique class Features___uefa_rankings
+[DEBUG] resolveCollisions: adding unique class Features___uefa_tv
+[DEBUG] resolveCollisions: adding unique class Features___unl
+[DEBUG] resolveCollisions: adding unique class Features___w2021
+[DEBUG] resolveCollisions: adding unique class Football___away
+[DEBUG] resolveCollisions: adding unique class Football___card_single_card_red
+[DEBUG] resolveCollisions: adding unique class Football___card_single_card_yellow
+[DEBUG] resolveCollisions: adding unique class Football___card_yellow_to_red
+[DEBUG] resolveCollisions: adding unique class Football___doubtful
+[DEBUG] resolveCollisions: adding unique class Football___eliminated
+[DEBUG] resolveCollisions: adding unique class Football___goal_extra_time
+[DEBUG] resolveCollisions: adding unique class Football___goal_own_goal
+[DEBUG] resolveCollisions: adding unique class Football___goal_penalty
+[DEBUG] resolveCollisions: adding unique class Football___goal_penalty_missed
+[DEBUG] resolveCollisions: adding unique class Football___goal_regular
+[DEBUG] resolveCollisions: adding unique class Football___home
+[DEBUG] resolveCollisions: adding unique class Football___injured
+[DEBUG] resolveCollisions: adding unique class Football___penalty_shootout
+[DEBUG] resolveCollisions: adding unique class Football___substitution_both
+[DEBUG] resolveCollisions: adding unique class Football___substitution_in
+[DEBUG] resolveCollisions: adding unique class Football___substitution_out
+[DEBUG] resolveCollisions: adding unique class Football___suspended
+[DEBUG] resolveCollisions: adding unique class Football___time_additional_time
+[DEBUG] resolveCollisions: adding unique class Football___time_break
+[DEBUG] resolveCollisions: adding unique class Football___time_end
+[DEBUG] resolveCollisions: adding unique class Football___time_extra_time
+[DEBUG] resolveCollisions: adding unique class Football___time_resume
+[DEBUG] resolveCollisions: adding unique class Football___time_start
+[DEBUG] resolveCollisions: adding unique class Football___time_whistle
+[DEBUG] resolveCollisions: adding unique class Football___var
+[DEBUG] resolveCollisions: adding unique class Football___var_progress
+[DEBUG] resolveCollisions: adding unique class Football___var_resolution
+[DEBUG] resolveCollisions: adding unique class Gaming___gaming_auto_complete
+[DEBUG] resolveCollisions: adding unique class Gaming___gaming_bench
+[DEBUG] resolveCollisions: adding unique class Gaming___gaming_captain
+[DEBUG] resolveCollisions: adding unique class Navigation___Expand
+[DEBUG] resolveCollisions: adding unique class Navigation___close
+[DEBUG] resolveCollisions: adding unique class Product___Flat___Competitions
+[DEBUG] resolveCollisions: adding unique class Product___Flat___Football
+[DEBUG] resolveCollisions: adding unique class Product___Flat___Support
+[DEBUG] resolveCollisions: adding unique class Product___Flat___Trophy
+[DEBUG] resolveCollisions: adding unique class VAR_progress
+[DEBUG] resolveCollisions: adding unique class VAR_resolution
+[DEBUG] resolveCollisions: adding unique class BriefNoteDemo
+[DEBUG] resolveCollisions: adding unique class Nav_Euro_28_Demo
+[DEBUG] resolveCollisions: adding unique class RadioSearchDemo
+[DEBUG] resolveCollisions: adding unique class GQ_2026_Demo
+[DEBUG] resolveCollisions: adding unique class UEFA_Academy_online_CourseDetails
+[DEBUG] resolveCollisions: adding unique class UEFA_Academy_online_Notifications
+[DEBUG] resolveCollisions: adding unique class UEFA_Academy_online_Summary
+[DEBUG] resolveCollisions: adding unique class Header_SponsorStrip_Combinations
+[DEBUG] resolveCollisions: adding unique class Header_Sponsor_Banner_Demo
+[DEBUG] resolveCollisions: adding unique class NavBookingDemo
+[DEBUG] resolveCollisions: adding unique class Nav_Booking_28_Demo
+[DEBUG] resolveCollisions: adding unique class SponsorStripDemo
+[DEBUG] resolveCollisions: adding unique class SponsorStripDemo_Curated
+[DEBUG] resolveCollisions: adding unique class Slide_Content_2Column_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Content_3Column_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Content_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Content_Bullets_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Bullets_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Blue_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Gray_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Subtle_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Subtle_Blue_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Subtle_Gray_extra
+[DEBUG] resolveCollisions: adding unique class Slide_MetricCards_4up_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Object_System_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Picture_BeforeAfter_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Picture_FullBleed_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Picture_Layouts_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Picture_ThreeColumn_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Statistics_Story_extra
+[DEBUG] resolveCollisions: adding unique class Slide_TextLeft_ImageRight_Padded_extra
+[DEBUG] resolveCollisions: adding unique class Slide_TextLeft_ImageRight_extra
+[DEBUG] resolveCollisions: adding unique class Slide_TextLeft_ObjectsRight_extra
+[DEBUG] resolveCollisions: adding unique class Slide_Title_extra
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_001 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_002 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_003 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_004 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_005 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_006 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_007 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_008 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_009 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_010 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_011 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_012 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_013 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_014 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_015 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_016 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_017 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_018 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_019 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_020 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_021 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Slide_022 (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: adding unique class Slide_2Body
+[DEBUG] resolveCollisions: adding unique class Slide_3Body
+[DEBUG] resolveCollisions: adding unique class Slide_Body
+[DEBUG] resolveCollisions: adding unique class Slide_Body_Bullets
+[DEBUG] resolveCollisions: adding unique class Slide_Bullets
+[DEBUG] resolveCollisions: adding unique class Slide_Divider
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Blue
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Gray
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Subtle
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Subtle_Blue
+[DEBUG] resolveCollisions: adding unique class Slide_Divider_Subtle_Gray
+[DEBUG] resolveCollisions: adding unique class Slide_Title
+[DEBUG] resolveCollisions: resolving collision for PPT_UefaLightExtraPresentation_Presentation (2 matches)
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-13-23' -> 'UEFA_Light_extra_presentation_2026_02_08_20_13_23'
+[DEBUG] Sanitizing: 'UEFA_Light_extra_presentation_2026-02-08_20-15-50' -> 'UEFA_Light_extra_presentation_2026_02_08_20_15_50'
+[DEBUG] resolveCollisions: adding unique class UEFA_Light_Extra_Presentation
+[DEBUG] resolveCollisions: adding unique class UEFA_Light_Presentation
+[DEBUG] Adding Slide export: Slide_2Body from ../slides/UEFA_Light_template/Slide_2Body
+[DEBUG] Adding Slide export: Slide_3Body from ../slides/UEFA_Light_template/Slide_3Body
+[DEBUG] Adding Slide export: Slide_Body from ../slides/UEFA_Light_template/Slide_Body
+[DEBUG] Adding Slide export: Slide_Body_Bullets from ../slides/UEFA_Light_template/Slide_Body_Bullets
+[DEBUG] Adding Slide export: Slide_Bullets from ../slides/UEFA_Light_template/Slide_Bullets
+[DEBUG] Adding Slide export: Slide_Bullets_extra from ../slides/UEFA_Light_extra/Slide_Bullets
+[DEBUG] Adding Slide export: Slide_Content_2Column_extra from ../slides/UEFA_Light_extra/Slide_2Body
+[DEBUG] Adding Slide export: Slide_Content_3Column_extra from ../slides/UEFA_Light_extra/Slide_3Body
+[DEBUG] Adding Slide export: Slide_Content_Bullets_extra from ../slides/UEFA_Light_extra/Slide_Body_Bullets
+[DEBUG] Adding Slide export: Slide_Content_extra from ../slides/UEFA_Light_extra/Slide_Body
+[DEBUG] Adding Slide export: Slide_Divider from ../slides/UEFA_Light_template/Slide_Divider
+[DEBUG] Adding Slide export: Slide_Divider_Blue from ../slides/UEFA_Light_template/Slide_Divider_Blue
+[DEBUG] Adding Slide export: Slide_Divider_Blue_extra from ../slides/UEFA_Light_extra/Slide_Divider_Blue
+[DEBUG] Adding Slide export: Slide_Divider_extra from ../slides/UEFA_Light_extra/Slide_Divider
+[DEBUG] Adding Slide export: Slide_Divider_Gray from ../slides/UEFA_Light_template/Slide_Divider_Gray
+[DEBUG] Adding Slide export: Slide_Divider_Gray_extra from ../slides/UEFA_Light_extra/Slide_Divider_Gray
+[DEBUG] Adding Slide export: Slide_Divider_Subtle from ../slides/UEFA_Light_template/Slide_Divider_Subtle
+[DEBUG] Adding Slide export: Slide_Divider_Subtle_Blue from ../slides/UEFA_Light_template/Slide_Divider_Subtle_Blue
+[DEBUG] Adding Slide export: Slide_Divider_Subtle_Blue_extra from ../slides/UEFA_Light_extra/Slide_Divider_Subtle_Blue
+[DEBUG] Adding Slide export: Slide_Divider_Subtle_extra from ../slides/UEFA_Light_extra/Slide_Divider_Subtle
+[DEBUG] Adding Slide export: Slide_Divider_Subtle_Gray from ../slides/UEFA_Light_template/Slide_Divider_Subtle_Gray
+[DEBUG] Adding Slide export: Slide_Divider_Subtle_Gray_extra from ../slides/UEFA_Light_extra/Slide_Divider_Subtle_Gray
+[DEBUG] Adding Slide export: Slide_MetricCards_4up_extra from ../slides/UEFA_Light_extra/Slide_MetricCards_4up_extra
+[DEBUG] Adding Slide export: Slide_Object_System_extra from ../slides/UEFA_Light_extra/Slide_Object_System_extra
+[DEBUG] Adding Slide export: Slide_Picture_BeforeAfter_extra from ../slides/UEFA_Light_extra/Slide_Picture_BeforeAfter_extra
+[DEBUG] Adding Slide export: Slide_Picture_FullBleed_extra from ../slides/UEFA_Light_extra/Slide_Picture_FullBleed_extra
+[DEBUG] Adding Slide export: Slide_Picture_Layouts_extra from ../slides/UEFA_Light_extra/Slide_Picture_Layouts_extra
+[DEBUG] Adding Slide export: Slide_Picture_ThreeColumn_extra from ../slides/UEFA_Light_extra/Slide_Picture_ThreeColumn_extra
+[DEBUG] Adding Slide export: Slide_Statistics_Story_extra from ../slides/UEFA_Light_extra/Slide_Statistics_Story_extra
+[DEBUG] Adding Slide export: Slide_TextLeft_ImageRight_extra from ../slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_extra
+[DEBUG] Adding Slide export: Slide_TextLeft_ImageRight_Padded_extra from ../slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_Padded_extra
+[DEBUG] Adding Slide export: Slide_TextLeft_ObjectsRight_extra from ../slides/UEFA_Light_extra/Slide_TextLeft_ObjectsRight_extra
+[DEBUG] Adding Slide export: Slide_Title from ../slides/UEFA_Light_template/Slide_Title
+[DEBUG] Adding Slide export: Slide_Title_extra from ../slides/UEFA_Light_extra/Slide_Title
+✅ Registered 306 components in components/index.ts
+[DEBUG] Final registry includes: accordion, Action___action_copy, Action___action_delete, Action___add, Action___add_circle, Action___add_to_calendar, Action___check, Action___check_circle, Action___Collapse_All, Action___compare, Action___Description, Action___directions, Action___dislike, Action___dislike_filled, Action___download, Action___Drag_horizontal, Action___Drag_horizontal_Alt, Action___Drag_vertical, Action___Drag_vertical_Alt, Action___edit, Action___edit_filled, Action___equal, Action___equal_Alt, Action___Expand_All, Action___favourite, Action___favourite_active, Action___filter, Action___filter_circle, Action___filter_circle_filled, Action___followed, Action___followed_active, Action___ios_close_full, Action___language, Action___like, Action___like_filled, Action___map, Action___Microphone, Action___Open_in_full, Action___Print, Action___profile, Action___qr_code, Action___remove, Action___remove_circle, Action___Restart, Action___save, Action___scan, Action___search, Action___settings, Action___share_android, Action___share_android_filled, Action___share_ios, Action___sorting, Action___Swap_horizontal, Action___Swap_vertical, Action___Sync, Action___Tune, Action___unfollow, Action__actions_language, AV___airplay, AV___android_forward_10, AV___android_replay_10, AV___autoplay, AV___backward, AV___chromecast, AV___forward, AV___fullscreen, AV___fullscreen_exit, AV___ios_backward_10, AV___ios_forward_10, AV___ios_go_to_end, AV___ios_next, AV___ios_previous, AV___pause, AV___pause_circle, AV___pause_circle_negative, AV___play, AV___play_circle, AV___play_circle_negative, AV___play_video_off_2, AV___sound_down, AV___sound_off, AV___sound_up, AV___stop, AV___stop_circle_negative, banner, BarChartObject, BookingLogo_color, BriefNote, BriefNoteDemo, Browser, Button, button_set, card, Card__Single_Card_Red, Card_1, Card_3, cards_row, checkbox, checkbox_element_Competition_newsletters, checkbox_element_UEFA_Academy_online, chip_dropdown, chip_expand, Content_container, Divider, dropdown_options, expanded_card, Features___euro_2020, Features___event_companion, Features___games, Features___gott, Features___history, Features___hospitality, Features___in_the_zone, Features___ko_bracket, Features___moments, Features___panini_virtual_album, Features___player_ranking, Features___podcast, Features___predictor, Features___quiz, Features___radio, Features___simulator, Features___Simulator_tool_standings_ALT, Features___skills, Features___stats, Features___store, Features___teams, Features___tickets, Features___top_scorer, Features___tournament_bracket, Features___uefa_rankings, Features___uefa_tv, Features___unl, Features___w2021, Football___away, Football___card_single_card_red, Football___card_single_card_yellow, Football___card_yellow_to_red, Football___doubtful, Football___eliminated, Football___goal_extra_time, Football___goal_own_goal, Football___goal_penalty, Football___goal_penalty_missed, Football___goal_regular, Football___home, Football___injured, Football___penalty_shootout, Football___substitution_both, Football___substitution_in, Football___substitution_out, Football___suspended, Football___time_additional_time, Football___time_break, Football___time_end, Football___time_extra_time, Football___time_resume, Football___time_start, Football___time_whistle, Football___var, Football___var_progress, Football___var_resolution, Gaming___gaming_auto_complete, Gaming___gaming_bench, Gaming___gaming_captain, GQ_2026_Demo, GQ_Banner_Shirts_Aligned, Header, Header_Sponsor_Banner_Demo, Header_SponsorStrip_Combinations, hero, Info, Info_generated, Info_raw, input_field, JsonReconstructor, Main_Navigation, Main_Navigation_28, Main_Navigation_28_Booking, Main_Navigation_Booking, Nav_Booking_28_Demo, Nav_Euro_28_Demo, NavBookingDemo, Navigation___close, Navigation___Expand, NavLink_selected_28, Page_title_Alex_CookBook, Page_title_UEFA_Academy_online, pk_button, PPT_UefaLightExtraPresentation_Presentation_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Presentation_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_001_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_001_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_002_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_002_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_003_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_003_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_004_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_004_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_005_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_005_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_006_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_006_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_007_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_007_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_008_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_008_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_009_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_009_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_010_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_010_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_011_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_011_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_012_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_012_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_013_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_013_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_014_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_014_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_015_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_015_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_016_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_016_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_017_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_017_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_018_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_018_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_019_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_019_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_020_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_020_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_021_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_021_UEFA_Light_extra_presentation_2026_02_08_20_15_50, PPT_UefaLightExtraPresentation_Slide_022_UEFA_Light_extra_presentation_2026_02_08_20_13_23, PPT_UefaLightExtraPresentation_Slide_022_UEFA_Light_extra_presentation_2026_02_08_20_15_50, Product___Flat___Competitions, Product___Flat___Football, Product___Flat___Support, Product___Flat___Trophy, Profile_Card, progress_stepper, radio_button, RadioSearchDemo, recipe_card, search_bar_Alex_CookBook, search_bar_expanded, search_bar_expanded_radio, search_bar_UEFA_Academy_online, Secondary_Navigation, sidebar_filtering, simple_info, Slide_2Body, Slide_3Body, Slide_Body, Slide_Body_Bullets, Slide_Bullets, Slide_Bullets_extra, Slide_Content_2Column_extra, Slide_Content_3Column_extra, Slide_Content_Bullets_extra, Slide_Content_extra, Slide_Divider, Slide_Divider_Blue, Slide_Divider_Blue_extra, Slide_Divider_extra, Slide_Divider_Gray, Slide_Divider_Gray_extra, Slide_Divider_Subtle, Slide_Divider_Subtle_Blue, Slide_Divider_Subtle_Blue_extra, Slide_Divider_Subtle_extra, Slide_Divider_Subtle_Gray, Slide_Divider_Subtle_Gray_extra, Slide_MetricCards_4up_extra, Slide_Object_System_extra, Slide_Picture_BeforeAfter_extra, Slide_Picture_FullBleed_extra, Slide_Picture_Layouts_extra, Slide_Picture_ThreeColumn_extra, Slide_Statistics_Story_extra, Slide_TextLeft_ImageRight_extra, Slide_TextLeft_ImageRight_Padded_extra, Slide_TextLeft_ObjectsRight_extra, Slide_Title, Slide_Title_extra, social_profile_card, SponsorBanner, SponsorStrip, SponsorStripDemo, SponsorStripDemo_Curated, SubSection_collapsed, TableStat, TitleBar_withCTA, toggle, Top_bar_Alex_CookBook, Top_bar_Competition_newsletters, Top_bar_UEFA_Academy_online, UEFA_Academy_online_CourseDetails, UEFA_Academy_online_Notifications, UEFA_Academy_online_Summary, uefa_cards_4x, UEFA_Light_Extra_Presentation, UEFA_Light_Presentation, UserObservationStickyNote, VAR_progress, VAR_resolution

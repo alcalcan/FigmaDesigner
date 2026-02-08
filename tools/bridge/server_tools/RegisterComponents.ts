@@ -160,7 +160,8 @@ function resolveCollisions(seenClasses: Map<string, ComponentExport[]>): Compone
             console.log(`[DEBUG] resolveCollisions: resolving collision for ${className} (${matches.length} matches)`);
             for (const match of matches) {
                 if (match.project) {
-                    match.alias = `${className}_${match.project}`;
+                    const safeProject = match.project.replace(/[^a-zA-Z0-9_]/g, '_');
+                    match.alias = `${className}_${safeProject}`;
                 } else {
                     match.alias = `${className}_Root`;
                 }

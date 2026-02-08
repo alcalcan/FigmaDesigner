@@ -184,19 +184,26 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
     req.on('data', chunk => { body += chunk.toString(); });
     req.on('end', () => {
         try {
-            const { folder } = JSON.parse(body); // e.g. "ProjectName"
+            const { folder, type } = JSON.parse(body); // e.g. "ProjectName", type: 'component' | 'page' | 'slide' | 'presentation'
             if (!folder) {
                 res.writeHead(400);
                 res.end(JSON.stringify({ error: "Missing folder name" }));
                 return;
             }
 
-            // Security: simple folder name or path relative to components
-            const componentsRoot = path.join(process.cwd(), 'components');
-            const fullPath = path.join(componentsRoot, folder);
-            const registryPath = path.join(componentsRoot, 'index.ts');
+            // Determine root directory based on type
+            let rootDir = 'components';
+            if (type === 'page') rootDir = 'pages';
+            if (type === 'slide') rootDir = 'slides';
+            if (type === 'presentation') rootDir = 'presentations';
 
-            if (!fullPath.startsWith(componentsRoot)) {
+            const baseDir = path.join(process.cwd(), rootDir);
+            const fullPath = path.join(baseDir, folder);
+
+            // Registry is always in components/index.ts
+            const registryPath = path.join(process.cwd(), 'components', 'index.ts');
+
+            if (!fullPath.startsWith(baseDir)) {
                 res.writeHead(403);
                 res.end(JSON.stringify({ error: "Invalid path" }));
                 return;
@@ -223,7 +230,17 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
                 try {
                     const content = fs.readFileSync(registryPath, 'utf8');
                     const lines = content.split('\n');
-                    const folderPrefix = `./${folder}/`;
+
+                    // Folder prefix depends on the type's relative path structure in index.ts
+                    // Components: "./folder/"
+                    // Pages: "../pages/folder/"
+                    // Slides: "../slides/folder/"
+                    // Presentations: "../presentations/folder/"
+
+                    let folderPrefix = `./${folder}/`;
+                    if (type === 'page') folderPrefix = `../pages/${folder}/`;
+                    if (type === 'slide') folderPrefix = `../slides/${folder}/`;
+                    if (type === 'presentation') folderPrefix = `../presentations/${folder}/`;
 
                     const forwardedContent = lines.filter(line => {
                         return !line.includes(`"${folderPrefix}`) && !line.includes(`'${folderPrefix}`);
@@ -244,6 +261,9 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
             }
 
             // 2. Cascade Delete: Cleanup source extraction project folder
+            // Only relevant for Components usually, or if pages/slides follow same structure.
+            // Assuming extraction uses same folder name at root of tools/extraction?
+            // Existing logic assumed folder name matches extraction folder name.
             try {
                 const extractionFolder = path.join(process.cwd(), 'tools', 'extraction', folder);
                 if (fs.existsSync(extractionFolder)) {
@@ -256,7 +276,7 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
 
             // 3. Delete Directory
             fs.rmSync(fullPath, { recursive: true, force: true });
-            console.log(`Deleted component folder: ${folder}`);
+            console.log(`Deleted ${type} folder: ${folder}`);
 
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ status: 'ok' }));

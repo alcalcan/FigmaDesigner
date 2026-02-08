@@ -11,13 +11,16 @@ import { Slide_Divider_Gray_extra } from "../../slides/UEFA_Light_extra/Slide_Di
 import { Slide_Divider_Subtle_extra } from "../../slides/UEFA_Light_extra/Slide_Divider_Subtle";
 import { Slide_Divider_Subtle_Blue_extra } from "../../slides/UEFA_Light_extra/Slide_Divider_Subtle_Blue";
 import { Slide_Divider_Subtle_Gray_extra } from "../../slides/UEFA_Light_extra/Slide_Divider_Subtle_Gray";
+import { Slide_MetricCards_4up_extra } from "../../slides/UEFA_Light_extra/Slide_MetricCards_4up_extra";
 import { Slide_Object_System_extra } from "../../slides/UEFA_Light_extra/Slide_Object_System_extra";
 import { Slide_Picture_BeforeAfter_extra } from "../../slides/UEFA_Light_extra/Slide_Picture_BeforeAfter_extra";
 import { Slide_Picture_FullBleed_extra } from "../../slides/UEFA_Light_extra/Slide_Picture_FullBleed_extra";
 import { Slide_Picture_Layouts_extra } from "../../slides/UEFA_Light_extra/Slide_Picture_Layouts_extra";
 import { Slide_Picture_ThreeColumn_extra } from "../../slides/UEFA_Light_extra/Slide_Picture_ThreeColumn_extra";
+import { Slide_Statistics_Story_extra } from "../../slides/UEFA_Light_extra/Slide_Statistics_Story_extra";
 import { Slide_TextLeft_ImageRight_extra } from "../../slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_extra";
 import { Slide_TextLeft_ImageRight_Padded_extra } from "../../slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_Padded_extra";
+import { Slide_TextLeft_ObjectsRight_extra } from "../../slides/UEFA_Light_extra/Slide_TextLeft_ObjectsRight_extra";
 import { Slide_Title_extra } from "../../slides/UEFA_Light_extra/Slide_Title";
 
 export class UEFA_Light_Extra_Presentation extends BaseComponent {
@@ -66,7 +69,10 @@ export class UEFA_Light_Extra_Presentation extends BaseComponent {
             { slide: new Slide_Picture_Layouts_extra(), number: "1.9" },
             { slide: new Slide_Picture_ThreeColumn_extra(), number: "1.10" },
             { slide: new Slide_Picture_BeforeAfter_extra(), number: "1.11" },
-            { slide: new Slide_Object_System_extra(), number: "1.12" }
+            { slide: new Slide_Object_System_extra(), number: "1.12" },
+            { slide: new Slide_TextLeft_ObjectsRight_extra(), number: "1.13" },
+            { slide: new Slide_Statistics_Story_extra(), number: "1.14" },
+            { slide: new Slide_MetricCards_4up_extra(), number: "1.15" }
         ];
 
         const slides = [...titleSlides, ...dividerSlides, ...contentSlides];

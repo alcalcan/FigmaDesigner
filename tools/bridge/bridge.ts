@@ -6,6 +6,7 @@ import { handleSave, handleSavePacket, handleSavePng } from './handlers/assets';
 import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
 import { handlePoll, handleLog } from './handlers/system';
 import { handleSavePpt } from './handlers/ppt_export';
+import { handleImportPpt } from './handlers/ppt_import';
 import { handleSelectSavePath } from './handlers/system_dialog';
 import { startBuild } from '../build';
 
@@ -50,6 +51,7 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/save-packet') return handleSavePacket(req, res);
     if (req.method === 'POST' && req.url === '/save-png') return handleSavePng(req, res);
     if (req.method === 'POST' && req.url === '/save-ppt') return handleSavePpt(req, res);
+    if (req.method === 'POST' && req.url === '/import-ppt') return handleImportPpt(req, res);
     if (req.method === 'POST' && req.url === '/select-save-path') return handleSelectSavePath(req, res);
 
     if (req.method === 'POST' && req.url === '/generate-code-preview') return handleGenerateCodePreview(req, res);

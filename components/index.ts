@@ -228,13 +228,16 @@ export { Slide_Divider_Subtle_Blue_extra } from "../slides/UEFA_Light_extra/Slid
 export { Slide_Divider_Subtle_extra } from "../slides/UEFA_Light_extra/Slide_Divider_Subtle";
 export { Slide_Divider_Subtle_Gray } from "../slides/UEFA_Light_template/Slide_Divider_Subtle_Gray";
 export { Slide_Divider_Subtle_Gray_extra } from "../slides/UEFA_Light_extra/Slide_Divider_Subtle_Gray";
+export { Slide_MetricCards_4up_extra } from "../slides/UEFA_Light_extra/Slide_MetricCards_4up_extra";
 export { Slide_Object_System_extra } from "../slides/UEFA_Light_extra/Slide_Object_System_extra";
 export { Slide_Picture_BeforeAfter_extra } from "../slides/UEFA_Light_extra/Slide_Picture_BeforeAfter_extra";
 export { Slide_Picture_FullBleed_extra } from "../slides/UEFA_Light_extra/Slide_Picture_FullBleed_extra";
 export { Slide_Picture_Layouts_extra } from "../slides/UEFA_Light_extra/Slide_Picture_Layouts_extra";
 export { Slide_Picture_ThreeColumn_extra } from "../slides/UEFA_Light_extra/Slide_Picture_ThreeColumn_extra";
+export { Slide_Statistics_Story_extra } from "../slides/UEFA_Light_extra/Slide_Statistics_Story_extra";
 export { Slide_TextLeft_ImageRight_extra } from "../slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_extra";
 export { Slide_TextLeft_ImageRight_Padded_extra } from "../slides/UEFA_Light_extra/Slide_TextLeft_ImageRight_Padded_extra";
+export { Slide_TextLeft_ObjectsRight_extra } from "../slides/UEFA_Light_extra/Slide_TextLeft_ObjectsRight_extra";
 export { Slide_Title } from "../slides/UEFA_Light_template/Slide_Title";
 export { Slide_Title_extra } from "../slides/UEFA_Light_extra/Slide_Title";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";

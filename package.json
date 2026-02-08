@@ -52,6 +52,8 @@
     "@modelcontextprotocol/sdk": "^1.25.2",
     "@types/eventsource": "^1.1.15",
     "eventsource": "^4.1.0",
+    "fast-xml-parser": "^5.3.5",
+    "jszip": "^3.10.1",
     "ts-node": "^10.9.2"
   }
 }

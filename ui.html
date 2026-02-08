@@ -385,6 +385,10 @@
                 <button id="build-ppt-btn" class="secondary"
                     style="margin-top: 8px; background: #ea580c; color: white; border-color: #c2410c;">Build PPT
                     (Selected Frame)</button>
+                <button id="import-ppt-btn" class="secondary"
+                    style="margin-top: 8px; background: #9333ea; color: white; border-color: #7e22ce;">Import PPT
+                    (.pptx)</button>
+                <input type="file" id="ppt-file-input" accept=".pptx" style="display: none;">
                 <label class="checkbox-row" style="margin-top: 8px;">
                     <input type="checkbox" id="ppt-editable-text-checkbox" checked>
                     <span style="color: #fff; font-weight: 600;">Editable Text in PPT</span>
@@ -648,6 +652,81 @@
                 confirmBtn.disabled = false;
                 confirmBtn.textContent = originalText;
             }
+        }
+
+        // --- PPT Import Logic ---
+        const importPptBtn = document.getElementById('import-ppt-btn');
+        const pptFileInput = document.getElementById('ppt-file-input');
+
+        if (importPptBtn && pptFileInput) {
+            importPptBtn.addEventListener('click', () => {
+                pptFileInput.value = ''; // Reset
+                pptFileInput.click();
+            });
+
+            pptFileInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                if (!file.name.toLowerCase().endsWith('.pptx')) {
+                    alert("Please select a valid .pptx file.");
+                    return;
+                }
+
+                const originalText = importPptBtn.textContent;
+                importPptBtn.disabled = true;
+                importPptBtn.textContent = "Importing...";
+
+                try {
+                    const reader = new FileReader();
+
+                    reader.onload = async () => {
+                        const base64Data = reader.result.split(',')[1]; // Remove data URL prefix
+
+                        try {
+                            const response = await fetch('http://127.0.0.1:3001/import-ppt', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    fileName: file.name,
+                                    data: base64Data
+                                })
+                            });
+
+                            const result = await response.json();
+
+                            if (response.ok) {
+                                alert(`PPT Imported Successfully!\n\nDeck: ${result.deckName}\nSlides: ${result.slideCount}\nKey: ${result.importKey}\n\nCheck 'slides/${result.importKey}' folder.`);
+                                // Refresh lists to show new slides
+                                document.getElementById('refresh-slides-btn')?.click();
+                                document.getElementById('refresh-presentations-btn')?.click();
+                            } else {
+                                throw new Error(result.error || "Import failed on server.");
+                            }
+                        } catch (err) {
+                            console.error("PPT Import Network Error:", err);
+                            alert("Failed to send PPT to Bridge: " + err.message);
+                        } finally {
+                            importPptBtn.disabled = false;
+                            importPptBtn.textContent = originalText;
+                        }
+                    };
+
+                    reader.onerror = () => {
+                        alert("Failed to read file.");
+                        importPptBtn.disabled = false;
+                        importPptBtn.textContent = originalText;
+                    };
+
+                    reader.readAsDataURL(file);
+
+                } catch (err) {
+                    console.error("PPT Import Error:", err);
+                    alert("An unexpected error occurred: " + err.message);
+                    importPptBtn.disabled = false;
+                    importPptBtn.textContent = originalText;
+                }
+            });
         }
     </script>
 
@@ -1944,11 +2023,14 @@
 
                         // COMPONENTS - Folder Delete (Server-Side)
                         delGroupBtn.textContent = '...';
+                        const firstItem = groups[projName][0];
+                        const itemType = firstItem ? firstItem.type : 'component';
+
                         try {
                             const resp = await fetch('http://127.0.0.1:3001/delete-component-folder', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ folder: projName })
+                                body: JSON.stringify({ folder: projName, type: itemType })
                             });
 
                             if (resp.ok) {
