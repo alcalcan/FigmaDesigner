@@ -30,37 +30,44 @@ interface AssetRecord {
 
 const sanitizeName = (name: string) => name.replace(/[^a-z0-9]/gi, '_');
 
-const resolveRegistryKey = (rawName: string): string | null => {
-  const registry = ComponentRegistry as Record<string, unknown>;
-  const requested = (rawName || "").trim();
-  if (!requested) return null;
+interface PptErrorElement {
+  type: 'text';
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  text: string;
+  fontSize: number;
+  color: string;
+}
 
-  if (registry[requested]) return requested;
+interface PptErrorSlide {
+  name: string;
+  elements: PptErrorElement[];
+}
 
-  const normalized = requested.replace(/\\/g, '/').replace(/\.ts$/i, '');
-  if (registry[normalized]) return normalized;
+type PptSlidePayload = ExtractPPT.PPTSlide | PptErrorSlide;
 
-  const parts = normalized.split('/').filter(Boolean);
-  const baseName = parts[parts.length - 1];
-  const projectName = parts.length > 1 ? parts[0] : undefined;
+const createPptErrorSlide = (name: string, text: string): PptErrorSlide => ({
+  name,
+  elements: [{
+    type: 'text',
+    x: 50,
+    y: 300,
+    w: 800,
+    h: 100,
+    text,
+    fontSize: 24,
+    color: "FF0000"
+  }]
+});
 
-  const candidates = new Set<string>();
-  if (baseName) candidates.add(baseName);
-  if (baseName && projectName) {
-    candidates.add(`${baseName}_${sanitizeName(projectName)}`);
-  }
-  candidates.add(normalized.replace(/\//g, '_'));
-
-  for (const candidate of candidates) {
-    if (registry[candidate]) return candidate;
-  }
-
-  if (baseName) {
-    const aliasMatch = Object.keys(registry).find(k => k === baseName || k.startsWith(`${baseName}_`));
-    if (aliasMatch) return aliasMatch;
-  }
-
-  return null;
+const postPptExportError = (message: string) => {
+  figma.notify(message, { error: true });
+  figma.ui.postMessage({
+    type: 'export-ppt-error',
+    message
+  });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -766,138 +773,44 @@ figma.ui.onmessage = async (msg) => {
       }
     }
 
-    if (msg.type === 'export-ppt') {
-      const presentationNames = Array.isArray(msg.presentations) ? msg.presentations : [];
-      console.log(`[Plugin] Handling export-ppt for: ${presentationNames}`);
+    if (msg.type === 'export-ppt-from-selection') {
+      const selection = figma.currentPage.selection;
+      if (selection.length !== 1) {
+        postPptExportError("Select exactly one presentation frame on canvas.");
+        return;
+      }
 
-      const payload: { presentationName: string, slides: any[] }[] = [];
+      const presentationNode = selection[0];
+      if (presentationNode.type !== 'FRAME') {
+        postPptExportError("Selected node must be a FRAME.");
+        return;
+      }
 
-      for (const requestedName of presentationNames) {
-        const requested = String(requestedName || "");
-        const presentationLabel = requested.replace(/\\/g, '/').split('/').filter(Boolean).pop() || requested;
-        logToUI(`[Plugin] Extracting PPT data for '${requested}'...`);
+      const slideFrames = presentationNode.children.filter((child): child is FrameNode => child.type === 'FRAME');
+      if (slideFrames.length === 0) {
+        postPptExportError("No first-level child frames found in the selected frame.");
+        return;
+      }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const resolvedRegistryKey = resolveRegistryKey(requested);
-        const ComponentClass = resolvedRegistryKey ? (ComponentRegistry as any)[resolvedRegistryKey] : null;
-
-        if (!ComponentClass) {
-          console.warn(`[Plugin] Component ${requested} not found.`);
-          payload.push({
-            presentationName: presentationLabel || "Unknown_Presentation",
-            slides: [{
-              name: "Error_NotFound",
-              elements: [{
-                type: 'text', x: 50, y: 300, w: 800, h: 100,
-                text: `Presentation not found in registry: ${requested}`,
-                fontSize: 24, color: "FF0000"
-              }]
-            }]
-          });
-          continue;
-        }
-        logToUI(`[Plugin] Resolved '${requested}' to registry key '${resolvedRegistryKey}'`);
-
+      const slides: PptSlidePayload[] = [];
+      for (const slideFrame of slideFrames) {
+        console.log(`[Plugin] Extracting selected slide: ${slideFrame.name} (ID: ${slideFrame.id})`);
         try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const instance = new ComponentClass() as any;
-          // Create hidden instance to extract data
-          // We place it far away so it doesn't interfere, or just create it and remove it.
-          // Note: create() usually appends to parent? No, it returns a Node.
-          // We need to append it to document to ensure it renders/layouts for coordinate extraction?
-          // Yes, FrameNode needs to be on page for absoluteTransform to work relative to page? 
-          // ACTUALLY: absoluteTransform works even if not detached, but layout engine needs it to be in the tree sometimes for auto-layout?
-          // Safest is to append, extract, then remove.
-
-          const props = {
-            name: presentationLabel || requested,
-            role: "Export Temp",
-          };
-
-          let rootNode: SceneNode;
-          if (typeof instance.createAsync === 'function') {
-            rootNode = await instance.createAsync(props);
-          } else {
-            rootNode = await instance.create(props);
-          }
-
-          // It might not be on the page yet depending on implementation of create.
-          // Most create implementations in this codebase seem to return the node, caller appends.
-          // Let's append to current page but hidden.
-          figma.currentPage.appendChild(rootNode);
-          rootNode.visible = true; // Must be visible for export
-          rootNode.x = 100000;
-          rootNode.y = 100000;
-
-          // Find Slides. Usually direct children frames of the presentation frame.
-          const slides: any[] = [];
-          if ("children" in rootNode) {
-            const children = (rootNode as FrameNode).children;
-            for (const child of children) {
-              // Verify if it's a slide (Frame/ComponentInstance)
-              if (child.type === 'FRAME' || child.type === 'INSTANCE' || child.type === 'COMPONENT') {
-                console.log(`[Plugin] Extracting slide node: ${child.name} (ID: ${child.id})`);
-                try {
-                  const slideData = await ExtractPPT.PPTExtractor.extract(child as FrameNode);
-                  slides.push(slideData);
-                } catch (err) {
-                  console.error(`[Plugin] Error extracting slide ${child.name}:`, err);
-                  slides.push({
-                    name: `Error_${child.name}`,
-                    elements: [{
-                      type: 'text', x: 50, y: 300, w: 800, h: 100,
-                      text: `Error extracting slide: ${(err as Error).message}`,
-                      fontSize: 24, color: "FF0000"
-                    }]
-                  });
-                }
-              }
-            }
-          }
-
-          if (slides.length === 0) {
-            console.warn(`[Plugin] No slides found for ${requested}. Injecting error slide.`);
-            slides.push({
-              name: "Error_NoSlides",
-              elements: [{
-                type: 'text', x: 50, y: 300, w: 800, h: 100,
-                text: `No slides found in presentation: ${requested}. Check logs.`,
-                fontSize: 24, color: "FF0000"
-              }]
-            });
-          }
-
-          payload.push({
-            presentationName: presentationLabel || requested,
-            slides: slides
-          });
-
-          console.log(`[Plugin] Finished extracting ${requested}. Total slides: ${slides.length}`);
-
-          rootNode.remove();
-
-        } catch (e) {
-          console.error(`[Plugin] Failed to extract PPT for ${requested}`, e);
-          logToUI(`[Plugin] Error extracting ${requested}: ${(e as Error).message}`);
-
-          // Fallback: Push an error presentation/slide so user sees something happened
-          payload.push({
-            presentationName: (presentationLabel || requested) + "_Error",
-            slides: [{
-              name: "Fatal_Error",
-              elements: [{
-                type: 'text', x: 50, y: 300, w: 800, h: 100,
-                text: `Fatal Error: ${(e as Error).message}`,
-                fontSize: 24, color: "FF0000"
-              }]
-            }]
-          });
+          const slideData = await ExtractPPT.PPTExtractor.extract(slideFrame);
+          slides.push(slideData);
+        } catch (err) {
+          const reason = err instanceof Error ? err.message : String(err);
+          console.error(`[Plugin] Error extracting slide ${slideFrame.name}:`, err);
+          slides.push(createPptErrorSlide(`Error_${slideFrame.name}`, `Error extracting slide: ${reason}`));
         }
       }
 
       figma.ui.postMessage({
         type: 'export-ppt-data',
-        payload: payload,
+        payload: [{
+          presentationName: presentationNode.name || "Presentation",
+          slides
+        }],
         docName: figma.root.name
       });
     }

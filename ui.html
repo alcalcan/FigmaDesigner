@@ -282,10 +282,6 @@
                     selected</span>
                 <button id="batch-delete-presentations-btn" class="secondary"
                     style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; background: #3a1a1a; color: #ff4d4d; border-color: #5a2a2a;">Delete</button>
-                <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
-                <button id="batch-export-ppt-btn" class="secondary"
-                    style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; background: #ea580c; color: white; border-color: #c2410c;">Export
-                    PPT</button>
             </div>
         </div>
     </div>
@@ -386,6 +382,9 @@
                 <button id="capture-png-btn" class="secondary" style="margin-top: 8px;">Capture PNG</button>
                 <button id="capture-clipboard-btn" class="secondary" style="margin-top: 8px;">Capture to
                     Clipboard</button>
+                <button id="build-ppt-btn" class="secondary"
+                    style="margin-top: 8px; background: #ea580c; color: white; border-color: #c2410c;">Build PPT
+                    (Selected Frame)</button>
                 <div style="margin-top: 12px;">
                     <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
                         <label class="checkbox-row" style="margin: 0;">
@@ -445,25 +444,53 @@
             (Manual)</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script>
         // --- PPT Export Modal Logic ---
         let pendingPptPayload = null;
         let pendingPptGenerator = null;
+        let pendingPptDocName = "Presentation";
+        let pendingPptTriggerBtnId = "build-ppt-btn";
+        let activePptExportBtn = null;
+        let activePptExportBtnOriginalText = "";
 
+        function setPptTriggerButton(buttonId) {
+            pendingPptTriggerBtnId = buttonId || "build-ppt-btn";
+        }
 
-        function showPptExport(payload, pptInstance) {
+        function resetActivePptExportButton() {
+            if (activePptExportBtn) {
+                activePptExportBtn.disabled = false;
+                if (activePptExportBtnOriginalText) {
+                    activePptExportBtn.textContent = activePptExportBtnOriginalText;
+                }
+            }
+            activePptExportBtn = null;
+            activePptExportBtnOriginalText = "";
+        }
+
+        function showPptExport(payload, pptInstance, docName) {
             pendingPptPayload = payload;
             pendingPptGenerator = pptInstance;
+            pendingPptDocName = docName || "Presentation";
+
+            const triggerBtn = document.getElementById(pendingPptTriggerBtnId) || document.getElementById('build-ppt-btn');
+            if (triggerBtn) {
+                activePptExportBtn = triggerBtn;
+            }
+            if (activePptExportBtn && !activePptExportBtnOriginalText) {
+                activePptExportBtnOriginalText = activePptExportBtn.textContent;
+            }
 
             // Try to use System Dialog first
             useSystemDialog(payload, pptInstance);
         }
 
         async function useSystemDialog(payload, pptInstance) {
-            const btn = document.getElementById('batch-export-ppt-btn');
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = "Selecting Path...";
+            if (activePptExportBtn) {
+                activePptExportBtn.disabled = true;
+                activePptExportBtn.textContent = "Selecting Path...";
+            }
 
             try {
                 // DEBUG: Check payload
@@ -471,11 +498,10 @@
                 console.log("[UI] Payload Length:", payload.length);
                 if (payload.length > 0) console.log("[UI] First Name:", payload[0].presentationName);
 
-                const pluginMessage = event.data.pluginMessage;
                 // Use first presentation name if available, otherwise docName
                 let defaultName = (payload && payload.length > 0 && payload[0].presentationName)
                     ? payload[0].presentationName
-                    : (pluginMessage.docName || "Presentation");
+                    : (pendingPptDocName || "Presentation");
 
                 // Keep underscores as per user request ("name of the .ts file")
                 // defaultName = defaultName.replace(/_/g, ' ');
@@ -503,13 +529,13 @@
 
                 if (pathResult.cancelled) {
                     console.log("User cancelled save dialog.");
-                    btn.disabled = false;
-                    btn.textContent = originalText;
                     return;
                 }
 
                 if (pathResult.path) {
-                    btn.textContent = "Exporting...";
+                    if (activePptExportBtn) {
+                        activePptExportBtn.textContent = "Exporting...";
+                    }
                     // 2. Generate and Save to the selected path
                     const base64Ctx = await pptInstance.write('base64');
 
@@ -539,8 +565,7 @@
                 // Fallback to modal in case of error
                 showPptModal(payload, pptInstance);
             } finally {
-                btn.disabled = false;
-                btn.textContent = originalText;
+                resetActivePptExportButton();
             }
         }
 
@@ -554,7 +579,9 @@
             const pathInput = document.getElementById('ppt-path-input');
 
             // Set default filename
-            const defaultName = payload.length === 1 ? payload[0].presentationName : `Export_${new Date().getTime()}`;
+            const defaultName = payload.length === 1
+                ? payload[0].presentationName
+                : (pendingPptDocName || `Export_${new Date().getTime()}`);
             fileNameInput.value = defaultName;
 
             modal.style.display = 'flex';
@@ -566,12 +593,8 @@
             document.getElementById('ppt-export-modal').style.display = 'none';
             pendingPptPayload = null;
             pendingPptGenerator = null;
-
-            const btn = document.getElementById('batch-export-ppt-btn');
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = "Export PPT";
-            }
+            pendingPptDocName = "Presentation";
+            resetActivePptExportButton();
         }
 
         async function confirmPptExport() {
@@ -659,11 +682,15 @@
         // --- PPT Generation Logic ---
         window.addEventListener('message', async (event) => {
             const msg = event.data.pluginMessage;
+            if (msg && msg.type === 'export-ppt-error') {
+                alert(msg.message || "Failed to build PPT.");
+                resetActivePptExportButton();
+                return;
+            }
+
             if (msg && msg.type === 'export-ppt-data') {
                 const payload = msg.payload;
                 console.log("[UI] Received PPT Data:", payload);
-
-                const batchExportPptBtn = document.getElementById('batch-export-ppt-btn');
 
                 try {
                     // Initialize PptxGenJS
@@ -724,15 +751,12 @@
                     }
 
                     // Show custom export flow (System Dialog -> fallback to Modal)
-                    showPptExport(payload, pptx);
+                    showPptExport(payload, pptx, msg.docName);
 
                 } catch (err) {
                     console.error("PPT Generation Failed:", err);
                     alert("Failed to generate PPT: " + err.message);
-                    if (batchExportPptBtn) {
-                        batchExportPptBtn.disabled = false;
-                        batchExportPptBtn.textContent = "Export PPT";
-                    }
+                    resetActivePptExportButton();
                 }
                 // Finally block removed here because modal handles button reset on close
             }
@@ -786,6 +810,7 @@
         const syncBtn = document.getElementById('sync-btn');
         const capturePngBtn = document.getElementById('capture-png-btn');
         const captureClipboardBtn = document.getElementById('capture-clipboard-btn');
+        const buildPptBtn = document.getElementById('build-ppt-btn');
 
         // State for clipboard operation
         let activeTab = 'tab-sync';
@@ -1025,25 +1050,6 @@
         batchDeleteSlidesBtn.onclick = batchDeleteBtn.onclick;
         batchDeletePresentationsBtn.onclick = batchDeleteBtn.onclick;
 
-        const batchExportPptBtn = document.getElementById('batch-export-ppt-btn');
-        batchExportPptBtn.onclick = async () => {
-            if (selectedItems.size === 0) return;
-            const items = Array.from(selectedItems).map(s => JSON.parse(s));
-            // Filter for presentations only
-            const presentations = items.filter(i => (i.t === 'presentation' || i.type === 'presentation')).map(i => i.p || i.fullPath);
-
-            if (presentations.length === 0) {
-                alert("Please select at least one presentation to export.");
-                return;
-            }
-
-            batchExportPptBtn.disabled = true;
-            batchExportPptBtn.textContent = "Exporting...";
-
-            console.log("[UI] Requesting PPT export for:", presentations);
-            parent.postMessage({ pluginMessage: { type: 'export-ppt', presentations: presentations } }, '*');
-        };
-
         batchConvertBtn.onclick = async () => {
             if (selectedItems.size === 0) return;
             const items = Array.from(selectedItems).filter(p => !p.includes('|')); // Only files for now
@@ -1133,6 +1139,15 @@
             }, '*');
 
             showFeedback(captureClipboardBtn, "Capture to Clipboard", "Capturing...");
+        }
+
+        buildPptBtn.onclick = () => {
+            setPptTriggerButton('build-ppt-btn');
+            activePptExportBtn = buildPptBtn;
+            activePptExportBtnOriginalText = "Build PPT (Selected Frame)";
+            buildPptBtn.disabled = true;
+            buildPptBtn.textContent = "Building...";
+            parent.postMessage({ pluginMessage: { type: 'export-ppt-from-selection' } }, '*');
         }
 
         previewCodeBtn.onclick = () => {
