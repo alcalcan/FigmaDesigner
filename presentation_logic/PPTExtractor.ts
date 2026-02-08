@@ -8,6 +8,8 @@ export interface PPTElement {
     text?: string;
     fontSize?: number;
     fontFace?: string;
+    bold?: boolean;
+    italic?: boolean;
     color?: string;
     align?: 'left' | 'center' | 'right' | 'justify';
     fill?: string; // hex for shape, base64 for image
@@ -37,6 +39,7 @@ interface ExtractContext {
     fidelity: PPTFidelity;
     rasterScale: number;
     compositionFallback: PPTCompositionFallback;
+    compositionAnalysisCache: WeakMap<SceneNode, CompositionAnalysis>;
 }
 
 interface Bounds {
@@ -45,6 +48,23 @@ interface Bounds {
     w: number;
     h: number;
 }
+
+interface CompositionAnalysis {
+    shouldFlatten: boolean;
+    ownReasons: string[];
+    inheritedReasons: string[];
+    hasComplexChild: boolean;
+    descendantCount: number;
+    activeClipOverflow: boolean;
+}
+
+const HARD_OWN_COMPOSITION_REASONS = new Set([
+    'mask',
+    'effects',
+    'blend-mode',
+    'rotation',
+    'active-clip-overflow'
+]);
 
 const VECTOR_TYPES = new Set<SceneNode['type']>([
     'VECTOR',
@@ -100,7 +120,8 @@ export class PPTExtractor {
             rootY,
             fidelity,
             rasterScale,
-            compositionFallback
+            compositionFallback,
+            compositionAnalysisCache: new WeakMap()
         };
 
         // Exact mode intentionally flattens the entire slide for max visual fidelity.
@@ -129,17 +150,17 @@ export class PPTExtractor {
             return;
         }
 
-        // Hard clipping safety: always flatten clipped containers in balanced mode.
+        // Hard clipping safety: flatten only when clipping is actively hiding overflow.
         if (
             !isSlideRoot &&
             context.fidelity === 'balanced' &&
-            this.isContainerWithClipping(node)
+            this.hasActiveClipOverflow(node)
         ) {
-            const reasons = ['clips-content-with-children'];
+            const reasons = ['active-clip-overflow'];
             const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
             if (flattened) {
                 console.log(
-                    `[PPTExtractor] Flattened clipped container id=${node.id} name="${node.name}" reasons=${reasons.join(',')}`
+                    `[PPTExtractor] Flattened clipped container id=${node.id} name="${node.name}" activeClipOverflow=true ownReasons=${reasons.join(',')} inheritedReasons=none childCount=${"children" in node ? node.children.length : 0}`
                 );
                 return;
             }
@@ -151,14 +172,24 @@ export class PPTExtractor {
             context.fidelity === 'balanced' &&
             context.compositionFallback === 'container'
         ) {
-            const compositionAnalysis = this.isComplexCompositionRoot(node);
+            const compositionAnalysis = this.analyzeComplexComposition(node, context);
             if (compositionAnalysis.shouldFlatten) {
-                const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
-                if (flattened) {
+                if (this.shouldDeferCompositionFlatten(node, compositionAnalysis, context)) {
                     console.log(
-                        `[PPTExtractor] Flattened complex composition id=${node.id} name="${node.name}" reasons=${compositionAnalysis.reasons.join(',')}`
+                        `[PPTExtractor] Deferred container flatten id=${node.id} name="${node.name}" ownReasons=${compositionAnalysis.ownReasons.join('|') || 'none'} inheritedReasons=${compositionAnalysis.inheritedReasons.join('|') || 'none'} activeClipOverflow=${compositionAnalysis.activeClipOverflow} childCount=${"children" in node ? node.children.length : 0} descendantCount=${compositionAnalysis.descendantCount}`
                     );
-                    return;
+                } else {
+                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                    if (flattened) {
+                        const flattenReasons = [
+                            ...compositionAnalysis.ownReasons,
+                            ...compositionAnalysis.inheritedReasons
+                        ];
+                        console.log(
+                            `[PPTExtractor] Flattened complex composition id=${node.id} name="${node.name}" ownReasons=${compositionAnalysis.ownReasons.join('|') || 'none'} inheritedReasons=${compositionAnalysis.inheritedReasons.join('|') || 'none'} activeClipOverflow=${compositionAnalysis.activeClipOverflow} childCount=${"children" in node ? node.children.length : 0} descendantCount=${compositionAnalysis.descendantCount} reasons=${flattenReasons.join(',') || 'none'}`
+                        );
+                        return;
+                    }
                 }
             }
         }
@@ -207,6 +238,9 @@ export class PPTExtractor {
 
             if (node.fontName !== figma.mixed) {
                 textElement.fontFace = node.fontName.family;
+                const style = node.fontName.style.toLowerCase();
+                textElement.bold = /(^|[\s-])(semibold|demibold|bold|extrabold|black|heavy)([\s-]|$)/.test(style);
+                textElement.italic = /(italic|oblique)/.test(style);
             }
 
             elements.push(textElement);
@@ -350,6 +384,105 @@ export class PPTExtractor {
         return "clipsContent" in node && node.clipsContent === true && node.children.length > 0;
     }
 
+    private static boundsExceed(container: Bounds, candidate: Bounds, epsilon: number): boolean {
+        const containerRight = container.x + container.w;
+        const containerBottom = container.y + container.h;
+        const candidateRight = candidate.x + candidate.w;
+        const candidateBottom = candidate.y + candidate.h;
+
+        return (
+            candidate.x < container.x - epsilon ||
+            candidate.y < container.y - epsilon ||
+            candidateRight > containerRight + epsilon ||
+            candidateBottom > containerBottom + epsilon
+        );
+    }
+
+    private static hasActiveClipOverflow(node: SceneNode, epsilon: number = 2): boolean {
+        if (!this.isContainerWithClipping(node)) {
+            return false;
+        }
+
+        const containerBounds = this.getAbsoluteBounds(node, false);
+        if (!containerBounds) {
+            return false;
+        }
+
+        for (const child of node.children) {
+            if (!child.visible) continue;
+            const childBounds = this.getAbsoluteBounds(child, false);
+            if (!childBounds) continue;
+            if (this.boundsExceed(containerBounds, childBounds, epsilon)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static isEditableOrSimpleNode(node: SceneNode, context: ExtractContext): boolean {
+        if (!node.visible) return false;
+        if (node.type === 'TEXT') return true;
+        if (VECTOR_TYPES.has(node.type)) return false;
+        if (this.shouldRasterizeNode(node).shouldRasterize) return false;
+
+        if (this.isCompositionContainerNode(node)) {
+            const analysis = this.analyzeComplexComposition(node, context);
+            if (analysis.activeClipOverflow) return false;
+            if (analysis.ownReasons.length > 0) return false;
+        }
+
+        return true;
+    }
+
+    private static hasEditableOrSimpleSiblings(node: SceneNode, context: ExtractContext): boolean {
+        if (!this.isCompositionContainerNode(node)) return false;
+
+        for (const child of node.children) {
+            if (!child.visible) continue;
+
+            const childIsComplex = this.shouldRasterizeNode(child).shouldRasterize ||
+                (this.isCompositionContainerNode(child) && this.analyzeComplexComposition(child, context).shouldFlatten);
+
+            if (childIsComplex) continue;
+
+            if (this.isEditableOrSimpleNode(child, context)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static hasDirectVisibleTextChild(node: SceneNode): boolean {
+        if (!this.isCompositionContainerNode(node)) return false;
+        return node.children.some((child) => child.visible && child.type === 'TEXT');
+    }
+
+    private static isContentLikeWrapper(node: SceneNode): boolean {
+        if (!this.isCompositionContainerNode(node)) return false;
+        const normalized = node.name.trim().toLowerCase();
+        if (!normalized.includes('content')) return false;
+        return this.hasDirectVisibleTextChild(node);
+    }
+
+    private static shouldDeferCompositionFlatten(
+        node: SceneNode,
+        analysis: CompositionAnalysis,
+        context: ExtractContext
+    ): boolean {
+        if (!this.isCompositionContainerNode(node)) return false;
+        if (!analysis.hasComplexChild) return false;
+
+        const hardOwnReasons = analysis.ownReasons.filter((reason) => HARD_OWN_COMPOSITION_REASONS.has(reason));
+        if (hardOwnReasons.length > 0) return false;
+
+        // Keep high-level wrappers (especially Content frames) editable and let
+        // complex descendants flatten on their own.
+        if (this.isContentLikeWrapper(node)) return true;
+        return this.hasEditableOrSimpleSiblings(node, context);
+    }
+
     private static hasNegativeAutoLayoutSpacing(node: SceneNode): boolean {
         if (!("layoutMode" in node) || node.layoutMode === 'NONE') {
             return false;
@@ -369,44 +502,79 @@ export class PPTExtractor {
         return false;
     }
 
-    private static isComplexCompositionRoot(node: SceneNode): { shouldFlatten: boolean; reasons: string[] } {
-        if (!this.isCompositionContainerNode(node)) {
-            return { shouldFlatten: false, reasons: [] };
+    private static getOwnCompositionReasons(node: SceneNode): string[] {
+        const reasons: string[] = [];
+        if (this.isMaskNode(node)) reasons.push('mask');
+        if (this.hasVisibleEffects(node)) reasons.push('effects');
+        if (this.hasNonDefaultBlend(node)) reasons.push('blend-mode');
+        if (this.hasNonZeroRotation(node)) reasons.push('rotation');
+        if ("fills" in node && this.hasUnsupportedFills(node.fills)) reasons.push('unsupported-fills');
+        if (this.hasNegativeAutoLayoutSpacing(node)) reasons.push('negative-auto-layout-spacing');
+        return reasons;
+    }
+
+    private static analyzeComplexComposition(node: SceneNode, context: ExtractContext): CompositionAnalysis {
+        const cached = context.compositionAnalysisCache.get(node);
+        if (cached) {
+            return cached;
         }
 
-        const reasons = new Set<string>();
+        if (!this.isCompositionContainerNode(node)) {
+            const trivial: CompositionAnalysis = {
+                shouldFlatten: false,
+                ownReasons: [],
+                inheritedReasons: [],
+                hasComplexChild: false,
+                descendantCount: 0,
+                activeClipOverflow: false
+            };
+            context.compositionAnalysisCache.set(node, trivial);
+            return trivial;
+        }
+
+        const ownReasonsSet = new Set<string>();
+        const inheritedReasonsSet = new Set<string>();
+        const ownReasons = this.getOwnCompositionReasons(node);
+        ownReasons.forEach((reason) => ownReasonsSet.add(reason));
+
+        const activeClipOverflow = this.hasActiveClipOverflow(node);
+        if (activeClipOverflow) {
+            ownReasonsSet.add('active-clip-overflow');
+        }
+
         let descendantCount = 0;
-        const stack: SceneNode[] = [node];
+        const stack: SceneNode[] = [...node.children];
 
         while (stack.length > 0) {
             const current = stack.pop() as SceneNode;
-            if (current !== node) {
-                descendantCount += 1;
-            }
+            descendantCount += 1;
 
             if (this.isContainerWithClipping(current)) {
-                reasons.add('clips-content-with-children');
+                inheritedReasonsSet.add('descendant-clips-content');
+            }
+            if (this.hasActiveClipOverflow(current)) {
+                inheritedReasonsSet.add('descendant-active-clip-overflow');
             }
             if (this.isMaskNode(current)) {
-                reasons.add('mask');
+                inheritedReasonsSet.add('descendant-mask');
             }
             if (this.hasVisibleEffects(current)) {
-                reasons.add('effects');
+                inheritedReasonsSet.add('descendant-effects');
             }
             if (this.hasNonDefaultBlend(current)) {
-                reasons.add('blend-mode');
+                inheritedReasonsSet.add('descendant-blend-mode');
             }
             if (this.hasNonZeroRotation(current)) {
-                reasons.add('rotation');
+                inheritedReasonsSet.add('descendant-rotation');
             }
             if (VECTOR_TYPES.has(current.type)) {
-                reasons.add('vector-content');
+                inheritedReasonsSet.add('descendant-vector-content');
             }
             if ("fills" in current && this.hasUnsupportedFills(current.fills)) {
-                reasons.add('unsupported-fills');
+                inheritedReasonsSet.add('descendant-unsupported-fills');
             }
             if (this.hasNegativeAutoLayoutSpacing(current)) {
-                reasons.add('negative-auto-layout-spacing');
+                inheritedReasonsSet.add('descendant-negative-auto-layout-spacing');
             }
 
             if ("children" in current) {
@@ -415,13 +583,34 @@ export class PPTExtractor {
         }
 
         if (descendantCount >= 12) {
-            reasons.add(`descendants>=12(${descendantCount})`);
+            inheritedReasonsSet.add(`descendants>=12(${descendantCount})`);
         }
 
-        return {
-            shouldFlatten: reasons.size > 0,
-            reasons: Array.from(reasons)
+        const hasComplexChild = node.children.some((child) => {
+            if (!child.visible) return false;
+            if (this.shouldRasterizeNode(child).shouldRasterize) {
+                return true;
+            }
+
+            if (!this.isCompositionContainerNode(child)) {
+                return false;
+            }
+
+            const childAnalysis = this.analyzeComplexComposition(child, context);
+            return childAnalysis.shouldFlatten;
+        });
+
+        const analysis: CompositionAnalysis = {
+            shouldFlatten: ownReasonsSet.size > 0 || inheritedReasonsSet.size > 0,
+            ownReasons: Array.from(ownReasonsSet),
+            inheritedReasons: Array.from(inheritedReasonsSet),
+            hasComplexChild,
+            descendantCount,
+            activeClipOverflow
         };
+
+        context.compositionAnalysisCache.set(node, analysis);
+        return analysis;
     }
 
     private static getAbsoluteBounds(node: SceneNode, preferRenderBounds: boolean): Bounds | null {

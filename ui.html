@@ -697,6 +697,7 @@
                     // eslint-disable-next-line no-undef
                     const pptx = new PptxGenJS();
                     const pxToInch = (px) => px / 96;
+                    const pxToPt = (px) => (px * 72) / 96;
 
                     // Match PPT canvas size to Figma slide dimensions to avoid scale drift/clipping.
                     const allSlides = (payload || []).flatMap((presentation) =>
@@ -743,12 +744,17 @@
                                 const h = pxToInch(el.h);
 
                                 if (el.type === 'text') {
+                                    const pptFontSize = typeof el.fontSize === 'number' ? pxToPt(el.fontSize) : undefined;
                                     slide.addText(el.text, {
                                         x: x, y: y, w: w, h: h,
-                                        fontSize: el.fontSize,
+                                        fontSize: pptFontSize,
                                         fontFace: el.fontFace,
+                                        bold: el.bold,
+                                        italic: el.italic,
                                         color: el.color,
                                         align: el.align,
+                                        valign: 'top',
+                                        margin: 0,
                                         // opacity: el.opacity // library support varies
                                     });
                                 } else if (el.type === 'image') {
