@@ -12,8 +12,26 @@ export interface PPTElement {
     italic?: boolean;
     color?: string;
     align?: 'left' | 'center' | 'right' | 'justify';
+    valign?: 'top' | 'mid' | 'bot';
     fill?: string; // hex for shape, base64 for image
     opacity?: number;
+    cornerRadius?: number;
+    sourceNodeId?: string;
+    sourceNodeName?: string;
+    textBoxX?: number;
+    textBoxY?: number;
+    textBoxW?: number;
+    textBoxH?: number;
+    fontFamily?: string;
+    fontStyle?: string;
+    fontWeight?: number;
+    letterSpacingPx?: number;
+    lineHeightPx?: number;
+    lineHeightPercent?: number;
+    textAutoResize?: string;
+    paragraphSpacing?: number;
+    textExportMode?: 'editable' | 'raster';
+    rasterReason?: string;
 }
 
 export interface PPTSlide {
@@ -26,11 +44,15 @@ export interface PPTSlide {
 
 export type PPTFidelity = 'editable' | 'balanced' | 'exact';
 export type PPTCompositionFallback = 'none' | 'container';
+export type PPTTextFidelityMode = 'smart_hybrid' | 'always_editable' | 'always_raster';
+export type PPTPlatformProfile = 'cross_platform' | 'mac_365' | 'win_365';
 
 export interface PPTExtractOptions {
     fidelity?: PPTFidelity;
     rasterScale?: number;
     compositionFallback?: PPTCompositionFallback;
+    textFidelityMode?: PPTTextFidelityMode;
+    platformProfile?: PPTPlatformProfile;
 }
 
 interface ExtractContext {
@@ -39,6 +61,8 @@ interface ExtractContext {
     fidelity: PPTFidelity;
     rasterScale: number;
     compositionFallback: PPTCompositionFallback;
+    textFidelityMode: PPTTextFidelityMode;
+    platformProfile: PPTPlatformProfile;
     compositionAnalysisCache: WeakMap<SceneNode, CompositionAnalysis>;
 }
 
@@ -81,6 +105,38 @@ const COMPOSITION_CONTAINER_TYPES = new Set<SceneNode['type']>([
     'COMPONENT'
 ]);
 
+const CROSS_PLATFORM_SAFE_FONTS = new Set([
+    'arial',
+    'calibri',
+    'cambria',
+    'candara',
+    'consolas',
+    'constantia',
+    'corbel',
+    'courier new',
+    'georgia',
+    'helvetica',
+    'segoe ui',
+    'tahoma',
+    'times new roman',
+    'trebuchet ms',
+    'verdana'
+]);
+
+const MAC_365_SAFE_FONTS = new Set([
+    ...CROSS_PLATFORM_SAFE_FONTS,
+    'avenir',
+    'avenir next',
+    'menlo',
+    'sf pro text'
+]);
+
+const WIN_365_SAFE_FONTS = new Set([
+    ...CROSS_PLATFORM_SAFE_FONTS,
+    'arial narrow',
+    'bahnschrift'
+]);
+
 export class PPTExtractor {
 
     static async extract(slideNode: FrameNode, options: PPTExtractOptions = {}): Promise<PPTSlide> {
@@ -92,6 +148,14 @@ export class PPTExtractor {
             options.compositionFallback === 'none'
                 ? 'none'
                 : (fidelity === 'balanced' ? 'container' : 'none');
+        const textFidelityMode: PPTTextFidelityMode =
+            options.textFidelityMode === 'always_editable' || options.textFidelityMode === 'always_raster'
+                ? options.textFidelityMode
+                : 'smart_hybrid';
+        const platformProfile: PPTPlatformProfile =
+            options.platformProfile === 'mac_365' || options.platformProfile === 'win_365'
+                ? options.platformProfile
+                : 'cross_platform';
 
         console.log(`[PPTExtractor] Extracting slide: ${slideNode.name} (Type: ${slideNode.type}, Visible: ${slideNode.visible})`);
         const slideData: PPTSlide = {
@@ -121,6 +185,8 @@ export class PPTExtractor {
             fidelity,
             rasterScale,
             compositionFallback,
+            textFidelityMode,
+            platformProfile,
             compositionAnalysisCache: new WeakMap()
         };
 
@@ -195,7 +261,9 @@ export class PPTExtractor {
         }
 
         const nodeRasterDecision = this.shouldRasterizeNode(node);
-        if (!isSlideRoot && context.fidelity !== 'editable' && nodeRasterDecision.shouldRasterize) {
+        const preserveEditableText =
+            node.type === 'TEXT' && context.textFidelityMode === 'always_editable';
+        if (!isSlideRoot && context.fidelity !== 'editable' && nodeRasterDecision.shouldRasterize && !preserveEditableText) {
             const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
             if (flattened) {
                 if (COMPOSITION_CONTAINER_TYPES.has(node.type)) {
@@ -225,26 +293,83 @@ export class PPTExtractor {
         if (node.type === 'TEXT') {
             const fill = this.firstVisiblePaint(node.fills);
             const color = fill && fill.type === 'SOLID' ? this.rgbToHex(fill.color) : "000000";
+            const textBounds = this.getTextFrameBounds(node, context.rootX, context.rootY) ?? bounds;
+            const fontSize = typeof node.fontSize === 'number' ? node.fontSize : 12;
+            const letterSpacingPx = this.getLetterSpacingPx(node.letterSpacing, fontSize);
+            const lineHeight = this.getLineHeightMetrics(node.lineHeight, fontSize);
+            const paragraphSpacing = typeof node.paragraphSpacing === 'number' ? node.paragraphSpacing : undefined;
 
             const textElement: PPTElement = {
                 type: 'text',
-                x, y, w, h,
+                x: textBounds.x,
+                y: textBounds.y,
+                w: textBounds.w,
+                h: textBounds.h,
                 text: node.characters,
-                fontSize: typeof node.fontSize === 'number' ? node.fontSize : 12,
+                textBoxX: textBounds.x,
+                textBoxY: textBounds.y,
+                textBoxW: textBounds.w,
+                textBoxH: textBounds.h,
+                sourceNodeId: node.id,
+                sourceNodeName: node.name,
+                fontSize: fontSize,
                 color: color,
                 align: this.toPptAlign(node.textAlignHorizontal),
-                opacity: node.opacity
+                valign: this.toPptVAlign(node.textAlignVertical),
+                opacity: node.opacity,
+                textAutoResize: node.textAutoResize,
+                textExportMode: 'editable'
             };
 
             if (node.fontName !== figma.mixed) {
                 textElement.fontFace = node.fontName.family;
+                textElement.fontFamily = node.fontName.family;
+                textElement.fontStyle = node.fontName.style;
                 const style = node.fontName.style.toLowerCase();
-                textElement.bold = /(^|[\s-])(semibold|demibold|bold|extrabold|black|heavy)([\s-]|$)/.test(style);
+                const fontWeight = this.fontStyleToWeight(style);
+                textElement.fontWeight = fontWeight;
+                textElement.bold = fontWeight >= 600;
                 textElement.italic = /(italic|oblique)/.test(style);
+            }
+            if (typeof letterSpacingPx === 'number') {
+                textElement.letterSpacingPx = letterSpacingPx;
+            }
+            if (typeof lineHeight.px === 'number') {
+                textElement.lineHeightPx = lineHeight.px;
+            }
+            if (typeof lineHeight.percent === 'number') {
+                textElement.lineHeightPercent = lineHeight.percent;
+            }
+            if (typeof paragraphSpacing === 'number') {
+                textElement.paragraphSpacing = paragraphSpacing;
+            }
+
+            const textRasterDecision = this.getTextRasterDecision(node, textElement, context);
+            const shouldSmartHybridRaster =
+                context.fidelity === 'balanced' &&
+                context.textFidelityMode === 'smart_hybrid' &&
+                textRasterDecision.shouldRasterize;
+            const shouldAlwaysRaster = context.textFidelityMode === 'always_raster';
+            const shouldRasterizeText = shouldAlwaysRaster || shouldSmartHybridRaster;
+
+            if (shouldRasterizeText) {
+                const reasons = shouldAlwaysRaster
+                    ? ['mode-always-raster']
+                    : textRasterDecision.reasons;
+                const flattened = await this.tryAddRasterizedNode(node, elements, context, true, {
+                    sourceNodeId: node.id,
+                    sourceNodeName: node.name,
+                    textExportMode: 'raster',
+                    rasterReason: reasons.join(',')
+                });
+                if (flattened) {
+                    console.log(`[PPTExtractor] Added rasterized text: "${node.name}" reasons=${reasons.join(',')}`);
+                    return;
+                }
             }
 
             elements.push(textElement);
-            console.log(`[PPTExtractor] Added Text: "${node.characters}" at (${x},${y})`);
+            console.log(`[PPTExtractor] Added Text: "${node.characters}" at (${textBounds.x},${textBounds.y})`);
         }
 
         else if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME' || node.type === 'INSTANCE' || node.type === 'COMPONENT') {
@@ -268,12 +393,29 @@ export class PPTExtractor {
                                 return;
                             }
                         } else if (fill.type === 'SOLID') {
-                            elements.push({
+                            const shapeElement: PPTElement = {
                                 type: 'shape',
                                 x, y, w, h,
                                 fill: this.rgbToHex(fill.color),
                                 opacity: node.opacity
-                            });
+                            };
+
+                            // Keep simple rounded rectangles editable. Fallback to raster only
+                            // when corner geometry is asymmetric/smoothed and likely to mismatch.
+                            if (node.type === 'RECTANGLE') {
+                                const cornerInfo = this.getRectangleCornerInfo(node);
+                                if (cornerInfo.shouldRasterize) {
+                                    const flattened = await this.tryAddRasterizedNode(node, elements, context, true);
+                                    if (flattened) {
+                                        console.log(`[PPTExtractor] Added flattened rounded rectangle: ${node.name}`);
+                                        return;
+                                    }
+                                } else if (typeof cornerInfo.cornerRadius === 'number' && cornerInfo.cornerRadius > 0) {
+                                    shapeElement.cornerRadius = cornerInfo.cornerRadius;
+                                }
+                            }
+
+                            elements.push(shapeElement);
                             console.log(`[PPTExtractor] Added Shape (from ${node.type}): ${node.name}`);
                         }
                     }
@@ -331,6 +473,128 @@ export class PPTExtractor {
         };
     }
 
+    private static getTextRasterDecision(
+        node: TextNode,
+        textElement: PPTElement,
+        context: ExtractContext
+    ): { shouldRasterize: boolean; reasons: string[] } {
+        const reasons: string[] = [];
+
+        if (node.fontName === figma.mixed || node.fontSize === figma.mixed) {
+            reasons.push('mixed-font');
+        }
+        if (node.fills === figma.mixed) {
+            reasons.push('mixed-text-fills');
+        }
+        const textFill = this.firstVisiblePaint(node.fills);
+        if (textFill && textFill.type !== 'SOLID') {
+            reasons.push('non-solid-text-fill');
+        }
+        if (this.hasVisibleEffects(node)) {
+            reasons.push('effects');
+        }
+        if (this.hasNonDefaultBlend(node)) {
+            reasons.push('blend-mode');
+        }
+        if (this.hasNonZeroRotation(node)) {
+            reasons.push('rotation');
+        }
+        if (node.textAutoResize === 'NONE' && node.textAlignVertical !== 'TOP') {
+            reasons.push('fixed-height-non-top-valign');
+        }
+        if (typeof node.fontSize === 'number' && node.fontSize >= 96) {
+            reasons.push('very-large-font-size');
+        }
+        if (typeof textElement.paragraphSpacing === 'number' && textElement.paragraphSpacing > 0) {
+            reasons.push('paragraph-spacing');
+        }
+
+        const fontFamily = textElement.fontFamily ?? textElement.fontFace;
+        if (this.hasFontRiskForProfile(fontFamily, context.platformProfile)) {
+            reasons.push(`font-${context.platformProfile}-risk`);
+        }
+
+        return { shouldRasterize: reasons.length > 0, reasons };
+    }
+
+    private static hasFontRiskForProfile(fontFamily: string | undefined, profile: PPTPlatformProfile): boolean {
+        if (!fontFamily || fontFamily.trim().length === 0) {
+            return false;
+        }
+
+        const normalized = this.normalizeFontFamily(fontFamily);
+        const safeFonts =
+            profile === 'mac_365'
+                ? MAC_365_SAFE_FONTS
+                : profile === 'win_365'
+                    ? WIN_365_SAFE_FONTS
+                    : CROSS_PLATFORM_SAFE_FONTS;
+
+        for (const candidate of safeFonts) {
+            if (normalized === candidate || normalized.startsWith(`${candidate} `)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static normalizeFontFamily(fontFamily: string): string {
+        return fontFamily.trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    private static fontStyleToWeight(style: string): number {
+        const normalized = style.trim().toLowerCase();
+        if (/(thin|hairline)/.test(normalized)) return 100;
+        if (/(extra[\s-]?light|ultra[\s-]?light)/.test(normalized)) return 200;
+        if (/(light)/.test(normalized)) return 300;
+        if (/(regular|normal|book|roman)/.test(normalized)) return 400;
+        if (/(medium)/.test(normalized)) return 500;
+        if (/(semi[\s-]?bold|demi[\s-]?bold)/.test(normalized)) return 600;
+        if (/(extra[\s-]?bold|ultra[\s-]?bold|heavy|black)/.test(normalized)) return 800;
+        if (/(bold)/.test(normalized)) return 700;
+        return 400;
+    }
+
+    private static getLetterSpacingPx(
+        letterSpacing: LetterSpacing | PluginAPI['mixed'],
+        fontSize: number
+    ): number | undefined {
+        if (!letterSpacing || letterSpacing === figma.mixed) {
+            return undefined;
+        }
+
+        if (letterSpacing.unit === 'PIXELS') {
+            return letterSpacing.value;
+        }
+        if (letterSpacing.unit === 'PERCENT') {
+            return (fontSize * letterSpacing.value) / 100;
+        }
+
+        return undefined;
+    }
+
+    private static getLineHeightMetrics(
+        lineHeight: LineHeight | PluginAPI['mixed'],
+        fontSize: number
+    ): { px?: number; percent?: number } {
+        if (!lineHeight || lineHeight === figma.mixed) {
+            return {};
+        }
+
+        if (lineHeight.unit === 'PIXELS') {
+            return { px: lineHeight.value };
+        }
+        if (lineHeight.unit === 'PERCENT') {
+            return {
+                percent: lineHeight.value,
+                px: (fontSize * lineHeight.value) / 100
+            };
+        }
+
+        return {};
+    }
+
     private static hasVisibleEffects(node: SceneNode): boolean {
         if (!("effects" in node) || !Array.isArray(node.effects)) return false;
         return node.effects.some(effect => effect.visible !== false);
@@ -379,7 +643,9 @@ export class PPTExtractor {
         return COMPOSITION_CONTAINER_TYPES.has(node.type) && "children" in node;
     }
 
-    private static isContainerWithClipping(node: SceneNode): boolean {
+    private static isContainerWithClipping(
+        node: SceneNode
+    ): node is (SceneNode & ChildrenMixin & { clipsContent: boolean }) {
         if (!this.isCompositionContainerNode(node)) return false;
         return "clipsContent" in node && node.clipsContent === true && node.children.length > 0;
     }
@@ -614,8 +880,8 @@ export class PPTExtractor {
     }
 
     private static getAbsoluteBounds(node: SceneNode, preferRenderBounds: boolean): Bounds | null {
-        const renderBounds = node.absoluteRenderBounds;
-        const boxBounds = node.absoluteBoundingBox;
+        const renderBounds = "absoluteRenderBounds" in node ? node.absoluteRenderBounds : null;
+        const boxBounds = "absoluteBoundingBox" in node ? node.absoluteBoundingBox : null;
 
         if (preferRenderBounds && renderBounds) {
             return {
@@ -669,11 +935,32 @@ export class PPTExtractor {
         };
     }
 
+    private static getTextFrameBounds(node: TextNode, rootX: number, rootY: number): Bounds | null {
+        const x = node.absoluteTransform[0][2] - rootX;
+        const y = node.absoluteTransform[1][2] - rootY;
+        const w = node.width;
+        const h = node.height;
+
+        if (
+            Number.isFinite(x) &&
+            Number.isFinite(y) &&
+            Number.isFinite(w) &&
+            Number.isFinite(h) &&
+            w > 0 &&
+            h > 0
+        ) {
+            return { x, y, w, h };
+        }
+
+        return this.getRelativeBounds(node, rootX, rootY, false);
+    }
+
     private static async tryAddRasterizedNode(
         node: SceneNode,
         elements: PPTElement[],
         context: ExtractContext,
-        preferRenderBounds: boolean
+        preferRenderBounds: boolean,
+        metadata: Partial<PPTElement> = {}
     ): Promise<boolean> {
         const bounds = this.getRelativeBounds(node, context.rootX, context.rootY, preferRenderBounds);
         if (!bounds) return false;
@@ -685,6 +972,9 @@ export class PPTExtractor {
                 constraint: { type: 'SCALE', value: context.rasterScale }
             });
             const base64 = figma.base64Encode(bytes);
+            const nodeOpacity = "opacity" in node && typeof node.opacity === 'number'
+                ? node.opacity
+                : 1;
             elements.push({
                 type: 'image',
                 x: bounds.x,
@@ -692,7 +982,8 @@ export class PPTExtractor {
                 w: bounds.w,
                 h: bounds.h,
                 fill: base64,
-                opacity: node.opacity
+                opacity: nodeOpacity,
+                ...metadata
             });
             return true;
         } catch (e) {
@@ -710,11 +1001,45 @@ export class PPTExtractor {
         return fills.find(fill => fill.visible !== false) ?? null;
     }
 
-    private static toPptAlign(value: TextAlignHorizontal): 'left' | 'center' | 'right' | 'justify' {
+    private static toPptAlign(value: 'LEFT' | 'CENTER' | 'RIGHT' | 'JUSTIFIED'): 'left' | 'center' | 'right' | 'justify' {
         if (value === 'CENTER') return 'center';
         if (value === 'RIGHT') return 'right';
         if (value === 'JUSTIFIED') return 'justify';
         return 'left';
+    }
+
+    private static toPptVAlign(value: 'TOP' | 'CENTER' | 'BOTTOM'): 'top' | 'mid' | 'bot' {
+        if (value === 'CENTER') return 'mid';
+        if (value === 'BOTTOM') return 'bot';
+        return 'top';
+    }
+
+    private static getRectangleCornerInfo(node: RectangleNode): { cornerRadius?: number; shouldRasterize: boolean } {
+        const epsilon = 0.01;
+        const hasSmoothing = typeof node.cornerSmoothing === 'number' && node.cornerSmoothing > epsilon;
+
+        if (typeof node.cornerRadius === 'number') {
+            if (node.cornerRadius <= epsilon) {
+                return { shouldRasterize: false };
+            }
+            if (hasSmoothing) {
+                return { shouldRasterize: true };
+            }
+            return { cornerRadius: node.cornerRadius, shouldRasterize: false };
+        }
+
+        const radii = [node.topLeftRadius, node.topRightRadius, node.bottomRightRadius, node.bottomLeftRadius];
+        const maxRadius = Math.max(...radii);
+        if (maxRadius <= epsilon) {
+            return { shouldRasterize: false };
+        }
+
+        const uniformRadius = radii.every((radius) => Math.abs(radius - radii[0]) <= epsilon);
+        if (!uniformRadius || hasSmoothing) {
+            return { shouldRasterize: true };
+        }
+
+        return { cornerRadius: radii[0], shouldRasterize: false };
     }
 
     private static rgbToHex(rgb: RGB): string {

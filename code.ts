@@ -799,6 +799,14 @@ figma.ui.onmessage = async (msg) => {
       const rasterScale = typeof msg.rasterScale === 'number' && msg.rasterScale > 0
         ? msg.rasterScale
         : 3;
+      const textFidelityMode: ExtractPPT.PPTTextFidelityMode =
+        msg.textFidelityMode === 'always_editable' || msg.textFidelityMode === 'always_raster'
+          ? msg.textFidelityMode
+          : 'smart_hybrid';
+      const platformProfile: ExtractPPT.PPTPlatformProfile =
+        msg.platformProfile === 'mac_365' || msg.platformProfile === 'win_365'
+          ? msg.platformProfile
+          : 'cross_platform';
 
       const slides: PptSlidePayload[] = [];
       for (const slideFrame of slideFrames) {
@@ -807,7 +815,9 @@ figma.ui.onmessage = async (msg) => {
           const slideData = await ExtractPPT.PPTExtractor.extract(slideFrame, {
             fidelity,
             rasterScale,
-            compositionFallback
+            compositionFallback,
+            textFidelityMode,
+            platformProfile
           });
           slides.push(slideData);
         } catch (err) {

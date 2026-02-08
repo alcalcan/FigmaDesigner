@@ -1,44 +1,60 @@
-# PPT Extractor and Empty Export Fix
+# PPT Extractor Notes
 
-This document explains the PowerPoint export path and the fix for empty `.pptx` exports.
+This document explains the current PowerPoint export path and the text-fidelity hardening model.
 
 ## Export Flow
 
-1. UI selection (`ui.html`) sends:
-   - `type: "export-ppt"`
-   - `presentations: [...]`
-2. Plugin handler (`code.ts`) receives the message and resolves each selected presentation to a registry class.
-3. The plugin creates a temporary presentation node, iterates slide children, and calls:
-   - `PPTExtractor.extract(slideNode)`
-4. `PPTExtractor` traverses visible nodes and serializes text/image/shape elements.
-5. UI receives `type: "export-ppt-data"` and uses PptxGenJS to write the `.pptx`.
+1. UI (`/Users/alexcalcan/Documents/Apps/FigmaDesigner/ui.html`) sends:
+   - `type: "export-ppt-from-selection"`
+   - `fidelity`, `rasterScale`, `compositionFallback`
+   - `textFidelityMode`: `smart_hybrid | always_editable | always_raster`
+   - `platformProfile`: `cross_platform | mac_365 | win_365`
+2. Plugin (`/Users/alexcalcan/Documents/Apps/FigmaDesigner/code.ts`) validates defaults and calls:
+   - `PPTExtractor.extract(slideFrame, options)`
+3. Extractor (`/Users/alexcalcan/Documents/Apps/FigmaDesigner/presentation_logic/PPTExtractor.ts`) traverses visible nodes and serializes:
+   - editable text/shape elements where possible
+   - rasterized elements for unsupported or high-risk fidelity cases
+4. UI receives `type: "export-ppt-data"` and uses PptxGenJS to render each element into `.pptx`.
 
-## Root Cause of Empty PPT
+## Text Fidelity Hardening
 
-The UI batch selection stores `item.fullPath` for presentations (example: `UEFA_template/UEFA_Light_Presentation`).
+### Added text metadata
 
-Before the fix, the plugin export handler looked up `ComponentRegistry[name]` directly. Registry keys are class names (example: `UEFA_Light_Presentation`), so path-form names were not resolved. This produced missing components and an effectively empty export payload.
+`PPTElement` now includes:
 
-## Fix Implemented
+- `textBoxX/Y/W/H` (frame-box geometry)
+- `fontFamily`, `fontStyle`, `fontWeight`
+- `letterSpacingPx`, `lineHeightPx`, `lineHeightPercent`
+- `textAutoResize`, `paragraphSpacing`
+- `textExportMode`, `rasterReason`
+- `sourceNodeId`, `sourceNodeName`
 
-In `code.ts`:
+### Smart-hybrid raster decisions
 
-- Added `resolveRegistryKey(rawName)` to support:
-  - class name
-  - path (`folder/ClassName`)
-  - windows path separators
-  - optional `.ts` suffix
-  - aliased keys (`Class_project`)
-- Updated export handler to use `resolveRegistryKey` before class lookup.
-- Added explicit fallback slide when a presentation cannot be resolved, so failure is visible in the exported file instead of silently empty output.
+When `textFidelityMode` is `smart_hybrid` and `fidelity` is `balanced`, text nodes are rasterized if they are likely to drift in PowerPoint:
 
-## Files Involved
+- mixed font/fill styles
+- non-solid text fill
+- visible effects, non-default blend mode, rotation
+- fixed-height text with non-top vertical alignment
+- very large display text
+- font availability risk for the selected `platformProfile`
 
-- `/Users/alexcalcan/Documents/Apps/FigmaDesigner/code.ts`
-- `/Users/alexcalcan/Documents/Apps/FigmaDesigner/presentation_logic/PPTExtractor.ts`
-- `/Users/alexcalcan/Documents/Apps/FigmaDesigner/ui.html`
-- `/Users/alexcalcan/Documents/Apps/FigmaDesigner/presentation_logic/PPTExtractor.md`
+`always_raster` forces text rasterization.  
+`always_editable` keeps text editable in the text pass (other non-text flatten rules still apply).
 
-## Notes
+### Geometry handling
 
-`PPTExtractor.ts` is responsible for element extraction once a valid slide node is provided. The empty export issue addressed here was upstream in presentation identifier resolution before extraction.
+Editable text uses text frame geometry (`absoluteTransform + width/height`) to avoid glyph-bounds drift.
+
+### Writer behavior
+
+In `ui.html`:
+
+- `textExportMode: "raster"` is rendered via `slide.addImage(...)`
+- editable text is rendered via `slide.addText(...)` using text box coordinates
+- font face resolution prefers explicit face, then `family + style`, then weight-derived fallback
+
+## Legacy Empty Export Fix (Retained)
+
+The earlier empty-export issue was fixed in `code.ts` by resolving registry keys from class names and path-like names before lookup, preventing silent empty payloads.

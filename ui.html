@@ -698,6 +698,36 @@
                     const pptx = new PptxGenJS();
                     const pxToInch = (px) => px / 96;
                     const pxToPt = (px) => (px * 72) / 96;
+                    const weightToStyleName = (weight) => {
+                        if (typeof weight !== 'number') return '';
+                        if (weight >= 800) return 'Extra Bold';
+                        if (weight >= 700) return 'Bold';
+                        if (weight >= 600) return 'Semi Bold';
+                        if (weight >= 500) return 'Medium';
+                        if (weight <= 300) return 'Light';
+                        return 'Regular';
+                    };
+                    const normalizeFontToken = (value) => String(value || '').trim().replace(/\s+/g, ' ');
+                    const resolvePptFontFace = (el) => {
+                        const candidates = [];
+                        const explicitFace = normalizeFontToken(el.fontFace);
+                        const family = normalizeFontToken(el.fontFamily || el.fontFace);
+                        const style = normalizeFontToken(el.fontStyle);
+                        const weightStyle = weightToStyleName(el.fontWeight);
+
+                        if (explicitFace) candidates.push(explicitFace);
+                        if (family && style) candidates.push(`${family} ${style}`);
+                        if (family && weightStyle) candidates.push(`${family} ${weightStyle}`);
+                        if (family) candidates.push(family);
+
+                        for (const candidate of candidates) {
+                            if (candidate) return candidate;
+                        }
+                        return undefined;
+                    };
+                    const resolveBool = (value, fallback) => (
+                        typeof value === 'boolean' ? value : fallback
+                    );
 
                     // Match PPT canvas size to Figma slide dimensions to avoid scale drift/clipping.
                     const allSlides = (payload || []).flatMap((presentation) =>
@@ -744,19 +774,50 @@
                                 const h = pxToInch(el.h);
 
                                 if (el.type === 'text') {
+                                    const textX = pxToInch(typeof el.textBoxX === 'number' ? el.textBoxX : el.x);
+                                    const textY = pxToInch(typeof el.textBoxY === 'number' ? el.textBoxY : el.y);
+                                    const textW = pxToInch(typeof el.textBoxW === 'number' ? el.textBoxW : el.w);
+                                    const textH = pxToInch(typeof el.textBoxH === 'number' ? el.textBoxH : el.h);
+                                    if (el.textExportMode === 'raster' && el.fill) {
+                                        const data = el.fill.startsWith('data:') ? el.fill : ("image/png;base64," + el.fill);
+                                        slide.addImage({
+                                            data: data,
+                                            x: textX, y: textY, w: textW, h: textH
+                                        });
+                                        continue;
+                                    }
+
                                     const pptFontSize = typeof el.fontSize === 'number' ? pxToPt(el.fontSize) : undefined;
-                                    slide.addText(el.text, {
-                                        x: x, y: y, w: w, h: h,
+                                    const resolvedFontFace = resolvePptFontFace(el);
+                                    const inferredBold = typeof el.fontWeight === 'number' ? el.fontWeight >= 600 : undefined;
+                                    const inferredItalic = typeof el.fontStyle === 'string' ?
+                                        /(italic|oblique)/i.test(el.fontStyle) : undefined;
+                                    const textOptions = {
+                                        x: textX, y: textY, w: textW, h: textH,
                                         fontSize: pptFontSize,
-                                        fontFace: el.fontFace,
-                                        bold: el.bold,
-                                        italic: el.italic,
+                                        fontFace: resolvedFontFace,
+                                        bold: resolveBool(el.bold, inferredBold),
+                                        italic: resolveBool(el.italic, inferredItalic),
                                         color: el.color,
                                         align: el.align,
-                                        valign: 'top',
+                                        valign: el.valign || 'top',
                                         margin: 0,
                                         // opacity: el.opacity // library support varies
-                                    });
+                                    };
+
+                                    if (typeof el.letterSpacingPx === 'number') {
+                                        textOptions.charSpace = pxToPt(el.letterSpacingPx);
+                                    }
+                                    if (typeof el.lineHeightPx === 'number') {
+                                        textOptions.lineSpacingPt = pxToPt(el.lineHeightPx);
+                                    } else if (typeof el.lineHeightPercent === 'number' && el.lineHeightPercent > 0) {
+                                        textOptions.lineSpacingMultiple = el.lineHeightPercent / 100;
+                                    }
+                                    if (typeof el.paragraphSpacing === 'number' && el.paragraphSpacing > 0) {
+                                        textOptions.paraSpaceAfterPt = pxToPt(el.paragraphSpacing);
+                                    }
+
+                                    slide.addText(el.text || '', textOptions);
                                 } else if (el.type === 'image') {
                                     if (el.fill) {
                                         const data = el.fill.startsWith('data:') ? el.fill : ("image/png;base64," + el.fill);
@@ -766,11 +827,23 @@
                                         });
                                     }
                                 } else if (el.type === 'shape') {
-                                    // Map to closest shape, default to rect
-                                    slide.addShape(pptx.ShapeType.rect, {
+                                    const hasCornerRadius = typeof el.cornerRadius === 'number' && el.cornerRadius > 0.01;
+                                    const roundRectType =
+                                        (pptx.ShapeType && (pptx.ShapeType.roundRect || pptx.ShapeType.round1Rect)) ||
+                                        pptx.ShapeType.rect;
+                                    const shapeType = hasCornerRadius ? roundRectType : pptx.ShapeType.rect;
+                                    const shapeOptions = {
                                         x: x, y: y, w: w, h: h,
                                         fill: { color: el.fill }
-                                    });
+                                    };
+
+                                    if (hasCornerRadius) {
+                                        const radiusInches = pxToInch(el.cornerRadius);
+                                        shapeOptions.radius = radiusInches;
+                                        shapeOptions.rectRadius = radiusInches;
+                                    }
+
+                                    slide.addShape(shapeType, shapeOptions);
                                 }
                             }
                         }
@@ -1178,7 +1251,9 @@
                     type: 'export-ppt-from-selection',
                     fidelity: 'balanced',
                     rasterScale: 3,
-                    compositionFallback: 'container'
+                    compositionFallback: 'container',
+                    textFidelityMode: 'smart_hybrid',
+                    platformProfile: 'cross_platform'
                 }
             }, '*');
         }
