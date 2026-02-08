@@ -802,7 +802,7 @@ figma.ui.onmessage = async (msg) => {
       const textFidelityMode: ExtractPPT.PPTTextFidelityMode =
         msg.textFidelityMode === 'always_editable' || msg.textFidelityMode === 'always_raster'
           ? msg.textFidelityMode
-          : 'smart_hybrid';
+          : 'always_editable';
       const platformProfile: ExtractPPT.PPTPlatformProfile =
         msg.platformProfile === 'mac_365' || msg.platformProfile === 'win_365'
           ? msg.platformProfile

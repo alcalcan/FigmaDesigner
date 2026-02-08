@@ -2,12 +2,12 @@ import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
 import { Colors, Fonts, Layout } from "../theme";
 import { addChapterNumber } from "../utils";
 
-const createComparisonPanel = async (titleText: string, descriptionText: string): Promise<FrameNode> => {
+const createComparisonPanel = async (titleText: string, descriptionText: string, width: number): Promise<FrameNode> => {
     const panel = figma.createFrame();
     panel.layoutMode = "VERTICAL";
     panel.primaryAxisSizingMode = "FIXED";
     panel.counterAxisSizingMode = "FIXED";
-    panel.resize(585, 390);
+    panel.resize(width, 390);
     panel.itemSpacing = 10;
     panel.fills = [];
 
@@ -31,7 +31,7 @@ const createComparisonPanel = async (titleText: string, descriptionText: string)
 
     const image = figma.createRectangle();
     image.name = `${titleText}_Image`;
-    image.resize(585, 300);
+    image.resize(width, 300);
     image.fills = [{ type: "SOLID", color: Colors.BACKGROUND }];
     image.strokes = [{ type: "SOLID", color: Colors.ACCENT, opacity: 0.55 }];
     image.strokeWeight = 2;
@@ -64,6 +64,7 @@ export class Slide_Picture_BeforeAfter_extra extends BaseComponent {
         slide.paddingTop = Layout.MARGIN_TOP_TITLE;
         slide.paddingBottom = Layout.MARGIN_FOOTER;
         slide.itemSpacing = 18;
+        const innerWidth = Layout.SLIDE_WIDTH - slide.paddingLeft - slide.paddingRight;
 
         const title = figma.createText();
         title.name = "Title";
@@ -96,17 +97,23 @@ export class Slide_Picture_BeforeAfter_extra extends BaseComponent {
         row.primaryAxisSizingMode = "AUTO";
         row.counterAxisSizingMode = "AUTO";
         row.layoutAlign = "STRETCH";
+        row.primaryAxisSizingMode = "FIXED";
+        row.counterAxisSizingMode = "FIXED";
         row.itemSpacing = 16;
         row.fills = [];
+        row.resize(innerWidth, 390);
         slide.appendChild(row);
 
+        const panelWidth = (innerWidth - row.itemSpacing) / 2;
         row.appendChild(await createComparisonPanel(
             "Before",
-            "Current state baseline image showing the starting point or existing condition."
+            "Current state baseline image showing the starting point or existing condition.",
+            panelWidth
         ));
         row.appendChild(await createComparisonPanel(
             "After",
-            "Target state image that demonstrates improvement, redesign, or final outcome."
+            "Target state image that demonstrates improvement, redesign, or final outcome.",
+            panelWidth
         ));
 
         return slide;

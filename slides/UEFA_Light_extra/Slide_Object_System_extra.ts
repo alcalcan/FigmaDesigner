@@ -122,12 +122,17 @@ export class Slide_Object_System_extra extends BaseComponent {
         grid.layoutMode = "HORIZONTAL";
         grid.layoutWrap = "WRAP";
         grid.primaryAxisSizingMode = "FIXED";
-        grid.counterAxisSizingMode = "AUTO";
+        grid.counterAxisSizingMode = "FIXED";
         grid.layoutAlign = "STRETCH";
-        grid.resize(innerWidth, 10);
         grid.itemSpacing = 16;
         grid.counterAxisSpacing = 16;
         grid.fills = [];
+        const cardWidth = 240;
+        const cardHeight = 120;
+        const cardsPerRow = Math.max(1, Math.floor((innerWidth + grid.itemSpacing) / (cardWidth + grid.itemSpacing)));
+        const rows = Math.ceil(objectNames.length / cardsPerRow);
+        const gridHeight = (rows * cardHeight) + ((rows - 1) * grid.counterAxisSpacing);
+        grid.resize(innerWidth, gridHeight);
         slide.appendChild(grid);
 
         for (const objectName of objectNames) {

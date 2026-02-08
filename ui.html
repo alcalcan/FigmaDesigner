@@ -385,6 +385,10 @@
                 <button id="build-ppt-btn" class="secondary"
                     style="margin-top: 8px; background: #ea580c; color: white; border-color: #c2410c;">Build PPT
                     (Selected Frame)</button>
+                <label class="checkbox-row" style="margin-top: 8px;">
+                    <input type="checkbox" id="ppt-editable-text-checkbox" checked>
+                    <span style="color: #fff; font-weight: 600;">Editable Text in PPT</span>
+                </label>
                 <div style="margin-top: 12px;">
                     <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
                         <label class="checkbox-row" style="margin: 0;">
@@ -708,17 +712,50 @@
                         return 'Regular';
                     };
                     const normalizeFontToken = (value) => String(value || '').trim().replace(/\s+/g, ' ');
+                    const normalizeFontKey = (value) =>
+                        normalizeFontToken(value).toLowerCase().replace(/[-_\s]+/g, '');
+                    const isEuropaNuovaFamily = (value) =>
+                        normalizeFontKey(value).includes('europanuova');
                     const resolvePptFontFace = (el) => {
                         const candidates = [];
                         const explicitFace = normalizeFontToken(el.fontFace);
                         const family = normalizeFontToken(el.fontFamily || el.fontFace);
                         const style = normalizeFontToken(el.fontStyle);
                         const weightStyle = weightToStyleName(el.fontWeight);
+                        const styleProbe = `${style} ${weightStyle} ${explicitFace} ${family}`.toLowerCase();
+                        const pushCandidate = (value) => {
+                            const normalized = normalizeFontToken(value);
+                            if (!normalized) return;
+                            if (!candidates.includes(normalized)) {
+                                candidates.push(normalized);
+                            }
+                        };
 
-                        if (explicitFace) candidates.push(explicitFace);
-                        if (family && style) candidates.push(`${family} ${style}`);
-                        if (family && weightStyle) candidates.push(`${family} ${weightStyle}`);
-                        if (family) candidates.push(family);
+                        // Map legacy/alias family names to installed EuropaNuova PostScript faces.
+                        if (isEuropaNuovaFamily(explicitFace) || isEuropaNuovaFamily(family)) {
+                            const wantsItalic = /(italic|oblique)/.test(styleProbe);
+                            const wantsExtraBold =
+                                /(extra\s*bold|extrabold|heavy|black)/.test(styleProbe) ||
+                                (typeof el.fontWeight === 'number' && el.fontWeight >= 800);
+                            const wantsBold =
+                                wantsExtraBold ||
+                                /(bold|semi\s*bold|semibold|demi\s*bold)/.test(styleProbe) ||
+                                (typeof el.fontWeight === 'number' && el.fontWeight >= 600);
+
+                            if (wantsExtraBold && wantsItalic) pushCandidate('EuropaNuova-ExtraBoldItalic');
+                            if (wantsExtraBold) pushCandidate('EuropaNuova-ExtraBold');
+                            if (wantsBold && wantsItalic) pushCandidate('EuropaNuova-BoldItalic');
+                            if (wantsBold) pushCandidate('EuropaNuova-Bold');
+                            if (!wantsBold && wantsItalic) pushCandidate('EuropaNuova-Italic');
+                            if (!wantsBold) pushCandidate('EuropaNuova-Regular');
+                            pushCandidate('EuropaNuova-ExtraBold');
+                            pushCandidate('EuropaNuova-Bold');
+                        }
+
+                        pushCandidate(explicitFace);
+                        if (family && style) pushCandidate(`${family} ${style}`);
+                        if (family && weightStyle) pushCandidate(`${family} ${weightStyle}`);
+                        pushCandidate(family);
 
                         for (const candidate of candidates) {
                             if (candidate) return candidate;
@@ -789,15 +826,20 @@
 
                                     const pptFontSize = typeof el.fontSize === 'number' ? pxToPt(el.fontSize) : undefined;
                                     const resolvedFontFace = resolvePptFontFace(el);
-                                    const inferredBold = typeof el.fontWeight === 'number' ? el.fontWeight >= 600 : undefined;
-                                    const inferredItalic = typeof el.fontStyle === 'string' ?
-                                        /(italic|oblique)/i.test(el.fontStyle) : undefined;
+                                    const faceStyleProbe = `${el.fontStyle || ''} ${el.fontFace || ''} ${el.fontFamily || ''}`.toLowerCase();
+                                    const inferredBold = typeof el.fontWeight === 'number'
+                                        ? el.fontWeight >= 600
+                                        : /(extra\s*bold|extrabold|semi\s*bold|semibold|demi\s*bold|bold)/i.test(faceStyleProbe);
+                                    const inferredItalic = /(italic|oblique)/i.test(faceStyleProbe);
+                                    const isExplicitEuropaPostScript =
+                                        typeof resolvedFontFace === 'string' &&
+                                        /^EuropaNuova-/.test(resolvedFontFace);
                                     const textOptions = {
                                         x: textX, y: textY, w: textW, h: textH,
                                         fontSize: pptFontSize,
                                         fontFace: resolvedFontFace,
-                                        bold: resolveBool(el.bold, inferredBold),
-                                        italic: resolveBool(el.italic, inferredItalic),
+                                        bold: isExplicitEuropaPostScript ? false : resolveBool(el.bold, inferredBold),
+                                        italic: isExplicitEuropaPostScript ? false : resolveBool(el.italic, inferredItalic),
                                         color: el.color,
                                         align: el.align,
                                         valign: el.valign || 'top',
@@ -910,6 +952,7 @@
         const capturePngBtn = document.getElementById('capture-png-btn');
         const captureClipboardBtn = document.getElementById('capture-clipboard-btn');
         const buildPptBtn = document.getElementById('build-ppt-btn');
+        const pptEditableTextCheckbox = document.getElementById('ppt-editable-text-checkbox');
 
         // State for clipboard operation
         let activeTab = 'tab-sync';
@@ -1241,6 +1284,9 @@
         }
 
         buildPptBtn.onclick = () => {
+            const textFidelityMode = (pptEditableTextCheckbox && pptEditableTextCheckbox.checked)
+                ? 'always_editable'
+                : 'smart_hybrid';
             setPptTriggerButton('build-ppt-btn');
             activePptExportBtn = buildPptBtn;
             activePptExportBtnOriginalText = "Build PPT (Selected Frame)";
@@ -1252,7 +1298,7 @@
                     fidelity: 'balanced',
                     rasterScale: 3,
                     compositionFallback: 'container',
-                    textFidelityMode: 'smart_hybrid',
+                    textFidelityMode: textFidelityMode,
                     platformProfile: 'cross_platform'
                 }
             }, '*');

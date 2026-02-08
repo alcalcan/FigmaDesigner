@@ -151,7 +151,7 @@ export class PPTExtractor {
         const textFidelityMode: PPTTextFidelityMode =
             options.textFidelityMode === 'always_editable' || options.textFidelityMode === 'always_raster'
                 ? options.textFidelityMode
-                : 'smart_hybrid';
+                : 'always_editable';
         const platformProfile: PPTPlatformProfile =
             options.platformProfile === 'mac_365' || options.platformProfile === 'win_365'
                 ? options.platformProfile
