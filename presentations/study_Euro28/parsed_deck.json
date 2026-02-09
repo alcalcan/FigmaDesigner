@@ -1,0 +1,2017 @@
+{
+  "deckName": "study",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "index": 1,
+      "name": "Slide_001",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "0D3AFF"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 502.07475065616796,
+          "w": 1094.41249343832,
+          "h": 129.24997375328084,
+          "text": "Divider title",
+          "runs": [
+            {
+              "text": "Divider title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "bottom"
+        },
+        {
+          "kind": "image",
+          "x": 585.2480839895013,
+          "y": 168.78110236220473,
+          "w": 755.5829921259842,
+          "h": 744.0629921259842,
+          "assetFileName": "img_0001.svg",
+          "opacity": 0.15
+        },
+        {
+          "kind": "text",
+          "x": 846.9193700787401,
+          "y": 72.57354330708661,
+          "w": 323.03076115485567,
+          "h": 25.164514435695537,
+          "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+          "runs": [
+            {
+              "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 9,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "bold": false,
+          "italic": false,
+          "align": "right"
+        },
+        {
+          "kind": "image",
+          "x": 1174.6880839895014,
+          "y": 63.181102362204726,
+          "w": 40.06299212598425,
+          "h": 40.06299212598425,
+          "assetFileName": "img_0001.svg"
+        },
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 400,
+          "w": 1107.2223622047245,
+          "h": 231.3247244094488,
+          "text": "EURO28\n\nBooking.com promotion\nin Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "EURO28",
+              "color": "FF00FB",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 24,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 60,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " promotion",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 60,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 60,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 60,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 60,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FF00FB",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "fontSize": 32,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "name": "Slide_002",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 478.5289238845144,
+          "y": 141.60661417322834,
+          "w": 731.7234645669291,
+          "h": 585.1504461942258,
+          "text": "Context\nGoal\nSolutions",
+          "runs": [
+            {
+              "text": "Context\n",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 24,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "Goal\n",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 24,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Solutions",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 24,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Bold",
+          "fontStyle": "Regular",
+          "fontSize": 32,
+          "bold": true,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 42.65249343832021,
+          "text": "Booking.com branding in Secutix ticketing portal\n",
+          "runs": [
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " branding in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal\n",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Index",
+          "runs": [
+            {
+              "text": "Index",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 44,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontStyle": "Regular",
+          "fontSize": 58.666666666666664,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Slide_003",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " branding in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "name": "Slide_004",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " branding in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "name": "Slide_005",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "0D3AFF"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 502.07475065616796,
+          "w": 1094.41249343832,
+          "h": 129.24997375328084,
+          "text": "Divider title",
+          "runs": [
+            {
+              "text": "Divider title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "bottom"
+        },
+        {
+          "kind": "image",
+          "x": 585.2480839895013,
+          "y": 168.78110236220473,
+          "w": 755.5829921259842,
+          "h": 744.0629921259842,
+          "assetFileName": "img_0001.svg",
+          "opacity": 0.15
+        },
+        {
+          "kind": "text",
+          "x": 846.9193700787401,
+          "y": 72.57354330708661,
+          "w": 323.03076115485567,
+          "h": 25.164514435695537,
+          "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+          "runs": [
+            {
+              "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 9,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "bold": false,
+          "italic": false,
+          "align": "right"
+        },
+        {
+          "kind": "image",
+          "x": 1174.6880839895014,
+          "y": 63.181102362204726,
+          "w": 40.06299212598425,
+          "h": 40.06299212598425,
+          "assetFileName": "img_0001.svg"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "name": "Slide_006",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60671916010497,
+          "w": 354.0490288713911,
+          "h": 88.5620997375328,
+          "text": "Option A.\nSponsor strip",
+          "runs": [
+            {
+              "text": "Option A.",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "Sponsor strip",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontStyle": "Regular",
+          "fontSize": 42.666666666666664,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com branding in Secutix ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 68.97805774278216,
+          "y": 260.65490813648296,
+          "w": 408.39181102362204,
+          "h": 435.4967979002625,
+          "text": "Pro: high visibility due to \"sticky\" behavior (stays fixed while scrolling).\nCons: smaller creative real estate for branding.\n\nRationale: users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+          "runs": [
+            {
+              "text": "Pro: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "high visibility due to \"sticky\" behavior (stays fixed while scrolling).\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Cons: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "smaller creative real estate for branding.\n\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Rationale: ",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontFamily": "Europa Nuova Bold",
+          "fontStyle": "Regular",
+          "fontSize": 21.333333333333332,
+          "bold": true,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "image",
+          "x": 550.7811023622047,
+          "y": 64.96272965879265,
+          "w": 1006.3941207349081,
+          "h": 584.2785301837271,
+          "assetFileName": "img_0002.png"
+        },
+        {
+          "kind": "image",
+          "x": 525.8833595800525,
+          "y": 213.74446194225723,
+          "w": 215.4498687664042,
+          "h": 435.4967979002625,
+          "assetFileName": "img_0003.png"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "name": "Slide_007",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "image",
+          "x": 138.78120734908137,
+          "y": 44.20514435695538,
+          "w": 1087.8853543307087,
+          "h": 631.5897112860893,
+          "assetFileName": "img_0002.png"
+        },
+        {
+          "kind": "image",
+          "x": 113.8833595800525,
+          "y": 205.03433070866143,
+          "w": 232.89564304461942,
+          "h": 470.7605249343832,
+          "assetFileName": "img_0003.png"
+        },
+        {
+          "kind": "text",
+          "x": -421.31622047244093,
+          "y": 141.60671916010497,
+          "w": 354.0490288713911,
+          "h": 88.5620997375328,
+          "text": "Option A.\nSponsor strip",
+          "runs": [
+            {
+              "text": "Option A.",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "Sponsor strip",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontStyle": "Regular",
+          "fontSize": 42.666666666666664,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": -421.31632545931757,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com branding in Secutix ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": -424.9051968503937,
+          "y": 260.65490813648296,
+          "w": 408.39181102362204,
+          "h": 435.4967979002625,
+          "text": "Pro: high visibility due to \"sticky\" behavior (stays fixed while scrolling).\nCons: smaller creative real estate for branding.\n\nRationale: users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+          "runs": [
+            {
+              "text": "Pro: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "high visibility due to \"sticky\" behavior (stays fixed while scrolling).\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Cons: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "smaller creative real estate for branding.\n\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Rationale: ",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontFamily": "Europa Nuova Bold",
+          "fontStyle": "Regular",
+          "fontSize": 21.333333333333332,
+          "bold": true,
+          "italic": false,
+          "valign": "top"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "name": "Slide_008",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60671916010497,
+          "w": 404.8028346456693,
+          "h": 100.12829396325459,
+          "text": "Option B.\nLeaderboard",
+          "runs": [
+            {
+              "text": "Option B.",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "Leaderboard",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontStyle": "Regular",
+          "fontSize": 42.666666666666664,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " branding in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "image",
+          "x": 550.4699212598425,
+          "y": 64.60136482939633,
+          "w": 1007.0164829396325,
+          "h": 584.6398950131234,
+          "assetFileName": "img_0004.png"
+        },
+        {
+          "kind": "image",
+          "x": 525.8833595800525,
+          "y": 213.74446194225723,
+          "w": 215.61952755905511,
+          "h": 435.83989501312334,
+          "assetFileName": "img_0005.png"
+        },
+        {
+          "kind": "text",
+          "x": 68.97805774278216,
+          "y": 260.65490813648296,
+          "w": 408.39181102362204,
+          "h": 435.4967979002625,
+          "text": "Pro: maximum visual impact and branding space.\nCons: not sticky (disappears as the user scrolls down).\n\nRationale: users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+          "runs": [
+            {
+              "text": "Pro: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "maximum visual impact and branding space.\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Cons: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "not sticky (disappears as the user scrolls down).\n\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Rationale: ",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontFamily": "Europa Nuova Bold",
+          "fontStyle": "Regular",
+          "fontSize": 21.333333333333332,
+          "bold": true,
+          "italic": false,
+          "valign": "top"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "name": "Slide_009",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "image",
+          "x": 138.78120734908137,
+          "y": 44.16,
+          "w": 1088.040839895013,
+          "h": 631.6798950131233,
+          "assetFileName": "img_0004.png"
+        },
+        {
+          "kind": "image",
+          "x": 111.8740157480315,
+          "y": 204.8503937007874,
+          "w": 232.71716535433072,
+          "h": 470.3997900262467,
+          "assetFileName": "img_0005.png"
+        },
+        {
+          "kind": "text",
+          "x": -421.4717060367454,
+          "y": 141.60671916010497,
+          "w": 404.8028346456693,
+          "h": 100.12829396325459,
+          "text": "Option B.\nLarge leaderboard",
+          "runs": [
+            {
+              "text": "Option B.",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "\n"
+            },
+            {
+              "text": "Large leaderboard",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova Extra Bold",
+              "fontSize": 32,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontStyle": "Regular",
+          "fontSize": 42.666666666666664,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": -421.471811023622,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " branding in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": -425.06068241469814,
+          "y": 260.65490813648296,
+          "w": 408.39181102362204,
+          "h": 435.4967979002625,
+          "text": "Pro: maximum visual impact and branding space.\nCons: not sticky (disappears as the user scrolls down).\n\nRationale: users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+          "runs": [
+            {
+              "text": "Pro: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "maximum visual impact and branding space.\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Cons: ",
+              "fontFamily": "Europa Nuova Bold",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "not sticky (disappears as the user scrolls down).\n\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Rationale: ",
+              "fontSize": 16,
+              "bold": true,
+              "italic": false
+            },
+            {
+              "text": "users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+              "fontSize": 16,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontFamily": "Europa Nuova Bold",
+          "fontStyle": "Regular",
+          "fontSize": 21.333333333333332,
+          "bold": true,
+          "italic": false,
+          "valign": "top"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "name": "Slide_010",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00B050"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 502.07475065616796,
+          "w": 1094.41249343832,
+          "h": 129.24997375328084,
+          "text": "Divider title",
+          "runs": [
+            {
+              "text": "Divider title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "bottom"
+        },
+        {
+          "kind": "image",
+          "x": 585.2480839895013,
+          "y": 168.78110236220473,
+          "w": 755.5829921259842,
+          "h": 744.0629921259842,
+          "assetFileName": "img_0001.svg",
+          "opacity": 0.15
+        },
+        {
+          "kind": "text",
+          "x": 846.9193700787401,
+          "y": 72.57354330708661,
+          "w": 323.03076115485567,
+          "h": 25.164514435695537,
+          "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+          "runs": [
+            {
+              "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 9,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "bold": false,
+          "italic": false,
+          "align": "right"
+        },
+        {
+          "kind": "image",
+          "x": 1174.6880839895014,
+          "y": 63.181102362204726,
+          "w": 40.06299212598425,
+          "h": 40.06299212598425,
+          "assetFileName": "img_0001.svg"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "name": "Slide_011",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00B050"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 502.07475065616796,
+          "w": 1094.41249343832,
+          "h": 129.24997375328084,
+          "text": "Divider title",
+          "runs": [
+            {
+              "text": "Divider title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "bottom"
+        },
+        {
+          "kind": "image",
+          "x": 585.2480839895013,
+          "y": 168.78110236220473,
+          "w": 755.5829921259842,
+          "h": 744.0629921259842,
+          "assetFileName": "img_0001.svg",
+          "opacity": 0.15
+        },
+        {
+          "kind": "text",
+          "x": 846.9193700787401,
+          "y": 72.57354330708661,
+          "w": 323.03076115485567,
+          "h": 25.164514435695537,
+          "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+          "runs": [
+            {
+              "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 9,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "bold": false,
+          "italic": false,
+          "align": "right"
+        },
+        {
+          "kind": "image",
+          "x": 1174.6880839895014,
+          "y": 63.181102362204726,
+          "w": 40.06299212598425,
+          "h": 40.06299212598425,
+          "assetFileName": "img_0001.svg"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "name": "Slide_012",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "0D3AFF"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 502.07475065616796,
+          "w": 1094.41249343832,
+          "h": 129.24997375328084,
+          "text": "Divider title",
+          "runs": [
+            {
+              "text": "Divider title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "bottom"
+        },
+        {
+          "kind": "image",
+          "x": 585.2480839895013,
+          "y": 168.78110236220473,
+          "w": 755.5829921259842,
+          "h": 744.0629921259842,
+          "assetFileName": "img_0001.svg",
+          "opacity": 0.15
+        },
+        {
+          "kind": "text",
+          "x": 846.9193700787401,
+          "y": 72.57354330708661,
+          "w": 323.03076115485567,
+          "h": 25.164514435695537,
+          "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+          "runs": [
+            {
+              "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 9,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "bold": false,
+          "italic": false,
+          "align": "right"
+        },
+        {
+          "kind": "image",
+          "x": 1174.6880839895014,
+          "y": 63.181102362204726,
+          "w": 40.06299212598425,
+          "h": 40.06299212598425,
+          "assetFileName": "img_0001.svg"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "name": "Slide_013",
+      "width": 1280,
+      "height": 720,
+      "background": {
+        "kind": "solid",
+        "color": "00004B"
+      },
+      "elements": [
+        {
+          "kind": "text",
+          "x": 72.5670341207349,
+          "y": 141.60661417322834,
+          "w": 354.0490288713911,
+          "h": 492.4477690288714,
+          "text": "Title",
+          "runs": [
+            {
+              "text": "Title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Section title",
+          "runs": [
+            {
+              "text": "Section title",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 93.13795275590552,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Topic",
+          "runs": [
+            {
+              "text": "Topic",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 455,
+          "y": 144.83338582677166,
+          "w": 752.5000524934384,
+          "h": 489.16661417322837,
+          "text": "Description",
+          "runs": [
+            {
+              "text": "Description",
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "000000",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "kind": "text",
+          "x": 72.56692913385827,
+          "y": 70.75863517060367,
+          "w": 906.6328608923884,
+          "h": 19.38750656167979,
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "runs": [
+            {
+              "text": "Booking.com",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " branding in ",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": "Secutix",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            },
+            {
+              "text": " ticketing portal",
+              "color": "FFFFFF",
+              "fontFamily": "Europa Nuova",
+              "fontSize": 28,
+              "bold": false,
+              "italic": false
+            }
+          ],
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontStyle": "Regular",
+          "bold": false,
+          "italic": false,
+          "valign": "top"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "fileName": "img_0001.svg",
+      "bytes": "[13577 bytes]",
+      "sourcePath": "ppt/media/image2.svg"
+    },
+    {
+      "fileName": "img_0002.png",
+      "bytes": "[1482899 bytes]",
+      "sourcePath": "ppt/media/image3.png"
+    },
+    {
+      "fileName": "img_0003.png",
+      "bytes": "[799140 bytes]",
+      "sourcePath": "ppt/media/image4.png"
+    },
+    {
+      "fileName": "img_0004.png",
+      "bytes": "[1558871 bytes]",
+      "sourcePath": "ppt/media/image5.png"
+    },
+    {
+      "fileName": "img_0005.png",
+      "bytes": "[837437 bytes]",
+      "sourcePath": "ppt/media/image6.png"
+    }
+  ],
+  "warnings": [
+    "Unsupported theme color 'tx1' (mapped to 'tx1') encountered."
+  ]
+}

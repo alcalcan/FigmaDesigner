@@ -1,0 +1,243 @@
+{
+  "index": 8,
+  "name": "Slide_008",
+  "width": 1280,
+  "height": 720,
+  "background": {
+    "kind": "solid",
+    "color": "00004B"
+  },
+  "elements": [
+    {
+      "kind": "text",
+      "x": 72.5670341207349,
+      "y": 141.60661417322834,
+      "w": 354.0490288713911,
+      "h": 492.4477690288714,
+      "text": "Title",
+      "runs": [
+        {
+          "text": "Title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "top"
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 70.75863517060367,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Section title",
+      "runs": [
+        {
+          "text": "Section title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 93.13795275590552,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Topic",
+      "runs": [
+        {
+          "text": "Topic",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 455,
+      "y": 144.83338582677166,
+      "w": 752.5000524934384,
+      "h": 489.16661417322837,
+      "text": "Description",
+      "runs": [
+        {
+          "text": "Description",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.5670341207349,
+      "y": 141.60671916010497,
+      "w": 404.8028346456693,
+      "h": 100.12829396325459,
+      "text": "Option B.\nLeaderboard",
+      "runs": [
+        {
+          "text": "Option B.",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontSize": 32,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "\n"
+        },
+        {
+          "text": "Leaderboard",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontSize": 32,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "FFFFFF",
+      "fontFamily": "Europa Nuova Extra Bold",
+      "fontStyle": "Regular",
+      "fontSize": 42.666666666666664,
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 70.75863517060367,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Booking.com branding in Secutix ticketing portal",
+      "runs": [
+        {
+          "text": "Booking.com",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " branding in ",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Secutix",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " ticketing portal",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "FFFFFF",
+      "fontFamily": "Europa Nuova",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "top"
+    },
+    {
+      "kind": "image",
+      "x": 550.4699212598425,
+      "y": 64.60136482939633,
+      "w": 1007.0164829396325,
+      "h": 584.6398950131234,
+      "assetFileName": "img_0004.png"
+    },
+    {
+      "kind": "image",
+      "x": 525.8833595800525,
+      "y": 213.74446194225723,
+      "w": 215.61952755905511,
+      "h": 435.83989501312334,
+      "assetFileName": "img_0005.png"
+    },
+    {
+      "kind": "text",
+      "x": 68.97805774278216,
+      "y": 260.65490813648296,
+      "w": 408.39181102362204,
+      "h": 435.4967979002625,
+      "text": "Pro: maximum visual impact and branding space.\nCons: not sticky (disappears as the user scrolls down).\n\nRationale: users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+      "runs": [
+        {
+          "text": "Pro: ",
+          "fontFamily": "Europa Nuova Bold",
+          "fontSize": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "maximum visual impact and branding space.\n",
+          "fontSize": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Cons: ",
+          "fontFamily": "Europa Nuova Bold",
+          "fontSize": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "not sticky (disappears as the user scrolls down).\n\n",
+          "fontSize": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Rationale: ",
+          "fontSize": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+          "fontSize": 16,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontFamily": "Europa Nuova Bold",
+      "fontStyle": "Regular",
+      "fontSize": 21.333333333333332,
+      "bold": true,
+      "italic": false,
+      "valign": "top"
+    }
+  ]
+}

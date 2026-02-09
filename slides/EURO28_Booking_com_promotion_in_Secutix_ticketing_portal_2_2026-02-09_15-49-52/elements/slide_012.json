@@ -1,0 +1,74 @@
+{
+  "index": 12,
+  "name": "Slide_012",
+  "width": 1280,
+  "height": 720,
+  "background": {
+    "kind": "solid",
+    "color": "0D3AFF"
+  },
+  "elements": [
+    {
+      "kind": "text",
+      "x": 72.5670341207349,
+      "y": 502.07475065616796,
+      "w": 1094.41249343832,
+      "h": 129.24997375328084,
+      "text": "Divider title",
+      "runs": [
+        {
+          "text": "Divider title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "bottom"
+    },
+    {
+      "kind": "image",
+      "x": 585.2480839895013,
+      "y": 168.78110236220473,
+      "w": 755.5829921259842,
+      "h": 744.0629921259842,
+      "assetFileName": "img_0001.svg",
+      "opacity": 0.15
+    },
+    {
+      "kind": "text",
+      "x": 846.9193700787401,
+      "y": 72.57354330708661,
+      "w": 323.03076115485567,
+      "h": 25.164514435695537,
+      "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+      "runs": [
+        {
+          "text": "INFORMATION, COMMUNICATION & TECHNOLOGY",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 9,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "FFFFFF",
+      "fontFamily": "Europa Nuova",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "bold": false,
+      "italic": false,
+      "align": "right"
+    },
+    {
+      "kind": "image",
+      "x": 1174.6880839895014,
+      "y": 63.181102362204726,
+      "w": 40.06299212598425,
+      "h": 40.06299212598425,
+      "assetFileName": "img_0001.svg"
+    }
+  ]
+}

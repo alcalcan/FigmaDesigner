@@ -1,0 +1,219 @@
+{
+  "index": 6,
+  "name": "Slide_006",
+  "width": 1280,
+  "height": 720,
+  "background": {
+    "kind": "solid",
+    "color": "00004B"
+  },
+  "elements": [
+    {
+      "kind": "text",
+      "x": 72.5670341207349,
+      "y": 141.60661417322834,
+      "w": 354.0490288713911,
+      "h": 492.4477690288714,
+      "text": "Title",
+      "runs": [
+        {
+          "text": "Title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "top"
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 70.75863517060367,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Section title",
+      "runs": [
+        {
+          "text": "Section title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 93.13795275590552,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Topic",
+      "runs": [
+        {
+          "text": "Topic",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 455,
+      "y": 144.83338582677166,
+      "w": 752.5000524934384,
+      "h": 489.16661417322837,
+      "text": "Description",
+      "runs": [
+        {
+          "text": "Description",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.5670341207349,
+      "y": 141.60671916010497,
+      "w": 354.0490288713911,
+      "h": 88.5620997375328,
+      "text": "Option A.\nSponsor strip",
+      "runs": [
+        {
+          "text": "Option A.",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontSize": 32,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "\n"
+        },
+        {
+          "text": "Sponsor strip",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova Extra Bold",
+          "fontSize": 32,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "FFFFFF",
+      "fontFamily": "Europa Nuova Extra Bold",
+      "fontStyle": "Regular",
+      "fontSize": 42.666666666666664,
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 70.75863517060367,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Booking.com branding in Secutix ticketing portal",
+      "runs": [
+        {
+          "text": "Booking.com branding in Secutix ticketing portal",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "FFFFFF",
+      "fontFamily": "Europa Nuova",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "top"
+    },
+    {
+      "kind": "text",
+      "x": 68.97805774278216,
+      "y": 260.65490813648296,
+      "w": 408.39181102362204,
+      "h": 435.4967979002625,
+      "text": "Pro: high visibility due to \"sticky\" behavior (stays fixed while scrolling).\nCons: smaller creative real estate for branding.\n\nRationale: users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+      "runs": [
+        {
+          "text": "Pro: ",
+          "fontFamily": "Europa Nuova Bold",
+          "fontSize": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "high visibility due to \"sticky\" behavior (stays fixed while scrolling).\n",
+          "fontSize": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Cons: ",
+          "fontFamily": "Europa Nuova Bold",
+          "fontSize": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "smaller creative real estate for branding.\n\n",
+          "fontSize": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Rationale: ",
+          "fontSize": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "users scroll when they’re interested in the content. Fear of losing vertical height is an outdated UX concept. On the most common screen resolutions, this strip does not block functional areas.\n",
+          "fontSize": 16,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontFamily": "Europa Nuova Bold",
+      "fontStyle": "Regular",
+      "fontSize": 21.333333333333332,
+      "bold": true,
+      "italic": false,
+      "valign": "top"
+    },
+    {
+      "kind": "image",
+      "x": 550.7811023622047,
+      "y": 64.96272965879265,
+      "w": 1006.3941207349081,
+      "h": 584.2785301837271,
+      "assetFileName": "img_0002.png"
+    },
+    {
+      "kind": "image",
+      "x": 525.8833595800525,
+      "y": 213.74446194225723,
+      "w": 215.4498687664042,
+      "h": 435.4967979002625,
+      "assetFileName": "img_0003.png"
+    }
+  ]
+}

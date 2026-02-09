@@ -1,0 +1,137 @@
+{
+  "index": 3,
+  "name": "Slide_003",
+  "width": 1280,
+  "height": 720,
+  "background": {
+    "kind": "solid",
+    "color": "00004B"
+  },
+  "elements": [
+    {
+      "kind": "text",
+      "x": 72.5670341207349,
+      "y": 141.60661417322834,
+      "w": 354.0490288713911,
+      "h": 492.4477690288714,
+      "text": "Title",
+      "runs": [
+        {
+          "text": "Title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "top"
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 70.75863517060367,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Section title",
+      "runs": [
+        {
+          "text": "Section title",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 93.13795275590552,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Topic",
+      "runs": [
+        {
+          "text": "Topic",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 455,
+      "y": 144.83338582677166,
+      "w": 752.5000524934384,
+      "h": 489.16661417322837,
+      "text": "Description",
+      "runs": [
+        {
+          "text": "Description",
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "000000",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "kind": "text",
+      "x": 72.56692913385827,
+      "y": 70.75863517060367,
+      "w": 906.6328608923884,
+      "h": 19.38750656167979,
+      "text": "Booking.com branding in Secutix ticketing portal",
+      "runs": [
+        {
+          "text": "Booking.com",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " branding in ",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Secutix",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " ticketing portal",
+          "color": "FFFFFF",
+          "fontFamily": "Europa Nuova",
+          "fontSize": 28,
+          "bold": false,
+          "italic": false
+        }
+      ],
+      "color": "FFFFFF",
+      "fontFamily": "Europa Nuova",
+      "fontStyle": "Regular",
+      "bold": false,
+      "italic": false,
+      "valign": "top"
+    }
+  ]
+}

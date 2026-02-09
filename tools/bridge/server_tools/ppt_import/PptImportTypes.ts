@@ -34,9 +34,20 @@ export interface BaseSlideElement {
     opacity?: number;
 }
 
+export interface TextRun {
+    text: string;
+    color?: string;
+    fontFamily?: string;
+    fontStyle?: string;
+    fontSize?: number;
+    bold?: boolean;
+    italic?: boolean;
+}
+
 export interface TextSlideElement extends BaseSlideElement {
     kind: 'text';
     text: string;
+    runs?: TextRun[];
     color?: string;
     fontFamily?: string;
     fontStyle?: string;
@@ -45,12 +56,14 @@ export interface TextSlideElement extends BaseSlideElement {
     italic?: boolean;
     align?: HorizontalAlign;
     valign?: VerticalAlign;
+    lineHeight?: { value: number, unit: 'PIXELS' | 'PERCENT' };
+    paragraphSpacing?: number;
 }
 
 export interface ShapeSlideElement extends BaseSlideElement {
     kind: 'shape';
     shapeType: 'rect' | 'ellipse' | 'line';
-    fillColor?: string;
+    fill?: SlideBackground;
     strokeColor?: string;
     strokeWeight?: number;
     cornerRadius?: number;
@@ -63,12 +76,17 @@ export interface ImageSlideElement extends BaseSlideElement {
 
 export type SlideElement = TextSlideElement | ShapeSlideElement | ImageSlideElement;
 
+export type SlideBackground =
+    | { kind: 'solid', color: string, opacity?: number }
+    | { kind: 'image', assetFileName: string, opacity?: number }
+    | { kind: 'gradient', type: 'linear' | 'radial', stops: { color: string, position: number }[], angle: number, opacity?: number };
+
 export interface ParsedSlide {
     index: number;
     name: string;
     width: number;
     height: number;
-    background?: string;
+    background?: SlideBackground;
     elements: SlideElement[];
 }
 

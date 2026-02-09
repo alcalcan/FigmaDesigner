@@ -3,12 +3,13 @@ import {
     SlideElement,
     TextSlideElement,
     ShapeSlideElement,
-    ImageSlideElement
+    ImageSlideElement,
+    SlideBackground
 } from './PptImportTypes';
 
 export class SlideEmitter {
     static emit(className: string, slide: ParsedSlide): string {
-        const imageImports = collectImageImports(slide.elements);
+        const imageImports = collectImageImports(slide);
         const fontList = collectFonts(slide.elements);
 
         const importLines: string[] = [
@@ -40,9 +41,9 @@ export class SlideEmitter {
             .filter((code) => code.length > 0)
             .join('\n\n');
 
-        const backgroundFills = slide.background
-            ? `[{ type: "SOLID", color: ${hexToRgbLiteral(slide.background)} }]`
-            : '[]';
+        const backgroundBlocks = emitBackgroundCode(slide.background);
+        const backgroundFills = backgroundBlocks.fillsExpression;
+        const backgroundSetup = backgroundBlocks.setupCode;
 
         return `${importLines.join('\n')}
 
@@ -53,6 +54,8 @@ export class ${className} extends BaseComponent {
         slide.resize(${formatNumber(slide.width)}, ${formatNumber(slide.height)});
         slide.x = props.x ?? 0;
         slide.y = props.y ?? 0;
+
+${indentBlock(backgroundSetup, 8)}
         slide.fills = ${backgroundFills};
 
 ${fontLoaderBlock}${indentBlock(elementBlocks, 8)}
@@ -146,8 +149,15 @@ function emitShapeCode(element: ShapeSlideElement, index: number): string {
     ];
 
     if (element.shapeType !== 'line') {
-        if (element.fillColor) {
-            lines.push(`${varName}.fills = [{ type: "SOLID", color: ${hexToRgbLiteral(element.fillColor)} }];`);
+        if (element.fill) {
+            const backgroundBlocks = emitBackgroundCode(element.fill);
+            // We use the same helper as backgrounds, but we might arguably rename it to emitFillCode
+            if (backgroundBlocks.setupCode) {
+                // Setup code needs to be hoisted? 
+                // emitShapeCode currently returns a single string block so we can just prepend setupCode
+                lines.splice(0, 0, backgroundBlocks.setupCode);
+            }
+            lines.push(`${varName}.fills = ${backgroundBlocks.fillsExpression};`);
         } else {
             lines.push(`${varName}.fills = [];`);
         }
@@ -178,15 +188,70 @@ function emitShapeCode(element: ShapeSlideElement, index: number): string {
     return lines.join('\n');
 }
 
+function normalizeFont(family: string, style: string, bold?: boolean, italic?: boolean): { family: string, style: string } {
+    const finalFamily = family;
+    let finalStyle = style;
+
+    const isAlreadyBold = /Bold|Heavy|Black|ExtraBold/i.test(family);
+    const isAlreadyItalic = /Italic|Oblique/i.test(family);
+
+    if (isAlreadyBold && (finalStyle === 'Bold' || bold)) {
+        finalStyle = 'Regular';
+    }
+
+    if (isAlreadyItalic && (finalStyle === 'Italic' || italic)) {
+        finalStyle = 'Regular';
+    }
+
+    // Special case for Europa Nuova Bold which is known to use "Regular" style in this environment
+    if (family === 'Europa Nuova Bold' || family === 'Europa Nuova Extra Bold') {
+        finalStyle = 'Regular';
+    }
+
+    return { family: finalFamily, style: finalStyle };
+}
+
+function collectFonts(elements: SlideElement[]): Array<{ family: string; style: string }> {
+    const fonts = new Map<string, { family: string; style: string }>();
+
+    fonts.set('Inter|Regular', { family: 'Inter', style: 'Regular' });
+
+    for (const element of elements) {
+        if (element.kind !== 'text') {
+            continue;
+        }
+
+        const family = element.fontFamily || 'Inter';
+        const initialStyle = element.fontStyle || (element.bold ? 'Bold' : element.italic ? 'Italic' : 'Regular');
+
+        const normalized = normalizeFont(family, initialStyle, element.bold, element.italic);
+        fonts.set(`${normalized.family}|${normalized.style}`, normalized);
+
+        // Collect fonts from runs
+        if (element.runs) {
+            for (const run of element.runs) {
+                const runFamily = run.fontFamily || family;
+                const runStyle = run.fontStyle || (run.bold ? 'Bold' : run.italic ? 'Italic' : 'Regular');
+                const runNorm = normalizeFont(runFamily, runStyle, run.bold, run.italic);
+                fonts.set(`${runNorm.family}|${runNorm.style}`, runNorm);
+            }
+        }
+    }
+
+    return Array.from(fonts.values());
+}
+
 function emitTextCode(element: TextSlideElement, index: number): string {
     const varName = `text_${index}`;
-    const requestedFontFamily = element.fontFamily || 'Inter';
-    const requestedFontStyle = element.fontStyle || (element.bold ? 'Bold' : 'Regular');
+    const family = element.fontFamily || 'Inter';
+    const initialStyle = element.fontStyle || (element.bold ? 'Bold' : element.italic ? 'Italic' : 'Regular');
+
+    const normalized = normalizeFont(family, initialStyle, element.bold, element.italic);
 
     const lines: string[] = [
         `const ${varName} = figma.createText();`,
         `${varName}.name = ${toQuoted(`Text_${index}`)};`,
-        `const ${varName}_font: FontName = { family: ${toQuoted(requestedFontFamily)}, style: ${toQuoted(requestedFontStyle)} };`,
+        `const ${varName}_font: FontName = { family: ${toQuoted(normalized.family)}, style: ${toQuoted(normalized.style)} };`,
         'try {',
         `    ${varName}.fontName = ${varName}_font;`,
         '} catch (_fontApplyErr) {',
@@ -199,20 +264,43 @@ function emitTextCode(element: TextSlideElement, index: number): string {
         `${varName}.textAutoResize = "NONE";`
     ];
 
-    if (typeof element.fontSize === 'number') {
-        lines.push(`${varName}.fontSize = ${formatNumber(Math.max(1, element.fontSize))};`);
-    }
+    // Rich Text Support
+    if (element.runs && element.runs.length > 0) {
+        let currentOffset = 0;
+        for (const run of element.runs) {
+            const runLength = run.text.length;
+            if (runLength === 0) continue;
 
-    if (element.bold) {
-        lines.push(`${varName}.fontName = { family: ${toQuoted(requestedFontFamily)}, style: "Bold" };`);
-    }
+            const start = currentOffset;
+            const end = currentOffset + runLength;
 
-    if (element.italic) {
-        lines.push(`${varName}.fontName = { family: ${toQuoted(requestedFontFamily)}, style: "Italic" };`);
-    }
+            if (run.color) {
+                lines.push(`${varName}.setRangeFills(${start}, ${end}, [{ type: "SOLID", color: ${hexToRgbLiteral(run.color)} }]);`);
+            }
 
-    if (element.color) {
-        lines.push(`${varName}.fills = [{ type: "SOLID", color: ${hexToRgbLiteral(element.color)} }];`);
+            if (run.bold !== undefined || run.italic !== undefined || run.fontFamily || run.fontSize) {
+                const runFamily = run.fontFamily || family;
+                const runStyle = run.fontStyle || (run.bold ? 'Bold' : run.italic ? 'Italic' : 'Regular');
+                const runNorm = normalizeFont(runFamily, runStyle, run.bold, run.italic);
+
+                lines.push(`try {`);
+                lines.push(`    ${varName}.setRangeFontName(${start}, ${end}, { family: ${toQuoted(runNorm.family)}, style: ${toQuoted(runNorm.style)} });`);
+                if (run.fontSize) {
+                    lines.push(`    ${varName}.setRangeFontSize(${start}, ${end}, ${formatNumber(Math.max(1, run.fontSize))});`);
+                }
+                lines.push(`} catch (_runFontErr) {}`);
+            }
+
+            currentOffset = end;
+        }
+    } else {
+        if (typeof element.fontSize === 'number') {
+            lines.push(`${varName}.fontSize = ${formatNumber(Math.max(1, element.fontSize))};`);
+        }
+
+        if (element.color) {
+            lines.push(`${varName}.fills = [{ type: "SOLID", color: ${hexToRgbLiteral(element.color)} }];`);
+        }
     }
 
     if (element.align) {
@@ -233,6 +321,18 @@ function emitTextCode(element: TextSlideElement, index: number): string {
         lines.push(`${varName}.opacity = ${formatNumber(clampOpacity(element.opacity))};`);
     }
 
+    if (element.lineHeight) {
+        if (element.lineHeight.unit === 'PIXELS') {
+            lines.push(`${varName}.lineHeight = { value: ${formatNumber(element.lineHeight.value)}, unit: "PIXELS" };`);
+        } else {
+            lines.push(`${varName}.lineHeight = { value: ${formatNumber(element.lineHeight.value)}, unit: "PERCENT" };`);
+        }
+    }
+
+    if (typeof element.paragraphSpacing === 'number') {
+        lines.push(`${varName}.paragraphSpacing = ${formatNumber(element.paragraphSpacing)};`);
+    }
+
     lines.push(`slide.appendChild(${varName});`);
     return lines.join('\n');
 }
@@ -242,20 +342,30 @@ function emitImageCode(element: ImageSlideElement, index: number): string {
     const importVariable = imageVariableName(element.assetFileName);
 
     const lines: string[] = [
-        `const ${varName} = figma.createRectangle();`,
-        `${varName}.name = ${toQuoted(`Image_${index}`)};`,
-        `${varName}.resize(${formatNumber(element.w)}, ${formatNumber(element.h)});`,
-        `${varName}.x = ${formatNumber(element.x)};`,
-        `${varName}.y = ${formatNumber(element.y)};`,
-        `// Debug: Check import type`,
-        `console.log("PPT Import Image:", typeof ${importVariable}, ${importVariable} ? ${importVariable}.toString().substring(0, 50) : "null");`,
+        `// Detect image type and create corresponding Figma node`,
         `const ${varName}_raw = ${importVariable};`,
-        `// Handle esmodule default export if necessary`,
         `const ${varName}_str = (typeof ${varName}_raw === 'string') ? ${varName}_raw : (${varName}_raw as any).default;`,
-        `const ${varName}_data = base64ToUint8Array(${varName}_str);`,
-        `if (${varName}_data.length > 0) {`,
-        `    const ${varName}_hash = figma.createImage(${varName}_data).hash;`,
-        `    ${varName}.fills = [{ type: "IMAGE", imageHash: ${varName}_hash, scaleMode: "FILL" }];`,
+        `let ${varName};`,
+        ``,
+        `if (${varName}_str && ${varName}_str.trim().startsWith('<svg')) {`,
+        `    // SVG Vector Asset`,
+        `    ${varName} = figma.createNodeFromSvg(${varName}_str);`,
+        `    ${varName}.name = ${toQuoted(`Image_${index}`)};`,
+        `    ${varName}.resize(${formatNumber(element.w)}, ${formatNumber(element.h)});`,
+        `    ${varName}.x = ${formatNumber(element.x)};`,
+        `    ${varName}.y = ${formatNumber(element.y)};`,
+        `} else {`,
+        `    // Raster Image Asset`,
+        `    ${varName} = figma.createRectangle();`,
+        `    ${varName}.name = ${toQuoted(`Image_${index}`)};`,
+        `    ${varName}.resize(${formatNumber(element.w)}, ${formatNumber(element.h)});`,
+        `    ${varName}.x = ${formatNumber(element.x)};`,
+        `    ${varName}.y = ${formatNumber(element.y)};`,
+        `    const ${varName}_data = base64ToUint8Array(${varName}_str);`,
+        `    if (${varName}_data.length > 0) {`,
+        `        const ${varName}_hash = figma.createImage(${varName}_data).hash;`,
+        `        ${varName}.fills = [{ type: "IMAGE", imageHash: ${varName}_hash, scaleMode: "FILL" }];`,
+        `    }`,
         `}`
     ];
 
@@ -265,51 +375,100 @@ function emitImageCode(element: ImageSlideElement, index: number): string {
 
     lines.push(`slide.appendChild(${varName});`);
 
+
     return lines.join('\n');
 }
 
 
 
-function collectImageImports(elements: SlideElement[]): Array<{ fileName: string; variableName: string }> {
+function collectImageImports(slide: ParsedSlide): Array<{ fileName: string; variableName: string }> {
     const seen = new Set<string>();
     const imports: Array<{ fileName: string; variableName: string }> = [];
 
-    for (const element of elements) {
+    const addImport = (fileName: string) => {
+        if (seen.has(fileName)) return;
+        seen.add(fileName);
+        imports.push({
+            fileName,
+            variableName: imageVariableName(fileName)
+        });
+    };
+
+    if (slide.background?.kind === 'image') {
+        addImport(slide.background.assetFileName);
+    }
+
+    for (const element of slide.elements) {
         if (element.kind !== 'image') {
             continue;
         }
-
-        if (seen.has(element.assetFileName)) {
-            continue;
-        }
-
-        seen.add(element.assetFileName);
-        imports.push({
-            fileName: element.assetFileName,
-            variableName: imageVariableName(element.assetFileName)
-        });
+        addImport(element.assetFileName);
     }
 
     return imports;
 }
 
-function collectFonts(elements: SlideElement[]): Array<{ family: string; style: string }> {
-    const fonts = new Map<string, { family: string; style: string }>();
-
-    fonts.set('Inter|Regular', { family: 'Inter', style: 'Regular' });
-
-    for (const element of elements) {
-        if (element.kind !== 'text') {
-            continue;
-        }
-
-        const family = element.fontFamily || 'Inter';
-        const style = element.fontStyle || (element.bold ? 'Bold' : element.italic ? 'Italic' : 'Regular');
-        fonts.set(`${family}|${style}`, { family, style });
+function emitBackgroundCode(background?: SlideBackground): { setupCode: string, fillsExpression: string } {
+    if (!background) {
+        return { setupCode: '', fillsExpression: '[]' };
     }
 
-    return Array.from(fonts.values());
+    if (background.kind === 'solid') {
+        const opacity = background.opacity ?? 1;
+        return {
+            setupCode: '',
+            fillsExpression: `[{ type: "SOLID", color: ${hexToRgbLiteral(background.color)}, opacity: ${formatNumber(opacity)} }]`
+        };
+    }
+
+    if (background.kind === 'image') {
+        const varName = 'bgImage';
+        const importVar = imageVariableName(background.assetFileName);
+        const setupCode = `
+let bgFills: Paint[] = [];
+try {
+    const ${varName}_raw = ${importVar};
+    const ${varName}_str = (typeof ${varName}_raw === 'string') ? ${varName}_raw : (${varName}_raw as any).default;
+    const ${varName}_data = base64ToUint8Array(${varName}_str);
+    if (${varName}_data.length > 0) {
+            const ${varName}_hash = figma.createImage(${varName}_data).hash;
+            bgFills = [{ type: "IMAGE", imageHash: ${varName}_hash, scaleMode: "FILL" }];
+    }
+} catch (e) {
+    console.error("Failed to load background image", e);
+}`;
+        return {
+            setupCode,
+            fillsExpression: 'bgFills'
+        };
+    }
+
+    if (background.kind === 'gradient') {
+        const gradientType = background.type === 'linear' ? 'GRADIENT_LINEAR' : 'GRADIENT_RADIAL';
+        const stops = background.stops.map(stop =>
+            `{ position: ${formatNumber(stop.position)}, color: { ...${hexToRgbLiteral(stop.color)}, a: 1 } }`
+        ).join(', ');
+
+        // Calculate transform based on angle (simplified)
+        // Figma gradients use a transform matrix. This is complex to map perfectly from PPT angle.
+        // For now, we will use a default transform or try a simple mapping.
+        // A full implementation would require calculating the matrix sine/cosine.
+        const angleRad = (background.angle || 0) * (Math.PI / 180);
+        const cos = Math.cos(angleRad);
+        const sin = Math.sin(angleRad);
+        // This is still a placeholder for the transform matrix.
+        // Using identity for now to avoid breaking.
+        const transform = `[[1, 0, 0], [0, 1, 0]]`;
+
+        return {
+            setupCode: '',
+            fillsExpression: `[{ type: "${gradientType}", gradientStops: [${stops}], gradientTransform: ${transform} }]`
+        };
+    }
+
+    return { setupCode: '', fillsExpression: '[]' };
 }
+
 
 function imageVariableName(fileName: string): string {
     return `IMG_${fileName.replace(/[^a-zA-Z0-9]/g, '_')}`;
