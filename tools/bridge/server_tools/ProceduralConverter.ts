@@ -944,8 +944,8 @@ export class ${className} extends BaseComponent {
         ${treeCode}
         
         const root = await this.renderDefinition(structure);
-        root.x = props.x;
-        root.y = props.y;
+        if (props.x !== undefined) root.x = props.x;
+        if (props.y !== undefined) root.y = props.y;
         return root; 
     }
 }

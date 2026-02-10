@@ -36,7 +36,7 @@ export class Action___compare extends BaseComponent {
               "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 1.4596279859542847, "strokeAlign": "CENTER", "strokeCap": "mixed", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                "strokeWeight": 1.4596279859542847, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "x": 2.034374237060547, "y": 3.774580478668213,
                 "strokes": [],
                 "effects": [],

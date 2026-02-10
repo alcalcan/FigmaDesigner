@@ -277,8 +277,8 @@ export class TitleBar_withCTA extends BaseComponent {
         const root = await this.renderDefinition(structure);
         
         // Final positioning
-        root.x = props.x;
-        root.y = props.y;
+        if (props.x !== undefined) root.x = props.x;
+        if (props.y !== undefined) root.y = props.y;
 
         return root;
     }

@@ -483,7 +483,9 @@ figma.ui.onmessage = async (msg) => {
     if (msg.type === 'tools-select-instances') {
       const instances = figma.currentPage.findAll(n => n.type === "INSTANCE");
       figma.currentPage.selection = instances;
-      figma.notify(`Selected ${instances.length} instances.`);
+      const count = instances.length;
+      figma.notify(`Selected ${count} instances.`);
+      console.log(`Selected ${count} instances.`);
     }
 
     if (msg.type === 'tools-organize-grid') {
