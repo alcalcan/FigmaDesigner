@@ -514,14 +514,14 @@ export abstract class BaseComponent {
       await figma.loadFontAsync(font);
       node.fontName = font;
     } catch (e) {
-      console.warn(`Failed to load font ${font.family} ${font.style}, falling back.`);
+      console.warn(`[BaseComponent] setFont: FAILED to load ${font.family} ${font.style}. Error:`, e);
       // Attempt to load Inter Regular just in case it wasn't loaded
       try {
         const fallback = { family: "Inter", style: "Regular" };
         await figma.loadFontAsync(fallback);
         node.fontName = fallback;
       } catch (e2) {
-        console.warn("Retrying Inter Regular failed", e2);
+        console.warn("[BaseComponent] setFont: Retrying Inter Regular failed", e2);
       }
     }
   }

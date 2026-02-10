@@ -1,6 +1,6 @@
 import { Placeholder } from "../../components/Placeholder";
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
-import { Top_bar } from "../../components/Competition_newsletters/Top_bar/Top_bar";
+import { Top_bar } from "../../components/Newsletters_competititon/Top_bar/Top_bar";
 import { Header } from "../../components/UEFA_Academy_online/Header/Header";
 import { TitleBar_withCTA } from "../../components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
 import { simple_info } from "../../components/UEFA_Academy_online/simple_info/simple_info";

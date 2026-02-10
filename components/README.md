@@ -243,3 +243,20 @@ shirtWidth = 176.95; // Match the source children
 **Why?**
 1.  **Pixel Perfection**: You stop guessing scaling factors (is it 0.55? 0.5869?) and use integer/exact coordinates.
 2.  **Asset Specificity**: Sometimes a specific layout requires specific assets (e.g., pre-cropped images). Don't be afraid to import layout-specific assets to ensure the component behaves exactly as the design intended.
+
+---
+
+## 12. Lessons Learned: The Silent Build Failure & Font Loading 🕵️‍♂️
+
+### The Incident
+We spent hours debugging why a font ("Champions Display") wasn't loading. The code looked perfect, logs were added, but **nothing appeared in the console**.
+
+### The Root Cause 🐛
+A **typo in an import path** (`Competition_newsletters` vs `Newsletters_competititon`) in a *different* file caused the TypeScript build to fail silently or partially. The `code.js` file wasn't being updated, so we were running old code despite hitting "Save".
+
+### Key Takeaways
+1.  **Check the Build Date**: If your changes aren't showing up, run `ls -l code.js` (or check the file timestamp). If it's old, your build is failing.
+2.  **Verify the Build Output**: Use `grep "MyUniqueLogString" code.js` to PROVE your new code is actually in the bundle.
+3.  **Dynamic Fonts**: `figma.loadFontAsync({ family: "Champions", style: "Display" })` often fails if you don't use the *exact* internal name.
+    *   **Solution**: Use `figma.listAvailableFontsAsync()` to find the *real* name on the user's system, then load *that* specific object.
+4.  **Toast Debugging**: `console.log` is great, but `figma.notify("Debug: ...")` is better because it's impossible to miss on the canvas.

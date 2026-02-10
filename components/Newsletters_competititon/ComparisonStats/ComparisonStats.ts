@@ -19,6 +19,59 @@ export class ComparisonStats extends BaseComponent {
         ];
 
         const containerWidth = props.width || 600;
+        const transparency = props.transparency ?? 0.48;
+        const isGlass = props.isGlass ?? true; // Enable by default as requested
+        // 1.5 Load Font
+        // 1.5 Load Font Dynamically
+        let mainFont: FontName = { family: "Inter", style: "Regular" };
+        let loaded = false;
+
+        // Try to find "Champions" font dynamically
+        try {
+            console.log("Searching for Champions font...");
+            const availableFonts = await figma.listAvailableFontsAsync();
+
+            // Filter for Champions
+            const championsFonts = availableFonts.filter(font =>
+                font.fontName.family.toLowerCase().includes("champions")
+            );
+
+            if (championsFonts.length > 0) {
+                // Priority:
+                // 1. Family "Champions Display" && Style "Regular" (Matches ChampionsDisplay-Regular.otf)
+                // 2. Family contains "Display"
+                // 3. Style "Display"
+                // 4. Style "Bold" (for Champions Bold)
+                // 5. Any match
+
+                let bestMatch = championsFonts.find(f => f.fontName.family === "Champions Display" && f.fontName.style === "Regular")
+                    || championsFonts.find(f => f.fontName.family.includes("Display")) // Prefer "Champions Display" family
+                    || championsFonts.find(f => f.fontName.family === "Champions" && f.fontName.style === "Display")
+                    || championsFonts.find(f => f.fontName.style === "Display")
+                    || championsFonts.find(f => f.fontName.style === "Bold")
+                    || championsFonts[0];
+
+                if (bestMatch) {
+                    await figma.loadFontAsync(bestMatch.fontName);
+                    mainFont = bestMatch.fontName;
+                    loaded = true;
+                }
+            } else {
+                console.warn("No 'Champions' fonts found available to plugin.");
+            }
+        } catch (e) {
+            console.warn("Error searching/loading dynamic fonts:", e);
+        }
+
+        // Fallback if dynamic search failed
+        if (!loaded) {
+            console.warn("Could not find/load Champions. Falling back to Inter.");
+            try {
+                await figma.loadFontAsync(mainFont);
+            } catch (e) {
+                console.error("Critical: Failed to load fallback Inter font", e);
+            }
+        }
 
         // 2. Describe the structure (Declarative Style)
         const structure: NodeDefinition = {
@@ -34,14 +87,17 @@ export class ComparisonStats extends BaseComponent {
                 paddingBottom: 24,
                 paddingLeft: 24,
                 cornerRadius: 24,
-                fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }]
+                fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: transparency }],
+                effects: isGlass ? [{ type: "BACKGROUND_BLUR", radius: 20 }] : [],
+                strokes: isGlass ? [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.1 }] : [],
+                strokeWeight: isGlass ? 1 : 0
             },
             layoutProps: {
                 width: containerWidth,
                 height: 1, // Will hug content
                 parentIsAutoLayout: false
             },
-            children: await Promise.all(stats.map(data => this.createRowDefinition(data, containerWidth)))
+            children: await Promise.all(stats.map(data => this.createRowDefinition(data, containerWidth, mainFont)))
         };
 
         // 3. Render the blueprint
@@ -54,7 +110,7 @@ export class ComparisonStats extends BaseComponent {
         return root;
     }
 
-    private async createRowDefinition(data: RowData, containerWidth: number): Promise<NodeDefinition> {
+    private async createRowDefinition(data: RowData, containerWidth: number, font: FontName): Promise<NodeDefinition> {
         // Logic for "head to head" bars
         const totalValue = data.leftValue + data.rightValue;
         const totalWidth = containerWidth - 48; // width - horizontal padding
@@ -93,7 +149,7 @@ export class ComparisonStats extends BaseComponent {
                             props: {
                                 characters: data.leftValue.toString(),
                                 fontSize: 28,
-                                font: { family: "Inter", style: "Bold" },
+                                font: font,
                                 textAlignHorizontal: "LEFT",
                                 textAutoResize: "WIDTH_AND_HEIGHT",
                                 fills: [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }]
@@ -106,10 +162,10 @@ export class ComparisonStats extends BaseComponent {
                             props: {
                                 characters: data.label,
                                 fontSize: 14,
-                                font: { family: "Inter", style: "Regular" },
+                                font: font,
                                 textAlignHorizontal: "CENTER",
                                 textAutoResize: "WIDTH_AND_HEIGHT",
-                                fills: [{ type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }]
+                                fills: [{ type: "SOLID", color: { r: 0, g: 0, b: 0.5 } }]
                             },
                             layoutProps: { parentIsAutoLayout: true }
                         },
@@ -119,7 +175,7 @@ export class ComparisonStats extends BaseComponent {
                             props: {
                                 characters: data.rightValue.toString(),
                                 fontSize: 28,
-                                font: { family: "Inter", style: "Bold" },
+                                font: font,
                                 textAlignHorizontal: "RIGHT",
                                 textAutoResize: "WIDTH_AND_HEIGHT",
                                 fills: [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }]
