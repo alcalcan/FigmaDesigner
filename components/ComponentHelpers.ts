@@ -79,11 +79,15 @@ export const createVector = (name: string, svgContent: string | undefined, overr
     if (!svgContent) return null;
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
+    const props = { ...DEFAULT_PROPS, ...restOverrides };
+    if (!restOverrides.fills) delete (props as any).fills;
+    if (!restOverrides.strokes) delete (props as any).strokes;
+
     return {
         type: "VECTOR",
         shouldFlatten: true,
         name,
-        props: { ...DEFAULT_PROPS, ...restOverrides },
+        props,
         layoutProps: {
             parentIsAutoLayout: true,
             layoutPositioning: "AUTO",

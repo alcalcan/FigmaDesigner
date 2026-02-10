@@ -44,8 +44,8 @@ export class Placeholder extends BaseComponent {
         frame.counterAxisAlignItems = "CENTER";
         frame.itemSpacing = 4;
 
-        frame.x = props.x;
-        frame.y = props.y;
+        if (props.x !== undefined) frame.x = props.x;
+        if (props.y !== undefined) frame.y = props.y;
 
         return frame;
     }

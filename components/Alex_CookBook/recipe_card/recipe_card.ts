@@ -45,7 +45,8 @@ export class recipe_card extends BaseComponent {
         layoutMode: "VERTICAL",
         itemSpacing: 8,
         layoutAlign: "STRETCH",
-        primaryAxisSizingMode: "AUTO"
+        primaryAxisSizingMode: "AUTO",
+        counterAxisSizingMode: "AUTO"
       }, [
         createText("Category", (props.category || "BREAKFAST").toUpperCase(), 12, "Bold", { r: 0.36, g: 0.48, b: 0.54 }, {
           font: { family: "Open Sans", style: "Bold" },
@@ -67,7 +68,9 @@ export class recipe_card extends BaseComponent {
         layoutMode: "HORIZONTAL",
         primaryAxisAlignItems: "SPACE_BETWEEN",
         counterAxisAlignItems: "CENTER",
-        layoutAlign: "STRETCH"
+        layoutAlign: "STRETCH",
+        primaryAxisSizingMode: "FIXED",
+        counterAxisSizingMode: "AUTO"
       }, [
         createFrame("Time Info", {
           layoutMode: "HORIZONTAL",
