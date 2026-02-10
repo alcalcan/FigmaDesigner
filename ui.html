@@ -192,6 +192,33 @@
             font-family: monospace;
             color: #0d99ff;
         }
+
+        .tool-row {
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #eee;
+            border-bottom: 1px solid #2a2a2a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e1e1e;
+            transition: background 0.2s;
+        }
+
+        .tool-row:hover {
+            background: #2a2a2a;
+        }
+
+        .tool-row:last-child {
+            border-bottom: none;
+        }
+
+        .tool-icon {
+            font-size: 10px;
+            color: #888;
+            transform: scale(0.8);
+        }
     </style>
 </head>
 
@@ -313,6 +340,8 @@
         </div>
     </div>
 
+
+
     <div class="section">
         <label class="section-label">Generate from JSON</label>
         <div class="card" style="padding: 0; overflow: hidden;">
@@ -361,6 +390,32 @@
                 <button id="convert-all-btn" class="secondary"
                     style="font-size: 12px; margin-top: 8px; display: none; background: #6200ee; color: white; border: none;">Convert
                     All Folder to Code</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <label class="section-label">Tools</label>
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div
+                style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
+                <span style="font-size: 11px; font-weight: 600; color: #888;">Available Tools</span>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button id="edit-tools-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; opacity: 0.5; cursor: default;">Edit</button>
+                    <button id="refresh-tools-btn" class="secondary"
+                        style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0; opacity: 0.5; cursor: default;">Refresh</button>
+                </div>
+            </div>
+            <div style="padding: 0; background: #1e1e1e;">
+                <div id="tool-select-instances" class="tool-row">
+                    <span class="tool-icon">🔨</span>
+                    <span>Select All Instances</span>
+                </div>
+                <div id="tool-organize-grid" class="tool-row">
+                    <span class="tool-icon">🔨</span>
+                    <span>Organize in Grid</span>
+                </div>
             </div>
         </div>
     </div>
@@ -422,6 +477,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="section">
         <label class="section-label">Code Preview</label>
@@ -2405,6 +2461,16 @@
         }
 
         setTimeout(() => connectBtn.click(), 500);
+    </script>
+    <script>
+        // --- Tools Section Logic ---
+        document.getElementById('tool-select-instances').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'tools-select-instances' } }, '*');
+        };
+
+        document.getElementById('tool-organize-grid').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'tools-organize-grid' } }, '*');
+        };
     </script>
 </body>
 

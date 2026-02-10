@@ -479,6 +479,49 @@ figma.ui.onmessage = async (msg) => {
       await pipeline.run();
     }
 
+    // --- Tools Handlers ---
+    if (msg.type === 'tools-select-instances') {
+      const instances = figma.currentPage.findAll(n => n.type === "INSTANCE");
+      figma.currentPage.selection = instances;
+      figma.notify(`Selected ${instances.length} instances.`);
+    }
+
+    if (msg.type === 'tools-organize-grid') {
+      const selection = figma.currentPage.selection;
+      if (selection.length < 2) {
+        figma.notify("Select at least 2 items to reorganize.", { error: true });
+        return;
+      }
+
+      const count = selection.length;
+      const cols = Math.ceil(Math.sqrt(count));
+      const gap = 100;
+
+      // Sort slightly by Y then X to keep visual order
+      const sorted = [...selection].sort((a, b) => {
+        if (Math.abs(a.y - b.y) > 50) return a.y - b.y;
+        return a.x - b.x;
+      });
+
+      // Grid with fixed cell size based on max dimensions
+      const maxW = Math.max(...sorted.map(n => n.width));
+      const maxH = Math.max(...sorted.map(n => n.height));
+
+      // Start from the top-left of the selection
+      const startX = Math.min(...selection.map(n => n.x));
+      const startY = Math.min(...selection.map(n => n.y));
+
+      sorted.forEach((node, index) => {
+        const row = Math.floor(index / cols);
+        const col = index % cols;
+
+        node.x = startX + col * (maxW + gap);
+        node.y = startY + row * (maxH + gap);
+      });
+
+      figma.notify(`Reorganized ${count} items into a grid.`);
+    }
+
     // Handle Manual Capture (Download)
     if (msg.type === 'capture') {
       const selection = figma.currentPage.selection;
