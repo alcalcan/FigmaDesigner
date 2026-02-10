@@ -82,6 +82,15 @@ const safeGet = (node: any, key: string) => {
   }
 };
 
+
+// Helper for async timeouts
+const withTimeout = <T>(promise: Promise<T>, ms: number, errorMsg: string): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error(errorMsg)), ms))
+  ]);
+};
+
 const captureNode = async (
   node: SceneNode,
   detailed: boolean,
@@ -204,12 +213,33 @@ const captureNode = async (
   // 3. Visuals: Fills (Images & Gradients)
   if ("fills" in node) {
     const nodeWithFills = node as GeometryMixin;
-    data.fills = await processFills(nodeWithFills.fills as Readonly<Paint[]>, assetStore);
+    try {
+      // Add timeout to paint processing (images can hang)
+      data.fills = await withTimeout(
+        processFills(nodeWithFills.fills as Readonly<Paint[]>, assetStore),
+        5000,
+        `Fills processing timeout for ${node.name}`
+      );
+    } catch (e) {
+      console.warn(`[Capture] Failed to process fills for ${node.name}:`, e);
+      // Fallback: just use raw fills without hydrating assets, or empty
+      data.fills = [];
+    }
   }
 
   // 4. Visuals: Strokes
   if ("strokes" in node) {
-    data.strokes = await processFills(node.strokes as Readonly<Paint[]>, assetStore);
+    try {
+      data.strokes = await withTimeout(
+        processFills(node.strokes as Readonly<Paint[]>, assetStore),
+        3000,
+        `Strokes processing timeout for ${node.name}`
+      );
+    } catch (e) {
+      console.warn(`[Capture] Failed to process strokes for ${node.name}:`, e);
+      data.strokes = [];
+    }
+
     data.strokeWeight = safeGet(node, "strokeWeight");
     data.strokeAlign = safeGet(node, "strokeAlign");
     data.strokeCap = safeGet(node, "strokeCap");
@@ -319,7 +349,12 @@ const captureNode = async (
           const dummySvg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="none"/></svg>`;
           base64 = figma.base64Encode(Uint8Array.from(dummySvg.split('').map(c => c.charCodeAt(0))));
         } else {
-          const svgBytes = await node.exportAsync({ format: 'SVG' });
+          // Wrap exportAsync in timeout (5 seconds)
+          const svgBytes = await withTimeout(
+            node.exportAsync({ format: 'SVG' }),
+            5000,
+            `SVG Export Timed Out for ${node.name}`
+          );
           base64 = figma.base64Encode(svgBytes);
         }
 
@@ -336,7 +371,10 @@ const captureNode = async (
         if (msg.includes("visible layers") || msg.includes("no visible layers")) {
           // Ignore this specific error as it just means the node is invisible/empty, which is fine.
         } else {
-          console.warn(`Failed to export SVG for ${node.name}`, e);
+          console.warn(`Failed to export SVG for ${node.name}:`, e);
+          // Don't kill the whole process, just continue without the SVG
+          // Maybe add a placeholder error property?
+          data.exportError = msg;
         }
       }
     }
@@ -409,6 +447,14 @@ const captureNode = async (
 
   // 9. Recursion
   if (detailed && "children" in node) {
+    // Process children sequentially to avoid flooding the event loop if one hangs
+    // or keep Promise.all but rely on individual timeouts inside captureNode?
+    // Using Promise.all is faster. We just need to make sure the recursion doesn't
+    // blow up the stack, which we check with depth.
+
+    // NOTE: Timeout wrapper logic is applied at the TOP LEVEL call or inside the loop,
+    // but enforcing it recursively within children is also good practice.
+
     const childPromises = (node as ChildrenMixin).children.map(child =>
       captureNode(child, detailed, assetStore, rootName, saveVectorInJson, skipAssets, depth + 1)
     );
@@ -497,6 +543,7 @@ figma.ui.onmessage = async (msg) => {
         const projectName = figma.root.name;
 
         if (msg.type === 'capture-png') {
+
           const total = selection.length;
 
           // Smart Capture for Demo/Case Pages:

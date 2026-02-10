@@ -88,6 +88,14 @@ export async function processFills(
 
     const out: PortablePaint[] = [];
 
+    // Helper timeout
+    const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
+        return Promise.race([
+            promise,
+            new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Timeout")), ms))
+        ]);
+    };
+
     for (const paint of fills) {
         // Clone
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,7 +110,8 @@ export async function processFills(
                     const img = figma.getImageByHash(imageHash);
                     if (img) {
                         try {
-                            const bytes = await img.getBytesAsync();
+                            // Add 5s timeout to image fetch
+                            const bytes = await withTimeout(img.getBytesAsync(), 5000);
                             assetRef = `assets/img_${assetStore.nextId++}.png`;
                             assetStore.imageHashToAssetRef.set(imageHash, assetRef);
                             assetStore.assets[assetRef] = { bytesBase64: bytesToBase64(bytes) };
