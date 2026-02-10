@@ -117,8 +117,6 @@ export { button_set } from "./UEFA_Academy_online/button_set/button_set";
 export { Cadiz } from "./Football_Crests/Cadiz/Cadiz";
 export { card } from "./UEFA_Academy_online/card/card";
 export { Card__Single_Card_Red } from "./UEFA_icons/Card__Single_Card_Red/Card__Single_Card_Red";
-export { Card_1 } from "./UEFA_icons/Card_1/Card_1";
-export { Card_3 } from "./UEFA_icons/Card_3/Card_3";
 export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
 export { Celta_de_Vigo } from "./Football_Crests/Celta_de_Vigo/Celta_de_Vigo";
 export { Celtic_Glasgow } from "./Football_Crests/Celtic_Glasgow/Celtic_Glasgow";

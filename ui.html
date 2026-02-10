@@ -433,6 +433,10 @@
             <button id="connect-btn" class="secondary">Connect to Server</button>
             <div id="bridge-active-tools"
                 style="display: none; margin-top: 16px; border-top: 1px solid #2a2a2a; padding-top: 16px;">
+                <div style="margin-bottom: 8px;">
+                    <input type="text" id="capture-folder-input" placeholder="Folder (Default: captures)"
+                        style="width: 100%; padding: 8px; background: #111; border: 1px solid #333; color: white; border-radius: 4px; font-size: 11px;">
+                </div>
                 <button id="sync-btn" class="success">Capture Sync (to Disk)</button>
                 <button id="capture-png-btn" class="secondary" style="margin-top: 8px;">Capture PNG</button>
                 <button id="capture-clipboard-btn" class="secondary" style="margin-top: 8px;">Capture to
@@ -2222,9 +2226,10 @@
                         const rawProjectName = msg.projectName || "Default";
                         const sanitaryProjectName = rawProjectName.replace(/[^a-z0-9]/gi, '_');
 
-                        // ALWAYS use 'captures' as the batch folder to isolate incoming elements
-                        // This prevent regenerating the whole project folder if other files are present there.
-                        const batchFolder = "captures";
+                        // Use user defined folder or default to 'captures'
+                        const folderInput = document.getElementById('capture-folder-input');
+                        const userFolder = folderInput ? folderInput.value.trim() : "";
+                        const batchFolder = userFolder || "captures";
                         lastCapturedProject = batchFolder;
 
                         const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
