@@ -82,21 +82,18 @@ export async function runAccessibilityCheck(selection: readonly SceneNode[]) {
         return;
     }
 
-    let fgNode: SceneNode = selection[0];
-    let bgNode: SceneNode = selection[0]; // dummy init
-
-    // Helper to find first visible text node with fill
-    const findTextNode = (node: SceneNode): TextNode | null => {
+    // Helper to find ALL visible text nodes with fill
+    const findAllTextNodes = (node: SceneNode): TextNode[] => {
+        let results: TextNode[] = [];
         if (node.type === "TEXT" && node.visible !== false) {
-            if (getSolidColor(node)) return node;
+            if (getSolidColor(node)) results.push(node);
         }
         if ("children" in node) {
             for (const child of node.children) {
-                const found = findTextNode(child);
-                if (found) return found;
+                results = results.concat(findAllTextNodes(child));
             }
         }
-        return null;
+        return results;
     };
 
     // Helper to check if node2 is visually behind node1 and overlaps it
@@ -110,47 +107,24 @@ export async function runAccessibilityCheck(selection: readonly SceneNode[]) {
         return overlaps;
     };
 
-    if (selection.length === 1) {
-        let node = selection[0];
-
-        // 1. Find Foreground (Text)
-        if (node.type === "FRAME" || node.type === "INSTANCE" || node.type === "COMPONENT" || node.type === "GROUP") {
-            const textInside = findTextNode(node);
-            if (textInside) {
-                fgNode = textInside;
-                node = textInside; // Update current node to start search from
-            } else {
-                fgNode = node;
-            }
-        } else {
-            fgNode = node;
-        }
-
-        // 2. Find Background
-        // Traverse up the hierarchy. For each parent, check:
-        // a) Sibling layers behind the current node that overlap
-        // b) The parent's own fill
-
-        let currentNode = fgNode;
-        // Search limit to prevent infinite loops (though parent chain is finite)
+    // Helper: Find effective background for a specific text node
+    const findBackgroundFor = (textNode: SceneNode): SceneNode | null => {
+        let currentNode: SceneNode = textNode;
         let foundBg = false;
+        let bgNode: SceneNode | null = null;
 
         while (currentNode.parent && currentNode.parent.type !== "PAGE") {
             const parent = currentNode.parent;
 
             // Check siblings behind currentNode
             if ("children" in parent) {
-                // In Figma, children[0] is top-most. 
-                // So siblings "behind" have index > currentNode's index.
                 const currentIndex = parent.children.indexOf(currentNode);
                 for (let i = currentIndex + 1; i < parent.children.length; i++) {
                     const sibling = parent.children[i];
                     if (sibling.visible !== false) {
-                        // Check if it has a solid fill
                         const fill = getSolidColor(sibling);
                         if (fill) {
-                            // Check overlap with original FG node (not current node in traversal)
-                            if (isBehindAndOverlaps(fgNode, sibling)) {
+                            if (isBehindAndOverlaps(textNode, sibling)) {
                                 bgNode = sibling;
                                 foundBg = true;
                                 break;
@@ -172,45 +146,56 @@ export async function runAccessibilityCheck(selection: readonly SceneNode[]) {
 
             currentNode = parent as SceneNode;
         }
+        return bgNode;
+    };
 
-        if (!foundBg) {
-            figma.notify("Selected element or its text child has no legible background.", { error: true });
+    // --- Execution ---
+
+    let itemsToCheck: { fg: SceneNode, bg: SceneNode }[] = [];
+
+    if (selection.length === 1) {
+        const node = selection[0];
+
+        // Strategy: Scan for all text nodes
+        if (node.type === "FRAME" || node.type === "INSTANCE" || node.type === "COMPONENT" || node.type === "GROUP") {
+            const allText = findAllTextNodes(node);
+
+            if (allText.length === 0) {
+                // Fallback: Check the node itself (maybe it's a shape)
+                // Cast hack, finding logic works for any node, but findBackgroundFor expects TextNode
+                const bg = findBackgroundFor(node);
+                if (bg) itemsToCheck.push({ fg: node, bg });
+            } else {
+                // Check each found text node
+                for (const text of allText) {
+                    const bg = findBackgroundFor(text);
+                    if (bg) {
+                        itemsToCheck.push({ fg: text, bg });
+                    } else {
+                        // warning?
+                    }
+                }
+            }
+        } else {
+            // Single leaf node (Text or Shape)
+            const bg = findBackgroundFor(node);
+            if (bg) itemsToCheck.push({ fg: node, bg });
+        }
+
+        if (itemsToCheck.length === 0) {
+            figma.notify("No valid foreground/background pairs found to check.", { error: true });
             return;
         }
 
     } else if (selection.length === 2) {
         const order = determineLayerOrder([...selection]);
-        fgNode = order.fg;
-        bgNode = order.bg;
+        itemsToCheck.push({ fg: order.fg, bg: order.bg });
     } else {
-        figma.notify("Please select max 2 layers.", { error: true });
+        figma.notify("Please select 1 component/frame to scan, or 2 explicit layers.", { error: true });
         return;
     }
 
-    // Calculate
-    const fgColor = getSolidColor(fgNode);
-    const bgColor = getSolidColor(bgNode);
-
-    if (!fgColor || !bgColor) {
-        figma.notify("Could not detect solid fills on selected layers.", { error: true });
-        return;
-    }
-
-    const l1 = getLuminance(fgColor.r, fgColor.g, fgColor.b);
-    const l2 = getLuminance(bgColor.r, bgColor.g, bgColor.b);
-    const ratio = getRate(l1, l2);
-    const roundedRatio = Math.round(ratio * 100) / 100;
-
-    // Check Compliance
-    // WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text.
-    // WCAG 2.1 level AAA requires a contrast ratio of at least 7:1 for normal text and 4.5:1 for large text.
-
-    const AA = ratio >= 4.5;
-    const AA_Large = ratio >= 3.0;
-    const AAA = ratio >= 7.0;
-    const AAA_Large = ratio >= 4.5;
-
-    // --- Generate Result Frame ---
+    // --- Generate Report ---
     await figma.loadFontAsync({ family: "Inter", style: "Regular" });
     await figma.loadFontAsync({ family: "Inter", style: "Bold" });
 
@@ -223,7 +208,7 @@ export async function runAccessibilityCheck(selection: readonly SceneNode[]) {
     frame.paddingRight = 24;
     frame.paddingTop = 24;
     frame.paddingBottom = 24;
-    frame.itemSpacing = 16;
+    frame.itemSpacing = 24; // Increased spacing between sections
     frame.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
     frame.effects = [{
         type: "DROP_SHADOW",
@@ -235,163 +220,204 @@ export async function runAccessibilityCheck(selection: readonly SceneNode[]) {
     }];
     frame.cornerRadius = 16;
     frame.strokeWeight = 1;
-    frame.strokes = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }]; // Light grey border
+    frame.strokes = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
 
-    // Position near selection
-    // Try to place it to the right of the foreground node
-    if ("absoluteTransform" in fgNode) {
-        frame.x = fgNode.absoluteTransform[0][2] + fgNode.width + 50;
-        frame.y = fgNode.absoluteTransform[1][2];
+    // Position
+    const mainRef = selection[0];
+    if ("absoluteTransform" in mainRef) {
+        frame.x = mainRef.absoluteTransform[0][2] + mainRef.width + 50;
+        frame.y = mainRef.absoluteTransform[1][2];
     } else {
         frame.x = figma.viewport.center.x;
         frame.y = figma.viewport.center.y;
     }
 
-    // Title
-    const title = figma.createText();
-    title.name = "Title";
-    await figma.loadFontAsync({ family: "Inter", style: "Bold" });
-    title.characters = "Accessibility Result";
-    title.fontSize = 16;
-    title.fontName = { family: "Inter", style: "Bold" };
-    title.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-    frame.appendChild(title);
+    // Main Title
+    const mainTitle = figma.createText();
+    mainTitle.name = "Report Title";
+    mainTitle.characters = "Accessibility Report";
+    mainTitle.fontSize = 20;
+    mainTitle.fontName = { family: "Inter", style: "Bold" };
+    mainTitle.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frame.appendChild(mainTitle);
 
-    // Ratio Big Display
-    const ratioRow = figma.createFrame();
-    ratioRow.name = "Ratio Row";
-    ratioRow.layoutMode = "HORIZONTAL";
-    ratioRow.primaryAxisSizingMode = "AUTO"; // Hug
-    ratioRow.counterAxisSizingMode = "AUTO"; // Hug
-    ratioRow.counterAxisAlignItems = "CENTER";
-    ratioRow.itemSpacing = 12;
-    ratioRow.fills = []; // transparent
+    // Iterate Results
+    for (const item of itemsToCheck) {
+        const fgColor = getSolidColor(item.fg);
+        const bgColor = getSolidColor(item.bg);
 
-    const ratioText = figma.createText();
-    ratioText.name = "Ratio Text";
-    ratioText.characters = `${roundedRatio}:1`;
-    ratioText.fontSize = 48;
-    ratioText.fontName = { family: "Inter", style: "Bold" };
-    // Red if fail AA (basic), Black if pass
-    ratioText.fills = [{ type: "SOLID", color: roundedRatio < 3 ? { r: 0.8, g: 0.2, b: 0.2 } : { r: 0, g: 0, b: 0 } }];
-    ratioRow.appendChild(ratioText);
-    frame.appendChild(ratioRow);
+        if (!fgColor || !bgColor) continue;
 
-    // Status List Container
-    const statusContainer = figma.createFrame();
-    statusContainer.name = "Status List";
-    statusContainer.layoutMode = "VERTICAL";
-    statusContainer.primaryAxisSizingMode = "AUTO"; // Hug
-    statusContainer.counterAxisSizingMode = "AUTO"; // Hug
-    statusContainer.itemSpacing = 8;
-    statusContainer.fills = [];
+        const l1 = getLuminance(fgColor.r, fgColor.g, fgColor.b);
+        const l2 = getLuminance(bgColor.r, bgColor.g, bgColor.b);
+        const ratio = getRate(l1, l2);
+        const roundedRatio = Math.round(ratio * 100) / 100;
 
-    const addStatusRow = (label: string, pass: boolean, subLabel: string = "") => {
-        const row = figma.createFrame();
-        row.name = `Status Row: ${label}`;
-        row.layoutMode = "HORIZONTAL";
-        row.primaryAxisSizingMode = "AUTO"; // Hug
-        row.counterAxisSizingMode = "AUTO"; // Hug
-        row.counterAxisAlignItems = "CENTER";
-        row.itemSpacing = 8;
-        row.fills = [];
+        const AA = ratio >= 4.5;
+        const AA_Large = ratio >= 3.0;
+        const AAA = ratio >= 7.0;
+        const AAA_Large = ratio >= 4.5; // AAA for large text is 4.5:1
 
-        const badge = figma.createEllipse();
-        badge.name = "Badge";
-        badge.resize(10, 10);
-        badge.fills = [{ type: "SOLID", color: pass ? { r: 0.1, g: 0.7, b: 0.3 } : { r: 0.9, g: 0.2, b: 0.2 } }]; // Green / Red
+        // --- Item Container (Card Style) ---
+        const itemFrame = figma.createFrame();
+        itemFrame.name = `Report: ${item.fg.name}`;
+        itemFrame.layoutMode = "VERTICAL";
+        itemFrame.primaryAxisSizingMode = "AUTO"; // Hug
+        itemFrame.counterAxisSizingMode = "AUTO"; // Hug
+        itemFrame.itemSpacing = 16;
+        itemFrame.fills = [];
 
-        const text = figma.createText();
-        text.name = "Label";
-        text.characters = `${label} ${pass ? "PASS" : "FAIL"}`;
-        text.fontSize = 12;
-        text.fontName = { family: "Inter", style: pass ? "Bold" : "Regular" }; // Bold on pass
-        text.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+        // 1. Element Name (Header)
+        const nameHeader = figma.createText();
+        nameHeader.name = "Element Name";
+        nameHeader.characters = item.fg.type === "TEXT" ? `Text: "${(item.fg as TextNode).characters.substring(0, 15)}${(item.fg as TextNode).characters.length > 15 ? "..." : ""}"` : item.fg.name;
+        nameHeader.fontSize = 12;
+        nameHeader.fontName = { family: "Inter", style: "Bold" };
+        nameHeader.fills = [{ type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }];
+        itemFrame.appendChild(nameHeader);
 
-        row.appendChild(badge);
-        row.appendChild(text);
+        // 2. Big Ratio Display
+        const ratioRow = figma.createFrame();
+        ratioRow.name = "Ratio Row";
+        ratioRow.layoutMode = "HORIZONTAL";
+        ratioRow.primaryAxisSizingMode = "AUTO"; // Hug
+        ratioRow.counterAxisSizingMode = "AUTO"; // Hug
+        ratioRow.counterAxisAlignItems = "CENTER";
+        ratioRow.itemSpacing = 12;
+        ratioRow.fills = [];
 
-        if (subLabel) {
-            const sub = figma.createText();
-            sub.name = "Sub Label";
-            sub.characters = subLabel;
-            sub.fontSize = 10;
-            sub.fills = [{ type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }];
-            row.appendChild(sub);
+        const ratioText = figma.createText();
+        ratioText.name = "Ratio Text";
+        ratioText.characters = `${roundedRatio}:1`;
+        ratioText.fontSize = 48;
+        ratioText.fontName = { family: "Inter", style: "Bold" };
+        // Red if fail AA (basic), Black if pass
+        ratioText.fills = [{ type: "SOLID", color: roundedRatio < 3 ? { r: 0.8, g: 0.2, b: 0.2 } : { r: 0, g: 0, b: 0 } }];
+        ratioRow.appendChild(ratioText);
+        itemFrame.appendChild(ratioRow);
+
+        // 3. Status List (Vertical)
+        const statusContainer = figma.createFrame();
+        statusContainer.name = "Status List";
+        statusContainer.layoutMode = "VERTICAL";
+        statusContainer.primaryAxisSizingMode = "AUTO"; // Hug
+        statusContainer.counterAxisSizingMode = "AUTO"; // Hug
+        statusContainer.itemSpacing = 8;
+        statusContainer.fills = [];
+
+        const addStatusRow = (label: string, pass: boolean, subLabel: string = "") => {
+            const row = figma.createFrame();
+            row.name = `Status Row: ${label}`;
+            row.layoutMode = "HORIZONTAL";
+            row.primaryAxisSizingMode = "AUTO"; // Hug
+            row.counterAxisSizingMode = "AUTO"; // Hug
+            row.counterAxisAlignItems = "CENTER";
+            row.itemSpacing = 8;
+            row.fills = [];
+
+            const badge = figma.createEllipse();
+            badge.name = "Badge";
+            badge.resize(10, 10);
+            badge.fills = [{ type: "SOLID", color: pass ? { r: 0.1, g: 0.7, b: 0.3 } : { r: 0.9, g: 0.2, b: 0.2 } }];
+
+            const text = figma.createText();
+            text.name = "Label";
+            text.characters = `${label} ${pass ? "PASS" : "FAIL"}`;
+            text.fontSize = 12;
+            text.fontName = { family: "Inter", style: pass ? "Bold" : "Regular" };
+            text.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+
+            row.appendChild(badge);
+            row.appendChild(text);
+
+            if (subLabel) {
+                const sub = figma.createText();
+                sub.name = "Sub Label";
+                sub.characters = subLabel;
+                sub.fontSize = 10;
+                sub.fills = [{ type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }];
+                row.appendChild(sub);
+            }
+            statusContainer.appendChild(row);
+        };
+
+        addStatusRow("AA Normal", AA, "(4.5+)");
+        addStatusRow("AA Large", AA_Large, "(3.0+)");
+        addStatusRow("AAA Normal", AAA, "(7.0+)");
+        addStatusRow("AAA Large", AAA_Large, "(4.5+)");
+
+        itemFrame.appendChild(statusContainer);
+
+        // 4. Separator Line (Thin)
+        const line = figma.createRectangle();
+        line.name = "Line";
+        line.resize(100, 1); // Width will be hugged by parent if we set parent to Hug? No, Divider needs specific width or Stretch. 
+        // We will set layoutAlign STRETCH on the Report Frame later if needed, but for now let's use a fixed small width or just allow it to sit there.
+        // Actually, let's make it match the content width or just be a visual separator.
+        // Since we are forcing "Hug" on everything, a fixed width line might force the container width. 
+        // Let's use a standard width of 200 for the line to ensure the card has some minimum width.
+        line.resize(240, 1);
+        line.layoutAlign = "INHERIT";
+        line.fills = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
+        itemFrame.appendChild(line);
+
+        // 5. Swatches (Detailed)
+        const addSwatch = (label: string, color: RGB, name: string) => {
+            const row = figma.createFrame();
+            row.name = `Swatch: ${label}`;
+            row.layoutMode = "HORIZONTAL";
+            row.primaryAxisSizingMode = "AUTO"; // Hug
+            row.counterAxisSizingMode = "AUTO"; // Hug
+            row.counterAxisAlignItems = "CENTER";
+            row.itemSpacing = 8;
+            row.fills = [];
+
+            const swatch = figma.createRectangle();
+            swatch.resize(16, 16);
+            swatch.cornerRadius = 4;
+            swatch.fills = [{ type: "SOLID", color: color }];
+            swatch.strokes = [{ type: "SOLID", color: { r: 0.8, g: 0.8, b: 0.8 } }];
+            swatch.strokeWeight = 1;
+
+            const info = figma.createText();
+            info.characters = `${label}:`;
+            info.fontSize = 11;
+            info.fontName = { family: "Inter", style: "Bold" };
+            info.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
+
+            const hex = figma.createText();
+            hex.characters = rgbToHex(color).toUpperCase();
+            hex.fontSize = 11;
+            hex.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
+
+            const nodeName = figma.createText();
+            nodeName.characters = `(${name})`;
+            nodeName.fontSize = 10;
+            nodeName.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
+
+            row.appendChild(swatch);
+            row.appendChild(info);
+            row.appendChild(hex);
+            row.appendChild(nodeName);
+            itemFrame.appendChild(row);
+        };
+
+        addSwatch("FG", fgColor, item.fg.name);
+        addSwatch("BG", bgColor, item.bg.name);
+
+        frame.appendChild(itemFrame);
+
+        // Main Divider (if not last)
+        if (itemsToCheck.indexOf(item) !== itemsToCheck.length - 1) {
+            const mainDiv = figma.createRectangle();
+            mainDiv.name = "Item Divider";
+            mainDiv.resize(280, 2); // Thicker divider between distinct items
+            mainDiv.fills = [{ type: "SOLID", color: { r: 0.95, g: 0.95, b: 0.95 } }];
+            frame.appendChild(mainDiv);
         }
-
-        statusContainer.appendChild(row);
-    };
-
-    addStatusRow("AA Normal", AA, "(4.5+)");
-    addStatusRow("AA Large", AA_Large, "(3.0+)");
-    addStatusRow("AAA Normal", AAA, "(7.0+)");
-    addStatusRow("AAA Large", AAA_Large, "(4.5+)");
-
-    frame.appendChild(statusContainer);
-
-    // Info Divider
-    const divider = figma.createRectangle();
-    divider.name = "Divider";
-    divider.resize(10, 1); // small default width, rely on stretch
-    divider.fills = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
-    divider.layoutAlign = "STRETCH";
-    frame.appendChild(divider);
-
-    // Color Swatches Breakdown
-    const addSwatch = (label: string, color: RGB, name: string) => {
-        const row = figma.createFrame();
-        row.name = `Swatch: ${label}`;
-        row.layoutMode = "HORIZONTAL";
-        row.primaryAxisSizingMode = "AUTO"; // Hug
-        row.counterAxisSizingMode = "AUTO"; // Hug
-        row.counterAxisAlignItems = "CENTER";
-        row.itemSpacing = 8;
-        row.fills = [];
-
-        // Color Box
-        const swatch = figma.createRectangle();
-        swatch.name = "Color Sample";
-        swatch.resize(16, 16);
-        swatch.cornerRadius = 4;
-        swatch.fills = [{ type: "SOLID", color: color }];
-        swatch.strokes = [{ type: "SOLID", color: { r: 0.8, g: 0.8, b: 0.8 } }]; // slight border for light colors
-        swatch.strokeWeight = 1;
-
-        // Label
-        const info = figma.createText();
-        info.name = "Info";
-        info.characters = `${label}:`;
-        info.fontSize = 11;
-        info.fontName = { family: "Inter", style: "Bold" };
-        info.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
-
-        // Hex
-        const hex = figma.createText();
-        hex.name = "Hex Value";
-        hex.characters = rgbToHex(color).toUpperCase();
-        hex.fontSize = 11;
-        hex.fontName = { family: "Inter", style: "Regular" };
-        hex.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
-
-        // Node Name
-        const nodeName = figma.createText();
-        nodeName.name = "Node Name";
-        nodeName.characters = `(${name})`;
-        nodeName.fontSize = 10;
-        nodeName.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
-
-        row.appendChild(swatch);
-        row.appendChild(info);
-        row.appendChild(hex);
-        row.appendChild(nodeName);
-        frame.appendChild(row);
-    };
-
-    addSwatch("FG", fgColor, fgNode.name);
-    addSwatch("BG", bgColor, bgNode.name);
+    }
 
     figma.currentPage.selection = [frame];
     figma.viewport.scrollAndZoomIntoView([frame]);
-    figma.notify(`Accessibility Check: ${roundedRatio}:1`);
+    figma.notify(`Analyzed ${itemsToCheck.length} element(s).`);
 }
