@@ -22,7 +22,7 @@ export interface NodeDefinition {
   name?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: Record<string, any> & {
-    richTextSpans?: { start: number; end: number; font?: FontName; fills?: Paint[] }[];
+    richTextSpans?: { start: number; end: number; font?: FontName; fills?: Paint[]; fontSize?: number }[];
   };
   booleanOperation?: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
   layoutProps?: {
@@ -322,12 +322,33 @@ export abstract class BaseComponent {
     // Handle Rich Text Spans for Text Nodes
     if (def.props?.richTextSpans && node.type === "TEXT") {
       const textNode = node as TextNode;
+      const textLen = textNode.characters.length;
+
       for (const span of def.props.richTextSpans) {
+        // Bounds check
+        if (span.start >= textLen) continue; // Start beyond end
+        const safeEnd = Math.min(span.end, textLen);
+        if (safeEnd <= span.start) continue; // Empty range
+
         if (span.font) {
-          await this.setRangeFont(textNode, span.start, span.end, span.font);
+          await this.setRangeFont(textNode, span.start, safeEnd, span.font);
         }
         if (span.fills) {
-          textNode.setRangeFills(span.start, span.end, span.fills);
+          // Additional safety: hydrate paints if needed or raw? 
+          // setRangeFills expects Paint[], BaseComponent hydratePaints returns Paint[].
+          // Assuming the props are already hydrated or raw compatible. 
+          try {
+            textNode.setRangeFills(span.start, safeEnd, span.fills);
+          } catch (fillErr) {
+            console.warn("[BaseComponent] setRangeFills failed", fillErr);
+          }
+        }
+        if (span.fontSize) {
+          try {
+            textNode.setRangeFontSize(span.start, safeEnd, span.fontSize);
+          } catch (fsErr) {
+            console.warn("[BaseComponent] setRangeFontSize failed", fsErr);
+          }
         }
       }
     }

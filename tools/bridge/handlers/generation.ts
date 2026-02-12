@@ -204,7 +204,8 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
         try {
             const { folder, project, simplified, procedural, refactor, compact, cleanup } = JSON.parse(body);
             // If folder is empty, we'll scan the entire extraction root
-            const targetFolder = folder || "";
+            const rawFolder = folder || "";
+            const targetFolder = rawFolder.replace(/[^a-z0-9_-]/gi, '_');
 
             // ... Logic to iterate folder files ...
             // Simplified reuse of logic:
@@ -236,7 +237,7 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
                     } else if (file.endsWith('.json') && !file.includes('vector') && !file.includes('icon')) {
                         try {
                             const componentName = path.basename(full, '.json');
-                            const currentProject = project || targetFolder || "Default";
+                            const currentProject = targetFolder || project || "Default";
 
                             console.log(`[Batch] ➡️ Processing ${componentName}...`);
                             if (procedural) {

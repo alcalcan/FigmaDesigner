@@ -130,6 +130,8 @@ export { ComparisonStats } from "./Newsletters_competititon/ComparisonStats/Comp
 export { Content_container } from "./UEFA_Academy_online/Content_container/Content_container";
 export { Copenhagen } from "./Football_Crests/Copenhagen/Copenhagen";
 export { Crvena_zvezda } from "./Football_Crests/Crvena_zvezda/Crvena_zvezda";
+export { DesktopHeader as DesktopHeader_Alex_CookBook } from "./Alex_CookBook/DesktopHeader/DesktopHeader";
+export { DesktopHeader as DesktopHeader_test_comp } from "./test_comp/DesktopHeader/DesktopHeader";
 export { Dinamo_Kyiv } from "./Football_Crests/Dinamo_Kyiv/Dinamo_Kyiv";
 export { Dinamo_Zagreb } from "./Football_Crests/Dinamo_Zagreb/Dinamo_Zagreb";
 export { Divider } from "./UEFA_Academy_online/Divider/Divider";

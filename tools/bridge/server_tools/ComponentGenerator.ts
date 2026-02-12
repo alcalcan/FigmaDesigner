@@ -504,7 +504,30 @@ export class ${this.componentName} extends BaseComponent {
         if (data.strokeBottomWeight !== undefined) code += `if ("strokeBottomWeight" in ${varName}) ${varName}.strokeBottomWeight = ${data.strokeBottomWeight};\n`;
         if (data.strokeLeftWeight !== undefined) code += `if ("strokeLeftWeight" in ${varName}) ${varName}.strokeLeftWeight = ${data.strokeLeftWeight};\n`;
 
-        if (data.effects) code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
+        if (data.effects) {
+            const validEffects = data.effects.map((effect: any) => {
+                // Map custom GLASS effect to BACKGROUND_BLUR
+                if (effect.type === "GLASS") {
+                    return {
+                        type: "BACKGROUND_BLUR",
+                        visible: effect.visible ?? true,
+                        radius: effect.radius || 0,
+                    };
+                }
+                // Filter out any other unknown types or strip invalid properties if strict
+                if (["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"].includes(effect.type)) {
+                    // We can return it as-is, but maybe strip extra props if they cause issues?
+                    // For now, assume standard effects are fine.
+                    // But to be safe against "blurType" or "boundVariables" issues if they are not in schema:
+                    // Figma usually acts lenient on extra props in JS objects, but "Invalid format" suggests strictness or type mismatch.
+                    // Let's return as-is for standard types to avoid regression, unless we suspect "blurType" is also an issue.
+                    return effect;
+                }
+                return null;
+            }).filter((e: any) => e !== null);
+
+            code += `${varName}.effects = ${JSON.stringify(validEffects)};\n`;
+        }
         if (data.cornerRadius !== undefined) {
             if (data.cornerRadius === "mixed") {
                 if (data.corners) {
@@ -567,7 +590,7 @@ export class ${this.componentName} extends BaseComponent {
                     const start = seg.start || 0;
                     const end = seg.end || 0;
                     if (seg.fontName) code += `await this.setRangeFont(${varName}, ${start}, ${end}, ${JSON.stringify(seg.fontName)});\n`;
-                    if (seg.fills) code += `${varName}.setRangeFills(${start}, ${end}, ${JSON.stringify(seg.fills)});\n`;
+                    if (seg.fills) code += `${varName}.setRangeFills(${start}, ${end}, ${this.stringifyPaints(seg.fills)});\n`;
                     if (seg.fontSize) code += `${varName}.setRangeFontSize(${start}, ${end}, ${seg.fontSize});\n`;
                 }
             }

@@ -416,6 +416,11 @@
                     <span class="tool-icon">🔨</span>
                     <span>Organize in Grid</span>
                 </div>
+                <!-- Accessibility Tool -->
+                <div id="tool-check-accessibility" class="tool-row">
+                    <span class="tool-icon">🔨</span>
+                    <span>Check Color Contrast (AA/AAA)</span>
+                </div>
             </div>
         </div>
     </div>
@@ -434,6 +439,8 @@
             <div id="bridge-active-tools"
                 style="display: none; margin-top: 16px; border-top: 1px solid #2a2a2a; padding-top: 16px;">
                 <div style="margin-bottom: 8px;">
+                    <input type="text" id="capture-name-input" placeholder="Component Name (Optional)"
+                        style="width: 100%; box-sizing: border-box; background: #333; color: white; border: 1px solid #444; padding: 6px; border-radius: 4px; margin-bottom: 8px;">
                     <input type="text" id="capture-folder-input" placeholder="Folder (Default: captures)"
                         style="width: 100%; padding: 8px; background: #111; border: 1px solid #333; color: white; border-radius: 4px; font-size: 11px;">
                 </div>
@@ -1202,6 +1209,10 @@
             showFeedback(captureBtn, "Download JSON (Manual)");
         };
 
+        document.getElementById('tool-check-accessibility').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'tools-check-accessibility' } }, '*')
+        };
+
         const editFilesBtn = document.getElementById('edit-files-btn');
         const editComponentsBtn = document.getElementById('edit-components-btn');
         const editPagesBtn = document.getElementById('edit-pages-btn');
@@ -1414,7 +1425,8 @@
                     saveVectorInJson: saveVectorInJson,
                     procedural: isProcedural,
                     refactor: !generatorOnlyCheckboxCapture.checked,
-                    compact: !generatorOnlyCheckboxCapture.checked
+                    compact: !generatorOnlyCheckboxCapture.checked,
+                    componentNameOverride: document.getElementById('capture-name-input').value.trim()
                 }
             }, '*')
             // Feedback will be triggered on result message for precision,
@@ -2261,7 +2273,7 @@
                     if (msg.isLast) {
                         console.log(`[UI] Last packet received.`);
                         // The final completion logic is now in capture-finished to separate data capture from
-                        processing
+                        // processing
                     }
                 } catch (e) {
                     console.error("Failed to process packet", e);
@@ -2306,7 +2318,12 @@
 
                         try {
                             const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
-                            syncBtn.textContent = "Processing Batch...";
+                            // 1. Get Folder Name AGAIN (since batchFolder var is local to other handler)
+                            const folderInput = document.getElementById('capture-folder-input');
+                            const userFolder = folderInput ? folderInput.value.trim() : "";
+                            const batchFolder = userFolder || "captures";
+
+                            syncBtn.textContent = "Processing batch in " + batchFolder + "...";
 
                             // If we used a temporary batch folder, target that for generation and cleanup
                             // We check if there are multiple saves or if we set lastCapturedProject to to_be_converted
@@ -2320,13 +2337,13 @@
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    folder: "captures",
+                                    folder: batchFolder,
                                     project: (msg.projectName || "Default").replace(/[^a-z0-9]/gi, '_'),
                                     simplified: true,
                                     procedural: isProcedural,
                                     refactor: !generatorOnlyCheckboxCapture.checked,
                                     compact: !generatorOnlyCheckboxCapture.checked,
-                                    cleanup: true // ALWAYS CLEANUP the captures folder
+                                    cleanup: false // KEEP captures for debugging
                                 })
                             });
 

@@ -185,7 +185,9 @@ export class JsonReconstructor extends BaseComponent {
             } else if (safeType === "TEXT") {
                 node = figma.createText();
             } else if (safeType === "RECTANGLE") {
+            } else if (safeType === "RECTANGLE") {
                 node = figma.createRectangle();
+                (node as RectangleNode).fills = []; // Clear default white/gray fill
             } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON" || safeType === "GROUP"))) {
                 if (data.svgPath && assetSource) {
                     const asset = assetSource.assets[data.svgPath];
@@ -234,15 +236,19 @@ export class JsonReconstructor extends BaseComponent {
                 }
             } else if (safeType === "STAR" && !data.svgPath) {
                 const starNode = figma.createStar();
+                starNode.fills = []; // Clear default fill
                 if (data.pointCount !== undefined) starNode.pointCount = data.pointCount;
                 if (data.innerRadius !== undefined) starNode.innerRadius = data.innerRadius;
                 node = starNode;
             } else if (safeType === "POLYGON" && !data.svgPath) {
                 const polyNode = figma.createPolygon();
+                polyNode.fills = []; // Clear default fill
                 if (data.pointCount !== undefined) polyNode.pointCount = data.pointCount;
                 node = polyNode;
             } else if (safeType === "ELLIPSE") {
+            } else if (safeType === "ELLIPSE") {
                 node = figma.createEllipse();
+                (node as EllipseNode).fills = []; // Clear default fill
             } else if (safeType === "LINE") {
                 node = figma.createLine();
             } else if (safeType === "GROUP") {

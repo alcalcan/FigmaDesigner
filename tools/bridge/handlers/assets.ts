@@ -82,6 +82,7 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             const isSimplified = simplified === true || parsed.options?.simplified === true;
             const skipGeneration = parsed.options?.skipGeneration === true;
 
+            console.log(`[Bridge Debug] batchFolder: '${parsed.batchFolder}'`);
             console.log(`[Bridge] handling SavePacket. Procedural? ${isProcedural}, Simplified? ${isSimplified}`);
 
             // 1. Prepare Directory: tools/extraction/[Project or batchFolder]/[Name]_[Timestamp]
@@ -124,18 +125,30 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
             console.log(`   Saved Packet: ${folderName}`);
 
             // 4. GENERATION
+            // Determine generation project name. 
+            // If parsed.batchFolder is "captures" (default), we use sanitaryProjectName (saving to component library or similar?).
+            // Actually, "captures" usually implies the temp holding area. 
+            // If the user specified a CUSTOM folder (e.g. "MyFolder"), parsed.batchFolder will be "MyFolder".
+            // We want the generator to output to `components/MyFolder/Component...` instead of `components/ProjectName/Component...`
+            // Current Logic: sanitaryProjectName is derived from msg.projectName (Figma page/file name).
+            // Fix: If batchFolder is provided and NOT "captures", use IT as the project name for generation.
+
+            const generationProjectName = (parsed.batchFolder && parsed.batchFolder !== "captures")
+                ? parsed.batchFolder.replace(/[^a-z0-9_-]/gi, '_')
+                : sanitaryProjectName;
+
             // If the user requested procedural or simplified generation, we do it NOW and AWAIT it.
             if (skipGeneration) {
                 console.log(`[Bridge] skipGeneration=true. Skipping auto-gen for ${sanitaryName}.`);
             } else if (isProcedural) {
-                console.log(`[Bridge] Auto-generating Procedural Code for ${sanitaryName}...`);
-                await FullProceduralPipeline.run(jsonPath, sanitaryProjectName, sanitaryName);
+                console.log(`[Bridge] Auto-generating Procedural Code for ${sanitaryName} in ${generationProjectName}...`);
+                await FullProceduralPipeline.run(jsonPath, generationProjectName, sanitaryName);
             } else {
                 // Always generate code if not procedural (Generator Only, Simplified, or Standard)
-                console.log(`[Bridge] Auto-generating Code for ${sanitaryName} (Simplified=${isSimplified}, Refactor=${parsed.options?.refactor !== false})...`);
+                console.log(`[Bridge] Auto-generating Code for ${sanitaryName} (Simplified=${isSimplified}, Refactor=${parsed.options?.refactor !== false}) in ${generationProjectName}...`);
 
                 const generator = new ComponentGenerator();
-                const result = generator.generate(jsonPath, sanitaryProjectName, false, sanitaryName);
+                const result = generator.generate(jsonPath, generationProjectName, false, sanitaryName);
 
                 if (parsed.options?.refactor !== false) {
                     new ComponentRefactorer().refactor(result.tsPath);

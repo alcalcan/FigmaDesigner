@@ -3,6 +3,7 @@ import { JsonReconstructor } from "./components/JsonReconstructor";
 import { AssetStore, processFills } from "./components/PaintHelpers";
 import * as ComponentRegistry from "./components/index";
 import * as ExtractPPT from "./presentation_logic/PPTExtractor";
+import { runAccessibilityCheck } from "./tools/accessibility_checker";
 
 // Plugin Initialization Log
 console.log(`[Plugin] Starting code.ts | Time: ${Date.now()}`);
@@ -524,6 +525,11 @@ figma.ui.onmessage = async (msg) => {
       figma.notify(`Reorganized ${count} items into a grid.`);
     }
 
+    if (msg.type === 'tools-check-accessibility') {
+      const selection = figma.currentPage.selection;
+      await runAccessibilityCheck(selection);
+    }
+
     // Handle Manual Capture (Download)
     if (msg.type === 'capture') {
       const selection = figma.currentPage.selection;
@@ -740,11 +746,21 @@ figma.ui.onmessage = async (msg) => {
 
             const resultType = msg.type === 'capture-preview' ? 'capture-preview-result-packet' : 'capture-bridge-result-packet';
 
+            // Override Logic: If componentNameOverride is provided and we are capturing a single item (or it's the first one, but UI usually blocks batch rename effectively), use it.
+            // Actually for batch, one name doesn't make sense unless it's a prefix, but let's assume single item usage for now 
+            // OR if the user really wants to name all selected items the same (which would overwrite), we should probably handle that by appending index if count > 1.
+            let finalName = node.name;
+            if (msg.componentNameOverride && total === 1) {
+              finalName = msg.componentNameOverride;
+            } else if (msg.componentNameOverride && total > 1) {
+              finalName = `${msg.componentNameOverride}_${count}`;
+            }
+
             figma.ui.postMessage({
               type: resultType,
               projectName: projectName,
               packet: {
-                name: node.name,
+                name: finalName,
                 data: data,
                 assets: assets
               },

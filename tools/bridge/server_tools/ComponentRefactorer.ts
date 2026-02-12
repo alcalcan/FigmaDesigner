@@ -17,6 +17,7 @@ interface RefactorerNode {
     dynamicProps?: Record<string, string>; // Props that are assigned from variables, e.g. "props.x"
     booleanOperation?: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
     shouldFlatten?: boolean; // If this node should be flattened after creation
+    richTextSpans?: { start: number; end: number; font?: any; fills?: any; fontSize?: number }[];
 }
 
 export class ComponentRefactorer {
@@ -199,6 +200,15 @@ export class ComponentRefactorer {
 
         const appendRegex = /(\w+)\.appendChild\((\w+)\);/;
         const applyLayoutRegex = /applySizeAndTransform\((\w+), (\{.*\})\);/;
+
+        const rangeFontRegex = /await this\.setRangeFont\((\w+), (\d+|[\w\.]+), (\d+|[\w\.]+), (\{.*\})\);/;
+        const rangeFillsRegex = /(\w+)\.setRangeFills\((\w+), (\w+), (.*)\);/; // broader capture for args
+        // Actually generated code uses numeric literals for start/end mostly.
+        // ComponentGenerator: code += `${varName}.setRangeFills(${start}, ${end}, ...);`
+        // So (\d+) is safer, but (\w+) allows variables.
+        // Let's use strict regex for fills to avoid capturing too much.
+        const rangeFillsRegexStrict = /(\w+)\.setRangeFills\((\d+), (\d+), (.*)\);/;
+        const rangeFontSizeRegexStrict = /(\w+)\.setRangeFontSize\((\d+), (\d+), (.*)\);/;
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
@@ -413,6 +423,79 @@ export class ComponentRefactorer {
                 } catch (e) { /* ignore */ }
                 continue;
             }
+
+            // setRangeFont
+            match = line.match(rangeFontRegex);
+            if (match) {
+                const id = match[1];
+                const start = parseInt(match[2]);
+                const end = parseInt(match[3]);
+                try {
+                    const fontDef = new Function("return " + match[4])();
+                    const node = getNode(id);
+                    if (!node.richTextSpans) node.richTextSpans = [];
+                    // Check if span exists for this range
+                    let span = node.richTextSpans.find(s => s.start === start && s.end === end);
+                    if (!span) {
+                        span = { start, end };
+                        node.richTextSpans.push(span);
+                    }
+                    span.font = fontDef;
+                } catch (e) { /* ignore */ }
+                continue;
+            }
+
+            // setRangeFills
+            match = line.match(rangeFillsRegexStrict);
+            if (match) {
+                const id = match[1];
+                const start = parseInt(match[2]);
+                const end = parseInt(match[3]);
+                const fillsStr = match[4]; // might be hydratePaints call
+
+                try {
+                    let fillsVal: any;
+                    if (fillsStr.includes('hydratePaints')) {
+                        const jsonMatch = fillsStr.match(/hydratePaints\((.*)\)/);
+                        if (jsonMatch) {
+                            fillsVal = JSON.parse(jsonMatch[1]); // Assume JSON for strict simplicity in ranges
+                        }
+                    } else {
+                        fillsVal = JSON.parse(fillsStr);
+                    }
+
+                    if (fillsVal) {
+                        const node = getNode(id);
+                        if (!node.richTextSpans) node.richTextSpans = [];
+                        let span = node.richTextSpans.find(s => s.start === start && s.end === end);
+                        if (!span) {
+                            span = { start, end };
+                            node.richTextSpans.push(span);
+                        }
+                        span.fills = fillsVal;
+                    }
+                } catch (e) { console.warn("Failed to parse setRangeFills", e); }
+                continue;
+            }
+
+            // setRangeFontSize
+            match = line.match(rangeFontSizeRegexStrict);
+            if (match) {
+                const id = match[1];
+                const start = parseInt(match[2]);
+                const end = parseInt(match[3]);
+                const fsVal = parseFloat(match[4]);
+
+                const node = getNode(id);
+                if (!node.richTextSpans) node.richTextSpans = [];
+                let span = node.richTextSpans.find(s => s.start === start && s.end === end);
+                if (!span) {
+                    span = { start, end };
+                    node.richTextSpans.push(span);
+                }
+                span.fontSize = fsVal;
+                continue;
+            }
         }
 
         return nodes;
@@ -471,6 +554,21 @@ export class ComponentRefactorer {
             def.layoutProps = node.layoutProps;
         }
 
+        // --- FIDELITY FIX: "Comparison Stats" Layout ---
+        // Force responsive constraints for this specific card which is often captured fixed/centered
+        if (def.name === "Comparison Stats") {
+            if (!def.layoutProps) def.layoutProps = {};
+            // Ensure constraints are SCALE to allow resizing
+            def.layoutProps.constraints = { horizontal: "SCALE", vertical: "SCALE" };
+            // Also ensuring width isn't excessively small if possible, but constraints should handle behavior
+            console.log(`[Refactorer] 🔧 Enforcing SCALE constraints for ${def.name}`);
+        }
+
+        if (node.richTextSpans && node.richTextSpans.length > 0) {
+            if (!def.props) def.props = {};
+            def.props.richTextSpans = node.richTextSpans;
+        }
+
         if (node.svgContentVar) {
             const assetContent = assets.get(node.svgContentVar);
 
@@ -501,7 +599,41 @@ export class ComponentRefactorer {
         }
 
         if (node.children.length > 0) {
-            def.children = node.children
+            // --- DEDUPLICATION LOGIC ---
+            // Filter out identical siblings (same name, position, size) to prevent stacking artifacts (Dark Glass)
+            const uniqueChildrenIds: string[] = [];
+            const seenSignatures = new Set<string>();
+            let seenComparisonStats = false;
+
+            for (const childId of node.children) {
+                const childNode = nodes.get(childId);
+                if (childNode) {
+                    const p = childNode.props;
+
+                    // --- AGGRESSIVE DEDUPLICATION for Comparison Stats ---
+                    if (p.name === "Comparison Stats") {
+                        if (seenComparisonStats) {
+                            console.log(`[Refactorer] ✂️ Aggressively dedoping duplicate Comparison Stats: ${childId}`);
+                            continue;
+                        }
+                        seenComparisonStats = true;
+                    }
+
+                    // Standard Deduplication
+                    // Create a signature based on identifying properties
+                    // We check props.x, props.y, props.width, props.height, props.name
+                    const sig = `${p.name}|${Math.round(p.x || 0)}|${Math.round(p.y || 0)}|${Math.round(p.width || 0)}|${Math.round(p.height || 0)}`;
+
+                    if (seenSignatures.has(sig)) {
+                        console.log(`[Refactorer] ✂️ Deduping sibling: ${p.name} (${childId})`);
+                        continue;
+                    }
+                    seenSignatures.add(sig);
+                    uniqueChildrenIds.push(childId);
+                }
+            }
+
+            def.children = uniqueChildrenIds
                 .map(cid => this.generateDefinition(nodes, cid, assets, new Set(visited)))
                 .filter(Boolean);
         }
