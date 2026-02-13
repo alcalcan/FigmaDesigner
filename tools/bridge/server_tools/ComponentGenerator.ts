@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { SerializedNode } from '../../../components/JsonReconstructor';
 import { detectBakedRotation } from '../../../components/TransformHelpers';
+import { ComponentRefactorer } from './ComponentRefactorer';
 
 
 export class ComponentGenerator {
@@ -54,6 +55,15 @@ export class ComponentGenerator {
         // 2. Write the .ts file
         const tsPath = path.join(this.targetDir, `${this.componentName}.ts`);
         fs.writeFileSync(tsPath, code);
+
+        // 2a. Refactor Component (Fix Text Truncation, Loops, etc)
+        try {
+            console.log(`[Generator] Running Refactorer for ${this.componentName}...`);
+            const refactorer = new ComponentRefactorer();
+            refactorer.refactor(tsPath);
+        } catch (e) {
+            console.warn(`[Generator] Refactoring failed for ${this.componentName}: ${e}`);
+        }
 
         // 3. Copy Assets (Images) - Now to shared folder
         this.copyAssets(assetsTargetDir);
@@ -435,7 +445,14 @@ export class ${this.componentName} extends BaseComponent {
 
         // Basic Properties
         code += `${varName}.name = "${(data.name || 'Unnamed').replace(/"/g, '\\"')}";\n`;
-        if (data.visible !== undefined) code += `${varName}.visible = ${data.visible};\n`;
+        // Explicitly set visible to false if opacity is 0 AND no effects are present
+        // Use loose check for effects in case it's undefined or null
+        const hasEffects = data.effects && data.effects.length > 0;
+        if (data.opacity === 0 && !hasEffects) {
+            code += `${varName}.visible = false;\n`;
+        } else if (data.visible !== undefined) {
+            code += `${varName}.visible = ${data.visible};\n`;
+        }
         if (data.opacity !== undefined) code += `${varName}.opacity = ${data.opacity};\n`;
         if (data.locked !== undefined) code += `${varName}.locked = ${data.locked};\n`;
         if (data.blendMode) code += `if ("blendMode" in ${varName}) ${varName}.blendMode = "${data.blendMode}";\n`;
@@ -483,9 +500,33 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 2. Visual Properties (Fills, Strokes, Effects) - Safe to apply here
-        if (Array.isArray(data.fills) && (safeType !== 'VECTOR' || !data.svgPath)) {
-            code += `${varName}.fills = await this.hydratePaints(${this.stringifyPaints(data.fills)});\n`;
+
+        // Check for GLASS effect first to influence fills
+        let hasGlassEffect = false;
+        if (data.effects) {
+            hasGlassEffect = data.effects.some((e: any) => e.type === "GLASS");
         }
+
+        // Handle Fills with Glass enhancement
+        let fillsToProcess = data.fills;
+        if (hasGlassEffect && Array.isArray(data.fills)) {
+            fillsToProcess = data.fills.map((fill: any) => {
+                // Boost opacity for glass effect if it's too low/invisible
+                if (fill.visible !== false && (fill.opacity === undefined || fill.opacity < 0.1)) {
+                    // Clone to avoid mutating original data if shared
+                    return { ...fill, opacity: 0.2 };
+                }
+                return fill;
+            });
+        } else if (hasGlassEffect) {
+            // If no fills but glass effect, add a default glass fill
+            fillsToProcess = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 }, opacity: 0.2, visible: true }];
+        }
+
+        if (Array.isArray(fillsToProcess)) {
+            code += `${varName}.fills = await this.hydratePaints(${this.stringifyPaints(fillsToProcess)});\n`;
+        }
+
         if (data.strokes && Array.isArray(data.strokes)) {
             code += `${varName}.strokes = await this.hydratePaints(${this.stringifyPaints(data.strokes)});\n`;
         } else if (data.strokes) {
@@ -507,20 +548,17 @@ export class ${this.componentName} extends BaseComponent {
         if (data.effects) {
             const validEffects = data.effects.map((effect: any) => {
                 // Map custom GLASS effect to BACKGROUND_BLUR
-                if (effect.type === "GLASS") {
+                // Cast to any to avoid "comparison appears unintentional" error if type is narrowed
+                const e = effect as any;
+                if (e.type === "GLASS") {
                     return {
                         type: "BACKGROUND_BLUR",
-                        visible: effect.visible ?? true,
-                        radius: effect.radius || 0,
+                        visible: e.visible ?? true,
+                        radius: e.radius || 0,
                     };
                 }
                 // Filter out any other unknown types or strip invalid properties if strict
-                if (["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"].includes(effect.type)) {
-                    // We can return it as-is, but maybe strip extra props if they cause issues?
-                    // For now, assume standard effects are fine.
-                    // But to be safe against "blurType" or "boundVariables" issues if they are not in schema:
-                    // Figma usually acts lenient on extra props in JS objects, but "Invalid format" suggests strictness or type mismatch.
-                    // Let's return as-is for standard types to avoid regression, unless we suspect "blurType" is also an issue.
+                if (["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"].includes(e.type)) {
                     return effect;
                 }
                 return null;
@@ -528,6 +566,7 @@ export class ${this.componentName} extends BaseComponent {
 
             code += `${varName}.effects = ${JSON.stringify(validEffects)};\n`;
         }
+
         if (data.cornerRadius !== undefined) {
             if (data.cornerRadius === "mixed") {
                 if (data.corners) {
@@ -543,7 +582,8 @@ export class ${this.componentName} extends BaseComponent {
 
 
         // 3. Text Properties
-        if (safeType === 'TEXT' && data.text) {
+        // Allow text generation for TEXT nodes AND Instances/Frames that have text overrides
+        if (((safeType as any) === 'TEXT' || (safeType as any) === 'INSTANCE' || data.text) && data.text) {
             code += `// Text Properties\n`;
             code += `${varName}.characters = \`${(data.text.characters || '').replace(/`/g, '\\`').replace(/\${/g, '\\${')}\`;\n`;
             if (typeof data.text.fontSize === 'number') code += `${varName}.fontSize = ${data.text.fontSize};\n`;
@@ -597,12 +637,12 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 4. Vector Paths
-        if (safeType === 'VECTOR' && data.vectorPaths && !data.svgPath) {
+        if ((safeType as any) === 'VECTOR' && data.vectorPaths && !data.svgPath) {
             code += `${varName}.vectorPaths = ${JSON.stringify(data.vectorPaths)};\n`;
         }
 
         // 5. Recursion (Children) using Phase B (Append) logic inside the loop
-        if (safeType !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
+        if ((safeType as any) !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
             data.children.forEach((child, index) => {
                 const childVar = `${varName}_child_${index}`;
                 code += `\n// Start Child: ${child.name}\n`;
@@ -650,8 +690,6 @@ export class ${this.componentName} extends BaseComponent {
 
     private copyAssets(targetDir: string) {
         this.assetsToCopy.forEach(entry => {
-            // Entry format: "path/to/source.png|unique_dest_name.png"
-            // Or legacy: "path/to/source.png" (if no pipe)
             const parts = entry.split('|');
             const assetPath = parts[0];
             const destName = parts.length > 1 ? parts[1] : path.basename(assetPath);
@@ -660,8 +698,6 @@ export class ${this.componentName} extends BaseComponent {
             const targetPath = path.join(targetDir, destName);
 
             if (fs.existsSync(sourcePath)) {
-                // Check if file exists to avoid unnecessary overwrite? 
-                // Creating unique names means we likely don't overwrite unless same generation.
                 fs.copyFileSync(sourcePath, targetPath);
                 console.log(`Copied asset: ${path.relative(process.cwd(), targetPath)}`);
             }
@@ -670,6 +706,7 @@ export class ${this.componentName} extends BaseComponent {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private stringifyPaints(paints: any[]): string {
+        if (!paints) return '[]';
         // Create a deep copy to avoid mutating the original data
         const processedPaints = JSON.parse(JSON.stringify(paints));
 

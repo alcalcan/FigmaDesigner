@@ -11,9 +11,6 @@ export function registerComponents() {
     const presentationsDir = path.join(rootDir, 'presentations');
     const indexFile = path.join(componentsDir, 'index.ts');
 
-    console.log(`[DEBUG] CWD: ${process.cwd()}`);
-    console.log(`[DEBUG] Slides Dir: ${slidesDir} (Exists: ${fs.existsSync(slidesDir)})`);
-
     if (!fs.existsSync(componentsDir)) {
         console.error("❌ Components directory not found!");
         return;
@@ -39,14 +36,10 @@ export function registerComponents() {
             if (stat.isDirectory()) {
                 // Determine project name (first level folder under components)
                 const newProject = project === "" ? item : project;
-                console.log(`[DEBUG] Entering dir: ${item}, Project: ${newProject}`);
                 walk(fullPath, newProject);
             } else if (item.endsWith('.ts')) {
                 // Potential component file
-                console.log(`[DEBUG] Found TS file: ${item}`);
                 processFile(fullPath, project, exports, seenClasses);
-            } else {
-                console.log(`[DEBUG] Skipped item: ${item}`);
             }
         }
     }
@@ -71,10 +64,6 @@ export function registerComponents() {
             importPath = './' + importPath;
         }
 
-        if (exp.className.startsWith('Slide_')) {
-            console.log(`[DEBUG] Adding Slide export: ${exp.className} from ${importPath}`);
-        }
-
         if (exp.alias) {
             content += `export { ${exp.className} as ${exp.alias} } from "${importPath}";\n`;
         } else {
@@ -92,7 +81,7 @@ export function registerComponents() {
         const newContentNormalized = content.replace(/\r\n/g, '\n');
 
         if (existingContent === newContentNormalized) {
-            console.log(`✅ components/index.ts is up to date (skipped write).`);
+            console.log(`✅ Registered ${sortedExports.length} components (No changes)`);
             return;
         }
     }
@@ -103,7 +92,6 @@ export function registerComponents() {
     fs.chmodSync(indexFile, 0o644);
 
     console.log(`✅ Registered ${sortedExports.length} components in components/index.ts`);
-    console.log(`[DEBUG] Final registry includes: ${sortedExports.map(e => e.alias || e.className).join(', ')}`);
 }
 
 interface ComponentExport {
@@ -125,15 +113,8 @@ function processFile(filePath: string, project: string, exports: ComponentExport
     // export class ClassName ...
     const classMatch = content.match(/export\s+class\s+([a-zA-Z0-9_]+)/);
 
-    if (fileName === 'Slide_Title.ts') {
-        console.log(`[DEBUG] processing Slide_Title.ts`);
-        console.log(`[DEBUG] Content snippet: ${content.substring(0, 100)}...`);
-        console.log(`[DEBUG] Match result: ${classMatch ? classMatch[1] : 'NULL'}`);
-    }
-
     if (classMatch) {
         const className = classMatch[1];
-        console.log(`[DEBUG] Found class ${className} in ${filePath}`);
 
         const exportData: ComponentExport = {
             className,
@@ -154,10 +135,9 @@ function resolveCollisions(seenClasses: Map<string, ComponentExport[]>): Compone
     for (const [className, matches] of seenClasses.entries()) {
         if (matches.length === 1) {
             // Unique
-            console.log(`[DEBUG] resolveCollisions: adding unique class ${className}`);
             finalExports.push({ ...matches[0] });
         } else {
-            console.log(`[DEBUG] resolveCollisions: resolving collision for ${className} (${matches.length} matches)`);
+            console.log(`[Resolution] Resolving collision for ${className} (${matches.length} matches)`);
             for (const match of matches) {
                 if (match.project) {
                     const safeProject = match.project.replace(/[^a-zA-Z0-9_]/g, '_');

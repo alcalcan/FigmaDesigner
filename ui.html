@@ -1564,6 +1564,12 @@
                             const fullAssetPath = dirPath ? `${dirPath}/${assetRef}` : assetRef;
                             const listRes = await
                                 fetch(`http://127.0.0.1:3001/read-asset?project=&path=${encodeURIComponent(fullAssetPath)}`);
+
+                            if (!listRes.ok) {
+                                console.warn(`[UI] Asset not found: ${fullAssetPath}`);
+                                return;
+                            }
+
                             const assetData = await listRes.json();
                             if (assetData.content) {
                                 assets[assetRef] = assetData.content;

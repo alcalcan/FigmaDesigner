@@ -2,7 +2,7 @@ import * as http from 'http';
 import { BridgeState, setPendingCommand, setSpinnerInterval } from './state';
 import { handleList, handleRead, handleDelete, handleBatchDelete } from './handlers/extraction';
 import { handleListComponents, handleDeleteComponent, handleDeleteComponentFolder, handleBatchDeleteComponents, handleBatchDeletePages } from './handlers/components';
-import { handleSave, handleSavePacket, handleSavePng } from './handlers/assets';
+import { handleSave, handleSavePacket, handleSavePng, handleReadAsset } from './handlers/assets';
 import { handleGenerateCodePreview, handleGenerateToCode, handleGenerateFolderToCode, handleRefactorCode, handleGenerateClipboard, handleProceduralConvert } from './handlers/generation';
 import { handlePoll, handleLog } from './handlers/system';
 import { handleSavePpt } from './handlers/ppt_export';
@@ -38,6 +38,7 @@ const server = http.createServer((req, res) => {
 
     if (req.method === 'GET' && (req.url === '/list' || req.url?.startsWith('/list?'))) return handleList(req, res);
     if (req.method === 'GET' && (req.url === '/read' || req.url?.startsWith('/read?'))) return handleRead(req, res);
+    if (req.method === 'GET' && (req.url === '/read-asset' || req.url?.startsWith('/read-asset?'))) return handleReadAsset(req, res);
     if (req.method === 'POST' && req.url === '/delete') return handleDelete(req, res);
     if (req.method === 'POST' && req.url === '/batch-delete') return handleBatchDelete(req, res);
 

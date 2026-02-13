@@ -6,6 +6,51 @@ import { ComponentGenerator } from '../server_tools/ComponentGenerator';
 import { ComponentRefactorer } from '../server_tools/ComponentRefactorer';
 import { CompactStructure } from '../server_tools/CompactStructure';
 
+export async function handleReadAsset(req: http.IncomingMessage, res: http.ServerResponse) {
+    const url = new URL(req.url!, `http://${req.headers.host}`);
+    const filePath = url.searchParams.get('path');
+
+    if (!filePath) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: "Missing path parameter" }));
+        return;
+    }
+
+    // Try to find the asset in extraction or components
+    const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
+    const componentsRoot = path.join(process.cwd(), 'components');
+
+    // Potentially the path comes in as 'Project/Component/assets/img.png'
+    // or just 'Component/assets/img.png' relative to some root.
+
+    let fullPath = path.join(extractionRoot, filePath);
+
+    if (!fs.existsSync(fullPath)) {
+        // Try components root
+        fullPath = path.join(componentsRoot, filePath);
+    }
+
+    if (!fs.existsSync(fullPath)) {
+        res.writeHead(404);
+        res.end(JSON.stringify({ error: "Asset not found" }));
+        return;
+    }
+
+    try {
+        const content = fs.readFileSync(fullPath);
+        // We'll return it as a JSON with base64 content to match what the UI expects
+        // The UI expects: const assetData = await listRes.json(); if (assetData.content) ...
+        const base64Content = content.toString('base64');
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ content: base64Content }));
+    } catch (e: any) {
+        console.error("Error reading asset:", e);
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Failed to read asset" }));
+    }
+}
+
 export async function handleSave(req: http.IncomingMessage, res: http.ServerResponse) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });

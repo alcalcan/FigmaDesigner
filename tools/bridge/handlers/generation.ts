@@ -174,10 +174,10 @@ export async function handleGenerateToCode(req: http.IncomingMessage, res: http.
             const result = generator.generate(fullPath, projectName, false, componentName);
             console.log(`✅ Component Generated: ${result.tsPath}`);
 
-            if (shouldSimplify) {
-                console.log(`[Bridge] Simplification (Refactor) requested for ${result.tsPath}`);
-                new ComponentRefactorer().refactor(result.tsPath);
-            }
+            // if (shouldSimplify) {
+            //    console.log(`[Bridge] Simplification (Refactor) requested for ${result.tsPath}`);
+            //    new ComponentRefactorer().refactor(result.tsPath);
+            // }
             if (shouldCompact) {
                 console.log(`[Bridge] Compacting ${result.tsPath}...`);
                 new CompactStructure().compact(result.tsPath);

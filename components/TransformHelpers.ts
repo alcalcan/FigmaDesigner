@@ -19,7 +19,7 @@ export function normalizeRelativeTransform(t: T2x3): T2x3 {
 
 export function applySizeAndTransform(
     node: SceneNode & LayoutMixin,
-    data: { width?: number; height?: number; relativeTransform?: T2x3 }
+    data: { width?: number; height?: number; relativeTransform?: T2x3; rotation?: number }
 ) {
     // 1) size first
     const canResize = typeof node.resize === 'function' || typeof (node as any).resizeWithoutConstraints === 'function';
@@ -39,7 +39,13 @@ export function applySizeAndTransform(
         }
     }
 
-    if (!data.relativeTransform) return;
+    if (!data.relativeTransform) {
+        // Fallback: if no relativeTransform but rotation is present, apply it
+        if (typeof data.rotation === 'number' && data.rotation !== 0) {
+            node.rotation = data.rotation;
+        }
+        return;
+    }
 
     const t = normalizeRelativeTransform(data.relativeTransform);
 
@@ -59,6 +65,9 @@ export function applySizeAndTransform(
     } else {
         node.relativeTransform = t;
     }
+
+    // 3) Explicit Rotation Override - REMOVED
+    // We trust relativeTransform matrix as it handles flips and complex transforms correctly.
 }
 
 // --- Linear Algebra Helpers for Gradients ---

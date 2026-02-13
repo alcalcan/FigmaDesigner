@@ -404,8 +404,6 @@ export abstract class BaseComponent {
         if (def.props?.textAutoResize === "WIDTH_AND_HEIGHT") {
           delete layoutOpts.width;
           delete layoutOpts.height;
-        } else if (def.props?.textAutoResize === "HEIGHT") {
-          delete layoutOpts.height;
         }
       }
 
@@ -571,42 +569,90 @@ export abstract class BaseComponent {
   hydrateEffects(effects: any[]): Effect[] {
     if (!effects || !Array.isArray(effects)) return [];
 
-    const hydrated = effects.map((e) => {
-      const effect = { ...e };
-
-      // Sanitize color in effects (Drop Shadow, Inner Shadow)
-      if (effect.color && typeof effect.color === 'object') {
-        const colorClone = JSON.parse(JSON.stringify(effect.color));
-        // Keep 'a' for effects if present, but deep clone ensures no ref mutation.
-        effect.color = colorClone;
+    return effects.reduce<Effect[]>((acc, e) => {
+      const converted = this.convertEffect(e);
+      if (converted) {
+        if (Array.isArray(converted)) {
+          acc.push(...converted);
+        } else {
+          acc.push(converted);
+        }
       }
+      return acc;
+    }, []);
+  }
 
-      // Strict Key Filtering for Drop Shadow to avoid "unrecognized keys"
-      if (effect.type === "DROP_SHADOW" || effect.type === "INNER_SHADOW") {
-        return {
-          type: effect.type,
-          color: effect.color,
-          offset: effect.offset,
-          radius: effect.radius,
-          spread: effect.spread,
-          visible: effect.visible !== undefined ? effect.visible : true,
-          blendMode: effect.blendMode || "NORMAL",
-          showShadowBehindNode: effect.showShadowBehindNode !== undefined ? effect.showShadowBehindNode : false
-        } as Effect;
-      }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  convertEffect(effectData: any): Effect | Effect[] | null {
+    const effect = { ...effectData };
 
-      if (effect.type === "LAYER_BLUR" || effect.type === "BACKGROUND_BLUR") {
-        return {
-          type: effect.type,
-          radius: effect.radius,
-          visible: effect.visible !== undefined ? effect.visible : true
-        } as Effect;
-      }
+    // Sanitize color
+    if (effect.color && typeof effect.color === 'object') {
+      const colorClone = JSON.parse(JSON.stringify(effect.color));
+      effect.color = colorClone;
+    }
 
-      return effect;
-    });
+    if (effect.type === "DROP_SHADOW" || effect.type === "INNER_SHADOW") {
+      return {
+        type: effect.type,
+        color: effect.color,
+        offset: effect.offset,
+        radius: effect.radius,
+        spread: effect.spread,
+        visible: effect.visible !== undefined ? effect.visible : true,
+        blendMode: effect.blendMode || "NORMAL",
+        showShadowBehindNode: effect.showShadowBehindNode !== undefined ? effect.showShadowBehindNode : false
+      } as Effect;
+    }
 
-    return hydrated;
+    if (effect.type === "LAYER_BLUR" || effect.type === "BACKGROUND_BLUR") {
+      return {
+        type: effect.type,
+        radius: typeof effect.radius === 'number' ? effect.radius : 20,
+        visible: effect.visible !== undefined ? effect.visible : true
+      } as Effect;
+    }
+
+    // Handle custom "GLASS" type
+    if (effect.type === "GLASS") {
+      const radius = typeof effect.radius === 'number' ? effect.radius : 20;
+      const glassEffects: Effect[] = [];
+
+      // 1. Background Blur
+      glassEffects.push({
+        type: "BACKGROUND_BLUR",
+        radius: radius,
+        visible: effect.visible !== undefined ? effect.visible : true
+      } as Effect);
+
+      // 2. Reflection/Highlight (Inner Shadow)
+      // Simulate light from top-left (-45deg) by using a white Inner Shadow
+      glassEffects.push({
+        type: "INNER_SHADOW",
+        color: { r: 1, g: 1, b: 1, a: 0.4 }, // Semi-transparent White
+        offset: { x: 0, y: 1 }, // Subtle top highlight
+        radius: radius * 0.5, // Softness relative to blur
+        spread: 0,
+        visible: effect.visible !== undefined ? effect.visible : true,
+        blendMode: "SCREEN"
+      });
+
+      // 3. Depth (Drop Shadow)
+      glassEffects.push({
+        type: "DROP_SHADOW",
+        color: { r: 0, g: 0, b: 0, a: 0.15 }, // Semi-transparent Black
+        offset: { x: 0, y: 4 },
+        radius: radius,
+        spread: 0,
+        visible: effect.visible !== undefined ? effect.visible : true,
+        blendMode: "NORMAL",
+        showShadowBehindNode: false
+      });
+
+      return glassEffects;
+    }
+
+    return null;
   }
 }
 

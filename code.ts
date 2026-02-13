@@ -20,7 +20,7 @@ const logToUI = (msg: string) => {
   }
 };
 
-logToUI(`[Plugin] Registry Keys: ${Object.keys(ComponentRegistry).join(", ")}`);
+
 
 // --- SHARED CAPTURE LOGIC ---
 interface AssetRecord {

@@ -185,7 +185,6 @@ export class JsonReconstructor extends BaseComponent {
             } else if (safeType === "TEXT") {
                 node = figma.createText();
             } else if (safeType === "RECTANGLE") {
-            } else if (safeType === "RECTANGLE") {
                 node = figma.createRectangle();
                 (node as RectangleNode).fills = []; // Clear default white/gray fill
             } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON" || safeType === "GROUP"))) {
@@ -313,6 +312,14 @@ export class JsonReconstructor extends BaseComponent {
 
             // 2. Apply Basic Properties
             if (data.name) node.name = data.name;
+            if (data.visible !== undefined) node.visible = data.visible;
+            if (data.opacity !== undefined) {
+                node.opacity = data.opacity;
+                // Double check visibility if opacity is 0
+                if (data.opacity === 0) {
+                    node.visible = false;
+                }
+            }
 
             // Step 1: Layout Mode (Early)
             // We set this early so children can be created with 'ABSOLUTE' positioning if needed.
@@ -598,7 +605,8 @@ export class JsonReconstructor extends BaseComponent {
                     applySizeAndTransform(node as SceneNode & LayoutMixin, {
                         width,
                         height,
-                        relativeTransform: rTransform
+                        relativeTransform: rTransform,
+                        rotation: data.rotation
                     });
                 } else {
                     node.resizeWithoutConstraints(width, height);
@@ -645,12 +653,7 @@ export class JsonReconstructor extends BaseComponent {
                 }
             }
 
-            if ("layoutAlign" in node && data.layoutAlign) {
-                node.layoutAlign = data.layoutAlign;
-            }
-            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
-                node.layoutGrow = data.layoutGrow;
-            }
+
 
             // 8. Add to parent
             if (parent) {
@@ -665,6 +668,13 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 9. Apply Context-Dependent Properties (Must be attached to parent)
+            if ("layoutAlign" in node && data.layoutAlign) {
+                node.layoutAlign = data.layoutAlign;
+            }
+            if ("layoutGrow" in node && data.layoutGrow !== undefined) {
+                node.layoutGrow = data.layoutGrow;
+            }
+
             if ("layoutPositioning" in node && data.layoutPositioning) {
                 // Now node.parent is set properly
                 if (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE") {

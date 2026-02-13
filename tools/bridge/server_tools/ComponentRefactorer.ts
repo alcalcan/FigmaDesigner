@@ -106,11 +106,14 @@ export class ComponentRefactorer {
 
                     if (braceCount === 0) {
                         endIndex = i;
+                        console.log(`[Refactorer Debug] Parsing finished at index ${endIndex}. Brace count matched.`);
                         break;
                     }
                 }
 
                 bodyContent = content.substring(startIndex, endIndex);
+                console.log(`[Refactorer Debug] Extracted body length: ${bodyContent.length}`);
+                console.log(`[Refactorer Debug] First 500 chars of body: ${bodyContent.substring(0, 500)}...`);
             } else {
                 console.warn("⚠️ Could not find 'create' method start, parsing entire file.");
             }
@@ -539,6 +542,12 @@ export class ComponentRefactorer {
         delete cleanProps.name; // moved to top level
         // layoutMode is vital for Frame, must be preserved.
 
+        // Enforce visibility rule for opacity 0
+        const hasEffects = cleanProps.effects && cleanProps.effects.length > 0;
+        if (cleanProps.opacity === 0 && !hasEffects) {
+            cleanProps.visible = false;
+        }
+
         if (Object.keys(cleanProps).length > 0) {
             def.props = cleanProps;
         }
@@ -562,6 +571,24 @@ export class ComponentRefactorer {
             def.layoutProps.constraints = { horizontal: "SCALE", vertical: "SCALE" };
             // Also ensuring width isn't excessively small if possible, but constraints should handle behavior
             console.log(`[Refactorer] 🔧 Enforcing SCALE constraints for ${def.name}`);
+
+            // Fix Text Truncation: Recursively force textAutoResize to WIDTH_AND_HEIGHT for all text nodes
+            const fixTextTruncation = (node: any) => {
+                if (node.type === 'TEXT' && node.props) {
+                    // Only apply if currently NONE or truncated-prone
+                    // But generally for stats we want full visibility
+                    if (node.props.textAutoResize === 'NONE' || node.props.textAutoResize === 'HEIGHT') {
+                        console.log(`[Refactorer] 🔧 Fixing Text Truncation for ${node.name} (Force WIDTH_AND_HEIGHT)`);
+                        node.props.textAutoResize = 'WIDTH_AND_HEIGHT';
+                        // Ensure text alignment is reasonable? 
+                        // Usually CENTER/CENTER for stats
+                    }
+                }
+                if (node.children) {
+                    node.children.forEach(fixTextTruncation);
+                }
+            };
+            fixTextTruncation(def);
         }
 
         if (node.richTextSpans && node.richTextSpans.length > 0) {
