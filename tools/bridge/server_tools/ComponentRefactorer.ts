@@ -651,7 +651,12 @@ export class ComponentRefactorer {
                     // We check props.x, props.y, props.width, props.height, props.name
                     const sig = `${p.name}|${Math.round(p.x || 0)}|${Math.round(p.y || 0)}|${Math.round(p.width || 0)}|${Math.round(p.height || 0)}`;
 
-                    if (seenSignatures.has(sig)) {
+                    // FIX: Don't dedupe structural frames/instances, only primitives or known artifacts
+                    // Frames are often used for layout or lists, even if they share geometry.
+                    // Loop detection handles merging them if they are truly repetitive.
+                    const isStructural = childNode.type === 'FRAME' || childNode.type === 'INSTANCE' || childNode.type === 'COMPONENT' || childNode.type === 'GROUP';
+
+                    if (!isStructural && seenSignatures.has(sig)) {
                         console.log(`[Refactorer] ✂️ Deduping sibling: ${p.name} (${childId})`);
                         continue;
                     }
