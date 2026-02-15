@@ -4,6 +4,13 @@ import { SerializedNode } from '../../../components/JsonReconstructor';
 import { detectBakedRotation } from '../../../components/TransformHelpers';
 import { ComponentRefactorer } from './ComponentRefactorer';
 
+export interface GeneratorOptions {
+    refactor?: boolean;
+    refactorOptions?: {
+        skipLoopDetection?: boolean;
+        fidelityStrict?: boolean;
+    };
+}
 
 export class ComponentGenerator {
     private assetsToCopy: Set<string> = new Set();
@@ -18,7 +25,13 @@ export class ComponentGenerator {
     /**
      * Main entry point to generate a component from a JSON file
      */
-    public generate(jsonPath: string, projectName: string, previewMode: boolean = false, componentNameOverride?: string) {
+    public generate(
+        jsonPath: string,
+        projectName: string,
+        previewMode: boolean = false,
+        componentNameOverride?: string,
+        options?: GeneratorOptions
+    ) {
         console.log(`[Generator] Generate called for ${jsonPath}`);
         console.log(`[Generator] Args: projectName=${projectName}, previewMode=${previewMode}, override=${componentNameOverride}`);
 
@@ -56,13 +69,26 @@ export class ComponentGenerator {
         const tsPath = path.join(this.targetDir, `${this.componentName}.ts`);
         fs.writeFileSync(tsPath, code);
 
-        // 2a. Refactor Component (Fix Text Truncation, Loops, etc)
-        try {
-            console.log(`[Generator] Running Refactorer for ${this.componentName}...`);
-            const refactorer = new ComponentRefactorer();
-            refactorer.refactor(tsPath);
-        } catch (e) {
-            console.warn(`[Generator] Refactoring failed for ${this.componentName}: ${e}`);
+        // 2a. Optional Refactor Stage
+        const shouldRefactor = options?.refactor !== false;
+        if (shouldRefactor) {
+            try {
+                console.log(`[Generator] Running Refactorer for ${this.componentName}...`);
+                const refactorer = new ComponentRefactorer();
+                refactorer.refactor(tsPath, options?.refactorOptions);
+            } catch (e) {
+                console.warn(`[Generator] Refactoring failed for ${this.componentName}: ${e}`);
+            }
+        }
+
+        // 2b. Safety Net: prevent rich captures from being persisted as empty fallback frames.
+        // If refactor heuristics collapse output, keep the raw generator code instead of broken code.
+        if (this.hasSubstantialContent(data)) {
+            const finalCode = fs.readFileSync(tsPath, 'utf8');
+            if (this.isDegenerateStructure(finalCode)) {
+                console.warn(`[Generator] Detected degenerate output for ${this.componentName}. Restoring pre-refactor code.`);
+                fs.writeFileSync(tsPath, code);
+            }
         }
 
         // 3. Copy Assets (Images) - Now to shared folder
@@ -72,6 +98,59 @@ export class ComponentGenerator {
 
         return {
             tsPath,
+        };
+    }
+
+    private isDegenerateStructure(content: string): boolean {
+        const hasTrivialFrameOnly = /const\s+structure:\s*NodeDefinition\s*=\s*\{\s*"type"\s*:\s*"FRAME"\s*\};/m.test(content);
+        const hasChildren = /"children"\s*:/m.test(content);
+        return hasTrivialFrameOnly && !hasChildren;
+    }
+
+    private hasSubstantialContent(node: SerializedNode | undefined): boolean {
+        if (!node || typeof node !== 'object') return false;
+
+        const hasLocalSignal =
+            (Array.isArray(node.children) && node.children.length > 0) ||
+            (Array.isArray(node.fills) && node.fills.length > 0) ||
+            (Array.isArray(node.strokes) && node.strokes.length > 0) ||
+            (Array.isArray(node.effects) && node.effects.length > 0) ||
+            (typeof node.text?.characters === 'string' && node.text.characters.length > 0) ||
+            !!node.svgPath ||
+            (Array.isArray(node.vectorPaths) && node.vectorPaths.length > 0);
+
+        if (hasLocalSignal) return true;
+        if (!Array.isArray(node.children) || node.children.length === 0) return false;
+        return node.children.some(child => this.hasSubstantialContent(child));
+    }
+
+    private resolveAutoLayoutSizing(layout: SerializedNode["layout"] | undefined): { primary?: "AUTO" | "FIXED"; counter?: "AUTO" | "FIXED" } {
+        if (!layout?.sizing) return {};
+
+        const horizontal = layout.sizing.horizontal;
+        const vertical = layout.sizing.vertical;
+        const mode = layout.mode || "NONE";
+
+        // Backward compatibility:
+        // - PHYSICAL_AXES_V1: horizontal=width axis, vertical=height axis
+        // - Legacy/default: horizontal=primary axis, vertical=counter axis
+        if ((layout as { sizingConvention?: string }).sizingConvention === "PHYSICAL_AXES_V1") {
+            if (mode === "VERTICAL") {
+                return {
+                    primary: vertical,
+                    counter: horizontal
+                };
+            }
+
+            return {
+                primary: horizontal,
+                counter: vertical
+            };
+        }
+
+        return {
+            primary: horizontal,
+            counter: vertical
         };
     }
 
@@ -469,9 +548,9 @@ export class ${this.componentName} extends BaseComponent {
                 isCurrentNodeAutoLayout = true;
 
                 if (data.layout.sizing) {
-                    const isHorizontal = data.layout.mode === "HORIZONTAL";
-                    const primarySizing = isHorizontal ? data.layout.sizing.horizontal : data.layout.sizing.vertical;
-                    const counterSizing = isHorizontal ? data.layout.sizing.vertical : data.layout.sizing.horizontal;
+                    const sizing = this.resolveAutoLayoutSizing(data.layout);
+                    const primarySizing = sizing.primary;
+                    const counterSizing = sizing.counter;
 
                     if (primarySizing) code += `    ${varName}.primaryAxisSizingMode = "${primarySizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
                     if (counterSizing) code += `    ${varName}.counterAxisSizingMode = "${counterSizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
@@ -501,30 +580,8 @@ export class ${this.componentName} extends BaseComponent {
 
         // 2. Visual Properties (Fills, Strokes, Effects) - Safe to apply here
 
-        // Check for GLASS effect first to influence fills
-        let hasGlassEffect = false;
-        if (data.effects) {
-            hasGlassEffect = data.effects.some((e: any) => e.type === "GLASS");
-        }
-
-        // Handle Fills with Glass enhancement
-        let fillsToProcess = data.fills;
-        if (hasGlassEffect && Array.isArray(data.fills)) {
-            fillsToProcess = data.fills.map((fill: any) => {
-                // Boost opacity for glass effect if it's too low/invisible
-                if (fill.visible !== false && (fill.opacity === undefined || fill.opacity < 0.1)) {
-                    // Clone to avoid mutating original data if shared
-                    return { ...fill, opacity: 0.2 };
-                }
-                return fill;
-            });
-        } else if (hasGlassEffect) {
-            // If no fills but glass effect, add a default glass fill
-            fillsToProcess = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 }, opacity: 0.2, visible: true }];
-        }
-
-        if (Array.isArray(fillsToProcess)) {
-            code += `${varName}.fills = await this.hydratePaints(${this.stringifyPaints(fillsToProcess)});\n`;
+        if (Array.isArray(data.fills)) {
+            code += `${varName}.fills = await this.hydratePaints(${this.stringifyPaints(data.fills)});\n`;
         }
 
         if (data.strokes && Array.isArray(data.strokes)) {
@@ -545,26 +602,9 @@ export class ${this.componentName} extends BaseComponent {
         if (data.strokeBottomWeight !== undefined) code += `if ("strokeBottomWeight" in ${varName}) ${varName}.strokeBottomWeight = ${data.strokeBottomWeight};\n`;
         if (data.strokeLeftWeight !== undefined) code += `if ("strokeLeftWeight" in ${varName}) ${varName}.strokeLeftWeight = ${data.strokeLeftWeight};\n`;
 
-        if (data.effects) {
-            const validEffects = data.effects.map((effect: any) => {
-                // Map custom GLASS effect to BACKGROUND_BLUR
-                // Cast to any to avoid "comparison appears unintentional" error if type is narrowed
-                const e = effect as any;
-                if (e.type === "GLASS") {
-                    return {
-                        type: "BACKGROUND_BLUR",
-                        visible: e.visible ?? true,
-                        radius: e.radius || 0,
-                    };
-                }
-                // Filter out any other unknown types or strip invalid properties if strict
-                if (["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"].includes(e.type)) {
-                    return effect;
-                }
-                return null;
-            }).filter((e: any) => e !== null);
-
-            code += `${varName}.effects = ${JSON.stringify(validEffects)};\n`;
+        if (Array.isArray(data.effects)) {
+            // Preserve captured effects as-is for fidelity (including newer types like GLASS).
+            code += `${varName}.effects = ${JSON.stringify(data.effects)};\n`;
         }
 
         if (data.cornerRadius !== undefined) {
@@ -583,7 +623,7 @@ export class ${this.componentName} extends BaseComponent {
 
         // 3. Text Properties
         // Allow text generation for TEXT nodes AND Instances/Frames that have text overrides
-        if (((safeType as any) === 'TEXT' || (safeType as any) === 'INSTANCE' || data.text) && data.text) {
+        if ((safeType === 'TEXT' || safeType === 'INSTANCE' || data.text) && data.text) {
             code += `// Text Properties\n`;
             code += `${varName}.characters = \`${(data.text.characters || '').replace(/`/g, '\\`').replace(/\${/g, '\\${')}\`;\n`;
             if (typeof data.text.fontSize === 'number') code += `${varName}.fontSize = ${data.text.fontSize};\n`;
@@ -637,12 +677,12 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 4. Vector Paths
-        if ((safeType as any) === 'VECTOR' && data.vectorPaths && !data.svgPath) {
+        if (safeType === 'VECTOR' && data.vectorPaths && !data.svgPath) {
             code += `${varName}.vectorPaths = ${JSON.stringify(data.vectorPaths)};\n`;
         }
 
         // 5. Recursion (Children) using Phase B (Append) logic inside the loop
-        if ((safeType as any) !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
+        if (safeType !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
             data.children.forEach((child, index) => {
                 const childVar = `${varName}_child_${index}`;
                 code += `\n// Start Child: ${child.name}\n`;
@@ -774,7 +814,6 @@ export class ${this.componentName} extends BaseComponent {
 
                 if (!skipBundling) {
                     const fileName = path.basename(finalAssetRef);
-                    const safeName = fileName.replace(/[^a-z0-9]/gi, '_');
 
                     // --- ASSET NAMING SAFETY ---
                     // Prepend component name for uniqueness in shared folder

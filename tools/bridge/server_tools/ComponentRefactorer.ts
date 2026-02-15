@@ -20,9 +20,21 @@ interface RefactorerNode {
     richTextSpans?: { start: number; end: number; font?: any; fills?: any; fontSize?: number }[];
 }
 
+interface RefactorerOptions {
+    skipLoopDetection?: boolean;
+    fidelityStrict?: boolean;
+}
+
 export class ComponentRefactorer {
 
-    public refactor(filePath: string, options: { skipLoopDetection?: boolean } = {}) {
+    private isAlreadyDeclarative(content: string): boolean {
+        // Refactoring this format again is destructive because there are no figma.create*/appendChild
+        // statements left for graph reconstruction.
+        return content.includes('const structure: NodeDefinition') &&
+            content.includes('await this.renderDefinition(structure)');
+    }
+
+    public refactor(filePath: string, options: RefactorerOptions = {}) {
         console.log(`🚀 [Refactorer] Starting conversion for: ${path.basename(filePath)}`);
         if (!fs.existsSync(filePath)) {
             console.error(`❌ File not found: ${filePath}`);
@@ -36,9 +48,15 @@ export class ComponentRefactorer {
         console.log(`🏁 [Refactorer] Conversion complete.`);
     }
 
-    public refactorCode(content: string, fileName: string = 'Component', options: { skipLoopDetection?: boolean } = {}): string {
+    public refactorCode(content: string, fileName: string = 'Component', options: RefactorerOptions = {}): string {
         try {
             console.log(`[Refactorer] options received:`, options);
+
+            if (this.isAlreadyDeclarative(content)) {
+                console.log(`[Refactorer] Skipping: ${fileName} is already declarative.`);
+                return content;
+            }
+
             // Extract 'create' method body using brace counting
             let bodyContent = content;
             const createStartRegex = /async create\s*\([^)]*\)\s*:\s*Promise<SceneNode>\s*\{/;
@@ -134,10 +152,10 @@ export class ComponentRefactorer {
             }
 
             // 4. Generate Definition JSON
-            let definition = this.generateDefinition(nodes, rootId, assets);
+            let definition = this.generateDefinition(nodes, rootId, assets, options);
 
             // 5. Post-process (Optimization: Loops, Conditionals)
-            if (!options.skipLoopDetection) {
+            if (!options.skipLoopDetection && !options.fidelityStrict) {
                 definition = this.postProcessDefinition(definition);
             }
 
@@ -505,7 +523,13 @@ export class ComponentRefactorer {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private generateDefinition(nodes: Map<string, RefactorerNode>, currentId: string, assets: Map<string, string>, visited = new Set<string>()): any {
+    private generateDefinition(
+        nodes: Map<string, RefactorerNode>,
+        currentId: string,
+        assets: Map<string, string>,
+        options: RefactorerOptions,
+        visited = new Set<string>()
+    ): any {
         if (visited.has(currentId)) {
             console.warn(`⚠️ Cycle detected for node ${currentId}, skipping.`);
             return null;
@@ -565,7 +589,7 @@ export class ComponentRefactorer {
 
         // --- FIDELITY FIX: "Comparison Stats" Layout ---
         // Force responsive constraints for this specific card which is often captured fixed/centered
-        if (def.name === "Comparison Stats") {
+        if (!options.fidelityStrict && def.name === "Comparison Stats") {
             if (!def.layoutProps) def.layoutProps = {};
             // Ensure constraints are SCALE to allow resizing
             def.layoutProps.constraints = { horizontal: "SCALE", vertical: "SCALE" };
@@ -603,7 +627,7 @@ export class ComponentRefactorer {
             // Check if this node is using the problematic "thin" chevron asset
             const isChevronAsset = node.svgContentVar.includes('assets_icon_Shape_I977_492_70_461_svg_10x6');
 
-            if (isChevronAsset) {
+            if (!options.fidelityStrict && isChevronAsset) {
                 console.log(`[Refactorer] Injecting BOLD CHEVRON FIX for node ${currentId}`);
                 const boldContent = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.6 0L5 4.4L9.4 0L10 0.6L5 5.6L0 0.6L0.6 0Z" fill="#1A313C"/></svg>`;
                 def.svgContent = boldContent;
@@ -626,47 +650,43 @@ export class ComponentRefactorer {
         }
 
         if (node.children.length > 0) {
-            // --- DEDUPLICATION LOGIC ---
-            // Filter out identical siblings (same name, position, size) to prevent stacking artifacts (Dark Glass)
             const uniqueChildrenIds: string[] = [];
-            const seenSignatures = new Set<string>();
-            let seenComparisonStats = false;
+            if (options.fidelityStrict) {
+                uniqueChildrenIds.push(...node.children);
+            } else {
+                // --- DEDUPLICATION LOGIC ---
+                // Filter out identical siblings (same name, position, size) to prevent stacking artifacts.
+                const seenSignatures = new Set<string>();
+                let seenComparisonStats = false;
 
-            for (const childId of node.children) {
-                const childNode = nodes.get(childId);
-                if (childNode) {
-                    const p = childNode.props;
+                for (const childId of node.children) {
+                    const childNode = nodes.get(childId);
+                    if (childNode) {
+                        const p = childNode.props;
 
-                    // --- AGGRESSIVE DEDUPLICATION for Comparison Stats ---
-                    if (p.name === "Comparison Stats") {
-                        if (seenComparisonStats) {
-                            console.log(`[Refactorer] ✂️ Aggressively dedoping duplicate Comparison Stats: ${childId}`);
+                        if (p.name === "Comparison Stats") {
+                            if (seenComparisonStats) {
+                                console.log(`[Refactorer] ✂️ Aggressively dedoping duplicate Comparison Stats: ${childId}`);
+                                continue;
+                            }
+                            seenComparisonStats = true;
+                        }
+
+                        const sig = `${p.name}|${Math.round(p.x || 0)}|${Math.round(p.y || 0)}|${Math.round(p.width || 0)}|${Math.round(p.height || 0)}`;
+                        const isStructural = childNode.type === 'FRAME' || childNode.type === 'INSTANCE' || childNode.type === 'COMPONENT' || childNode.type === 'GROUP';
+
+                        if (!isStructural && seenSignatures.has(sig)) {
+                            console.log(`[Refactorer] ✂️ Deduping sibling: ${p.name} (${childId})`);
                             continue;
                         }
-                        seenComparisonStats = true;
+                        seenSignatures.add(sig);
+                        uniqueChildrenIds.push(childId);
                     }
-
-                    // Standard Deduplication
-                    // Create a signature based on identifying properties
-                    // We check props.x, props.y, props.width, props.height, props.name
-                    const sig = `${p.name}|${Math.round(p.x || 0)}|${Math.round(p.y || 0)}|${Math.round(p.width || 0)}|${Math.round(p.height || 0)}`;
-
-                    // FIX: Don't dedupe structural frames/instances, only primitives or known artifacts
-                    // Frames are often used for layout or lists, even if they share geometry.
-                    // Loop detection handles merging them if they are truly repetitive.
-                    const isStructural = childNode.type === 'FRAME' || childNode.type === 'INSTANCE' || childNode.type === 'COMPONENT' || childNode.type === 'GROUP';
-
-                    if (!isStructural && seenSignatures.has(sig)) {
-                        console.log(`[Refactorer] ✂️ Deduping sibling: ${p.name} (${childId})`);
-                        continue;
-                    }
-                    seenSignatures.add(sig);
-                    uniqueChildrenIds.push(childId);
                 }
             }
 
             def.children = uniqueChildrenIds
-                .map(cid => this.generateDefinition(nodes, cid, assets, new Set(visited)))
+                .map(cid => this.generateDefinition(nodes, cid, assets, options, new Set(visited)))
                 .filter(Boolean);
         }
 

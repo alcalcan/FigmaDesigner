@@ -17,14 +17,14 @@ export class FullProceduralPipeline {
 
         // 1. Generate Raw Code
         const generator = new ComponentGenerator();
-        const result = generator.generate(jsonPath, projectName, false, componentNameOverride);
+        const result = generator.generate(jsonPath, projectName, false, componentNameOverride, { refactor: false });
         const tsPath = result.tsPath;
         const className = componentNameOverride || path.basename(tsPath, '.ts');
 
         // 2. Refactor (Skip loop detection because ProceduralConverter needs static JSON)
         console.log(`[Pipeline] Step 1 / 3: Refactoring...`);
         try {
-            new ComponentRefactorer().refactor(tsPath, { skipLoopDetection: true });
+            new ComponentRefactorer().refactor(tsPath, { skipLoopDetection: true, fidelityStrict: true });
         } catch (e) {
             console.error(`❌ [Pipeline] Refactoring FAILED:`, e);
             // We do NOT return here, because sometimes partial refactoring might still be useful?

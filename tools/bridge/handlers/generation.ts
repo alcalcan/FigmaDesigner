@@ -51,18 +51,16 @@ export function handleGenerateCodePreview(req: http.IncomingMessage, res: http.S
 
             // 4. Run Generator
             // NOTE: Dynamic reloading removed to fix linting/stability. Using imported classes directly.
+            const shouldRefactor = options?.refactor !== false;
             const generator = new ComponentGenerator();
-            // We use 'temp_preview' as project name to verify isolation
-            const result = generator.generate(jsonPath, 'temp_preview');
+            // We use 'temp_preview' as project name to verify isolation.
+            const result = generator.generate(jsonPath, 'temp_preview', false, sanitaryName, {
+                refactor: shouldRefactor,
+                refactorOptions: { fidelityStrict: true }
+            });
 
             const tsPath = result.tsPath;
             console.log(`[Preview] Generated at: ${tsPath}`);
-
-            // 5. Apply Refactor (Default true)
-            if (options?.refactor !== false) {
-                console.log(`[Preview] Refactoring...`);
-                new ComponentRefactorer().refactor(tsPath);
-            }
 
             // 6. Apply Refactor & Compact (Prerequisites for Procedural)
             if (options?.procedural === true || options?.compact === true) {
@@ -171,13 +169,11 @@ export async function handleGenerateToCode(req: http.IncomingMessage, res: http.
             // Standard Code Generation (Non-procedural)
             const generator = new ComponentGenerator();
             // Pass previewMode = false so it UPDATES the registry
-            const result = generator.generate(fullPath, projectName, false, componentName);
+            const result = generator.generate(fullPath, projectName, false, componentName, {
+                refactor: shouldSimplify,
+                refactorOptions: { fidelityStrict: true }
+            });
             console.log(`✅ Component Generated: ${result.tsPath}`);
-
-            // if (shouldSimplify) {
-            //    console.log(`[Bridge] Simplification (Refactor) requested for ${result.tsPath}`);
-            //    new ComponentRefactorer().refactor(result.tsPath);
-            // }
             if (shouldCompact) {
                 console.log(`[Bridge] Compacting ${result.tsPath}...`);
                 new CompactStructure().compact(result.tsPath);
@@ -226,48 +222,107 @@ export function handleGenerateFolderToCode(req: http.IncomingMessage, res: http.
             // But let's support it since we added the param.
 
             const results: { file: string, status: string, error?: string }[] = [];
+            const currentProject = targetFolder || project || "Default";
 
-            // Recursively find json files
-            const getFiles = async (dir: string) => {
+            const scoreNode = (node: any): number => {
+                if (!node || typeof node !== 'object') return 0;
+                let score = 0;
+
+                const children = Array.isArray(node.children) ? node.children : [];
+                score += children.length * 100;
+                if (Array.isArray(node.effects)) score += node.effects.length * 20;
+                if (Array.isArray(node.fills)) score += node.fills.length * 8;
+                if (Array.isArray(node.strokes)) score += node.strokes.length * 5;
+                if (typeof node.text?.characters === 'string' && node.text.characters.length > 0) score += 25;
+                if (typeof node.svgPath === 'string' && node.svgPath.length > 0) score += 20;
+                if (Array.isArray(node.vectorPaths)) score += node.vectorPaths.length * 10;
+
+                for (const child of children) {
+                    score += scoreNode(child);
+                }
+                return score;
+            };
+
+            const scoreJsonFile = (filePath: string): number => {
+                try {
+                    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                    return scoreNode(parsed);
+                } catch {
+                    return -1;
+                }
+            };
+
+            type Candidate = { fullPath: string, componentName: string, score: number, mtimeMs: number };
+            const bestByComponent = new Map<string, Candidate>();
+
+            // Recursively collect best JSON file per component name.
+            const collectCandidates = async (dir: string) => {
                 const subdirs = fs.readdirSync(dir);
                 for (const file of subdirs) {
                     const full = path.join(dir, file);
                     if (fs.statSync(full).isDirectory()) {
-                        await getFiles(full);
+                        await collectCandidates(full);
                     } else if (file.endsWith('.json') && !file.includes('vector') && !file.includes('icon')) {
-                        try {
-                            const componentName = path.basename(full, '.json');
-                            const currentProject = targetFolder || project || "Default";
+                        const componentName = path.basename(full, '.json');
+                        const stat = fs.statSync(full);
+                        const candidate: Candidate = {
+                            fullPath: full,
+                            componentName,
+                            score: scoreJsonFile(full),
+                            mtimeMs: stat.mtimeMs
+                        };
 
-                            console.log(`[Batch] ➡️ Processing ${componentName}...`);
-                            if (procedural) {
-                                await FullProceduralPipeline.run(full, currentProject, componentName);
-                            } else {
-                                const generator = new ComponentGenerator();
-                                const result = generator.generate(full, currentProject, false, componentName);
+                        const existing = bestByComponent.get(componentName);
+                        if (!existing) {
+                            bestByComponent.set(componentName, candidate);
+                            continue;
+                        }
 
-                                const shouldRefactor = (simplified !== false) && (refactor !== false);
-                                const shouldCompact = (compact !== false) && (simplified !== false);
+                        const shouldReplace =
+                            candidate.score > existing.score ||
+                            (candidate.score === existing.score && candidate.mtimeMs > existing.mtimeMs);
 
-                                if (shouldRefactor) {
-                                    new ComponentRefactorer().refactor(result.tsPath);
-                                }
-                                if (shouldCompact) {
-                                    new CompactStructure().compact(result.tsPath);
-                                }
-                            }
-                            results.push({ file: componentName, status: 'ok' });
-                        } catch (e: unknown) {
-                            const error = e as Error;
-                            console.error(`[Batch] ❌ Error processing ${file}:`, error.message);
-                            results.push({ file, status: 'error', error: error.message });
+                        if (shouldReplace) {
+                            console.log(`[Batch] Replacing duplicate candidate for ${componentName}: ${path.basename(existing.fullPath)} -> ${path.basename(candidate.fullPath)}`);
+                            bestByComponent.set(componentName, candidate);
+                        } else {
+                            console.log(`[Batch] Skipping duplicate candidate for ${componentName}: ${path.basename(candidate.fullPath)}`);
                         }
                     }
                 }
             };
 
             if (fs.existsSync(projectPath)) {
-                await getFiles(projectPath);
+                await collectCandidates(projectPath);
+                const selected = Array.from(bestByComponent.values()).sort((a, b) => a.componentName.localeCompare(b.componentName));
+
+                for (const entry of selected) {
+                    try {
+                        console.log(`[Batch] ➡️ Processing ${entry.componentName} (score=${entry.score})...`);
+                        if (procedural) {
+                            await FullProceduralPipeline.run(entry.fullPath, currentProject, entry.componentName);
+                        } else {
+                            const shouldRefactor = (simplified !== false) && (refactor !== false);
+                            const shouldCompact = (compact !== false) && (simplified !== false);
+
+                            const generator = new ComponentGenerator();
+                            const result = generator.generate(entry.fullPath, currentProject, false, entry.componentName, {
+                                refactor: shouldRefactor,
+                                refactorOptions: { fidelityStrict: true }
+                            });
+
+                            if (shouldCompact) {
+                                new CompactStructure().compact(result.tsPath);
+                            }
+                        }
+                        results.push({ file: entry.componentName, status: 'ok' });
+                    } catch (e: unknown) {
+                        const error = e as Error;
+                        console.error(`[Batch] ❌ Error processing ${entry.componentName}:`, error.message);
+                        results.push({ file: entry.componentName, status: 'error', error: error.message });
+                    }
+                }
+
                 console.log(`[Batch] ✅ Processed ${results.length} files. Success: ${results.filter(r => r.status === 'ok').length}, Fail: ${results.filter(r => r.status !== 'ok').length}`);
 
                 // Cleanup logic: If cleanup requested
@@ -325,12 +380,15 @@ export function handleRefactorCode(req: http.IncomingMessage, res: http.ServerRe
                 if (procedural) {
                     resultPath = await FullProceduralPipeline.run(targetPath, currentProject, componentName);
                 } else {
+                    const shouldRefactor = simplified === true;
                     const generator = new ComponentGenerator();
-                    const result = generator.generate(targetPath, currentProject, false, componentName);
+                    const result = generator.generate(targetPath, currentProject, false, componentName, {
+                        refactor: shouldRefactor,
+                        refactorOptions: { fidelityStrict: true }
+                    });
                     resultPath = result.tsPath;
 
-                    if (simplified) {
-                        new ComponentRefactorer().refactor(resultPath);
+                    if (shouldRefactor) {
                         new CompactStructure().compact(resultPath);
                     }
                 }

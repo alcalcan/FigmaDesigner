@@ -79,7 +79,7 @@ export function handleRead(req: http.IncomingMessage, res: http.ServerResponse) 
     }
 
     try {
-        const content = fs.readFileSync(fullPath, 'utf8');
+        const content = fs.readFileSync(targetPath, 'utf8');
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(content);
     } catch (e) {

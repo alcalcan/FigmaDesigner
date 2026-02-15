@@ -50,6 +50,7 @@ export interface SerializedNode {
             horizontal?: "AUTO" | "FIXED";
             vertical?: "AUTO" | "FIXED";
         };
+        sizingConvention?: "PHYSICAL_AXES_V1" | "LEGACY_PRIMARY_COUNTER_V0";
         alignment?: {
             primary?: "MIN" | "MAX" | "CENTER" | "SPACE_BETWEEN";
             counter?: "MIN" | "MAX" | "CENTER" | "BASELINE";
@@ -124,6 +125,41 @@ export class JsonReconstructor extends BaseComponent {
     private data: SerializedNode;
     private jsonPath: string;
 
+    private resolveAutoLayoutSizing(layout: SerializedNode["layout"] | undefined): { primary?: "AUTO" | "FIXED"; counter?: "AUTO" | "FIXED" } {
+        if (!layout?.sizing) return {};
+
+        const horizontal = layout.sizing.horizontal;
+        const vertical = layout.sizing.vertical;
+        const mode = layout.mode || "NONE";
+
+        // Backward compatibility:
+        // - PHYSICAL_AXES_V1: horizontal=width axis, vertical=height axis
+        // - Legacy/default: horizontal=primary axis, vertical=counter axis
+        if (layout.sizingConvention === "PHYSICAL_AXES_V1") {
+            if (mode === "VERTICAL") {
+                return {
+                    primary: vertical,
+                    counter: horizontal
+                };
+            }
+
+            return {
+                primary: horizontal,
+                counter: vertical
+            };
+        }
+
+        return {
+            primary: horizontal,
+            counter: vertical
+        };
+    }
+
+    private isPlaceholderData(data: SerializedNode | undefined): boolean {
+        if (!data) return true;
+        return data.id === "0:0" && data.type === "FRAME" && data.name === "Empty Registry Result";
+    }
+
     constructor(jsonPath: string) {
         super();
         this.jsonPath = jsonPath;
@@ -142,10 +178,17 @@ export class JsonReconstructor extends BaseComponent {
     }
 
     public setData(data: SerializedNode) {
+        if (!data || typeof data !== "object" || !("type" in data)) {
+            throw new Error("Invalid JSON payload: missing root node type");
+        }
         this.data = data;
     }
 
     async create(props: ComponentProps & { assets?: Record<string, string> }): Promise<SceneNode> {
+        if (this.isPlaceholderData(this.data)) {
+            throw new Error("No valid JSON data loaded for reconstruction");
+        }
+
         const assetSource: AssetSource = {
             assets: {},
             createdImagesByAssetRef: new Map()
@@ -244,7 +287,6 @@ export class JsonReconstructor extends BaseComponent {
                 polyNode.fills = []; // Clear default fill
                 if (data.pointCount !== undefined) polyNode.pointCount = data.pointCount;
                 node = polyNode;
-            } else if (safeType === "ELLIPSE") {
             } else if (safeType === "ELLIPSE") {
                 node = figma.createEllipse();
                 (node as EllipseNode).fills = []; // Clear default fill
@@ -385,7 +427,12 @@ export class JsonReconstructor extends BaseComponent {
                 if ("strokeLeftWeight" in node && typeof data.strokeLeftWeight === 'number') node.strokeLeftWeight = data.strokeLeftWeight;
             }
             if ("effects" in node && data.effects) {
-                node.effects = this.hydrateEffects(data.effects);
+                try {
+                    node.effects = this.hydrateEffects(data.effects, { preserveUnknown: true });
+                } catch (effectErr) {
+                    console.warn(`Failed to apply exact effects to ${node.name}, using fallback`, effectErr);
+                    node.effects = this.hydrateEffects(data.effects, { preserveUnknown: false });
+                }
             }
             if ("cornerRadius" in node) {
                 if (typeof data.cornerRadius === 'number') {
@@ -623,11 +670,10 @@ export class JsonReconstructor extends BaseComponent {
                 const frame = node as FrameNode;
                 // layoutMode was already set to allow absolute children, but we re-apply or apply rest here
                 if (frame.layoutMode !== "NONE") {
-                    if (data.layout.sizing) {
-                        // This is where "Hug" (AUTO) is applied, overriding the Fixed size from step 1
-                        frame.primaryAxisSizingMode = data.layout.sizing.horizontal === "AUTO" ? "AUTO" : "FIXED";
-                        frame.counterAxisSizingMode = data.layout.sizing.vertical === "AUTO" ? "AUTO" : "FIXED";
-                    }
+                    const sizing = this.resolveAutoLayoutSizing(data.layout);
+                    // This is where "Hug" (AUTO) is applied, overriding the Fixed size from step 1
+                    if (sizing.primary) frame.primaryAxisSizingMode = sizing.primary;
+                    if (sizing.counter) frame.counterAxisSizingMode = sizing.counter;
                     if (data.layout.alignment) {
                         frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
                         frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";

@@ -19,7 +19,13 @@ export function normalizeRelativeTransform(t: T2x3): T2x3 {
 
 export function applySizeAndTransform(
     node: SceneNode & LayoutMixin,
-    data: { width?: number; height?: number; relativeTransform?: T2x3; rotation?: number }
+    data: {
+        width?: number;
+        height?: number;
+        relativeTransform?: T2x3;
+        rotation?: number;
+        preserveAutoLayoutTranslation?: boolean;
+    }
 ) {
     // 1) size first
     const canResize = typeof node.resize === 'function' || typeof (node as any).resizeWithoutConstraints === 'function';
@@ -59,7 +65,7 @@ export function applySizeAndTransform(
         | "ABSOLUTE"
         | null;
 
-    if (inAutoLayout && positioning !== "ABSOLUTE") {
+    if (inAutoLayout && positioning !== "ABSOLUTE" && data.preserveAutoLayoutTranslation !== true) {
         // Translation will be ignored anyway in auto-layout flow.
         node.relativeTransform = [[t[0][0], t[0][1], 0], [t[1][0], t[1][1], 0]];
     } else {

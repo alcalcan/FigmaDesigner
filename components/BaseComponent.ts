@@ -1,6 +1,4 @@
-import { SerializedNode } from './JsonReconstructor';
 import { applySizeAndTransform, detectBakedRotation, T2x3 } from "./TransformHelpers";
-import { AssetSource, hydrateFills } from "./PaintHelpers";
 
 export { type T2x3 };
 
@@ -36,6 +34,7 @@ export interface NodeDefinition {
     layoutGrow?: 0 | 1;
     layoutAlign?: "INHERIT" | "STRETCH";
     constraints?: Constraints;
+    preserveAutoLayoutTranslation?: boolean;
   };
   children?: NodeDefinition[];
   // For specialized nodes like Vectors where we might pass raw SVG or paths
@@ -43,11 +42,44 @@ export interface NodeDefinition {
   vectorPaths?: VectorPaths;
   shouldFlatten?: boolean;
   preventBakingAnalysis?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component?: any;
+  component?: new () => {
+    create: (props: ComponentProps) => SceneNode | Promise<SceneNode>;
+    createAsync?: (props: ComponentProps) => Promise<SceneNode>;
+  };
+  postCreate?: (node: SceneNode, props?: NodeDefinition["props"]) => void | Promise<void>;
 }
 
 export abstract class BaseComponent {
+  private static nativeGlassSupport: boolean | null = null;
+
+  private supportsNativeGlassEffects(): boolean {
+    if (BaseComponent.nativeGlassSupport !== null) return BaseComponent.nativeGlassSupport;
+
+    let frameProbe: FrameNode | null = null;
+    let rectProbe: RectangleNode | null = null;
+    try {
+      // Probe with minimal payload. We test both frame and rectangle because
+      // captures frequently apply GLASS on frames.
+      frameProbe = figma.createFrame();
+      frameProbe.resizeWithoutConstraints(2, 2);
+      frameProbe.fills = [];
+      frameProbe.effects = [{ type: "GLASS", visible: true, radius: 1 } as unknown as Effect];
+
+      rectProbe = figma.createRectangle();
+      rectProbe.effects = [{ type: "GLASS", visible: true, radius: 1 } as unknown as Effect];
+      BaseComponent.nativeGlassSupport = true;
+    } catch (_err) {
+      BaseComponent.nativeGlassSupport = false;
+    } finally {
+      try {
+        frameProbe?.remove();
+        rectProbe?.remove();
+      } catch (_removeErr) { /* noop */ }
+    }
+
+    return BaseComponent.nativeGlassSupport;
+  }
+
   abstract create(props: ComponentProps): SceneNode | Promise<SceneNode>;
 
   /**
@@ -55,7 +87,8 @@ export abstract class BaseComponent {
    */
   async renderDefinition(def: NodeDefinition, parent?: BaseNode): Promise<SceneNode> {
     let node: SceneNode;
-    let isFromSvg = false;
+    let pendingLayoutGrow: number | undefined;
+    let pendingLayoutAlign: string | undefined;
 
     // 1. Create Node
     switch (def.type) {
@@ -71,7 +104,6 @@ export abstract class BaseComponent {
       case "STAR":
         if (def.svgContent) {
           node = figma.createNodeFromSvg(def.svgContent);
-          isFromSvg = true;
         } else {
           const starNode = figma.createStar();
           if (def.props?.pointCount !== undefined) starNode.pointCount = def.props.pointCount;
@@ -82,7 +114,6 @@ export abstract class BaseComponent {
       case "POLYGON":
         if (def.svgContent) {
           node = figma.createNodeFromSvg(def.svgContent);
-          isFromSvg = true;
         } else {
           const polyNode = figma.createPolygon();
           if (def.props?.pointCount !== undefined) polyNode.pointCount = def.props.pointCount;
@@ -91,7 +122,6 @@ export abstract class BaseComponent {
         break;
       case "VECTOR":
         if (def.svgContent) {
-          isFromSvg = true;
           // Detect and fix baked rotations in SVG assets
           let finalSvgContent = def.svgContent;
           const layout = def.layoutProps;
@@ -162,12 +192,11 @@ export abstract class BaseComponent {
         break;
       }
       case "COMPONENT": {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const componentClass = (def as any).component;
+        const componentClass = def.component;
         if (componentClass) {
           const instance = new componentClass();
           // Pass EVERYTHING to the nested component: props and layout properties
-          console.log(`[BaseComponent] Creating nested component: ${def.name || (componentClass as any).name}`);
+          console.log(`[BaseComponent] Creating nested component: ${def.name || componentClass.name}`);
           node = await instance.create({
             ...(def.props || {}),
             ...(def.layoutProps || {})
@@ -180,11 +209,6 @@ export abstract class BaseComponent {
       }
       // TODO: Handle INSTANCE, GROUP if needed
       default: node = figma.createFrame(); break;
-    }
-
-    if (parent && "appendChild" in parent) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (parent as any).appendChild(node);
     }
 
     // 2.5. Flatten if requested (must be done after appending children, but potentially before other props?)
@@ -250,8 +274,17 @@ export abstract class BaseComponent {
     // 2.5 Handle Flattening
     if (def.shouldFlatten) {
       try {
+        const flattenParent = (parent || figma.currentPage) as BaseNode & ChildrenMixin;
+        // Ensure node is attached before flattening to match Figma expectations.
+        // This mirrors runtime behavior used by JsonReconstructor (attach late but valid).
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((node as any).parent !== flattenParent) {
+          try {
+            flattenParent.appendChild(node);
+          } catch (_attachErr) { /* noop */ }
+        }
         // Flatten replaces the node with a new Vector node
-        const flattened = figma.flatten([node], (parent || figma.currentPage) as BaseNode & ChildrenMixin);
+        const flattened = figma.flatten([node], flattenParent);
         node = flattened;
       } catch (e) {
         console.warn(`[BaseComponent] Failed to flatten node ${def.name || 'node'}`, e);
@@ -260,19 +293,19 @@ export abstract class BaseComponent {
 
 
     // 3. Set Properties
-    // Re-assign safeNode in case node identity changed due to flattening
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const finalNode = node as any;
+    // Re-assign final node in case identity changed due to flattening
+    const finalNode = node as SceneNode & Record<string, unknown>;
 
     if (def.props) {
       // Pre-load font for TextNodes to avoid "unloaded font" errors when setting characters/properties
       if (def.type === "TEXT") {
+        const textNode = node as TextNode;
         const fontProp = def.props.font;
         if (fontProp) {
-          await this.setFont(finalNode, fontProp);
+          await this.setFont(textNode, fontProp);
         } else {
           // If no explicit font prop, ensure the default font is loaded
-          const currentFont = finalNode.fontName;
+          const currentFont = textNode.fontName;
           if (currentFont && currentFont !== figma.mixed) {
             await figma.loadFontAsync(currentFont as FontName);
           }
@@ -302,12 +335,26 @@ export abstract class BaseComponent {
           // Allow overriding paints even for SVG content if explicit props are provided
           finalNode[key] = await this.hydratePaints(value);
         } else if (key === "effects") {
-          finalNode[key] = this.hydrateEffects(value);
+          // Prefer exact captured effects (including newer effect types). If the runtime rejects
+          // those payloads, fall back to conservative legacy-safe hydration.
+          const exactEffects = this.hydrateEffects(value, { preserveUnknown: true });
+          try {
+            finalNode[key] = exactEffects;
+          } catch (effectErr) {
+            console.warn(`[BaseComponent] Failed to apply exact effects on ${def.name || def.type}, falling back`, effectErr);
+            const fallbackEffects = this.hydrateEffects(value, { preserveUnknown: false });
+            try {
+              finalNode[key] = fallbackEffects;
+            } catch (fallbackErr) {
+              console.warn(`[BaseComponent] Failed to apply fallback effects on ${def.name || def.type}, dropping effects`, fallbackErr);
+              finalNode[key] = [];
+            }
+          }
         } else {
           try {
             // Check key existence and skip if it's not a property or if it's a function
-            if (key in finalNode && typeof (finalNode as any)[key] !== 'function') {
-              (finalNode as any)[key] = value;
+            if (key in finalNode && typeof finalNode[key] !== 'function') {
+              finalNode[key] = value;
             } else if (!(key in finalNode)) {
               // Optionally log or ignore custom props
               // console.log(`Skipping non-Figma property: ${key}`);
@@ -361,7 +408,9 @@ export abstract class BaseComponent {
           // Masks need a fill to be effective (opacity source). Any solid fill works.
           n.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
           // Force ALPHA mask type so the fill constitutes the mask (ignoring vector paths if missing)
-          (n as any).maskType = "ALPHA";
+          if ("maskType" in node) {
+            node.maskType = "ALPHA";
+          }
         }
       }
     }
@@ -379,24 +428,10 @@ export abstract class BaseComponent {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const layoutOpts = { ...def.layoutProps } as any;
 
-      // CRITICAL FIX: If sizing mode is AUTO (Hug Contents), we must NOT hardcode the dimension via resize(),
-      // because resize() forces the node into FIXED mode. We should let the content drive the size.
-      if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE") {
-        const frame = node as FrameNode;
-        const isHorizontal = frame.layoutMode === "HORIZONTAL";
-        const isVertical = frame.layoutMode === "VERTICAL";
-
-        // Primary Axis
-        if (frame.primaryAxisSizingMode === "AUTO") {
-          if (isHorizontal) delete layoutOpts.width;
-          if (isVertical) delete layoutOpts.height;
-        }
-
-        // Counter Axis
-        if (frame.counterAxisSizingMode === "AUTO") {
-          if (isHorizontal) delete layoutOpts.height;
-          if (isVertical) delete layoutOpts.width;
-        }
+      // Preserve translation for in-flow auto-layout children only when explicitly requested.
+      // Default behavior should match JsonReconstructor (strip in-flow translation).
+      if (def.layoutProps.preserveAutoLayoutTranslation === true) {
+        layoutOpts.preserveAutoLayoutTranslation = true;
       }
 
       // TEXT Node hugging support
@@ -412,31 +447,95 @@ export abstract class BaseComponent {
       // but layoutPositioning is still "AUTO".
       if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {
         try {
-          (node as any).layoutPositioning = def.layoutProps.layoutPositioning;
+          (node as LayoutMixin).layoutPositioning = def.layoutProps.layoutPositioning;
         } catch (e) {
           console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name}`, e);
+        }
+      }
+
+      // Force fixed sizing modes before resize so width/height are actually applied.
+      // This mirrors JsonReconstructor behavior and prevents accidental "all hug" drift.
+      if (
+        "layoutMode" in node &&
+        (node as FrameNode).layoutMode !== "NONE" &&
+        (typeof layoutOpts.width === "number" || typeof layoutOpts.height === "number")
+      ) {
+        const frame = node as FrameNode;
+        try {
+          if (frame.primaryAxisSizingMode !== "FIXED") frame.primaryAxisSizingMode = "FIXED";
+          if (frame.counterAxisSizingMode !== "FIXED") frame.counterAxisSizingMode = "FIXED";
+        } catch (e) {
+          console.warn(`[BaseComponent] Failed to force FIXED sizing on ${def.name || def.type}`, e);
         }
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       applySizeAndTransform(node as any, layoutOpts);
 
-      // Apply layoutGrow and layoutAlign
-      if (def.layoutProps.layoutGrow !== undefined && "layoutGrow" in node) {
-        (node as any).layoutGrow = def.layoutProps.layoutGrow;
+      // Resize operations can force AUTO sizing modes into FIXED.
+      // Re-apply container layout props after transform to preserve captured Auto Layout behavior.
+      if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE" && def.props) {
+        const frame = node as FrameNode;
+        if (def.props.primaryAxisSizingMode !== undefined) frame.primaryAxisSizingMode = def.props.primaryAxisSizingMode;
+        if (def.props.counterAxisSizingMode !== undefined) frame.counterAxisSizingMode = def.props.counterAxisSizingMode;
+        if (def.props.primaryAxisAlignItems !== undefined) frame.primaryAxisAlignItems = def.props.primaryAxisAlignItems;
+        if (def.props.counterAxisAlignItems !== undefined) frame.counterAxisAlignItems = def.props.counterAxisAlignItems;
+        if (def.props.itemSpacing !== undefined) frame.itemSpacing = def.props.itemSpacing;
+        if (def.props.paddingTop !== undefined) frame.paddingTop = def.props.paddingTop;
+        if (def.props.paddingRight !== undefined) frame.paddingRight = def.props.paddingRight;
+        if (def.props.paddingBottom !== undefined) frame.paddingBottom = def.props.paddingBottom;
+        if (def.props.paddingLeft !== undefined) frame.paddingLeft = def.props.paddingLeft;
+        if (def.props.itemReverseZIndex !== undefined) frame.itemReverseZIndex = def.props.itemReverseZIndex;
+        if (def.props.strokesIncludedInLayout !== undefined) frame.strokesIncludedInLayout = def.props.strokesIncludedInLayout;
+        if (def.props.layoutWrap !== undefined && "layoutWrap" in frame) {
+          (frame as FrameNode & { layoutWrap: "NO_WRAP" | "WRAP" }).layoutWrap = def.props.layoutWrap as "NO_WRAP" | "WRAP";
+        }
       }
-      if (def.layoutProps.layoutAlign && "layoutAlign" in node) {
-        (node as any).layoutAlign = def.layoutProps.layoutAlign;
-      }
+
+      // Defer child auto-layout placement props until node is attached to parent.
+      // Detached nodes can reject or ignore these values.
+      pendingLayoutGrow = def.layoutProps.layoutGrow ?? def.props?.layoutGrow;
+      pendingLayoutAlign = def.layoutProps.layoutAlign ?? def.props?.layoutAlign;
       if (def.layoutProps.constraints && "constraints" in node) {
         (node as ConstraintMixin).constraints = def.layoutProps.constraints;
       }
     }
 
     // 4.5 Post-Create Hook (Specialized logic)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((def as any).postCreate && typeof (def as any).postCreate === 'function') {
-      await (def as any).postCreate(node, def.props);
+    if (typeof def.postCreate === 'function') {
+      await def.postCreate(node, def.props);
+    }
+
+    // 4.8 Attach to parent at the end to preserve stable auto-layout behavior.
+    // This matches JsonReconstructor ordering more closely and avoids intermediate
+    // layout calculations with partially configured nodes.
+    if (parent && "appendChild" in parent) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const parentWithChildren = parent as any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((node as any).parent !== parentWithChildren) {
+        try {
+          parentWithChildren.appendChild(node);
+        } catch (appendErr) {
+          console.warn(`[BaseComponent] Failed to append ${def.name || def.type} to parent`, appendErr);
+        }
+      }
+    }
+
+    if (pendingLayoutGrow !== undefined && "layoutGrow" in node) {
+      try {
+        (node as LayoutMixin).layoutGrow = pendingLayoutGrow;
+      } catch (e) {
+        console.warn(`[BaseComponent] Failed to set layoutGrow on ${def.name || def.type}`, e);
+      }
+    }
+
+    if (pendingLayoutAlign && "layoutAlign" in node) {
+      try {
+        (node as LayoutMixin).layoutAlign = pendingLayoutAlign;
+      } catch (e) {
+        console.warn(`[BaseComponent] Failed to set layoutAlign on ${def.name || def.type}`, e);
+      }
     }
 
     // 5. Recursion
@@ -566,11 +665,12 @@ export abstract class BaseComponent {
    * Helper to convert portable effects to Figma-ready effects
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  hydrateEffects(effects: any[]): Effect[] {
+  hydrateEffects(effects: any[], options: { preserveUnknown?: boolean } = {}): Effect[] {
     if (!effects || !Array.isArray(effects)) return [];
+    const preserveUnknown = options.preserveUnknown !== false;
 
     return effects.reduce<Effect[]>((acc, e) => {
-      const converted = this.convertEffect(e);
+      const converted = this.convertEffect(e, preserveUnknown);
       if (converted) {
         if (Array.isArray(converted)) {
           acc.push(...converted);
@@ -583,22 +683,36 @@ export abstract class BaseComponent {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  convertEffect(effectData: any): Effect | Effect[] | null {
+  convertEffect(effectData: any, preserveUnknown: boolean = true): Effect | Effect[] | null {
     const effect = { ...effectData };
+    delete effect.boundVariables;
 
     // Sanitize color
     if (effect.color && typeof effect.color === 'object') {
       const colorClone = JSON.parse(JSON.stringify(effect.color));
-      effect.color = colorClone;
+      const hasRgb = typeof colorClone.r === 'number' && typeof colorClone.g === 'number' && typeof colorClone.b === 'number';
+      if (!hasRgb) {
+        // Invalid/mixed/variable alias color payloads are rejected by set_effects.
+        delete effect.color;
+      } else {
+        if (typeof colorClone.a === 'number') {
+          const a = Math.max(0, Math.min(1, colorClone.a));
+          colorClone.a = a;
+        }
+        effect.color = colorClone;
+      }
     }
 
     if (effect.type === "DROP_SHADOW" || effect.type === "INNER_SHADOW") {
       return {
         type: effect.type,
-        color: effect.color,
-        offset: effect.offset,
-        radius: effect.radius,
-        spread: effect.spread,
+        color: effect.color || { r: 0, g: 0, b: 0, a: 0.25 },
+        offset: {
+          x: typeof effect.offset?.x === 'number' ? effect.offset.x : 0,
+          y: typeof effect.offset?.y === 'number' ? effect.offset.y : 0
+        },
+        radius: typeof effect.radius === 'number' ? effect.radius : 0,
+        spread: typeof effect.spread === 'number' ? effect.spread : 0,
         visible: effect.visible !== undefined ? effect.visible : true,
         blendMode: effect.blendMode || "NORMAL",
         showShadowBehindNode: effect.showShadowBehindNode !== undefined ? effect.showShadowBehindNode : false
@@ -613,8 +727,23 @@ export abstract class BaseComponent {
       } as Effect;
     }
 
-    // Handle custom "GLASS" type
+    // Preserve custom/new effect types when requested for capture fidelity.
     if (effect.type === "GLASS") {
+      // Keep native GLASS payload minimal. Some runtimes accept GLASS but reject
+      // extended metadata fields from capture payloads.
+      const nativeGlass: Record<string, unknown> = {
+        type: "GLASS",
+        visible: effect.visible !== undefined ? effect.visible : true,
+        radius: typeof effect.radius === 'number' ? effect.radius : 20
+      };
+
+      if (preserveUnknown) {
+        if (this.supportsNativeGlassEffects()) {
+          return nativeGlass as Effect;
+        }
+      }
+
+      // Legacy fallback for environments that reject unknown effect types.
       const radius = typeof effect.radius === 'number' ? effect.radius : 20;
       const glassEffects: Effect[] = [];
 
@@ -652,7 +781,11 @@ export abstract class BaseComponent {
       return glassEffects;
     }
 
+    if (preserveUnknown && typeof effect.type === "string") {
+      // Best-effort pass-through without known-invalid keys.
+      return effect as Effect;
+    }
+
     return null;
   }
 }
-

@@ -1,8 +1,8 @@
 import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 
 // SVG Imports
-import SVG_Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832 from "./assets/Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832.svg";
-import SVG_Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336 from "./assets/Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336.svg";
+import SVG_Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711 from "./assets/Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711.svg";
+import SVG_Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879 from "./assets/Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879.svg";
 import SVG_Top_bar_Synth_VectorStroke_2 from "./assets/Top_bar_Synth_VectorStroke_2.svg";
 import SVG_Top_bar_Synth_VectorStroke_3 from "./assets/Top_bar_Synth_VectorStroke_3.svg";
 import SVG_Top_bar_Synth_VectorStroke_4 from "./assets/Top_bar_Synth_VectorStroke_4.svg";
@@ -71,6 +71,7 @@ root.opacity = 1;
 root.locked = false;
 if ("blendMode" in root) root.blendMode = "PASS_THROUGH";
 if ("isMask" in root) root.isMask = false;
+if ("maskType" in root) root.maskType = "ALPHA";
 if ("clipsContent" in root) root.clipsContent = false;
 if ("layoutMode" in root) {
     root.layoutMode = "HORIZONTAL";
@@ -83,6 +84,8 @@ if ("layoutMode" in root) {
     root.paddingRight = 40;
     root.paddingBottom = 8;
     root.paddingLeft = 40;
+    root.itemReverseZIndex = false;
+    root.strokesIncludedInLayout = false;
 }
 root.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.9490196108818054,"g":0.9529411792755127,"b":0.95686274766922},"boundVariables":{}}]);
 root.strokes = await this.hydratePaints([]);
@@ -91,6 +94,10 @@ root.strokeAlign = "INSIDE";
 if ("strokeCap" in root) root.strokeCap = "NONE";
 if ("strokeJoin" in root) root.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root) root.strokeTopWeight = 1;
+if ("strokeRightWeight" in root) root.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root) root.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root) root.strokeLeftWeight = 1;
 root.effects = [];
 if ("cornerRadius" in root) root.cornerRadius = 0;
 
@@ -102,6 +109,7 @@ root_child_0.opacity = 1;
 root_child_0.locked = false;
 if ("blendMode" in root_child_0) root_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0) root_child_0.isMask = false;
+if ("maskType" in root_child_0) root_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_0) root_child_0.clipsContent = false;
 if ("layoutMode" in root_child_0) {
     root_child_0.layoutMode = "HORIZONTAL";
@@ -114,6 +122,8 @@ if ("layoutMode" in root_child_0) {
     root_child_0.paddingRight = 0;
     root_child_0.paddingBottom = 0;
     root_child_0.paddingLeft = 0;
+    root_child_0.itemReverseZIndex = false;
+    root_child_0.strokesIncludedInLayout = false;
 }
 root_child_0.fills = await this.hydratePaints([]);
 root_child_0.strokes = await this.hydratePaints([]);
@@ -122,6 +132,10 @@ root_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_0) root_child_0.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_0) root_child_0.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_0) root_child_0.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_0) root_child_0.strokeLeftWeight = 1;
 root_child_0.effects = [];
 if ("cornerRadius" in root_child_0) root_child_0.cornerRadius = 0;
 
@@ -133,6 +147,7 @@ root_child_0_child_0.opacity = 1;
 root_child_0_child_0.locked = false;
 if ("blendMode" in root_child_0_child_0) root_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0) root_child_0_child_0.isMask = false;
+if ("maskType" in root_child_0_child_0) root_child_0_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_0_child_0) root_child_0_child_0.clipsContent = false;
 if ("layoutMode" in root_child_0_child_0) {
     root_child_0_child_0.layoutMode = "HORIZONTAL";
@@ -145,6 +160,8 @@ if ("layoutMode" in root_child_0_child_0) {
     root_child_0_child_0.paddingRight = 0;
     root_child_0_child_0.paddingBottom = 0;
     root_child_0_child_0.paddingLeft = 0;
+    root_child_0_child_0.itemReverseZIndex = false;
+    root_child_0_child_0.strokesIncludedInLayout = false;
 }
 root_child_0_child_0.fills = await this.hydratePaints([]);
 root_child_0_child_0.strokes = await this.hydratePaints([]);
@@ -153,22 +170,39 @@ root_child_0_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0_child_0) root_child_0_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_0) root_child_0_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_0) root_child_0_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_0_child_0) root_child_0_child_0.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_0_child_0) root_child_0_child_0.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_0_child_0) root_child_0_child_0.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_0_child_0) root_child_0_child_0.strokeLeftWeight = 1;
 root_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0) root_child_0_child_0.cornerRadius = 0;
 
 // Start Child: Group 19
-const root_child_0_child_0_child_0 = figma.createFrame(); // Group handled as Frame
-root_child_0_child_0_child_0.fills = []; // Groups normally have no fills, but Frame defaults to white
-root_child_0_child_0_child_0.clipsContent = false; // Groups never clip content
-root_child_0_child_0_child_0.strokes = [];
-root_child_0_child_0_child_0.strokeWeight = 0;
+const root_child_0_child_0_child_0 = figma.createFrame();
 root_child_0_child_0_child_0.name = "Group 19";
 root_child_0_child_0_child_0.visible = true;
 root_child_0_child_0_child_0.opacity = 1;
 root_child_0_child_0_child_0.locked = false;
 if ("blendMode" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.isMask = false;
+if ("maskType" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.maskType = "ALPHA";
+if ("clipsContent" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.clipsContent = false;
+if ("layoutMode" in root_child_0_child_0_child_0) {
+    root_child_0_child_0_child_0.layoutMode = "NONE";
+}
+root_child_0_child_0_child_0.fills = await this.hydratePaints([]);
+root_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
+root_child_0_child_0_child_0.strokeWeight = 0;
+root_child_0_child_0_child_0.strokeAlign = "INSIDE";
+if ("strokeCap" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeCap = "NONE";
+if ("strokeJoin" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeJoin = "MITER";
+if ("strokeMiterLimit" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeTopWeight = 0;
+if ("strokeRightWeight" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeRightWeight = 0;
+if ("strokeBottomWeight" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeBottomWeight = 0;
+if ("strokeLeftWeight" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.strokeLeftWeight = 0;
 root_child_0_child_0_child_0.effects = [];
+if ("cornerRadius" in root_child_0_child_0_child_0) root_child_0_child_0_child_0.cornerRadius = 0;
 
 // Start Child: Logos / Wordmark / UEFA.com Black
 const root_child_0_child_0_child_0_child_0 = figma.createFrame();
@@ -178,6 +212,7 @@ root_child_0_child_0_child_0_child_0.opacity = 1;
 root_child_0_child_0_child_0_child_0.locked = false;
 if ("blendMode" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.isMask = false;
+if ("maskType" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.clipsContent = true;
 if ("layoutMode" in root_child_0_child_0_child_0_child_0) {
     root_child_0_child_0_child_0_child_0.layoutMode = "NONE";
@@ -189,11 +224,15 @@ root_child_0_child_0_child_0_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeTopWeight = 0.5517241358757019;
+if ("strokeRightWeight" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeRightWeight = 0.5517241358757019;
+if ("strokeBottomWeight" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeBottomWeight = 0.5517241358757019;
+if ("strokeLeftWeight" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.strokeLeftWeight = 0.5517241358757019;
 root_child_0_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0.cornerRadius = 0;
 
 // Start Child: UEFA.com
-const root_child_0_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_Top_bar_assets_vector_UEFA_com_858_8512_svg_98_46454620361328x15_945378303527832);
+const root_child_0_child_0_child_0_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_Top_bar_assets_vector_UEFA_com_1026_1733_svg_98_4645004272461x15_94540023803711);
 root_child_0_child_0_child_0_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_0_child_0_child_0_child_0_child_0 = figma.flatten([root_child_0_child_0_child_0_child_0_child_0_svgContainer]);
 root_child_0_child_0_child_0_child_0_child_0.name = "UEFA.com";
@@ -202,16 +241,17 @@ root_child_0_child_0_child_0_child_0_child_0.opacity = 1;
 root_child_0_child_0_child_0_child_0_child_0.locked = false;
 if ("blendMode" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.isMask = false;
+if ("maskType" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.maskType = "ALPHA";
 root_child_0_child_0_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
-root_child_0_child_0_child_0_child_0_child_0.strokeWeight = 1;
-root_child_0_child_0_child_0_child_0_child_0.strokeAlign = "INSIDE";
+root_child_0_child_0_child_0_child_0_child_0.strokeWeight = 0;
+root_child_0_child_0_child_0_child_0_child_0.strokeAlign = "CENTER";
 if ("strokeCap" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.strokeMiterLimit = 4;
 root_child_0_child_0_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_0_child_0_child_0) root_child_0_child_0_child_0_child_0_child_0.cornerRadius = 0;
 root_child_0_child_0_child_0_child_0.appendChild(root_child_0_child_0_child_0_child_0_child_0);
-applySizeAndTransform(root_child_0_child_0_child_0_child_0_child_0, {"width":98.46454620361328,"height":15.945378303527832,"relativeTransform":[[1,0,0],[0,1,0.0546875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_0_child_0_child_0_child_0_child_0, {"width":98.4645004272461,"height":15.94540023803711,"relativeTransform":[[1,0,0],[0,1,0.0546875]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 root_child_0_child_0_child_0_child_0_child_0.x = 0;
 root_child_0_child_0_child_0_child_0_child_0.y = 0.0546875;
 root_child_0_child_0_child_0.appendChild(root_child_0_child_0_child_0_child_0);
@@ -222,7 +262,7 @@ root_child_0_child_0.appendChild(root_child_0_child_0_child_0);
 // Child Layout Props
 root_child_0_child_0_child_0.layoutAlign = "INHERIT";
 root_child_0_child_0_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_0_child_0_child_0, {"width":54,"height":18.5,"relativeTransform":[[1,0,0],[0,1,2.5]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO"});
+applySizeAndTransform(root_child_0_child_0_child_0, {"width":54,"height":18.5,"relativeTransform":[[1,0,0],[0,1,1.25]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 
 // Start Child: Line 39
 const root_child_0_child_0_child_1 = figma.createLine();
@@ -232,6 +272,7 @@ root_child_0_child_0_child_1.opacity = 1;
 root_child_0_child_0_child_1.locked = false;
 if ("blendMode" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.isMask = false;
+if ("maskType" in root_child_0_child_0_child_1) root_child_0_child_0_child_1.maskType = "ALPHA";
 root_child_0_child_0_child_1.fills = await this.hydratePaints([]);
 root_child_0_child_0_child_1.strokes = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0,"g":0,"b":0},"boundVariables":{}}]);
 root_child_0_child_0_child_1.strokeWeight = 1;
@@ -244,7 +285,7 @@ root_child_0_child_0.appendChild(root_child_0_child_0_child_1);
 // Child Layout Props
 root_child_0_child_0_child_1.layoutAlign = "STRETCH";
 root_child_0_child_0_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_0_child_0_child_1, {"width":21,"height":1,"relativeTransform":[[-4.3711395392165286e-8,-1,67],[1,-4.3711395392165286e-8,2.1855697696082643e-8]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_0_child_0_child_1, {"width":21,"height":0,"relativeTransform":[[-4.3711395392165286e-8,-1,66.00000762939453],[1,-4.3711395392165286e-8,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 
 // Start Child: Frame 1614
 const root_child_0_child_0_child_2 = figma.createFrame();
@@ -254,6 +295,7 @@ root_child_0_child_0_child_2.opacity = 1;
 root_child_0_child_0_child_2.locked = false;
 if ("blendMode" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.isMask = false;
+if ("maskType" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.maskType = "ALPHA";
 if ("clipsContent" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.clipsContent = false;
 if ("layoutMode" in root_child_0_child_0_child_2) {
     root_child_0_child_0_child_2.layoutMode = "HORIZONTAL";
@@ -266,6 +308,8 @@ if ("layoutMode" in root_child_0_child_0_child_2) {
     root_child_0_child_0_child_2.paddingRight = 0;
     root_child_0_child_0_child_2.paddingBottom = 0;
     root_child_0_child_0_child_2.paddingLeft = 0;
+    root_child_0_child_0_child_2.itemReverseZIndex = false;
+    root_child_0_child_0_child_2.strokesIncludedInLayout = false;
 }
 root_child_0_child_0_child_2.fills = await this.hydratePaints([]);
 root_child_0_child_0_child_2.strokes = await this.hydratePaints([]);
@@ -274,6 +318,10 @@ root_child_0_child_0_child_2.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeCap = "NONE";
 if ("strokeJoin" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.strokeLeftWeight = 1;
 root_child_0_child_0_child_2.effects = [];
 if ("cornerRadius" in root_child_0_child_0_child_2) root_child_0_child_0_child_2.cornerRadius = 0;
 
@@ -285,6 +333,7 @@ root_child_0_child_0_child_2_child_0.opacity = 1;
 root_child_0_child_0_child_2_child_0.locked = false;
 if ("blendMode" in root_child_0_child_0_child_2_child_0) root_child_0_child_0_child_2_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_0_child_0_child_2_child_0) root_child_0_child_0_child_2_child_0.isMask = false;
+if ("maskType" in root_child_0_child_0_child_2_child_0) root_child_0_child_0_child_2_child_0.maskType = "ALPHA";
 root_child_0_child_0_child_2_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.10196078568696976,"g":0.1921568661928177,"b":0.23529411852359772},"boundVariables":{}}]);
 root_child_0_child_0_child_2_child_0.strokes = await this.hydratePaints([]);
 root_child_0_child_0_child_2_child_0.strokeWeight = 1;
@@ -303,6 +352,8 @@ root_child_0_child_0_child_2_child_0.letterSpacing = {"unit":"PIXELS","value":0}
 root_child_0_child_0_child_2_child_0.lineHeight = {"unit":"PIXELS","value":21};
 if ("textCase" in root_child_0_child_0_child_2_child_0) root_child_0_child_0_child_2_child_0.textCase = "ORIGINAL";
 if ("textDecoration" in root_child_0_child_0_child_2_child_0) root_child_0_child_0_child_2_child_0.textDecoration = "NONE";
+root_child_0_child_0_child_2_child_0.paragraphSpacing = 0;
+root_child_0_child_0_child_2_child_0.paragraphIndent = 0;
 await this.setFont(root_child_0_child_0_child_2_child_0, {"family":"Open Sans","style":"Bold"});
 // Styled Segments
 await this.setRangeFont(root_child_0_child_0_child_2_child_0, 0, 9, {"family":"Open Sans","style":"Bold"});
@@ -317,17 +368,17 @@ root_child_0_child_0.appendChild(root_child_0_child_0_child_2);
 // Child Layout Props
 root_child_0_child_0_child_2.layoutAlign = "INHERIT";
 root_child_0_child_0_child_2.layoutGrow = 0;
-applySizeAndTransform(root_child_0_child_0_child_2, {"width":82,"height":21,"relativeTransform":[[1,0,79],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_0_child_0_child_2, {"width":82,"height":21,"relativeTransform":[[1,0,78],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 root_child_0.appendChild(root_child_0_child_0);
 // Child Layout Props
 root_child_0_child_0.layoutAlign = "STRETCH";
 root_child_0_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_0_child_0, {"width":161,"height":21,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_0_child_0, {"width":160,"height":21,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 root.appendChild(root_child_0);
 // Child Layout Props
 root_child_0.layoutAlign = "INHERIT";
 root_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_0, {"width":161,"height":21,"relativeTransform":[[1,0,40],[0,1,9.5]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_0, {"width":160,"height":21,"relativeTransform":[[1,0,40],[0,1,9.5]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 
 // Start Child: Frame 1838
 const root_child_1 = figma.createFrame();
@@ -337,6 +388,7 @@ root_child_1.opacity = 1;
 root_child_1.locked = false;
 if ("blendMode" in root_child_1) root_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1) root_child_1.isMask = false;
+if ("maskType" in root_child_1) root_child_1.maskType = "ALPHA";
 if ("clipsContent" in root_child_1) root_child_1.clipsContent = false;
 if ("layoutMode" in root_child_1) {
     root_child_1.layoutMode = "HORIZONTAL";
@@ -349,6 +401,8 @@ if ("layoutMode" in root_child_1) {
     root_child_1.paddingRight = 0;
     root_child_1.paddingBottom = 0;
     root_child_1.paddingLeft = 0;
+    root_child_1.itemReverseZIndex = false;
+    root_child_1.strokesIncludedInLayout = false;
 }
 root_child_1.fills = await this.hydratePaints([]);
 root_child_1.strokes = await this.hydratePaints([]);
@@ -357,6 +411,10 @@ root_child_1.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1) root_child_1.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1) root_child_1.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1) root_child_1.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1) root_child_1.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1) root_child_1.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1) root_child_1.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1) root_child_1.strokeLeftWeight = 1;
 root_child_1.effects = [];
 if ("cornerRadius" in root_child_1) root_child_1.cornerRadius = 0;
 
@@ -368,6 +426,7 @@ root_child_1_child_0.opacity = 1;
 root_child_1_child_0.locked = false;
 if ("blendMode" in root_child_1_child_0) root_child_1_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_0) root_child_1_child_0.isMask = false;
+if ("maskType" in root_child_1_child_0) root_child_1_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_1_child_0) root_child_1_child_0.clipsContent = true;
 if ("layoutMode" in root_child_1_child_0) {
     root_child_1_child_0.layoutMode = "NONE";
@@ -379,11 +438,15 @@ root_child_1_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1_child_0) root_child_1_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1_child_0) root_child_1_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1_child_0) root_child_1_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1_child_0) root_child_1_child_0.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1_child_0) root_child_1_child_0.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1_child_0) root_child_1_child_0.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1_child_0) root_child_1_child_0.strokeLeftWeight = 1;
 root_child_1_child_0.effects = [];
 if ("cornerRadius" in root_child_1_child_0) root_child_1_child_0.cornerRadius = 0;
 
 // Start Child: Vector
-const root_child_1_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_Top_bar_assets_icon_Vector_858_8522_svg_14_999951362609863x19_192251205444336);
+const root_child_1_child_0_child_0_svgContainer = figma.createNodeFromSvg(SVG_Top_bar_assets_icon_Vector_1026_1742_svg_15x19_19230079650879);
 root_child_1_child_0_child_0_svgContainer.fills = []; // Ensure transparent background
 const root_child_1_child_0_child_0 = figma.flatten([root_child_1_child_0_child_0_svgContainer]);
 root_child_1_child_0_child_0.name = "Vector";
@@ -392,6 +455,7 @@ root_child_1_child_0_child_0.opacity = 1;
 root_child_1_child_0_child_0.locked = false;
 if ("blendMode" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.isMask = false;
+if ("maskType" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.maskType = "ALPHA";
 root_child_1_child_0_child_0.strokes = await this.hydratePaints([]);
 root_child_1_child_0_child_0.strokeWeight = 1;
 root_child_1_child_0_child_0.strokeAlign = "INSIDE";
@@ -401,14 +465,14 @@ if ("strokeMiterLimit" in root_child_1_child_0_child_0) root_child_1_child_0_chi
 root_child_1_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_1_child_0_child_0) root_child_1_child_0_child_0.cornerRadius = 0;
 root_child_1_child_0.appendChild(root_child_1_child_0_child_0);
-applySizeAndTransform(root_child_1_child_0_child_0, {"width":14.999951362609863,"height":19.192251205444336,"relativeTransform":[[1,0,4.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_1_child_0_child_0, {"width":15,"height":19.19230079650879,"relativeTransform":[[1,0,4.5],[0,1,2.5]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 root_child_1_child_0_child_0.x = 4.5;
 root_child_1_child_0_child_0.y = 2.5;
 root_child_1.appendChild(root_child_1_child_0);
 // Child Layout Props
 root_child_1_child_0.layoutAlign = "INHERIT";
 root_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_0, {"width":24,"height":24,"relativeTransform":[[1,0,749.62060546875],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_1_child_0, {"width":24,"height":24,"relativeTransform":[[1,0,750.62060546875],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 
 // Start Child: Frame 1612
 const root_child_1_child_1 = figma.createFrame();
@@ -418,6 +482,7 @@ root_child_1_child_1.opacity = 1;
 root_child_1_child_1.locked = false;
 if ("blendMode" in root_child_1_child_1) root_child_1_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1) root_child_1_child_1.isMask = false;
+if ("maskType" in root_child_1_child_1) root_child_1_child_1.maskType = "ALPHA";
 if ("clipsContent" in root_child_1_child_1) root_child_1_child_1.clipsContent = false;
 if ("layoutMode" in root_child_1_child_1) {
     root_child_1_child_1.layoutMode = "HORIZONTAL";
@@ -430,6 +495,8 @@ if ("layoutMode" in root_child_1_child_1) {
     root_child_1_child_1.paddingRight = 0;
     root_child_1_child_1.paddingBottom = 0;
     root_child_1_child_1.paddingLeft = 0;
+    root_child_1_child_1.itemReverseZIndex = false;
+    root_child_1_child_1.strokesIncludedInLayout = false;
 }
 root_child_1_child_1.fills = await this.hydratePaints([]);
 root_child_1_child_1.strokes = await this.hydratePaints([]);
@@ -438,6 +505,10 @@ root_child_1_child_1.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1_child_1) root_child_1_child_1.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1_child_1) root_child_1_child_1.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1_child_1) root_child_1_child_1.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1_child_1) root_child_1_child_1.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1_child_1) root_child_1_child_1.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1_child_1) root_child_1_child_1.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1_child_1) root_child_1_child_1.strokeLeftWeight = 1;
 root_child_1_child_1.effects = [];
 if ("cornerRadius" in root_child_1_child_1) root_child_1_child_1.cornerRadius = 0;
 
@@ -449,6 +520,7 @@ root_child_1_child_1_child_0.opacity = 1;
 root_child_1_child_1_child_0.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.clipsContent = false;
 if ("layoutMode" in root_child_1_child_1_child_0) {
     root_child_1_child_1_child_0.layoutMode = "HORIZONTAL";
@@ -461,6 +533,8 @@ if ("layoutMode" in root_child_1_child_1_child_0) {
     root_child_1_child_1_child_0.paddingRight = 0;
     root_child_1_child_1_child_0.paddingBottom = 0;
     root_child_1_child_1_child_0.paddingLeft = 0;
+    root_child_1_child_1_child_0.itemReverseZIndex = false;
+    root_child_1_child_1_child_0.strokesIncludedInLayout = false;
 }
 root_child_1_child_1_child_0.fills = await this.hydratePaints([]);
 root_child_1_child_1_child_0.strokes = await this.hydratePaints([]);
@@ -469,6 +543,10 @@ root_child_1_child_1_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.strokeLeftWeight = 1;
 root_child_1_child_1_child_0.effects = [];
 if ("cornerRadius" in root_child_1_child_1_child_0) root_child_1_child_1_child_0.cornerRadius = 0;
 
@@ -480,6 +558,7 @@ root_child_1_child_1_child_0_child_0.opacity = 1;
 root_child_1_child_1_child_0_child_0.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.clipsContent = false;
 if ("layoutMode" in root_child_1_child_1_child_0_child_0) {
     root_child_1_child_1_child_0_child_0.layoutMode = "HORIZONTAL";
@@ -492,6 +571,8 @@ if ("layoutMode" in root_child_1_child_1_child_0_child_0) {
     root_child_1_child_1_child_0_child_0.paddingRight = 0;
     root_child_1_child_1_child_0_child_0.paddingBottom = 0;
     root_child_1_child_1_child_0_child_0.paddingLeft = 0;
+    root_child_1_child_1_child_0_child_0.itemReverseZIndex = false;
+    root_child_1_child_1_child_0_child_0.strokesIncludedInLayout = false;
 }
 root_child_1_child_1_child_0_child_0.fills = await this.hydratePaints([]);
 root_child_1_child_1_child_0_child_0.strokes = await this.hydratePaints([]);
@@ -500,6 +581,10 @@ root_child_1_child_1_child_0_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.strokeLeftWeight = 1;
 root_child_1_child_1_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_1_child_1_child_0_child_0) root_child_1_child_1_child_0_child_0.cornerRadius = 0;
 
@@ -511,6 +596,7 @@ root_child_1_child_1_child_0_child_0_child_0.opacity = 1;
 root_child_1_child_1_child_0_child_0_child_0.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.maskType = "ALPHA";
 if ("clipsContent" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.clipsContent = false;
 if ("layoutMode" in root_child_1_child_1_child_0_child_0_child_0) {
     root_child_1_child_1_child_0_child_0_child_0.layoutMode = "NONE";
@@ -522,6 +608,10 @@ root_child_1_child_1_child_0_child_0_child_0.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.strokeLeftWeight = 1;
 root_child_1_child_1_child_0_child_0_child_0.effects = [];
 if ("cornerRadius" in root_child_1_child_1_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0.cornerRadius = 0;
 
@@ -533,6 +623,7 @@ root_child_1_child_1_child_0_child_0_child_0_child_0.opacity = 1;
 root_child_1_child_1_child_0_child_0_child_0_child_0.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0_child_0.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0_child_0_child_0_child_0) root_child_1_child_1_child_0_child_0_child_0_child_0.maskType = "ALPHA";
 root_child_1_child_1_child_0_child_0_child_0_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.8156862854957581,"g":0.8470588326454163,"b":0.8588235378265381},"boundVariables":{}}]);
 root_child_1_child_1_child_0_child_0_child_0_child_0.strokes = await this.hydratePaints([]);
 root_child_1_child_1_child_0_child_0_child_0_child_0.strokeWeight = 1;
@@ -555,6 +646,7 @@ root_child_1_child_1_child_0_child_0_child_0_child_1.opacity = 1;
 root_child_1_child_1_child_0_child_0_child_0_child_1.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_0_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_0_child_1.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_0_child_1.maskType = "ALPHA";
 root_child_1_child_1_child_0_child_0_child_0_child_1.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.2705882489681244,"g":0.3607843220233917,"b":0.40392157435417175},"boundVariables":{}}]);
 root_child_1_child_1_child_0_child_0_child_0_child_1.strokes = await this.hydratePaints([]);
 root_child_1_child_1_child_0_child_0_child_0_child_1.strokeWeight = 2.473090410232544;
@@ -573,6 +665,8 @@ root_child_1_child_1_child_0_child_0_child_0_child_1.letterSpacing = {"unit":"PI
 root_child_1_child_1_child_0_child_0_child_0_child_1.lineHeight = {"unit":"PERCENT","value":150};
 if ("textCase" in root_child_1_child_1_child_0_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_0_child_1.textCase = "ORIGINAL";
 if ("textDecoration" in root_child_1_child_1_child_0_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_0_child_1.textDecoration = "NONE";
+root_child_1_child_1_child_0_child_0_child_0_child_1.paragraphSpacing = 0;
+root_child_1_child_1_child_0_child_0_child_0_child_1.paragraphIndent = 0;
 await this.setFont(root_child_1_child_1_child_0_child_0_child_0_child_1, {"family":"Manrope","style":"Bold"});
 // Styled Segments
 await this.setRangeFont(root_child_1_child_1_child_0_child_0_child_0_child_1, 0, 2, {"family":"Manrope","style":"Bold"});
@@ -596,6 +690,7 @@ root_child_1_child_1_child_0_child_0_child_1.opacity = 1;
 root_child_1_child_1_child_0_child_0_child_1.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_1.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_1.maskType = "ALPHA";
 root_child_1_child_1_child_0_child_0_child_1.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.10196078568696976,"g":0.1921568661928177,"b":0.23529411852359772},"boundVariables":{}}]);
 root_child_1_child_1_child_0_child_0_child_1.strokes = await this.hydratePaints([]);
 root_child_1_child_1_child_0_child_0_child_1.strokeWeight = 1;
@@ -614,6 +709,8 @@ root_child_1_child_1_child_0_child_0_child_1.letterSpacing = {"unit":"PIXELS","v
 root_child_1_child_1_child_0_child_0_child_1.lineHeight = {"unit":"PIXELS","value":21};
 if ("textCase" in root_child_1_child_1_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_1.textCase = "ORIGINAL";
 if ("textDecoration" in root_child_1_child_1_child_0_child_0_child_1) root_child_1_child_1_child_0_child_0_child_1.textDecoration = "NONE";
+root_child_1_child_1_child_0_child_0_child_1.paragraphSpacing = 0;
+root_child_1_child_1_child_0_child_0_child_1.paragraphIndent = 0;
 await this.setFont(root_child_1_child_1_child_0_child_0_child_1, {"family":"Open Sans","style":"Regular"});
 // Styled Segments
 await this.setRangeFont(root_child_1_child_1_child_0_child_0_child_1, 0, 8, {"family":"Open Sans","style":"Regular"});
@@ -638,6 +735,7 @@ root_child_1_child_1_child_0_child_1.opacity = 1;
 root_child_1_child_1_child_0_child_1.locked = false;
 if ("blendMode" in root_child_1_child_1_child_0_child_1) root_child_1_child_1_child_0_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_1_child_0_child_1) root_child_1_child_1_child_0_child_1.isMask = false;
+if ("maskType" in root_child_1_child_1_child_0_child_1) root_child_1_child_1_child_0_child_1.maskType = "ALPHA";
 root_child_1_child_1_child_0_child_1.fills = await this.hydratePaints([]);
 root_child_1_child_1_child_0_child_1.strokes = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.8156862854957581,"g":0.8470588326454163,"b":0.8588235378265381},"boundVariables":{}}]);
 root_child_1_child_1_child_0_child_1.strokeWeight = 1;
@@ -650,17 +748,17 @@ root_child_1_child_1_child_0.appendChild(root_child_1_child_1_child_0_child_1);
 // Child Layout Props
 root_child_1_child_1_child_0_child_1.layoutAlign = "STRETCH";
 root_child_1_child_1_child_0_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_0_child_1, {"width":24,"height":1,"relativeTransform":[[-4.3711395392165286e-8,-1,105],[1,-4.3711395392165286e-8,2.1855697696082643e-8]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_1_child_1_child_0_child_1, {"width":24,"height":0,"relativeTransform":[[-4.3711395392165286e-8,-1,104],[1,-4.3711395392165286e-8,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 root_child_1_child_1.appendChild(root_child_1_child_1_child_0);
 // Child Layout Props
-root_child_1_child_1_child_0.layoutAlign = "STRETCH";
+root_child_1_child_1_child_0.layoutAlign = "INHERIT";
 root_child_1_child_1_child_0.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1_child_0, {"width":105,"height":24,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_1_child_1_child_0, {"width":104,"height":24,"relativeTransform":[[1,0,0],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 root_child_1.appendChild(root_child_1_child_1);
 // Child Layout Props
-root_child_1_child_1.layoutAlign = "STRETCH";
+root_child_1_child_1.layoutAlign = "INHERIT";
 root_child_1_child_1.layoutGrow = 0;
-applySizeAndTransform(root_child_1_child_1, {"width":105,"height":24,"relativeTransform":[[1,0,797.62060546875],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
+applySizeAndTransform(root_child_1_child_1, {"width":104,"height":24,"relativeTransform":[[1,0,798.62060546875],[0,1,0]],"parentIsAutoLayout":true,"layoutPositioning":"AUTO","constraints":{"horizontal":"MIN","vertical":"MIN"}});
 
 // Start Child: Navigation / Hamburger
 const root_child_1_child_2 = figma.createFrame();
@@ -670,6 +768,7 @@ root_child_1_child_2.opacity = 1;
 root_child_1_child_2.locked = false;
 if ("blendMode" in root_child_1_child_2) root_child_1_child_2.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_2) root_child_1_child_2.isMask = false;
+if ("maskType" in root_child_1_child_2) root_child_1_child_2.maskType = "ALPHA";
 if ("clipsContent" in root_child_1_child_2) root_child_1_child_2.clipsContent = true;
 if ("layoutMode" in root_child_1_child_2) {
     root_child_1_child_2.layoutMode = "NONE";
@@ -681,6 +780,10 @@ root_child_1_child_2.strokeAlign = "INSIDE";
 if ("strokeCap" in root_child_1_child_2) root_child_1_child_2.strokeCap = "NONE";
 if ("strokeJoin" in root_child_1_child_2) root_child_1_child_2.strokeJoin = "MITER";
 if ("strokeMiterLimit" in root_child_1_child_2) root_child_1_child_2.strokeMiterLimit = 4;
+if ("strokeTopWeight" in root_child_1_child_2) root_child_1_child_2.strokeTopWeight = 1;
+if ("strokeRightWeight" in root_child_1_child_2) root_child_1_child_2.strokeRightWeight = 1;
+if ("strokeBottomWeight" in root_child_1_child_2) root_child_1_child_2.strokeBottomWeight = 1;
+if ("strokeLeftWeight" in root_child_1_child_2) root_child_1_child_2.strokeLeftWeight = 1;
 root_child_1_child_2.effects = [];
 if ("cornerRadius" in root_child_1_child_2) root_child_1_child_2.cornerRadius = 0;
 
@@ -696,6 +799,7 @@ root_child_1_child_2_child_0_child_0.opacity = 1;
 root_child_1_child_2_child_0_child_0.locked = false;
 if ("blendMode" in root_child_1_child_2_child_0_child_0) root_child_1_child_2_child_0_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_2_child_0_child_0) root_child_1_child_2_child_0_child_0.isMask = false;
+if ("maskType" in root_child_1_child_2_child_0_child_0) root_child_1_child_2_child_0_child_0.maskType = "ALPHA";
 root_child_1_child_2_child_0_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.07058823853731155,"g":0.2235294133424759,"b":0.5215686559677124},"boundVariables":{}}]);
 root_child_1_child_2_child_0_child_0.strokes = await this.hydratePaints([]);
 root_child_1_child_2_child_0_child_0.strokeWeight = 2;
@@ -720,6 +824,7 @@ root_child_1_child_2_child_0_child_1.opacity = 1;
 root_child_1_child_2_child_0_child_1.locked = false;
 if ("blendMode" in root_child_1_child_2_child_0_child_1) root_child_1_child_2_child_0_child_1.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_2_child_0_child_1) root_child_1_child_2_child_0_child_1.isMask = false;
+if ("maskType" in root_child_1_child_2_child_0_child_1) root_child_1_child_2_child_0_child_1.maskType = "ALPHA";
 root_child_1_child_2_child_0_child_1.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.07058823853731155,"g":0.2235294133424759,"b":0.5215686559677124},"boundVariables":{}}]);
 root_child_1_child_2_child_0_child_1.strokes = await this.hydratePaints([]);
 root_child_1_child_2_child_0_child_1.strokeWeight = 2;
@@ -744,6 +849,7 @@ root_child_1_child_2_child_0_child_2.opacity = 1;
 root_child_1_child_2_child_0_child_2.locked = false;
 if ("blendMode" in root_child_1_child_2_child_0_child_2) root_child_1_child_2_child_0_child_2.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_2_child_0_child_2) root_child_1_child_2_child_0_child_2.isMask = false;
+if ("maskType" in root_child_1_child_2_child_0_child_2) root_child_1_child_2_child_0_child_2.maskType = "ALPHA";
 root_child_1_child_2_child_0_child_2.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.07058823853731155,"g":0.2235294133424759,"b":0.5215686559677124},"boundVariables":{}}]);
 root_child_1_child_2_child_0_child_2.strokes = await this.hydratePaints([]);
 root_child_1_child_2_child_0_child_2.strokeWeight = 2;
@@ -764,6 +870,7 @@ root_child_1_child_2_child_0.opacity = 1;
 root_child_1_child_2_child_0.locked = false;
 if ("blendMode" in root_child_1_child_2_child_0) root_child_1_child_2_child_0.blendMode = "PASS_THROUGH";
 if ("isMask" in root_child_1_child_2_child_0) root_child_1_child_2_child_0.isMask = false;
+if ("maskType" in root_child_1_child_2_child_0) root_child_1_child_2_child_0.maskType = "ALPHA";
 root_child_1_child_2_child_0.fills = await this.hydratePaints([{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.10196078568696976,"g":0.1921568661928177,"b":0.23529411852359772},"boundVariables":{}}]);
 root_child_1_child_2_child_0.strokes = await this.hydratePaints([]);
 root_child_1_child_2_child_0.strokeWeight = 2;

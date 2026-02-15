@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as http from 'http';
 import { FullProceduralPipeline } from '../server_tools/FullProceduralPipeline';
 import { ComponentGenerator } from '../server_tools/ComponentGenerator';
-import { ComponentRefactorer } from '../server_tools/ComponentRefactorer';
 import { CompactStructure } from '../server_tools/CompactStructure';
 
 export async function handleReadAsset(req: http.IncomingMessage, res: http.ServerResponse) {
@@ -90,11 +89,10 @@ export async function handleSave(req: http.IncomingMessage, res: http.ServerResp
                 const tsPath = savedPath.replace('.json', '.ts');
                 if (!fs.existsSync(tsPath)) {
                     const generator = new ComponentGenerator();
-                    generator.generate(savedPath, projectName, false, componentName);
-                }
-
-                if (isRefactor) {
-                    new ComponentRefactorer().refactor(tsPath);
+                    generator.generate(savedPath, projectName, false, componentName, {
+                        refactor: isRefactor,
+                        refactorOptions: { fidelityStrict: true }
+                    });
                 }
 
                 if (isCompact) {
@@ -193,11 +191,11 @@ export function handleSavePacket(req: http.IncomingMessage, res: http.ServerResp
                 console.log(`[Bridge] Auto-generating Code for ${sanitaryName} (Simplified=${isSimplified}, Refactor=${parsed.options?.refactor !== false}) in ${generationProjectName}...`);
 
                 const generator = new ComponentGenerator();
-                const result = generator.generate(jsonPath, generationProjectName, false, sanitaryName);
-
-                if (parsed.options?.refactor !== false) {
-                    new ComponentRefactorer().refactor(result.tsPath);
-                }
+                const shouldRefactor = parsed.options?.refactor !== false;
+                const result = generator.generate(jsonPath, generationProjectName, false, sanitaryName, {
+                    refactor: shouldRefactor,
+                    refactorOptions: { fidelityStrict: true }
+                });
 
                 if (isSimplified) {
                     new CompactStructure().compact(result.tsPath);

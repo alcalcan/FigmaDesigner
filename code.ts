@@ -183,12 +183,23 @@ const captureNode = async (
 
   // 2. Auto Layout (Frame / Component / Instance)
   if ("layoutMode" in node) {
+    const layoutMode = safeGet(node, "layoutMode") as "NONE" | "HORIZONTAL" | "VERTICAL" | undefined;
+    const primarySizing = safeGet(node, "primaryAxisSizingMode");
+    const counterSizing = safeGet(node, "counterAxisSizingMode");
+
+    // Store physical-axis sizing explicitly for new captures.
+    // horizontal => width axis, vertical => height axis.
+    // Legacy captures used primary/counter under these keys.
+    const horizontalSizing = layoutMode === "VERTICAL" ? counterSizing : primarySizing;
+    const verticalSizing = layoutMode === "VERTICAL" ? primarySizing : counterSizing;
+
     data.layout = {
-      mode: safeGet(node, "layoutMode"), // NONE, HORIZONTAL, VERTICAL
+      mode: layoutMode, // NONE, HORIZONTAL, VERTICAL
       sizing: {
-        horizontal: safeGet(node, "primaryAxisSizingMode"), // FIXED, AUTO
-        vertical: safeGet(node, "counterAxisSizingMode"),
+        horizontal: horizontalSizing, // FIXED, AUTO (width axis)
+        vertical: verticalSizing, // FIXED, AUTO (height axis)
       },
+      sizingConvention: "PHYSICAL_AXES_V1",
       alignment: {
         primary: safeGet(node, "primaryAxisAlignItems"), // MIN, MAX, CENTER, SPACE_BETWEEN
         counter: safeGet(node, "counterAxisAlignItems"), // MIN, MAX, CENTER, BASELINE
@@ -794,6 +805,10 @@ figma.ui.onmessage = async (msg) => {
     // Handle Dynamic Generation from JSON
     if (msg.type === 'generate-from-json') {
       try {
+        if (!msg.data || typeof msg.data !== 'object' || !msg.data.type) {
+          throw new Error("Invalid JSON payload. Select a valid extracted JSON file and try again.");
+        }
+
         // Figma viewport center
         const { x, y } = figma.viewport.center;
 
@@ -815,26 +830,33 @@ figma.ui.onmessage = async (msg) => {
           console.log("Reconstruction from JSON complete.");
         }
       } catch (e) {
+        const message = (e as Error).message || "Failed to generate from JSON";
         console.error("Failed to generate from JSON:", e);
+        figma.notify(message, { error: true });
+        figma.ui.postMessage({ type: 'capture-error', message });
       }
     }
 
     if (msg.type === 'generate-component') {
       const name = msg.componentName;
       const projectName = msg.projectName; // Optional
+      type GeneratedComponentClass = new () => {
+        create: (props: Record<string, unknown>) => SceneNode | Promise<SceneNode>;
+        createAsync?: (props: Record<string, unknown>) => Promise<SceneNode>;
+      };
+      const componentRegistry = ComponentRegistry as unknown as Record<string, GeneratedComponentClass | undefined>;
 
       logToUI(`[Plugin] Requested Component: '${name}', Project: '${projectName}'`);
       logToUI(`[Plugin] Current Registry Keys: ${Object.keys(ComponentRegistry).join(", ")}`);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let ComponentClass = (ComponentRegistry as any)[name];
+      let ComponentClass = componentRegistry[name];
       logToUI(`[Plugin] Initial lookup for '${name}': ${ComponentClass ? 'FOUND' : 'NOT FOUND'}`);
 
       if (!ComponentClass && projectName) {
         // Try aliased name: e.g. chip_expand_Alex_CookBook
         const safeProjectName = sanitizeName(projectName);
         const aliasedName = `${name}_${safeProjectName}`;
-        ComponentClass = (ComponentRegistry as any)[aliasedName];
+        ComponentClass = componentRegistry[aliasedName];
         logToUI(`[Plugin] Alias lookup for '${aliasedName}': ${ComponentClass ? 'FOUND' : 'NOT FOUND'}`);
       }
 
@@ -844,8 +866,7 @@ figma.ui.onmessage = async (msg) => {
       }
 
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const instance = new ComponentClass() as any;
+        const instance = new ComponentClass();
         const { x, y } = figma.viewport.center;
 
         // Default props
