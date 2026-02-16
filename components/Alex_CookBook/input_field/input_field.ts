@@ -2,8 +2,9 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 
 // SVG Assets
 import CARET_LEFT from "./assets/caret_left.svg";
-import SEARCH_ICON from "./assets/search_icon.svg";
-import CLOSE_ICON from "./assets/close_icon.svg";
+
+// Lucide Icons
+import { Lucide_alert_circle, Lucide_alert_triangle, Lucide_check_circle, Lucide_info, Lucide_search, Lucide_x } from "../../index";
 
 export interface InputFieldProps extends ComponentProps {
     placeholder?: string;
@@ -15,6 +16,7 @@ export interface InputFieldProps extends ComponentProps {
     showSearchIcon?: boolean;
     searchIconPosition?: "front" | "back";
     helperType?: "info" | "error" | "warning";
+    state?: "default" | "error" | "warning" | "success";
     width?: number | "hug" | "fill" | "auto";
     height?: number | "auto";
     clear?: boolean;
@@ -26,7 +28,8 @@ export class input_field extends BaseComponent {
         const displayValue = props.value || props.placeholder;
         const isPlaceholder = !props.value;
         const type = props.type ?? "dropdown";
-        const helperType = props.helperType ?? "info";
+        const state = props.state ?? "default";
+        const helperType = props.helperType ?? (state === "error" ? "error" : state === "warning" ? "warning" : "info");
 
         let widthProp = props.width ?? 320;
         if (widthProp === "auto") widthProp = "hug"; // Alias auto -> hug
@@ -35,10 +38,20 @@ export class input_field extends BaseComponent {
 
         const iconSize = props.iconSize ?? 24; // Default to 24
 
-        let backIconContent = props.backIcon;
-        if (props.clear && !backIconContent) {
-            backIconContent = CLOSE_ICON;
+        let BackIconClass: any = props.backIcon;
+        if (props.clear && !BackIconClass) {
+            BackIconClass = Lucide_x;
         }
+
+        // State-based icons
+        let StateIconClass: any = undefined;
+        if (state === "error") StateIconClass = Lucide_alert_circle;
+        else if (state === "warning") StateIconClass = Lucide_alert_triangle;
+        else if (state === "success") StateIconClass = Lucide_check_circle;
+        // else if (state === "default" && props.helperType === "info") StateIconClass = Lucide_info; // Optional
+
+        const FrontIconClass = props.frontIcon || (props.showSearchIcon && props.searchIconPosition !== "back" ? Lucide_search : undefined);
+        const SearchBackIconClass = (props.showSearchIcon && props.searchIconPosition === "back") ? Lucide_search : undefined;
 
         // Layout props based on width
         let rootLayoutAlign: "MIN" | "MAX" | "CENTER" | "STRETCH" | "INHERIT" = "INHERIT";
@@ -85,6 +98,15 @@ export class input_field extends BaseComponent {
             inputHeight = heightProp as number;
             inputContainerCounterAxisSizingMode = "FIXED";
         }
+
+        const stateColors = {
+            default: { r: 0.7019608020782471, g: 0.7529411911964417, b: 0.772549033164978 },
+            error: { r: 0.92, g: 0.26, b: 0.21 },
+            warning: { r: 1, g: 0.6, b: 0 },
+            success: { r: 0.3, g: 0.69, b: 0.31 }
+        };
+
+        const strokeColor = stateColors[state];
 
         const helperColors = {
             info: { r: 0.4, g: 0.4, b: 0.4 },
@@ -141,7 +163,7 @@ export class input_field extends BaseComponent {
                         "strokes": [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0.7019608020782471, "g": 0.7529411911964417, "b": 0.772549033164978 },
+                                "color": strokeColor,
                                 "boundVariables": {}
                             }
                         ],
@@ -153,38 +175,22 @@ export class input_field extends BaseComponent {
                         "width": (widthProp === "hug" || widthProp === "fill") ? undefined : widthProp, "height": inputHeight
                     },
                     "children": [
-                        ...(props.frontIcon || (props.showSearchIcon && props.searchIconPosition !== "back") ? [
+                        ...(FrontIconClass ? [
                             {
-                                "type": "FRAME",
+                                "type": "COMPONENT",
                                 "name": "Front Icon",
+                                "component": FrontIconClass,
                                 "props": {
-                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                                    "layoutMode": "NONE",
+                                    "width": iconSize,
+                                    "height": iconSize,
+                                    "strokeWeight": 2.0,
+                                    // Default to search icon or similar, might need color
                                 },
                                 "layoutProps": {
-                                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                    "width": iconSize, "height": iconSize
-                                },
-                                "children": [
-                                    {
-                                        "type": "VECTOR",
-                                        "shouldFlatten": true,
-                                        "name": "Icon",
-                                        "props": {
-                                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                            "isMask": false, "maskType": "ALPHA",
-                                            // Removed style overrides to allow SVG to dictate own stroke/fill
-                                            "cornerRadius": 0,
-                                        },
-                                        "layoutProps": {
-                                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                            "width": iconSize, "height": iconSize,
-                                            "relativeTransform": [[1, 0, 0], [0, 1, 0]]
-                                        },
-                                        "svgContent": props.frontIcon || SEARCH_ICON
-                                    }
-                                ]
+                                    "parentIsAutoLayout": true,
+                                    "width": iconSize,
+                                    "height": iconSize
+                                }
                             } as NodeDefinition
                         ] : []),
                         {
@@ -207,7 +213,7 @@ export class input_field extends BaseComponent {
                             },
                             "layoutProps": {
                                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                "width": (widthProp === "hug" || widthProp === "fill") ? undefined : 272, "height": 24
+                                "width": undefined, "height": 24
                             },
                             "children": [
                                 {
@@ -241,135 +247,156 @@ export class input_field extends BaseComponent {
                                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                                         "width": undefined, "height": 21
                                     }
+                                }
+                            ]
+                        },
+                        ...(BackIconClass || SearchBackIconClass ? [
+                            {
+                                "type": "COMPONENT",
+                                "name": "Back Icon",
+                                "component": BackIconClass || SearchBackIconClass,
+                                "props": {
+                                    "width": iconSize,
+                                    "height": iconSize,
+                                    "strokeWeight": 1.5,
                                 },
-                                ...(backIconContent || (props.showSearchIcon && props.searchIconPosition === "back") ? [
+                                "layoutProps": {
+                                    "parentIsAutoLayout": true,
+                                    "width": iconSize,
+                                    "height": iconSize
+                                }
+                            } as NodeDefinition
+                        ] : []),
+                        ...(type === "dropdown" ? [
+                            {
+                                "type": "FRAME",
+                                "name": "Caret",
+                                "props": {
+                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+                                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+                                    "layoutAlign": "INHERIT", "layoutGrow": 0,
+                                    "layoutMode": "NONE",
+                                    "fills": [
+                                        {
+                                            "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                            "color": { "r": 1, "g": 1, "b": 1 },
+                                            "boundVariables": {}
+                                        }
+                                    ],
+                                    "strokes": [],
+                                    "effects": [],
+                                    "cornerRadius": 0
+                                },
+                                "layoutProps": {
+                                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+                                    "width": 24, "height": 24
+                                },
+                                "children": [
                                     {
-                                        "type": "FRAME",
-                                        "name": "Back Icon",
+                                        "type": "VECTOR",
+                                        "shouldFlatten": true,
+                                        "name": "Shape",
                                         "props": {
                                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                                            "layoutMode": "HORIZONTAL", // Center icon
-                                            "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-                                        },
-                                        "layoutProps": {
-                                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                            "width": iconSize, "height": iconSize
-                                        },
-                                        "children": [
-                                            {
-                                                "type": "VECTOR",
-                                                "shouldFlatten": true,
-                                                "name": "Icon",
-                                                "props": {
-                                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                                    "isMask": false, "maskType": "ALPHA",
-                                                    "cornerRadius": 0,
-                                                },
-                                                "layoutProps": {
-                                                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                                    "width": iconSize, "height": iconSize,
-                                                    "relativeTransform": [[1, 0, 0], [0, 1, 0]]
-                                                },
-                                                "svgContent": backIconContent || SEARCH_ICON
-                                            }
-                                        ]
-                                    } as NodeDefinition
-                                ] : []),
-                                ...(type === "dropdown" ? [
-                                    {
-                                        "type": "FRAME",
-                                        "name": "Caret",
-                                        "props": {
-                                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                                            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                                            "layoutAlign": "INHERIT", "layoutGrow": 0,
-                                            "layoutMode": "NONE",
+                                            "isMask": false, "maskType": "ALPHA",
+                                            "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                            "x": 7, "y": 16,
                                             "fills": [
                                                 {
-                                                    "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                                    "color": { "r": 1, "g": 1, "b": 1 },
+                                                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                                    "color": { "r": 0, "g": 0, "b": 0 },
                                                     "boundVariables": {}
                                                 }
                                             ],
                                             "strokes": [],
                                             "effects": [],
-                                            "cornerRadius": 0
+                                            "cornerRadius": 0,
+                                            "vectorPaths": [
+                                                { "windingRule": "EVENODD", "data": "M 0 5.161276340484619 L 6 0 L 6 10 L 0 5.161276340484619 Z" }
+                                            ]
                                         },
                                         "layoutProps": {
-                                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                            "width": 24, "height": 24
+                                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
+                                            "width": 6, "height": 10,
+                                            "relativeTransform": [[-1.8369701465288538e-16, 1, 7], [-1, -1.8369701465288538e-16, 16]]
                                         },
-                                        "children": [
-                                            {
-                                                "type": "VECTOR",
-                                                "shouldFlatten": true,
-                                                "name": "Shape",
-                                                "props": {
-                                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                                    "isMask": false, "maskType": "ALPHA",
-                                                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                                    "x": 7, "y": 16,
-                                                    "fills": [
-                                                        {
-                                                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                                            "color": { "r": 0, "g": 0, "b": 0 },
-                                                            "boundVariables": {}
-                                                        }
-                                                    ],
-                                                    "strokes": [],
-                                                    "effects": [],
-                                                    "cornerRadius": 0,
-                                                    "vectorPaths": [
-                                                        { "windingRule": "EVENODD", "data": "M 0 5.161276340484619 L 6 0 L 6 10 L 0 5.161276340484619 Z" }
-                                                    ]
-                                                },
-                                                "layoutProps": {
-                                                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                                    "width": 6, "height": 10,
-                                                    "relativeTransform": [[-1.8369701465288538e-16, 1, 7], [-1, -1.8369701465288538e-16, 16]]
-                                                },
-                                                "svgContent": CARET_LEFT
-                                            }
-                                        ]
-                                    } as NodeDefinition
-                                ] : [])
-                            ]
-                        }
+                                        "svgContent": CARET_LEFT
+                                    }
+                                ]
+                            } as NodeDefinition
+                        ] : [])
                     ]
                 },
                 ...(props.helperText ? [
                     {
-                        "type": "TEXT",
-                        "name": "Helper",
+                        "type": "FRAME",
+                        "name": "Helper Container",
                         "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "layoutAlign": "INHERIT", "layoutGrow": 0,
-                            "characters": props.helperText, "fontSize": 14,
-                            "textCase": "ORIGINAL", "textDecoration": "NONE",
-                            "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
-                            "paragraphSpacing": 0, "paragraphIndent": 0,
-                            "fills": [
-                                {
-                                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                    "color": helperColor,
-                                    "boundVariables": {}
-                                }
-                            ],
-                            "strokes": [],
-                            "effects": [],
-                            "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                            "lineHeight": { "unit": "PIXELS", "value": 21 },
-                            "font": { "family": "Open Sans", "style": "Regular" }
+                            "visible": true,
+                            "layoutMode": "HORIZONTAL",
+                            "itemSpacing": 8,
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "primaryAxisAlignItems": "MIN",
+                            "counterAxisAlignItems": "CENTER",
+                            "layoutAlign": "INHERIT"
                         },
                         "layoutProps": {
-                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                            "width": (widthProp === "hug" || widthProp === "fill") ? undefined : widthProp, "height": 21
-                        }
+                            "parentIsAutoLayout": true,
+                            "width": (widthProp === "hug" || widthProp === "fill") ? undefined : widthProp,
+                        },
+                        "children": [
+                            ...(StateIconClass ? [
+                                {
+                                    "type": "COMPONENT",
+                                    "name": "State Icon",
+                                    "component": StateIconClass,
+                                    "props": {
+                                        "width": 16,
+                                        "height": 16,
+                                        "strokeWeight": 1.5, // Thinner stroke for small scale
+                                        "color": helperColor
+                                    },
+                                    "layoutProps": {
+                                        "parentIsAutoLayout": true,
+                                        "width": 16,
+                                        "height": 16
+                                    }
+                                } as NodeDefinition
+                            ] : []),
+                            {
+                                "type": "TEXT",
+                                "name": "Helper",
+                                "props": {
+                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                    "isMask": false, "maskType": "ALPHA",
+                                    "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                    "layoutAlign": "INHERIT", "layoutGrow": 0,
+                                    "characters": props.helperText, "fontSize": 12,
+                                    "textCase": "ORIGINAL", "textDecoration": "NONE",
+                                    "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                                    "paragraphSpacing": 0, "paragraphIndent": 0,
+                                    "fills": [
+                                        {
+                                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                            "color": helperColor,
+                                            "boundVariables": {}
+                                        }
+                                    ],
+                                    "strokes": [],
+                                    "effects": [],
+                                    "letterSpacing": { "unit": "PIXELS", "value": 0 },
+                                    "lineHeight": { "unit": "PIXELS", "value": 18 },
+                                    "font": { "family": "Open Sans", "style": "Regular" }
+                                },
+                                "layoutProps": {
+                                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+                                    "width": undefined, "height": 18
+                                }
+                            }
+                        ]
                     } as NodeDefinition
                 ] : [])
             ]

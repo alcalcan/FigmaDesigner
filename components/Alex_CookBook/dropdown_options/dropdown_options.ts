@@ -3,7 +3,7 @@ import { checkbox } from "../checkbox/checkbox";
 import { radio_button } from "../radio_button/radio_button";
 
 export class dropdown_options extends BaseComponent {
-    async create(props: ComponentProps & { options?: { name: string, selected: boolean }[], selectionType?: "checkbox" | "radio" }): Promise<SceneNode> {
+    async create(props: ComponentProps & { options?: { name: string, selected: boolean }[], selectionType?: "checkbox" | "radio", width?: number }): Promise<SceneNode> {
         // Default dummy options if none provided
         const defaultOptions = [
             { name: "Default Option 1", selected: false },
@@ -47,7 +47,7 @@ export class dropdown_options extends BaseComponent {
                 ],
                 "cornerRadius": 12
             },
-            "layoutProps": { "width": 200, "height": 100, "parentIsAutoLayout": false },
+            "layoutProps": { "width": props.width ?? 200, "height": 100, "parentIsAutoLayout": false },
             "children": options.map(auth => ({
                 "type": "COMPONENT",
                 "component": selectionType === "radio" ? radio_button : checkbox,

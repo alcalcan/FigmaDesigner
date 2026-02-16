@@ -28,20 +28,15 @@ export function applySizeAndTransform(
     }
 ) {
     // 1) size first
-    const canResize = typeof node.resize === 'function' || typeof (node as any).resizeWithoutConstraints === 'function';
+    const canResize = typeof node.resize === 'function';
     if (canResize && (typeof data.width === 'number' || typeof data.height === 'number')) {
         const newW = typeof data.width === 'number' ? data.width : node.width;
         const newH = typeof data.height === 'number' ? data.height : node.height;
 
-        // Only resize if different from current to avoid breaking "Hug" unnecessarily?
-        // Actually, Figma's AUTO sizing mode is sensitive.
-        // If the intended mode is AUTO, we should skip resizing that axis in layoutProps.
         if (newW !== node.width || newH !== node.height) {
-            if (typeof (node as any).resizeWithoutConstraints === 'function') {
-                (node as any).resizeWithoutConstraints(newW, newH);
-            } else {
-                node.resize(newW, newH);
-            }
+            // We use resize() instead of resizeWithoutConstraints to ensure 
+            // that children with SCALE constraints (like icons) scale correctly.
+            node.resize(newW, newH);
         }
     }
 
@@ -66,8 +61,13 @@ export function applySizeAndTransform(
         | null;
 
     if (inAutoLayout && positioning !== "ABSOLUTE" && data.preserveAutoLayoutTranslation !== true) {
-        // Translation will be ignored anyway in auto-layout flow.
-        node.relativeTransform = [[t[0][0], t[0][1], 0], [t[1][0], t[1][1], 0]];
+        // CRITICAL FIX: If we are in-flow auto-layout, translation is managed by Figma.
+        // Forcing X/Y to 0 here causes children to overlap until Figma re-layouts.
+        // We ONLY set relativeTransform if there is non-zero rotation.
+        const isIdentityRotation = Math.abs(t[0][1]) < 1e-6 && Math.abs(t[1][0]) < 1e-6;
+        if (!isIdentityRotation) {
+            node.relativeTransform = [[t[0][0], t[0][1], 0], [t[1][0], t[1][1], 0]];
+        }
     } else {
         node.relativeTransform = t;
     }

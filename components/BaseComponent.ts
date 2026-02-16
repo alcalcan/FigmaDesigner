@@ -159,6 +159,12 @@ export abstract class BaseComponent {
               }
             }
           }
+          /**
+           * VECTOR nodes with 'svgContent' are treated as containers.
+           * Figma's createNodeFromSvg() creates a Frame containing the paths.
+           * We typically propagate parent-level 'props' (strokes, fills) to these children 
+           * during the 'postCreate' hook.
+           */
           node = figma.createNodeFromSvg(finalSvgContent);
         } else {
           node = figma.createVector();

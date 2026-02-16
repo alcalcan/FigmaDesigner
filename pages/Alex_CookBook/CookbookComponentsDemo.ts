@@ -17,7 +17,14 @@ import { search_bar_expanded_radio } from "../../components/Alex_CookBook/search
 import { sidebar_filtering } from "../../components/Alex_CookBook/sidebar_filtering/sidebar_filtering";
 import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
+import { slider } from "../../components/Alex_CookBook/slider/slider";
 import { social_profile_card } from "../../components/Alex_CookBook/social_profile_card/social_profile_card";
+import { dropdown_input } from "../../components/Alex_CookBook/dropdown_input/dropdown_input";
+import { metric_card } from "../../components/Alex_CookBook/metric_card/metric_card";
+import { line_chart_card } from "../../components/Alex_CookBook/line_chart_card/line_chart_card";
+import { button } from "../../components/Alex_CookBook/button/button";
+import { badge } from "../../components/Alex_CookBook/badge/badge";
+import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
 
 export class CookbookComponentsDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -102,6 +109,28 @@ export class CookbookComponentsDemo extends BaseComponent {
 
             container.appendChild(row);
 
+            // States and Professional Inputs
+            const stateRow = this.createRow();
+            stateRow.layoutAlign = "STRETCH";
+            stateRow.appendChild(await inputComp.create({ placeholder: "Error State", state: "error", helperText: "This field is required", width: 320 }));
+            stateRow.appendChild(await inputComp.create({ placeholder: "Warning State", state: "warning", helperText: "Check your input", width: 320 }));
+            stateRow.appendChild(await inputComp.create({ placeholder: "Success State", state: "success", helperText: "Looking good!", width: 320 }));
+            container.appendChild(stateRow);
+
+            // Dropdown Input Showcase
+            const di = new dropdown_input();
+            const diNode = await di.create({
+                placeholder: "Professional Dropdown",
+                options: [
+                    { name: "Option 1", selected: false },
+                    { name: "Option 2", selected: true },
+                    { name: "Option 3", selected: false }
+                ],
+                width: 320
+            });
+            // (diNode as FrameNode).layoutAlign = "STRETCH"; // REMOVED to respect fixed width 320
+            container.appendChild(diNode);
+
             // Search Bars
             const searchDefault = new search_bar();
             const searchDefaultNode = await searchDefault.create({ placeholder: "Default Search Bar" });
@@ -117,6 +146,64 @@ export class CookbookComponentsDemo extends BaseComponent {
             const searchRadioNode = await searchRadio.create({ placeholder: "Expanded Search (Radio)" });
             (searchRadioNode as FrameNode).layoutAlign = "STRETCH";
             container.appendChild(searchRadioNode);
+        });
+
+        // --- BUTTONS ---
+        await this.addSection(root, "Buttons", async (container) => {
+            const btn = new button();
+
+            // Variants Row
+            const variantRow = this.createRow();
+            variantRow.appendChild(await btn.create({ label: "Primary", variant: "primary" }));
+            variantRow.appendChild(await btn.create({ label: "Secondary", variant: "secondary" }));
+            variantRow.appendChild(await btn.create({ label: "Ghost", variant: "ghost" }));
+            variantRow.appendChild(await btn.create({ label: "Danger", variant: "danger" }));
+            container.appendChild(variantRow);
+
+            // States Row
+            const stateRow = this.createRow();
+            stateRow.appendChild(await btn.create({ label: "Default", state: "default" }));
+            stateRow.appendChild(await btn.create({ label: "Hover State", state: "hover" }));
+            stateRow.appendChild(await btn.create({ label: "Disabled", state: "disabled" }));
+            stateRow.appendChild(await btn.create({ label: "Loading", state: "loading" }));
+            container.appendChild(stateRow);
+
+            // Sizes Row
+            const sizeRow = this.createRow();
+            sizeRow.appendChild(await btn.create({ label: "Small Button", size: "small" }));
+            sizeRow.appendChild(await btn.create({ label: "Medium Button", size: "medium" }));
+            sizeRow.appendChild(await btn.create({ label: "Large Button", size: "large" }));
+            container.appendChild(sizeRow);
+
+            // Full Width Button
+            container.appendChild(await btn.create({ label: "Full Width Primary Button", width: "fill" }));
+        });
+
+        // --- BADGES & TABS ---
+        await this.addSection(root, "Badges & Tabs", async (container) => {
+            const b = new badge();
+
+            // Subtle Badges
+            const subtleRow = this.createRow();
+            subtleRow.appendChild(await b.create({ label: "Neutral", variant: "neutral", type: "subtle" }));
+            subtleRow.appendChild(await b.create({ label: "Success", variant: "success", type: "subtle" }));
+            subtleRow.appendChild(await b.create({ label: "Warning", variant: "warning", type: "subtle" }));
+            subtleRow.appendChild(await b.create({ label: "Error", variant: "error", type: "subtle" }));
+            subtleRow.appendChild(await b.create({ label: "Info", variant: "info", type: "subtle" }));
+            container.appendChild(subtleRow);
+
+            // Solid Badges
+            const solidRow = this.createRow();
+            solidRow.appendChild(await b.create({ label: "Neutral Solid", variant: "neutral", type: "solid" }));
+            solidRow.appendChild(await b.create({ label: "Success Solid", variant: "success", type: "solid" }));
+            solidRow.appendChild(await b.create({ label: "Warning Solid", variant: "warning", type: "solid" }));
+            solidRow.appendChild(await b.create({ label: "Error Solid", variant: "error", type: "solid" }));
+            solidRow.appendChild(await b.create({ label: "Info Solid", variant: "info", type: "solid" }));
+            container.appendChild(solidRow);
+
+            const t = new tabs();
+            container.appendChild(await t.create({ items: ["Overview", "Details", "Ingredients", "Reviews"], activeIndex: 0 }));
+            container.appendChild(await t.create({ items: ["Messages", "Notifications", "Settings"], activeIndex: 1 }));
         });
 
         // --- CONTROLS ---
@@ -147,6 +234,31 @@ export class CookbookComponentsDemo extends BaseComponent {
             row.appendChild(tgCol);
 
             container.appendChild(row);
+        });
+
+        // --- SLIDERS ---
+        await this.addSection(root, "Sliders", async (container) => {
+            const sl = new slider();
+
+            const simpleRow = this.createRow();
+            simpleRow.appendChild(await sl.create({ type: "simple", value: 30, width: 300 }));
+            simpleRow.appendChild(await sl.create({ type: "simple", value: 70, width: 300 }));
+            container.appendChild(simpleRow);
+
+            const rangeRow = this.createRow();
+            rangeRow.appendChild(await sl.create({ type: "range", rangeValue: [10, 40], width: 300 }));
+            rangeRow.appendChild(await sl.create({ type: "range", rangeValue: [30, 90], width: 300 }));
+            container.appendChild(rangeRow);
+
+            const inputRow = this.createRow();
+            inputRow.appendChild(await sl.create({ type: "with-input", value: 45, width: 300 }));
+            inputRow.appendChild(await sl.create({ type: "with-input", value: 82, width: 300 }));
+            container.appendChild(inputRow);
+
+            const rangeInputRow = this.createRow();
+            rangeInputRow.appendChild(await sl.create({ type: "range-with-inputs", rangeValue: [15, 65], width: 480 }));
+            rangeInputRow.appendChild(await sl.create({ type: "range-with-inputs", rangeValue: [40, 95], width: 480 }));
+            container.appendChild(rangeInputRow);
         });
 
         // --- NAVIGATION ---
@@ -222,6 +334,55 @@ export class CookbookComponentsDemo extends BaseComponent {
             const uefaNode = await uefa.create({});
             (uefaNode as FrameNode).layoutAlign = "STRETCH";
             container.appendChild(uefaNode);
+        });
+
+        // --- DATA VISUALIZATION ---
+        await this.addSection(root, "Data Visualization", async (container) => {
+            const row = this.createRow();
+            row.primaryAxisAlignItems = "SPACE_BETWEEN"; // Distribute evenly
+            row.layoutAlign = "STRETCH";
+
+            // Metric Cards
+            const metric = new metric_card();
+            row.appendChild(await metric.create({
+                label: "Total Revenue",
+                value: "$42,500",
+                trend: "+12%",
+                trendDirection: "up"
+            }));
+            row.appendChild(await metric.create({
+                label: "Active Users",
+                value: "1,240",
+                trend: "-3%",
+                trendDirection: "down"
+            }));
+            row.appendChild(await metric.create({
+                label: "Avg. Session",
+                value: "4m 30s",
+                trend: "0%",
+                trendDirection: "neutral"
+            }));
+
+            container.appendChild(row);
+
+            // Chart Cards
+            const chartRow = this.createRow();
+            chartRow.layoutAlign = "STRETCH";
+
+            const chart = new line_chart_card();
+            chartRow.appendChild(await chart.create({
+                title: "Weekly Traffic",
+                dataPoints: [0.1, 0.4, 0.3, 0.7, 0.5, 0.8, 0.6],
+                color: { r: 0.1, g: 0.6, b: 0.35 } // Green
+            }));
+
+            chartRow.appendChild(await chart.create({
+                title: "Server Load",
+                dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.8, 0.9],
+                color: { r: 0.86, g: 0.15, b: 0.15 } // Red
+            }));
+
+            container.appendChild(chartRow);
         });
 
         root.x = props.x ?? 0;

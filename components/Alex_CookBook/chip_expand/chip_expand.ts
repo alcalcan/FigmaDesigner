@@ -2,8 +2,8 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 import { dropdown_options } from "../dropdown_options/dropdown_options";
 
 
-// SVG Assets
-import SVG_chevron_down from "./assets/chevron_down.svg";
+// Lucide Icons
+import { Lucide_chevron_down } from "../../index";
 
 
 export class chip_expand extends BaseComponent {
@@ -86,24 +86,19 @@ export class chip_expand extends BaseComponent {
           },
           "children": [
             {
-              "type": "VECTOR",
-              "shouldFlatten": true,
+              "type": "COMPONENT",
+              "component": Lucide_chevron_down,
               "name": "Vector",
               "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 6, "y": 8,
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
+                "width": 12,
+                "height": 12,
+                "strokeWeight": 1.5,
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 12, "height": 7.400000095367432,
-                "relativeTransform": [[1, 0, 6], [0, 1, 8]]
+                "width": 12, "height": 12,
+                "relativeTransform": [[1, 0, 6], [0, 1, 6]]
               },
-              "svgContent": SVG_chevron_down
             }
           ]
         }

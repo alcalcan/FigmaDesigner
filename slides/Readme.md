@@ -37,6 +37,19 @@ Included objects:
 - `image`
 - `text`
 
+## Lucide Icons
+
+This project includes a collection of curated [Lucide](https://lucide.dev/) icons, ported from SVG assets to native Figma components.
+
+### Implementation
+- **Location**: `components/lucide_icons/`
+- **Structure**: Each icon is a class extending `BaseComponent`, wrapping its SVG content as a `VECTOR` node.
+- **Style Propagation**: The `BaseComponent` handles drawing the SVG paths and propagating styles (stroke color, weight, caps, joins) to all child paths.
+
+### Management
+- **Previewing**: Use the `Lucide_IconShowcase` page (`pages/lucide_icons/Lucide_IconShowcase.ts`) to view all available icons.
+- **Adding Icons**: Use the script in `tools/GenerateLucideIcons.ts` to automatically generate new icon components from Lucide's raw SVG repository.
+
 ## Available Slides
 
 ### Slide_Title
