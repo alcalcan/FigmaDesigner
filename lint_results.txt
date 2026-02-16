@@ -1,0 +1,1272 @@
+
+> FigmaDesigner@1.0.0 lint
+> eslint --ext .ts,.tsx --ignore-pattern node_modules .
+
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Alex_CookBook/Browser/Browser.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Alex_CookBook/GQ_Banner_Shirts_Aligned/GQ_Banner_Shirts_Aligned.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  199:49  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  307:49  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  431:52  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  455:52  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  472:38  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  492:64  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  498:29  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  524:46  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  557:52  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  598:64  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  655:27  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  665:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Alex_CookBook/Info_generated/Info_generated.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Alex_CookBook/Info_raw/Info_raw.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Alex_CookBook/checkbox/checkbox.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  213:42  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  214:42  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Alex_CookBook/chip_expand/chip_expand.ts
+  116:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/BaseComponent.ts
+   90:9   error  'pendingLayoutGrow' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   91:9   error  'pendingLayoutAlign' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  467:52  error  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  493:37  error  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  504:55  error  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  507:21  error  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  519:60  error  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/ComponentHelpers.ts
+  83:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  84:50  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/AEK_Larnaka/AEK_Larnaka.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/AS_Roma/AS_Roma.ts
+     1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   197:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+   205:77  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+   750:59  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1499:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1507:78  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1688:26  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1696:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1940:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1948:77  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/AZ_Alkmaar/AZ_Alkmaar.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Ajax/Ajax.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Alessandria/Alessandria.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Anderlecht/Anderlecht.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Antwerp/Antwerp.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Arsenal/Arsenal.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Aston_Villa/Aston_Villa.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Atalanta/Atalanta.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Atletico/Atletico.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Barcelona/Barcelona.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Basel/Basel.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Bayern/Bayern.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Benfica/Benfica.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Bes_iktas_/Bes_iktas_.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Betis/Betis.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Bilbao/Bilbao.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Bologna/Bologna.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Braga/Braga.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Brest/Brest.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Cadiz/Cadiz.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Celta_de_Vigo/Celta_de_Vigo.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Celtic_Glasgow/Celtic_Glasgow.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Chelsea/Chelsea.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Club_Brugge/Club_Brugge.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Copenhagen/Copenhagen.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Crvena_zvezda/Crvena_zvezda.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Dinamo_Kyiv/Dinamo_Kyiv.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Dinamo_Zagreb/Dinamo_Zagreb.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Djurg_rden/Djurg_rden.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Dortmund/Dortmund.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Elfsborg/Elfsborg.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/FCSB/FCSB.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Fenerbah_e/Fenerbah_e.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Feren_avaros/Feren_avaros.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Feyenoord/Feyenoord.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Fiorentina/Fiorentina.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Frankfurt/Frankfurt.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Galatasaray/Galatasaray.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Genk/Genk.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Gent/Gent.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Girona/Girona.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Granada/Granada.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Hertha_Berlin/Hertha_Berlin.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Hoffenheim/Hoffenheim.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Inter/Inter.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Istambul_B_/Istambul_B_.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Juventus/Juventus.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Krasnodar/Krasnodar.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Lazio/Lazio.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Lech/Lech.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Leeds/Leeds.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  380:54  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  505:34  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  561:55  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  569:82  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Leicester/Leicester.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  209:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Leipzig/Leipzig.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Lens/Lens.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Leverkusen/Leverkusen.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Lille/Lille.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Liverpool/Liverpool.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Livorno/Livorno.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  243:63  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  496:81  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Ludogorets/Ludogorets.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Lyon/Lyon.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Macabi_Haifa/Macabi_Haifa.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Maccabi__Tel_Aviv/Maccabi__Tel_Aviv.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Madrid/Madrid.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Mallorca/Mallorca.ts
+     1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   268:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+   331:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+   541:59  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+   625:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1024:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1045:59  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1486:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1486:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1542:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1550:78  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1675:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1822:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1920:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1928:78  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1983:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1991:78  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2025:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2033:78  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2088:51  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2096:78  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2116:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2200:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2235:26  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2243:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2340:26  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2348:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2508:26  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2516:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2529:26  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2536:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2537:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  2557:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  3019:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  3040:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  3180:26  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  3188:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  3208:30  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Malm_/Malm_.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Manchester_City/Manchester_City.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Manchester_United/Manchester_United.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Marseille/Marseille.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Midtjylland/Midtjylland.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Milan/Milan.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  242:68  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  557:68  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Molde/Molde.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  346:34  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  354:58  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Monaco/Monaco.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Monchengladbach/Monchengladbach.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Nantes/Nantes.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Napoli/Napoli.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Newcastle/Newcastle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Nice/Nice.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Olympiacos/Olympiacos.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Oporto/Oporto.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/PAOK/PAOK.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/PSG_Paris/PSG_Paris.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/PSV/PSV.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Qarabag/Qarabag.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/RFS/RFS.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Rangers/Rangers.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  141:34  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Rapid_Viena/Rapid_Viena.ts
+     1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   401:38  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+   443:67  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1134:68  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  1155:67  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Rayo/Rayo.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Real_Sociedad/Real_Sociedad.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Reggina/Reggina.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Rennes/Rennes.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Salzburg/Salzburg.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sevilla/Sevilla.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Shakhtar/Shakhtar.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Shalke_04/Shalke_04.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sheriff/Sheriff.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sivasspor/Sivasspor.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Slavia/Slavia.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Slovan_Bratislava/Slovan_Bratislava.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sparta_Praha/Sparta_Praha.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sporting_CP/Sporting_CP.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sttutgart/Sttutgart.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Sturm_Graz/Sturm_Graz.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Torpedo_Moscu/Torpedo_Moscu.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Tottenham/Tottenham.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Tweente/Tweente.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Union_Berlin/Union_Berlin.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Villarreal/Villarreal.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  214:82  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/West_Ham/West_Ham.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Wolfsburg/Wolfsburg.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Wolverhampton/Wolverhampton.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Young_boys/Young_boys.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  603:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+  624:50  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Football_Crests/Zenit/Zenit.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/GQ_2026/banner/banner.ts
+  299:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/Miscellaneous/BriefNote/BriefNote.ts
+  155:17   error  Unexpected lexical declaration in case block  no-case-declarations
+  201:17   error  Unexpected lexical declaration in case block  no-case-declarations
+  222:114  error  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  223:22   error  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/TransformHelpers.ts
+  31:76  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_Academy_online/Info/Info.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  134:38  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  201:38  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  212:35  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  212:41  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  214:55  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_Academy_online/Top_bar/Top_bar.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_Academy_online/search_bar/search_bar.ts
+  12:10  error  'applySizeAndTransform' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___airplay/AV___airplay.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___android_forward_10/AV___android_forward_10.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___android_replay_10/AV___android_replay_10.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___autoplay/AV___autoplay.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___backward/AV___backward.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___chromecast/AV___chromecast.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___forward/AV___forward.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___fullscreen/AV___fullscreen.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___fullscreen_exit/AV___fullscreen_exit.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___ios_backward_10/AV___ios_backward_10.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___ios_forward_10/AV___ios_forward_10.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___ios_go_to_end/AV___ios_go_to_end.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___ios_next/AV___ios_next.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___ios_previous/AV___ios_previous.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___pause/AV___pause.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___pause_circle/AV___pause_circle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___pause_circle_negative/AV___pause_circle_negative.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___play/AV___play.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___play_circle/AV___play_circle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___play_circle_negative/AV___play_circle_negative.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___play_video_off_2/AV___play_video_off_2.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___sound_down/AV___sound_down.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___sound_off/AV___sound_off.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___sound_up/AV___sound_up.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___stop/AV___stop.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/AV___stop_circle_negative/AV___stop_circle_negative.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Collapse_All/Action___Collapse_All.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Description/Action___Description.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Drag_horizontal/Action___Drag_horizontal.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Drag_horizontal_Alt/Action___Drag_horizontal_Alt.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Drag_vertical/Action___Drag_vertical.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Drag_vertical_Alt/Action___Drag_vertical_Alt.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Expand_All/Action___Expand_All.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Microphone/Action___Microphone.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Open_in_full/Action___Open_in_full.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Print/Action___Print.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Restart/Action___Restart.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Swap_horizontal/Action___Swap_horizontal.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Swap_vertical/Action___Swap_vertical.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Sync/Action___Sync.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___Tune/Action___Tune.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___action_copy/Action___action_copy.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___action_delete/Action___action_delete.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___add/Action___add.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___add_circle/Action___add_circle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___add_to_calendar/Action___add_to_calendar.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___check/Action___check.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___check_circle/Action___check_circle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___compare/Action___compare.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___directions/Action___directions.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___dislike/Action___dislike.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___dislike_filled/Action___dislike_filled.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___download/Action___download.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___edit/Action___edit.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___edit_filled/Action___edit_filled.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___equal/Action___equal.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___equal_Alt/Action___equal_Alt.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___favourite/Action___favourite.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___favourite_active/Action___favourite_active.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___filter/Action___filter.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___filter_circle/Action___filter_circle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___filter_circle_filled/Action___filter_circle_filled.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___followed/Action___followed.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___followed_active/Action___followed_active.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___ios_close_full/Action___ios_close_full.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___language/Action___language.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___like/Action___like.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___like_filled/Action___like_filled.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___map/Action___map.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___profile/Action___profile.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___qr_code/Action___qr_code.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___remove/Action___remove.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___remove_circle/Action___remove_circle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___save/Action___save.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___scan/Action___scan.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___search/Action___search.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___settings/Action___settings.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___share_android/Action___share_android.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___share_android_filled/Action___share_android_filled.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___share_ios/Action___share_ios.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___sorting/Action___sorting.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action___unfollow/Action___unfollow.ts
+   1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  81:60  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Action__actions_language/Action__actions_language.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Card__Single_Card_Red/Card__Single_Card_Red.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___Simulator_tool_standings_ALT/Features___Simulator_tool_standings_ALT.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___euro_2020/Features___euro_2020.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___event_companion/Features___event_companion.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___games/Features___games.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___gott/Features___gott.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___history/Features___history.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___hospitality/Features___hospitality.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___in_the_zone/Features___in_the_zone.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___ko_bracket/Features___ko_bracket.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___moments/Features___moments.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___panini_virtual_album/Features___panini_virtual_album.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___player_ranking/Features___player_ranking.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___podcast/Features___podcast.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___predictor/Features___predictor.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___quiz/Features___quiz.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___radio/Features___radio.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___simulator/Features___simulator.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___skills/Features___skills.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___stats/Features___stats.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___store/Features___store.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___teams/Features___teams.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___tickets/Features___tickets.ts
+   1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  99:74  error  This number literal will lose precision at runtime                                @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___top_scorer/Features___top_scorer.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___tournament_bracket/Features___tournament_bracket.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___uefa_rankings/Features___uefa_rankings.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___uefa_tv/Features___uefa_tv.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___unl/Features___unl.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Features___w2021/Features___w2021.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___away/Football___away.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___card_single_card_red/Football___card_single_card_red.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___card_single_card_yellow/Football___card_single_card_yellow.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___card_yellow_to_red/Football___card_yellow_to_red.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___doubtful/Football___doubtful.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___eliminated/Football___eliminated.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___goal_extra_time/Football___goal_extra_time.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___goal_own_goal/Football___goal_own_goal.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___goal_penalty/Football___goal_penalty.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___goal_penalty_missed/Football___goal_penalty_missed.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___goal_regular/Football___goal_regular.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___home/Football___home.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___injured/Football___injured.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___penalty_shootout/Football___penalty_shootout.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___substitution_both/Football___substitution_both.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___substitution_in/Football___substitution_in.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___substitution_out/Football___substitution_out.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___suspended/Football___suspended.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_additional_time/Football___time_additional_time.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_break/Football___time_break.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_end/Football___time_end.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_extra_time/Football___time_extra_time.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_resume/Football___time_resume.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_start/Football___time_start.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___time_whistle/Football___time_whistle.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___var/Football___var.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___var_progress/Football___var_progress.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Football___var_resolution/Football___var_resolution.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Gaming___gaming_auto_complete/Gaming___gaming_auto_complete.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Gaming___gaming_bench/Gaming___gaming_bench.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Gaming___gaming_captain/Gaming___gaming_captain.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Navigation___Expand/Navigation___Expand.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Navigation___close/Navigation___close.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Product___Flat___Competitions/Product___Flat___Competitions.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Product___Flat___Football/Product___Flat___Football.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Product___Flat___Support/Product___Flat___Support.ts
+    1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   78:38  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  145:38  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  156:35  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  156:41  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  158:55  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/Product___Flat___Trophy/Product___Flat___Trophy.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/VAR_progress/VAR_progress.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_icons/VAR_resolution/VAR_resolution.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/BookingLogo_color/BookingLogo_color.ts
+   1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  33:63  error  This number literal will lose precision at runtime                      @typescript-eslint/no-loss-of-precision
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/Main_Navigation/Main_Navigation.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/Main_Navigation_28/Main_Navigation_28.ts
+  28:15  error  'menuItemHeight' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/Main_Navigation_Booking/Main_Navigation_Booking.ts
+  32:11  error  'message' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/NavLink_selected_28/NavLink_selected_28.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/Secondary_Navigation/Secondary_Navigation.ts
+  1:57  error  'T2x3' is defined but never used. Allowed unused vars must match /^_/u                                                                                                                                       @typescript-eslint/no-unused-vars
+  7:8   error  'SVG_Secondary_Navigation_assets_icon_Vector_I14_114603_13611_17298_9157_80892_8836_74401_1004_283_svg_6_710267066955566x4_968685150146484' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/SponsorBanner/SponsorBanner.ts
+  22:15  error  'logoRadius' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/Top_bar/Top_bar.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/components/UEFA_web/uefa_cards_4x/uefa_cards_4x.ts
+  84:40  error  'index' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/pages/UEFA_Academy_online/UEFA_Academy_online_CourseDetails.ts
+  1:10  error  'Placeholder' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/pages/UEFA_Academy_online/UEFA_Academy_online_Summary.ts
+  1:10  error  'Placeholder' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/pages/UEFA_icons/UEFA_IconShowcase.ts
+  80:60  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_001.ts
+   42:31  error  Empty block statement                     no-empty
+   48:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   91:31  error  Empty block statement                     no-empty
+   97:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  139:31  error  Empty block statement                     no-empty
+  144:31  error  Empty block statement                     no-empty
+  149:31  error  Empty block statement                     no-empty
+  154:31  error  Empty block statement                     no-empty
+  159:31  error  Empty block statement                     no-empty
+  164:31  error  Empty block statement                     no-empty
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_002.ts
+   42:31  error  Empty block statement                                                                 no-empty
+   61:31  error  Empty block statement                                                                 no-empty
+   79:31  error  Empty block statement                                                                 no-empty
+   97:31  error  Empty block statement                                                                 no-empty
+  117:31  error  Empty block statement                                                                 no-empty
+  122:31  error  Empty block statement                                                                 no-empty
+  127:31  error  Empty block statement                                                                 no-empty
+  148:31  error  Empty block statement                                                                 no-empty
+  153:31  error  Empty block statement                                                                 no-empty
+  158:31  error  Empty block statement                                                                 no-empty
+  163:31  error  Empty block statement                                                                 no-empty
+  184:31  error  Empty block statement                                                                 no-empty
+  191:10  error  'base64ToUint8Array' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_003.ts
+   40:31  error  Empty block statement                                                                 no-empty
+   59:31  error  Empty block statement                                                                 no-empty
+   77:31  error  Empty block statement                                                                 no-empty
+   95:31  error  Empty block statement                                                                 no-empty
+  115:31  error  Empty block statement                                                                 no-empty
+  120:31  error  Empty block statement                                                                 no-empty
+  125:31  error  Empty block statement                                                                 no-empty
+  130:31  error  Empty block statement                                                                 no-empty
+  138:10  error  'base64ToUint8Array' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_004.ts
+   40:31  error  Empty block statement                                                                 no-empty
+   59:31  error  Empty block statement                                                                 no-empty
+   77:31  error  Empty block statement                                                                 no-empty
+   95:31  error  Empty block statement                                                                 no-empty
+  115:31  error  Empty block statement                                                                 no-empty
+  120:31  error  Empty block statement                                                                 no-empty
+  125:31  error  Empty block statement                                                                 no-empty
+  130:31  error  Empty block statement                                                                 no-empty
+  138:10  error  'base64ToUint8Array' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_005.ts
+  41:31  error  Empty block statement                     no-empty
+  47:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:31  error  Empty block statement                     no-empty
+  96:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_006.ts
+   44:31  error  Empty block statement                     no-empty
+   63:31  error  Empty block statement                     no-empty
+   81:31  error  Empty block statement                     no-empty
+   99:31  error  Empty block statement                     no-empty
+  119:31  error  Empty block statement                     no-empty
+  124:31  error  Empty block statement                     no-empty
+  144:31  error  Empty block statement                     no-empty
+  164:31  error  Empty block statement                     no-empty
+  168:31  error  Empty block statement                     no-empty
+  172:31  error  Empty block statement                     no-empty
+  176:31  error  Empty block statement                     no-empty
+  180:31  error  Empty block statement                     no-empty
+  184:31  error  Empty block statement                     no-empty
+  190:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  217:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_007.ts
+   44:31  error  Empty block statement                     no-empty
+   63:31  error  Empty block statement                     no-empty
+   81:31  error  Empty block statement                     no-empty
+   99:31  error  Empty block statement                     no-empty
+  104:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:31  error  Empty block statement                     no-empty
+  178:31  error  Empty block statement                     no-empty
+  198:31  error  Empty block statement                     no-empty
+  218:31  error  Empty block statement                     no-empty
+  222:31  error  Empty block statement                     no-empty
+  226:31  error  Empty block statement                     no-empty
+  230:31  error  Empty block statement                     no-empty
+  234:31  error  Empty block statement                     no-empty
+  238:31  error  Empty block statement                     no-empty
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_008.ts
+   44:31  error  Empty block statement                     no-empty
+   63:31  error  Empty block statement                     no-empty
+   81:31  error  Empty block statement                     no-empty
+   99:31  error  Empty block statement                     no-empty
+  119:31  error  Empty block statement                     no-empty
+  124:31  error  Empty block statement                     no-empty
+  144:31  error  Empty block statement                     no-empty
+  149:31  error  Empty block statement                     no-empty
+  154:31  error  Empty block statement                     no-empty
+  159:31  error  Empty block statement                     no-empty
+  165:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  192:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  233:31  error  Empty block statement                     no-empty
+  237:31  error  Empty block statement                     no-empty
+  241:31  error  Empty block statement                     no-empty
+  245:31  error  Empty block statement                     no-empty
+  249:31  error  Empty block statement                     no-empty
+  253:31  error  Empty block statement                     no-empty
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_009.ts
+   44:31  error  Empty block statement                     no-empty
+   63:31  error  Empty block statement                     no-empty
+   81:31  error  Empty block statement                     no-empty
+   99:31  error  Empty block statement                     no-empty
+  104:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:31  error  Empty block statement                     no-empty
+  178:31  error  Empty block statement                     no-empty
+  198:31  error  Empty block statement                     no-empty
+  203:31  error  Empty block statement                     no-empty
+  208:31  error  Empty block statement                     no-empty
+  213:31  error  Empty block statement                     no-empty
+  233:31  error  Empty block statement                     no-empty
+  237:31  error  Empty block statement                     no-empty
+  241:31  error  Empty block statement                     no-empty
+  245:31  error  Empty block statement                     no-empty
+  249:31  error  Empty block statement                     no-empty
+  253:31  error  Empty block statement                     no-empty
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_010.ts
+  41:31  error  Empty block statement                     no-empty
+  47:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:31  error  Empty block statement                     no-empty
+  96:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_011.ts
+  41:31  error  Empty block statement                     no-empty
+  47:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:31  error  Empty block statement                     no-empty
+  96:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_012.ts
+  41:31  error  Empty block statement                     no-empty
+  47:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:31  error  Empty block statement                     no-empty
+  96:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_013.ts
+   40:31  error  Empty block statement                                                                 no-empty
+   59:31  error  Empty block statement                                                                 no-empty
+   77:31  error  Empty block statement                                                                 no-empty
+   95:31  error  Empty block statement                                                                 no-empty
+  115:31  error  Empty block statement                                                                 no-empty
+  120:31  error  Empty block statement                                                                 no-empty
+  125:31  error  Empty block statement                                                                 no-empty
+  130:31  error  Empty block statement                                                                 no-empty
+  138:10  error  'base64ToUint8Array' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/UEFA_Light_template/Slide_3Body.ts
+  70:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/temp_debug_refactored_code.ts
+  1:41  error  'NodeDefinition' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/accessibility_checker.ts
+  6:7  error  'getRGB' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/bridge.ts
+  11:10  error  'startBuild' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/handlers/assets.ts
+  46:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/handlers/components.ts
+  116:45   error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+  320:29   error  Empty block statement                           no-empty
+  321:110  error  Empty block statement                           no-empty
+  329:49   error  Require statement not part of import statement  @typescript-eslint/no-var-requires
+  332:29   error  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  332:34   error  Empty block statement                           no-empty
+  341:29   error  Empty block statement                           no-empty
+  345:21   error  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  369:21   error  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/handlers/extraction.ts
+  148:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  169:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  209:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  216:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/handlers/generation.ts
+  227:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/handlers/ppt_export.ts
+   5:13   error  'os' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  47:103  error  Unnecessary escape character: \.                                      no-useless-escape
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/handlers/system.ts
+    4:42  error  'setSpinnerInterval' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+    5:10  error  'stopSpinner' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  139:49  error  Require statement not part of import statement                                        @typescript-eslint/no-var-requires
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/CompactStructure.ts
+   20:83  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  233:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  237:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/ComponentRefactorer.ts
+    20:58   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+    20:71   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   225:74   error  Unnecessary escape character: \.                                                            no-useless-escape
+   225:89   error  Unnecessary escape character: \.                                                            no-useless-escape
+   226:15   error  'rangeFillsRegex' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   478:35   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   532:8    error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   600:46   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   821:30   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   821:38   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   836:30   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   836:38   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   853:15   error  'isHoleCheckbox' is assigned a value but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   861:39   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   863:51   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   874:37   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   889:34   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   904:39   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   950:44   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   950:50   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   965:66   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   983:56   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1009:52   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1113:123  error  'nodes' is defined but never used. Allowed unused args must match /^_/u                     @typescript-eslint/no-unused-vars
+  1188:32   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1188:44   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1199:34   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1203:34   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1203:46   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1213:37   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1254:53   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1276:36   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1276:48   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1293:37   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1305:36   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1307:31   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1307:37   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1309:44   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1330:35   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1330:43   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1339:35   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1339:48   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  1346:57   error  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/ProceduralConverter.ts
+  981:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/Reformatter.ts
+  2:13  error  'path' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/ppt_import/PptxParser.ts
+   281:33  error  'rId' is assigned a value but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   444:41  error  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+   448:15  error  'cSldNode' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   489:41  error  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+   493:15  error  'cSldNode' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  1230:25  error  'brCursor' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/ppt_import/SlideEmitter.ts
+   85:38  error  Unnecessary escape character: \-                                                no-useless-escape
+  457:15  error  'cos' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  458:15  error  'sin' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/ppt_import/analyze_ppt.ts
+  2:13  error  'path' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/bridge/server_tools/run_pipeline_test.ts
+  5:13  error  'path' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/build.ts
+  56:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/tools/test_procedural_flow.ts
+  64:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 615 problems (615 errors, 0 warnings)
+

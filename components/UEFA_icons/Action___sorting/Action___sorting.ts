@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -30,7 +30,7 @@ export class Action___sorting extends BaseComponent {
               "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 0.8000000715255737, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                "strokeWeight": 0.800000, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "x": 5, "y": 22,
                 "strokes": [],
                 "effects": [],

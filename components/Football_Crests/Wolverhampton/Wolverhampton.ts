@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -68,8 +68,8 @@ export class Wolverhampton extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.6176323294639587, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 0.000006665726687060669, "y": 4.007803440093994,
+                    "strokeWeight": 0.617632, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 0.000006, "y": 4.007803,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
@@ -77,7 +77,7 @@ export class Wolverhampton extends BaseComponent {
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                     "width": 60, "height": 51.984375,
-                    "relativeTransform": [[1, 0, 0.000006665726687060669], [0, 1, 4.007803440093994]],
+                    "relativeTransform": [[1, 0, 0.000006], [0, 1, 4.007803]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Wolverhampton_assets_icon_Vector_I190_21181_635_118_svg_60x51_984375
@@ -89,16 +89,16 @@ export class Wolverhampton extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.6176323294639587, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 5.7655816078186035, "y": 9.011734962463379,
+                    "strokeWeight": 0.617632, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 5.765581, "y": 9.011734,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 48.46873092651367, "height": 41.976566314697266,
-                    "relativeTransform": [[1, 0, 5.7655816078186035], [0, 1, 9.011734962463379]],
+                    "width": 48.468730, "height": 41.976566,
+                    "relativeTransform": [[1, 0, 5.765581], [0, 1, 9.011734]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Wolverhampton_assets_icon_Vector_I190_21181_635_119_svg_48_46873092651367x41_976566314697266
@@ -110,8 +110,8 @@ export class Wolverhampton extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.6176323294639587, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 5.261727809906006, "y": 8.566411018371582,
+                    "strokeWeight": 0.617632, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 5.261727, "y": 8.566411,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
@@ -119,7 +119,7 @@ export class Wolverhampton extends BaseComponent {
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                     "width": 49.48828125, "height": 42.8671875,
-                    "relativeTransform": [[1, 0, 5.261727809906006], [0, 1, 8.566411018371582]],
+                    "relativeTransform": [[1, 0, 5.261727], [0, 1, 8.566411]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Wolverhampton_assets_icon_Vector_I190_21181_635_120_svg_49_48828125x42_8671875
@@ -131,8 +131,8 @@ export class Wolverhampton extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.6176323294639587, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 12.82032585144043, "y": 10.910148620605469,
+                    "strokeWeight": 0.617632, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 12.820325, "y": 10.910148,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
@@ -140,7 +140,7 @@ export class Wolverhampton extends BaseComponent {
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                     "width": 34.359375, "height": 38.1796875,
-                    "relativeTransform": [[1, 0, 12.82032585144043], [0, 1, 10.910148620605469]],
+                    "relativeTransform": [[1, 0, 12.820325], [0, 1, 10.910148]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Wolverhampton_assets_icon_Vector_I190_21181_635_121_svg_34_359375x38_1796875
@@ -152,16 +152,16 @@ export class Wolverhampton extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.6176323294639587, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.839805603027344, "y": 27.25783920288086,
+                    "strokeWeight": 0.617632, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 22.839805, "y": 27.257839,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 14.320308685302734, "height": 5.484375,
-                    "relativeTransform": [[1, 0, 22.839805603027344], [0, 1, 27.25783920288086]],
+                    "width": 14.320308, "height": 5.484375,
+                    "relativeTransform": [[1, 0, 22.839805], [0, 1, 27.257839]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Wolverhampton_assets_icon_Vector_I190_21181_635_122_svg_14_320308685302734x5_484375

@@ -87,8 +87,8 @@ export abstract class BaseComponent {
    */
   async renderDefinition(def: NodeDefinition, parent?: BaseNode): Promise<SceneNode> {
     let node: SceneNode;
-    let pendingLayoutGrow: number | undefined;
-    let pendingLayoutAlign: string | undefined;
+    // let pendingLayoutGrow: number | undefined;
+    // let pendingLayoutAlign: string | undefined;
 
     // 1. Create Node
     switch (def.type) {

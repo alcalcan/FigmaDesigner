@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -23,7 +23,7 @@ export class Info_raw extends BaseComponent {
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.7803921699523926, "g": 0.9176470637321472, "b": 0.9843137264251709 },
+                "color": { "r": 0.780392, "g": 0.917647, "b": 0.984313 },
                 "boundVariables": {}
               }
             ],
@@ -193,7 +193,7 @@ export class Info_raw extends BaseComponent {
                         ],
                         "strokes": [],
                         "effects": [],
-                        "letterSpacing": { "unit": "PIXELS", "value": -0.10000000149011612 },
+                        "letterSpacing": { "unit": "PIXELS", "value": -0.100000 },
                         "lineHeight": { "unit": "PERCENT", "value": 150 },
                         "font": { "family": "Manrope", "style": "Bold" }
                       },
@@ -249,7 +249,7 @@ export class Info_raw extends BaseComponent {
                             "strokes": [],
                             "effects": [],
                             "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                            "lineHeight": { "unit": "PERCENT", "value": 129.99999523162842 },
+                            "lineHeight": { "unit": "PERCENT", "value": 129.999995 },
                             "font": { "family": "Manrope", "style": "SemiBold" }
                           },
                           "layoutProps": {
@@ -287,15 +287,15 @@ export class Info_raw extends BaseComponent {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                 "isMask": false, "maskType": "ALPHA",
                                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                "x": 2.642333984375, "y": 2.5,
+                                "x": 2.642333, "y": 2.5,
                                 "strokes": [],
                                 "effects": [],
                                 "cornerRadius": 0
                               },
                               "layoutProps": {
                                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 18.715295791625977, "height": 19.192251205444336,
-                                "relativeTransform": [[1, 0, 2.642333984375], [0, 1, 2.5]]
+                                "width": 18.715295, "height": 19.192251,
+                                "relativeTransform": [[1, 0, 2.642333], [0, 1, 2.5]]
                               },
                               "svgContent": SVG_Info_raw_assets_icon_Vector_976_133_svg_18_715295791625977x19_192251205444336
                             }
@@ -323,7 +323,7 @@ export class Info_raw extends BaseComponent {
                             "strokes": [],
                             "effects": [],
                             "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                            "lineHeight": { "unit": "PERCENT", "value": 129.99999523162842 },
+                            "lineHeight": { "unit": "PERCENT", "value": 129.999995 },
                             "font": { "family": "Manrope", "style": "SemiBold" }
                           },
                           "layoutProps": {

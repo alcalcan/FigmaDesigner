@@ -50,58 +50,58 @@ export class Features___tickets extends BaseComponent {
         } catch (e) {
             console.warn("Failed to load Inter Regular", e);
         }
-        
+
         const root = figma.createFrame();
-root.name = "Features / tickets";
-root.visible = true;
-root.opacity = 1;
-root.locked = false;
-if ("blendMode" in root) root.blendMode = "PASS_THROUGH";
-if ("isMask" in root) root.isMask = false;
-if ("maskType" in root) root.maskType = "ALPHA";
-if ("clipsContent" in root) root.clipsContent = false;
-if ("layoutMode" in root) {
-    root.layoutMode = "NONE";
-}
-root.fills = await this.hydratePaints([]);
-root.strokes = await this.hydratePaints([]);
-root.strokeWeight = 1;
-root.strokeAlign = "INSIDE";
-if ("strokeCap" in root) root.strokeCap = "NONE";
-if ("strokeJoin" in root) root.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
-if ("strokeTopWeight" in root) root.strokeTopWeight = 1;
-if ("strokeRightWeight" in root) root.strokeRightWeight = 1;
-if ("strokeBottomWeight" in root) root.strokeBottomWeight = 1;
-if ("strokeLeftWeight" in root) root.strokeLeftWeight = 1;
-root.effects = [];
-if ("cornerRadius" in root) root.cornerRadius = 0;
+        root.name = "Features / tickets";
+        root.visible = true;
+        root.opacity = 1;
+        root.locked = false;
+        if ("blendMode" in root) root.blendMode = "PASS_THROUGH";
+        if ("isMask" in root) root.isMask = false;
+        if ("maskType" in root) root.maskType = "ALPHA";
+        if ("clipsContent" in root) root.clipsContent = false;
+        if ("layoutMode" in root) {
+            root.layoutMode = "NONE";
+        }
+        root.fills = await this.hydratePaints([]);
+        root.strokes = await this.hydratePaints([]);
+        root.strokeWeight = 1;
+        root.strokeAlign = "INSIDE";
+        if ("strokeCap" in root) root.strokeCap = "NONE";
+        if ("strokeJoin" in root) root.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root) root.strokeMiterLimit = 4;
+        if ("strokeTopWeight" in root) root.strokeTopWeight = 1;
+        if ("strokeRightWeight" in root) root.strokeRightWeight = 1;
+        if ("strokeBottomWeight" in root) root.strokeBottomWeight = 1;
+        if ("strokeLeftWeight" in root) root.strokeLeftWeight = 1;
+        root.effects = [];
+        if ("cornerRadius" in root) root.cornerRadius = 0;
 
-// Start Child: Vector
-const root_child_0_svgContainer = figma.createNodeFromSvg(SVG_Features___tickets_assets_icon_Vector_I92_670925_1715_45_svg_21_790618896484375x21_794143676757812);
-root_child_0_svgContainer.fills = []; // Ensure transparent background
-const root_child_0 = figma.flatten([root_child_0_svgContainer]);
-root_child_0.name = "Vector";
-root_child_0.visible = true;
-root_child_0.opacity = 1;
-root_child_0.locked = false;
-if ("blendMode" in root_child_0) root_child_0.blendMode = "PASS_THROUGH";
-if ("isMask" in root_child_0) root_child_0.isMask = false;
-if ("maskType" in root_child_0) root_child_0.maskType = "ALPHA";
-root_child_0.strokes = await this.hydratePaints([]);
-root_child_0.strokeWeight = 1;
-root_child_0.strokeAlign = "INSIDE";
-if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
-if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
-if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
-root_child_0.effects = [];
-root.appendChild(root_child_0);
-applySizeAndTransform(root_child_0, {"width":21.790618896484375,"height":21.794143676757812,"relativeTransform":[[1,0,1.1064453125],[0,1,1.1029052734375]],"parentIsAutoLayout":false,"layoutPositioning":"AUTO"});
-root_child_0.x = 1.1064453125;
-root_child_0.y = 1.1029052734375;
+        // Start Child: Vector
+        const root_child_0_svgContainer = figma.createNodeFromSvg(SVG_Features___tickets_assets_icon_Vector_I92_670925_1715_45_svg_21_790618896484375x21_794143676757812);
+        root_child_0_svgContainer.fills = []; // Ensure transparent background
+        const root_child_0 = figma.flatten([root_child_0_svgContainer]);
+        root_child_0.name = "Vector";
+        root_child_0.visible = true;
+        root_child_0.opacity = 1;
+        root_child_0.locked = false;
+        if ("blendMode" in root_child_0) root_child_0.blendMode = "PASS_THROUGH";
+        if ("isMask" in root_child_0) root_child_0.isMask = false;
+        if ("maskType" in root_child_0) root_child_0.maskType = "ALPHA";
+        root_child_0.strokes = await this.hydratePaints([]);
+        root_child_0.strokeWeight = 1;
+        root_child_0.strokeAlign = "INSIDE";
+        if ("strokeCap" in root_child_0) root_child_0.strokeCap = "NONE";
+        if ("strokeJoin" in root_child_0) root_child_0.strokeJoin = "MITER";
+        if ("strokeMiterLimit" in root_child_0) root_child_0.strokeMiterLimit = 4;
+        root_child_0.effects = [];
+        root.appendChild(root_child_0);
+        applySizeAndTransform(root_child_0, { "width": 21.790618, "height": 21.794143, "relativeTransform": [[1, 0, 1.106445], [0, 1, 1.102905]], "parentIsAutoLayout": false, "layoutPositioning": "AUTO" });
+        root_child_0.x = 1.106445;
+        root_child_0.y = 1.102905;
 
 
-        applySizeAndTransform(root, {"width":24,"height":24,"parentIsAutoLayout":false});
+        applySizeAndTransform(root, { "width": 24, "height": 24, "parentIsAutoLayout": false });
 
         if (props.x !== undefined) root.x = props.x;
         if (props.y !== undefined) root.y = props.y;

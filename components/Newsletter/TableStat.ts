@@ -23,8 +23,8 @@ export class TableStat extends BaseComponent {
         // 2. Create Main Frame
         const frame = figma.createFrame();
         frame.name = "Frame 2609217"; // From JSON
-        frame.x = props.x;
-        frame.y = props.y;
+        frame.x = props.x ?? 0;
+        frame.y = props.y ?? 0;
         frame.resize(512, 324);
         frame.layoutMode = "VERTICAL";
         frame.primaryAxisSizingMode = "AUTO"; // Sizing: Horizontal AUTO (actually fixed in JSON but children adapt) - JSON says V:FIXED, H:AUTO

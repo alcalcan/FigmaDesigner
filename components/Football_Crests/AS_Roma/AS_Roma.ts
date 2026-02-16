@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -139,7 +139,7 @@ export class AS_Roma extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 46.06441116333008, "height": 60,
+                "width": 46.064411, "height": 60,
                 "relativeTransform": [[1, 0, 7], [0, 1, 0]],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
               },
@@ -152,15 +152,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": -0.0006809980259276927, "y": 0,
+                    "x": -0.000680, "y": 0,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 46.064422607421875, "height": 59.99891662597656,
-                    "relativeTransform": [[1, 0, -0.0006809980259276927], [0, 1, 0]],
+                    "width": 46.064422, "height": 59.998916,
+                    "relativeTransform": [[1, 0, -0.000680], [0, 1, 0]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_11_svg_46_064422607421875x59_99891662597656
@@ -173,15 +173,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 1.1231176853179932, "y": 1.670365333557129,
+                    "x": 1.123117, "y": 1.670365,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 43.81655502319336, "height": 28.273881912231445,
-                    "relativeTransform": [[1, 0, 1.1231176853179932], [0, 1, 1.670365333557129]],
+                    "width": 43.816555, "height": 28.273881,
+                    "relativeTransform": [[1, 0, 1.123117], [0, 1, 1.670365]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_12_svg_43_81655502319336x28_273881912231445
@@ -194,15 +194,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 2.247361421585083, "y": 30.549392700195312,
+                    "x": 2.247361, "y": 30.549392,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 41.55886459350586, "height": 28.31285285949707,
-                    "relativeTransform": [[1, 0, 2.247361421585083], [0, 1, 30.549392700195312]],
+                    "width": 41.558864, "height": 28.312852,
+                    "relativeTransform": [[1, 0, 2.247361], [0, 1, 30.549392]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_13_svg_41_55886459350586x28_31285285949707
@@ -215,15 +215,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 7.165359020233154, "y": 35.20758056640625,
+                    "x": 7.165359, "y": 35.207580,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.350472927093506, "height": 7.044111251831055,
-                    "relativeTransform": [[1, 0, 7.165359020233154], [0, 1, 35.20758056640625]],
+                    "width": 7.350472, "height": 7.044111,
+                    "relativeTransform": [[1, 0, 7.165359], [0, 1, 35.207580]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_14_svg_7_350472927093506x7_044111251831055
@@ -236,15 +236,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 14.12395191192627, "y": 35.07658767700195,
+                    "x": 14.123951, "y": 35.076587,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.610284805297852, "height": 7.302844047546387,
-                    "relativeTransform": [[1, 0, 14.12395191192627], [0, 1, 35.07658767700195]],
+                    "width": 7.610284, "height": 7.302844,
+                    "relativeTransform": [[1, 0, 14.123951], [0, 1, 35.076587]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_15_svg_7_610284805297852x7_302844047546387
@@ -257,15 +257,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.456022262573242, "y": 35.07658767700195,
+                    "x": 21.456022, "y": 35.076587,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 9.620569229125977, "height": 7.191342353820801,
-                    "relativeTransform": [[1, 0, 21.456022262573242], [0, 1, 35.07658767700195]],
+                    "width": 9.620569, "height": 7.191342,
+                    "relativeTransform": [[1, 0, 21.456022], [0, 1, 35.076587]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_16_svg_9_620569229125977x7_191342353820801
@@ -278,15 +278,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.897972106933594, "y": 35.07875442504883,
+                    "x": 30.897972, "y": 35.078754,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.665493965148926, "height": 7.172934055328369,
-                    "relativeTransform": [[1, 0, 30.897972106933594], [0, 1, 35.07875442504883]],
+                    "width": 7.665493, "height": 7.172934,
+                    "relativeTransform": [[1, 0, 30.897972], [0, 1, 35.078754]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_17_svg_7_665493965148926x7_172934055328369
@@ -299,15 +299,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 7.411096096038818, "y": 34.99972915649414,
+                    "x": 7.411096, "y": 34.999729,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.350473880767822, "height": 7.041947364807129,
-                    "relativeTransform": [[1, 0, 7.411096096038818], [0, 1, 34.99972915649414]],
+                    "width": 7.350473, "height": 7.041947,
+                    "relativeTransform": [[1, 0, 7.411096], [0, 1, 34.999729]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_18_svg_7_350473880767822x7_041947364807129
@@ -320,15 +320,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 14.36968994140625, "y": 34.86982345581055,
+                    "x": 14.369689, "y": 34.869823,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.610282897949219, "height": 7.301760673522949,
-                    "relativeTransform": [[1, 0, 14.36968994140625], [0, 1, 34.86982345581055]],
+                    "width": 7.610282, "height": 7.301760,
+                    "relativeTransform": [[1, 0, 14.369689], [0, 1, 34.869823]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_19_svg_7_610282897949219x7_301760673522949
@@ -341,15 +341,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.701759338378906, "y": 34.868743896484375,
+                    "x": 21.701759, "y": 34.868743,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 9.621651649475098, "height": 7.190255165100098,
-                    "relativeTransform": [[1, 0, 21.701759338378906], [0, 1, 34.868743896484375]],
+                    "width": 9.621651, "height": 7.190255,
+                    "relativeTransform": [[1, 0, 21.701759], [0, 1, 34.868743]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_20_svg_9_621651649475098x7_190255165100098
@@ -362,15 +362,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 31.143709182739258, "y": 34.870906829833984,
+                    "x": 31.143709, "y": 34.870906,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.665493965148926, "height": 7.171854019165039,
-                    "relativeTransform": [[1, 0, 31.143709182739258], [0, 1, 34.870906829833984]],
+                    "width": 7.665493, "height": 7.171854,
+                    "relativeTransform": [[1, 0, 31.143709], [0, 1, 34.870906]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_21_svg_7_665493965148926x7_171854019165039
@@ -383,15 +383,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 19.715290069580078, "y": 46.473609924316406,
+                    "x": 19.715290, "y": 46.473609,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.571042060852051, "height": 4.037890911102295,
-                    "relativeTransform": [[1, 0, 19.715290069580078], [0, 1, 46.473609924316406]],
+                    "width": 2.571042, "height": 4.037890,
+                    "relativeTransform": [[1, 0, 19.715290], [0, 1, 46.473609]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_22_svg_2_571042060852051x4_037890911102295
@@ -404,15 +404,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 16.990528106689453, "y": 46.4714469909668,
+                    "x": 16.990528, "y": 46.471446,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.9853852987289429, "height": 3.936131715774536,
-                    "relativeTransform": [[1, 0, 16.990528106689453], [0, 1, 46.4714469909668]],
+                    "width": 1.985385, "height": 3.936131,
+                    "relativeTransform": [[1, 0, 16.990528], [0, 1, 46.471446]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_23_svg_1_9853852987289429x3_936131715774536
@@ -425,15 +425,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.73775291442871, "y": 46.47036361694336,
+                    "x": 22.737752, "y": 46.470363,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.640324831008911, "height": 3.92205810546875,
-                    "relativeTransform": [[1, 0, 22.73775291442871], [0, 1, 46.47036361694336]],
+                    "width": 2.640324, "height": 3.922058,
+                    "relativeTransform": [[1, 0, 22.737752], [0, 1, 46.470363]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_24_svg_2_640324831008911x3_92205810546875
@@ -446,15 +446,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 25.931259155273438, "y": 46.50933837890625,
+                    "x": 25.931259, "y": 46.509338,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.5504751205444336, "height": 3.969686985015869,
-                    "relativeTransform": [[1, 0, 25.931259155273438], [0, 1, 46.50933837890625]],
+                    "width": 2.550475, "height": 3.969686,
+                    "relativeTransform": [[1, 0, 25.931259], [0, 1, 46.509338]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_25_svg_2_5504751205444336x3_969686985015869
@@ -467,15 +467,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 19.87442398071289, "y": 46.32530212402344,
+                    "x": 19.874423, "y": 46.325302,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.5721256732940674, "height": 4.037890911102295,
-                    "relativeTransform": [[1, 0, 19.87442398071289], [0, 1, 46.32530212402344]],
+                    "width": 2.572125, "height": 4.037890,
+                    "relativeTransform": [[1, 0, 19.874423], [0, 1, 46.325302]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_26_svg_2_5721256732940674x4_037890911102295
@@ -488,15 +488,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 17.15074348449707, "y": 46.324222564697266,
+                    "x": 17.150743, "y": 46.324222,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.98430335521698, "height": 3.935044765472412,
-                    "relativeTransform": [[1, 0, 17.15074348449707], [0, 1, 46.324222564697266]],
+                    "width": 1.984303, "height": 3.935044,
+                    "relativeTransform": [[1, 0, 17.150743], [0, 1, 46.324222]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_27_svg_1_98430335521698x3_935044765472412
@@ -509,15 +509,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.89580535888672, "y": 46.324222564697266,
+                    "x": 22.895805, "y": 46.324222,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.641406774520874, "height": 3.9209744930267334,
-                    "relativeTransform": [[1, 0, 22.89580535888672], [0, 1, 46.324222564697266]],
+                    "width": 2.641406, "height": 3.920974,
+                    "relativeTransform": [[1, 0, 22.895805], [0, 1, 46.324222]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_28_svg_2_641406774520874x3_9209744930267334
@@ -530,15 +530,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 26.09039306640625, "y": 46.36211013793945,
+                    "x": 26.090393, "y": 46.362110,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.5504751205444336, "height": 3.9696903228759766,
-                    "relativeTransform": [[1, 0, 26.09039306640625], [0, 1, 46.36211013793945]],
+                    "width": 2.550475, "height": 3.969690,
+                    "relativeTransform": [[1, 0, 26.090393], [0, 1, 46.362110]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_29_svg_2_5504751205444336x3_9696903228759766
@@ -551,15 +551,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 5.251668930053711, "y": 11.749932289123535,
+                    "x": 5.251668, "y": 11.749932,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 35.34722900390625, "height": 20.893098831176758,
-                    "relativeTransform": [[1, 0, 5.251668930053711], [0, 1, 11.749932289123535]],
+                    "width": 35.347229, "height": 20.893098,
+                    "relativeTransform": [[1, 0, 5.251668], [0, 1, 11.749932]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_30_svg_35_34722900390625x20_893098831176758
@@ -572,15 +572,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 16.43027687072754, "y": 31.66595458984375,
+                    "x": 16.430276, "y": 31.665954,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.15289458632469177, "height": 0.14745813608169556,
-                    "relativeTransform": [[1, 0, 16.43027687072754], [0, 1, 31.66595458984375]],
+                    "width": 0.152894, "height": 0.147458,
+                    "relativeTransform": [[1, 0, 16.430276], [0, 1, 31.665954]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_31_svg_0_15289458632469177x0_14745813608169556
@@ -593,15 +593,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.437891006469727, "y": 23.007307052612305,
+                    "x": 30.437891, "y": 23.007307,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.12665580213069916, "height": 0.06495329737663269,
-                    "relativeTransform": [[1, 0, 30.437891006469727], [0, 1, 23.007307052612305]],
+                    "width": 0.126655, "height": 0.064953,
+                    "relativeTransform": [[1, 0, 30.437891], [0, 1, 23.007307]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_32_svg_0_12665580213069916x0_06495329737663269
@@ -614,15 +614,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.007038116455078, "y": 22.88064956665039,
+                    "x": 30.007038, "y": 22.880649,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.28903740644454956, "height": 0.184032142162323,
-                    "relativeTransform": [[1, 0, 30.007038116455078], [0, 1, 22.88064956665039]],
+                    "width": 0.289037, "height": 0.184032,
+                    "relativeTransform": [[1, 0, 30.007038], [0, 1, 22.880649]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_33_svg_0_28903740644454956x0_184032142162323
@@ -635,15 +635,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.617321014404297, "y": 22.851421356201172,
+                    "x": 29.617321, "y": 22.851421,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.21975630521774292, "height": 0.08876939862966537,
-                    "relativeTransform": [[1, 0, 29.617321014404297], [0, 1, 22.851421356201172]],
+                    "width": 0.219756, "height": 0.088769,
+                    "relativeTransform": [[1, 0, 29.617321], [0, 1, 22.851421]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_34_svg_0_21975630521774292x0_08876939862966537
@@ -656,15 +656,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.642221450805664, "y": 22.867103576660156,
+                    "x": 29.642221, "y": 22.867103,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.16887660324573517, "height": 0.05576625466346741,
-                    "relativeTransform": [[1, 0, 29.642221450805664], [0, 1, 22.867103576660156]],
+                    "width": 0.168876, "height": 0.055766,
+                    "relativeTransform": [[1, 0, 29.642221], [0, 1, 22.867103]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_35_svg_0_16887660324573517x0_05576625466346741
@@ -677,15 +677,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 25.823265075683594, "y": 22.453044891357422,
+                    "x": 25.823265, "y": 22.453044,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 6.753381729125977, "height": 8.876860618591309,
-                    "relativeTransform": [[1, 0, 25.823265075683594], [0, 1, 22.453044891357422]],
+                    "width": 6.753381, "height": 8.876860,
+                    "relativeTransform": [[1, 0, 25.823265], [0, 1, 22.453044]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_36_svg_6_753381729125977x8_876860618591309
@@ -698,15 +698,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 26.182415008544922, "y": 22.77889060974121,
+                    "x": 26.182415, "y": 22.778890,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 6.100195407867432, "height": 8.21799373626709,
-                    "relativeTransform": [[1, 0, 26.182415008544922], [0, 1, 22.77889060974121]],
+                    "width": 6.100195, "height": 8.217993,
+                    "relativeTransform": [[1, 0, 26.182415], [0, 1, 22.778890]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_37_svg_6_100195407867432x8_21799373626709
@@ -719,15 +719,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.7581844329834, "y": 23.919893264770508,
+                    "x": 30.758184, "y": 23.919893,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.2686062753200531, "height": 0.15047354996204376,
-                    "relativeTransform": [[1, 0, 30.7581844329834], [0, 1, 23.919893264770508]],
+                    "width": 0.268606, "height": 0.150473,
+                    "relativeTransform": [[1, 0, 30.758184], [0, 1, 23.919893]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_38_svg_0_2686062753200531x0_15047354996204376
@@ -740,15 +740,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 20.761613845825195, "y": 24.30852508544922,
+                    "x": 20.761613, "y": 24.308525,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 7.384698867797852, "height": 8.060623168945312,
-                    "relativeTransform": [[1, 0, 20.761613845825195], [0, 1, 24.30852508544922]],
+                    "width": 7.384698, "height": 8.060623,
+                    "relativeTransform": [[1, 0, 20.761613], [0, 1, 24.308525]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_39_svg_7_384698867797852x8_060623168945312
@@ -761,15 +761,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.06513786315918, "y": 24.619199752807617,
+                    "x": 21.065137, "y": 24.619199,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 6.779384136199951, "height": 7.44683313369751,
-                    "relativeTransform": [[1, 0, 21.06513786315918], [0, 1, 24.619199752807617]],
+                    "width": 6.779384, "height": 7.446833,
+                    "relativeTransform": [[1, 0, 21.065137], [0, 1, 24.619199]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_40_svg_6_779384136199951x7_44683313369751
@@ -782,15 +782,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 28.61756706237793, "y": 20.943979263305664,
+                    "x": 28.617567, "y": 20.943979,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.7283265590667725, "height": 2.0665760040283203,
-                    "relativeTransform": [[1, 0, 28.61756706237793], [0, 1, 20.943979263305664]],
+                    "width": 1.728326, "height": 2.066576,
+                    "relativeTransform": [[1, 0, 28.617567], [0, 1, 20.943979]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_41_svg_1_7283265590667725x2_0665760040283203
@@ -803,15 +803,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 6.214791774749756, "y": 14.30772876739502,
+                    "x": 6.214791, "y": 14.307728,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 4.094274997711182, "height": 5.156924247741699,
-                    "relativeTransform": [[1, 0, 6.214791774749756], [0, 1, 14.30772876739502]],
+                    "width": 4.094274, "height": 5.156924,
+                    "relativeTransform": [[1, 0, 6.214791], [0, 1, 14.307728]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_42_svg_4_094274997711182x5_156924247741699
@@ -824,15 +824,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 37.073524475097656, "y": 31.03004264831543,
+                    "x": 37.073524, "y": 31.030042,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.6303039193153381, "height": 1.0635267496109009,
-                    "relativeTransform": [[1, 0, 37.073524475097656], [0, 1, 31.03004264831543]],
+                    "width": 0.630303, "height": 1.063526,
+                    "relativeTransform": [[1, 0, 37.073524], [0, 1, 31.030042]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_43_svg_0_6303039193153381x1_0635267496109009
@@ -845,15 +845,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 20.600759506225586, "y": 22.500511169433594,
+                    "x": 20.600759, "y": 22.500511,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.8556903004646301, "height": 1.4150919914245605,
-                    "relativeTransform": [[1, 0, 20.600759506225586], [0, 1, 22.500511169433594]],
+                    "width": 0.855690, "height": 1.415091,
+                    "relativeTransform": [[1, 0, 20.600759], [0, 1, 22.500511]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_44_svg_0_8556903004646301x1_4150919914245605
@@ -866,15 +866,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.056074142456055, "y": 14.512227058410645,
+                    "x": 30.056074, "y": 14.512227,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 10.088794708251953, "height": 17.59109878540039,
-                    "relativeTransform": [[1, 0, 30.056074142456055], [0, 1, 14.512227058410645]],
+                    "width": 10.088794, "height": 17.591098,
+                    "relativeTransform": [[1, 0, 30.056074], [0, 1, 14.512227]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_45_svg_10_088794708251953x17_59109878540039
@@ -887,15 +887,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 6.905548095703125, "y": 12.887686729431152,
+                    "x": 6.905548, "y": 12.887686,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.8260655999183655, "height": 1.5220565795898438,
-                    "relativeTransform": [[1, 0, 6.905548095703125], [0, 1, 12.887686729431152]],
+                    "width": 0.826065, "height": 1.522056,
+                    "relativeTransform": [[1, 0, 6.905548], [0, 1, 12.887686]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_46_svg_0_8260655999183655x1_5220565795898438
@@ -908,15 +908,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 33.769962310791016, "y": 30.588735580444336,
+                    "x": 33.769962, "y": 30.588735,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.6559528112411499, "height": 0.5748573541641235,
-                    "relativeTransform": [[1, 0, 33.769962310791016], [0, 1, 30.588735580444336]],
+                    "width": 0.655952, "height": 0.574857,
+                    "relativeTransform": [[1, 0, 33.769962], [0, 1, 30.588735]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_47_svg_0_6559528112411499x0_5748573541641235
@@ -929,15 +929,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 33.325706481933594, "y": 30.420568466186523,
+                    "x": 33.325706, "y": 30.420568,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.450410395860672, "height": 0.6244547963142395,
-                    "relativeTransform": [[1, 0, 33.325706481933594], [0, 1, 30.420568466186523]],
+                    "width": 0.450410, "height": 0.624454,
+                    "relativeTransform": [[1, 0, 33.325706], [0, 1, 30.420568]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_48_svg_0_450410395860672x0_6244547963142395
@@ -950,15 +950,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 5.895852565765381, "y": 16.6955509185791,
+                    "x": 5.895852, "y": 16.695550,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.49588969349861145, "height": 0.45742544531822205,
-                    "relativeTransform": [[1, 0, 5.895852565765381], [0, 1, 16.6955509185791]],
+                    "width": 0.495889, "height": 0.457425,
+                    "relativeTransform": [[1, 0, 5.895852], [0, 1, 16.695550]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_49_svg_0_49588969349861145x0_45742544531822205
@@ -971,15 +971,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 14.369443893432617, "y": 31.397924423217773,
+                    "x": 14.369443, "y": 31.397924,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.6208548545837402, "height": 0.7917090058326721,
-                    "relativeTransform": [[1, 0, 14.369443893432617], [0, 1, 31.397924423217773]],
+                    "width": 0.620854, "height": 0.791709,
+                    "relativeTransform": [[1, 0, 14.369443], [0, 1, 31.397924]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_50_svg_0_6208548545837402x0_7917090058326721
@@ -992,15 +992,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 35.31552505493164, "y": 26.906747817993164,
+                    "x": 35.315525, "y": 26.906747,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.2914073467254639, "height": 3.7222132682800293,
-                    "relativeTransform": [[1, 0, 35.31552505493164], [0, 1, 26.906747817993164]],
+                    "width": 1.291407, "height": 3.722213,
+                    "relativeTransform": [[1, 0, 35.315525], [0, 1, 26.906747]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_51_svg_1_2914073467254639x3_7222132682800293
@@ -1013,15 +1013,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 6.670636177062988, "y": 12.242959022521973,
+                    "x": 6.670636, "y": 12.242959,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 11.438159942626953, "height": 7.759206771850586,
-                    "relativeTransform": [[1, 0, 6.670636177062988], [0, 1, 12.242959022521973]],
+                    "width": 11.438159, "height": 7.759206,
+                    "relativeTransform": [[1, 0, 6.670636], [0, 1, 12.242959]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_52_svg_11_438159942626953x7_759206771850586
@@ -1034,15 +1034,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 26.260398864746094, "y": 21.572227478027344,
+                    "x": 26.260398, "y": 21.572227,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.1128394603729248, "height": 1.7931169271469116,
-                    "relativeTransform": [[1, 0, 26.260398864746094], [0, 1, 21.572227478027344]],
+                    "width": 1.112839, "height": 1.793116,
+                    "relativeTransform": [[1, 0, 26.260398], [0, 1, 21.572227]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_53_svg_1_1128394603729248x1_7931169271469116
@@ -1055,15 +1055,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 23.404550552368164, "y": 21.68836784362793,
+                    "x": 23.404550, "y": 21.688367,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.2027579545974731, "height": 1.6653696298599243,
-                    "relativeTransform": [[1, 0, 23.404550552368164], [0, 1, 21.68836784362793]],
+                    "width": 1.202757, "height": 1.665369,
+                    "relativeTransform": [[1, 0, 23.404550], [0, 1, 21.688367]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_54_svg_1_2027579545974731x1_6653696298599243
@@ -1076,15 +1076,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 14.864192008972168, "y": 14.483031272888184,
+                    "x": 14.864192, "y": 14.483031,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 16.51875877380371, "height": 17.78257179260254,
-                    "relativeTransform": [[1, 0, 14.864192008972168], [0, 1, 14.483031272888184]],
+                    "width": 16.518758, "height": 17.782571,
+                    "relativeTransform": [[1, 0, 14.864192], [0, 1, 14.483031]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_55_svg_16_51875877380371x17_78257179260254
@@ -1097,15 +1097,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 28.890684127807617, "y": 21.196504592895508,
+                    "x": 28.890684, "y": 21.196504,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.1964592933654785, "height": 1.548318862915039,
-                    "relativeTransform": [[1, 0, 28.890684127807617], [0, 1, 21.196504592895508]],
+                    "width": 1.196459, "height": 1.548318,
+                    "relativeTransform": [[1, 0, 28.890684], [0, 1, 21.196504]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_56_svg_1_1964592933654785x1_548318862915039
@@ -1118,15 +1118,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.5054931640625, "y": 17.906360626220703,
+                    "x": 21.505493, "y": 17.906360,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.1564841270446777, "height": 2.6825437545776367,
-                    "relativeTransform": [[1, 0, 21.5054931640625], [0, 1, 17.906360626220703]],
+                    "width": 1.156484, "height": 2.682543,
+                    "relativeTransform": [[1, 0, 21.505493], [0, 1, 17.906360]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_57_svg_1_1564841270446777x2_6825437545776367
@@ -1139,15 +1139,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.36671257019043, "y": 29.51649284362793,
+                    "x": 29.366712, "y": 29.516492,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.796161949634552, "height": 0.6368552446365356,
-                    "relativeTransform": [[1, 0, 29.36671257019043], [0, 1, 29.51649284362793]],
+                    "width": 0.796161, "height": 0.636855,
+                    "relativeTransform": [[1, 0, 29.366712], [0, 1, 29.516492]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_58_svg_0_796161949634552x0_6368552446365356
@@ -1160,15 +1160,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 8.153721809387207, "y": 14.679025650024414,
+                    "x": 8.153721, "y": 14.679025,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.0159547328948975, "height": 0.9928483963012695,
-                    "relativeTransform": [[1, 0, 8.153721809387207], [0, 1, 14.679025650024414]],
+                    "width": 2.015954, "height": 0.992848,
+                    "relativeTransform": [[1, 0, 8.153721], [0, 1, 14.679025]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_59_svg_2_0159547328948975x0_9928483963012695
@@ -1181,15 +1181,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 8.376725196838379, "y": 14.77171516418457,
+                    "x": 8.376725, "y": 14.771715,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.5108399391174316, "height": 0.947907030582428,
-                    "relativeTransform": [[1, 0, 8.376725196838379], [0, 1, 14.77171516418457]],
+                    "width": 1.510839, "height": 0.947907,
+                    "relativeTransform": [[1, 0, 8.376725], [0, 1, 14.771715]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_60_svg_1_5108399391174316x0_947907030582428
@@ -1202,15 +1202,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 12.800000190734863, "y": 17.01434326171875,
+                    "x": 12.800000, "y": 17.014343,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.7339646816253662, "height": 0.8487140536308289,
-                    "relativeTransform": [[1, 0, 12.800000190734863], [0, 1, 17.01434326171875]],
+                    "width": 0.733964, "height": 0.848714,
+                    "relativeTransform": [[1, 0, 12.800000], [0, 1, 17.014343]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_61_svg_0_7339646816253662x0_8487140536308289
@@ -1223,15 +1223,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 13.303382873535156, "y": 17.48525047302246,
+                    "x": 13.303382, "y": 17.485250,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.7740182876586914, "height": 0.8443846106529236,
-                    "relativeTransform": [[1, 0, 13.303382873535156], [0, 1, 17.48525047302246]],
+                    "width": 0.774018, "height": 0.844384,
+                    "relativeTransform": [[1, 0, 13.303382], [0, 1, 17.485250]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_62_svg_0_7740182876586914x0_8443846106529236
@@ -1244,15 +1244,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 12.1439790725708, "y": 18.146684646606445,
+                    "x": 12.143979, "y": 18.146684,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.6743728518486023, "height": 0.9656290411949158,
-                    "relativeTransform": [[1, 0, 12.1439790725708], [0, 1, 18.146684646606445]],
+                    "width": 0.674372, "height": 0.965629,
+                    "relativeTransform": [[1, 0, 12.143979], [0, 1, 18.146684]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_63_svg_0_6743728518486023x0_9656290411949158
@@ -1265,15 +1265,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 12.764276504516602, "y": 17.810014724731445,
+                    "x": 12.764276, "y": 17.810014,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.6408658623695374, "height": 1.0457361936569214,
-                    "relativeTransform": [[1, 0, 12.764276504516602], [0, 1, 17.810014724731445]],
+                    "width": 0.640865, "height": 1.045736,
+                    "relativeTransform": [[1, 0, 12.764276], [0, 1, 17.810014]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_64_svg_0_6408658623695374x1_0457361936569214
@@ -1286,15 +1286,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 13.267659187316895, "y": 18.146684646606445,
+                    "x": 13.267659, "y": 18.146684,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.633913516998291, "height": 0.8898512721061707,
-                    "relativeTransform": [[1, 0, 13.267659187316895], [0, 1, 18.146684646606445]],
+                    "width": 0.633913, "height": 0.889851,
+                    "relativeTransform": [[1, 0, 13.267659], [0, 1, 18.146684]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_65_svg_0_633913516998291x0_8898512721061707
@@ -1307,15 +1307,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 13.404059410095215, "y": 16.580244064331055,
+                    "x": 13.404059, "y": 16.580244,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.7718535661697388, "height": 0.9331523776054382,
-                    "relativeTransform": [[1, 0, 13.404059410095215], [0, 1, 16.580244064331055]],
+                    "width": 0.771853, "height": 0.933152,
+                    "relativeTransform": [[1, 0, 13.404059], [0, 1, 16.580244]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_66_svg_0_7718535661697388x0_9331523776054382
@@ -1328,15 +1328,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 13.011096954345703, "y": 16.122325897216797,
+                    "x": 13.011096, "y": 16.122325,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.637618362903595, "height": 0.8941823840141296,
-                    "relativeTransform": [[1, 0, 13.011096954345703], [0, 1, 16.122325897216797]],
+                    "width": 0.637618, "height": 0.894182,
+                    "relativeTransform": [[1, 0, 13.011096], [0, 1, 16.122325]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_67_svg_0_637618362903595x0_8941823840141296
@@ -1349,15 +1349,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 13.816509246826172, "y": 15.983760833740234,
+                    "x": 13.816509, "y": 15.983760,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.5239517092704773, "height": 0.7263877391815186,
-                    "relativeTransform": [[1, 0, 13.816509246826172], [0, 1, 15.983760833740234]],
+                    "width": 0.523951, "height": 0.726387,
+                    "relativeTransform": [[1, 0, 13.816509], [0, 1, 15.983760]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_68_svg_0_5239517092704773x0_7263877391815186
@@ -1370,15 +1370,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 14.425344467163086, "y": 15.586467742919922,
+                    "x": 14.425344, "y": 15.586467,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.44123220443725586, "height": 0.6809210777282715,
-                    "relativeTransform": [[1, 0, 14.425344467163086], [0, 1, 15.586467742919922]],
+                    "width": 0.441232, "height": 0.680921,
+                    "relativeTransform": [[1, 0, 14.425344], [0, 1, 15.586467]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_69_svg_0_44123220443725586x0_6809210777282715
@@ -1391,15 +1391,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 15.011470794677734, "y": 15.116643905639648,
+                    "x": 15.011470, "y": 15.116643,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.4331839084625244, "height": 0.6513183116912842,
-                    "relativeTransform": [[1, 0, 15.011470794677734], [0, 1, 15.116643905639648]],
+                    "width": 0.433183, "height": 0.651318,
+                    "relativeTransform": [[1, 0, 15.011470], [0, 1, 15.116643]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_70_svg_0_4331839084625244x0_6513183116912842
@@ -1412,15 +1412,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 12.273883819580078, "y": 17.418132781982422,
+                    "x": 12.273883, "y": 17.418132,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.5975647568702698, "height": 0.6441149711608887,
-                    "relativeTransform": [[1, 0, 12.273883819580078], [0, 1, 17.418132781982422]],
+                    "width": 0.597564, "height": 0.644114,
+                    "relativeTransform": [[1, 0, 12.273883], [0, 1, 17.418132]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_71_svg_0_5975647568702698x0_6441149711608887
@@ -1433,15 +1433,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 13.532660484313965, "y": 15.633017539978027,
+                    "x": 13.532660, "y": 15.633017,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.44081729650497437, "height": 0.7166435718536377,
-                    "relativeTransform": [[1, 0, 13.532660484313965], [0, 1, 15.633017539978027]],
+                    "width": 0.440817, "height": 0.716643,
+                    "relativeTransform": [[1, 0, 13.532660], [0, 1, 15.633017]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_72_svg_0_44081729650497437x0_7166435718536377
@@ -1454,15 +1454,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 18.654399871826172, "y": 14.478734970092773,
+                    "x": 18.654399, "y": 14.478734,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.5834475755691528, "height": 1.9283004999160767,
-                    "relativeTransform": [[1, 0, 18.654399871826172], [0, 1, 14.478734970092773]],
+                    "width": 1.583447, "height": 1.928300,
+                    "relativeTransform": [[1, 0, 18.654399], [0, 1, 14.478734]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_73_svg_1_5834475755691528x1_9283004999160767
@@ -1475,15 +1475,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 8.940730094909668, "y": 13.632841110229492,
+                    "x": 8.940730, "y": 13.632841,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.410588026046753, "height": 2.7438840866088867,
-                    "relativeTransform": [[1, 0, 8.940730094909668], [0, 1, 13.632841110229492]],
+                    "width": 2.410588, "height": 2.743884,
+                    "relativeTransform": [[1, 0, 8.940730], [0, 1, 13.632841]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_74_svg_2_410588026046753x2_7438840866088867
@@ -1496,15 +1496,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 31.622190475463867, "y": 29.670364379882812,
+                    "x": 31.622190, "y": 29.670364,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.2841854691505432, "height": 1.1788920164108276,
-                    "relativeTransform": [[1, 0, 31.622190475463867], [0, 1, 29.670364379882812]],
+                    "width": 0.284185, "height": 1.178892,
+                    "relativeTransform": [[1, 0, 31.622190], [0, 1, 29.670364]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_75_svg_0_2841854691505432x1_1788920164108276
@@ -1517,15 +1517,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.160757064819336, "y": 22.854339599609375,
+                    "x": 30.160757, "y": 22.854339,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.9880154132843018, "height": 1.6663919687271118,
-                    "relativeTransform": [[1, 0, 30.160757064819336], [0, 1, 22.854339599609375]],
+                    "width": 0.988015, "height": 1.666391,
+                    "relativeTransform": [[1, 0, 30.160757], [0, 1, 22.854339]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_76_svg_0_9880154132843018x1_6663919687271118
@@ -1538,15 +1538,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.482267379760742, "y": 23.533361434936523,
+                    "x": 29.482267, "y": 23.533361,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.31168827414512634, "height": 0.17020589113235474,
-                    "relativeTransform": [[1, 0, 29.482267379760742], [0, 1, 23.533361434936523]],
+                    "width": 0.311688, "height": 0.170205,
+                    "relativeTransform": [[1, 0, 29.482267], [0, 1, 23.533361]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_77_svg_0_31168827414512634x0_17020589113235474
@@ -1559,15 +1559,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.10771369934082, "y": 23.318342208862305,
+                    "x": 30.107713, "y": 23.318342,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.24032489955425262, "height": 0.12523064017295837,
-                    "relativeTransform": [[1, 0, 30.10771369934082], [0, 1, 23.318342208862305]],
+                    "width": 0.240324, "height": 0.125230,
+                    "relativeTransform": [[1, 0, 30.107713], [0, 1, 23.318342]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_78_svg_0_24032489955425262x0_12523064017295837
@@ -1580,15 +1580,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.765628814697266, "y": 24.124963760375977,
+                    "x": 29.765628, "y": 24.124963,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 2.1262013912200928, "height": 3.570840358734131,
-                    "relativeTransform": [[1, 0, 29.765628814697266], [0, 1, 24.124963760375977]],
+                    "width": 2.126201, "height": 3.570840,
+                    "relativeTransform": [[1, 0, 29.765628], [0, 1, 24.124963]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_79_svg_2_1262013912200928x3_570840358734131
@@ -1601,15 +1601,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 28.75994873046875, "y": 27.643842697143555,
+                    "x": 28.759948, "y": 27.643842,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.040323257446289, "height": 1.7677944898605347,
-                    "relativeTransform": [[1, 0, 28.75994873046875], [0, 1, 27.643842697143555]],
+                    "width": 1.040323, "height": 1.767794,
+                    "relativeTransform": [[1, 0, 28.759948], [0, 1, 27.643842]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_80_svg_1_040323257446289x1_7677944898605347
@@ -1622,15 +1622,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 30.318811416625977, "y": 28.253244400024414,
+                    "x": 30.318811, "y": 28.253244,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.0641392469406128, "height": 1.1226662397384644,
-                    "relativeTransform": [[1, 0, 30.318811416625977], [0, 1, 28.253244400024414]],
+                    "width": 1.064139, "height": 1.122666,
+                    "relativeTransform": [[1, 0, 30.318811], [0, 1, 28.253244]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_81_svg_1_0641392469406128x1_1226662397384644
@@ -1643,15 +1643,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 28.291683197021484, "y": 25.70933723449707,
+                    "x": 28.291683, "y": 25.709337,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.2134227603673935, "height": 0.9704169631004333,
-                    "relativeTransform": [[1, 0, 28.291683197021484], [0, 1, 25.70933723449707]],
+                    "width": 0.213422, "height": 0.970416,
+                    "relativeTransform": [[1, 0, 28.291683], [0, 1, 25.709337]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_82_svg_0_2134227603673935x0_9704169631004333
@@ -1664,15 +1664,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 28.684167861938477, "y": 25.00893211364746,
+                    "x": 28.684167, "y": 25.008932,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.3702315092086792, "height": 1.6855201721191406,
-                    "relativeTransform": [[1, 0, 28.684167861938477], [0, 1, 25.00893211364746]],
+                    "width": 0.370231, "height": 1.685520,
+                    "relativeTransform": [[1, 0, 28.684167], [0, 1, 25.008932]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_83_svg_0_3702315092086792x1_6855201721191406
@@ -1685,15 +1685,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 28.389663696289062, "y": 28.375642776489258,
+                    "x": 28.389663, "y": 28.375642,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.0089861154556274, "height": 0.9591357111930847,
-                    "relativeTransform": [[1, 0, 28.389663696289062], [0, 1, 28.375642776489258]],
+                    "width": 1.008986, "height": 0.959135,
+                    "relativeTransform": [[1, 0, 28.389663], [0, 1, 28.375642]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_84_svg_1_0089861154556274x0_9591357111930847
@@ -1706,15 +1706,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.041587829589844, "y": 24.864952087402344,
+                    "x": 29.041587, "y": 24.864952,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.602204442024231, "height": 0.3496612310409546,
-                    "relativeTransform": [[1, 0, 29.041587829589844], [0, 1, 24.864952087402344]],
+                    "width": 0.602204, "height": 0.349661,
+                    "relativeTransform": [[1, 0, 29.041587], [0, 1, 24.864952]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_85_svg_0_602204442024231x0_3496612310409546
@@ -1727,15 +1727,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.339107513427734, "y": 27.29143524169922,
+                    "x": 21.339107, "y": 27.291435,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.5541649460792542, "height": 0.20734818279743195,
-                    "relativeTransform": [[1, 0, 21.339107513427734], [0, 1, 27.29143524169922]],
+                    "width": 0.554164, "height": 0.207348,
+                    "relativeTransform": [[1, 0, 21.339107], [0, 1, 27.291435]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_86_svg_0_5541649460792542x0_20734818279743195
@@ -1748,15 +1748,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.896469116210938, "y": 24.85867691040039,
+                    "x": 22.896469, "y": 24.858676,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.547949194908142, "height": 1.276883602142334,
-                    "relativeTransform": [[1, 0, 22.896469116210938], [0, 1, 24.85867691040039]],
+                    "width": 1.547949, "height": 1.276883,
+                    "relativeTransform": [[1, 0, 22.896469], [0, 1, 24.858676]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_87_svg_1_547949194908142x1_276883602142334
@@ -1769,15 +1769,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.73856544494629, "y": 29.178491592407227,
+                    "x": 21.738565, "y": 29.178491,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.595670461654663, "height": 1.6230485439300537,
-                    "relativeTransform": [[1, 0, 21.73856544494629], [0, 1, 29.178491592407227]],
+                    "width": 1.595670, "height": 1.623048,
+                    "relativeTransform": [[1, 0, 21.738565], [0, 1, 29.178491]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_88_svg_1_595670461654663x1_6230485439300537
@@ -1790,15 +1790,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.411699295043945, "y": 26.52016258239746,
+                    "x": 22.411699, "y": 26.520162,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.801289975643158, "height": 1.4939110279083252,
-                    "relativeTransform": [[1, 0, 22.411699295043945], [0, 1, 26.52016258239746]],
+                    "width": 0.801289, "height": 1.493911,
+                    "relativeTransform": [[1, 0, 22.411699], [0, 1, 26.520162]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_89_svg_0_801289975643158x1_4939110279083252
@@ -1811,15 +1811,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.287416458129883, "y": 28.854127883911133,
+                    "x": 22.287416, "y": 28.854127,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.3932336568832397, "height": 1.9615691900253296,
-                    "relativeTransform": [[1, 0, 22.287416458129883], [0, 1, 28.854127883911133]],
+                    "width": 1.393233, "height": 1.961569,
+                    "relativeTransform": [[1, 0, 22.287416], [0, 1, 28.854127]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_90_svg_1_3932336568832397x1_9615691900253296
@@ -1832,15 +1832,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 24.083356857299805, "y": 29.48200225830078,
+                    "x": 24.083356, "y": 29.482002,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.7198910713195801, "height": 1.266421914100647,
-                    "relativeTransform": [[1, 0, 24.083356857299805], [0, 1, 29.48200225830078]],
+                    "width": 0.719891, "height": 1.266421,
+                    "relativeTransform": [[1, 0, 24.083356], [0, 1, 29.482002]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_91_svg_0_7198910713195801x1_266421914100647
@@ -1853,15 +1853,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 26.88389778137207, "y": 30.520160675048828,
+                    "x": 26.883897, "y": 30.520160,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.1779470294713974, "height": 0.7502021789550781,
-                    "relativeTransform": [[1, 0, 26.88389778137207], [0, 1, 30.520160675048828]],
+                    "width": 0.177947, "height": 0.750202,
+                    "relativeTransform": [[1, 0, 26.883897], [0, 1, 30.520160]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_92_svg_0_1779470294713974x0_7502021789550781
@@ -1874,15 +1874,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 24.16562843322754, "y": 26.507171630859375,
+                    "x": 24.165628, "y": 26.507171,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.8443846702575684, "height": 1.1507447957992554,
-                    "relativeTransform": [[1, 0, 24.16562843322754], [0, 1, 26.507171630859375]],
+                    "width": 0.844384, "height": 1.150744,
+                    "relativeTransform": [[1, 0, 24.165628], [0, 1, 26.507171]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_93_svg_0_8443846702575684x1_1507447957992554
@@ -1895,15 +1895,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.47144889831543, "y": 26.236536026000977,
+                    "x": 22.471448, "y": 26.236536,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.1680642366409302, "height": 0.17778876423835754,
-                    "relativeTransform": [[1, 0, 22.47144889831543], [0, 1, 26.236536026000977]],
+                    "width": 1.168064, "height": 0.177788,
+                    "relativeTransform": [[1, 0, 22.471448], [0, 1, 26.236536]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_94_svg_1_1680642366409302x0_17778876423835754
@@ -1916,15 +1916,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 23.732637405395508, "y": 26.21813201904297,
+                    "x": 23.732637, "y": 26.218132,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 1.1074196100234985, "height": 0.19183331727981567,
-                    "relativeTransform": [[1, 0, 23.732637405395508], [0, 1, 26.21813201904297]],
+                    "width": 1.107419, "height": 0.191833,
+                    "relativeTransform": [[1, 0, 23.732637], [0, 1, 26.218132]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_95_svg_1_1074196100234985x0_19183331727981567
@@ -1937,15 +1937,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 25.04681968688965, "y": 26.368606567382812,
+                    "x": 25.046819, "y": 26.368606,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.7837624549865723, "height": 0.8136681318283081,
-                    "relativeTransform": [[1, 0, 25.04681968688965], [0, 1, 26.368606567382812]],
+                    "width": 0.783762, "height": 0.813668,
+                    "relativeTransform": [[1, 0, 25.046819], [0, 1, 26.368606]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_96_svg_0_7837624549865723x0_8136681318283081
@@ -1958,15 +1958,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 22.2419490814209, "y": 30.652057647705078,
+                    "x": 22.241949, "y": 30.652057,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.7014880776405334, "height": 0.42886117100715637,
-                    "relativeTransform": [[1, 0, 22.2419490814209], [0, 1, 30.652057647705078]],
+                    "width": 0.701488, "height": 0.428861,
+                    "relativeTransform": [[1, 0, 22.241949], [0, 1, 30.652057]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_97_svg_0_7014880776405334x0_42886117100715637
@@ -1979,15 +1979,15 @@ export class AS_Roma extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 21.440902709960938, "y": 27.277942657470703,
+                    "x": 21.440902, "y": 27.277942,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.9726243615150452, "height": 1.2102850675582886,
-                    "relativeTransform": [[1, 0, 21.440902709960938], [0, 1, 27.277942657470703]],
+                    "width": 0.972624, "height": 1.210285,
+                    "relativeTransform": [[1, 0, 21.440902], [0, 1, 27.277942]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_AS_Roma_assets_icon_Vector_I190_21075_2936_98_svg_0_9726243615150452x1_2102850675582886

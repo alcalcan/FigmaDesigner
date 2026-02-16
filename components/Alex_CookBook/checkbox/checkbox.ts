@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 
 // SVG Assets
@@ -67,7 +67,7 @@ export class checkbox extends BaseComponent {
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                    "color": { "r": 0.101960, "g": 0.192156, "b": 0.235294 },
                     "boundVariables": {}
                   }
                 ],
@@ -103,7 +103,7 @@ export class checkbox extends BaseComponent {
                     "vectorPaths": [
                       {
                         "windingRule": "EVENODD",
-                        "data": "M 1.6666666269302368 0 L 13.333333015441895 0 C 14.253807663917542 0 15 0.7461919784545898 15 1.6666666269302368 L 15 13.333333015441895 C 15 14.253807663917542 14.253807663917542 15 13.333333015441895 15 L 1.6666666269302368 15 C 0.7461919784545898 15 0 14.253807663917542 0 13.333333015441895 L 0 1.6666666269302368 C 0 0.7461919784545898 0.7461919784545898 0 1.6666666269302368 0 Z"
+                        "data": "M 1.666666 0 L 13.333333 0 C 14.253807 0 15 0.746191 15 1.666666 L 15 13.333333 C 15 14.253807 14.253807 15 13.333333 15 L 1.666666 15 C 0.746191 15 0 14.253807 0 13.333333 L 0 1.666666 C 0 0.746191 0.746191 0 1.666666 0 Z"
                       }
                     ]
                   },
@@ -122,7 +122,7 @@ export class checkbox extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 4.166666030883789, "y": 4.166656494140625,
+                    "x": 4.166666, "y": 4.166656,
                     "fills": [
                       {
                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -136,14 +136,14 @@ export class checkbox extends BaseComponent {
                     "vectorPaths": [
                       {
                         "windingRule": "EVENODD",
-                        "data": "M 0 0 L 0 11.666666984558105 L 11.666666984558105 11.666666984558105 L 11.666666984558105 0 L 0 0 Z"
+                        "data": "M 0 0 L 0 11.666666 L 11.666666 11.666666 L 11.666666 0 L 0 0 Z"
                       }
                     ]
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 11.666666984558105, "height": 11.666666984558105,
-                    "relativeTransform": [[1, 0, 4.166666030883789], [0, 1, 4.166656494140625]]
+                    "width": 11.666666, "height": 11.666666,
+                    "relativeTransform": [[1, 0, 4.166666], [0, 1, 4.166656]]
                   },
                   "svgContent": SVG_checkbox_Synth_Path_1
                 }
@@ -166,7 +166,7 @@ export class checkbox extends BaseComponent {
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                "color": { "r": 0.101960, "g": 0.192156, "b": 0.235294 },
                 "boundVariables": {}
               }
             ],
@@ -194,7 +194,7 @@ export class checkbox extends BaseComponent {
           visible: true,
           opacity: 1,
           blendMode: "NORMAL",
-          color: { r: 0.9450980424880981, g: 0.9529411792755127, b: 0.9725490212440491 },
+          color: { r: 0.945098, g: 0.952941, b: 0.972549 },
           boundVariables: {}
         }]
       };

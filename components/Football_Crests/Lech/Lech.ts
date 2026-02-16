@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -42,7 +42,7 @@ export class Lech extends BaseComponent {
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "IMAGE",
                     "scaleMode": "FIT",
-                    "imageTransform": [[1, 0, 0], [0, 0.5270092487335205, 0.23649539053440094]],
+                    "imageTransform": [[1, 0, 0], [0, 0.527009, 0.236495]],
                     "scalingFactor": 0.5,
                     "rotation": 0,
                     "filters": {

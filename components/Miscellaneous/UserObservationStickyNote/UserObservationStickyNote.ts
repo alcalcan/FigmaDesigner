@@ -1,7 +1,7 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
 export interface UserObservationStickyNoteProps extends ComponentProps {
-    text: string;
+    text?: string;
 }
 
 export class UserObservationStickyNote extends BaseComponent {

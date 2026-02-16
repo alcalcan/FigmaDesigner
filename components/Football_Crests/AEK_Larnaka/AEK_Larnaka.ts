@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -42,7 +42,7 @@ export class AEK_Larnaka extends BaseComponent {
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "IMAGE",
                     "scaleMode": "FIT",
-                    "imageTransform": [[1, 0, 0], [0, 0.7220216393470764, 0.1389891654253006]],
+                    "imageTransform": [[1, 0, 0], [0, 0.722021, 0.138989]],
                     "scalingFactor": 0.5,
                     "rotation": 0,
                     "filters": {

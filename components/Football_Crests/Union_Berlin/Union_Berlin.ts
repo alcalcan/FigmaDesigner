@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -42,7 +42,7 @@ export class Union_Berlin extends BaseComponent {
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "IMAGE",
                     "scaleMode": "FIT",
-                    "imageTransform": [[0.3645038306713104, 0, 0.317748099565506], [0, 1, 0]],
+                    "imageTransform": [[0.364503, 0, 0.317748], [0, 1, 0]],
                     "scalingFactor": 0.5,
                     "rotation": 0,
                     "filters": {

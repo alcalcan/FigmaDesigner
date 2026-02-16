@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../components/BaseComponent";
 
 
 // SVG Assets
@@ -12,7 +12,7 @@ export class checkbox_test_case extends BaseComponent {
       "name": "root",
       "props": { "layoutMode": "VERTICAL", "itemSpacing": 10 },
       "children": [
-        ...[{ "name": "Option 1", "isSelected": false }, { "name": "Option 2", "isSelected": false }, { "name": "Option 3", "isSelected": false }].map(item => {
+        ...[{ "name": "Option 1", "isSelected": false }, { "name": "Option 2", "isSelected": false }, { "name": "Option 3", "isSelected": false }].map((item: any) => {
           const node: NodeDefinition = {
             "type": "FRAME",
             "name": "Item 1",
@@ -112,7 +112,7 @@ export class checkbox_test_case extends BaseComponent {
               });
             } else {
               // Update visibility of existing checkmark
-              const checkmark = checkbox.children.find(c => c.name === 'Checkmark');
+              const checkmark = checkbox.children.find((c: any) => c.name === 'Checkmark');
               if (checkmark && checkmark.props) checkmark.props.visible = !!item.isSelected;
             }
           }
@@ -140,8 +140,8 @@ export class checkbox_test_case extends BaseComponent {
     const root = await this.renderDefinition(structure);
 
     // Final positioning
-    root.x = props.x;
-    root.y = props.y;
+    root.x = props.x ?? 0;
+    root.y = props.y ?? 0;
 
     return root;
   }

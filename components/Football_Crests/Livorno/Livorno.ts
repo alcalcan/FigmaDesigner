@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -111,15 +111,15 @@ export class Livorno extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 0.8613074421882629, "y": 0.8614075183868408,
+                    "x": 0.861307, "y": 0.861407,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 58.27716827392578, "height": 58.27688217163086,
-                    "relativeTransform": [[1, 0, 0.8613074421882629], [0, 1, 0.8614075183868408]],
+                    "width": 58.277168, "height": 58.276882,
+                    "relativeTransform": [[1, 0, 0.861307], [0, 1, 0.861407]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_415_svg_58_27716827392578x58_27688217163086
@@ -130,15 +130,15 @@ export class Livorno extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "x": 2.5424649715423584, "y": 2.246614694595337,
+                    "x": 2.542464, "y": 2.246614,
                     "strokes": [],
                     "strokeWeight": 0,
                     "effects": []
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 57.6769483089447, "height": 35.71643853187561,
-                    "relativeTransform": [[1, 0, 2.5424649715423584], [0, 1, 2.246614694595337]]
+                    "width": 57.676948, "height": 35.716438,
+                    "relativeTransform": [[1, 0, 2.542464], [0, 1, 2.246614]]
                   },
                   "children": [
                     {
@@ -149,15 +149,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 2.5424649715423584, "y": 31.191526651382446,
+                        "x": 2.542464, "y": 31.191526,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 5.042332649230957, "height": 4.524911880493164,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 28.94491195678711]],
+                        "width": 5.042332, "height": 4.524911,
+                        "relativeTransform": [[1, 0, 0], [0, 1, 28.944911]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_417_svg_5_042332649230957x4_524911880493164
@@ -170,15 +170,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 5.9740471839904785, "y": 29.018911600112915,
+                        "x": 5.974047, "y": 29.018911,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 1.0276365280151367, "height": 1.0469284057617188,
-                        "relativeTransform": [[1, 0, 3.43158221244812], [0, 1, 26.772296905517578]],
+                        "width": 1.027636, "height": 1.046928,
+                        "relativeTransform": [[1, 0, 3.431582], [0, 1, 26.772296]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_418_svg_1_0276365280151367x1_0469284057617188
@@ -191,15 +191,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 2.621610164642334, "y": 23.356624841690063,
+                        "x": 2.621610, "y": 23.356624,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.924190044403076, "height": 4.093866348266602,
-                        "relativeTransform": [[1, 0, 0.07914519309997559], [0, 1, 21.110010147094727]],
+                        "width": 4.924190, "height": 4.093866,
+                        "relativeTransform": [[1, 0, 0.079145], [0, 1, 21.110010]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_419_svg_4_924190044403076x4_093866348266602
@@ -212,15 +212,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 7.254464864730835, "y": 21.274486780166626,
+                        "x": 7.254464, "y": 21.274486,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 1.2996463775634766, "height": 1.3112010955810547,
-                        "relativeTransform": [[1, 0, 4.711999893188477], [0, 1, 19.02787208557129]],
+                        "width": 1.299646, "height": 1.311201,
+                        "relativeTransform": [[1, 0, 4.711999], [0, 1, 19.027872]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_420_svg_1_2996463775634766x1_3112010955810547
@@ -233,15 +233,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 6.689468145370483, "y": 14.150169610977173,
+                        "x": 6.689468, "y": 14.150169,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 5.724377632141113, "height": 3.5741348266601562,
-                        "relativeTransform": [[1, 0, 4.147003173828125], [0, 1, 11.903554916381836]],
+                        "width": 5.724377, "height": 3.574134,
+                        "relativeTransform": [[1, 0, 4.147003], [0, 1, 11.903554]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_421_svg_5_724377632141113x3_5741348266601562
@@ -254,15 +254,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 10.073425054550171, "y": 10.045674562454224,
+                        "x": 10.073425, "y": 10.045674,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.029965400695801, "height": 4.032835006713867,
-                        "relativeTransform": [[1, 0, 7.5309600830078125], [0, 1, 7.799059867858887]],
+                        "width": 4.029965, "height": 4.032835,
+                        "relativeTransform": [[1, 0, 7.530960], [0, 1, 7.799059]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_422_svg_4_029965400695801x4_032835006713867
@@ -275,15 +275,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 12.200125455856323, "y": 6.230671405792236,
+                        "x": 12.200125, "y": 6.230671,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.89530086517334, "height": 5.377525806427002,
-                        "relativeTransform": [[1, 0, 9.657660484313965], [0, 1, 3.9840567111968994]],
+                        "width": 4.895300, "height": 5.377525,
+                        "relativeTransform": [[1, 0, 9.657660], [0, 1, 3.984056]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_423_svg_4_89530086517334x5_377525806427002
@@ -296,15 +296,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 17.96293807029724, "y": 4.110742568969727,
+                        "x": 17.962938, "y": 4.110742,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.700815200805664, "height": 4.914623260498047,
-                        "relativeTransform": [[1, 0, 15.420473098754883], [0, 1, 1.8641278743743896]],
+                        "width": 4.700815, "height": 4.914623,
+                        "relativeTransform": [[1, 0, 15.420473], [0, 1, 1.864127]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_424_svg_4_700815200805664x4_914623260498047
@@ -317,15 +317,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 23.902042150497437, "y": 2.5198652744293213,
+                        "x": 23.902042, "y": 2.519865,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.685178756713867, "height": 5.020510673522949,
-                        "relativeTransform": [[1, 0, 21.359577178955078], [0, 1, 0.2732505798339844]],
+                        "width": 4.685178, "height": 5.020510,
+                        "relativeTransform": [[1, 0, 21.359577], [0, 1, 0.273250]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_425_svg_4_685178756713867x5_020510673522949
@@ -338,15 +338,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 29.91563582420349, "y": 2.246614694595337,
+                        "x": 29.915635, "y": 2.246614,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.310857772827148, "height": 4.976183891296387,
-                        "relativeTransform": [[1, 0, 27.373170852661133], [0, 1, 0]],
+                        "width": 4.310857, "height": 4.976183,
+                        "relativeTransform": [[1, 0, 27.373170], [0, 1, 0]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_426_svg_4_310857772827148x4_976183891296387
@@ -359,15 +359,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 35.72703528404236, "y": 3.504733085632324,
+                        "x": 35.727035, "y": 3.504733,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.6719512939453125, "height": 4.913234710693359,
-                        "relativeTransform": [[1, 0, 33.1845703125], [0, 1, 1.2581183910369873]],
+                        "width": 4.671951, "height": 4.913234,
+                        "relativeTransform": [[1, 0, 33.184570], [0, 1, 1.258118]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_427_svg_4_6719512939453125x4_913234710693359
@@ -380,15 +380,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 43.67771124839783, "y": 7.9705650806427,
+                        "x": 43.677711, "y": 7.970565,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.768852233886719, "height": 4.835580825805664,
-                        "relativeTransform": [[1, 0, 41.13524627685547], [0, 1, 5.723950386047363]],
+                        "width": 4.768852, "height": 4.835580,
+                        "relativeTransform": [[1, 0, 41.135246], [0, 1, 5.723950]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_428_svg_4_768852233886719x4_835580825805664
@@ -401,15 +401,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 46.808685064315796, "y": 12.66010594367981,
+                        "x": 46.808685, "y": 12.660105,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 5.425437927246094, "height": 5.074875831604004,
-                        "relativeTransform": [[1, 0, 44.26622009277344], [0, 1, 10.413491249084473]],
+                        "width": 5.425437, "height": 5.074875,
+                        "relativeTransform": [[1, 0, 44.266220], [0, 1, 10.413491]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_429_svg_5_425437927246094x5_074875831604004
@@ -422,15 +422,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 50.10632300376892, "y": 16.673223733901978,
+                        "x": 50.106323, "y": 16.673223,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.656494140625, "height": 5.003427505493164,
-                        "relativeTransform": [[1, 0, 47.56385803222656], [0, 1, 14.42660903930664]],
+                        "width": 4.656494, "height": 5.003427,
+                        "relativeTransform": [[1, 0, 47.563858], [0, 1, 14.426609]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_430_svg_4_656494140625x5_003427505493164
@@ -443,15 +443,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 52.263267278671265, "y": 22.03449845314026,
+                        "x": 52.263267, "y": 22.034498,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.904411315917969, "height": 4.465663909912109,
-                        "relativeTransform": [[1, 0, 49.720802307128906], [0, 1, 19.787883758544922]],
+                        "width": 4.904411, "height": 4.465663,
+                        "relativeTransform": [[1, 0, 49.720802], [0, 1, 19.787883]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_431_svg_4_904411315917969x4_465663909912109
@@ -464,15 +464,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 52.95910620689392, "y": 28.10224175453186,
+                        "x": 52.959106, "y": 28.102241,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.717842102050781, "height": 1.2571372985839844,
-                        "relativeTransform": [[1, 0, 50.41664123535156], [0, 1, 25.855627059936523]],
+                        "width": 4.717842, "height": 1.257137,
+                        "relativeTransform": [[1, 0, 50.416641], [0, 1, 25.855627]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_432_svg_4_717842102050781x1_2571372985839844
@@ -485,15 +485,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 52.67362952232361, "y": 31.0803701877594,
+                        "x": 52.673629, "y": 31.080370,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 4.9007720947265625, "height": 4.609891891479492,
-                        "relativeTransform": [[1, 0, 50.13116455078125], [0, 1, 28.833755493164062]],
+                        "width": 4.900772, "height": 4.609891,
+                        "relativeTransform": [[1, 0, 50.131164], [0, 1, 28.833755]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_433_svg_4_9007720947265625x4_609891891479492
@@ -506,15 +506,15 @@ export class Livorno extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "x": 21.74259376525879, "y": 51.79571533203125,
+                    "x": 21.742593, "y": 51.795715,
                     "strokes": [],
                     "strokeWeight": 0,
                     "effects": []
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 38.965065002441406, "height": 57.646888732910156,
-                    "relativeTransform": [[1, 0, 21.74259376525879], [0, 1, 51.79571533203125]]
+                    "width": 38.965065, "height": 57.646888,
+                    "relativeTransform": [[1, 0, 21.742593], [0, 1, 51.795715]]
                   },
                   "children": [
                     {
@@ -525,15 +525,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 21.74259376525879, "y": 52.17416000366211,
+                        "x": 21.742593, "y": 52.174160,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 2.450777053833008, "height": 4.603919982910156,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 0.3784446716308594]],
+                        "width": 2.450777, "height": 4.603919,
+                        "relativeTransform": [[1, 0, 0], [0, 1, 0.378444]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_435_svg_2_450777053833008x4_603919982910156
@@ -546,15 +546,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 25.841344833374023, "y": 52.89035415649414,
+                        "x": 25.841344, "y": 52.890354,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 3.4014129638671875, "height": 4.756534576416016,
-                        "relativeTransform": [[1, 0, 4.098751068115234], [0, 1, 1.0946388244628906]],
+                        "width": 3.401412, "height": 4.756534,
+                        "relativeTransform": [[1, 0, 4.098751], [0, 1, 1.094638]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_436_svg_3_4014129638671875x4_756534576416016
@@ -567,15 +567,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 30.88536834716797, "y": 52.93924331665039,
+                        "x": 30.885368, "y": 52.939243,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 2.4074974060058594, "height": 4.647342681884766,
-                        "relativeTransform": [[1, 0, 9.14277458190918], [0, 1, 1.1435279846191406]],
+                        "width": 2.407497, "height": 4.647342,
+                        "relativeTransform": [[1, 0, 9.142774], [0, 1, 1.143527]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_437_svg_2_4074974060058594x4_647342681884766
@@ -588,15 +588,15 @@ export class Livorno extends BaseComponent {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 35.36226272583008, "y": 51.79571533203125,
+                        "x": 35.362262, "y": 51.795715,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 3.602802276611328, "height": 4.983543395996094,
-                        "relativeTransform": [[1, 0, 13.619668960571289], [0, 1, 0]],
+                        "width": 3.602802, "height": 4.983543,
+                        "relativeTransform": [[1, 0, 13.619668], [0, 1, 0]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_438_svg_3_602802276611328x4_983543395996094
@@ -611,15 +611,15 @@ export class Livorno extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 8.440290451049805, "y": 8.440163612365723,
+                    "x": 8.440290, "y": 8.440163,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 43.1197509765625, "height": 43.119651794433594,
-                    "relativeTransform": [[1, 0, 8.440290451049805], [0, 1, 8.440163612365723]],
+                    "width": 43.119750, "height": 43.119651,
+                    "relativeTransform": [[1, 0, 8.440290], [0, 1, 8.440163]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_439_svg_43_1197509765625x43_119651794433594
@@ -632,15 +632,15 @@ export class Livorno extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 9.301597595214844, "y": 9.301470756530762,
+                    "x": 9.301597, "y": 9.301470,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 41.396820068359375, "height": 41.39692306518555,
-                    "relativeTransform": [[1, 0, 9.301597595214844], [0, 1, 9.301470756530762]],
+                    "width": 41.396820, "height": 41.396923,
+                    "relativeTransform": [[1, 0, 9.301597], [0, 1, 9.301470]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_440_svg_41_396820068359375x41_39692306518555
@@ -653,15 +653,15 @@ export class Livorno extends BaseComponent {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 10.851744651794434, "y": 10.854832649230957,
+                    "x": 10.851744, "y": 10.854832,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 38.29685592651367, "height": 38.195091247558594,
-                    "relativeTransform": [[1, 0, 10.851744651794434], [0, 1, 10.854832649230957]],
+                    "width": 38.296855, "height": 38.195091,
+                    "relativeTransform": [[1, 0, 10.851744], [0, 1, 10.854832]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Livorno_assets_icon_Vector_I190_21129_635_441_svg_38_29685592651367x38_195091247558594

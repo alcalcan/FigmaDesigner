@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -73,7 +73,7 @@ export class Milan extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 38.268550872802734, "height": 60,
+                "width": 38.268550, "height": 60,
                 "relativeTransform": [[1, 0, 11], [0, 1, 0]],
                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
               },
@@ -94,13 +94,13 @@ export class Milan extends BaseComponent {
                     "vectorPaths": [
                       {
                         "windingRule": "NONE",
-                        "data": "M 0 0 L 0.10600706189870834 0 L 0.10600706189870834 0.10600706934928894 L 0 0.10600706934928894 L 0 0 Z"
+                        "data": "M 0 0 L 0.106007 0 L 0.106007 0.106007 L 0 0.106007 L 0 0 Z"
                       }
                     ]
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 0.10600706189870834, "height": 0.10600706934928894,
+                    "width": 0.106007, "height": 0.106007,
                     "relativeTransform": [[1, 0, 0], [0, 1, 0]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
@@ -119,7 +119,7 @@ export class Milan extends BaseComponent {
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 38.29971694946289, "height": 60,
+                    "width": 38.299716, "height": 60,
                     "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                   },
                   "children": [
@@ -136,7 +136,7 @@ export class Milan extends BaseComponent {
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 38.29971694946289, "height": 60,
+                        "width": 38.299716, "height": 60,
                         "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                       },
                       "children": [
@@ -148,15 +148,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 0, "y": -1.1102230246251565e-16,
+                            "x": 0, "y": -1.110223e-16,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 38.29971694946289, "height": 60,
-                            "relativeTransform": [[1, 0, 0], [0, 1, -1.1102230246251565e-16]],
+                            "width": 38.299716, "height": 60,
+                            "relativeTransform": [[1, 0, 0], [0, 1, -1.110223e-16]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_2_I190_21141_632_526_svg_38_29971694946289x60
@@ -169,15 +169,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 0.6201807856559753, "y": 0.6067852973937988,
+                            "x": 0.620180, "y": 0.606785,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 37.0592155456543, "height": 58.78643035888672,
-                            "relativeTransform": [[1, 0, 0.6201807856559753], [0, 1, 0.6067852973937988]],
+                            "width": 37.059215, "height": 58.786430,
+                            "relativeTransform": [[1, 0, 0.620180], [0, 1, 0.606785]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_3_I190_21141_632_527_svg_37_0592155456543x58_78643035888672
@@ -190,15 +190,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 2.270904064178467, "y": 2.303523302078247,
+                            "x": 2.270904, "y": 2.303523,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 33.757843017578125, "height": 55.41183090209961,
-                            "relativeTransform": [[1, 0, 2.270904064178467], [0, 1, 2.303523302078247]],
+                            "width": 33.757843, "height": 55.411830,
+                            "relativeTransform": [[1, 0, 2.270904], [0, 1, 2.303523]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_4_I190_21141_632_528_svg_33_757843017578125x55_41183090209961
@@ -211,15 +211,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 4.440351963043213, "y": 3.7488203048706055,
+                            "x": 4.440351, "y": 3.748820,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 29.419187545776367, "height": 18.48690414428711,
-                            "relativeTransform": [[1, 0, 4.440351963043213], [0, 1, 3.7488203048706055]],
+                            "width": 29.419187, "height": 18.486904,
+                            "relativeTransform": [[1, 0, 4.440351], [0, 1, 3.748820]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_5_I190_21141_632_529_svg_29_419187545776367x18_48690414428711
@@ -232,15 +232,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 4.459368705749512, "y": 37.7824821472168,
+                            "x": 4.459368, "y": 37.782482,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 29.381126403808594, "height": 18.488296508789062,
-                            "relativeTransform": [[1, 0, 4.459368705749512], [0, 1, 37.7824821472168]],
+                            "width": 29.381126, "height": 18.488296,
+                            "relativeTransform": [[1, 0, 4.459368], [0, 1, 37.782482]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_6_I190_21141_632_530_svg_29_381126403808594x18_488296508789062
@@ -253,15 +253,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 23.36467933654785, "y": 46.31474685668945,
+                            "x": 23.364679, "y": 46.314746,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 4.281223297119141, "height": 5.086856842041016,
-                            "relativeTransform": [[1, 0, 23.36467933654785], [0, 1, 46.31474685668945]],
+                            "width": 4.281223, "height": 5.086856,
+                            "relativeTransform": [[1, 0, 23.364679], [0, 1, 46.314746]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_7_I190_21141_632_531_svg_4_281223297119141x5_086856842041016
@@ -274,15 +274,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 15.731663703918457, "y": 5.256993293762207,
+                            "x": 15.731663, "y": 5.256993,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 6.449257850646973, "height": 7.245476722717285,
-                            "relativeTransform": [[1, 0, 15.731663703918457], [0, 1, 5.256993293762207]],
+                            "width": 6.449257, "height": 7.245476,
+                            "relativeTransform": [[1, 0, 15.731663], [0, 1, 5.256993]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_8_I190_21141_632_532_svg_6_449257850646973x7_245476722717285
@@ -295,15 +295,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 22.450668334960938, "y": 6.8703179359436035,
+                            "x": 22.450668, "y": 6.870317,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 7.105852127075195, "height": 9.12722396850586,
-                            "relativeTransform": [[1, 0, 22.450668334960938], [0, 1, 6.8703179359436035]],
+                            "width": 7.105852, "height": 9.127223,
+                            "relativeTransform": [[1, 0, 22.450668], [0, 1, 6.870317]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_9_I190_21141_632_533_svg_7_105852127075195x9_12722396850586
@@ -316,15 +316,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 8.489483833312988, "y": 6.8703179359436035,
+                            "x": 8.489483, "y": 6.870317,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 7.369293212890625, "height": 9.333272933959961,
-                            "relativeTransform": [[1, 0, 8.489483833312988], [0, 1, 6.8703179359436035]],
+                            "width": 7.369293, "height": 9.333272,
+                            "relativeTransform": [[1, 0, 8.489483], [0, 1, 6.870317]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_10_I190_21141_632_534_svg_7_369293212890625x9_333272933959961
@@ -337,15 +337,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 18.78053855895996, "y": 47.232215881347656,
+                            "x": 18.780538, "y": 47.232215,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 3.9492130279541016, "height": 5.084869384765625,
-                            "relativeTransform": [[1, 0, 18.78053855895996], [0, 1, 47.232215881347656]],
+                            "width": 3.949213, "height": 5.084869,
+                            "relativeTransform": [[1, 0, 18.780538], [0, 1, 47.232215]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_11_I190_21141_632_535_svg_3_9492130279541016x5_084869384765625
@@ -358,15 +358,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 13.825451850891113, "y": 47.02294158935547,
+                            "x": 13.825451, "y": 47.022941,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 4.073712348937988, "height": 5.138893127441406,
-                            "relativeTransform": [[1, 0, 13.825451850891113], [0, 1, 47.02294158935547]],
+                            "width": 4.073712, "height": 5.138893,
+                            "relativeTransform": [[1, 0, 13.825451], [0, 1, 47.022941]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_12_I190_21141_632_536_svg_4_073712348937988x5_138893127441406
@@ -379,15 +379,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 10.678618431091309, "y": 46.112545013427734,
+                            "x": 10.678618, "y": 46.112545,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 2.9140214920043945, "height": 4.945865631103516,
-                            "relativeTransform": [[1, 0, 10.678618431091309], [0, 1, 46.112545013427734]],
+                            "width": 2.914021, "height": 4.945865,
+                            "relativeTransform": [[1, 0, 10.678618], [0, 1, 46.112545]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_13_I190_21141_632_537_svg_2_9140214920043945x4_945865631103516
@@ -400,15 +400,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 29.595796585083008, "y": 32.329715728759766,
+                            "x": 29.595796, "y": 32.329715,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 5.025262832641602, "height": 9.045372009277344,
-                            "relativeTransform": [[1, 0, 29.595796585083008], [0, 1, 32.329715728759766]],
+                            "width": 5.025262, "height": 9.045372,
+                            "relativeTransform": [[1, 0, 29.595796], [0, 1, 32.329715]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_14_I190_21141_632_538_svg_5_025262832641602x9_045372009277344
@@ -421,15 +421,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 20.012779235839844, "y": 32.329715728759766,
+                            "x": 20.012779, "y": 32.329715,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 3.7435340881347656, "height": 12.891944885253906,
-                            "relativeTransform": [[1, 0, 20.012779235839844], [0, 1, 32.329715728759766]],
+                            "width": 3.743534, "height": 12.891944,
+                            "relativeTransform": [[1, 0, 20.012779], [0, 1, 32.329715]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_15_I190_21141_632_539_svg_3_7435340881347656x12_891944885253906
@@ -442,15 +442,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 29.595796585083008, "y": 18.659605026245117,
+                            "x": 29.595796, "y": 18.659605,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 4.950525283813477, "height": 8.524026870727539,
-                            "relativeTransform": [[1, 0, 29.595796585083008], [0, 1, 18.659605026245117]],
+                            "width": 4.950525, "height": 8.524026,
+                            "relativeTransform": [[1, 0, 29.595796], [0, 1, 18.659605]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_16_I190_21141_632_540_svg_4_950525283813477x8_524026870727539
@@ -463,15 +463,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 20.012779235839844, "y": 14.7982816696167,
+                            "x": 20.012779, "y": 14.798281,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 3.7435340881347656, "height": 12.385321617126465,
-                            "relativeTransform": [[1, 0, 20.012779235839844], [0, 1, 14.7982816696167]],
+                            "width": 3.743534, "height": 12.385321,
+                            "relativeTransform": [[1, 0, 20.012779], [0, 1, 14.798281]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_17_I190_21141_632_541_svg_3_7435340881347656x12_385321617126465
@@ -484,15 +484,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 29.57779884338379, "y": 18.643795013427734,
+                            "x": 29.577798, "y": 18.643795,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 0.018024444580078125, "height": 0.015781402587890625,
-                            "relativeTransform": [[1, 0, 29.57779884338379], [0, 1, 18.643795013427734]],
+                            "width": 0.018024, "height": 0.015781,
+                            "relativeTransform": [[1, 0, 29.577798], [0, 1, 18.643795]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_18_I190_21141_632_542_svg_0_018024444580078125x0_015781402587890625
@@ -505,15 +505,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 3.494823932647705, "y": 22.68655776977539,
+                            "x": 3.494823, "y": 22.686557,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 1.9088726043701172, "height": 14.643089294433594,
-                            "relativeTransform": [[1, 0, 3.494823932647705], [0, 1, 22.68655776977539]],
+                            "width": 1.908872, "height": 14.643089,
+                            "relativeTransform": [[1, 0, 3.494823], [0, 1, 22.686557]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_19_I190_21141_632_543_svg_1_9088726043701172x14_643089294433594
@@ -526,15 +526,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 20.011564254760742, "y": 15.718423843383789,
+                            "x": 20.011564, "y": 15.718423,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 14.811944961547852, "height": 28.581411361694336,
-                            "relativeTransform": [[1, 0, 20.011564254760742], [0, 1, 15.718423843383789]],
+                            "width": 14.811944, "height": 28.581411,
+                            "relativeTransform": [[1, 0, 20.011564], [0, 1, 15.718423]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_20_I190_21141_632_544_svg_14_811944961547852x28_581411361694336
@@ -547,15 +547,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 14.172004699707031, "y": 14.887553215026855,
+                            "x": 14.172004, "y": 14.887553,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 2.9290828704833984, "height": 30.243179321289062,
-                            "relativeTransform": [[1, 0, 14.172004699707031], [0, 1, 14.887553215026855]],
+                            "width": 2.929082, "height": 30.243179,
+                            "relativeTransform": [[1, 0, 14.172004], [0, 1, 14.887553]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_21_I190_21141_632_545_svg_2_9290828704833984x30_243179321289062
@@ -568,15 +568,15 @@ export class Milan extends BaseComponent {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
                             "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 8.332959175109863, "y": 16.855867385864258,
+                            "x": 8.332959, "y": 16.855867,
                             "strokes": [],
                             "effects": [],
                             "cornerRadius": 0
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 2.910006523132324, "height": 26.307851791381836,
-                            "relativeTransform": [[1, 0, 8.332959175109863], [0, 1, 16.855867385864258]],
+                            "width": 2.910006, "height": 26.307851,
+                            "relativeTransform": [[1, 0, 8.332959], [0, 1, 16.855867]],
                             "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                           },
                           "svgContent": SVG_Milan_assets_icon_svg_22_I190_21141_632_546_svg_2_910006523132324x26_307851791381836

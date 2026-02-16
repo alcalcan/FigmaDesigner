@@ -16,7 +16,6 @@ import { search_bar_expanded } from "../../components/Alex_CookBook/search_bar_e
 import { search_bar_expanded_radio } from "../../components/Alex_CookBook/search_bar_expanded_radio/search_bar_expanded_radio";
 import { sidebar_filtering } from "../../components/Alex_CookBook/sidebar_filtering/sidebar_filtering";
 import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
-import { uefa_cards_4x } from "../../components/Alex_CookBook/uefa_cards_4x/uefa_cards_4x";
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
 import { social_profile_card } from "../../components/Alex_CookBook/social_profile_card/social_profile_card";
 
@@ -219,7 +218,7 @@ export class CookbookComponentsDemo extends BaseComponent {
 
             container.appendChild(cardRow);
 
-            const uefa = new uefa_cards_4x();
+            const uefa = new Placeholder("uefa_cards_4x");
             const uefaNode = await uefa.create({});
             (uefaNode as FrameNode).layoutAlign = "STRETCH";
             container.appendChild(uefaNode);

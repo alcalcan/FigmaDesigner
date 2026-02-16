@@ -18,8 +18,8 @@ export class Button extends BaseComponent {
         frame.paddingBottom = 8;
         frame.itemSpacing = 8;
         frame.cornerRadius = 6;
-        frame.x = props.x;
-        frame.y = props.y;
+        frame.x = props.x ?? 0;
+        frame.y = props.y ?? 0;
 
         // Background color
         if (props.primary) {

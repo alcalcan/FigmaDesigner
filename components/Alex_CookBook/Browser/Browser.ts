@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -22,7 +22,7 @@ export class Browser extends BaseComponent {
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.8745098114013672, "g": 0.8823529481887817, "b": 0.8980392217636108 },
+                "color": { "r": 0.874509, "g": 0.882352, "b": 0.898039 },
                 "boundVariables": {}
               }
             ],
@@ -45,7 +45,7 @@ export class Browser extends BaseComponent {
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "IMAGE",
                     "scaleMode": "CROP",
-                    "imageTransform": [[0.9986700415611267, 0, 0], [0, 0.4093264043331146, 0]],
+                    "imageTransform": [[0.998670, 0, 0], [0, 0.409326, 0]],
                     "scalingFactor": 0.5,
                     "filters": {
                       "exposure": 0,
@@ -126,8 +126,8 @@ export class Browser extends BaseComponent {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "IMAGE",
                     "scaleMode": "CROP",
                     "imageTransform": [
-                      [ 0.8496894240379333, 0, 0.15031056106090546 ],
-                      [ 0, 0.8974359035491943, 0.10256410390138626 ]
+                      [ 0.849689, 0, 0.150310 ],
+                      [ 0, 0.897435, 0.102564 ]
                     ],
                     "scalingFactor": 0.5,
                     "filters": {
@@ -168,8 +168,8 @@ export class Browser extends BaseComponent {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "IMAGE",
                     "scaleMode": "CROP",
                     "imageTransform": [
-                      [ 0.6310558915138245, 0, 0.15031056106090546 ],
-                      [ 0, 0.8974359035491943, 0.10256410390138626 ]
+                      [ 0.631055, 0, 0.150310 ],
+                      [ 0, 0.897435, 0.102564 ]
                     ],
                     "scalingFactor": 0.5,
                     "filters": {
@@ -208,7 +208,7 @@ export class Browser extends BaseComponent {
                 "strokes": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.8745098114013672, "g": 0.8784313797950745, "b": 0.8823529481887817 },
+                    "color": { "r": 0.874509, "g": 0.878431, "b": 0.882352 },
                     "boundVariables": {}
                   }
                 ],
@@ -233,7 +233,7 @@ export class Browser extends BaseComponent {
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.8745098114013672, "g": 0.8823529481887817, "b": 0.8980392217636108 },
+                    "color": { "r": 0.874509, "g": 0.882352, "b": 0.898039 },
                     "boundVariables": {}
                   }
                 ],
@@ -287,7 +287,7 @@ export class Browser extends BaseComponent {
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.9450980424880981, "g": 0.9529411792755127, "b": 0.95686274766922 },
+                    "color": { "r": 0.945098, "g": 0.952941, "b": 0.956862 },
                     "boundVariables": {}
                   }
                 ],
@@ -333,7 +333,7 @@ export class Browser extends BaseComponent {
               "type": "TEXT",
               "name": "www.uefa.com",
               "props": {
-                "visible": true, "opacity": 0.800000011920929, "locked": false, "blendMode": "PASS_THROUGH",
+                "visible": true, "opacity": 0.800000, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA",
                 "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "characters": "www.uefa.com", "fontSize": 14,
@@ -344,14 +344,14 @@ export class Browser extends BaseComponent {
                 "fills": [
                   {
                     "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                    "color": { "r": 0.101960, "g": 0.192156, "b": 0.235294 },
                     "boundVariables": {}
                   }
                 ],
                 "strokes": [],
                 "effects": [],
                 "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                "lineHeight": { "unit": "PERCENT", "value": 129.99999523162842 },
+                "lineHeight": { "unit": "PERCENT", "value": 129.999995 },
                 "font": { "family": "Manrope", "style": "SemiBold" }
               },
               "layoutProps": {

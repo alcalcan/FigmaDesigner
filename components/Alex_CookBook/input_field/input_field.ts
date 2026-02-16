@@ -6,7 +6,7 @@ import SEARCH_ICON from "./assets/search_icon.svg";
 import CLOSE_ICON from "./assets/close_icon.svg";
 
 export interface InputFieldProps extends ComponentProps {
-    placeholder: string;
+    placeholder?: string;
     value?: string;
     helperText?: string;
     type?: "simple" | "dropdown";

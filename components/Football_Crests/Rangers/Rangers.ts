@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -71,7 +71,7 @@ export class Rangers extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "x": 0, "y": 0,
                     "strokes": [],
                     "effects": [],
@@ -91,15 +91,15 @@ export class Rangers extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "x": 1.2497925758361816, "y": 1.2749810218811035,
+                    "x": 1.249792, "y": 1.274981,
                     "strokes": [],
                     "strokeWeight": 0,
                     "effects": []
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 58.73005533218384, "height": 58.75524377822876,
-                    "relativeTransform": [[1, 0, 1.2497925758361816], [0, 1, 1.2749810218811035]]
+                    "width": 58.730055, "height": 58.755243,
+                    "relativeTransform": [[1, 0, 1.249792], [0, 1, 1.274981]]
                   },
                   "children": [
                     {
@@ -109,15 +109,15 @@ export class Rangers extends BaseComponent {
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 1.2497925758361816, "y": 1.2749810218811035,
+                        "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                        "x": 1.249792, "y": 1.274981,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 57.480262756347656, "height": 57.480262756347656,
+                        "width": 57.480262, "height": 57.480262,
                         "relativeTransform": [[1, 0, 0], [0, 1, 0]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
@@ -130,16 +130,16 @@ export class Rangers extends BaseComponent {
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 12.007965564727783, "y": 14.160927295684814,
+                        "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                        "x": 12.007965, "y": 14.160927,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 29.790115356445312, "height": 12.141271591186523,
-                        "relativeTransform": [[1, 0, 10.758172988891602], [0, 1, 12.885946273803711]],
+                        "width": 29.790115, "height": 12.141271,
+                        "relativeTransform": [[1, 0, 10.758172], [0, 1, 12.885946]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Rangers_assets_icon_Vector_I190_21155_632_204_svg_29_790115356445312x12_141271591186523
@@ -151,16 +151,16 @@ export class Rangers extends BaseComponent {
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 17.94557809829712, "y": 17.083810329437256,
+                        "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                        "x": 17.945578, "y": 17.083810,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 24.098764419555664, "height": 25.93314552307129,
-                        "relativeTransform": [[1, 0, 16.695785522460938], [0, 1, 15.808829307556152]],
+                        "width": 24.098764, "height": 25.933145,
+                        "relativeTransform": [[1, 0, 16.695785], [0, 1, 15.808829]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Rangers_assets_icon_Vector_I190_21155_632_205_svg_24_098764419555664x25_93314552307129
@@ -172,16 +172,16 @@ export class Rangers extends BaseComponent {
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "x": 15.61155366897583, "y": 11.26825475692749,
+                        "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                        "x": 15.611553, "y": 11.268254,
                         "strokes": [],
                         "effects": [],
                         "cornerRadius": 0
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 28.77054214477539, "height": 7.842229843139648,
-                        "relativeTransform": [[1, 0, 14.361761093139648], [0, 1, 9.993273735046387]],
+                        "width": 28.770542, "height": 7.842229,
+                        "relativeTransform": [[1, 0, 14.361761], [0, 1, 9.993273]],
                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                       },
                       "svgContent": SVG_Rangers_assets_icon_Vector_I190_21155_632_206_svg_28_77054214477539x7_842229843139648
@@ -195,16 +195,16 @@ export class Rangers extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 20.167985916137695, "y": 18.358842849731445,
+                    "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 20.167985, "y": 18.358842,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 18.850088119506836, "height": 23.48900032043457,
-                    "relativeTransform": [[1, 0, 20.167985916137695], [0, 1, 18.358842849731445]],
+                    "width": 18.850088, "height": 23.489000,
+                    "relativeTransform": [[1, 0, 20.167985], [0, 1, 18.358842]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Rangers_assets_icon_Vector_I190_21155_632_207_svg_18_850088119506836x23_48900032043457
@@ -216,16 +216,16 @@ export class Rangers extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 29.838762283325195, "y": 45.04545211791992,
+                    "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 29.838762, "y": 45.045452,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 4.264036178588867, "height": 2.0333518981933594,
-                    "relativeTransform": [[1, 0, 29.838762283325195], [0, 1, 45.04545211791992]],
+                    "width": 4.264036, "height": 2.033351,
+                    "relativeTransform": [[1, 0, 29.838762], [0, 1, 45.045452]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Rangers_assets_icon_Vector_I190_21155_632_208_svg_4_264036178588867x2_0333518981933594
@@ -237,16 +237,16 @@ export class Rangers extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0.2656036913394928, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 5.311613082885742, "y": 3.9917385578155518,
+                    "strokeWeight": 0.265603, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                    "x": 5.311613, "y": 3.991738,
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 0
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 49.19743347167969, "height": 51.65920639038086,
-                    "relativeTransform": [[1, 0, 5.311613082885742], [0, 1, 3.9917385578155518]],
+                    "width": 49.197433, "height": 51.659206,
+                    "relativeTransform": [[1, 0, 5.311613], [0, 1, 3.991738]],
                     "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                   },
                   "svgContent": SVG_Rangers_assets_icon_Vector_I190_21155_632_209_svg_49_19743347167969x51_65920639038086

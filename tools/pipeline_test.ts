@@ -49,7 +49,7 @@ async function run() {
         console.log("Compacted Code Sample (around structure):");
         const match = compacted.match(/const\s+structure\s*:/);
         if (match) {
-            console.log(compacted.substring(match.index, match.index + 200));
+            console.log(compacted.substring(match.index!, match.index! + 200));
         } else {
             console.log("Structure NOT FOUND in compacted code!");
         }

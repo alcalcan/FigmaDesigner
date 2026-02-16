@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -86,15 +86,15 @@ export class Young_boys extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA",
-                    "x": 0.05660108104348183, "y": 0.056511249393224716,
+                    "x": 0.056601, "y": 0.056511,
                     "strokes": [],
                     "strokeWeight": 0,
                     "effects": []
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 59.94358304515481, "height": 59.94348558411002,
-                    "relativeTransform": [[1, 0, 0.05660108104348183], [0, 1, 0.056511249393224716]]
+                    "width": 59.943583, "height": 59.943485,
+                    "relativeTransform": [[1, 0, 0.056601], [0, 1, 0.056511]]
                   },
                   "children": [
                     {
@@ -103,14 +103,14 @@ export class Young_boys extends BaseComponent {
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
-                        "x": 0.05660108104348183, "y": 0.056511249393224716,
+                        "x": 0.056601, "y": 0.056511,
                         "strokes": [],
                         "strokeWeight": 0,
                         "effects": []
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                        "width": 59.94358304515481, "height": 59.94348558411002,
+                        "width": 59.943583, "height": 59.943485,
                         "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                       },
                       "children": [
@@ -120,14 +120,14 @@ export class Young_boys extends BaseComponent {
                           "props": {
                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                             "isMask": false, "maskType": "ALPHA",
-                            "x": 0.05660108104348183, "y": 0.056511249393224716,
+                            "x": 0.056601, "y": 0.056511,
                             "strokes": [],
                             "strokeWeight": 0,
                             "effects": []
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 59.94358304515481, "height": 59.94348558411002,
+                            "width": 59.943583, "height": 59.943485,
                             "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                           },
                           "children": [
@@ -137,14 +137,14 @@ export class Young_boys extends BaseComponent {
                               "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                 "isMask": false, "maskType": "ALPHA",
-                                "x": 0.05660108104348183, "y": 0.056511249393224716,
+                                "x": 0.056601, "y": 0.056511,
                                 "strokes": [],
                                 "strokeWeight": 0,
                                 "effects": []
                               },
                               "layoutProps": {
                                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 59.94358304515481, "height": 59.94348558411002,
+                                "width": 59.943583, "height": 59.943485,
                                 "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                               },
                               "children": [
@@ -154,14 +154,14 @@ export class Young_boys extends BaseComponent {
                                   "props": {
                                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                     "isMask": false, "maskType": "ALPHA",
-                                    "x": 0.05660108104348183, "y": 0.056511249393224716,
+                                    "x": 0.056601, "y": 0.056511,
                                     "strokes": [],
                                     "strokeWeight": 0,
                                     "effects": []
                                   },
                                   "layoutProps": {
                                     "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                    "width": 59.94358304515481, "height": 59.94348558411002,
+                                    "width": 59.943583, "height": 59.943485,
                                     "relativeTransform": [[1, 0, 0], [0, 1, 0]]
                                   },
                                   "children": [
@@ -173,15 +173,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 0.3115447200834751, "y": 0.31151043996214867,
+                                        "x": 0.311544, "y": 0.311510,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 59.377296447753906, "height": 59.37686538696289,
-                                        "relativeTransform": [[1, 0, 0.2549436390399933], [0, 1, 0.25499919056892395]],
+                                        "width": 59.377296, "height": 59.376865,
+                                        "relativeTransform": [[1, 0, 0.254943], [0, 1, 0.254999]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path16_I190_21182_632_435_svg_59_377296447753906x59_37686538696289
@@ -194,14 +194,14 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 0.05660108104348183, "y": 0.056511249393224716,
+                                        "x": 0.056601, "y": 0.056511,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 59.88698196411133, "height": 59.8869743347168,
+                                        "width": 59.886981, "height": 59.886974,
                                         "relativeTransform": [[1, 0, 0], [0, 1, 0]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
@@ -215,15 +215,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 7.5214581824839115, "y": 7.521440353244543,
+                                        "x": 7.521458, "y": 7.521440,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 44.957130432128906, "height": 44.957115173339844,
-                                        "relativeTransform": [[1, 0, 7.46485710144043], [0, 1, 7.464929103851318]],
+                                        "width": 44.957130, "height": 44.957115,
+                                        "relativeTransform": [[1, 0, 7.464857], [0, 1, 7.464929]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path20_I190_21182_632_437_svg_44_957130432128906x44_957115173339844
@@ -236,15 +236,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 5.133220706135035, "y": 17.327623691409826,
+                                        "x": 5.133220, "y": 17.327623,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 45.081764221191406, "height": 35.955963134765625,
-                                        "relativeTransform": [[1, 0, 5.076619625091553], [0, 1, 17.2711124420166]],
+                                        "width": 45.081764, "height": 35.955963,
+                                        "relativeTransform": [[1, 0, 5.076619], [0, 1, 17.271112]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path22_I190_21182_632_438_svg_45_081764221191406x35_955963134765625
@@ -257,15 +257,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 5.557383570820093, "y": 17.751743640750647,
+                                        "x": 5.557383, "y": 17.751743,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 44.2333869934082, "height": 35.10760498046875,
-                                        "relativeTransform": [[1, 0, 5.500782489776611], [0, 1, 17.695232391357422]],
+                                        "width": 44.233386, "height": 35.107604,
+                                        "relativeTransform": [[1, 0, 5.500782], [0, 1, 17.695232]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path24_I190_21182_632_439_svg_44_2333869934082x35_10760498046875
@@ -278,15 +278,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 25.150095496326685, "y": 26.440985050052404,
+                                        "x": 25.150095, "y": 26.440985,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 21.929773330688477, "height": 23.01749610900879,
-                                        "relativeTransform": [[1, 0, 25.093494415283203], [0, 1, 26.38447380065918]],
+                                        "width": 21.929773, "height": 23.017496,
+                                        "relativeTransform": [[1, 0, 25.093494], [0, 1, 26.384473]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path26_I190_21182_632_440_svg_21_929773330688477x23_01749610900879
@@ -299,15 +299,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 5.726600680500269, "y": 17.92182954773307,
+                                        "x": 5.726600, "y": 17.921829,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 31.18587875366211, "height": 18.213592529296875,
-                                        "relativeTransform": [[1, 0, 5.669999599456787], [0, 1, 17.865318298339844]],
+                                        "width": 31.185878, "height": 18.213592,
+                                        "relativeTransform": [[1, 0, 5.669999], [0, 1, 17.865318]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path28_I190_21182_632_441_svg_31_18587875366211x18_213592529296875
@@ -320,15 +320,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 26.844791922718287, "y": 9.312250461429358,
+                                        "x": 26.844791, "y": 9.312250,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 6.310352325439453, "height": 6.000951766967773,
-                                        "relativeTransform": [[1, 0, 26.788190841674805], [0, 1, 9.255739212036133]],
+                                        "width": 6.310352, "height": 6.000951,
+                                        "relativeTransform": [[1, 0, 26.788190], [0, 1, 9.255739]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path30_I190_21182_632_442_svg_6_310352325439453x6_000951766967773
@@ -341,15 +341,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 24.418774161487818, "y": 54.495842304080725,
+                                        "x": 24.418774, "y": 54.495842,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 1.5737342834472656, "height": 3.1100730895996094,
-                                        "relativeTransform": [[1, 0, 24.362173080444336], [0, 1, 54.4393310546875]],
+                                        "width": 1.573734, "height": 3.110073,
+                                        "relativeTransform": [[1, 0, 24.362173], [0, 1, 54.439331]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path32_I190_21182_632_443_svg_1_5737342834472656x3_1100730895996094
@@ -362,15 +362,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 29.943218741565943, "y": 54.81097063049674,
+                                        "x": 29.943218, "y": 54.810970,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 2.568920135498047, "height": 3.129497528076172,
-                                        "relativeTransform": [[1, 0, 29.88661766052246], [0, 1, 54.754459381103516]],
+                                        "width": 2.568920, "height": 3.129497,
+                                        "relativeTransform": [[1, 0, 29.886617], [0, 1, 54.754459]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path34_I190_21182_632_444_svg_2_568920135498047x3_129497528076172
@@ -383,15 +383,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 26.829002890735865, "y": 54.78416093811393,
+                                        "x": 26.829002, "y": 54.784160,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 2.5781517028808594, "height": 3.1255645751953125,
-                                        "relativeTransform": [[1, 0, 26.772401809692383], [0, 1, 54.7276496887207]],
+                                        "width": 2.578151, "height": 3.125564,
+                                        "relativeTransform": [[1, 0, 26.772401], [0, 1, 54.727649]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path36_I190_21182_632_445_svg_2_5781517028808594x3_1255645751953125
@@ -404,15 +404,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 33.1539445258677, "y": 54.38037904724479,
+                                        "x": 33.153944, "y": 54.380379,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 2.700115203857422, "height": 3.1387176513671875,
-                                        "relativeTransform": [[1, 0, 33.09734344482422], [0, 1, 54.32386779785156]],
+                                        "width": 2.700115, "height": 3.138717,
+                                        "relativeTransform": [[1, 0, 33.097343], [0, 1, 54.323867]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path38_I190_21182_632_446_svg_2_700115203857422x3_1387176513671875
@@ -425,15 +425,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 6.792788539081812, "y": 11.987184848636389,
+                                        "x": 6.792788, "y": 11.987184,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 4.196856498718262, "height": 4.158597946166992,
-                                        "relativeTransform": [[1, 0, 6.73618745803833], [0, 1, 11.930673599243164]],
+                                        "width": 4.196856, "height": 4.158597,
+                                        "relativeTransform": [[1, 0, 6.736187], [0, 1, 11.930673]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path40_I190_21182_632_447_svg_4_196856498718262x4_158597946166992
@@ -446,15 +446,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 10.136462721973658, "y": 9.086637821048498,
+                                        "x": 10.136462, "y": 9.086637,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.747330665588379, "height": 3.6956787109375,
-                                        "relativeTransform": [[1, 0, 10.079861640930176], [0, 1, 9.030126571655273]],
+                                        "width": 3.747330, "height": 3.695678,
+                                        "relativeTransform": [[1, 0, 10.079861], [0, 1, 9.030126]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path42_I190_21182_632_448_svg_3_747330665588379x3_6956787109375
@@ -467,15 +467,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 13.599510703235865, "y": 6.551253166049719,
+                                        "x": 13.599510, "y": 6.551253,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.791337013244629, "height": 3.649456024169922,
-                                        "relativeTransform": [[1, 0, 13.542909622192383], [0, 1, 6.494741916656494]],
+                                        "width": 3.791337, "height": 3.649456,
+                                        "relativeTransform": [[1, 0, 13.542909], [0, 1, 6.494741]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path44_I190_21182_632_449_svg_3_791337013244629x3_649456024169922
@@ -488,15 +488,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 18.70383122935891, "y": 3.711958732455969,
+                                        "x": 18.703831, "y": 3.711958,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.470701217651367, "height": 3.723159074783325,
-                                        "relativeTransform": [[1, 0, 18.64723014831543], [0, 1, 3.655447483062744]],
+                                        "width": 3.470701, "height": 3.723159,
+                                        "relativeTransform": [[1, 0, 18.647230], [0, 1, 3.655447]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path46_I190_21182_632_450_svg_3_470701217651367x3_723159074783325
@@ -509,15 +509,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 22.51340154185891, "y": 3.0639761351048946,
+                                        "x": 22.513401, "y": 3.063976,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.849031448364258, "height": 3.43847393989563,
-                                        "relativeTransform": [[1, 0, 22.45680046081543], [0, 1, 3.00746488571167]],
+                                        "width": 3.849031, "height": 3.438473,
+                                        "relativeTransform": [[1, 0, 22.456800], [0, 1, 3.007464]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path48_I190_21182_632_451_svg_3_849031448364258x3_43847393989563
@@ -530,15 +530,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 26.64244321361184, "y": 2.5599196814000607,
+                                        "x": 26.642443, "y": 2.559919,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.406707763671875, "height": 3.407134771347046,
-                                        "relativeTransform": [[1, 0, 26.58584213256836], [0, 1, 2.503408432006836]],
+                                        "width": 3.406707, "height": 3.407134,
+                                        "relativeTransform": [[1, 0, 26.585842], [0, 1, 2.503408]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path50_I190_21182_632_452_svg_3_406707763671875x3_407134771347046
@@ -551,15 +551,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 30.37150815501809, "y": 2.534785833209753,
+                                        "x": 30.371508, "y": 2.534785,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.5779247283935547, "height": 3.435105800628662,
-                                        "relativeTransform": [[1, 0, 30.31490707397461], [0, 1, 2.4782745838165283]],
+                                        "width": 3.577924, "height": 3.435105,
+                                        "relativeTransform": [[1, 0, 30.314907], [0, 1, 2.478274]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path52_I190_21182_632_453_svg_3_5779247283935547x3_435105800628662
@@ -572,15 +572,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 34.12369016185403, "y": 3.2139676474034786,
+                                        "x": 34.123690, "y": 3.213967,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.8004608154296875, "height": 3.4489905834198,
-                                        "relativeTransform": [[1, 0, 34.06708908081055], [0, 1, 3.157456398010254]],
+                                        "width": 3.800460, "height": 3.448990,
+                                        "relativeTransform": [[1, 0, 34.067089], [0, 1, 3.157456]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path54_I190_21182_632_454_svg_3_8004608154296875x3_4489905834198
@@ -593,15 +593,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 39.27324155345559, "y": 4.71021493896842,
+                                        "x": 39.273241, "y": 4.710214,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.9831924438476562, "height": 4.010124683380127,
-                                        "relativeTransform": [[1, 0, 39.21664047241211], [0, 1, 4.653703689575195]],
+                                        "width": 3.983192, "height": 4.010124,
+                                        "relativeTransform": [[1, 0, 39.216640], [0, 1, 4.653703]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path56_I190_21182_632_455_svg_3_9831924438476562x4_010124683380127
@@ -614,15 +614,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 43.155092749744654, "y": 7.169718112796545,
+                                        "x": 43.155092, "y": 7.169718,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.7928848266601562, "height": 3.6406493186950684,
-                                        "relativeTransform": [[1, 0, 43.09849166870117], [0, 1, 7.11320686340332]],
+                                        "width": 3.792884, "height": 3.640649,
+                                        "relativeTransform": [[1, 0, 43.098491], [0, 1, 7.113206]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path58_I190_21182_632_456_svg_3_7928848266601562x3_6406493186950684
@@ -635,15 +635,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 46.49872449412942, "y": 8.851377811282873,
+                                        "x": 46.498724, "y": 8.851377,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.8197174072265625, "height": 3.8498239517211914,
-                                        "relativeTransform": [[1, 0, 46.44212341308594], [0, 1, 8.794866561889648]],
+                                        "width": 3.819717, "height": 3.849823,
+                                        "relativeTransform": [[1, 0, 46.442123], [0, 1, 8.794866]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path60_I190_21182_632_457_svg_3_8197174072265625x3_8498239517211914
@@ -656,15 +656,15 @@ export class Young_boys extends BaseComponent {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
                                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                        "x": 48.79562619701028, "y": 12.138449039310217,
+                                        "x": 48.795626, "y": 12.138449,
                                         "strokes": [],
                                         "effects": [],
                                         "cornerRadius": 0
                                       },
                                       "layoutProps": {
                                         "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": 3.6796913146972656, "height": 3.7501916885375977,
-                                        "relativeTransform": [[1, 0, 48.7390251159668], [0, 1, 12.081937789916992]],
+                                        "width": 3.679691, "height": 3.750191,
+                                        "relativeTransform": [[1, 0, 48.739025], [0, 1, 12.081937]],
                                         "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                                       },
                                       "svgContent": SVG_Young_boys_assets_icon_path62_I190_21182_632_458_svg_3_6796913146972656x3_7501916885375977

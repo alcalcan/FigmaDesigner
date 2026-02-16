@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
 
 
 // SVG Assets
@@ -36,7 +36,7 @@ export class VAR_resolution extends BaseComponent {
               "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 0.7692307829856873, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                "strokeWeight": 0.769230, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "x": 2, "y": 4,
                 "strokes": [],
                 "effects": [],
@@ -44,7 +44,7 @@ export class VAR_resolution extends BaseComponent {
               },
               "layoutProps": {
                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 20, "height": 15.384614944458008,
+                "width": 20, "height": 15.384614,
                 "relativeTransform": [[1, 0, 2], [0, 1, 4]]
               },
               "svgContent": SVG_VAR_resolution_assets_icon_Union_I105_47039_836_353_svg_20x15_384614944458008
