@@ -4,7 +4,7 @@ export class radio_button extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "radio_button",
+            "name": "Radio Button Component",
             "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -17,7 +17,7 @@ export class radio_button extends BaseComponent {
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "RadioButtonWrapper",
+                    "name": "Radio Button Container",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "layoutAlign": "INHERIT", "layoutGrow": 0,
@@ -33,7 +33,7 @@ export class radio_button extends BaseComponent {
                     "children": [
                         {
                             "type": "RECTANGLE",
-                            "name": "RadioOuter",
+                            "name": "Outer Circle",
                             "props": {
                                 "visible": true,
                                 "cornerRadius": 8, // Fully rounded for 16x16
@@ -58,7 +58,7 @@ export class radio_button extends BaseComponent {
                 },
                 {
                     "type": "TEXT",
-                    "name": "Label",
+                    "name": "Radio Label",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "characters": "Option 1", "fontSize": 14,
@@ -125,8 +125,8 @@ export class radio_button extends BaseComponent {
         // Handle Checked State
         if (props.checked !== undefined) {
             // Use name-based search with type check
-            const wrapper = (root as FrameNode).children.find(n => n.name === "RadioButtonWrapper") as FrameNode;
-            const outerCircle = wrapper?.children.find(n => n.name === "RadioOuter" && n.type === "RECTANGLE") as RectangleNode;
+            const wrapper = (root as FrameNode).children.find(n => n.name === "Radio Button Container") as FrameNode;
+            const outerCircle = wrapper?.children.find(n => n.name === "Outer Circle" && n.type === "RECTANGLE") as RectangleNode;
 
             if (outerCircle) {
                 if (props.checked) {
@@ -151,7 +151,7 @@ export class radio_button extends BaseComponent {
                 // Actually BaseComponent definitions often use Frames/Rectangles. I'll stick to Figma API calls here since I'm manipulating the node directly.
 
                 const dot = figma.createEllipse();
-                dot.name = "RadioDot";
+                dot.name = "Checked Indicator Dot";
                 dot.resize(6, 6);
                 dot.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
 

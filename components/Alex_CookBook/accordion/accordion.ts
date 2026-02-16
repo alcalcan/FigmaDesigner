@@ -1,8 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-
-// SVG Assets
-import PLUS_ICON from "./assets/plus.svg";
-import MINUS_ICON from "./assets/minus.svg";
+import { Lucide_plus, Lucide_minus } from "../../index";
 
 export interface AccordionProps extends ComponentProps {
     title?: string;
@@ -44,7 +41,7 @@ export class accordion extends BaseComponent {
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Header",
+                    "name": "Accordion Header",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -102,57 +99,19 @@ export class accordion extends BaseComponent {
                             }
                         },
                         {
-                            "type": "FRAME",
-                            "name": isExpanded ? "Actions / Minus / Small" : "Actions / Add / Small",
+                            "type": "COMPONENT",
+                            "component": isExpanded ? Lucide_minus : Lucide_plus,
+                            "name": "Toggle Icon",
                             "props": {
-                                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                                "layoutMode": "NONE",
-                                "fills": [
-                                    {
-                                        "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                        "color": { "r": 1, "g": 1, "b": 1 },
-                                        "boundVariables": {}
-                                    }
-                                ],
-                                "strokes": [],
-                                "effects": [],
-                                "cornerRadius": 0
+                                "width": 12,
+                                "height": 12,
+                                "strokeWeight": 2,
+                                "color": titleColor
                             },
                             "layoutProps": {
                                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                                 "width": 12, "height": 12
-                            },
-                            "children": [
-                                {
-                                    "type": "VECTOR",
-                                    "shouldFlatten": true,
-                                    "name": "Icon",
-                                    "props": {
-                                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                        "isMask": false, "maskType": "ALPHA",
-                                        "strokeWeight": isExpanded ? 2 : 0, "strokeAlign": isExpanded ? "CENTER" : "CENTER", "strokeCap": "ROUND", "strokeJoin": "ROUND", "strokeMiterLimit": 4,
-                                        "x": isExpanded ? 2.5 : 2, "y": isExpanded ? 6 : 2,
-                                        "strokes": isExpanded ? [
-                                            {
-                                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                                "color": titleColor,
-                                                "boundVariables": {}
-                                            }
-                                        ] : [],
-                                        "effects": [],
-                                        "cornerRadius": 0
-                                    },
-                                    "layoutProps": {
-                                        "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                        "width": isExpanded ? 7 : 8, "height": isExpanded ? 0 : 8
-                                    },
-                                    "svgContent": isExpanded ? MINUS_ICON : PLUS_ICON
-                                }
-                            ]
+                            }
                         }
                     ]
                 },
@@ -161,7 +120,7 @@ export class accordion extends BaseComponent {
                         ? props.children
                         : [{
                             "type": "TEXT",
-                            "name": "Description",
+                            "name": "Description Content",
                             "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                 "isMask": false, "maskType": "ALPHA",
@@ -199,3 +158,4 @@ export class accordion extends BaseComponent {
         return root;
     }
 }
+

@@ -9,7 +9,7 @@ export class toggle extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Toggle",
+            "name": "Toggle Switch",
             "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -30,7 +30,7 @@ export class toggle extends BaseComponent {
             "children": [
                 {
                     "type": "RECTANGLE",
-                    "name": "Background",
+                    "name": "Toggle Track",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
@@ -61,7 +61,7 @@ export class toggle extends BaseComponent {
                 {
                     "type": "VECTOR",
                     "shouldFlatten": true,
-                    "name": "Knob",
+                    "name": "Toggle Knob",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",

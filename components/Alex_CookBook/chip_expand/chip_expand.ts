@@ -35,7 +35,7 @@ export class chip_expand extends BaseComponent {
       "children": [
         {
           "type": "TEXT",
-          "name": "Newer first",
+          "name": "Chip Label",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA",
@@ -66,7 +66,7 @@ export class chip_expand extends BaseComponent {
         },
         {
           "type": "FRAME",
-          "name": "Navigation / Expand",
+          "name": "Expand Icon Area",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -88,7 +88,7 @@ export class chip_expand extends BaseComponent {
             {
               "type": "COMPONENT",
               "component": Lucide_chevron_down,
-              "name": "Vector",
+              "name": "Expand Chevron",
               "props": {
                 "width": 12,
                 "height": 12,
@@ -154,7 +154,7 @@ export class chip_expand extends BaseComponent {
         textNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
       }
 
-      const vectorNode = (root as FrameNode).findOne(n => n.name === "Vector" && n.type === "VECTOR") as VectorNode;
+      const vectorNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
       if (vectorNode) {
         vectorNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
       }
@@ -170,7 +170,7 @@ export class chip_expand extends BaseComponent {
         textNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
       }
 
-      const vectorNode = (root as FrameNode).findOne(n => n.name === "Vector" && n.type === "VECTOR") as VectorNode;
+      const vectorNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
       if (vectorNode) {
         vectorNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
       }
@@ -178,7 +178,7 @@ export class chip_expand extends BaseComponent {
 
     // Handle Expanded State (Chevron Rotation)
     if (props.expanded) {
-      const vector = (root as FrameNode).findOne(n => n.name === "Vector" && n.type === "VECTOR") as VectorNode;
+      const vector = (root as FrameNode).findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
       if (vector) {
         vector.rotation = 180;
         vector.x = 6 + vector.width;

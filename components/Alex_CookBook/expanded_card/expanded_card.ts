@@ -91,7 +91,7 @@ export class expanded_card extends BaseComponent {
           strokes: [{ type: "SOLID", color: { r: 0, g: 0.635, b: 0.588 } }],
           cornerRadius: 100
         }, [
-          createText("Label", badgeLabel, 14, "Regular", { r: 0.102, g: 0.192, b: 0.235 }, {
+          createText("Badge Label", badgeLabel, 14, "Regular", { r: 0.102, g: 0.192, b: 0.235 }, {
             font: { family: "Open Sans", style: "Regular" },
             lineHeight: { unit: "PERCENT", value: 130 }
           }),
@@ -111,12 +111,12 @@ export class expanded_card extends BaseComponent {
           cornerRadius: 100,
           layoutProps: { width: 40, height: 40 }
         }, [
-          createFrame("Icon Wrapper", {
+          createFrame("Expand Icon Area", {
             layoutMode: "NONE",
             clipsContent: true,
             layoutProps: { width: 24, height: 24 }
           }, [
-            createVector("Vector", SVG_Chevron, {
+            createVector("Expand Chevron Icon", SVG_Chevron, {
               fills: [{ type: "SOLID", color: { r: 0.102, g: 0.192, b: 0.235 } }],
               layoutProps: {
                 parentIsAutoLayout: false,

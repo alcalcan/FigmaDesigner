@@ -328,7 +328,7 @@ export abstract class BaseComponent {
         "layoutWrap",
         "pointCount", "innerRadius", // Shape specific
         "width", "height", "x", "y", "rotation", // Read-only or handled via resize/transform
-        "relativeTransform",
+        "relativeTransform", "layoutGrow", "layoutAlign", // Handled in layoutProps
         "type", "children", "fontWeight" // Read-only or handled explicitly
       ]);
 

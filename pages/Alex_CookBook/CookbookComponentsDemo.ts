@@ -25,6 +25,7 @@ import { line_chart_card } from "../../components/Alex_CookBook/line_chart_card/
 import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
+import { Features___store, Features___stats, Lucide_users } from "../../components/index";
 
 export class CookbookComponentsDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -338,51 +339,142 @@ export class CookbookComponentsDemo extends BaseComponent {
 
         // --- DATA VISUALIZATION ---
         await this.addSection(root, "Data Visualization", async (container) => {
-            const row = this.createRow();
-            row.primaryAxisAlignItems = "SPACE_BETWEEN"; // Distribute evenly
-            row.layoutAlign = "STRETCH";
+            // Dashboard Container for all cards (Metrics + Charts)
+            const dashboard = figma.createFrame();
+            dashboard.name = "Dashboard Grid";
+            dashboard.layoutMode = "HORIZONTAL";
+            dashboard.layoutWrap = "WRAP"; // Wraps items to next row
+            dashboard.itemSpacing = 32; // Horizontal gap
+            dashboard.counterAxisSpacing = 32; // Vertical gap
+            dashboard.primaryAxisAlignItems = "MIN";
+            dashboard.counterAxisAlignItems = "MIN";
+            dashboard.layoutAlign = "STRETCH"; // Fill the parent width
+            dashboard.primaryAxisSizingMode = "FIXED"; // Needed for wrapping to trigger against the parent width
+            dashboard.counterAxisSizingMode = "AUTO"; // Grow height as needed
+            dashboard.fills = [];
+            dashboard.clipsContent = false;
 
-            // Metric Cards
             const metric = new metric_card();
-            row.appendChild(await metric.create({
-                label: "Total Revenue",
-                value: "$42,500",
-                trend: "+12%",
-                trendDirection: "up"
-            }));
-            row.appendChild(await metric.create({
-                label: "Active Users",
-                value: "1,240",
-                trend: "-3%",
-                trendDirection: "down"
-            }));
-            row.appendChild(await metric.create({
-                label: "Avg. Session",
-                value: "4m 30s",
-                trend: "0%",
-                trendDirection: "neutral"
-            }));
-
-            container.appendChild(row);
-
-            // Chart Cards
-            const chartRow = this.createRow();
-            chartRow.layoutAlign = "STRETCH";
-
             const chart = new line_chart_card();
-            chartRow.appendChild(await chart.create({
+
+            // Add Metric Cards (Reference Style)
+            dashboard.appendChild(await metric.create({
+                label: "Active Users",
+                value: "436",
+                period: "Month to Date",
+                trend: "191%",
+                trendValue: "150",
+                trendDirection: "up",
+                isFavorite: true,
+                platformName: "Google Analytics 4",
+                sparklineData: [0.2, 0.3, 0.25, 0.4, 0.35, 0.5, 0.45],
+                color: { r: 0.1, g: 0.8, b: 0.5 } // Green
+            }));
+
+            dashboard.appendChild(await metric.create({
+                label: "Engaged Sessions",
+                value: "488",
+                period: "Month to Date",
+                trend: "297%",
+                trendValue: "123",
+                trendDirection: "up",
+                isFavorite: true,
+                platformName: "Google Analytics 4",
+                sparklineData: [0.3, 0.4, 0.35, 0.5, 0.4, 0.6, 0.5],
+                color: { r: 0.1, g: 0.8, b: 0.5 } // Green
+            }));
+
+            dashboard.appendChild(await metric.create({
+                label: "Impressions",
+                value: "22,321",
+                period: "Month to Date",
+                trend: "5%",
+                trendValue: "23,545",
+                trendDirection: "down",
+                isFavorite: true,
+                platformName: "Instagram Business",
+                sparklineData: [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.35],
+                color: { r: 0.95, g: 0.25, b: 0.25 } // Red
+            }));
+
+            dashboard.appendChild(await metric.create({
+                label: "Total Followers",
+                value: "3,062",
+                period: "Month to Date",
+                trendDirection: "neutral", // Blue line
+                isFavorite: true,
+                platformName: "Instagram Business",
+                sparklineData: [0.1, 0.2, 0.25, 0.3, 0.4, 0.45, 0.5],
+                color: { r: 0.2, g: 0.5, b: 1 } // Blue
+            }));
+
+            // --- Compact Metric Cards Row ---
+            const compactRow = figma.createFrame();
+            compactRow.name = "Compact Cards Row";
+            compactRow.layoutMode = "HORIZONTAL";
+            compactRow.itemSpacing = 16;
+            compactRow.layoutAlign = "STRETCH";
+            compactRow.primaryAxisSizingMode = "FIXED";
+            compactRow.counterAxisSizingMode = "AUTO";
+            compactRow.fills = [];
+
+            // 1. Basket (All Spendings)
+            compactRow.appendChild(await metric.create({
+                variant: "compact",
+                icon: Features___store,
+                label: "All Spendings",
+                value: "$574.34",
+                chartType: "none",
+                color: { r: 0.4, g: 0.3, b: 1 } // Purple
+            }));
+
+            // 2. Bar Chart (Spent this month)
+            compactRow.appendChild(await metric.create({
+                variant: "compact",
+                label: "Spent this month",
+                value: "$682.5",
+                chartType: "bar",
+                color: { r: 0.3, g: 0.2, b: 0.9 }, // Deep Purple
+                sparklineData: [0.4, 0.6, 0.5, 0.8, 0.3, 0.9, 0.2]
+            }));
+
+            // 3. Stats (Earnings)
+            compactRow.appendChild(await metric.create({
+                variant: "compact",
+                icon: Features___stats,
+                label: "Earnings",
+                value: "$350.40",
+                chartType: "none",
+                color: { r: 0.3, g: 0.4, b: 0.9 } // Blue-ish Purple
+            }));
+
+            // 4. User + Line (New clients)
+            compactRow.appendChild(await metric.create({
+                variant: "compact",
+                icon: Lucide_users,
+                label: "New clients",
+                value: "321",
+                chartType: "line",
+                color: { r: 0.5, g: 0.4, b: 0.9 }, // Light Purple
+                sparklineData: [0.2, 0.3, 0.2, 0.5, 0.4, 0.8, 0.7]
+            }));
+
+            dashboard.appendChild(compactRow);
+
+            // Add Chart Cards (Keeping existing ones for variety)
+            dashboard.appendChild(await chart.create({
                 title: "Weekly Traffic",
                 dataPoints: [0.1, 0.4, 0.3, 0.7, 0.5, 0.8, 0.6],
-                color: { r: 0.1, g: 0.6, b: 0.35 } // Green
+                color: { r: 0.05, g: 0.75, b: 0.45 } // Emerald Green
             }));
 
-            chartRow.appendChild(await chart.create({
+            dashboard.appendChild(await chart.create({
                 title: "Server Load",
                 dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.8, 0.9],
-                color: { r: 0.86, g: 0.15, b: 0.15 } // Red
+                color: { r: 0.95, g: 0.2, b: 0.2 } // Vibrant Red
             }));
 
-            container.appendChild(chartRow);
+            container.appendChild(dashboard);
         });
 
         root.x = props.x ?? 0;

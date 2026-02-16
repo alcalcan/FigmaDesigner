@@ -1,4 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { Lucide_check } from "../../index";
 
 interface ProgressStepperProps extends ComponentProps {
     steps: string[];
@@ -67,15 +68,21 @@ export class progress_stepper extends BaseComponent {
             // --- Render Content based on Type ---
             if (contentType === "CHECK") {
                 content = {
-                    "type": "VECTOR",
-                    "name": "CheckIcon",
-                    "svgContent": `<svg width="${indicatorSize / 2}" height="${indicatorSize / 2}" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+                    "type": "COMPONENT",
+                    "component": Lucide_check,
+                    "name": "Success Icon",
+                    "props": {
+                        "width": indicatorSize / 2,
+                        "height": indicatorSize / 2,
+                        "strokeWeight": 3,
+                        "color": white
+                    },
                     "layoutProps": { "width": indicatorSize / 2, "height": indicatorSize / 2, "layoutAlign": "INHERIT", "parentIsAutoLayout": true }
                 };
             } else if (contentType === "DOT") {
                 content = {
                     "type": "ELLIPSE",
-                    "name": "Dot",
+                    "name": "Indicator Dot",
                     "props": {
                         "fills": [{ type: "SOLID", color: white }]
                     },
@@ -85,7 +92,7 @@ export class progress_stepper extends BaseComponent {
                 const letter = String.fromCharCode(65 + index); // A, B, C...
                 content = {
                     "type": "TEXT",
-                    "name": "StepLetter",
+                    "name": "Step Identifier",
                     "props": {
                         "characters": letter,
                         "fontSize": indicatorSize * 0.5,
@@ -99,7 +106,7 @@ export class progress_stepper extends BaseComponent {
                 // Default: NUMBER
                 content = {
                     "type": "TEXT",
-                    "name": "StepNumber",
+                    "name": "Step Number",
                     "props": {
                         "characters": (index + 1).toString(),
                         "fontSize": indicatorSize * 0.5,
@@ -113,7 +120,7 @@ export class progress_stepper extends BaseComponent {
 
             const stepNode: NodeDefinition = {
                 "type": "FRAME",
-                "name": `Step_${index}`,
+                "name": "Step Item",
                 "props": {
                     "layoutMode": "HORIZONTAL",
                     "itemSpacing": 8,
@@ -126,7 +133,7 @@ export class progress_stepper extends BaseComponent {
                     // Circle/Square
                     {
                         "type": "FRAME",
-                        "name": "Indicator",
+                        "name": "Status Indicator",
                         "props": {
                             "width": indicatorSize, "height": indicatorSize,
                             "cornerRadius": indicatorShape === "CIRCLE" ? indicatorSize / 2 : 2, // 2px roundness if square
@@ -141,7 +148,7 @@ export class progress_stepper extends BaseComponent {
                     // Label
                     {
                         "type": "TEXT",
-                        "name": "Label",
+                        "name": "Step Label",
                         "props": {
                             "characters": stepLabel,
                             "fontSize": 14,
@@ -162,7 +169,7 @@ export class progress_stepper extends BaseComponent {
 
                 children.push({
                     "type": "RECTANGLE",
-                    "name": "Connector",
+                    "name": "Connector Line",
                     "props": {
                         "fills": [{ type: "SOLID", color: lineColor }],
                         "cornerRadius": 1

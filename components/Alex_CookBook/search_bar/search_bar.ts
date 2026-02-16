@@ -11,7 +11,7 @@ export class search_bar extends BaseComponent {
 
     const structure: NodeDefinition = {
       "type": "FRAME",
-      "name": "search_bar",
+      "name": "Search Bar Area",
       "props": {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
         "layoutMode": "HORIZONTAL", "itemSpacing": 16,
@@ -43,7 +43,7 @@ export class search_bar extends BaseComponent {
         },
         {
           "type": "FRAME",
-          "name": "Chips Container",
+          "name": "Filter Chips Area",
           "props": {
             "layoutMode": "HORIZONTAL", "itemSpacing": 16,
             "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 16,
@@ -60,7 +60,7 @@ export class search_bar extends BaseComponent {
     };
 
     const root = await this.renderDefinition(structure);
-    const chipsContainer = (root as FrameNode).findOne(n => n.name === "Chips Container") as FrameNode;
+    const chipsContainer = (root as FrameNode).findOne(n => n.name === "Filter Chips Area") as FrameNode;
 
     // Use chips from props or defaults
     const chipsConfig = props.chips || [

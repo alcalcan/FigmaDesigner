@@ -83,7 +83,7 @@ export class social_profile_card extends BaseComponent {
                 createText("Followers", `${props.followerCount || "1,234"} followers`, 13, "SemiBold", { r: 0.349, g: 0.439, b: 0.482 }, {
                     font: { family: "Open Sans", style: "SemiBold" }
                 }),
-                createFrame("Button", {
+                createFrame("Follow Button Container", {
                     layoutMode: "HORIZONTAL",
                     paddingLeft: 20,
                     paddingRight: 20,

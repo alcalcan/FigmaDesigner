@@ -118,7 +118,7 @@ export class input_field extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Text Field",
+            "name": "Input Field",
             "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -142,7 +142,7 @@ export class input_field extends BaseComponent {
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "input_container",
+                    "name": "Field Container",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -195,7 +195,7 @@ export class input_field extends BaseComponent {
                         ] : []),
                         {
                             "type": "FRAME",
-                            "name": "Inner",
+                            "name": "Value Container",
                             "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -218,7 +218,7 @@ export class input_field extends BaseComponent {
                             "children": [
                                 {
                                     "type": "TEXT",
-                                    "name": "Text",
+                                    "name": "Value",
                                     "props": {
                                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                         "isMask": false, "maskType": "ALPHA",
@@ -270,7 +270,7 @@ export class input_field extends BaseComponent {
                         ...(type === "dropdown" ? [
                             {
                                 "type": "FRAME",
-                                "name": "Caret",
+                                "name": "Caret Area",
                                 "props": {
                                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                     "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -297,7 +297,7 @@ export class input_field extends BaseComponent {
                                     {
                                         "type": "VECTOR",
                                         "shouldFlatten": true,
-                                        "name": "Shape",
+                                        "name": "Caret Icon",
                                         "props": {
                                             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                             "isMask": false, "maskType": "ALPHA",
@@ -332,7 +332,7 @@ export class input_field extends BaseComponent {
                 ...(props.helperText ? [
                     {
                         "type": "FRAME",
-                        "name": "Helper Container",
+                        "name": "Helper Area",
                         "props": {
                             "visible": true,
                             "layoutMode": "HORIZONTAL",
@@ -351,7 +351,7 @@ export class input_field extends BaseComponent {
                             ...(StateIconClass ? [
                                 {
                                     "type": "COMPONENT",
-                                    "name": "State Icon",
+                                    "name": "Status Icon",
                                     "component": StateIconClass,
                                     "props": {
                                         "width": 16,
@@ -368,7 +368,7 @@ export class input_field extends BaseComponent {
                             ] : []),
                             {
                                 "type": "TEXT",
-                                "name": "Helper",
+                                "name": "Helper Text",
                                 "props": {
                                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                                     "isMask": false, "maskType": "ALPHA",

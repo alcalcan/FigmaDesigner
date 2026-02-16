@@ -52,7 +52,7 @@ export class badge extends BaseComponent {
             children: [
                 {
                     type: "TEXT",
-                    name: "Label",
+                    name: "Badge Label",
                     props: {
                         characters: labelText.toUpperCase(),
                         fontSize: 10,

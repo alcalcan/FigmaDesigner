@@ -91,7 +91,7 @@ export class button extends BaseComponent {
             children: [
                 {
                     type: "TEXT",
-                    name: "Label",
+                    name: "Button Label",
                     props: {
                         characters: state === "loading" ? "Loading..." : labelText,
                         fontSize: currentSize.fontSize,

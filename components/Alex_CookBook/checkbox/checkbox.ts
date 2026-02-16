@@ -1,11 +1,5 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-
-
-// SVG Assets
-import SVG_checkbox_Synth_Path_0 from "./assets/checkbox_Synth_Path_0.svg";
-import SVG_checkbox_Synth_Path_1 from "./assets/checkbox_Synth_Path_1.svg";
-import SVG_Checkmark from "./assets/checkmark.svg";
-
+import { Lucide_check } from "../../index";
 
 export class checkbox extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
@@ -30,7 +24,7 @@ export class checkbox extends BaseComponent {
       "children": [
         {
           "type": "FRAME",
-          "name": "Checkbox",
+          "name": "Checkbox Container",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA", "clipsContent": false,
@@ -54,106 +48,11 @@ export class checkbox extends BaseComponent {
             "width": 20, "height": 20,
             "relativeTransform": [[1, 0, 8], [0, 1, 6]]
           },
-          "children": [
-            {
-              "type": "BOOLEAN_OPERATION",
-              "booleanOperation": "EXCLUDE",
-              "name": "Shape",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA",
-                "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "x": 2.5, "y": 2.5,
-                "fills": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 0.101960, "g": 0.192156, "b": 0.235294 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                "width": 15, "height": 15,
-                "relativeTransform": [[1, 0, 2.5], [0, 1, 2.5]]
-              },
-              "children": [
-                {
-                  "type": "VECTOR",
-                  "shouldFlatten": true,
-                  "name": "Path",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 2.5, "y": 2.5,
-                    "fills": [
-                      {
-                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 0, "g": 0, "b": 0 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0,
-                    "vectorPaths": [
-                      {
-                        "windingRule": "EVENODD",
-                        "data": "M 1.666666 0 L 13.333333 0 C 14.253807 0 15 0.746191 15 1.666666 L 15 13.333333 C 15 14.253807 14.253807 15 13.333333 15 L 1.666666 15 C 0.746191 15 0 14.253807 0 13.333333 L 0 1.666666 C 0 0.746191 0.746191 0 1.666666 0 Z"
-                      }
-                    ]
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 15, "height": 15,
-                    "relativeTransform": [[1, 0, 2.5], [0, 1, 2.5]]
-                  },
-                  "svgContent": SVG_checkbox_Synth_Path_0
-                },
-                {
-                  "type": "VECTOR",
-                  "shouldFlatten": true,
-                  "name": "Path",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA",
-                    "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "x": 4.166666, "y": 4.166656,
-                    "fills": [
-                      {
-                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                        "color": { "r": 0, "g": 0, "b": 0 },
-                        "boundVariables": {}
-                      }
-                    ],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0,
-                    "vectorPaths": [
-                      {
-                        "windingRule": "EVENODD",
-                        "data": "M 0 0 L 0 11.666666 L 11.666666 11.666666 L 11.666666 0 L 0 0 Z"
-                      }
-                    ]
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                    "width": 11.666666, "height": 11.666666,
-                    "relativeTransform": [[1, 0, 4.166666], [0, 1, 4.166656]]
-                  },
-                  "svgContent": SVG_checkbox_Synth_Path_1
-                }
-              ]
-            }
-          ]
+          "children": []
         },
         {
           "type": "TEXT",
-          "name": "Filter name",
+          "name": "Checkbox Label",
           "props": {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA",
@@ -226,62 +125,40 @@ export class checkbox extends BaseComponent {
       }
     }
 
-    // Handle Checked State
-    if (props.checked !== undefined) {
-      const wrapper = (root as FrameNode).children.find(n => n.name === "Checkbox") as FrameNode;
-      const shape = wrapper?.findOne(n => n.name === "Shape" && n.type === "BOOLEAN_OPERATION") as BooleanOperationNode;
+    // Inner Shell (the actual square box)
+    const wrapper = (root as FrameNode).children.find(n => n.name === "Checkbox Container") as FrameNode;
+    if (wrapper) {
+      // Create the background box
+      const box = figma.createRectangle();
+      box.name = "Box";
+      box.resize(16, 16);
+      box.cornerRadius = 2;
 
-      if (shape && wrapper) {
-        if (props.checked) {
-          // Solid background for checked state
-          shape.fills = [{
-            type: "SOLID",
-            visible: true,
-            opacity: 1,
-            blendMode: "NORMAL",
-            color: { r: 0, g: 0.635, b: 0.588 }, // Brand green
-            boundVariables: {}
-          }];
-          // Add border to fix "stroke problem"
-          shape.strokes = [{
-            type: "SOLID",
-            visible: true,
-            opacity: 1,
-            blendMode: "NORMAL",
-            color: { r: 0, g: 0.5, b: 0.45 }, // Darker green for stroke
-            boundVariables: {}
-          }];
-          shape.strokeWeight = 1;
+      if (props.checked) {
+        box.fills = [{ type: "SOLID", color: { r: 0, g: 0.635, b: 0.588 } }]; // Brand green
+        box.strokes = [];
+      } else {
+        box.fills = [];
+        box.strokes = [{ type: "SOLID", color: { r: 0.102, g: 0.192, b: 0.235 } }]; // Blue
+        box.strokeWeight = 1.5;
+      }
+      wrapper.appendChild(box);
+      box.x = 2;
+      box.y = 2;
 
-          // Hide the inner "hole" path (it's the second child)
-          if (shape.children.length > 1) {
-            shape.children[1].visible = false;
-          }
-
-          // Add Checkmark
-          const checkmark = figma.createNodeFromSvg(SVG_Checkmark);
-          const flatCheck = figma.flatten([checkmark]);
-          flatCheck.name = "Checkmark_Icon";
-          wrapper.appendChild(flatCheck);
-
-          // Center in 20x20 wrapper (Icon is 8x7)
-          flatCheck.x = (20 - 8) / 2;
-          flatCheck.y = (20 - 7) / 2;
-        } else {
-          // Hollow for unchecked state
-          shape.fills = [{
-            type: "SOLID",
-            visible: true,
-            opacity: 1,
-            blendMode: "NORMAL",
-            color: { r: 0.102, g: 0.192, b: 0.235 }, // Blue
-            boundVariables: {}
-          }];
-          shape.strokes = []; // No stroke for unchecked (it has the hole)
-          if (shape.children.length > 1) {
-            shape.children[1].visible = true;
-          }
-        }
+      // Add Checkmark if checked
+      if (props.checked) {
+        const checkIcon = new Lucide_check();
+        const checkNode = await checkIcon.create({
+          width: 12,
+          height: 12,
+          strokeWeight: 3,
+          color: { r: 1, g: 1, b: 1 }
+        });
+        checkNode.name = "Checkmark Icon";
+        wrapper.appendChild(checkNode);
+        checkNode.x = 4;
+        checkNode.y = 4;
       }
     }
 
@@ -292,3 +169,4 @@ export class checkbox extends BaseComponent {
     return root;
   }
 }
+

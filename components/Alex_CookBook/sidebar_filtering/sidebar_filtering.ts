@@ -1,5 +1,6 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { createFrame, createText, createVector, createLine } from "../../ComponentHelpers";
+import { Lucide_search } from "../../index";
 import { checkbox } from "../checkbox/checkbox";
 import { toggle } from "../toggle/toggle";
 import { accordion } from "../accordion/accordion";
@@ -18,7 +19,6 @@ export interface SidebarFilteringProps extends ComponentProps {
 
 // SVG Assets
 import SVG_Star_Stroke from "./assets/sidebar_assets_icon_Vector__Stroke__1142_1197_svg_22_000059127807617x21_020004272460938.svg";
-import SEARCH_ICON from "../input_field/assets/search_icon.svg";
 
 export class sidebar_filtering extends BaseComponent {
   async create(props: SidebarFilteringProps): Promise<SceneNode> {
@@ -46,7 +46,7 @@ export class sidebar_filtering extends BaseComponent {
       layoutProps: { width: 328 }
     }, [
       // Favourites Header
-      createFrame("Favourites Row", {
+      createFrame("Favourites Header", {
         layoutMode: "HORIZONTAL",
         itemSpacing: 16,
         primaryAxisSizingMode: "FIXED",
@@ -55,7 +55,7 @@ export class sidebar_filtering extends BaseComponent {
         layoutAlign: "STRETCH",
         layoutProps: { height: 25 }
       }, [
-        createFrame("Title Group", {
+        createFrame("Label Group", {
           layoutMode: "HORIZONTAL",
           itemSpacing: 4,
           primaryAxisSizingMode: "FIXED",
@@ -63,12 +63,12 @@ export class sidebar_filtering extends BaseComponent {
           counterAxisAlignItems: "CENTER",
           layoutGrow: 1
         }, [
-          createFrame("Star Icon Wrapper", {
+          createFrame("Favourites Icon", {
             layoutMode: "NONE",
             clipsContent: true,
             layoutProps: { width: 24, height: 24 }
           }, [
-            createVector("Star Icon", SVG_Star_Stroke, {
+            createVector("Fav Icon", SVG_Star_Stroke, {
               layoutProps: {
                 parentIsAutoLayout: false,
                 width: 22,
@@ -87,7 +87,7 @@ export class sidebar_filtering extends BaseComponent {
         ]),
         {
           type: "COMPONENT",
-          name: "Toggle",
+          name: "Selection Toggle",
           component: toggle,
           props: {
             isOn: props.favouriteToggleIsOn ?? true
@@ -100,12 +100,12 @@ export class sidebar_filtering extends BaseComponent {
         }
       ]),
       // Separator
-      createLine("Line", {
+      createLine("Divider", {
         strokes: [{ type: "SOLID", color: { r: 0.816, g: 0.847, b: 0.859 } }],
         layoutAlign: "STRETCH"
       }),
       // Filters Header
-      createFrame("Filters Row", {
+      createFrame("Filters Header", {
         layoutMode: "HORIZONTAL",
         itemSpacing: 16,
         primaryAxisSizingMode: "FIXED",
@@ -114,25 +114,35 @@ export class sidebar_filtering extends BaseComponent {
         layoutAlign: "STRETCH",
         layoutProps: { height: 40 }
       }, [
-        createText("Filters Label", filtersTitle, 20, "SemiBold", { r: 0.1, g: 0.19, b: 0.24 }, {
+        createText("Filters Title", filtersTitle, 20, "SemiBold", { r: 0.1, g: 0.19, b: 0.24 }, {
           font: { family: "Open Sans", style: "SemiBold" },
           lineHeight: { unit: "PIXELS", value: 25 },
           layoutGrow: 1
         }),
-        createFrame("Search Toggle Button", {
+        createFrame("Circular Search Button", {
           layoutMode: "HORIZONTAL",
-          paddingTop: 8,
-          paddingRight: 8,
-          paddingBottom: 8,
-          paddingLeft: 8,
+          primaryAxisAlignItems: "CENTER",
+          counterAxisAlignItems: "CENTER",
           fills: [{ type: "SOLID", color: { r: 0.945, g: 0.953, b: 0.973 } }],
           cornerRadius: 100,
           layoutProps: { width: 40, height: 40 }
         }, [
-          createVector("Search Icon", SEARCH_ICON, {
-            fills: [{ type: "SOLID", color: { r: 0.1, g: 0.19, b: 0.24 } }],
-            layoutProps: { width: 18, height: 18 }
-          })
+          {
+            type: "COMPONENT",
+            component: Lucide_search,
+            name: "Search Icon",
+            props: {
+              width: 20,
+              height: 20,
+              strokeWeight: 2,
+              color: { r: 0.1, g: 0.19, b: 0.24 }
+            },
+            layoutProps: {
+              parentIsAutoLayout: true,
+              width: 20,
+              height: 20
+            }
+          }
         ])
       ]),
       // Search Input

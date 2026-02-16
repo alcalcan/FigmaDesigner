@@ -41,7 +41,7 @@ export class tabs extends BaseComponent {
                 children: [
                     {
                         type: "TEXT",
-                        name: "Label",
+                        name: "Tab Label",
                         props: {
                             characters: item,
                             fontSize: 14,
@@ -55,7 +55,7 @@ export class tabs extends BaseComponent {
 
         const structure: NodeDefinition = {
             type: "FRAME",
-            name: "TabsContainer",
+            name: "Tabs Area",
             props: {
                 layoutMode: "HORIZONTAL",
                 itemSpacing: 8,
