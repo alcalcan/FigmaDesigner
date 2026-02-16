@@ -37,7 +37,7 @@ export class social_profile_card extends BaseComponent {
                 itemSpacing: 16,
                 counterAxisAlignItems: "CENTER",
                 layoutAlign: "STRETCH",
-                primaryAxisSizingMode: "AUTO",
+                primaryAxisSizingMode: "FIXED", // Change from AUTO to FIXED to support Fill container width
                 counterAxisSizingMode: "AUTO"
             }, [
                 createFrame("Avatar", {
@@ -68,7 +68,8 @@ export class social_profile_card extends BaseComponent {
             createText("Bio", props.bio || "No bio provided.", 15, "Regular", { r: 0.102, g: 0.192, b: 0.235 }, {
                 font: { family: "Open Sans", style: "Regular" },
                 lineHeight: { value: 150, unit: "PERCENT" },
-                layoutAlign: "STRETCH"
+                layoutAlign: "STRETCH",
+                textAutoResize: "HEIGHT"
             }),
             // Footer
             createFrame("Footer", {

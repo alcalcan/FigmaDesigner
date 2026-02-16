@@ -260,8 +260,9 @@ function applySizeAndTransform(
             parentIsAutoLayout: false
             // Root behaves like absolute for inner contents, but external props control its x/y
         };
+        const roundedOpts = this.roundNumericValues(rootOpts);
         const rootTransformCode = (data.width !== undefined && data.height !== undefined)
-            ? `applySizeAndTransform(${variableName}, ${JSON.stringify(rootOpts)});\n`
+            ? `applySizeAndTransform(${variableName}, ${JSON.stringify(roundedOpts)});\n`
             : '';
 
         return `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "${importPrefix}BaseComponent";
@@ -353,8 +354,9 @@ export class ${this.componentName} extends BaseComponent {
                         parentIsAutoLayout: false, // Boolean ops are never auto-layout
                         layoutPositioning: child.layoutPositioning
                     };
+                    const roundedChildOpts = this.roundNumericValues(childOpts);
                     if (childOpts.width !== undefined || childOpts.relativeTransform) {
-                        code += `applySizeAndTransform(${childVar}, ${JSON.stringify(childOpts)});\n`;
+                        code += `applySizeAndTransform(${childVar}, ${JSON.stringify(roundedChildOpts)});\n`;
                     }
                     if (child.x !== undefined) code += `${childVar}.x = ${child.x};\n`;
                     if (child.y !== undefined) code += `${childVar}.y = ${child.y};\n`;
@@ -713,8 +715,9 @@ export class ${this.componentName} extends BaseComponent {
                     constraints: child.constraints
                 };
 
+                const roundedChildOpts = this.roundNumericValues(childOpts);
                 if (childOpts.width !== undefined || childOpts.relativeTransform) {
-                    code += `applySizeAndTransform(${childVar}, ${JSON.stringify(childOpts)});\n`;
+                    code += `applySizeAndTransform(${childVar}, ${JSON.stringify(roundedChildOpts)});\n`;
                 }
 
                 // Explicit Position Override (Reliable fallback if relativeTransform specific translation is tricky)
@@ -879,5 +882,26 @@ export class ${this.componentName} extends BaseComponent {
             safeKey = `${safeCompName}_${safeKey}`;
         }
         return safeKey;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private roundNumericValues(obj: any): any {
+        if (typeof obj === 'number') {
+            // Round to 4 decimal places to prevent precision loss lint errors
+            // while maintaining high fidelity for Figma positioning.
+            return Math.round(obj * 10000) / 10000;
+        }
+        if (Array.isArray(obj)) {
+            return obj.map(item => this.roundNumericValues(item));
+        }
+        if (obj !== null && typeof obj === 'object') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const rounded: any = {};
+            for (const key in obj) {
+                rounded[key] = this.roundNumericValues(obj[key]);
+            }
+            return rounded;
+        }
+        return obj;
     }
 }

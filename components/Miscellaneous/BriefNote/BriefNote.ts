@@ -250,7 +250,7 @@ export class BriefNote extends BaseComponent {
         let i = 0;
 
         while (i < lines.length) {
-            let line = lines[i].trim();
+            const line = lines[i].trim();
             if (!line) {
                 i++;
                 continue;

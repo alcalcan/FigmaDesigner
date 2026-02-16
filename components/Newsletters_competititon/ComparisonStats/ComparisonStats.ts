@@ -44,7 +44,7 @@ export class ComparisonStats extends BaseComponent {
                 // 4. Style "Bold" (for Champions Bold)
                 // 5. Any match
 
-                let bestMatch = championsFonts.find(f => f.fontName.family === "Champions Display" && f.fontName.style === "Regular")
+                const bestMatch = championsFonts.find(f => f.fontName.family === "Champions Display" && f.fontName.style === "Regular")
                     || championsFonts.find(f => f.fontName.family.includes("Display")) // Prefer "Champions Display" family
                     || championsFonts.find(f => f.fontName.family === "Champions" && f.fontName.style === "Display")
                     || championsFonts.find(f => f.fontName.style === "Display")

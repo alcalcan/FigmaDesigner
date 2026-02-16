@@ -151,7 +151,7 @@ export async function runAccessibilityCheck(selection: readonly SceneNode[]) {
 
     // --- Execution ---
 
-    let itemsToCheck: { fg: SceneNode, bg: SceneNode }[] = [];
+    const itemsToCheck: { fg: SceneNode, bg: SceneNode }[] = [];
 
     if (selection.length === 1) {
         const node = selection[0];
