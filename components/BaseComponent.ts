@@ -422,84 +422,7 @@ export abstract class BaseComponent {
     // If it's a Frame from SVG, we might want to flatten it or handle it as requested.
     // referencing generated code: figma.flatten([v10])
 
-    // 4. Transform / Layout
-    if (def.layoutProps) {
-      // Create a copy of layoutProps to safely modify
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const layoutOpts = { ...def.layoutProps } as any;
 
-      // Preserve translation for in-flow auto-layout children only when explicitly requested.
-      // Default behavior should match JsonReconstructor (strip in-flow translation).
-      if (def.layoutProps.preserveAutoLayoutTranslation === true) {
-        layoutOpts.preserveAutoLayoutTranslation = true;
-      }
-
-      // TEXT Node hugging support
-      if (def.type === "TEXT") {
-        if (def.props?.textAutoResize === "WIDTH_AND_HEIGHT") {
-          delete layoutOpts.width;
-          delete layoutOpts.height;
-        }
-      }
-
-      // Explicitly apply layoutPositioning if requested BEFORE transform
-      // This is CRITICAL because applySizeAndTransform might strip translation if Auto Layout is on
-      // but layoutPositioning is still "AUTO".
-      if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {
-        try {
-          (node as LayoutMixin).layoutPositioning = def.layoutProps.layoutPositioning;
-        } catch (e) {
-          console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name}`, e);
-        }
-      }
-
-      // Force fixed sizing modes before resize so width/height are actually applied.
-      // This mirrors JsonReconstructor behavior and prevents accidental "all hug" drift.
-      if (
-        "layoutMode" in node &&
-        (node as FrameNode).layoutMode !== "NONE" &&
-        (typeof layoutOpts.width === "number" || typeof layoutOpts.height === "number")
-      ) {
-        const frame = node as FrameNode;
-        try {
-          if (frame.primaryAxisSizingMode !== "FIXED") frame.primaryAxisSizingMode = "FIXED";
-          if (frame.counterAxisSizingMode !== "FIXED") frame.counterAxisSizingMode = "FIXED";
-        } catch (e) {
-          console.warn(`[BaseComponent] Failed to force FIXED sizing on ${def.name || def.type}`, e);
-        }
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      applySizeAndTransform(node as any, layoutOpts);
-
-      // Resize operations can force AUTO sizing modes into FIXED.
-      // Re-apply container layout props after transform to preserve captured Auto Layout behavior.
-      if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE" && def.props) {
-        const frame = node as FrameNode;
-        if (def.props.primaryAxisSizingMode !== undefined) frame.primaryAxisSizingMode = def.props.primaryAxisSizingMode;
-        if (def.props.counterAxisSizingMode !== undefined) frame.counterAxisSizingMode = def.props.counterAxisSizingMode;
-        if (def.props.primaryAxisAlignItems !== undefined) frame.primaryAxisAlignItems = def.props.primaryAxisAlignItems;
-        if (def.props.counterAxisAlignItems !== undefined) frame.counterAxisAlignItems = def.props.counterAxisAlignItems;
-        if (def.props.itemSpacing !== undefined) frame.itemSpacing = def.props.itemSpacing;
-        if (def.props.paddingTop !== undefined) frame.paddingTop = def.props.paddingTop;
-        if (def.props.paddingRight !== undefined) frame.paddingRight = def.props.paddingRight;
-        if (def.props.paddingBottom !== undefined) frame.paddingBottom = def.props.paddingBottom;
-        if (def.props.paddingLeft !== undefined) frame.paddingLeft = def.props.paddingLeft;
-        if (def.props.itemReverseZIndex !== undefined) frame.itemReverseZIndex = def.props.itemReverseZIndex;
-        if (def.props.strokesIncludedInLayout !== undefined) frame.strokesIncludedInLayout = def.props.strokesIncludedInLayout;
-        if (def.props.layoutWrap !== undefined && "layoutWrap" in frame) {
-          (frame as FrameNode & { layoutWrap: "NO_WRAP" | "WRAP" }).layoutWrap = def.props.layoutWrap as "NO_WRAP" | "WRAP";
-        }
-      }
-
-      // Defer child auto-layout placement props until node is attached to parent.
-      // Detached nodes can reject or ignore these values.
-      pendingLayoutGrow = def.layoutProps.layoutGrow ?? def.props?.layoutGrow;
-      pendingLayoutAlign = def.layoutProps.layoutAlign ?? def.props?.layoutAlign;
-      if (def.layoutProps.constraints && "constraints" in node) {
-        (node as ConstraintMixin).constraints = def.layoutProps.constraints;
-      }
-    }
 
     // 4.5 Post-Create Hook (Specialized logic)
     if (typeof def.postCreate === 'function') {
@@ -522,41 +445,83 @@ export abstract class BaseComponent {
       }
     }
 
-    if (pendingLayoutGrow !== undefined && "layoutGrow" in node) {
-      try {
-        (node as LayoutMixin).layoutGrow = pendingLayoutGrow;
-      } catch (e) {
-        console.warn(`[BaseComponent] Failed to set layoutGrow on ${def.name || def.type}`, e);
+    // 4.9 Post-attach property application & Transform
+    // CRITICAL: Transforms and absolute positioning must be applied AFTER the node is 
+    // attached to its parent. This prevents Figma's Auto Layout from stripping
+    // positional data or misaligning elements.
+    if (def.layoutProps) {
+      const parentNode = node.parent;
+
+      // 1. Set Layout Positioning
+      if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {
+        try {
+          if (parentNode && "layoutMode" in parentNode && parentNode.layoutMode !== "NONE") {
+            (node as LayoutMixin).layoutPositioning = def.layoutProps.layoutPositioning;
+          }
+        } catch (e) {
+          console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name || def.type}`, e);
+        }
+      }
+
+      // 2. Apply Size and Transform
+      const layoutOpts = { ...def.layoutProps } as any;
+
+      // Preserve translation for in-flow auto-layout children only when explicitly requested.
+      if (def.layoutProps.preserveAutoLayoutTranslation === true) {
+        layoutOpts.preserveAutoLayoutTranslation = true;
+      }
+
+      // TEXT Node hugging support
+      if (def.type === "TEXT" && def.props?.textAutoResize === "WIDTH_AND_HEIGHT") {
+        delete layoutOpts.width;
+        delete layoutOpts.height;
+      }
+
+      // Force fixed sizing modes before resize
+      if (
+        "layoutMode" in node &&
+        (node as FrameNode).layoutMode !== "NONE" &&
+        (typeof layoutOpts.width === "number" || typeof layoutOpts.height === "number")
+      ) {
+        const frame = node as FrameNode;
+        try {
+          if (frame.primaryAxisSizingMode !== "FIXED") frame.primaryAxisSizingMode = "FIXED";
+          if (frame.counterAxisSizingMode !== "FIXED") frame.counterAxisSizingMode = "FIXED";
+        } catch (e) { /* ignore */ }
+      }
+
+      applySizeAndTransform(node as any, layoutOpts);
+
+      // Re-apply container layout props after transform (resize can reset them)
+      if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE" && def.props) {
+        const frame = node as FrameNode;
+        const autoLayoutKeys = [
+          "primaryAxisSizingMode", "counterAxisSizingMode", "primaryAxisAlignItems",
+          "counterAxisAlignItems", "itemSpacing", "paddingTop", "paddingRight",
+          "paddingBottom", "paddingLeft", "itemReverseZIndex", "strokesIncludedInLayout"
+        ];
+        for (const key of autoLayoutKeys) {
+          if (def.props[key] !== undefined) (frame as any)[key] = def.props[key];
+        }
+        if (def.props.layoutWrap !== undefined && "layoutWrap" in frame) {
+          (frame as any).layoutWrap = def.props.layoutWrap;
+        }
+      }
+
+      // 3. Apply child placement props (Grow/Align/Constraints)
+      const grow = def.layoutProps.layoutGrow ?? def.props?.layoutGrow;
+      const align = def.layoutProps.layoutAlign ?? def.props?.layoutAlign;
+
+      if (grow !== undefined && "layoutGrow" in node) {
+        try { (node as LayoutMixin).layoutGrow = grow; } catch (e) { /* ignore */ }
+      }
+      if (align && "layoutAlign" in node) {
+        try { (node as LayoutMixin).layoutAlign = align as any; } catch (e) { /* ignore */ }
+      }
+      if (def.layoutProps.constraints && "constraints" in node) {
+        (node as ConstraintMixin).constraints = def.layoutProps.constraints;
       }
     }
-
-    if (pendingLayoutAlign && "layoutAlign" in node) {
-      try {
-        (node as LayoutMixin).layoutAlign = pendingLayoutAlign;
-      } catch (e) {
-        console.warn(`[BaseComponent] Failed to set layoutAlign on ${def.name || def.type}`, e);
-      }
-    }
-
-    // 5. Recursion
-    // 5. Recursion (Already done if we flattened, but check if we skipped it?)
-    // If we moved recursion up, we should remove it from here.
-    // But wait, step 2 (Append) was before recursion in original code.
-    // Original: 1. Create, 2. Append, 3. Props, 4. Layout, 5. Recursion.
-
-    // If we move recursion up, we change the order of operations.
-    // Is that safe?
-    // Usually yes, unless children depend on parent props (which they might for layout).
-    // But `renderDefinition` passes `node` as parent.
-    // If `node` doesn't have layout/props set yet, children might not layout correctly?
-    // Figma usually handles layout dynamically.
-
-    // OPTIMIZATION: Only move recursion up if we plan to flatten?
-    // Or just do it. Let's stick to the modification plan:
-    // If we moved it up in step 2.5 replacement, we must delete it here or guard it.
-    // The previous ReplacementChunk replaced insertion at step 2.
-    // So we need to REMOVE this block.
-
 
     return node;
   }
@@ -739,7 +704,7 @@ export abstract class BaseComponent {
 
       if (preserveUnknown) {
         if (this.supportsNativeGlassEffects()) {
-          return nativeGlass as Effect;
+          return nativeGlass as unknown as Effect;
         }
       }
 
@@ -783,7 +748,7 @@ export abstract class BaseComponent {
 
     if (preserveUnknown && typeof effect.type === "string") {
       // Best-effort pass-through without known-invalid keys.
-      return effect as Effect;
+      return effect as unknown as Effect;
     }
 
     return null;

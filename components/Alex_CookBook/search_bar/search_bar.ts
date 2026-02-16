@@ -50,6 +50,7 @@ export class search_bar extends BaseComponent {
             "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
             "primaryAxisAlignItems": "MAX", "counterAxisAlignItems": "CENTER",
             "clipsContent": false,
+            "itemReverseZIndex": true,
             "fills": []
           },
           "layoutProps": { "width": 491, "height": 32, "parentIsAutoLayout": true },

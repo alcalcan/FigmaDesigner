@@ -124,12 +124,10 @@ export class chip_expand extends BaseComponent {
           layoutPositioning: "ABSOLUTE",
           parentIsAutoLayout: true,
           width: 200,
-          height: 100
-        },
-        postCreate: (node: SceneNode) => {
-          // Position absolute dropdown below the chip
-          node.x = 0;
-          node.y = 36; // Adjust based on chip height
+          relativeTransform: [
+            [1, 0, 0],   // X translation = 0 (Align with left edge of chip)
+            [0, 1, 40]   // Y translation = 40 (Below chip)
+          ]
         }
       };
       structure.children?.push(dropdownChild);

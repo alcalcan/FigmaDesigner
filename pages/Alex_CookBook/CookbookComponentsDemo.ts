@@ -20,7 +20,7 @@ import { uefa_cards_4x } from "../../components/Alex_CookBook/uefa_cards_4x/uefa
 import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
 import { social_profile_card } from "../../components/Alex_CookBook/social_profile_card/social_profile_card";
 
-export class RadioSearchDemo extends BaseComponent {
+export class CookbookComponentsDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
         // Essential fonts
         await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
