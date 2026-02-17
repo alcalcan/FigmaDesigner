@@ -113,6 +113,12 @@ const captureNode = async (
     return null;
   }
 
+  const parentLayoutMode = (node.parent && "layoutMode" in node.parent)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ? ((node.parent as any).layoutMode as "NONE" | "HORIZONTAL" | "VERTICAL" | "GRID")
+    : undefined;
+  const parentIsGrid = parentLayoutMode === "GRID";
+
 
   // 1. Basic Identity & Transform
   // Use 'Record<string, unknown>' to allow building the object dynamically
@@ -179,11 +185,16 @@ const captureNode = async (
     layoutAlign: safeGet(node, "layoutAlign"), // MIN, MAX, CENTER, STRETCH, INHERIT
     layoutGrow: safeGet(node, "layoutGrow"),
     layoutPositioning: safeGet(node, "layoutPositioning"), // AUTO, ABSOLUTE
+    layoutSizingHorizontal: safeGet(node, "layoutSizingHorizontal"), // FIXED, HUG, FILL
+    layoutSizingVertical: safeGet(node, "layoutSizingVertical"), // FIXED, HUG, FILL
+    // Only grid children can legally carry row/column span.
+    gridRowSpan: parentIsGrid ? safeGet(node, "gridRowSpan") : undefined,
+    gridColumnSpan: parentIsGrid ? safeGet(node, "gridColumnSpan") : undefined,
   };
 
   // 2. Auto Layout (Frame / Component / Instance)
   if ("layoutMode" in node) {
-    const layoutMode = safeGet(node, "layoutMode") as "NONE" | "HORIZONTAL" | "VERTICAL" | undefined;
+    const layoutMode = safeGet(node, "layoutMode") as "NONE" | "HORIZONTAL" | "VERTICAL" | "GRID" | undefined;
     const primarySizing = safeGet(node, "primaryAxisSizingMode");
     const counterSizing = safeGet(node, "counterAxisSizingMode");
 
@@ -206,6 +217,14 @@ const captureNode = async (
       },
       spacing: safeGet(node, "itemSpacing"),
       counterAxisSpacing: safeGet(node, "counterAxisSpacing"),
+      layoutWrap: safeGet(node, "layoutWrap"),
+      counterAxisAlignContent: safeGet(node, "counterAxisAlignContent"),
+      gridRowCount: safeGet(node, "gridRowCount"),
+      gridColumnCount: safeGet(node, "gridColumnCount"),
+      gridRowGap: safeGet(node, "gridRowGap"),
+      gridColumnGap: safeGet(node, "gridColumnGap"),
+      gridRowSizes: safeGet(node, "gridRowSizes"),
+      gridColumnSizes: safeGet(node, "gridColumnSizes"),
       padding: {
         top: safeGet(node, "paddingTop"),
         right: safeGet(node, "paddingRight"),
@@ -394,10 +413,10 @@ const captureNode = async (
 
   // Also capture raw vector paths if available (for exact reconstruction)
   // ALWAYS capture if detailed mode is on to ensure procedural analysis has enough data
-  if ("vectorPaths" in node && (detailed || saveVectorInJson || !data.svgPath)) {
+  if ("vectorPaths" in node && (detailed || saveVectorInJson || node.type === "VECTOR" || !data.svgPath)) {
     data.vectorPaths = safeGet(node, "vectorPaths");
   }
-  if ("vectorNetwork" in node && (detailed || saveVectorInJson || !data.svgPath)) {
+  if ("vectorNetwork" in node && (detailed || saveVectorInJson || node.type === "VECTOR" || !data.svgPath)) {
     data.vectorNetwork = safeGet(node, "vectorNetwork");
   }
 

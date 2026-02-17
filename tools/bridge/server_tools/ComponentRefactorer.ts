@@ -196,6 +196,7 @@ export class ComponentRefactorer {
 
     private buildNodeGraph(lines: string[]): Map<string, RefactorerNode> {
         const nodes = new Map<string, RefactorerNode>();
+        const svgTypeHints = new Map<string, string>();
 
         const getNode = (id: string): RefactorerNode => {
             if (!nodes.has(id)) {
@@ -233,7 +234,13 @@ export class ComponentRefactorer {
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
-            if (!line || line.startsWith('//')) continue;
+            if (!line) continue;
+            const svgTypeHintMatch = line.match(/^\/\/\s*__SVG_NODE_TYPE:([A-Z_]+):(\w+)\s*$/);
+            if (svgTypeHintMatch) {
+                svgTypeHints.set(svgTypeHintMatch[2], svgTypeHintMatch[1]);
+                continue;
+            }
+            if (line.startsWith('//')) continue;
 
 
             // Creation
@@ -249,7 +256,10 @@ export class ComponentRefactorer {
             match = line.match(/const\s+(\w+)\s*=\s*figma\.createNodeFromSvg\((\w+)\);/);
             if (match) {
                 const node = getNode(match[1]);
-                node.type = 'VECTOR';
+                // Prefer explicit generator hint when present (e.g. GROUP/STAR/POLYGON container),
+                // otherwise fallback to Frame-like container semantics.
+                const hintedType = (svgTypeHints.get(match[1]) || 'FRAME').toUpperCase();
+                node.type = hintedType;
                 node.svgContentVar = match[2];
                 continue;
             }
@@ -313,6 +323,38 @@ export class ComponentRefactorer {
 
                 // Mark for flattening
                 newNode.shouldFlatten = true;
+
+                continue;
+            }
+
+            // Alias assignment (e.g. `const v = v_svgContainer;`)
+            // Important for SVG containers that are intentionally kept unflattened.
+            match = line.match(/const\s+(\w+)\s*=\s*(\w+)\s*;/);
+            if (match) {
+                const aliasId = match[1];
+                const sourceId = match[2];
+
+                if (aliasId !== sourceId) {
+                    const source = getNode(sourceId);
+                    const alias = getNode(aliasId);
+
+                    alias.type = source.type;
+                    alias.svgContentVar = source.svgContentVar;
+                    alias.booleanOperation = source.booleanOperation;
+                    alias.shouldFlatten = source.shouldFlatten;
+
+                    if (source.layoutProps && !alias.layoutProps) {
+                        alias.layoutProps = { ...source.layoutProps };
+                    }
+
+                    if (Object.keys(source.props).length > 0 && Object.keys(alias.props).length === 0) {
+                        alias.props = { ...source.props };
+                    }
+
+                    if (source.children.length > 0 && alias.children.length === 0) {
+                        alias.children = [...source.children];
+                    }
+                }
 
                 continue;
             }

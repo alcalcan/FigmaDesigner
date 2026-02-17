@@ -2,11 +2,10 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 
 // SVG Assets
-import SVG_metric_card_design1_assets_icon_Subtract_1578_10446_svg_18_000009536743164x15_876081466674805 from "./assets/metric_card_design1_assets_icon_Subtract_1578_10446_svg_18_000009536743164x15_876081466674805.svg";
-import SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_459x79 from "./assets/metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_459x79.svg";
-import SVG_metric_card_design1_assets_icon_Vector_1578_10461_svg_22_003427505493164x22 from "./assets/metric_card_design1_assets_icon_Vector_1578_10461_svg_22_003427505493164x22.svg";
-import SVG_metric_card_design1_assets_icon_Vector_1578_10455_svg_8_166666984558105x4_083333492279053 from "./assets/metric_card_design1_assets_icon_Vector_1578_10455_svg_8_166666984558105x4_083333492279053.svg";
-import SVG_metric_card_design1_Synth_Vector_4 from "./assets/metric_card_design1_Synth_Vector_4.svg";
+import SVG_metric_card_design1_assets_icon_Subtract_1578_10446_svg_orig from "./assets/metric_card_design1_assets_icon_Subtract_1578_10446_svg_orig.svg";
+import SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig from "./assets/metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig.svg";
+import SVG_metric_card_design1_assets_icon_Vector_1578_10461_svg_orig from "./assets/metric_card_design1_assets_icon_Vector_1578_10461_svg_orig.svg";
+import SVG_metric_card_design1_assets_icon_Vector_1578_10455_svg_orig from "./assets/metric_card_design1_assets_icon_Vector_1578_10455_svg_orig.svg";
 
 
 export class metric_card_design1 extends BaseComponent {
@@ -23,6 +22,13 @@ export class metric_card_design1 extends BaseComponent {
             "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
             "strokeWeight": 2, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
             "strokeTopWeight": 2, "strokeRightWeight": 2, "strokeBottomWeight": 2, "strokeLeftWeight": 2,
+            "counterAxisSpacing": 0,
+            "layoutWrap": "NO_WRAP",
+            "counterAxisAlignContent": "AUTO",
+            "gridRowCount": 0,
+            "gridColumnCount": 0,
+            "gridRowGap": 0,
+            "gridColumnGap": 0,
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "GRADIENT_LINEAR",
@@ -88,7 +94,9 @@ export class metric_card_design1 extends BaseComponent {
                 "showShadowBehindNode": true
               }
             ],
-            "cornerRadius": 32
+            "cornerRadius": 32,
+            "layoutSizingHorizontal": "FIXED",
+            "layoutSizingVertical": "HUG"
           },
           "layoutProps": { "width": 490.6667, "height": 308.8761, "parentIsAutoLayout": false },
           "children": [
@@ -105,10 +113,19 @@ export class metric_card_design1 extends BaseComponent {
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                 "layoutAlign": "STRETCH", "layoutGrow": 0,
+                "counterAxisSpacing": 0,
+                "layoutWrap": "NO_WRAP",
+                "counterAxisAlignContent": "AUTO",
+                "gridRowCount": 0,
+                "gridColumnCount": 0,
+                "gridRowGap": 0,
+                "gridColumnGap": 0,
                 "fills": [],
                 "strokes": [],
                 "effects": [],
-                "cornerRadius": 0
+                "cornerRadius": 0,
+                "layoutSizingHorizontal": "HUG",
+                "layoutSizingVertical": "HUG"
               },
               "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -138,6 +155,8 @@ export class metric_card_design1 extends BaseComponent {
                     ],
                     "strokes": [],
                     "effects": [],
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG",
                     "letterSpacing": { "unit": "PERCENT", "value": 0 },
                     "lineHeight": { "unit": "AUTO" },
                     "font": { "family": "Inter", "style": "Medium" },
@@ -170,17 +189,21 @@ export class metric_card_design1 extends BaseComponent {
                   "props": {
                     "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                     "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "layoutMode": "GRID", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+                    "layoutMode": "GRID", "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                     "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                    "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-                    "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                     "layoutAlign": "INHERIT", "layoutGrow": 0,
+                    "gridRowCount": 1,
+                    "gridColumnCount": 1,
+                    "gridRowGap": 0,
+                    "gridColumnGap": 0,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
-                    "cornerRadius": 0
+                    "cornerRadius": 0,
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG"
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -215,7 +238,7 @@ export class metric_card_design1 extends BaseComponent {
                         "relativeTransform": [[1, 0, 0], [0, 1, 0]],
                         "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                       },
-                      "svgContent": SVG_metric_card_design1_assets_icon_Subtract_1578_10446_svg_18_000009536743164x15_876081466674805
+                      "svgContent": SVG_metric_card_design1_assets_icon_Subtract_1578_10446_svg_orig
                     }
                   ]
                 }
@@ -234,10 +257,19 @@ export class metric_card_design1 extends BaseComponent {
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                 "layoutAlign": "STRETCH", "layoutGrow": 0,
+                "counterAxisSpacing": 0,
+                "layoutWrap": "NO_WRAP",
+                "counterAxisAlignContent": "AUTO",
+                "gridRowCount": 0,
+                "gridColumnCount": 0,
+                "gridRowGap": 0,
+                "gridColumnGap": 0,
                 "fills": [],
                 "strokes": [],
                 "effects": [],
-                "cornerRadius": 0
+                "cornerRadius": 0,
+                "layoutSizingVertical": "HUG",
+                "layoutSizingHorizontal": "FILL"
               },
               "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -267,6 +299,8 @@ export class metric_card_design1 extends BaseComponent {
                     ],
                     "strokes": [],
                     "effects": [],
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG",
                     "letterSpacing": { "unit": "PERCENT", "value": 0 },
                     "lineHeight": { "unit": "AUTO" },
                     "font": { "family": "Inter", "style": "Regular" },
@@ -314,6 +348,8 @@ export class metric_card_design1 extends BaseComponent {
                     ],
                     "strokes": [],
                     "effects": [],
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG",
                     "letterSpacing": { "unit": "PIXELS", "value": -1.5 },
                     "lineHeight": { "unit": "AUTO" },
                     "font": { "family": "Inter", "style": "Bold" },
@@ -366,7 +402,9 @@ export class metric_card_design1 extends BaseComponent {
                         "showShadowBehindNode": false
                       }
                     ],
-                    "cornerRadius": 16
+                    "cornerRadius": 16,
+                    "layoutSizingVertical": "FIXED",
+                    "layoutSizingHorizontal": "FILL"
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -418,7 +456,7 @@ export class metric_card_design1 extends BaseComponent {
                         "relativeTransform": [[1, 0, 0], [0, 1, 9.123]],
                         "constraints": { "horizontal": "MIN", "vertical": "STRETCH" }
                       },
-                      "svgContent": SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_459x79
+                      "svgContent": SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig
                     }
                   ]
                 }
@@ -437,10 +475,19 @@ export class metric_card_design1 extends BaseComponent {
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                 "layoutAlign": "STRETCH", "layoutGrow": 0,
+                "counterAxisSpacing": 0,
+                "layoutWrap": "NO_WRAP",
+                "counterAxisAlignContent": "AUTO",
+                "gridRowCount": 0,
+                "gridColumnCount": 0,
+                "gridRowGap": 0,
+                "gridColumnGap": 0,
                 "fills": [],
                 "strokes": [],
                 "effects": [],
-                "cornerRadius": 0
+                "cornerRadius": 0,
+                "layoutSizingVertical": "HUG",
+                "layoutSizingHorizontal": "FILL"
               },
               "layoutProps": {
                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -462,10 +509,19 @@ export class metric_card_design1 extends BaseComponent {
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                     "layoutAlign": "INHERIT", "layoutGrow": 0,
+                    "counterAxisSpacing": 0,
+                    "layoutWrap": "NO_WRAP",
+                    "counterAxisAlignContent": "AUTO",
+                    "gridRowCount": 0,
+                    "gridColumnCount": 0,
+                    "gridRowGap": 0,
+                    "gridColumnGap": 0,
                     "fills": [],
                     "strokes": [],
                     "effects": [],
-                    "cornerRadius": 0
+                    "cornerRadius": 0,
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG"
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -480,13 +536,15 @@ export class metric_card_design1 extends BaseComponent {
                       "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                        "layoutMode": "GRID", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+                        "layoutMode": "GRID", "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                         "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                        "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                         "layoutAlign": "INHERIT", "layoutGrow": 0,
+                        "gridRowCount": 1,
+                        "gridColumnCount": 1,
+                        "gridRowGap": 0,
+                        "gridColumnGap": 0,
                         "fills": [
                           {
                             "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -496,7 +554,9 @@ export class metric_card_design1 extends BaseComponent {
                         ],
                         "strokes": [],
                         "effects": [],
-                        "cornerRadius": 0
+                        "cornerRadius": 0,
+                        "layoutSizingHorizontal": "HUG",
+                        "layoutSizingVertical": "HUG"
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -531,7 +591,7 @@ export class metric_card_design1 extends BaseComponent {
                             "relativeTransform": [[1, 0, 0], [0, 1, 0]],
                             "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                           },
-                          "svgContent": SVG_metric_card_design1_assets_icon_Vector_1578_10461_svg_22_003427505493164x22
+                          "svgContent": SVG_metric_card_design1_assets_icon_Vector_1578_10461_svg_orig
                         }
                       ]
                     },
@@ -556,6 +616,8 @@ export class metric_card_design1 extends BaseComponent {
                         ],
                         "strokes": [],
                         "effects": [],
+                        "layoutSizingHorizontal": "HUG",
+                        "layoutSizingVertical": "HUG",
                         "letterSpacing": { "unit": "PERCENT", "value": 0 },
                         "lineHeight": { "unit": "AUTO" },
                         "font": { "family": "Inter", "style": "Medium" },
@@ -597,6 +659,13 @@ export class metric_card_design1 extends BaseComponent {
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                     "layoutAlign": "INHERIT", "layoutGrow": 0,
+                    "counterAxisSpacing": 0,
+                    "layoutWrap": "NO_WRAP",
+                    "counterAxisAlignContent": "AUTO",
+                    "gridRowCount": 0,
+                    "gridColumnCount": 0,
+                    "gridRowGap": 0,
+                    "gridColumnGap": 0,
                     "fills": [
                       {
                         "visible": true, "opacity": 0.10000000149011612, "blendMode": "NORMAL", "type": "SOLID",
@@ -606,7 +675,9 @@ export class metric_card_design1 extends BaseComponent {
                     ],
                     "strokes": [],
                     "effects": [],
-                    "cornerRadius": 8
+                    "cornerRadius": 8,
+                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingVertical": "HUG"
                   },
                   "layoutProps": {
                     "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -628,7 +699,9 @@ export class metric_card_design1 extends BaseComponent {
                         "fills": [],
                         "strokes": [],
                         "effects": [],
-                        "cornerRadius": 0
+                        "cornerRadius": 0,
+                        "layoutSizingHorizontal": "FIXED",
+                        "layoutSizingVertical": "FIXED"
                       },
                       "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
@@ -656,7 +729,9 @@ export class metric_card_design1 extends BaseComponent {
                             ],
                             "strokes": [],
                             "effects": [],
-                            "cornerRadius": 0
+                            "cornerRadius": 0,
+                            "layoutSizingHorizontal": "FIXED",
+                            "layoutSizingVertical": "FIXED"
                           },
                           "layoutProps": {
                             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
@@ -691,11 +766,10 @@ export class metric_card_design1 extends BaseComponent {
                                 "relativeTransform": [[1, 0, 2.9167], [0, 1, 2.9167]],
                                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                               },
-                              "svgContent": SVG_metric_card_design1_assets_icon_Vector_1578_10455_svg_8_166666984558105x4_083333492279053
+                              "svgContent": SVG_metric_card_design1_assets_icon_Vector_1578_10455_svg_orig
                             },
                             {
                               "type": "VECTOR",
-                              "shouldFlatten": true,
                               "name": "Vector",
                               "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
@@ -721,8 +795,7 @@ export class metric_card_design1 extends BaseComponent {
                                 "width": 0, "height": 8.1667,
                                 "relativeTransform": [[1, 0, 7], [0, 1, 2.9167]],
                                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
-                              },
-                              "svgContent": SVG_metric_card_design1_Synth_Vector_4
+                              }
                             }
                           ]
                         }
@@ -749,6 +822,8 @@ export class metric_card_design1 extends BaseComponent {
                         ],
                         "strokes": [],
                         "effects": [],
+                        "layoutSizingHorizontal": "HUG",
+                        "layoutSizingVertical": "HUG",
                         "letterSpacing": { "unit": "PERCENT", "value": 0 },
                         "lineHeight": { "unit": "AUTO" },
                         "font": { "family": "Inter", "style": "Bold" },
@@ -796,6 +871,8 @@ export class metric_card_design1 extends BaseComponent {
                         ],
                         "strokes": [],
                         "effects": [],
+                        "layoutSizingHorizontal": "HUG",
+                        "layoutSizingVertical": "HUG",
                         "letterSpacing": { "unit": "PERCENT", "value": 0 },
                         "lineHeight": { "unit": "AUTO" },
                         "font": { "family": "Inter", "style": "Medium" },

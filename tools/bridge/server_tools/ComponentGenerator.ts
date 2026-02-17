@@ -222,8 +222,22 @@ function applySizeAndTransform(
     const { width, height, relativeTransform, parentIsAutoLayout, constraints } = opts;
     const positioning = opts.layoutPositioning ?? "AUTO";
 
-    if (typeof width === "number" && typeof height === "number") {
-        node.resize(width, height);
+    if (typeof width === "number" && typeof height === "number" && Number.isFinite(width) && Number.isFinite(height)) {
+        const safeWidth = Math.max(width, 0.01);
+        const safeHeight = node.type === "LINE" ? 0 : Math.max(height, 0.01);
+        const isDegenerateVectorTarget = node.type === "VECTOR" && (safeWidth <= 0.01 || safeHeight <= 0.01);
+        const hasDegenerateCurrentVectorBounds =
+            node.type === "VECTOR" &&
+            (!Number.isFinite(node.width) || !Number.isFinite(node.height) || node.width <= 0.01 || node.height <= 0.01);
+
+        // Vector resize can throw when either source or target bounds are effectively zero.
+        if (!isDegenerateVectorTarget && !hasDegenerateCurrentVectorBounds) {
+            try {
+                node.resize(safeWidth, safeHeight);
+            } catch (resizeError) {
+                console.warn("Failed to resize node", resizeError);
+            }
+        }
     }
 
     if (constraints && "constraints" in node) {
@@ -265,7 +279,7 @@ function applySizeAndTransform(
             ? `applySizeAndTransform(${variableName}, ${JSON.stringify(roundedOpts)});\n`
             : '';
 
-        return `import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "${importPrefix}BaseComponent";
+        return `import { BaseComponent, ComponentProps, T2x3 } from "${importPrefix}BaseComponent";
 ${imageImports}
 ${svgImports}
 
@@ -292,7 +306,7 @@ export class ${this.componentName} extends BaseComponent {
 `;
     }
 
-    private generateNodeCode(data: SerializedNode, varName: string, _parentIsAutoLayout: boolean = false, parentName: string = ''): string {
+    private generateNodeCode(data: SerializedNode, varName: string, parentIsAutoLayout: boolean = false, parentName: string = ''): string {
         const type = data.type;
         const safeType = (type || '').trim();
         let code = '';
@@ -302,7 +316,7 @@ export class ${this.componentName} extends BaseComponent {
         // (e.g. height=16 but child at y=2.5 with height=16 -> real height 18.5).
         // This causes misalignment when the Group is placed in an AutoLayout frame.
         // We recalculate the bounds here to ensure the converted Frame is sized correctly.
-        if (safeType === 'GROUP' && data.children && data.children.length > 0) {
+        if (safeType === 'GROUP' && !data.svgPath && data.children && data.children.length > 0) {
             let minX = Infinity;
             let minY = Infinity;
             let maxX = -Infinity;
@@ -387,7 +401,7 @@ export class ${this.componentName} extends BaseComponent {
         } else if (safeType === 'POLYGON' && !data.svgPath) {
             code += `const ${varName} = figma.createPolygon();\n`;
             if (data.pointCount !== undefined) code += `${varName}.pointCount = ${data.pointCount};\n`;
-        } else if (safeType === 'VECTOR' || (data.svgPath && (safeType === 'STAR' || safeType === 'POLYGON'))) {
+        } else if (safeType === 'VECTOR' || (data.svgPath && (safeType === 'STAR' || safeType === 'POLYGON' || safeType === 'GROUP'))) {
             if (data.svgPath) {
                 const fullSvgPath = path.join(this.sourceDir, data.svgPath);
                 console.log(`[Generator] Checking SVG: ${data.name} -> ${fullSvgPath}`);
@@ -408,6 +422,7 @@ export class ${this.componentName} extends BaseComponent {
                     this.svgAssets.set(distinctKey, boldContent);
 
                     const safeRef = this.getSvgVariableName(distinctKey);
+                    code += `// __SVG_NODE_TYPE:${safeType}:${varName}_svgContainer\n`;
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
                     code += `${varName}_svgContainer.fills = [];\n`;
                     // Force the stroke color and weight on the container's children (paths) or just rely on SVG?
@@ -456,7 +471,7 @@ export class ${this.componentName} extends BaseComponent {
 
                     // Mismatch detection: If SVG is Landscape and JSON is Portrait (or vice versa)
                     // AND they were roughly similar in area (sanity check), implies 90deg rotation was baked into path.
-                    if (detectBakedRotation(svgW, svgH, useWidth || 0, useHeight || 0)) {
+                    if (safeType === 'VECTOR' && detectBakedRotation(svgW, svgH, useWidth || 0, useHeight || 0)) {
                         // Orientation swap detected.
                         // The SVG path is likely already "unrotated" relative to the visual expectation, 
                         // but the JSON still carries the rotation metadata.
@@ -468,22 +483,39 @@ export class ${this.componentName} extends BaseComponent {
                         overrideTransform = true;
                     }
 
-                    // Patch SVG Header to match target dimensions (Fix clipping)
-                    if (useWidth && useHeight) {
-                        // Replace the opening <svg ...> tag entirely
+                    // Preserve original SVG header by default.
+                    // Only rewrite dimensions when we intentionally override baked rotation.
+                    if (overrideTransform && useWidth && useHeight) {
                         content = content.replace(/<svg[^>]*>/i,
                             `<svg width="${useWidth}" height="${useHeight}" viewBox="0 0 ${useWidth} ${useHeight}" fill="none" xmlns="http://www.w3.org/2000/svg">`
                         );
                     }
 
-                    // Use unique key for dimensions to avoid conflicts
-                    const distinctKey = `${data.svgPath}_${useWidth}x${useHeight}`;
+                    // Use a stable key for unmodified assets so we do not create scaled variants.
+                    const distinctKey = overrideTransform
+                        ? `${data.svgPath}_${useWidth}x${useHeight}_override`
+                        : `${data.svgPath}_orig`;
                     this.svgAssets.set(distinctKey, content);
 
                     const safeRef = this.getSvgVariableName(distinctKey);
+                    code += `// __SVG_NODE_TYPE:${safeType}:${varName}_svgContainer\n`;
                     code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
                     code += `${varName}_svgContainer.fills = []; // Ensure transparent background\n`;
-                    code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
+                    const keepContainerBounds =
+                        safeType === 'GROUP' || (
+                            safeType !== 'VECTOR' && (
+                            data.layoutSizingHorizontal === "FILL" ||
+                            data.layoutSizingVertical === "FILL" ||
+                            data.layoutAlign === "STRETCH" ||
+                            data.constraints?.horizontal === "STRETCH" ||
+                            data.constraints?.vertical === "STRETCH"
+                            )
+                        );
+                    if (keepContainerBounds) {
+                        code += `const ${varName} = ${varName}_svgContainer;\n`;
+                    } else {
+                        code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
+                    }
 
                     if (overrideTransform) {
                         data.width = useWidth;
@@ -492,32 +524,49 @@ export class ${this.componentName} extends BaseComponent {
                     }
                 } else {
                     console.warn(`[Generator] SVG file NOT found: ${fullSvgPath}`);
+                    if (safeType === 'GROUP') {
+                        code += `const ${varName} = figma.createFrame(); // Group SVG missing fallback\n`;
+                        code += `${varName}.fills = [];\n`;
+                        code += `${varName}.strokes = [];\n`;
+                        code += `${varName}.strokeWeight = 0;\n`;
+                    } else {
+                        code += `const ${varName} = figma.createVector(); // SVG missing fallback\n`;
+                    }
                 }
             } else if (data.vectorPaths && data.vectorPaths.length > 0) {
-                // Synthesize SVG from vectorPaths to ensure Procedural Converter compatibility
-                let svgContent = `<svg width="${data.width || 100}" height="${data.height || 100}" viewBox="0 0 ${data.width || 100} ${data.height || 100}" fill="none" xmlns="http://www.w3.org/2000/svg">`;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (data.vectorPaths as any[]).forEach((vp: any) => {
-                    const rule = vp.windingRule === "NONZERO" ? "nonzero" : "evenodd";
-                    svgContent += `<path d="${vp.data}" fill="black" fill-rule="${rule}" clip-rule="${rule}" stroke="none" />`;
-                });
-                svgContent += `</svg>`;
+                const vectorWidth = typeof data.width === 'number' ? data.width : 0;
+                const vectorHeight = typeof data.height === 'number' ? data.height : 0;
 
-                const distinctKey = `Synth_${(data.name || 'Vec').replace(/[^a-zA-Z0-9]/g, '')}_${this.svgAssets.size}`;
-                this.svgAssets.set(distinctKey, svgContent);
-                const safeRef = this.getSvgVariableName(distinctKey);
+                // Zero-size vectors (for example vertical/horizontal strokes) should stay procedural.
+                // Synthesizing them as SVG introduces fake dimensions and clips geometry.
+                if (vectorWidth <= 0.01 || vectorHeight <= 0.01) {
+                    code += `const ${varName} = figma.createVector();\n`;
+                } else {
+                    // Synthesize SVG from vectorPaths to ensure Procedural Converter compatibility
+                    let svgContent = `<svg width="${vectorWidth}" height="${vectorHeight}" viewBox="0 0 ${vectorWidth} ${vectorHeight}" fill="none" xmlns="http://www.w3.org/2000/svg">`;
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (data.vectorPaths as any[]).forEach((vp: any) => {
+                        const rule = vp.windingRule === "NONZERO" ? "nonzero" : "evenodd";
+                        svgContent += `<path d="${vp.data}" fill="black" fill-rule="${rule}" clip-rule="${rule}" stroke="none" />`;
+                    });
+                    svgContent += `</svg>`;
 
-                code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
-                // Resize container to frame size before flattening to ensure correct bounds
-                code += `${varName}_svgContainer.resize(${data.width || 1}, ${data.height || 1});\n`;
-                code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
+                    const distinctKey = `Synth_${(data.name || 'Vec').replace(/[^a-zA-Z0-9]/g, '')}_${this.svgAssets.size}`;
+                    this.svgAssets.set(distinctKey, svgContent);
+                    const safeRef = this.getSvgVariableName(distinctKey);
+
+                    code += `// __SVG_NODE_TYPE:VECTOR:${varName}_svgContainer\n`;
+                    code += `const ${varName}_svgContainer = figma.createNodeFromSvg(SVG_${safeRef});\n`;
+                    // Resize container to frame size before flattening to ensure correct bounds
+                    code += `${varName}_svgContainer.resize(${vectorWidth}, ${vectorHeight});\n`;
+                    code += `const ${varName} = figma.flatten([${varName}_svgContainer]);\n`;
+                }
             } else {
                 code += `const ${varName} = figma.createVector();\n`;
             }
         } else if (safeType === 'GROUP') {
             code += `const ${varName} = figma.createFrame(); // Group handled as Frame\n`;
             code += `${varName}.fills = []; // Groups normally have no fills, but Frame defaults to white\n`;
-            code += `${varName}.clipsContent = false; // Groups never clip content\n`;
             code += `${varName}.strokes = [];\n`;
             code += `${varName}.strokeWeight = 0;\n`;
         } else {
@@ -549,22 +598,27 @@ export class ${this.componentName} extends BaseComponent {
                 code += `    ${varName}.layoutMode = "${data.layout.mode}";\n`;
                 isCurrentNodeAutoLayout = true;
 
-                if (data.layout.sizing) {
-                    const sizing = this.resolveAutoLayoutSizing(data.layout);
-                    const primarySizing = sizing.primary;
-                    const counterSizing = sizing.counter;
+                if (data.layout.mode !== "GRID") {
+                    if (data.layout.sizing) {
+                        const sizing = this.resolveAutoLayoutSizing(data.layout);
+                        const primarySizing = sizing.primary;
+                        const counterSizing = sizing.counter;
 
-                    if (primarySizing) code += `    ${varName}.primaryAxisSizingMode = "${primarySizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
-                    if (counterSizing) code += `    ${varName}.counterAxisSizingMode = "${counterSizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
-                }
-                if (data.layout.alignment) {
-                    if (data.layout.alignment.primary) {
-                        const align = data.layout.alignment.primary === 'SPACE_BETWEEN' ? 'SPACE_BETWEEN' : data.layout.alignment.primary;
-                        code += `    ${varName}.primaryAxisAlignItems = "${align}";\n`;
+                        if (primarySizing) code += `    ${varName}.primaryAxisSizingMode = "${primarySizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
+                        if (counterSizing) code += `    ${varName}.counterAxisSizingMode = "${counterSizing === 'AUTO' ? 'AUTO' : 'FIXED'}";\n`;
                     }
-                    if (data.layout.alignment.counter) code += `    ${varName}.counterAxisAlignItems = "${data.layout.alignment.counter}";\n`;
+                    if (data.layout.alignment) {
+                        if (data.layout.alignment.primary) {
+                            const align = data.layout.alignment.primary === 'SPACE_BETWEEN' ? 'SPACE_BETWEEN' : data.layout.alignment.primary;
+                            code += `    ${varName}.primaryAxisAlignItems = "${align}";\n`;
+                        }
+                        if (data.layout.alignment.counter) code += `    ${varName}.counterAxisAlignItems = "${data.layout.alignment.counter}";\n`;
+                    }
+                    if (data.layout.spacing !== undefined) code += `    ${varName}.itemSpacing = ${data.layout.spacing};\n`;
+                    if (data.layout.counterAxisSpacing !== undefined) code += `    if ("counterAxisSpacing" in ${varName}) ${varName}.counterAxisSpacing = ${data.layout.counterAxisSpacing};\n`;
+                    if (data.layout.layoutWrap !== undefined) code += `    if ("layoutWrap" in ${varName}) ${varName}.layoutWrap = "${data.layout.layoutWrap}";\n`;
+                    if (data.layout.counterAxisAlignContent !== undefined) code += `    if ("counterAxisAlignContent" in ${varName}) ${varName}.counterAxisAlignContent = "${data.layout.counterAxisAlignContent}";\n`;
                 }
-                if (data.layout.spacing !== undefined) code += `    ${varName}.itemSpacing = ${data.layout.spacing};\n`;
                 if (data.layout.padding) {
                     // Check against undefined simply
                     if (data.layout.padding.top !== undefined) code += `    ${varName}.paddingTop = ${data.layout.padding.top};\n`;
@@ -574,6 +628,22 @@ export class ${this.componentName} extends BaseComponent {
                 }
                 if (data.layout.itemReverseZIndex !== undefined) code += `    ${varName}.itemReverseZIndex = ${data.layout.itemReverseZIndex};\n`;
                 if (data.layout.strokesIncludedInLayout !== undefined) code += `    ${varName}.strokesIncludedInLayout = ${data.layout.strokesIncludedInLayout};\n`;
+                if (data.layout.gridRowCount !== undefined) code += `    if ("gridRowCount" in ${varName}) ${varName}.gridRowCount = ${data.layout.gridRowCount};\n`;
+                if (data.layout.gridColumnCount !== undefined) code += `    if ("gridColumnCount" in ${varName}) ${varName}.gridColumnCount = ${data.layout.gridColumnCount};\n`;
+                if (data.layout.gridRowGap !== undefined) code += `    if ("gridRowGap" in ${varName}) ${varName}.gridRowGap = ${data.layout.gridRowGap};\n`;
+                if (data.layout.gridColumnGap !== undefined) code += `    if ("gridColumnGap" in ${varName}) ${varName}.gridColumnGap = ${data.layout.gridColumnGap};\n`;
+                if (Array.isArray(data.layout.gridRowSizes)) {
+                    data.layout.gridRowSizes.forEach((size, idx) => {
+                        if (size.type) code += `    if ("gridRowSizes" in ${varName} && ${varName}.gridRowSizes[${idx}]) ${varName}.gridRowSizes[${idx}].type = "${size.type}";\n`;
+                        if (typeof size.value === "number") code += `    if ("gridRowSizes" in ${varName} && ${varName}.gridRowSizes[${idx}]) ${varName}.gridRowSizes[${idx}].value = ${size.value};\n`;
+                    });
+                }
+                if (Array.isArray(data.layout.gridColumnSizes)) {
+                    data.layout.gridColumnSizes.forEach((size, idx) => {
+                        if (size.type) code += `    if ("gridColumnSizes" in ${varName} && ${varName}.gridColumnSizes[${idx}]) ${varName}.gridColumnSizes[${idx}].type = "${size.type}";\n`;
+                        if (typeof size.value === "number") code += `    if ("gridColumnSizes" in ${varName} && ${varName}.gridColumnSizes[${idx}]) ${varName}.gridColumnSizes[${idx}].value = ${size.value};\n`;
+                    });
+                }
             } else {
                 code += `    ${varName}.layoutMode = "NONE";\n`;
             }
@@ -620,6 +690,19 @@ export class ${this.componentName} extends BaseComponent {
             } else {
                 code += `if ("cornerRadius" in ${varName}) ${varName}.cornerRadius = ${typeof data.cornerRadius === 'number' ? data.cornerRadius : JSON.stringify(data.cornerRadius)};\n`;
             }
+        }
+
+        // Layout sizing shorthand (maps to Fill/Hug/Fixed in the UI).
+        // Apply non-FILL values before append. FILL is applied in Phase C after append.
+        const shouldEmitLayoutSizingShorthand =
+            safeType === "TEXT" ||
+            data.layout?.sizingConvention === "PHYSICAL_AXES_V1" ||
+            (data.layoutAlign === undefined && data.layoutGrow === undefined);
+        if (shouldEmitLayoutSizingShorthand && data.layoutSizingHorizontal && (!parentIsAutoLayout || data.layoutSizingHorizontal !== "FILL")) {
+            code += `if ("layoutSizingHorizontal" in ${varName}) ${varName}.layoutSizingHorizontal = "${data.layoutSizingHorizontal}";\n`;
+        }
+        if (shouldEmitLayoutSizingShorthand && data.layoutSizingVertical && (!parentIsAutoLayout || data.layoutSizingVertical !== "FILL")) {
+            code += `if ("layoutSizingVertical" in ${varName}) ${varName}.layoutSizingVertical = "${data.layoutSizingVertical}";\n`;
         }
 
 
@@ -684,7 +767,8 @@ export class ${this.componentName} extends BaseComponent {
         }
 
         // 5. Recursion (Children) using Phase B (Append) logic inside the loop
-        if (safeType !== 'BOOLEAN_OPERATION' && data.children && data.children.length > 0) {
+        const shouldReplayCapturedChildren = !(safeType === 'GROUP' && !!data.svgPath);
+        if (safeType !== 'BOOLEAN_OPERATION' && shouldReplayCapturedChildren && data.children && data.children.length > 0) {
             data.children.forEach((child, index) => {
                 const childVar = `${varName}_child_${index}`;
                 code += `\n// Start Child: ${child.name}\n`;
@@ -703,6 +787,20 @@ export class ${this.componentName} extends BaseComponent {
                     }
                     if (child.layoutAlign) code += `${childVar}.layoutAlign = "${child.layoutAlign}";\n`;
                     if (child.layoutGrow !== undefined) code += `${childVar}.layoutGrow = ${child.layoutGrow};\n`;
+                    const shouldEmitChildLayoutSizingShorthand =
+                        child.type === "TEXT" ||
+                        child.layout?.sizingConvention === "PHYSICAL_AXES_V1" ||
+                        (child.layoutAlign === undefined && child.layoutGrow === undefined);
+                    if (shouldEmitChildLayoutSizingShorthand && child.layoutSizingHorizontal) code += `if ("layoutSizingHorizontal" in ${childVar}) ${childVar}.layoutSizingHorizontal = "${child.layoutSizingHorizontal}";\n`;
+                    if (shouldEmitChildLayoutSizingShorthand && child.layoutSizingVertical) code += `if ("layoutSizingVertical" in ${childVar}) ${childVar}.layoutSizingVertical = "${child.layoutSizingVertical}";\n`;
+                }
+                const parentIsGridLayout = data.layout?.mode === "GRID";
+                const shouldApplyGridSpan = parentIsGridLayout && child.layoutPositioning !== "ABSOLUTE";
+                if (shouldApplyGridSpan && child.gridRowSpan !== undefined) {
+                    code += `if ("gridRowSpan" in ${childVar}) { try { ${childVar}.gridRowSpan = ${child.gridRowSpan}; } catch (_err) { /* noop */ } }\n`;
+                }
+                if (shouldApplyGridSpan && child.gridColumnSpan !== undefined) {
+                    code += `if ("gridColumnSpan" in ${childVar}) { try { ${childVar}.gridColumnSpan = ${child.gridColumnSpan}; } catch (_err) { /* noop */ } }\n`;
                 }
 
                 // --- Phase D: Size & Transform (Atomic with context, AFTER append) ---

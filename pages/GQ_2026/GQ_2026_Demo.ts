@@ -42,7 +42,13 @@ export class GQ_2026_Demo extends BaseComponent {
                 "name": "GQ_Hero_Instance",
                 "component": hero,
                 "props": {},
-                "layoutProps": { "parentIsAutoLayout": true }
+                "layoutProps": {
+                    "parentIsAutoLayout": true,
+                    "width": 600,
+                    "height": 686,
+                    "layoutSizingHorizontal": "FIXED",
+                    "layoutSizingVertical": "FIXED"
+                }
             },
 
             { "type": "FRAME", "name": "Spacer", "layoutProps": { "height": 80, "parentIsAutoLayout": true }, "props": { "fills": [] } },

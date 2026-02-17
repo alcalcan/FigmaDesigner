@@ -45,7 +45,13 @@ export class hero extends BaseComponent {
         "effects": [],
         "cornerRadius": 0
       },
-      "layoutProps": { "width": 600, "height": 686, "parentIsAutoLayout": false },
+      "layoutProps": {
+        "width": 600,
+        "height": 686,
+        "parentIsAutoLayout": false,
+        "layoutSizingHorizontal": "FIXED",
+        "layoutSizingVertical": "FIXED"
+      },
       "children": [
         {
           "type": "FRAME",
@@ -664,7 +670,7 @@ export class hero extends BaseComponent {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
             "width": 600, "height": 165.6080780029297,
             "relativeTransform": [[1, 0, 0], [0, 1, 38]],
-            "constraints": { "horizontal": "CENTER", "vertical": "MIN" }
+            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
           },
           "children": [
             {
@@ -780,7 +786,7 @@ export class hero extends BaseComponent {
             "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
             "strokeWeight": 1.2937, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
             "strokeTopWeight": 1.2937, "strokeRightWeight": 1.2937, "strokeBottomWeight": 1.2937, "strokeLeftWeight": 1.2937,
-            "x": -4, "y": 245,
+                "x": -4.1806, "y": 245,
             "fills": [],
             "strokes": [],
             "effects": [],
@@ -789,8 +795,8 @@ export class hero extends BaseComponent {
           "layoutProps": {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
             "width": 608.3612, "height": 308.302,
-            "relativeTransform": [[1, 0, -4], [0, 1, 245]],
-            "constraints": { "horizontal": "CENTER", "vertical": "MIN" }
+            "relativeTransform": [[1, 0, -4.1806], [0, 1, 245]],
+            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
           },
           "children": [
             {
@@ -984,7 +990,7 @@ export class hero extends BaseComponent {
             "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
             "width": 288, "height": 54,
             "relativeTransform": [[1, 0, 156], [0, 1, 586]],
-            "constraints": { "horizontal": "CENTER", "vertical": "MIN" }
+            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
           }
         }
       ]

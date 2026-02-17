@@ -29,14 +29,29 @@ export function applySizeAndTransform(
 ) {
     // 1) size first
     const canResize = typeof node.resize === 'function';
-    if (canResize && (typeof data.width === 'number' || typeof data.height === 'number')) {
+    if (
+        canResize &&
+        (typeof data.width === 'number' || typeof data.height === 'number') &&
+        (data.width === undefined || Number.isFinite(data.width)) &&
+        (data.height === undefined || Number.isFinite(data.height))
+    ) {
         const newW = typeof data.width === 'number' ? data.width : node.width;
         const newH = typeof data.height === 'number' ? data.height : node.height;
+        const safeW = Math.max(newW, 0.01);
+        const safeH = node.type === "LINE" ? 0 : Math.max(newH, 0.01);
+        const isDegenerateVectorTarget = node.type === "VECTOR" && (safeW <= 0.01 || safeH <= 0.01);
+        const hasDegenerateCurrentVectorBounds =
+            node.type === "VECTOR" &&
+            (!Number.isFinite(node.width) || !Number.isFinite(node.height) || node.width <= 0.01 || node.height <= 0.01);
 
-        if (newW !== node.width || newH !== node.height) {
+        if ((safeW !== node.width || safeH !== node.height) && !isDegenerateVectorTarget && !hasDegenerateCurrentVectorBounds) {
             // We use resize() instead of resizeWithoutConstraints to ensure 
             // that children with SCALE constraints (like icons) scale correctly.
-            node.resize(newW, newH);
+            try {
+                node.resize(safeW, safeH);
+            } catch (resizeError) {
+                console.warn("Failed to resize node safely", resizeError);
+            }
         }
     }
 
@@ -52,15 +67,14 @@ export function applySizeAndTransform(
 
     // 2) decide whether translation will be respected
     const parent = node.parent;
-    const inAutoLayout =
-        isAutoLayoutFrame(parent) && (parent as FrameNode).layoutMode !== "NONE" && "layoutPositioning" in node;
+    const parentIsAutoLayout = isAutoLayoutFrame(parent) && (parent as FrameNode).layoutMode !== "NONE";
+    const hasLayoutPositioning = "layoutPositioning" in node;
+    const positioning = (hasLayoutPositioning
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ? (node as any).layoutPositioning
+        : "AUTO") as "AUTO" | "ABSOLUTE";
 
-    const positioning = (inAutoLayout ? (node as LayoutMixin).layoutPositioning : null) as
-        | "AUTO"
-        | "ABSOLUTE"
-        | null;
-
-    if (inAutoLayout && positioning !== "ABSOLUTE" && data.preserveAutoLayoutTranslation !== true) {
+    if (parentIsAutoLayout && positioning !== "ABSOLUTE" && data.preserveAutoLayoutTranslation !== true) {
         // CRITICAL FIX: If we are in-flow auto-layout, translation is managed by Figma.
         // Forcing X/Y to 0 here causes children to overlap until Figma re-layouts.
         // We ONLY set relativeTransform if there is non-zero rotation.

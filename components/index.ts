@@ -129,6 +129,8 @@ export { chip_dropdown } from "./UEFA_Academy_online/chip_dropdown/chip_dropdown
 export { chip_expand } from "./Alex_CookBook/chip_expand/chip_expand";
 export { Club_Brugge } from "./Football_Crests/Club_Brugge/Club_Brugge";
 export { ComparisonStats } from "./Newsletters_competititon/ComparisonStats/ComparisonStats";
+export { competitions_2026 } from "./captures/competitions_2026/competitions_2026";
+export { competitions_2026_no_refactor_for_inspect } from "./captures/competitions_2026_no_refactor_for_inspect/competitions_2026_no_refactor_for_inspect";
 export { Content_container } from "./UEFA_Academy_online/Content_container/Content_container";
 export { CookbookComponentsDemo } from "../pages/Alex_CookBook/CookbookComponentsDemo";
 export { Copenhagen } from "./Football_Crests/Copenhagen/Copenhagen";

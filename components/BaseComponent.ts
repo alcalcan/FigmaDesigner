@@ -29,10 +29,12 @@ export interface NodeDefinition {
     x?: number;
     y?: number;
     relativeTransform?: T2x3;
-    parentIsAutoLayout: boolean;
+    parentIsAutoLayout?: boolean;
     layoutPositioning?: "AUTO" | "ABSOLUTE";
-    layoutGrow?: 0 | 1;
-    layoutAlign?: "INHERIT" | "STRETCH";
+    layoutGrow?: number;
+    layoutAlign?: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+    layoutSizingHorizontal?: "FIXED" | "HUG" | "FILL";
+    layoutSizingVertical?: "FIXED" | "HUG" | "FILL";
     constraints?: Constraints;
     preserveAutoLayoutTranslation?: boolean;
   };
@@ -87,15 +89,25 @@ export abstract class BaseComponent {
    */
   async renderDefinition(def: NodeDefinition, parent?: BaseNode): Promise<SceneNode> {
     let node: SceneNode;
+    let isSvgContainerNode = false;
+    let skipCapturedChildren = false;
+    let preSizedNonAutoLayoutContainer = false;
     // let pendingLayoutGrow: number | undefined;
     // let pendingLayoutAlign: string | undefined;
 
     // 1. Create Node
     switch (def.type) {
       case "FRAME":
-        node = figma.createFrame();
-        // Default to transparent to ensure Groups converted to Frames don't result in white boxes
-        node.fills = [];
+        if (def.svgContent) {
+          node = figma.createNodeFromSvg(def.svgContent);
+          node.fills = [];
+          isSvgContainerNode = true;
+          skipCapturedChildren = true;
+        } else {
+          node = figma.createFrame();
+          // Default to transparent to ensure Groups converted to Frames don't result in white boxes
+          node.fills = [];
+        }
         break;
       case "TEXT": node = figma.createText(); break;
       case "RECTANGLE": node = figma.createRectangle(); break;
@@ -159,18 +171,32 @@ export abstract class BaseComponent {
               }
             }
           }
-          /**
-           * VECTOR nodes with 'svgContent' are treated as containers.
-           * Figma's createNodeFromSvg() creates a Frame containing the paths.
-           * We typically propagate parent-level 'props' (strokes, fills) to these children 
-           * during the 'postCreate' hook.
-           */
-          node = figma.createNodeFromSvg(finalSvgContent);
+          const svgContainer = figma.createNodeFromSvg(finalSvgContent);
+          svgContainer.fills = [];
+          try {
+            // Fidelity rule: NodeDefinition type VECTOR should instantiate as a real VectorNode.
+            node = figma.flatten([svgContainer], figma.currentPage);
+          } catch (flattenError) {
+            console.warn(`[BaseComponent] Failed to flatten SVG vector ${def.name || "Vector"}, using container fallback`, flattenError);
+            node = svgContainer;
+          }
         } else {
           node = figma.createVector();
           if (def.vectorPaths) {
             (node as VectorNode).vectorPaths = def.vectorPaths;
           }
+        }
+        break;
+      case "GROUP":
+        if (def.svgContent) {
+          node = figma.createNodeFromSvg(def.svgContent);
+          node.fills = [];
+          isSvgContainerNode = true;
+          skipCapturedChildren = true;
+        } else {
+          const groupFallback = figma.createFrame();
+          groupFallback.fills = [];
+          node = groupFallback;
         }
         break;
       case "BOOLEAN_OPERATION": {
@@ -213,7 +239,7 @@ export abstract class BaseComponent {
         }
         break;
       }
-      // TODO: Handle INSTANCE, GROUP if needed
+      // TODO: Handle INSTANCE if needed
       default: node = figma.createFrame(); break;
     }
 
@@ -247,14 +273,21 @@ export abstract class BaseComponent {
         safeNode.layoutMode = def.props.layoutMode;
 
         // Apply other AutoLayout properties immediately
-        const layoutKeys = [
-          "primaryAxisSizingMode", "counterAxisSizingMode",
-          "primaryAxisAlignItems", "counterAxisAlignItems",
-          "itemSpacing",
-          "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
-          "itemReverseZIndex", "strokesIncludedInLayout",
-          "layoutWrap" // Just in case
-        ];
+        const isGrid = def.props.layoutMode === "GRID";
+        const layoutKeys = isGrid
+          ? [
+            "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+            "itemReverseZIndex", "strokesIncludedInLayout",
+            "gridRowCount", "gridColumnCount", "gridRowGap", "gridColumnGap"
+          ]
+          : [
+            "primaryAxisSizingMode", "counterAxisSizingMode",
+            "primaryAxisAlignItems", "counterAxisAlignItems",
+            "itemSpacing", "counterAxisSpacing",
+            "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+            "itemReverseZIndex", "strokesIncludedInLayout",
+            "layoutWrap", "counterAxisAlignContent"
+          ];
 
         for (const key of layoutKeys) {
           if (def.props[key] !== undefined) {
@@ -266,10 +299,33 @@ export abstract class BaseComponent {
       }
     }
 
+    // Fidelity: pre-size non-auto-layout containers before reconstructing children.
+    // This prevents SCALE-constrained children from inheriting a transient 100x100 parent size.
+    if (
+      !skipCapturedChildren &&
+      "children" in node &&
+      "resizeWithoutConstraints" in node &&
+      def.layoutProps &&
+      typeof def.layoutProps.width === "number" &&
+      typeof def.layoutProps.height === "number"
+    ) {
+      const layoutMode = "layoutMode" in node ? (node as FrameNode).layoutMode : "NONE";
+      if (layoutMode === "NONE") {
+        try {
+          const safeW = Math.max(def.layoutProps.width, 0.01);
+          const safeH = node.type === "LINE" ? 0 : Math.max(def.layoutProps.height, 0.01);
+          node.resizeWithoutConstraints(safeW, safeH);
+          preSizedNonAutoLayoutContainer = true;
+        } catch (preSizeErr) {
+          console.warn(`[BaseComponent] Failed pre-size for ${def.name || def.type}`, preSizeErr);
+        }
+      }
+    }
+
     // 5. Recursion (Moved Up for Flatten Support)
     // CRITICAL: Skip recursion for BOOLEAN_OPERATION nodes because they handle their children
     // specially inside the 'renderDefinition' switch block to ensure document order.
-    if (def.children && def.type !== "BOOLEAN_OPERATION") {
+    if (def.children && def.type !== "BOOLEAN_OPERATION" && !skipCapturedChildren) {
       for (const childDef of def.children) {
         if ("appendChild" in node) {
           await this.renderDefinition(childDef, node as BaseNode & ChildrenMixin);
@@ -322,15 +378,19 @@ export abstract class BaseComponent {
         "layoutMode", "font",
         "primaryAxisSizingMode", "counterAxisSizingMode",
         "primaryAxisAlignItems", "counterAxisAlignItems",
-        "itemSpacing",
+        "itemSpacing", "counterAxisSpacing",
         "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
         "itemReverseZIndex", "strokesIncludedInLayout",
-        "layoutWrap",
+        "layoutWrap", "counterAxisAlignContent",
+        "gridRowCount", "gridColumnCount", "gridRowGap", "gridColumnGap", "gridRowSizes", "gridColumnSizes",
         "pointCount", "innerRadius", // Shape specific
         "width", "height", "x", "y", "rotation", // Read-only or handled via resize/transform
         "relativeTransform", "layoutGrow", "layoutAlign", // Handled in layoutProps
+        "layoutSizingHorizontal", "layoutSizingVertical", // apply post-attach to avoid invalid FILL errors
+        "gridRowSpan", "gridColumnSpan", // apply post-attach only when parent is GRID
         "type", "children", "fontWeight" // Read-only or handled explicitly
       ]);
+      const skipSvgContainerPaintHydration = isSvgContainerNode;
 
       for (const [key, value] of Object.entries(def.props)) {
         if (skippedKeys.has(key)) continue;
@@ -338,6 +398,7 @@ export abstract class BaseComponent {
 
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
+          if (skipSvgContainerPaintHydration) continue;
           // Allow overriding paints even for SVG content if explicit props are provided
           finalNode[key] = await this.hydratePaints(value);
         } else if (key === "effects") {
@@ -470,7 +531,17 @@ export abstract class BaseComponent {
       }
 
       // 2. Apply Size and Transform
-      const layoutOpts = { ...def.layoutProps } as any;
+      const layoutOpts: {
+        width?: number;
+        height?: number;
+        relativeTransform?: T2x3;
+        preserveAutoLayoutTranslation?: boolean;
+      } = {
+        width: (isSvgContainerNode || preSizedNonAutoLayoutContainer) ? undefined : def.layoutProps.width,
+        height: (isSvgContainerNode || preSizedNonAutoLayoutContainer) ? undefined : def.layoutProps.height,
+        relativeTransform: def.layoutProps.relativeTransform,
+        preserveAutoLayoutTranslation: def.layoutProps.preserveAutoLayoutTranslation
+      };
 
       // Preserve translation for in-flow auto-layout children only when explicitly requested.
       if (def.layoutProps.preserveAutoLayoutTranslation === true) {
@@ -496,36 +567,98 @@ export abstract class BaseComponent {
         } catch (e) { /* ignore */ }
       }
 
-      applySizeAndTransform(node as any, layoutOpts);
+      applySizeAndTransform(node as SceneNode & LayoutMixin, layoutOpts);
 
       // Re-apply container layout props after transform (resize can reset them)
       if ("layoutMode" in node && (node as FrameNode).layoutMode !== "NONE" && def.props) {
         const frame = node as FrameNode;
-        const autoLayoutKeys = [
-          "primaryAxisSizingMode", "counterAxisSizingMode", "primaryAxisAlignItems",
-          "counterAxisAlignItems", "itemSpacing", "paddingTop", "paddingRight",
-          "paddingBottom", "paddingLeft", "itemReverseZIndex", "strokesIncludedInLayout"
-        ];
+        const isGrid = frame.layoutMode === "GRID";
+        const autoLayoutKeys = isGrid
+          ? [
+            "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+            "itemReverseZIndex", "strokesIncludedInLayout",
+            "gridRowCount", "gridColumnCount", "gridRowGap", "gridColumnGap"
+          ]
+          : [
+            "primaryAxisSizingMode", "counterAxisSizingMode", "primaryAxisAlignItems",
+            "counterAxisAlignItems", "itemSpacing", "counterAxisSpacing", "paddingTop", "paddingRight",
+            "paddingBottom", "paddingLeft", "itemReverseZIndex", "strokesIncludedInLayout",
+            "counterAxisAlignContent"
+          ];
+        const frameMutable = frame as unknown as Record<string, unknown>;
         for (const key of autoLayoutKeys) {
-          if (def.props[key] !== undefined) (frame as any)[key] = def.props[key];
+          if (def.props[key] !== undefined) frameMutable[key] = def.props[key];
         }
-        if (def.props.layoutWrap !== undefined && "layoutWrap" in frame) {
-          (frame as any).layoutWrap = def.props.layoutWrap;
+        if (!isGrid && def.props.layoutWrap !== undefined && "layoutWrap" in frame) {
+          frameMutable.layoutWrap = def.props.layoutWrap;
+        }
+        if (Array.isArray(def.props.gridRowSizes) && "gridRowSizes" in frame) {
+          def.props.gridRowSizes.forEach((size: { type?: "FLEX" | "FIXED" | "HUG"; value?: number }, idx: number) => {
+            if (!frame.gridRowSizes[idx]) return;
+            try {
+              if (size.type) frame.gridRowSizes[idx].type = size.type;
+              if (typeof size.value === "number") frame.gridRowSizes[idx].value = size.value;
+            } catch (_err) { /* noop */ }
+          });
+        }
+        if (Array.isArray(def.props.gridColumnSizes) && "gridColumnSizes" in frame) {
+          def.props.gridColumnSizes.forEach((size: { type?: "FLEX" | "FIXED" | "HUG"; value?: number }, idx: number) => {
+            if (!frame.gridColumnSizes[idx]) return;
+            try {
+              if (size.type) frame.gridColumnSizes[idx].type = size.type;
+              if (typeof size.value === "number") frame.gridColumnSizes[idx].value = size.value;
+            } catch (_err) { /* noop */ }
+          });
         }
       }
 
       // 3. Apply child placement props (Grow/Align/Constraints)
       const grow = def.layoutProps.layoutGrow ?? def.props?.layoutGrow;
       const align = def.layoutProps.layoutAlign ?? def.props?.layoutAlign;
+      const sizingHorizontal = def.layoutProps.layoutSizingHorizontal ?? def.props?.layoutSizingHorizontal;
+      const sizingVertical = def.layoutProps.layoutSizingVertical ?? def.props?.layoutSizingVertical;
+      const shouldApplyLayoutSizingShorthand =
+        node.type === "TEXT" ||
+        (grow === undefined && align === undefined);
 
       if (grow !== undefined && "layoutGrow" in node) {
         try { (node as LayoutMixin).layoutGrow = grow; } catch (e) { /* ignore */ }
       }
       if (align && "layoutAlign" in node) {
-        try { (node as LayoutMixin).layoutAlign = align as any; } catch (e) { /* ignore */ }
+        try {
+          (node as LayoutMixin).layoutAlign = align as "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+        } catch (e) { /* ignore */ }
+      }
+      if (shouldApplyLayoutSizingShorthand) {
+        if (sizingHorizontal && "layoutSizingHorizontal" in node) {
+          try {
+            const canApply = sizingHorizontal !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
+            if (canApply) (node as LayoutMixin).layoutSizingHorizontal = sizingHorizontal;
+          } catch (e) { /* ignore */ }
+        }
+        if (sizingVertical && "layoutSizingVertical" in node) {
+          try {
+            const canApply = sizingVertical !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
+            if (canApply) (node as LayoutMixin).layoutSizingVertical = sizingVertical;
+          } catch (e) { /* ignore */ }
+        }
       }
       if (def.layoutProps.constraints && "constraints" in node) {
         (node as ConstraintMixin).constraints = def.layoutProps.constraints;
+      }
+
+      const parentIsGrid = !!(
+        node.parent &&
+        "layoutMode" in node.parent &&
+        (node.parent as FrameNode).layoutMode === "GRID"
+      );
+      if (parentIsGrid) {
+        if (typeof def.props?.gridRowSpan === "number" && "gridRowSpan" in node) {
+          try { (node as LayoutMixin).gridRowSpan = def.props.gridRowSpan; } catch (_err) { /* noop */ }
+        }
+        if (typeof def.props?.gridColumnSpan === "number" && "gridColumnSpan" in node) {
+          try { (node as LayoutMixin).gridColumnSpan = def.props.gridColumnSpan; } catch (_err) { /* noop */ }
+        }
       }
     }
 

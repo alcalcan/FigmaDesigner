@@ -45,7 +45,7 @@ export interface SerializedNode {
     strokeLeftWeight?: number | "mixed";
 
     layout?: {
-        mode?: "NONE" | "HORIZONTAL" | "VERTICAL";
+        mode?: "NONE" | "HORIZONTAL" | "VERTICAL" | "GRID";
         sizing?: {
             horizontal?: "AUTO" | "FIXED";
             vertical?: "AUTO" | "FIXED";
@@ -56,6 +56,15 @@ export interface SerializedNode {
             counter?: "MIN" | "MAX" | "CENTER" | "BASELINE";
         };
         spacing?: number;
+        counterAxisSpacing?: number;
+        layoutWrap?: "NO_WRAP" | "WRAP";
+        counterAxisAlignContent?: "AUTO" | "SPACE_BETWEEN";
+        gridRowCount?: number;
+        gridColumnCount?: number;
+        gridRowGap?: number;
+        gridColumnGap?: number;
+        gridRowSizes?: Array<{ type: "FLEX" | "FIXED" | "HUG"; value?: number }>;
+        gridColumnSizes?: Array<{ type: "FLEX" | "FIXED" | "HUG"; value?: number }>;
         padding?: {
             top?: number;
             right?: number;
@@ -70,6 +79,10 @@ export interface SerializedNode {
     layoutAlign?: "MIN" | "MAX" | "CENTER" | "STRETCH" | "INHERIT";
     layoutGrow?: number;
     layoutPositioning?: "AUTO" | "ABSOLUTE"; // Explicitly added
+    layoutSizingHorizontal?: "FIXED" | "HUG" | "FILL";
+    layoutSizingVertical?: "FIXED" | "HUG" | "FILL";
+    gridRowSpan?: number;
+    gridColumnSpan?: number;
 
     text?: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -218,6 +231,10 @@ export class JsonReconstructor extends BaseComponent {
         console.log(`Reconstructing node: ${data.name} (${data.type})`);
         let node: SceneNode | null = null;
         let isFromSvg = false; // Declare isFromSvg here
+        let isSvgBackedVector = false;
+        let isSvgBackedGroup = false;
+        let skipCapturedChildren = false;
+        let preSizedNonAutoLayoutContainer = false;
 
         try {
             // 1. Create Node based on type
@@ -230,7 +247,7 @@ export class JsonReconstructor extends BaseComponent {
             } else if (safeType === "RECTANGLE") {
                 node = figma.createRectangle();
                 (node as RectangleNode).fills = []; // Clear default white/gray fill
-            } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON" || safeType === "GROUP"))) {
+            } else if (safeType === "VECTOR" || (data.svgPath && (safeType === "STAR" || safeType === "POLYGON"))) {
                 if (data.svgPath && assetSource) {
                     const asset = assetSource.assets[data.svgPath];
                     if (asset) {
@@ -253,14 +270,34 @@ export class JsonReconstructor extends BaseComponent {
                                 throw new Error("Decoded SVG content is empty");
                             }
 
-                            // figma.createNodeFromSvg returns the root node of the SVG (usually a Frame or Group)
                             const svgContainer = figma.createNodeFromSvg(svgContent);
                             svgContainer.fills = []; // Ensure transparent background
 
-                            // Flatten the container to get a pure VectorNode.
-                            // This also normalizes the coordinates relative to the new node's bounds.
-                            const flattenedNode = figma.flatten([svgContainer]);
-                            node = flattenedNode;
+                            if (safeType === "VECTOR") {
+                                // Fidelity rule: captured VECTOR nodes must remain vectors, not SVG container frames.
+                                // This avoids nested container+child geometry drift (e.g. 79 -> 67.75 height mismatch).
+                                try {
+                                    node = figma.flatten([svgContainer]);
+                                    isSvgBackedVector = true;
+                                } catch (flattenError) {
+                                    console.warn(`Failed to flatten SVG container for ${data.name}, falling back to container`, flattenError);
+                                    node = svgContainer;
+                                }
+                            } else {
+                                const keepContainerBounds =
+                                    data.layoutSizingHorizontal === "FILL" ||
+                                    data.layoutSizingVertical === "FILL" ||
+                                    data.layoutAlign === "STRETCH" ||
+                                    data.constraints?.horizontal === "STRETCH" ||
+                                    data.constraints?.vertical === "STRETCH";
+
+                                // For non-VECTOR SVG-backed primitives (STAR/POLYGON), preserve old behavior.
+                                if (keepContainerBounds) {
+                                    node = svgContainer;
+                                } else {
+                                    node = figma.flatten([svgContainer]);
+                                }
+                            }
 
                             // If we created from SVG, we mark it to skip redundant visual property application
                             // because the SVG already contains the fills/strokes.
@@ -293,7 +330,42 @@ export class JsonReconstructor extends BaseComponent {
             } else if (safeType === "LINE") {
                 node = figma.createLine();
             } else if (safeType === "GROUP") {
-                if (data.children && data.children.length > 0) {
+                // Fidelity-first: if capture exported an SVG for a group, trust that visual source.
+                // Many complex logos rely on clip paths that are safer in the SVG representation.
+                if (data.svgPath && assetSource) {
+                    const asset = assetSource.assets[data.svgPath];
+                    if (asset) {
+                        try {
+                            const bytes = figma.base64Decode(asset.bytesBase64);
+                            let svgContent = "";
+                            try {
+                                const textDecoder = new TextDecoder();
+                                svgContent = textDecoder.decode(bytes);
+                            } catch (_decodeErr) {
+                                for (let i = 0; i < bytes.length; i++) {
+                                    svgContent += String.fromCharCode(bytes[i]);
+                                }
+                            }
+
+                            if (!svgContent || svgContent.length === 0) {
+                                throw new Error("Decoded SVG content is empty");
+                            }
+
+                            const svgContainer = figma.createNodeFromSvg(svgContent);
+                            svgContainer.fills = [];
+                            node = svgContainer;
+                            isFromSvg = true;
+                            isSvgBackedGroup = true;
+                            skipCapturedChildren = true;
+                        } catch (e) {
+                            console.warn(`Failed to create GROUP from SVG asset: ${data.svgPath}`, e);
+                        }
+                    } else {
+                        console.warn(`GROUP SVG asset not found in source: ${data.svgPath}`);
+                    }
+                }
+
+                if (!node && data.children && data.children.length > 0) {
                     const childrenNodes: SceneNode[] = [];
                     // Create children on current page first to establish relative positions
                     for (const childData of data.children) {
@@ -305,7 +377,7 @@ export class JsonReconstructor extends BaseComponent {
                     if (childrenNodes.length > 0) {
                         // Create group in the target parent
                         node = figma.group(childrenNodes, parent || figma.currentPage);
-                        data.children = []; // Prevent re-processing in Step 7
+                        skipCapturedChildren = true; // Prevent re-processing in Step 7
                     }
                 }
 
@@ -367,6 +439,29 @@ export class JsonReconstructor extends BaseComponent {
             // We set this early so children can be created with 'ABSOLUTE' positioning if needed.
             if ("layoutMode" in node && data.layout) {
                 (node as FrameNode).layoutMode = data.layout.mode || "NONE";
+            }
+
+            // Step 1b: Pre-size non-auto-layout containers before children are reconstructed.
+            // Otherwise, children with SCALE constraints get unintentionally scaled when parent
+            // is resized later from default 100x100 to captured dimensions.
+            if (
+                "children" in node &&
+                "resizeWithoutConstraints" in node &&
+                typeof data.width === "number" &&
+                typeof data.height === "number"
+            ) {
+                const layoutMode = ("layoutMode" in node) ? (node as FrameNode).layoutMode : "NONE";
+                const isNonAutoLayoutContainer = layoutMode === "NONE";
+                if (isNonAutoLayoutContainer) {
+                    try {
+                        const safeW = Math.max(data.width, 0.01);
+                        const safeH = node.type === "LINE" ? 0 : Math.max(data.height, 0.01);
+                        node.resizeWithoutConstraints(safeW, safeH);
+                        preSizedNonAutoLayoutContainer = true;
+                    } catch (preSizeError) {
+                        console.warn(`Failed pre-sizing container ${data.name}`, preSizeError);
+                    }
+                }
             }
 
             // 2.5 Apply Advanced Visuals
@@ -624,7 +719,7 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 7. Handle Children (Recursion)
-            if ("children" in node && data.children && data.children.length > 0) {
+            if (!skipCapturedChildren && "children" in node && data.children && data.children.length > 0) {
                 const container = node as FrameNode;
                 for (const childData of data.children) {
                     await this.reconstruct(childData, container, assetSource);
@@ -644,20 +739,28 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             if ("resize" in node) {
-                const width = data.width || 1;
-                const height = data.height || 1;
+                const width = typeof data.width === "number" ? data.width : node.width;
+                const height = typeof data.height === "number" ? data.height : node.height;
                 const rTransform = data.relativeTransform as T2x3 | undefined;
+                const shouldSkipResize = isSvgBackedGroup || preSizedNonAutoLayoutContainer;
+                const isDegenerateVectorLine =
+                    node.type === "VECTOR" &&
+                    (width <= 0.01 || height <= 0.01);
 
                 if (rTransform) {
                     applySizeAndTransform(node as SceneNode & LayoutMixin, {
-                        width,
-                        height,
+                        width: (isDegenerateVectorLine || shouldSkipResize) ? undefined : width,
+                        height: (isDegenerateVectorLine || shouldSkipResize) ? undefined : height,
                         relativeTransform: rTransform,
                         rotation: data.rotation
                     });
                 } else {
-                    node.resizeWithoutConstraints(width, height);
-                    node.rotation = data.rotation || 0;
+                    if (!isDegenerateVectorLine && !shouldSkipResize) {
+                        const safeWidth = Math.max(width, 0.01);
+                        const safeHeight = node.type === "LINE" ? 0 : Math.max(height, 0.01);
+                        node.resizeWithoutConstraints(safeWidth, safeHeight);
+                    }
+                    node.rotation = data.rotation ?? 0;
                     if ("layoutPositioning" in node && node.layoutPositioning !== 'AUTO') {
                         node.x = data.x !== undefined ? data.x : 0;
                         node.y = data.y !== undefined ? data.y : 0;
@@ -670,23 +773,73 @@ export class JsonReconstructor extends BaseComponent {
                 const frame = node as FrameNode;
                 // layoutMode was already set to allow absolute children, but we re-apply or apply rest here
                 if (frame.layoutMode !== "NONE") {
-                    const sizing = this.resolveAutoLayoutSizing(data.layout);
-                    // This is where "Hug" (AUTO) is applied, overriding the Fixed size from step 1
-                    if (sizing.primary) frame.primaryAxisSizingMode = sizing.primary;
-                    if (sizing.counter) frame.counterAxisSizingMode = sizing.counter;
-                    if (data.layout.alignment) {
-                        frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
-                        frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";
+                    if (frame.layoutMode === "HORIZONTAL" || frame.layoutMode === "VERTICAL") {
+                        const sizing = this.resolveAutoLayoutSizing(data.layout);
+                        // This is where "Hug" (AUTO) is applied, overriding the Fixed size from step 1
+                        if (sizing.primary) frame.primaryAxisSizingMode = sizing.primary;
+                        if (sizing.counter) frame.counterAxisSizingMode = sizing.counter;
+                        if (data.layout.alignment) {
+                            frame.primaryAxisAlignItems = data.layout.alignment.primary || "MIN";
+                            frame.counterAxisAlignItems = data.layout.alignment.counter || "MIN";
+                        }
+                        if (typeof data.layout.spacing === "number") frame.itemSpacing = data.layout.spacing;
+                        if (data.layout.layoutWrap && "layoutWrap" in frame) {
+                            try {
+                                frame.layoutWrap = data.layout.layoutWrap;
+                            } catch (_err) { /* noop */ }
+                        }
+                        if (typeof data.layout.counterAxisSpacing === "number" && "counterAxisSpacing" in frame) {
+                            try {
+                                frame.counterAxisSpacing = data.layout.counterAxisSpacing;
+                            } catch (_err) { /* noop */ }
+                        }
+                        if (data.layout.counterAxisAlignContent && "counterAxisAlignContent" in frame) {
+                            try {
+                                frame.counterAxisAlignContent = data.layout.counterAxisAlignContent;
+                            } catch (_err) { /* noop */ }
+                        }
                     }
-                    frame.itemSpacing = data.layout.spacing || 0;
                     if (data.layout.padding) {
-                        frame.paddingTop = data.layout.padding.top || 0;
-                        frame.paddingRight = data.layout.padding.right || 0;
-                        frame.paddingBottom = data.layout.padding.bottom || 0;
-                        frame.paddingLeft = data.layout.padding.left || 0;
+                        frame.paddingTop = data.layout.padding.top ?? 0;
+                        frame.paddingRight = data.layout.padding.right ?? 0;
+                        frame.paddingBottom = data.layout.padding.bottom ?? 0;
+                        frame.paddingLeft = data.layout.padding.left ?? 0;
                     }
                     if (data.layout.itemReverseZIndex !== undefined) frame.itemReverseZIndex = data.layout.itemReverseZIndex;
                     if (data.layout.strokesIncludedInLayout !== undefined) frame.strokesIncludedInLayout = data.layout.strokesIncludedInLayout;
+
+                    if (frame.layoutMode === "GRID") {
+                        if (typeof data.layout.gridRowCount === "number") {
+                            try { frame.gridRowCount = data.layout.gridRowCount; } catch (_err) { /* noop */ }
+                        }
+                        if (typeof data.layout.gridColumnCount === "number") {
+                            try { frame.gridColumnCount = data.layout.gridColumnCount; } catch (_err) { /* noop */ }
+                        }
+                        if (typeof data.layout.gridRowGap === "number") {
+                            try { frame.gridRowGap = data.layout.gridRowGap; } catch (_err) { /* noop */ }
+                        }
+                        if (typeof data.layout.gridColumnGap === "number") {
+                            try { frame.gridColumnGap = data.layout.gridColumnGap; } catch (_err) { /* noop */ }
+                        }
+                        if (Array.isArray(data.layout.gridRowSizes)) {
+                            data.layout.gridRowSizes.forEach((size, idx) => {
+                                if (!frame.gridRowSizes[idx]) return;
+                                try {
+                                    if (size.type) frame.gridRowSizes[idx].type = size.type;
+                                    if (typeof size.value === "number") frame.gridRowSizes[idx].value = size.value;
+                                } catch (_err) { /* noop */ }
+                            });
+                        }
+                        if (Array.isArray(data.layout.gridColumnSizes)) {
+                            data.layout.gridColumnSizes.forEach((size, idx) => {
+                                if (!frame.gridColumnSizes[idx]) return;
+                                try {
+                                    if (size.type) frame.gridColumnSizes[idx].type = size.type;
+                                    if (typeof size.value === "number") frame.gridColumnSizes[idx].value = size.value;
+                                } catch (_err) { /* noop */ }
+                            });
+                        }
+                    }
                 }
             }
 
@@ -728,6 +881,72 @@ export class JsonReconstructor extends BaseComponent {
                         (node as LayoutMixin).layoutPositioning = data.layoutPositioning;
                     } catch (e) {
                         console.warn("Failed to set layoutPositioning", e);
+                    }
+                }
+            }
+
+            const parentIsAutoLayout = !!(node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
+            const hasReliableSizingConvention = data.layout?.sizingConvention === "PHYSICAL_AXES_V1";
+            const shouldApplyLayoutSizingShorthand =
+                node.type === "TEXT" ||
+                hasReliableSizingConvention ||
+                (data.layoutAlign === undefined && data.layoutGrow === undefined);
+            if (shouldApplyLayoutSizingShorthand) {
+                if ("layoutSizingHorizontal" in node && data.layoutSizingHorizontal) {
+                    if (data.layoutSizingHorizontal !== "FILL" || parentIsAutoLayout) {
+                        try { (node as LayoutMixin).layoutSizingHorizontal = data.layoutSizingHorizontal; } catch (_err) { /* noop */ }
+                    }
+                }
+                if ("layoutSizingVertical" in node && data.layoutSizingVertical) {
+                    if (data.layoutSizingVertical !== "FILL" || parentIsAutoLayout) {
+                        try { (node as LayoutMixin).layoutSizingVertical = data.layoutSizingVertical; } catch (_err) { /* noop */ }
+                    }
+                }
+            }
+            const parentIsGrid = !!(node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode === "GRID");
+            if (parentIsGrid && "gridRowSpan" in node && typeof data.gridRowSpan === "number") {
+                try { (node as LayoutMixin).gridRowSpan = data.gridRowSpan; } catch (_err) { /* noop */ }
+            }
+            if (parentIsGrid && "gridColumnSpan" in node && typeof data.gridColumnSpan === "number") {
+                try { (node as LayoutMixin).gridColumnSpan = data.gridColumnSpan; } catch (_err) { /* noop */ }
+            }
+
+            // Absolute auto-layout children need transform reapplied after layoutPositioning is set.
+            if (parentIsAutoLayout && data.layoutPositioning === "ABSOLUTE" && "resize" in node) {
+                const width = typeof data.width === "number" ? data.width : node.width;
+                const height = typeof data.height === "number" ? data.height : node.height;
+                const rTransform = data.relativeTransform as T2x3 | undefined;
+                const isDegenerateVectorLine =
+                    node.type === "VECTOR" &&
+                    (width <= 0.01 || height <= 0.01);
+                if (rTransform) {
+                    applySizeAndTransform(node as SceneNode & LayoutMixin, {
+                        width: isDegenerateVectorLine ? undefined : width,
+                        height: isDegenerateVectorLine ? undefined : height,
+                        relativeTransform: rTransform,
+                        rotation: data.rotation
+                    });
+                } else {
+                    if (!isDegenerateVectorLine) {
+                        const safeWidth = Math.max(width, 0.01);
+                        const safeHeight = node.type === "LINE" ? 0 : Math.max(height, 0.01);
+                        node.resizeWithoutConstraints(safeWidth, safeHeight);
+                    }
+                    if (typeof data.x === "number") node.x = data.x;
+                    if (typeof data.y === "number") node.y = data.y;
+                    if (typeof data.rotation === "number") node.rotation = data.rotation;
+                }
+            }
+
+            // Final geometry guard for flattened SVG vectors:
+            // Some SVG imports can still report tighter bounds after transform.
+            // Enforce captured width/height exactly when available.
+            if (isSvgBackedVector && node.type === "VECTOR" && "resizeWithoutConstraints" in node) {
+                if (typeof data.width === "number" && typeof data.height === "number") {
+                    const deltaW = Math.abs(node.width - data.width);
+                    const deltaH = Math.abs(node.height - data.height);
+                    if (deltaW > 0.1 || deltaH > 0.1) {
+                        node.resizeWithoutConstraints(Math.max(data.width, 0.01), Math.max(data.height, 0.01));
                     }
                 }
             }
