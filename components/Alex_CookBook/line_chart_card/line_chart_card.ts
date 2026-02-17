@@ -84,6 +84,8 @@ export class line_chart_card extends BaseComponent {
                 primaryAxisAlignItems: "SPACE_BETWEEN",
                 counterAxisAlignItems: "CENTER",
                 layoutAlign: "STRETCH",
+                primaryAxisSizingMode: "FIXED", // Fill width (when layoutAlign is STRETCH in vertical parent)
+                counterAxisSizingMode: "AUTO",  // Hug height
                 fills: []
             }, [
                 createFrame("Title Stack", {

@@ -333,6 +333,7 @@ export { Manchester_City } from "./Football_Crests/Manchester_City/Manchester_Ci
 export { Manchester_United } from "./Football_Crests/Manchester_United/Manchester_United";
 export { Marseille } from "./Football_Crests/Marseille/Marseille";
 export { metric_card } from "./Alex_CookBook/metric_card/metric_card";
+export { metric_card_design1 } from "./captures/metric_card_design1/metric_card_design1";
 export { Midtjylland } from "./Football_Crests/Midtjylland/Midtjylland";
 export { Milan } from "./Football_Crests/Milan/Milan";
 export { Molde } from "./Football_Crests/Molde/Molde";
@@ -446,6 +447,7 @@ export { Sporting_CP } from "./Football_Crests/Sporting_CP/Sporting_CP";
 export { Sttutgart } from "./Football_Crests/Sttutgart/Sttutgart";
 export { Sturm_Graz } from "./Football_Crests/Sturm_Graz/Sturm_Graz";
 export { SubSection_collapsed } from "./UEFA_Academy_online/SubSection/SubSection_collapsed";
+export { table } from "./Alex_CookBook/table/table";
 export { TableStat } from "./Newsletter/TableStat";
 export { tabs } from "./Alex_CookBook/tabs/tabs";
 export { TitleBar_withCTA } from "./UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";

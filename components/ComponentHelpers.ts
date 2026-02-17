@@ -14,15 +14,15 @@ const DEFAULT_PROPS = {
 };
 
 const DEFAULT_LAYOUT_PROPS = {
-    width: 100,
-    height: 100,
+    width: undefined,
+    height: undefined,
     itemSpacing: 0,
     paddingTop: 0,
     paddingRight: 0,
     paddingBottom: 0,
     paddingLeft: 0,
-    counterAxisSizingMode: "FIXED",
-    primaryAxisSizingMode: "FIXED"
+    counterAxisSizingMode: "AUTO",
+    primaryAxisSizingMode: "AUTO"
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

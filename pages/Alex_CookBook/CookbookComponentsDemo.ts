@@ -25,7 +25,8 @@ import { line_chart_card } from "../../components/Alex_CookBook/line_chart_card/
 import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
-import { Features___store, Features___stats, Lucide_users } from "../../components/index";
+import { table } from "../../components/Alex_CookBook/table/table";
+import { Features___store, Features___stats, Lucide_users, Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings } from "../../components/index";
 
 export class CookbookComponentsDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -40,15 +41,17 @@ export class CookbookComponentsDemo extends BaseComponent {
         root.name = "Alex CookBook - Component Showcase";
         root.layoutMode = "VERTICAL";
         root.itemSpacing = 64; // Generous section spacing
-        root.paddingTop = 100;
-        root.paddingLeft = 120;
-        root.paddingRight = 120;
-        root.paddingBottom = 100;
-        root.primaryAxisSizingMode = "AUTO";
-        root.counterAxisSizingMode = "FIXED";
+        root.paddingTop = 80;
+        root.paddingLeft = 80;
+        root.paddingRight = 80;
+        root.paddingBottom = 80;
+        root.counterAxisSizingMode = "FIXED"; // Fixed width for showcase
+        root.resize(1680, 100); // Set fixed width first
+
+        root.primaryAxisSizingMode = "AUTO"; // Then set height to Hug
         root.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.98, b: 0.99 } }];
 
-        root.resize(1680, 5000); // Temporary large height, will hug later
+        root.layoutAlign = "STRETCH";
         root.clipsContent = false;
 
         // --- IDENTITY ---
@@ -175,6 +178,15 @@ export class CookbookComponentsDemo extends BaseComponent {
             sizeRow.appendChild(await btn.create({ label: "Medium Button", size: "medium" }));
             sizeRow.appendChild(await btn.create({ label: "Large Button", size: "large" }));
             container.appendChild(sizeRow);
+
+            // Icons Showcase Row
+            const iconRow = this.createRow();
+            iconRow.appendChild(await btn.create({ label: "Add Recipe", variant: "primary", frontIcon: Lucide_plus }));
+            iconRow.appendChild(await btn.create({ label: "Select Option", variant: "secondary", backIcon: Lucide_chevron_down }));
+            iconRow.appendChild(await btn.create({ label: "Continue", variant: "primary", backIcon: Lucide_arrow_right }));
+            iconRow.appendChild(await btn.create({ label: "Settings", variant: "ghost", frontIcon: Action___settings }));
+            iconRow.appendChild(await btn.create({ label: "Disabled Action", state: "disabled", frontIcon: Lucide_plus }));
+            container.appendChild(iconRow);
 
             // Full Width Button
             container.appendChild(await btn.create({ label: "Full Width Primary Button", width: "fill" }));
@@ -338,143 +350,170 @@ export class CookbookComponentsDemo extends BaseComponent {
         });
 
         // --- DATA VISUALIZATION ---
+        // --- DATA VISUALIZATION ---
         await this.addSection(root, "Data Visualization", async (container) => {
             // Dashboard Container for all cards (Metrics + Charts)
             const dashboard = figma.createFrame();
             dashboard.name = "Dashboard Grid";
-            dashboard.layoutMode = "HORIZONTAL";
-            dashboard.layoutWrap = "WRAP"; // Wraps items to next row
-            dashboard.itemSpacing = 32; // Horizontal gap
-            dashboard.counterAxisSpacing = 32; // Vertical gap
-            dashboard.primaryAxisAlignItems = "MIN";
-            dashboard.counterAxisAlignItems = "MIN";
-            dashboard.layoutAlign = "STRETCH"; // Fill the parent width
-            dashboard.primaryAxisSizingMode = "FIXED"; // Needed for wrapping to trigger against the parent width
-            dashboard.counterAxisSizingMode = "AUTO"; // Grow height as needed
+            dashboard.layoutMode = "VERTICAL";
+            dashboard.itemSpacing = 24;
+            dashboard.layoutAlign = "STRETCH";
+            dashboard.primaryAxisSizingMode = "AUTO";
+            dashboard.counterAxisSizingMode = "FIXED";
             dashboard.fills = [];
             dashboard.clipsContent = false;
 
             const metric = new metric_card();
             const chart = new line_chart_card();
 
-            // Add Metric Cards (Reference Style)
-            dashboard.appendChild(await metric.create({
-                label: "Active Users",
-                value: "436",
-                period: "Month to Date",
-                trend: "191%",
-                trendValue: "150",
-                trendDirection: "up",
-                isFavorite: true,
-                platformName: "Google Analytics 4",
-                sparklineData: [0.2, 0.3, 0.25, 0.4, 0.35, 0.5, 0.45],
-                color: { r: 0.1, g: 0.8, b: 0.5 } // Green
+            // 3x3 Grid Layout - Varied Data
+            const gridData = [
+                { label: "Daily Active Users", value: "8,241", trend: "+12.5%", trendValue: "(+842)", period: "Last 24h", color: { r: 0.1, g: 0.8, b: 0.4 }, platform: "Google Analytics", icon: Lucide_users, data: [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7] },
+                { label: "Gross Revenue", value: "$42,500", trend: "+8.2%", trendValue: "(+$3.2k)", period: "Month to Date", color: { r: 0.2, g: 0.5, b: 1.0 }, platform: "Stripe Billing", icon: Action___settings, data: [0.1, 0.2, 0.4, 0.35, 0.6, 0.55, 0.9] },
+                { label: "Churn Rate", value: "2.4%", trend: "-1.2%", trendValue: "(-0.5%)", period: "Last 30 Days", color: { r: 0.9, g: 0.2, b: 0.3 }, platform: "Customer Success", icon: Features___stats, data: [0.8, 0.7, 0.6, 0.65, 0.5, 0.4, 0.35] },
+                { label: "Avg. Session Time", value: "4m 32s", trend: "+15%", trendValue: "(+42s)", period: "Last 7 Days", color: { r: 1.0, g: 0.6, b: 0.0 }, platform: "Mixpanel", icon: Lucide_users, data: [0.3, 0.35, 0.5, 0.45, 0.7, 0.65, 0.8] },
+                { label: "Support Tickets", value: "142", trend: "-5.4%", trendValue: "(-8)", period: "Open Tickets", color: { r: 0.6, g: 0.3, b: 0.9 }, platform: "Zendesk", icon: Action___settings, data: [0.5, 0.4, 0.45, 0.3, 0.35, 0.25, 0.2] },
+                { label: "New Signups", value: "1,452", trend: "+22%", trendValue: "(+280)", period: "Regional Growth", color: { r: 0.0, g: 0.7, b: 0.8 }, platform: "Internal Auth", icon: Features___stats, data: [0.1, 0.3, 0.2, 0.5, 0.45, 0.8, 0.95] },
+                { label: "Server Latency", value: "24ms", trend: "Stable", trendValue: "(0ms)", period: "Global Avg.", color: { r: 0.5, g: 0.5, b: 0.6 }, platform: "Cloudfront", icon: Action___settings, data: [0.2, 0.21, 0.2, 0.19, 0.2, 0.2, 0.2] },
+                { label: "Ad Conversion", value: "3.8%", trend: "+0.4%", trendValue: "(+12%)", period: "FB Campaigns", color: { r: 0.2, g: 0.4, b: 0.8 }, platform: "Meta Ads", icon: Lucide_users, data: [0.4, 0.5, 0.45, 0.6, 0.55, 0.75, 0.85] },
+                { label: "API Error Rate", value: "0.04%", trend: "-0.01%", trendValue: "(-20%)", period: "Production", color: { r: 0.8, g: 0.1, b: 0.2 }, platform: "Sentry", icon: Features___stats, data: [0.4, 0.3, 0.35, 0.2, 0.15, 0.1, 0.05] }
+            ];
+
+            for (let r = 0; r < 3; r++) {
+                const row = figma.createFrame();
+                row.name = `Row ${r + 1}`;
+                row.layoutMode = "HORIZONTAL";
+                row.itemSpacing = 24;
+                row.layoutAlign = "STRETCH";
+                row.primaryAxisSizingMode = "FIXED"; // Stretch
+                row.counterAxisSizingMode = "AUTO"; // Hug
+                row.fills = [];
+                row.clipsContent = false; // Show shadows!
+                dashboard.appendChild(row);
+
+                for (let c = 0; c < 3; c++) {
+                    const idx = r * 3 + c;
+                    const data = gridData[idx];
+
+                    row.appendChild(await metric.create({
+                        label: data.label,
+                        value: data.value,
+                        trend: data.trend,
+                        trendValue: data.trendValue,
+                        period: data.period,
+                        color: data.color,
+                        platformName: data.platform,
+                        platformIcon: data.icon,
+                        sparklineData: data.data,
+                        width: "fill"
+                    }));
+                }
+            }
+
+            // Line Chart and Compact Metrics below the grid
+            const secondaryRow = figma.createFrame();
+            secondaryRow.name = "Secondary Row";
+            secondaryRow.layoutMode = "HORIZONTAL";
+            secondaryRow.itemSpacing = 24;
+            secondaryRow.layoutAlign = "STRETCH";
+            secondaryRow.primaryAxisSizingMode = "FIXED";
+            secondaryRow.counterAxisSizingMode = "AUTO";
+            secondaryRow.fills = [];
+            secondaryRow.clipsContent = false; // Show shadows!
+            dashboard.appendChild(secondaryRow);
+
+            secondaryRow.appendChild(await chart.create({
+                title: "Weekly Engagement",
+                dataPoints: [0.3, 0.4, 0.2, 0.6, 0.5, 0.8, 0.75],
+                color: { r: 0.1, g: 0.6, b: 0.9 }
+            }));
+            secondaryRow.appendChild(await chart.create({
+                title: "Conversion Pulse",
+                dataPoints: [0.1, 0.25, 0.2, 0.4, 0.35, 0.8, 0.9],
+                color: { r: 0.8, g: 0.2, b: 0.4 }
             }));
 
-            dashboard.appendChild(await metric.create({
-                label: "Engaged Sessions",
-                value: "488",
-                period: "Month to Date",
-                trend: "297%",
-                trendValue: "123",
-                trendDirection: "up",
-                isFavorite: true,
-                platformName: "Google Analytics 4",
-                sparklineData: [0.3, 0.4, 0.35, 0.5, 0.4, 0.6, 0.5],
-                color: { r: 0.1, g: 0.8, b: 0.5 } // Green
+            const compactCol = figma.createFrame();
+            compactCol.name = "Compact Metrics Column";
+            compactCol.layoutMode = "VERTICAL";
+            compactCol.itemSpacing = 16;
+            compactCol.layoutGrow = 1;
+            compactCol.primaryAxisSizingMode = "AUTO";
+            compactCol.counterAxisSizingMode = "FIXED";
+            compactCol.fills = [];
+            compactCol.clipsContent = false; // Show shadows!
+            secondaryRow.appendChild(compactCol);
+
+            compactCol.appendChild(await metric.create({
+                variant: "compact", width: "fill", label: "Store Visits", value: "1,240",
+                icon: Features___store, color: { r: 0.4, g: 0.7, b: 0.2 }, chartType: "line",
+                sparklineData: [0.2, 0.3, 0.25, 0.4, 0.5, 0.45, 0.6]
             }));
-
-            dashboard.appendChild(await metric.create({
-                label: "Impressions",
-                value: "22,321",
-                period: "Month to Date",
-                trend: "5%",
-                trendValue: "23,545",
-                trendDirection: "down",
-                isFavorite: true,
-                platformName: "Instagram Business",
-                sparklineData: [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.35],
-                color: { r: 0.95, g: 0.25, b: 0.25 } // Red
-            }));
-
-            dashboard.appendChild(await metric.create({
-                label: "Total Followers",
-                value: "3,062",
-                period: "Month to Date",
-                trendDirection: "neutral", // Blue line
-                isFavorite: true,
-                platformName: "Instagram Business",
-                sparklineData: [0.1, 0.2, 0.25, 0.3, 0.4, 0.45, 0.5],
-                color: { r: 0.2, g: 0.5, b: 1 } // Blue
-            }));
-
-            // --- Compact Metric Cards Row ---
-            const compactRow = figma.createFrame();
-            compactRow.name = "Compact Cards Row";
-            compactRow.layoutMode = "HORIZONTAL";
-            compactRow.itemSpacing = 16;
-            compactRow.layoutAlign = "STRETCH";
-            compactRow.primaryAxisSizingMode = "FIXED";
-            compactRow.counterAxisSizingMode = "AUTO";
-            compactRow.fills = [];
-
-            // 1. Basket (All Spendings)
-            compactRow.appendChild(await metric.create({
-                variant: "compact",
-                icon: Features___store,
-                label: "All Spendings",
-                value: "$574.34",
-                chartType: "none",
-                color: { r: 0.4, g: 0.3, b: 1 } // Purple
-            }));
-
-            // 2. Bar Chart (Spent this month)
-            compactRow.appendChild(await metric.create({
-                variant: "compact",
-                label: "Spent this month",
-                value: "$682.5",
-                chartType: "bar",
-                color: { r: 0.3, g: 0.2, b: 0.9 }, // Deep Purple
-                sparklineData: [0.4, 0.6, 0.5, 0.8, 0.3, 0.9, 0.2]
-            }));
-
-            // 3. Stats (Earnings)
-            compactRow.appendChild(await metric.create({
-                variant: "compact",
-                icon: Features___stats,
-                label: "Earnings",
-                value: "$350.40",
-                chartType: "none",
-                color: { r: 0.3, g: 0.4, b: 0.9 } // Blue-ish Purple
-            }));
-
-            // 4. User + Line (New clients)
-            compactRow.appendChild(await metric.create({
-                variant: "compact",
-                icon: Lucide_users,
-                label: "New clients",
-                value: "321",
-                chartType: "line",
-                color: { r: 0.5, g: 0.4, b: 0.9 }, // Light Purple
-                sparklineData: [0.2, 0.3, 0.2, 0.5, 0.4, 0.8, 0.7]
-            }));
-
-            dashboard.appendChild(compactRow);
-
-            // Add Chart Cards (Keeping existing ones for variety)
-            dashboard.appendChild(await chart.create({
-                title: "Weekly Traffic",
-                dataPoints: [0.1, 0.4, 0.3, 0.7, 0.5, 0.8, 0.6],
-                color: { r: 0.05, g: 0.75, b: 0.45 } // Emerald Green
-            }));
-
-            dashboard.appendChild(await chart.create({
-                title: "Server Load",
-                dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.8, 0.9],
-                color: { r: 0.95, g: 0.2, b: 0.2 } // Vibrant Red
+            compactCol.appendChild(await metric.create({
+                variant: "compact", width: "fill", label: "Referrals", value: "854",
+                icon: Lucide_users, color: { r: 0.9, g: 0.4, b: 0.1 }, chartType: "bar",
+                sparklineData: [0.1, 0.2, 0.4, 0.6, 0.5, 0.8, 0.7]
             }));
 
             container.appendChild(dashboard);
+        });
+
+        // --- TABLES ---
+        await this.addSection(root, "Tables", async (container) => {
+            const t = new table();
+
+            // 1. Simple Table
+            const simpleTable = await t.create({
+                width: "fill",
+                columns: [
+                    { label: "Product", key: "name", width: "fill" },
+                    { label: "Category", key: "category", width: 200 },
+                    { label: "Price", key: "price", width: 120, align: "RIGHT" },
+                    { label: "Stock", key: "stock", width: 120, align: "CENTER" }
+                ],
+                data: [
+                    { name: "Wireless Headphones", category: "Electronics", price: "$199.99", stock: "45" },
+                    { name: "Smart Watch", category: "Wearables", price: "$249.00", stock: "12" },
+                    { name: "Bluetooth Speaker", category: "Electronics", price: "$89.50", stock: "88" }
+                ]
+            });
+            container.appendChild(simpleTable);
+
+            // 2. User Table with Badges
+            const userTable = await t.create({
+                width: "fill",
+                columns: [
+                    { label: "User", key: "user", width: "fill" },
+                    { label: "Email", key: "email", width: 300 },
+                    { label: "Role", key: "role", width: 150 },
+                    { label: "Status", key: "status", width: 150, type: "badge" }
+                ],
+                data: [
+                    { user: "Alex Calcan", email: "alex@example.com", role: "Admin", status: "Active" },
+                    { user: "John Doe", email: "john@doe.com", role: "Editor", status: "Pending" },
+                    { user: "Sarah Smith", email: "sarah@design.com", role: "Designer", status: "Inactive" },
+                    { user: "Mike Ross", email: "mike@law.com", role: "Member", status: "Active" }
+                ]
+            });
+            container.appendChild(userTable);
+
+            // 3. Order Table with Checkboxes
+            const orderTable = await t.create({
+                width: "fill",
+                columns: [
+                    { label: "Selected", key: "selected", width: 80, type: "checkbox", align: "CENTER" },
+                    { label: "Order ID", key: "id", width: 150 },
+                    { label: "Customer", key: "customer", width: "fill" },
+                    { label: "Date", key: "date", width: 180 },
+                    { label: "Total", key: "total", width: 120, align: "RIGHT" }
+                ],
+                data: [
+                    { selected: true, id: "#ORD-9921", customer: "Apple Inc.", date: "Oct 24, 2023", total: "$2,450.00" },
+                    { selected: false, id: "#ORD-9922", customer: "Google Cloud", date: "Oct 25, 2023", total: "$1,200.00" },
+                    { selected: true, id: "#ORD-9923", customer: "Microsoft Corp.", date: "Oct 26, 2023", total: "$5,630.00" }
+                ]
+            });
+            container.appendChild(orderTable);
         });
 
         root.x = props.x ?? 0;
