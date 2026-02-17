@@ -313,7 +313,7 @@ export abstract class BaseComponent {
       if (layoutMode === "NONE") {
         try {
           const safeW = Math.max(def.layoutProps.width, 0.01);
-          const safeH = node.type === "LINE" ? 0 : Math.max(def.layoutProps.height, 0.01);
+          const safeH = Math.max(def.layoutProps.height, 0.01);
           node.resizeWithoutConstraints(safeW, safeH);
           preSizedNonAutoLayoutContainer = true;
         } catch (preSizeErr) {

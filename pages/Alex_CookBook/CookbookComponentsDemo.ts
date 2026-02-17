@@ -26,7 +26,7 @@ import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
 import { table } from "../../components/Alex_CookBook/table/table";
-import { metric_card_design1 } from "../../components/captures/metric_card_design1/metric_card_design1";
+import { metric_card_design1 } from "../../components/Alex_CookBook/metric_card_design1/metric_card_design1";
 
 import { Features___store, Features___stats, Lucide_users, Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings } from "../../components/index";
 
@@ -525,8 +525,43 @@ export class CookbookComponentsDemo extends BaseComponent {
         // --- DESIGN CAPTURES ---
         await this.addSection(root, "Design Captures", async (container) => {
             const design1 = new metric_card_design1();
-            const design1Node = await design1.create({});
-            container.appendChild(design1Node);
+
+            const row = this.createRow();
+            row.layoutAlign = "STRETCH";
+
+            // Default (Up Trend)
+            row.appendChild(await design1.create({
+                title: "Server Latency",
+                value: "24ms",
+                period: "Global Avg.",
+                trendDirection: "up",
+                trendValue: "12%",
+                width: 490
+            }));
+
+            // Down Trend
+            row.appendChild(await design1.create({
+                title: "Error Rate",
+                value: "0.02%",
+                period: "Last Hour",
+                trendDirection: "down",
+                trendValue: "0.05%",
+                width: 490,
+                dataPoints: [0.8, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+            }));
+
+            // Neutral/Stable
+            row.appendChild(await design1.create({
+                title: "CPU Usage",
+                value: "45%",
+                period: "Cluster B",
+                trendDirection: "neutral",
+                trendValue: "0%",
+                width: 490,
+                dataPoints: [0.4, 0.45, 0.4, 0.45, 0.4, 0.45, 0.4]
+            }));
+
+            container.appendChild(row);
         });
 
         root.x = props.x ?? 0;

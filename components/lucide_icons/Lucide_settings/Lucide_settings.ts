@@ -15,7 +15,9 @@ export class Lucide_settings extends BaseComponent {
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "GRID",
+                "gridRowCount": 1,
+                "gridColumnCount": 1
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
@@ -30,7 +32,7 @@ export class Lucide_settings extends BaseComponent {
                         "strokes": [{ "type": "SOLID", "color": color }]
                     },
                     "layoutProps": {
-                        "width": iconSize, 
+                        "width": iconSize,
                         "height": iconSize
                     },
                     "svgContent": SVG_CONTENT,
@@ -38,13 +40,13 @@ export class Lucide_settings extends BaseComponent {
                         if (node.type === "FRAME") {
                             // Ensure the SVG wrapper doesn't clip its own strokes
                             node.clipsContent = false;
-                            
+
                             // Propagate styles to all paths and set SCALE constraints
                             for (const child of node.children) {
                                 if ("constraints" in child) {
                                     child.constraints = { horizontal: "SCALE", vertical: "SCALE" };
                                 }
-                                
+
                                 // Apply stroke properties to vector children
                                 if ("strokes" in child && nodeProps.strokes) {
                                     child.strokes = nodeProps.strokes;
@@ -52,12 +54,12 @@ export class Lucide_settings extends BaseComponent {
                                 if ("strokeWeight" in child && nodeProps.strokeWeight) {
                                     child.strokeWeight = nodeProps.strokeWeight;
                                 }
-                                
+
                                 // Ensure standard Lucide rounded look
                                 if ("strokeJoin" in child) (child as any).strokeJoin = "ROUND";
                                 if ("strokeCap" in child) (child as any).strokeCap = "ROUND";
                             }
-                            
+
                             // Remove strokes from the wrapper frame itself to avoid "contours"
                             node.strokes = [];
                         }
