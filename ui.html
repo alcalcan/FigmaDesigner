@@ -587,7 +587,7 @@
                 if (!defaultName.endsWith('.pptx')) defaultName += '.pptx';
 
                 // 1. Ask Bridge to open System Save Dialog
-                const pathResponse = await fetch('http://127.0.0.1:3001/select-save-path', {
+                const pathResponse = await fetch('http://127.0.0.1:4000/select-save-path', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ defaultName: defaultName })
@@ -614,7 +614,7 @@
                     // 2. Generate and Save to the selected path
                     const base64Ctx = await pptInstance.write('base64');
 
-                    const saveResponse = await fetch('http://127.0.0.1:3001/save-ppt', {
+                    const saveResponse = await fetch('http://127.0.0.1:4000/save-ppt', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -695,7 +695,7 @@
                 const base64Ctx = await pendingPptGenerator.write('base64');
 
                 // Send to Bridge
-                const response = await fetch('http://127.0.0.1:3001/save-ppt', {
+                const response = await fetch('http://127.0.0.1:4000/save-ppt', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -751,7 +751,7 @@
                         const base64Data = reader.result.split(',')[1]; // Remove data URL prefix
 
                         try {
-                            const response = await fetch('http://127.0.0.1:3001/import-ppt', {
+                            const response = await fetch('http://127.0.0.1:4000/import-ppt', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
@@ -1093,7 +1093,7 @@
                     return String(arg);
                 }).join(' ');
 
-                fetch('http://127.0.0.1:3001/log', {
+                fetch('http://127.0.0.1:4000/log', {
                     method: 'POST',
                     body: `[UI ${level.toUpperCase()}] ${message}`
                 }).catch(() => { }); // Ignore errors if bridge is down
@@ -1324,28 +1324,28 @@
 
             try {
                 if (files.length > 0) {
-                    await fetch('http://127.0.0.1:3001/batch-delete', {
+                    await fetch('http://127.0.0.1:4000/batch-delete', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ paths: files })
                     });
                 }
                 if (comps.length > 0) {
-                    await fetch('http://127.0.0.1:3001/batch-delete-components', {
+                    await fetch('http://127.0.0.1:4000/batch-delete-components', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ names: comps })
                     });
                 }
                 if (pages.length > 0) {
-                    await fetch('http://127.0.0.1:3001/batch-delete-pages', {
+                    await fetch('http://127.0.0.1:4000/batch-delete-pages', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ names: pages })
                     });
                 }
                 if (slides.length > 0) {
-                    await fetch('http://127.0.0.1:3001/batch-delete-components', {
+                    await fetch('http://127.0.0.1:4000/batch-delete-components', {
                         // Reuse component delete for slides as they are basically components
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1353,7 +1353,7 @@
                     });
                 }
                 if (presentations.length > 0) {
-                    await fetch('http://127.0.0.1:3001/batch-delete-components', {
+                    await fetch('http://127.0.0.1:4000/batch-delete-components', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ names: presentations })
@@ -1386,7 +1386,7 @@
             try {
                 for (const itemPath of items) {
                     const isProcedural = document.getElementById('procedural-gen-checkbox').checked;
-                    await fetch('http://127.0.0.1:3001/generate-from-json', {
+                    await fetch('http://127.0.0.1:4000/generate-from-json', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1533,7 +1533,7 @@
 
             try {
                 const response = await
-                    fetch(`http://127.0.0.1:3001/read?path=${encodeURIComponent(selectedFilePath)}`);
+                    fetch(`http://127.0.0.1:4000/read?path=${encodeURIComponent(selectedFilePath)}`);
                 if (!response.ok) {
                     showFeedback(generateSelectedBtn, "Generate Selected", "File Not Found!");
                     console.error(`Failed to read file: ${response.status} ${response.statusText}`);
@@ -1563,7 +1563,7 @@
                         try {
                             const fullAssetPath = dirPath ? `${dirPath}/${assetRef}` : assetRef;
                             const listRes = await
-                                fetch(`http://127.0.0.1:3001/read-asset?project=&path=${encodeURIComponent(fullAssetPath)}`);
+                                fetch(`http://127.0.0.1:4000/read-asset?project=&path=${encodeURIComponent(fullAssetPath)}`);
 
                             if (!listRes.ok) {
                                 console.warn(`[UI] Asset not found: ${fullAssetPath}`);
@@ -1602,7 +1602,7 @@
                 const isSimplified = simplifiedCodeCheckbox.checked;
                 const isProcedural = proceduralGenCheckbox.checked;
 
-                const response = await fetch('http://127.0.0.1:3001/generate-to-code', {
+                const response = await fetch('http://127.0.0.1:4000/generate-to-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1642,7 +1642,7 @@
             try {
                 const isSimplified = simplifiedCodeCheckbox.checked;
                 const isProcedural = proceduralGenCheckbox.checked;
-                const response = await fetch('http://127.0.0.1:3001/generate-folder-to-code', {
+                const response = await fetch('http://127.0.0.1:4000/generate-folder-to-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1700,7 +1700,7 @@
             selectedFolder = null;
 
             try {
-                const response = await fetch(`http://127.0.0.1:3001/list?t=${Date.now()}`);
+                const response = await fetch(`http://127.0.0.1:4000/list?t=${Date.now()}`);
                 if (!response.ok) throw new Error("Failed");
                 const { files } = await response.json();
 
@@ -1750,7 +1750,7 @@
             }
 
             try {
-                const response = await fetch(`http://127.0.0.1:3001/list-components?t=${Date.now()}`);
+                const response = await fetch(`http://127.0.0.1:4000/list-components?t=${Date.now()}`);
                 if (!response.ok) throw new Error("Failed");
                 const { components, pages, slides, presentations } = await response.json();
 
@@ -1881,7 +1881,7 @@
                         input.disabled = true;
                         input.style.opacity = '0.5';
                         try {
-                            const resp = await fetch('http://127.0.0.1:3001/move', {
+                            const resp = await fetch('http://127.0.0.1:4000/move', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
@@ -1928,8 +1928,8 @@
                     e.stopPropagation();
                     if (!confirm(`Delete ${item.name}?`)) return;
                     try {
-                        let url = item.type === 'file' ? 'http://127.0.0.1:3001/delete' :
-                            'http://127.0.0.1:3001/delete-component';
+                        let url = item.type === 'file' ? 'http://127.0.0.1:4000/delete' :
+                            'http://127.0.0.1:4000/delete-component';
                         let body = item.type === 'file' ? { path: item.fullPath } : { name: item.fullPath };
                         const resp = await fetch(url, {
                             method: 'POST',
@@ -2085,7 +2085,7 @@
                         // So deleting `item.project` deletes the whole project folder.
                         // If that's what we want? Yes, "Delete Folder".
                         try {
-                            const resp = await fetch('http://127.0.0.1:3001/delete', {
+                            const resp = await fetch('http://127.0.0.1:4000/delete', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ path: projName })
@@ -2105,7 +2105,7 @@
                         const itemType = firstItem ? firstItem.type : 'component';
 
                         try {
-                            const resp = await fetch('http://127.0.0.1:3001/delete-component-folder', {
+                            const resp = await fetch('http://127.0.0.1:4000/delete-component-folder', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ folder: projName, type: itemType })
@@ -2153,7 +2153,7 @@
 
             pollInterval = setInterval(async () => {
                 try {
-                    const response = await fetch('http://127.0.0.1:3001/poll');
+                    const response = await fetch('http://127.0.0.1:4000/poll');
                     const json = await response.json();
 
                     if (statusDot.className !== "dot active") {
@@ -2254,7 +2254,7 @@
                         const isSimplified = document.getElementById('process-checkbox').checked;
 
                         activeSaves++;
-                        fetch('http://127.0.0.1:3001/save-packet', {
+                        fetch('http://127.0.0.1:4000/save-packet', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -2291,7 +2291,7 @@
                     console.log(`[UI] Processing PNG packet: ${msg.packet.name}`);
                     const projectName = msg.projectName || "Default";
 
-                    const response = await fetch('http://127.0.0.1:3001/save-png', {
+                    const response = await fetch('http://127.0.0.1:4000/save-png', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -2339,7 +2339,7 @@
                             // Actually, let's just use a more robust way to track if it was a batch.
                             const isBatch = lastCapturedProject === "to_be_converted" || true; // Fallback to check
 
-                            await fetch('http://127.0.0.1:3001/generate-folder-to-code', {
+                            await fetch('http://127.0.0.1:4000/generate-folder-to-code', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
@@ -2391,7 +2391,7 @@
                         isClipboardCapture = false; // Reset flag
 
                         const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
-                        const response = await fetch('http://127.0.0.1:3001/generate-clipboard', {
+                        const response = await fetch('http://127.0.0.1:4000/generate-clipboard', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -2424,7 +2424,7 @@
                         return;
                     }
 
-                    const response = await fetch('http://127.0.0.1:3001/generate-code-preview', {
+                    const response = await fetch('http://127.0.0.1:4000/generate-code-preview', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

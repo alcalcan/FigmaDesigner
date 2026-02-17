@@ -26,6 +26,8 @@ import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
 import { table } from "../../components/Alex_CookBook/table/table";
+import { metric_card_design1 } from "../../components/captures/metric_card_design1/metric_card_design1";
+
 import { Features___store, Features___stats, Lucide_users, Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings } from "../../components/index";
 
 export class CookbookComponentsDemo extends BaseComponent {
@@ -518,6 +520,13 @@ export class CookbookComponentsDemo extends BaseComponent {
                 ]
             });
             container.appendChild(orderTable);
+        });
+
+        // --- DESIGN CAPTURES ---
+        await this.addSection(root, "Design Captures", async (container) => {
+            const design1 = new metric_card_design1();
+            const design1Node = await design1.create({});
+            container.appendChild(design1Node);
         });
 
         root.x = props.x ?? 0;

@@ -152,7 +152,7 @@ export class checkbox extends BaseComponent {
         const checkNode = await checkIcon.create({
           width: 12,
           height: 12,
-          strokeWeight: 3,
+          strokeWeight: 1.5,
           color: { r: 1, g: 1, b: 1 }
         });
         checkNode.name = "Checkmark Icon";
