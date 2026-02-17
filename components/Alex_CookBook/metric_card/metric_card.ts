@@ -50,7 +50,7 @@ export class metric_card extends BaseComponent {
         const data = props.sparklineData || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7];
 
         // -- Render Helper: Line Chart --
-        const renderLineChart = (targetHeight: number = 40) => {
+        const renderLineChart = (targetHeight: number = 40, fillHeight: boolean = false) => {
             const width = 240; // Reference width for path generation
             const step = width / (data.length - 1);
             let pathData = `M 0 ${targetHeight - (data[0] * targetHeight)}`;
@@ -68,19 +68,20 @@ export class metric_card extends BaseComponent {
                 layoutMode: "NONE",
                 fills: [],
                 layoutProps: {
-                    height: targetHeight,
+                    height: fillHeight ? undefined : targetHeight,
                     layoutAlign: "STRETCH",
+                    layoutGrow: fillHeight ? 1 : 0,
                     parentIsAutoLayout: true,
-                    counterAxisSizingMode: "FIXED" // Container is fixed height for charting
+                    counterAxisSizingMode: fillHeight ? "FIXED" : "FIXED" // Container is fixed height for charting relative coords, but frame itself can GROW
                 }
             }, [
                 // Area Fill - Using viewBox and stretch to make it responsive
                 createVector("Area Fill", `<svg width="100%" height="100%" viewBox="0 0 ${width} ${targetHeight}" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="${areaData}" fill="rgb(${Math.round(chartColor.r * 255)},${Math.round(chartColor.g * 255)},${Math.round(chartColor.b * 255)})" fill-opacity="0.1"/></svg>`, {
-                    layoutProps: { width: undefined, height: targetHeight, layoutAlign: "STRETCH", layoutPositioning: "AUTO" }
+                    layoutProps: { width: undefined, height: undefined, layoutAlign: "STRETCH", layoutPositioning: "AUTO", constraints: { horizontal: "STRETCH", vertical: "STRETCH" } }
                 }),
                 // Line
                 createVector("Sparkline Path", `<svg width="100%" height="100%" viewBox="0 0 ${width} ${targetHeight}" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="${pathData}" stroke="rgb(${Math.round(chartColor.r * 255)},${Math.round(chartColor.g * 255)},${Math.round(chartColor.b * 255)})" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`, {
-                    layoutProps: { width: undefined, height: targetHeight, layoutAlign: "STRETCH", layoutPositioning: "AUTO" } // Removed marginTop hack
+                    layoutProps: { width: undefined, height: undefined, layoutAlign: "STRETCH", layoutPositioning: "AUTO", constraints: { horizontal: "STRETCH", vertical: "STRETCH" } }
                 })
             ]);
         };
@@ -146,14 +147,15 @@ export class metric_card extends BaseComponent {
                     layoutMode: "HORIZONTAL",
                     primaryAxisAlignItems: "CENTER",
                     counterAxisAlignItems: "CENTER",
+                    clipsContent: false, // Prevent icon cropping
                     layoutProps: { width: 44, height: 44 }
                 }, [
                     {
                         type: "COMPONENT",
                         component: props.icon,
                         name: "Icon",
-                        props: { width: 22, height: 22, color: chartColor, strokeWeight: 2 },
-                        layoutProps: { width: 22, height: 22, parentIsAutoLayout: true }
+                        props: { width: 24, height: 24, color: chartColor, strokeWeight: 2 },
+                        layoutProps: { width: 24, height: 24, parentIsAutoLayout: true }
                     }
                 ]) : null,
 
@@ -176,7 +178,7 @@ export class metric_card extends BaseComponent {
 
                 // 3. Chart
                 props.chartType === "bar" ? renderBarChart(64, 32) :
-                    props.chartType === "line" ? renderLineChart(32) : null
+                    props.chartType === "line" ? renderLineChart(32, false) : null
 
             ].filter(Boolean) as NodeDefinition[]);
 
@@ -241,10 +243,10 @@ export class metric_card extends BaseComponent {
                     component: props.isFavorite ? Action___favourite_active : Action___favourite,
                     name: "Star Icon",
                     props: {
-                        width: 20, height: 20,
+                        width: 22, height: 22,
                         color: props.isFavorite ? { r: 0.98, g: 0.75, b: 0.15 } : { r: 0.82, g: 0.85, b: 0.9 }
                     },
-                    layoutProps: { width: 20, height: 20, parentIsAutoLayout: true }
+                    layoutProps: { width: 22, height: 22, parentIsAutoLayout: true }
                 }
             ]),
 
@@ -270,7 +272,7 @@ export class metric_card extends BaseComponent {
                 }),
 
                 // Sparkline
-                renderLineChart(64),
+                renderLineChart(64, isFillHeight),
 
                 // Trend Pill
                 createFrame("Trend Pill", {
@@ -291,7 +293,7 @@ export class metric_card extends BaseComponent {
                     {
                         type: "COMPONENT",
                         component: isDown ? Lucide_arrow_down : Lucide_arrow_up,
-                        props: { width: 14, height: 14, color: stateColor, strokeWeight: 3.5 },
+                        props: { width: 14, height: 14, color: stateColor, strokeWeight: 4 }, // Increased strokeWeight for better visibility
                         layoutProps: { width: 14, height: 14, parentIsAutoLayout: true }
                     },
                     createText("Trend %", props.trend || "10%", 13, "Bold", stateColor, {
@@ -320,12 +322,12 @@ export class metric_card extends BaseComponent {
                     component: props.platformIcon || Features___stats,
                     name: "Platform Icon",
                     props: {
-                        width: 16, height: 16,
+                        width: 18, height: 18,
                         color: props.platformName?.includes("Instagram") ? { r: 0.85, g: 0.25, b: 0.55 } :
                             props.platformName?.includes("Facebook") ? { r: 0.25, g: 0.45, b: 0.85 } :
                                 { r: 0.98, g: 0.55, b: 0.05 }
                     },
-                    layoutProps: { width: 16, height: 16, parentIsAutoLayout: true }
+                    layoutProps: { width: 18, height: 18, parentIsAutoLayout: true }
                 },
                 createText("Platform Name", props.platformName || "Google Analytics 4", 12, "Medium", { r: 0.55, g: 0.6, b: 0.7 }, {
                     font: { family: "Inter", style: "Medium" }

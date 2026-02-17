@@ -360,11 +360,26 @@ export class CookbookComponentsDemo extends BaseComponent {
             dashboard.layoutAlign = "STRETCH";
             dashboard.primaryAxisSizingMode = "AUTO";
             dashboard.counterAxisSizingMode = "FIXED";
+            dashboard.counterAxisAlignItems = "MIN";
             dashboard.fills = [];
             dashboard.clipsContent = false;
 
             const metric = new metric_card();
             const chart = new line_chart_card();
+
+            const createDashboardRow = (name: string): FrameNode => {
+                const row = figma.createFrame();
+                row.name = name;
+                row.layoutMode = "HORIZONTAL";
+                row.itemSpacing = 24;
+                row.layoutAlign = "STRETCH";
+                row.primaryAxisSizingMode = "FIXED"; // Fill available width from vertical parent
+                row.counterAxisSizingMode = "AUTO"; // Hug card height
+                row.counterAxisAlignItems = "MIN"; // Keep cards top-aligned when content height differs
+                row.fills = [];
+                row.clipsContent = false;
+                return row;
+            };
 
             // 3x3 Grid Layout - Varied Data
             const gridData = [
@@ -380,22 +395,14 @@ export class CookbookComponentsDemo extends BaseComponent {
             ];
 
             for (let r = 0; r < 3; r++) {
-                const row = figma.createFrame();
-                row.name = `Row ${r + 1}`;
-                row.layoutMode = "HORIZONTAL";
-                row.itemSpacing = 24;
-                row.layoutAlign = "STRETCH";
-                row.primaryAxisSizingMode = "FIXED"; // Stretch
-                row.counterAxisSizingMode = "AUTO"; // Hug
-                row.fills = [];
-                row.clipsContent = false; // Show shadows!
+                const row = createDashboardRow(`Row ${r + 1}`);
                 dashboard.appendChild(row);
 
                 for (let c = 0; c < 3; c++) {
                     const idx = r * 3 + c;
                     const data = gridData[idx];
 
-                    row.appendChild(await metric.create({
+                    const metricNode = await metric.create({
                         label: data.label,
                         value: data.value,
                         trend: data.trend,
@@ -406,20 +413,17 @@ export class CookbookComponentsDemo extends BaseComponent {
                         platformIcon: data.icon,
                         sparklineData: data.data,
                         width: "fill"
-                    }));
+                    });
+
+                    const metricFrame = metricNode as FrameNode;
+                    metricFrame.layoutGrow = 1; // Explicit fill behavior in horizontal rows
+                    metricFrame.layoutAlign = "INHERIT"; // Preserve hug height, avoid vertical stretch
+                    row.appendChild(metricFrame);
                 }
             }
 
             // Line Chart and Compact Metrics below the grid
-            const secondaryRow = figma.createFrame();
-            secondaryRow.name = "Secondary Row";
-            secondaryRow.layoutMode = "HORIZONTAL";
-            secondaryRow.itemSpacing = 24;
-            secondaryRow.layoutAlign = "STRETCH";
-            secondaryRow.primaryAxisSizingMode = "FIXED";
-            secondaryRow.counterAxisSizingMode = "AUTO";
-            secondaryRow.fills = [];
-            secondaryRow.clipsContent = false; // Show shadows!
+            const secondaryRow = createDashboardRow("Secondary Row");
             dashboard.appendChild(secondaryRow);
 
             secondaryRow.appendChild(await chart.create({
