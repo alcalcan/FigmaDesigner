@@ -26,7 +26,7 @@ import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
 import { table } from "../../components/Alex_CookBook/table/table";
-import { metric_card_design1 } from "../../components/Alex_CookBook/metric_card_design1/metric_card_design1";
+import { metric_card_design1 as metric_card_design1_Alex_CookBook } from "../../components/Alex_CookBook/metric_card_design1/metric_card_design1";
 
 import { Features___store, Features___stats, Lucide_users, Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings } from "../../components/index";
 
@@ -345,6 +345,7 @@ export class CookbookComponentsDemo extends BaseComponent {
 
             container.appendChild(cardRow);
 
+
             const uefa = new Placeholder("uefa_cards_4x");
             const uefaNode = await uefa.create({});
             (uefaNode as FrameNode).layoutAlign = "STRETCH";
@@ -354,7 +355,7 @@ export class CookbookComponentsDemo extends BaseComponent {
         // --- DATA VISUALIZATION ---
         // --- DATA VISUALIZATION ---
         await this.addSection(root, "Data Visualization", async (container) => {
-            // Dashboard Container for all cards (Metrics + Charts)
+            // 2. Dashboard Container for standard metrics
             const dashboard = figma.createFrame();
             dashboard.name = "Dashboard Grid";
             dashboard.layoutMode = "VERTICAL";
@@ -522,46 +523,97 @@ export class CookbookComponentsDemo extends BaseComponent {
             container.appendChild(orderTable);
         });
 
-        // --- DESIGN CAPTURES ---
-        await this.addSection(root, "Design Captures", async (container) => {
-            const design1 = new metric_card_design1();
+        // --- METRIC CARDS - MODERN GLASSMORPHIC (DESIGN 1) ---
+        await this.addSection(root, "Metric Cards - Modern Glassmorphic (Design 1)", async (container) => {
+            const design1 = new metric_card_design1_Alex_CookBook();
 
-            const row = this.createRow();
-            row.layoutAlign = "STRETCH";
+            // 1. Standard Variations Row
+            const standardRow = this.createRow();
+            standardRow.layoutAlign = "STRETCH";
+            standardRow.name = "Standard Variations";
 
-            // Default (Up Trend)
-            row.appendChild(await design1.create({
+            // Up Trend
+            standardRow.appendChild(await design1.create({
                 title: "Server Latency",
                 value: "24ms",
                 period: "Global Avg.",
                 trendDirection: "up",
                 trendValue: "12%",
-                width: 490
+                width: "fill"
             }));
 
             // Down Trend
-            row.appendChild(await design1.create({
+            standardRow.appendChild(await design1.create({
                 title: "Error Rate",
                 value: "0.02%",
                 period: "Last Hour",
                 trendDirection: "down",
                 trendValue: "0.05%",
-                width: 490,
+                width: "fill",
                 dataPoints: [0.8, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
             }));
 
-            // Neutral/Stable
-            row.appendChild(await design1.create({
+            // Neutral
+            standardRow.appendChild(await design1.create({
                 title: "CPU Usage",
                 value: "45%",
                 period: "Cluster B",
                 trendDirection: "neutral",
-                trendValue: "0%",
-                width: 490,
+                trendValue: "Stable",
+                width: "fill",
                 dataPoints: [0.4, 0.45, 0.4, 0.45, 0.4, 0.45, 0.4]
             }));
 
-            container.appendChild(row);
+            container.appendChild(standardRow);
+
+            // 2. Compact Variations Row
+            const compactRow = this.createRow();
+            compactRow.layoutAlign = "STRETCH";
+            compactRow.name = "Compact Variations";
+
+            compactRow.appendChild(await design1.create({
+                variant: "compact",
+                title: "Memory Usage",
+                value: "4.2GB",
+                period: "Region A",
+                trendDirection: "up",
+                trendValue: "2%",
+                width: "fill"
+            }));
+
+            compactRow.appendChild(await design1.create({
+                variant: "compact",
+                title: "Disk I/O",
+                value: "120MB/s",
+                period: "Storage X",
+                trendDirection: "down",
+                trendValue: "5%",
+                width: "fill",
+                dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.5, 0.3]
+            }));
+
+            compactRow.appendChild(await design1.create({
+                variant: "compact",
+                title: "Network In",
+                value: "1.2Gbps",
+                period: "Edge 1",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill"
+            }));
+
+            compactRow.appendChild(await design1.create({
+                variant: "compact",
+                title: "Queue Depth",
+                value: "14",
+                period: "Worker B",
+                trendDirection: "up",
+                trendValue: "High",
+                width: "fill",
+                dataPoints: [0.1, 0.2, 0.4, 0.8, 0.7, 0.9, 0.95]
+            }));
+
+            container.appendChild(compactRow);
         });
 
         root.x = props.x ?? 0;
@@ -578,6 +630,7 @@ export class CookbookComponentsDemo extends BaseComponent {
         section.fills = [];
         section.layoutAlign = "STRETCH";
         section.primaryAxisSizingMode = "AUTO";
+        section.counterAxisSizingMode = "FIXED";
         section.clipsContent = false; // Allow dropdowns to overflow
 
         const label = figma.createText();
@@ -595,6 +648,7 @@ export class CookbookComponentsDemo extends BaseComponent {
         contentContainer.fills = [];
         contentContainer.layoutAlign = "STRETCH";
         contentContainer.primaryAxisSizingMode = "AUTO";
+        contentContainer.counterAxisSizingMode = "FIXED";
         contentContainer.clipsContent = false; // Allow dropdowns to overflow
         contentContainer.itemReverseZIndex = true; // Ensure top items (like dropdowns) stack OVER bottom items
 
@@ -609,9 +663,10 @@ export class CookbookComponentsDemo extends BaseComponent {
         row.layoutMode = "HORIZONTAL";
         row.itemSpacing = 24;
         row.fills = [];
-        row.primaryAxisSizingMode = "AUTO";
+        row.layoutAlign = "STRETCH";
+        row.primaryAxisSizingMode = "FIXED";
         row.counterAxisSizingMode = "AUTO";
-        row.counterAxisAlignItems = "CENTER";
+        row.counterAxisAlignItems = "MIN";
         row.clipsContent = false;
         return row;
     }

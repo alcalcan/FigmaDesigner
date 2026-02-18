@@ -49,22 +49,24 @@ export class metric_card extends BaseComponent {
         // Sparkline Generation Data
         const data = props.sparklineData || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7];
 
-        // -- Render Helper: Line Chart --
         const renderLineChart = (targetHeight: number = 40, fillHeight: boolean = false) => {
             const width = 240; // Reference width for path generation
             const step = width / (data.length - 1);
-            let pathData = `M 0 ${targetHeight - (data[0] * targetHeight)}`;
             let areaData = `M 0 ${targetHeight} L 0 ${targetHeight - (data[0] * targetHeight)}`;
 
             for (let i = 1; i < data.length; i++) {
                 const x = i * step;
                 const y = targetHeight - (data[i] * targetHeight);
-                pathData += ` L ${x} ${y}`;
                 areaData += ` L ${x} ${y}`;
             }
             areaData += ` L ${width} ${targetHeight} Z`;
 
-            return createFrame("Sparkline Container", {
+            const r = Math.round(chartColor.r * 255);
+            const g = Math.round(chartColor.g * 255);
+            const b = Math.round(chartColor.b * 255);
+            const colorStr = `rgb(${r},${g},${b})`;
+
+            return createFrame("Chart_Container", {
                 layoutMode: "NONE",
                 fills: [],
                 layoutProps: {
@@ -72,15 +74,14 @@ export class metric_card extends BaseComponent {
                     layoutAlign: "STRETCH",
                     layoutGrow: fillHeight ? 1 : 0,
                     parentIsAutoLayout: true,
-                    counterAxisSizingMode: fillHeight ? "FIXED" : "FIXED" // Container is fixed height for charting relative coords, but frame itself can GROW
+                    counterAxisSizingMode: fillHeight ? "FIXED" : "FIXED"
                 }
             }, [
-                // Area Fill - Using viewBox and stretch to make it responsive
-                createVector("Area Fill", `<svg width="100%" height="100%" viewBox="0 0 ${width} ${targetHeight}" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="${areaData}" fill="rgb(${Math.round(chartColor.r * 255)},${Math.round(chartColor.g * 255)},${Math.round(chartColor.b * 255)})" fill-opacity="0.1"/></svg>`, {
-                    layoutProps: { width: undefined, height: undefined, layoutAlign: "STRETCH", layoutPositioning: "AUTO", constraints: { horizontal: "STRETCH", vertical: "STRETCH" } }
-                }),
-                // Line
-                createVector("Sparkline Path", `<svg width="100%" height="100%" viewBox="0 0 ${width} ${targetHeight}" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="${pathData}" stroke="rgb(${Math.round(chartColor.r * 255)},${Math.round(chartColor.g * 255)},${Math.round(chartColor.b * 255)})" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`, {
+                // Area Fill - Solid color as requested
+                createVector("Chart_Area_Fill", `
+<svg width="100%" height="100%" viewBox="0 0 ${width} ${targetHeight}" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="${areaData}" fill="${colorStr}" fill-opacity="0.1"/>
+</svg>`, {
                     layoutProps: { width: undefined, height: undefined, layoutAlign: "STRETCH", layoutPositioning: "AUTO", constraints: { horizontal: "STRETCH", vertical: "STRETCH" } }
                 })
             ]);
@@ -272,7 +273,17 @@ export class metric_card extends BaseComponent {
                 }),
 
                 // Sparkline
-                renderLineChart(64, isFillHeight),
+                createFrame("Chart_Area_Wrapper", {
+                    layoutMode: "VERTICAL",
+                    layoutAlign: "STRETCH",
+                    layoutGrow: isFillHeight ? 1 : 0,
+                    primaryAxisSizingMode: isFillHeight ? "FIXED" : "AUTO",
+                    counterAxisSizingMode: "FIXED",
+                    fills: [],
+                    clipsContent: false
+                }, [
+                    renderLineChart(64, isFillHeight)
+                ]),
 
                 // Trend Pill
                 createFrame("Trend Pill", {
@@ -291,10 +302,25 @@ export class metric_card extends BaseComponent {
                     layoutProps: { parentIsAutoLayout: true }
                 }, [
                     {
-                        type: "COMPONENT",
-                        component: isDown ? Lucide_arrow_down : Lucide_arrow_up,
-                        props: { width: 14, height: 14, color: stateColor, strokeWeight: 4 }, // Increased strokeWeight for better visibility
-                        layoutProps: { width: 14, height: 14, parentIsAutoLayout: true }
+                        type: "FRAME",
+                        name: "Trend Icon Wrapper",
+                        props: {
+                            layoutMode: "HORIZONTAL",
+                            primaryAxisAlignItems: "CENTER",
+                            counterAxisAlignItems: "CENTER",
+                            itemSpacing: 0,
+                            fills: []
+                        },
+                        layoutProps: { width: 14, height: 14, parentIsAutoLayout: true },
+                        children: [
+                            {
+                                type: "COMPONENT",
+                                name: "Trend Icon",
+                                component: isDown ? Lucide_arrow_down : Lucide_arrow_up,
+                                props: { width: 14, height: 14, color: stateColor, strokeWeight: 4 },
+                                layoutProps: { width: 14, height: 14, parentIsAutoLayout: true }
+                            }
+                        ]
                     },
                     createText("Trend %", props.trend || "10%", 13, "Bold", stateColor, {
                         font: { family: "Inter", style: "Bold" }
