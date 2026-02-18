@@ -14,9 +14,11 @@ export interface MetricCardDesign1Props extends ComponentProps {
     platformName?: string;
     trendDirection?: "up" | "down" | "neutral";
     trendValue?: string;
+    variant?: "standard" | "compact";
+    width?: number | "fill";
+    height?: number | "fill" | "hug";
+    gap?: number | "auto";
     dataPoints?: number[];
-    gradientStart?: RGB;
-    gradientEnd?: RGB;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -24,6 +26,7 @@ export class metric_card_design1 extends BaseComponent {
         const isCompact = props.variant === "compact";
         const isFillWidth = props.width === "fill" || props.layoutSizingHorizontal === "FILL";
         const isFillHeight = props.height === "fill" || props.layoutSizingVertical === "FILL";
+        const isHugHeight = props.height === "hug" || props.layoutSizingVertical === "HUG";
 
         const title = props.title || "Server Latency";
         const value = props.value || "24ms";
@@ -48,6 +51,8 @@ export class metric_card_design1 extends BaseComponent {
         const rootWidth = isCompact ? 320 : 490.6667;
         const rootHeight = isCompact ? 200 : 304;
         const sparklineHeight = isCompact ? 40 : 70;
+        const defaultGap = isCompact ? 10 : 16;
+        const gap = typeof props.gap === "number" ? props.gap : defaultGap;
         const sparklineCornerRadius = isCompact ? 12 : 16;
         const starIconSize = 18;
         const platformIconSize = 18;
@@ -58,14 +63,14 @@ export class metric_card_design1 extends BaseComponent {
             name: isCompact ? "metric_card_design1_compact" : "metric_card_design1",
             props: {
                 layoutMode: "VERTICAL",
-                itemSpacing: isCompact ? 10 : 16,
+                itemSpacing: gap,
                 paddingTop: isCompact ? 12 : 16,
                 paddingRight: isCompact ? 12 : 16,
                 paddingBottom: isCompact ? 12 : 16,
                 paddingLeft: isCompact ? 12 : 16,
                 primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
                 counterAxisSizingMode: "FIXED",
-                primaryAxisAlignItems: "SPACE_BETWEEN",
+                primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : (typeof props.gap === "number" ? "MIN" : "SPACE_BETWEEN"),
                 counterAxisAlignItems: "MIN",
                 clipsContent: true,
                 fills: [
@@ -114,9 +119,9 @@ export class metric_card_design1 extends BaseComponent {
             },
             layoutProps: {
                 width: isFillWidth ? undefined : (typeof props.width === "number" ? props.width : rootWidth),
-                height: isFillHeight ? undefined : (typeof props.height === "number" ? props.height : rootHeight),
+                height: isHugHeight || isFillHeight ? undefined : (typeof props.height === "number" ? props.height : rootHeight),
                 layoutSizingHorizontal: isFillWidth ? "FILL" : "FIXED",
-                layoutSizingVertical: isFillHeight ? "FILL" : "HUG",
+                layoutSizingVertical: isFillHeight ? "FILL" : (isHugHeight || (typeof props.height === "undefined")) ? "HUG" : "FIXED",
                 layoutGrow: isFillWidth ? 1 : 0,
                 parentIsAutoLayout: true
             },

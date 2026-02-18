@@ -23,7 +23,8 @@ export interface MetricCardProps extends ComponentProps {
 
     // Layout Props
     width?: number | "fill";
-    height?: number | "fill";
+    height?: number | "fill" | "hug";
+    gap?: number | "auto";
 
     // New Props for Compact Variant
     variant?: "standard" | "compact";
@@ -195,14 +196,14 @@ export class metric_card extends BaseComponent {
 
         const structure: NodeDefinition = createFrame("metric_card", {
             layoutMode: "VERTICAL",
-            itemSpacing: 16,
+            itemSpacing: typeof props.gap === "number" ? props.gap : (props.gap === "auto" ? 0 : 16),
             paddingTop: 32,
             paddingRight: 32,
             paddingBottom: 32,
             paddingLeft: 32,
             primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
             counterAxisSizingMode: isFillWidth ? "FIXED" : "AUTO",
-            primaryAxisAlignItems: "SPACE_BETWEEN",
+            primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : (typeof props.gap === "number" ? "MIN" : "SPACE_BETWEEN"),
             fills: [{
                 type: "GRADIENT_LINEAR",
                 gradientStops: [

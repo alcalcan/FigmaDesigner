@@ -540,7 +540,8 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendDirection: "up",
                 trendValue: "12%",
                 width: "fill",
-                height: 304
+                height: 304,
+                gap: "auto"
             }));
 
             // Down Trend
@@ -552,6 +553,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendValue: "0.05%",
                 width: "fill",
                 height: 304,
+                gap: "auto",
                 dataPoints: [0.8, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1],
                 gradientStart: { r: 0.9, g: 0.1, b: 0.2 }, // Red
                 gradientEnd: { r: 1, g: 0.5, b: 0.6 }
@@ -566,6 +568,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendValue: "Stable",
                 width: "fill",
                 height: 304,
+                gap: "auto",
                 dataPoints: [0.4, 0.42, 0.41, 0.4, 0.43, 0.41, 0.4],
                 gradientStart: { r: 0.1, g: 0.7, b: 0.3 }, // Green
                 gradientEnd: { r: 0.4, g: 0.9, b: 0.6 }
@@ -587,6 +590,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendValue: "2%",
                 width: "fill",
                 height: 200,
+                gap: "auto",
                 dataPoints: [0.2, 0.4, 0.5, 0.6, 0.8, 0.85, 0.95],
                 gradientStart: { r: 0.9, g: 0.1, b: 0.2 }, // Red
                 gradientEnd: { r: 1, g: 0.5, b: 0.6 }
@@ -601,6 +605,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendValue: "5%",
                 width: "fill",
                 height: 200,
+                gap: "auto",
                 dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.5, 0.3],
                 gradientStart: { r: 0.1, g: 0.7, b: 0.3 }, // Green
                 gradientEnd: { r: 0.4, g: 0.9, b: 0.6 }
@@ -615,6 +620,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendValue: "Stable",
                 width: "fill",
                 height: 200,
+                gap: "auto",
                 dataPoints: [0.6, 0.61, 0.59, 0.6, 0.62, 0.6, 0.6],
                 gradientStart: { r: 0.1, g: 0.4, b: 0.9 }, // Blue
                 gradientEnd: { r: 0.4, g: 0.8, b: 1 }
@@ -629,6 +635,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendValue: "High",
                 width: "fill",
                 height: 200,
+                gap: "auto",
                 dataPoints: [0.1, 0.2, 0.4, 0.8, 0.7, 0.9, 0.95],
                 gradientStart: { r: 0.9, g: 0.6, b: 0.1 }, // Orange
                 gradientEnd: { r: 1, g: 0.9, b: 0.4 }
