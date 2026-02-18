@@ -170,6 +170,75 @@ export class MetricCardsDesign1Demo extends BaseComponent {
 
         advancedGroup.appendChild(advancedRow);
 
+        // --- FLAT VARIATIONS ---
+        const flatGroup = this.createSection(root, "Flat Variations");
+        const flatRow = this.createRow();
+
+        // 1. Gradient in Graph
+        await this.createCardWithCaption(design1, flatRow, {
+            title: "Response Rate",
+            value: "94.2%",
+            period: "All Systems",
+            trendDirection: "up",
+            trendValue: "Healthy",
+            width: "fill",
+            height: "hug",
+            cornerRadius: 32, // Proper rounding (16+16)
+            cardShadow: "none",
+            showChartShadow: false,
+            chartFillType: "gradient", // Gradient in graph
+            cardFillType: "solid",
+            showFooter: false, // Take out footer
+            strokeWeight: 1,
+            strokeColor: { r: 0.92, g: 0.94, b: 0.96 }, // Light darker border
+            gap: 24,
+            gradientStart: { r: 0, g: 0.6, b: 1 },
+            gradientEnd: { r: 0.4, g: 0.8, b: 1 }
+        }, "Flat Style (Gradient Graph)");
+
+        // 2. Border on Card
+        await this.createCardWithCaption(design1, flatRow, {
+            title: "Memory Usage",
+            value: "1.2GB",
+            period: "Cluster A",
+            trendDirection: "neutral",
+            trendValue: "Stable",
+            width: "fill",
+            height: "hug",
+            cornerRadius: 8, // Low roundness
+            chartCornerRadius: 8, // Equivalent graph roundness
+            cardShadow: "none",
+            showChartShadow: false,
+            chartFillType: "solid",
+            cardFillType: "solid",
+            strokeWeight: 1,
+            strokeColor: { r: 0.92, g: 0.94, b: 0.96 }, // Consistent light border
+            gap: 24,
+            gradientStart: { r: 0.5, g: 0.3, b: 0.9 }
+        }, "Flat Style (Outline Border)");
+
+        // 3. Small Shadow
+        await this.createCardWithCaption(design1, flatRow, {
+            title: "Active Users",
+            value: "2,400",
+            period: "Real-time",
+            trendDirection: "up",
+            trendValue: "+120",
+            width: "fill",
+            height: "hug",
+            cornerRadius: 32, // Proper rounding
+            cardShadow: "small", // Small shadow
+            showChartShadow: false,
+            chartFillType: "solid",
+            cardFillType: "solid",
+            strokeWeight: 1,
+            strokeColor: { r: 0.92, g: 0.94, b: 0.96 }, // Consistent light border
+            gap: 24,
+            gradientStart: { r: 1, g: 0.5, b: 0 }
+        }, "Flat Style (Small Shadow)");
+
+        flatGroup.appendChild(flatRow);
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 

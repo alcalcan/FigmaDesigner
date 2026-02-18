@@ -29,6 +29,13 @@ export interface MetricCardDesign1Props extends ComponentProps {
     chartGradientOpacityStart?: number;
     chartGradientOpacityEnd?: number;
     trendPillRadius?: number;
+    cornerRadius?: number;
+    cardShadow?: "none" | "small" | "standard";
+    cardFillType?: "gradient" | "solid";
+    strokeWeight?: number;
+    strokeColor?: RGB;
+    showFooter?: boolean;
+    chartCornerRadius?: number;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -64,7 +71,8 @@ export class metric_card_design1 extends BaseComponent {
         const showChart = props.showChart !== false;
         const defaultGap = isCompact ? 10 : 16;
         const gap = typeof props.gap === "number" ? props.gap : defaultGap;
-        const sparklineCornerRadius = isCompact ? 12 : 16;
+        const padding = isCompact ? 12 : 16;
+        const sparklineCornerRadius = props.chartCornerRadius ?? (props.cornerRadius !== undefined ? Math.max(0, props.cornerRadius - padding) : (isCompact ? 12 : 16));
         const starIconSize = 18;
         const platformIconSize = 18;
         const trendIconSize = isCompact ? 12 : 14;
@@ -75,16 +83,18 @@ export class metric_card_design1 extends BaseComponent {
             props: {
                 layoutMode: "VERTICAL",
                 itemSpacing: gap,
-                paddingTop: isCompact ? 12 : 16,
-                paddingRight: isCompact ? 12 : 16,
-                paddingBottom: isCompact ? 12 : 16,
-                paddingLeft: isCompact ? 12 : 16,
+                paddingTop: padding,
+                paddingRight: padding,
+                paddingBottom: padding,
+                paddingLeft: padding,
                 primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
                 counterAxisSizingMode: "FIXED",
                 primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : "MIN",
                 counterAxisAlignItems: "MIN",
                 clipsContent: true,
-                fills: [
+                fills: props.cardFillType === "solid" ? [
+                    { type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 1 }
+                ] : [
                     {
                         visible: true,
                         opacity: 1,
@@ -92,7 +102,7 @@ export class metric_card_design1 extends BaseComponent {
                         type: "GRADIENT_LINEAR",
                         gradientStops: [
                             { color: { r: 1, g: 1, b: 1, a: 1 }, position: 0 },
-                            { color: { r: 0.9800000190734863, g: 0.9900000095367432, b: 1, a: 0.9599999785423279 }, position: 1 }
+                            { color: { r: 0.98, g: 0.99, b: 1, a: 0.96 }, position: 1 }
                         ],
                         gradientTransform: [
                             [0.690418004989624, 0.38661691546440125, -0.044504158198833466],
@@ -100,18 +110,29 @@ export class metric_card_design1 extends BaseComponent {
                         ]
                     }
                 ],
-                strokes: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 1 }],
-                strokeWeight: 2,
+                strokes: [{ type: "SOLID", color: props.strokeColor ?? { r: 1, g: 1, b: 1 }, opacity: 1 }],
+                strokeWeight: props.strokeWeight ?? 2,
                 strokeAlign: "OUTSIDE",
-                cornerRadius: isCompact ? 24 : 32,
-                effects: [
+                cornerRadius: props.cornerRadius ?? (isCompact ? 24 : 32),
+                effects: (props.cardShadow === "small") ? [
+                    {
+                        visible: true,
+                        blendMode: "NORMAL",
+                        type: "DROP_SHADOW",
+                        radius: 12,
+                        color: { r: 0, g: 0, b: 0, a: 0.04 },
+                        offset: { x: 0, y: 4 },
+                        spread: 0,
+                        showShadowBehindNode: true
+                    }
+                ] : (props.cardShadow === "standard" || typeof props.cardShadow === "undefined") ? [
                     { visible: true, type: "BACKGROUND_BLUR", radius: 24, blurType: "NORMAL" },
                     {
                         visible: true,
                         blendMode: "NORMAL",
                         type: "DROP_SHADOW",
                         radius: 32,
-                        color: { r: 0.05, g: 0.1, b: 0.2, a: 0.05999999865889549 },
+                        color: { r: 0.05, g: 0.1, b: 0.2, a: 0.06 },
                         offset: { x: 0, y: 16 },
                         spread: 0,
                         showShadowBehindNode: true
@@ -121,12 +142,12 @@ export class metric_card_design1 extends BaseComponent {
                         blendMode: "NORMAL",
                         type: "DROP_SHADOW",
                         radius: 4,
-                        color: { r: 0, g: 0, b: 0, a: 0.019999999552965164 },
+                        color: { r: 0, g: 0, b: 0, a: 0.02 },
                         offset: { x: 0, y: 4 },
                         spread: 0,
                         showShadowBehindNode: true
                     }
-                ]
+                ] : []
             },
             layoutProps: {
                 width: isFillWidth ? undefined : (typeof props.width === "number" ? props.width : rootWidth),
@@ -247,7 +268,7 @@ export class metric_card_design1 extends BaseComponent {
                     ]) : null
                 ].filter(Boolean) as NodeDefinition[]),
 
-                createFrame("Footer", {
+                props.showFooter !== false ? createFrame("Footer", {
                     layoutMode: "HORIZONTAL",
                     primaryAxisAlignItems: "SPACE_BETWEEN",
                     counterAxisAlignItems: "CENTER",
@@ -354,8 +375,8 @@ export class metric_card_design1 extends BaseComponent {
                             })
                             : null
                     ].filter(Boolean) as NodeDefinition[])
-                ])
-            ]
+                ]) : null
+            ].filter(Boolean) as NodeDefinition[]
         };
 
         const root = await this.renderDefinition(structure);
