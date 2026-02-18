@@ -42,8 +42,8 @@ export class metric_card_design1 extends BaseComponent {
         const rootHeight = isCompact ? 212 : 308.8761;
         const sparklineHeight = isCompact ? 56 : 88;
         const sparklineCornerRadius = isCompact ? 12 : 16;
-        const starIconSize = isCompact ? 16 : 18;
-        const platformIconSize = isCompact ? 18 : 22;
+        const starIconSize = 18;
+        const platformIconSize = 18;
         const trendIconSize = isCompact ? 12 : 14;
 
         const structure: NodeDefinition = {
@@ -128,23 +128,37 @@ export class metric_card_design1 extends BaseComponent {
                         layoutSizingHorizontal: "HUG",
                         layoutSizingVertical: "HUG"
                     }),
-                    {
-                        type: "COMPONENT",
-                        name: "Star Icon",
-                        component: Lucide_star,
-                        props: {
-                            width: starIconSize,
-                            color: iconBlack,
-                            strokeWeight: 1.5
-                        },
-                        layoutProps: {
-                            width: starIconSize,
-                            height: starIconSize,
-                            layoutSizingHorizontal: "FIXED",
-                            layoutSizingVertical: "FIXED",
-                            parentIsAutoLayout: true
+                    createFrame("Icon Wrapper", {
+                        layoutMode: "HORIZONTAL",
+                        primaryAxisAlignItems: "CENTER",
+                        counterAxisAlignItems: "CENTER",
+                        paddingTop: 1,
+                        paddingRight: 1,
+                        paddingBottom: 1,
+                        paddingLeft: 1,
+                        layoutSizingHorizontal: "HUG",
+                        layoutSizingVertical: "HUG",
+                        fills: []
+                    }, [
+                        {
+                            type: "COMPONENT",
+                            name: "Star Icon",
+                            component: Lucide_star,
+                            props: {
+                                width: starIconSize,
+                                height: starIconSize,
+                                color: iconBlack,
+                            },
+                            layoutProps: {
+                                width: starIconSize,
+                                height: starIconSize,
+                                layoutSizingHorizontal: "FIXED",
+                                layoutSizingVertical: "FIXED",
+                                parentIsAutoLayout: true,
+                                constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                            }
                         }
-                    }
+                    ])
                 ]),
 
                 createFrame("Content", {
@@ -225,23 +239,37 @@ export class metric_card_design1 extends BaseComponent {
                         layoutSizingVertical: "HUG",
                         fills: []
                     }, [
-                        {
-                            type: "COMPONENT",
-                            name: "Platform Icon",
-                            component: Lucide_settings,
-                            props: {
-                                width: platformIconSize,
-                                color: iconBlack,
-                                strokeWeight: 1.5
-                            },
-                            layoutProps: {
-                                width: platformIconSize,
-                                height: platformIconSize,
-                                layoutSizingHorizontal: "FIXED",
-                                layoutSizingVertical: "FIXED",
-                                parentIsAutoLayout: true
+                        createFrame("Icon Wrapper", {
+                            layoutMode: "HORIZONTAL",
+                            primaryAxisAlignItems: "CENTER",
+                            counterAxisAlignItems: "CENTER",
+                            paddingTop: 1,
+                            paddingRight: 1,
+                            paddingBottom: 1,
+                            paddingLeft: 1,
+                            layoutSizingHorizontal: "HUG",
+                            layoutSizingVertical: "HUG",
+                            fills: []
+                        }, [
+                            {
+                                type: "COMPONENT",
+                                name: "Platform Icon",
+                                component: Lucide_settings,
+                                props: {
+                                    width: platformIconSize,
+                                    height: platformIconSize,
+                                    color: iconBlack,
+                                },
+                                layoutProps: {
+                                    width: platformIconSize,
+                                    height: platformIconSize,
+                                    layoutSizingHorizontal: "FIXED",
+                                    layoutSizingVertical: "FIXED",
+                                    parentIsAutoLayout: true,
+                                    constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                                }
                             }
-                        },
+                        ]),
                         createText("Platform Name Text", platformName, isCompact ? 11 : 12, "Medium", platformTextColor, {
                             font: { family: "Inter", style: "Medium" }
                         })
@@ -267,8 +295,8 @@ export class metric_card_design1 extends BaseComponent {
                             component: trendDirection === "up" ? Lucide_arrow_up : trendDirection === "down" ? Lucide_arrow_down : Lucide_minus,
                             props: {
                                 width: trendIconSize,
+                                height: trendIconSize,
                                 color: trendColor,
-                                strokeWeight: 3.5
                             },
                             layoutProps: {
                                 width: trendIconSize,
