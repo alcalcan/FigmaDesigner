@@ -35,9 +35,8 @@ export class MetricCardsDesign1Demo extends BaseComponent {
         // --- ORIGINAL VARIATIONS ---
         const originalGroup = this.createSection(root, "Original Variations");
         const originalRow = this.createRow();
-        originalRow.layoutAlign = "STRETCH";
 
-        originalRow.appendChild(await design1.create({
+        await this.createCardWithCaption(design1, originalRow, {
             title: "Original Size 1",
             value: "491 x 304",
             period: "Component Default",
@@ -45,9 +44,9 @@ export class MetricCardsDesign1Demo extends BaseComponent {
             trendValue: "Stable",
             height: "hug",
             gap: 24
-        }));
+        }, "Default component behavior (Gap 24)");
 
-        originalRow.appendChild(await design1.create({
+        await this.createCardWithCaption(design1, originalRow, {
             title: "Original Size 2",
             value: "491 x 304",
             period: "Component Default",
@@ -57,172 +56,177 @@ export class MetricCardsDesign1Demo extends BaseComponent {
             gap: 24,
             gradientStart: { r: 0.02, g: 0.08, b: 0.25 }, // Dark Blue
             gradientEnd: { r: 0.15, g: 0.35, b: 0.8 }    // Rich Blue
-        }));
+        }, "Custom Blue gradient (Gap 24)");
 
         originalGroup.appendChild(originalRow);
 
-        // --- STANDARD VARIATIONS ---
-        const standardGroup = this.createSection(root, "Standard Variations");
-        const standardRow = this.createRow();
-        standardRow.layoutAlign = "STRETCH";
-
-        // Original Look
-        standardRow.appendChild(await design1.create({
-            title: "Server Latency",
-            value: "24ms",
-            period: "Global Avg.",
-            trendDirection: "up",
-            trendValue: "12%",
-            width: "fill",
-            height: 304,
-            gap: "auto"
-        }));
-
-        // Red Variation
-        standardRow.appendChild(await design1.create({
-            title: "Error Rate",
-            value: "0.02%",
-            period: "Last Hour",
-            trendDirection: "down",
-            trendValue: "0.05%",
-            width: "fill",
-            height: 304,
-            gap: "auto",
-            dataPoints: [0.8, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1],
-            gradientStart: { r: 0.9, g: 0.1, b: 0.2 },
-            gradientEnd: { r: 1, g: 0.5, b: 0.6 }
-        }));
-
-        // Green Variation
-        standardRow.appendChild(await design1.create({
-            title: "CPU Usage",
-            value: "45%",
-            period: "Cluster B",
-            trendDirection: "neutral",
-            trendValue: "Stable",
-            width: "fill",
-            height: 304,
-            gap: "auto",
-            dataPoints: [0.4, 0.42, 0.41, 0.4, 0.43, 0.41, 0.4],
-            gradientStart: { r: 0.1, g: 0.7, b: 0.3 }, // Green
-            gradientEnd: { r: 0.4, g: 0.9, b: 0.6 }
-        }));
-
-        standardGroup.appendChild(standardRow);
-
-        // --- COMPACT VARIATIONS ---
-        const compactGroup = this.createSection(root, "Compact Variations");
-        const compactRow = this.createRow();
-        compactRow.layoutAlign = "STRETCH";
-
-        // Blue Compact
-        compactRow.appendChild(await design1.create({
-            variant: "compact",
-            title: "Network In",
-            value: "1.2Gbps",
-            period: "Edge 1",
-            trendDirection: "neutral",
-            trendValue: "Stable",
-            width: "fill",
-            height: 200,
-            gap: "auto",
-            dataPoints: [0.6, 0.61, 0.59, 0.6, 0.62, 0.6, 0.6],
-            gradientStart: { r: 0.1, g: 0.4, b: 0.9 },
-            gradientEnd: { r: 0.4, g: 0.8, b: 1 }
-        }));
-
-        // Orange Compact
-        compactRow.appendChild(await design1.create({
-            variant: "compact",
-            title: "Queue Depth",
-            value: "14",
-            period: "Worker B",
-            trendDirection: "up",
-            trendValue: "High",
-            width: "fill",
-            height: 200,
-            gap: "auto",
-            dataPoints: [0.1, 0.2, 0.4, 0.8, 0.7, 0.9, 0.95],
-            gradientStart: { r: 0.9, g: 0.6, b: 0.1 },
-            gradientEnd: { r: 1, g: 0.9, b: 0.4 }
-        }));
-
-        // Red Compact
-        compactRow.appendChild(await design1.create({
-            variant: "compact",
-            title: "Memory Usage",
-            value: "4.2GB",
-            period: "Region A",
-            trendDirection: "up",
-            trendValue: "2%",
-            width: "fill",
-            height: 200,
-            gap: "auto",
-            dataPoints: [0.2, 0.4, 0.5, 0.6, 0.8, 0.85, 0.95],
-            gradientStart: { r: 0.9, g: 0.1, b: 0.2 },
-            gradientEnd: { r: 1, g: 0.5, b: 0.6 }
-        }));
-
-        compactGroup.appendChild(compactRow);
 
         // --- CHART CUSTOMIZATION ---
         const customizationGroup = this.createSection(root, "Chart Customization");
         const customizationRow = this.createRow();
-        customizationRow.layoutAlign = "STRETCH";
 
         // Tall Chart
-        customizationRow.appendChild(await design1.create({
+        await this.createCardWithCaption(design1, customizationRow, {
             title: "Peak Loading",
             value: "92%",
             period: "Worker C",
             trendDirection: "up",
             trendValue: "Critical",
             width: "fill",
-            height: "hug", // Hugging content
+            height: "hug",
             chartHeight: 120, // Tall chart
-            gap: 24, // Explicit gap
+            gap: 24,
             dataPoints: [0.1, 0.3, 0.2, 0.9, 0.8, 1.0, 0.95],
             gradientStart: { r: 0.8, g: 0.1, b: 0.1 },
             gradientEnd: { r: 1, g: 0.4, b: 0.1 }
-        }));
+        }, "Tall Chart (Height: 120px)");
 
         // Short Chart
-        customizationRow.appendChild(await design1.create({
+        await this.createCardWithCaption(design1, customizationRow, {
             title: "API Latency",
             value: "14ms",
             period: "Edge 2",
             trendDirection: "down",
             trendValue: "Stable",
             width: "fill",
-            height: "hug", // Hugging content
+            height: "hug",
             chartHeight: 30, // Short chart
-            gap: 24, // Explicit gap
+            gap: 24,
             dataPoints: [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
             gradientStart: { r: 0.1, g: 0.6, b: 0.8 },
             gradientEnd: { r: 0.4, g: 0.9, b: 1 }
-        }));
+        }, "Short Chart (Height: 30px)");
 
         // No Chart
-        customizationRow.appendChild(await design1.create({
+        await this.createCardWithCaption(design1, customizationRow, {
             title: "License Status",
             value: "Active",
             period: "Subscription",
             trendDirection: "neutral",
             trendValue: "Valid",
             width: "fill",
-            height: "hug", // Hugging content
+            height: "hug",
             showChart: false, // Hidden chart
-            gap: 24, // Explicit gap
+            gap: 24,
             gradientStart: { r: 0.5, g: 0.5, b: 0.5 },
             gradientEnd: { r: 0.8, g: 0.8, b: 0.8 }
-        }));
+        }, "No Chart (Hidden)");
 
         customizationGroup.appendChild(customizationRow);
+
+        // --- ADVANCED CHART STYLES ---
+        const advancedGroup = this.createSection(root, "Advanced Chart Styles");
+        const advancedRow = this.createRow();
+
+        // Solid Fill, No Shadow
+        await this.createCardWithCaption(design1, advancedRow, {
+            title: "Disk Usage",
+            value: "84%",
+            period: "Storage A",
+            trendDirection: "neutral",
+            trendValue: "Stable",
+            width: "fill",
+            height: "hug",
+            chartFillType: "solid",
+            showChartShadow: false,
+            gradientStart: { r: 1, g: 0.6, b: 0.1 }, // Orange-ish
+            gap: 24,
+            dataPoints: [0.2, 0.4, 0.5, 0.7, 0.8, 0.82, 0.84]
+        }, "Solid Fill, No Shadow");
+
+        // Transparent Gradient - Refined (Blue, No Shadow)
+        await this.createCardWithCaption(design1, advancedRow, {
+            title: "Network Out",
+            value: "256Mbps",
+            period: "Edge 3",
+            trendDirection: "down",
+            trendValue: "Low",
+            width: "fill",
+            height: "hug",
+            chartOpacity: 0.3,
+            showChartShadow: false,
+            gap: 24,
+            gradientStart: { r: 0.1, g: 0.4, b: 0.9 }, // Deep Blue
+            gradientEnd: { r: 0.4, g: 0.8, b: 1 }
+        }, "Transparent Blue, No Shadow");
+
+        // Fading Effect - Refined (No Shadow)
+        await this.createCardWithCaption(design1, advancedRow, {
+            title: "User Growth",
+            value: "1.2k",
+            period: "This Week",
+            trendDirection: "up",
+            trendValue: "+15%",
+            width: "fill",
+            height: "hug",
+            chartGradientOpacityStart: 0.05,
+            chartGradientOpacityEnd: 0.9,
+            showChartShadow: false,
+            gap: 24,
+            gradientStart: { r: 0.4, g: 0.1, b: 0.9 },
+            gradientEnd: { r: 0.6, g: 0.4, b: 1 },
+            dataPoints: [0.1, 0.2, 0.4, 0.5, 0.8, 0.9, 1.0]
+        }, "Gradient Fading, No Shadow");
+
+        advancedGroup.appendChild(advancedRow);
 
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 
         return root;
+    }
+
+    private async createCardWithCaption(design: metric_card_design1_Alex_CookBook, row: FrameNode, props: any, caption: string): Promise<FrameNode> {
+        const container = figma.createFrame();
+        container.name = `Variant: ${caption}`;
+        container.layoutMode = "VERTICAL";
+        container.itemSpacing = 12;
+        container.fills = [];
+        container.clipsContent = false;
+
+        // Append to row first so layout props below are valid
+        row.appendChild(container);
+
+        const card = await design.create({ ...props, height: "hug" });
+        container.appendChild(card);
+
+        // Mimic sizing: if card is set to fill (width), container must grow in the row
+        if (props.width === "fill") {
+            (container as any).layoutGrow = 1;
+
+            // Inside the vertical container, card should stretch to fill width
+            if ('layoutAlign' in card) {
+                (card as any).layoutAlign = "STRETCH";
+            }
+        } else {
+            // For fixed width (like the original 491px), hug the card
+            container.counterAxisSizingMode = "AUTO";
+        }
+
+        if ("layoutSizingVertical" in container) {
+            (container as any).layoutSizingVertical = "HUG";
+        }
+        container.primaryAxisSizingMode = "AUTO";
+
+        if ("layoutSizingVertical" in card) {
+            (card as any).layoutSizingVertical = "HUG";
+        }
+        if ("primaryAxisSizingMode" in card && (card as any).layoutMode === "VERTICAL") {
+            (card as any).primaryAxisSizingMode = "AUTO";
+        }
+
+        const text = figma.createText();
+        text.fontName = { family: "Inter", style: "Medium" };
+        text.characters = caption;
+        text.fontSize = 12;
+        text.fills = [{ type: "SOLID", color: { r: 0.45, g: 0.5, b: 0.6 } }];
+
+        container.appendChild(text);
+        // Set layoutAlign after appending to ensure it's a child of an AL frame
+        text.layoutAlign = "STRETCH";
+        text.textAlignHorizontal = "CENTER";
+
+        return container;
     }
 
     private createSection(root: FrameNode, title: string): FrameNode {
@@ -232,7 +236,7 @@ export class MetricCardsDesign1Demo extends BaseComponent {
         container.itemSpacing = 24;
         container.fills = [];
         container.layoutAlign = "STRETCH";
-        container.primaryAxisSizingMode = "AUTO";
+        container.primaryAxisSizingMode = "AUTO"; // Back to stable AUTO
         container.clipsContent = false;
 
         const label = figma.createText();
@@ -254,6 +258,7 @@ export class MetricCardsDesign1Demo extends BaseComponent {
         row.layoutAlign = "STRETCH";
         row.primaryAxisSizingMode = "FIXED";
         row.counterAxisSizingMode = "AUTO";
+        row.counterAxisAlignItems = "MIN"; // Ensure children don't stretch vertically
         row.clipsContent = false;
         return row;
     }

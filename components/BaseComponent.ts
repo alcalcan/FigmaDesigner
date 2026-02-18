@@ -277,6 +277,7 @@ export abstract class BaseComponent {
         const layoutKeys = isGrid
           ? [
             "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+            "primaryAxisAlignItems", "counterAxisAlignItems",
             "itemReverseZIndex", "strokesIncludedInLayout",
             "gridRowCount", "gridColumnCount", "gridRowGap", "gridColumnGap"
           ]
@@ -576,6 +577,7 @@ export abstract class BaseComponent {
         const autoLayoutKeys = isGrid
           ? [
             "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+            "primaryAxisAlignItems", "counterAxisAlignItems",
             "itemReverseZIndex", "strokesIncludedInLayout",
             "gridRowCount", "gridColumnCount", "gridRowGap", "gridColumnGap"
           ]

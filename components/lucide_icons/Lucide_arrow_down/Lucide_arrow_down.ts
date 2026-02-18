@@ -15,9 +15,9 @@ export class Lucide_arrow_down extends BaseComponent {
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "GRID",
-                "gridRowCount": 1,
-                "gridColumnCount": 1
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [

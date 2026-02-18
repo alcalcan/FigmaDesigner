@@ -23,6 +23,11 @@ export interface MetricCardDesign1Props extends ComponentProps {
     chartHeight?: number;
     gradientStart?: RGB;
     gradientEnd?: RGB;
+    showChartShadow?: boolean;
+    chartFillType?: "gradient" | "solid";
+    chartOpacity?: number;
+    chartGradientOpacityStart?: number;
+    chartGradientOpacityEnd?: number;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -75,7 +80,7 @@ export class metric_card_design1 extends BaseComponent {
                 paddingLeft: isCompact ? 12 : 16,
                 primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
                 counterAxisSizingMode: "FIXED",
-                primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : (typeof props.gap === "number" ? "MIN" : "SPACE_BETWEEN"),
+                primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : "MIN",
                 counterAxisAlignItems: "MIN",
                 clipsContent: true,
                 fills: [
@@ -124,7 +129,7 @@ export class metric_card_design1 extends BaseComponent {
             },
             layoutProps: {
                 width: isFillWidth ? undefined : (typeof props.width === "number" ? props.width : rootWidth),
-                height: isHugHeight || isFillHeight ? undefined : (typeof props.height === "number" ? props.height : rootHeight),
+                height: isHugHeight || (typeof props.height === "undefined") || isFillHeight ? undefined : (typeof props.height === "number" ? props.height : rootHeight),
                 layoutSizingHorizontal: isFillWidth ? "FILL" : "FIXED",
                 layoutSizingVertical: isFillHeight ? "FILL" : (isHugHeight || (typeof props.height === "undefined")) ? "HUG" : "FIXED",
                 layoutGrow: isFillWidth ? 1 : 0,
@@ -210,7 +215,7 @@ export class metric_card_design1 extends BaseComponent {
                         layoutSizingVertical: "FIXED",
                         cornerRadius: sparklineCornerRadius,
                         fills: [],
-                        effects: [{
+                        effects: props.showChartShadow !== false ? [{
                             visible: true,
                             blendMode: "NORMAL",
                             type: "DROP_SHADOW",
@@ -219,7 +224,7 @@ export class metric_card_design1 extends BaseComponent {
                             offset: { x: 0, y: 5 },
                             spread: 0,
                             showShadowBehindNode: false
-                        }],
+                        }] : [],
                         layoutProps: {
                             height: sparklineHeight,
                             parentIsAutoLayout: true
@@ -229,7 +234,14 @@ export class metric_card_design1 extends BaseComponent {
                             props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
                             isCompact ? 320 - 24 : 490.6667 - 32,
                             sparklineHeight,
-                            { start: startColor, end: endColor }
+                            {
+                                start: startColor,
+                                end: endColor,
+                                fillType: props.chartFillType,
+                                opacity: props.chartOpacity,
+                                gradientOpacityStart: props.chartGradientOpacityStart,
+                                gradientOpacityEnd: props.chartGradientOpacityEnd
+                            }
                         )
                     ]) : null
                 ].filter(Boolean) as NodeDefinition[]),
@@ -237,7 +249,7 @@ export class metric_card_design1 extends BaseComponent {
                 createFrame("Footer", {
                     layoutMode: "HORIZONTAL",
                     primaryAxisAlignItems: "SPACE_BETWEEN",
-                    counterAxisAlignItems: isCompact ? "CENTER" : "MAX",
+                    counterAxisAlignItems: "CENTER",
                     layoutSizingHorizontal: "FILL",
                     layoutSizingVertical: "HUG",
                     itemSpacing: isCompact ? 12 : 20,
@@ -301,28 +313,42 @@ export class metric_card_design1 extends BaseComponent {
                         layoutSizingVertical: "HUG",
                         fills: [{ type: "SOLID", color: trendColor, opacity: 0.1 }]
                     }, [
-                        {
-                            type: "COMPONENT",
-                            name: "Trend Icon",
-                            component: trendDirection === "up" ? Lucide_arrow_up : trendDirection === "down" ? Lucide_arrow_down : Lucide_minus,
-                            props: {
-                                width: trendIconSize,
-                                height: trendIconSize,
-                                color: trendColor,
-                            },
-                            layoutProps: {
-                                width: trendIconSize,
-                                height: trendIconSize,
-                                layoutSizingHorizontal: "FIXED",
-                                layoutSizingVertical: "FIXED",
-                                parentIsAutoLayout: true
+                        createFrame("Icon Wrapper", {
+                            layoutMode: "HORIZONTAL",
+                            primaryAxisAlignItems: "CENTER",
+                            counterAxisAlignItems: "CENTER",
+                            paddingTop: 1,
+                            paddingRight: 1,
+                            paddingBottom: 1,
+                            paddingLeft: 1,
+                            layoutSizingHorizontal: "HUG",
+                            layoutSizingVertical: "HUG",
+                            fills: []
+                        }, [
+                            {
+                                type: "COMPONENT",
+                                name: "Trend Icon",
+                                component: trendDirection === "up" ? Lucide_arrow_up : trendDirection === "down" ? Lucide_arrow_down : Lucide_minus,
+                                props: {
+                                    width: trendIconSize,
+                                    height: trendIconSize,
+                                    color: trendColor,
+                                },
+                                layoutProps: {
+                                    width: trendIconSize,
+                                    height: trendIconSize,
+                                    layoutSizingHorizontal: "FIXED",
+                                    layoutSizingVertical: "FIXED",
+                                    parentIsAutoLayout: true,
+                                    constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                                }
                             }
-                        },
+                        ]),
                         createText("Trend %", trendValue, isCompact ? 12 : 13, "Bold", trendColor, {
                             font: { family: "Inter", style: "Bold" }
                         }),
                         !isCompact
-                            ? createText("Trend Abs", trendDirection === "up" ? "(+8ms)" : trendDirection === "down" ? "(-8ms)" : "((0ms))", 13, "Medium", platformTextColor, {
+                            ? createText("Trend Abs", trendDirection === "up" ? "(+8ms)" : trendDirection === "down" ? "(-8ms)" : "(0ms)", 13, "Medium", platformTextColor, {
                                 font: { family: "Inter", style: "Medium" }
                             })
                             : null
@@ -337,7 +363,14 @@ export class metric_card_design1 extends BaseComponent {
         return root;
     }
 
-    private renderWave(data: number[], width: number, height: number, customGradient?: { start?: RGB, end?: RGB }): NodeDefinition | null {
+    private renderWave(data: number[], width: number, height: number, customStyle?: {
+        start?: RGB,
+        end?: RGB,
+        fillType?: "gradient" | "solid",
+        opacity?: number,
+        gradientOpacityStart?: number,
+        gradientOpacityEnd?: number
+    }): NodeDefinition | null {
         if (data.length < 2) return null;
 
         const step = width / (data.length - 1);
@@ -350,15 +383,12 @@ export class metric_card_design1 extends BaseComponent {
         pathData += `L ${points[0].x} ${points[0].y} `;
 
         // Use cubic beziers for smoothing
-        // For each segment i to i+1, we use points i-1, i, i+1, i+2 to calculate control points
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i - 1] || points[i];
             const p1 = points[i];
             const p2 = points[i + 1];
             const p3 = points[i + 2] || points[i + 1];
 
-            // Tension parameter controls how "tight" the curve is. 
-            // 0.2 to 0.4 is usually good for sparklines.
             const tension = 0.2;
 
             const cp1x = p1.x + (p2.x - p0.x) * tension;
@@ -372,21 +402,29 @@ export class metric_card_design1 extends BaseComponent {
         // Close back to bottom
         pathData += `L ${width} ${height} Z`;
 
-        const startColor = customGradient?.start || { r: 0, g: 0, b: 0.388 }; // Default #000063-ish
-        const endColor = customGradient?.end || { r: 0.68, g: 0.4, b: 1 }; // Default #AE67FF-ish
+        const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
+        const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
+        const isSolid = customStyle?.fillType === "solid";
+        const baseOpacity = customStyle?.opacity ?? 1;
+        const gradOpacityStart = customStyle?.gradientOpacityStart ?? 0.8;
+        const gradOpacityEnd = customStyle?.gradientOpacityEnd ?? 1.0;
 
         const startRGB = `rgb(${Math.round(startColor.r * 255)}, ${Math.round(startColor.g * 255)}, ${Math.round(startColor.b * 255)})`;
         const endRGB = `rgb(${Math.round(endColor.r * 255)}, ${Math.round(endColor.g * 255)}, ${Math.round(endColor.b * 255)})`;
 
+        const fillValue = isSolid ? startRGB : "url(#paint0_linear_dynamic)";
+        const fillOpacity = isSolid ? baseOpacity : 1;
+
         return createVector("Area Fill", `
 <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="${pathData}" fill="url(#paint0_linear_dynamic)"/>
+<path d="${pathData}" fill="${fillValue}" fill-opacity="${fillOpacity}"/>
+${!isSolid ? `
 <defs>
 <linearGradient id="paint0_linear_dynamic" x1="${width / 2}" y1="${height}" x2="${width / 2}" y2="0" gradientUnits="userSpaceOnUse">
-<stop stop-color="${startRGB}" stop-opacity="0.8"/>
-<stop offset="1" stop-color="${endRGB}"/>
+<stop stop-color="${startRGB}" stop-opacity="${gradOpacityStart * baseOpacity}"/>
+<stop offset="1" stop-color="${endRGB}" stop-opacity="${gradOpacityEnd * baseOpacity}"/>
 </linearGradient>
-</defs>
+</defs>` : ""}
 </svg>`, {
             layoutProps: {
                 width: undefined,
