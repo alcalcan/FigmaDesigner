@@ -169,8 +169,8 @@ export class metric_card extends BaseComponent {
                     fills: [],
                     layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
                 }, [
-                    createText("Label", props.label || "Label", 12, "SemiBold", { r: 0.5, g: 0.55, b: 0.65 }, {
-                        font: { family: "Inter", style: "SemiBold" }
+                    createText("Label", props.label || "Label", 12, "Semi Bold", { r: 0.5, g: 0.55, b: 0.65 }, {
+                        font: { family: "Inter", style: "Semi Bold" }
                     }),
                     createText("Value", props.value || "$0.00", 22, "Bold", { r: 0.1, g: 0.12, b: 0.2 }, {
                         font: { family: "Inter", style: "Bold" }
@@ -195,13 +195,14 @@ export class metric_card extends BaseComponent {
 
         const structure: NodeDefinition = createFrame("metric_card", {
             layoutMode: "VERTICAL",
-            itemSpacing: 20,
+            itemSpacing: 16,
             paddingTop: 32,
             paddingRight: 32,
             paddingBottom: 32,
             paddingLeft: 32,
-            primaryAxisSizingMode: isFillHeight ? "FIXED" : "AUTO",
+            primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
             counterAxisSizingMode: isFillWidth ? "FIXED" : "AUTO",
+            primaryAxisAlignItems: "SPACE_BETWEEN",
             fills: [{
                 type: "GRADIENT_LINEAR",
                 gradientStops: [
@@ -221,7 +222,7 @@ export class metric_card extends BaseComponent {
             layoutProps: {
                 width: isFillWidth ? undefined : (typeof props.width === 'number' ? props.width : undefined),
                 height: isFillHeight ? undefined : (typeof props.height === 'number' ? props.height : undefined),
-                layoutAlign: "INHERIT", // Fix: Don't STRETCH by default (prevents vertical stretch in horizontal rows)
+                layoutAlign: isFillWidth ? "STRETCH" : "INHERIT",
                 layoutGrow: isFillWidth ? 1 : 0, // In horizontal parent, width fill is Grow
                 minWidth: 280
             }
@@ -257,15 +258,15 @@ export class metric_card extends BaseComponent {
                 primaryAxisAlignItems: "CENTER",
                 counterAxisAlignItems: "CENTER",
                 layoutAlign: "STRETCH",
-                itemSpacing: 16,
+                itemSpacing: 8,
                 fills: [],
                 layoutProps: {
                     layoutGrow: isFillHeight ? 1 : 0,
                     parentIsAutoLayout: true
                 }
             }, [
-                createText("Label", props.label || "Active Users", 16, "SemiBold", { r: 0.45, g: 0.5, b: 0.6 }, {
-                    font: { family: "Inter", style: "SemiBold" }
+                createText("Label", props.label || "Active Users", 16, "Semi Bold", { r: 0.45, g: 0.5, b: 0.6 }, {
+                    font: { family: "Inter", style: "Semi Bold" }
                 }),
                 createText("Value", props.value || "1,234", 48, "Bold", { r: 0.05, g: 0.08, b: 0.15 }, {
                     font: { family: "Inter", style: "Bold" },
@@ -277,12 +278,16 @@ export class metric_card extends BaseComponent {
                     layoutMode: "VERTICAL",
                     layoutAlign: "STRETCH",
                     layoutGrow: isFillHeight ? 1 : 0,
-                    primaryAxisSizingMode: isFillHeight ? "FIXED" : "AUTO",
+                    primaryAxisSizingMode: "FIXED",
                     counterAxisSizingMode: "FIXED",
                     fills: [],
-                    clipsContent: false
+                    clipsContent: false,
+                    layoutProps: {
+                        height: 70,
+                        parentIsAutoLayout: true
+                    }
                 }, [
-                    renderLineChart(64, isFillHeight)
+                    renderLineChart(70, isFillHeight)
                 ]),
 
                 // Trend Pill

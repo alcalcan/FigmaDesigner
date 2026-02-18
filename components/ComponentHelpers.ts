@@ -54,7 +54,7 @@ export const createText = (name: string, text: string, fontSize: number, style: 
         props: {
             ...DEFAULT_PROPS,
             strokeAlign: "OUTSIDE",
-            characters: text,
+            characters: text ?? "", // Ensure characters is never undefined or null
             fontSize,
             font: { family: "Inter", style },
             fills: [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color }],

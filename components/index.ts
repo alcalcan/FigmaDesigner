@@ -340,6 +340,7 @@ export { Marseille } from "./Football_Crests/Marseille/Marseille";
 export { metric_card } from "./Alex_CookBook/metric_card/metric_card";
 export { metric_card_design1 as metric_card_design1_Alex_CookBook } from "./Alex_CookBook/metric_card_design1/metric_card_design1";
 export { metric_card_design1 as metric_card_design1_captures } from "./captures/metric_card_design1/metric_card_design1";
+export { MetricCardsDesign1Demo } from "../pages/Alex_CookBook/MetricCardsDesign1Demo";
 export { Midtjylland } from "./Football_Crests/Midtjylland/Midtjylland";
 export { Milan } from "./Football_Crests/Milan/Milan";
 export { Molde } from "./Football_Crests/Molde/Molde";

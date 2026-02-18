@@ -46,8 +46,8 @@ export class metric_card_design1 extends BaseComponent {
         const endColor = props.gradientEnd || defaultGradientEnd;
 
         const rootWidth = isCompact ? 320 : 490.6667;
-        const rootHeight = isCompact ? 212 : 308.8761;
-        const sparklineHeight = isCompact ? 56 : 88;
+        const rootHeight = isCompact ? 200 : 304;
+        const sparklineHeight = isCompact ? 40 : 70;
         const sparklineCornerRadius = isCompact ? 12 : 16;
         const starIconSize = 18;
         const platformIconSize = 18;
@@ -63,9 +63,9 @@ export class metric_card_design1 extends BaseComponent {
                 paddingRight: isCompact ? 12 : 16,
                 paddingBottom: isCompact ? 12 : 16,
                 paddingLeft: isCompact ? 12 : 16,
-                primaryAxisSizingMode: "AUTO",
+                primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
                 counterAxisSizingMode: "FIXED",
-                primaryAxisAlignItems: "MIN",
+                primaryAxisAlignItems: "SPACE_BETWEEN",
                 counterAxisAlignItems: "MIN",
                 clipsContent: true,
                 fills: [
@@ -170,7 +170,7 @@ export class metric_card_design1 extends BaseComponent {
 
                 createFrame("Content", {
                     layoutMode: "VERTICAL",
-                    itemSpacing: isCompact ? 12 : 16,
+                    itemSpacing: isCompact ? 4 : 8,
                     layoutSizingHorizontal: "FILL",
                     layoutSizingVertical: "HUG",
                     primaryAxisAlignItems: "CENTER",
@@ -211,6 +211,7 @@ export class metric_card_design1 extends BaseComponent {
                             showShadowBehindNode: false
                         }],
                         layoutProps: {
+                            height: sparklineHeight,
                             parentIsAutoLayout: true
                         }
                     }, [
