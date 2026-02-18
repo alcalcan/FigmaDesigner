@@ -532,7 +532,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             standardRow.layoutAlign = "STRETCH";
             standardRow.name = "Standard Variations";
 
-            // Up Trend
+            // Up Trend - ORIGINAL
             standardRow.appendChild(await design1.create({
                 title: "Server Latency",
                 value: "24ms",
@@ -550,7 +550,9 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendDirection: "down",
                 trendValue: "0.05%",
                 width: "fill",
-                dataPoints: [0.8, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+                dataPoints: [0.8, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1],
+                gradientStart: { r: 0.9, g: 0.1, b: 0.2 }, // Red
+                gradientEnd: { r: 1, g: 0.5, b: 0.6 }
             }));
 
             // Neutral
@@ -561,7 +563,9 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendDirection: "neutral",
                 trendValue: "Stable",
                 width: "fill",
-                dataPoints: [0.4, 0.45, 0.4, 0.45, 0.4, 0.45, 0.4]
+                dataPoints: [0.4, 0.42, 0.41, 0.4, 0.43, 0.41, 0.4],
+                gradientStart: { r: 0.1, g: 0.7, b: 0.3 }, // Green
+                gradientEnd: { r: 0.4, g: 0.9, b: 0.6 }
             }));
 
             container.appendChild(standardRow);
@@ -578,7 +582,10 @@ export class CookbookComponentsDemo extends BaseComponent {
                 period: "Region A",
                 trendDirection: "up",
                 trendValue: "2%",
-                width: "fill"
+                width: "fill",
+                dataPoints: [0.2, 0.4, 0.5, 0.6, 0.8, 0.85, 0.95],
+                gradientStart: { r: 0.9, g: 0.1, b: 0.2 }, // Red
+                gradientEnd: { r: 1, g: 0.5, b: 0.6 }
             }));
 
             compactRow.appendChild(await design1.create({
@@ -589,7 +596,9 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendDirection: "down",
                 trendValue: "5%",
                 width: "fill",
-                dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.5, 0.3]
+                dataPoints: [0.2, 0.3, 0.5, 0.4, 0.6, 0.5, 0.3],
+                gradientStart: { r: 0.1, g: 0.7, b: 0.3 }, // Green
+                gradientEnd: { r: 0.4, g: 0.9, b: 0.6 }
             }));
 
             compactRow.appendChild(await design1.create({
@@ -599,7 +608,10 @@ export class CookbookComponentsDemo extends BaseComponent {
                 period: "Edge 1",
                 trendDirection: "neutral",
                 trendValue: "Stable",
-                width: "fill"
+                width: "fill",
+                dataPoints: [0.6, 0.61, 0.59, 0.6, 0.62, 0.6, 0.6],
+                gradientStart: { r: 0.1, g: 0.4, b: 0.9 }, // Blue
+                gradientEnd: { r: 0.4, g: 0.8, b: 1 }
             }));
 
             compactRow.appendChild(await design1.create({
@@ -610,7 +622,9 @@ export class CookbookComponentsDemo extends BaseComponent {
                 trendDirection: "up",
                 trendValue: "High",
                 width: "fill",
-                dataPoints: [0.1, 0.2, 0.4, 0.8, 0.7, 0.9, 0.95]
+                dataPoints: [0.1, 0.2, 0.4, 0.8, 0.7, 0.9, 0.95],
+                gradientStart: { r: 0.9, g: 0.6, b: 0.1 }, // Orange
+                gradientEnd: { r: 1, g: 0.9, b: 0.4 }
             }));
 
             container.appendChild(compactRow);

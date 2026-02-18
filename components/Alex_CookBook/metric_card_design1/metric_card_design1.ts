@@ -14,8 +14,9 @@ export interface MetricCardDesign1Props extends ComponentProps {
     platformName?: string;
     trendDirection?: "up" | "down" | "neutral";
     trendValue?: string;
-    variant?: "default" | "compact";
     dataPoints?: number[];
+    gradientStart?: RGB;
+    gradientEnd?: RGB;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -37,6 +38,12 @@ export class metric_card_design1 extends BaseComponent {
         const platformTextColor = { r: 0.55, g: 0.6, b: 0.7 };
         const trendColor = { r: 0.2, g: 0.5, b: 1 };
         const iconBlack = { r: 0, g: 0, b: 0 };
+
+        const defaultGradientStart = { r: 0, g: 0, b: 0.388 }; // #000063
+        const defaultGradientEnd = { r: 0.68, g: 0.4, b: 1 }; // #AE67FF
+
+        const startColor = props.gradientStart || defaultGradientStart;
+        const endColor = props.gradientEnd || defaultGradientEnd;
 
         const rootWidth = isCompact ? 320 : 490.6667;
         const rootHeight = isCompact ? 212 : 308.8761;
@@ -198,27 +205,21 @@ export class metric_card_design1 extends BaseComponent {
                             blendMode: "NORMAL",
                             type: "DROP_SHADOW",
                             radius: 18.899999618530273,
-                            color: { r: 0.6117647290229797, g: 0.364705890417099, b: 0.9372549057006836, a: 0.800000011920929 },
+                            color: { ...endColor, a: 0.8 },
                             offset: { x: 0, y: 5 },
                             spread: 0,
                             showShadowBehindNode: false
                         }],
                         layoutProps: {
-                            height: sparklineHeight,
                             parentIsAutoLayout: true
                         }
                     }, [
-                        createVector("Area Fill", SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig, {
-                            layoutProps: {
-                                width: undefined,
-                                height: undefined,
-                                parentIsAutoLayout: true,
-                                layoutPositioning: "AUTO",
-                                layoutAlign: "STRETCH",
-                                layoutGrow: 1,
-                                constraints: { horizontal: "STRETCH", vertical: "STRETCH" }
-                            }
-                        })
+                        this.renderWave(
+                            props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
+                            isCompact ? 320 - 24 : 490.6667 - 32,
+                            sparklineHeight,
+                            { start: startColor, end: endColor }
+                        )
                     ])
                 ]),
 
@@ -323,5 +324,68 @@ export class metric_card_design1 extends BaseComponent {
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
         return root;
+    }
+
+    private renderWave(data: number[], width: number, height: number, customGradient?: { start?: RGB, end?: RGB }): NodeDefinition | null {
+        if (data.length < 2) return null;
+
+        const step = width / (data.length - 1);
+        const points = data.map((d, i) => ({ x: i * step, y: height - (d * height) }));
+
+        // Start from bottom-left corner
+        let pathData = `M 0 ${height} `;
+
+        // Line to the first point
+        pathData += `L ${points[0].x} ${points[0].y} `;
+
+        // Use cubic beziers for smoothing
+        // For each segment i to i+1, we use points i-1, i, i+1, i+2 to calculate control points
+        for (let i = 0; i < points.length - 1; i++) {
+            const p0 = points[i - 1] || points[i];
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            const p3 = points[i + 2] || points[i + 1];
+
+            // Tension parameter controls how "tight" the curve is. 
+            // 0.2 to 0.4 is usually good for sparklines.
+            const tension = 0.2;
+
+            const cp1x = p1.x + (p2.x - p0.x) * tension;
+            const cp1y = p1.y + (p2.y - p0.y) * tension;
+            const cp2x = p2.x - (p3.x - p1.x) * tension;
+            const cp2y = p2.y - (p3.y - p1.y) * tension;
+
+            pathData += `C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} `;
+        }
+
+        // Close back to bottom
+        pathData += `L ${width} ${height} Z`;
+
+        const startColor = customGradient?.start || { r: 0, g: 0, b: 0.388 }; // Default #000063-ish
+        const endColor = customGradient?.end || { r: 0.68, g: 0.4, b: 1 }; // Default #AE67FF-ish
+
+        const startRGB = `rgb(${Math.round(startColor.r * 255)}, ${Math.round(startColor.g * 255)}, ${Math.round(startColor.b * 255)})`;
+        const endRGB = `rgb(${Math.round(endColor.r * 255)}, ${Math.round(endColor.g * 255)}, ${Math.round(endColor.b * 255)})`;
+
+        return createVector("Area Fill", `
+<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="${pathData}" fill="url(#paint0_linear_dynamic)"/>
+<defs>
+<linearGradient id="paint0_linear_dynamic" x1="${width / 2}" y1="${height}" x2="${width / 2}" y2="0" gradientUnits="userSpaceOnUse">
+<stop stop-color="${startRGB}" stop-opacity="0.8"/>
+<stop offset="1" stop-color="${endRGB}"/>
+</linearGradient>
+</defs>
+</svg>`, {
+            layoutProps: {
+                width: undefined,
+                height: undefined,
+                parentIsAutoLayout: true,
+                layoutPositioning: "AUTO",
+                layoutAlign: "STRETCH",
+                layoutGrow: 1,
+                constraints: { horizontal: "STRETCH", vertical: "STRETCH" }
+            }
+        });
     }
 }
