@@ -19,6 +19,10 @@ export interface MetricCardDesign1Props extends ComponentProps {
     height?: number | "fill" | "hug";
     gap?: number | "auto";
     dataPoints?: number[];
+    showChart?: boolean;
+    chartHeight?: number;
+    gradientStart?: RGB;
+    gradientEnd?: RGB;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -50,7 +54,8 @@ export class metric_card_design1 extends BaseComponent {
 
         const rootWidth = isCompact ? 320 : 490.6667;
         const rootHeight = isCompact ? 200 : 304;
-        const sparklineHeight = isCompact ? 40 : 70;
+        const sparklineHeight = props.chartHeight ?? (isCompact ? 40 : 70);
+        const showChart = props.showChart !== false;
         const defaultGap = isCompact ? 10 : 16;
         const gap = typeof props.gap === "number" ? props.gap : defaultGap;
         const sparklineCornerRadius = isCompact ? 12 : 16;
@@ -196,7 +201,7 @@ export class metric_card_design1 extends BaseComponent {
                         layoutSizingHorizontal: "HUG",
                         layoutSizingVertical: "HUG"
                     }),
-                    createFrame("Sparkline Container", {
+                    showChart ? createFrame("Sparkline Container", {
                         layoutMode: "VERTICAL",
                         primaryAxisAlignItems: "CENTER",
                         counterAxisAlignItems: "CENTER",
@@ -226,8 +231,8 @@ export class metric_card_design1 extends BaseComponent {
                             sparklineHeight,
                             { start: startColor, end: endColor }
                         )
-                    ])
-                ]),
+                    ]) : null
+                ].filter(Boolean) as NodeDefinition[]),
 
                 createFrame("Footer", {
                     layoutMode: "HORIZONTAL",

@@ -165,6 +165,60 @@ export class MetricCardsDesign1Demo extends BaseComponent {
 
         compactGroup.appendChild(compactRow);
 
+        // --- CHART CUSTOMIZATION ---
+        const customizationGroup = this.createSection(root, "Chart Customization");
+        const customizationRow = this.createRow();
+        customizationRow.layoutAlign = "STRETCH";
+
+        // Tall Chart
+        customizationRow.appendChild(await design1.create({
+            title: "Peak Loading",
+            value: "92%",
+            period: "Worker C",
+            trendDirection: "up",
+            trendValue: "Critical",
+            width: "fill",
+            height: "hug", // Hugging content
+            chartHeight: 120, // Tall chart
+            gap: 24, // Explicit gap
+            dataPoints: [0.1, 0.3, 0.2, 0.9, 0.8, 1.0, 0.95],
+            gradientStart: { r: 0.8, g: 0.1, b: 0.1 },
+            gradientEnd: { r: 1, g: 0.4, b: 0.1 }
+        }));
+
+        // Short Chart
+        customizationRow.appendChild(await design1.create({
+            title: "API Latency",
+            value: "14ms",
+            period: "Edge 2",
+            trendDirection: "down",
+            trendValue: "Stable",
+            width: "fill",
+            height: "hug", // Hugging content
+            chartHeight: 30, // Short chart
+            gap: 24, // Explicit gap
+            dataPoints: [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            gradientStart: { r: 0.1, g: 0.6, b: 0.8 },
+            gradientEnd: { r: 0.4, g: 0.9, b: 1 }
+        }));
+
+        // No Chart
+        customizationRow.appendChild(await design1.create({
+            title: "License Status",
+            value: "Active",
+            period: "Subscription",
+            trendDirection: "neutral",
+            trendValue: "Valid",
+            width: "fill",
+            height: "hug", // Hugging content
+            showChart: false, // Hidden chart
+            gap: 24, // Explicit gap
+            gradientStart: { r: 0.5, g: 0.5, b: 0.5 },
+            gradientEnd: { r: 0.8, g: 0.8, b: 0.8 }
+        }));
+
+        customizationGroup.appendChild(customizationRow);
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 
