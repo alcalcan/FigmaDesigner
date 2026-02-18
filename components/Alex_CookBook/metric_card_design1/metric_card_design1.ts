@@ -28,6 +28,7 @@ export interface MetricCardDesign1Props extends ComponentProps {
     chartOpacity?: number;
     chartGradientOpacityStart?: number;
     chartGradientOpacityEnd?: number;
+    trendPillRadius?: number;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -306,7 +307,7 @@ export class metric_card_design1 extends BaseComponent {
                         paddingBottom: isCompact ? 6 : 8,
                         paddingLeft: isCompact ? 8 : 12,
                         paddingRight: isCompact ? 8 : 12,
-                        cornerRadius: 8,
+                        cornerRadius: props.trendPillRadius ?? (isCompact ? 12 : 16),
                         primaryAxisAlignItems: "CENTER",
                         counterAxisAlignItems: "CENTER",
                         layoutSizingHorizontal: "HUG",
