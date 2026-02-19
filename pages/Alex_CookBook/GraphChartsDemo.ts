@@ -1,5 +1,5 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
-import { graph_chart, GraphChartProps } from "../../components/Alex_CookBook/graph_chart/graph_chart";
+import { graph_chart, GraphChartProps, GraphLineSeries } from "../../components/Alex_CookBook/graph_chart/graph_chart";
 
 export class GraphChartsDemo extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -51,40 +51,52 @@ export class GraphChartsDemo extends BaseComponent {
 
         // --- SECTION 1: Standard Variation ---
         await this.addSection(root, graphCreator, "Standard Performance Tracking", "Fluid Spline Area Chart • Gradient Fill, Soft Shadow, 16px Roundness", {
-            dataPoints: [0.1, 0.3, 0.2, 0.5, 0.4, 0.8, 0.7, 0.9, 0.85, 1.0],
+            type: "spline",
+            series: [{ dataPoints: [0.1, 0.3, 0.2, 0.5, 0.4, 0.8, 0.7, 0.9, 0.85, 1.0] }],
             height: 240,
-            gradientStart: { r: 0.1, g: 0.4, b: 0.9 },
-            gradientEnd: { r: 0.4, g: 0.8, b: 1 },
-            showChartShadow: true
+            area: {
+                startColor: { r: 0.1, g: 0.4, b: 0.9 },
+                endColor: { r: 0.4, g: 0.8, b: 1 },
+                shadow: true
+            }
         });
 
         // --- SECTION 2: Compact Dense Data ---
         await this.addSection(root, graphCreator, "High-Density API Metrics (Shortened)", "Fluid Spline Area Chart • Solid Gradient, No Shadow, Compact Height (120px)", {
-            dataPoints: Array.from({ length: 40 }, () => Math.random() * 0.5 + 0.2),
+            type: "spline",
+            series: [{ dataPoints: Array.from({ length: 40 }, () => Math.random() * 0.5 + 0.2) }],
             height: 120,
-            gradientStart: { r: 0.02, g: 0.08, b: 0.25 },
-            gradientEnd: { r: 0.15, g: 0.35, b: 0.8 },
-            showChartShadow: false
+            area: {
+                startColor: { r: 0.02, g: 0.08, b: 0.25 },
+                endColor: { r: 0.15, g: 0.35, b: 0.8 },
+                shadow: false
+            }
         });
 
         // --- SECTION 3: Warning State ---
         await this.addSection(root, graphCreator, "Critical Load Peak", "Fluid Spline Area Chart • Warning Colors, Glow Shadow, Peak Data Visualization", {
-            dataPoints: [0.2, 0.25, 0.3, 0.4, 0.9, 0.85, 0.95, 0.8, 0.3, 0.2],
+            type: "spline",
+            series: [{ dataPoints: [0.2, 0.25, 0.3, 0.4, 0.9, 0.85, 0.95, 0.8, 0.3, 0.2] }],
             height: 200,
-            gradientStart: { r: 0.8, g: 0.1, b: 0.1 },
-            gradientEnd: { r: 1, g: 0.4, b: 0.1 },
-            chartFillType: "gradient",
-            showChartShadow: true
+            area: {
+                startColor: { r: 0.8, g: 0.1, b: 0.1 },
+                endColor: { r: 1, g: 0.4, b: 0.1 },
+                fillType: "gradient",
+                shadow: true
+            }
         });
 
         // --- SECTION 4: Solid Style ---
         await this.addSection(root, graphCreator, "Disk Read Latency (Solid Style)", "Fluid Spline Area Chart • Transparent Solid Fill, No Shadow, Custom Opacity", {
-            dataPoints: [0.4, 0.45, 0.42, 0.5, 0.48, 0.55, 0.52, 0.6, 0.58],
+            type: "spline",
+            series: [{ dataPoints: [0.4, 0.45, 0.42, 0.5, 0.48, 0.55, 0.52, 0.6, 0.58] }],
             height: 180,
-            gradientStart: { r: 0.4, g: 0.1, b: 0.9 },
-            chartFillType: "solid",
-            chartOpacity: 0.2,
-            showChartShadow: false
+            area: {
+                startColor: { r: 0.4, g: 0.1, b: 0.9 },
+                fillType: "solid",
+                opacity: 0.2,
+                shadow: false
+            }
         });
 
         // --- BAR CHART EXAMPLES (REFERENCE-STYLE) ---
@@ -138,43 +150,92 @@ export class GraphChartsDemo extends BaseComponent {
             root,
             graphCreator,
             "Daily Trends (Multi-Line)",
-            "Configurable Line Chart • Pass lineSeries and lineSeriesCount via props to control how many lines render",
+            "Configurable Line Chart • Nested props API with backward-compatible demo controls",
+            this.buildMultiLineChartProps(props, defaultLineSeries)
+        );
+        const intersectionDateLabels = ["01", "03", "05", "07", "09", "11", "13", "15", "17", "19", "21", "23", "25", "27", "29", "30"];
+        const intersectionSelectedIndex = 7;
+        const splineSpend = [18000, 20500, 23200, 24800, 22100, 17600, 20800, 36200, 43800, 45200, 40900, 32500, 23800, 17200, 11900, 9800];
+        const splineCashback = [12600, 14900, 18600, 22100, 25200, 26200, 24600, 20500, 28400, 37200, 42800, 39500, 45200, 51800, 56300, 48700];
+        await this.addSection(
+            root,
+            graphCreator,
+            "Spline Intersections (Date Tooltip)",
+            "Spline-style two-line intersection • One filled trend + two distinct strokes + date/value tooltip",
             {
-                type: "line",
+                type: "spline",
                 height: 320,
-                lineSeries: Array.isArray(props.multiLineSeries) ? props.multiLineSeries : defaultLineSeries,
-                lineSeriesCount: typeof props.multiLineLineCount === "number" ? props.multiLineLineCount : undefined,
-                lineYAxisMin: typeof props.multiLineYAxisMin === "number" ? props.multiLineYAxisMin : 0,
-                lineYAxisMax: typeof props.multiLineYAxisMax === "number" ? props.multiLineYAxisMax : 50000,
-                lineYAxisTicks: Array.isArray(props.multiLineYAxisTicks) ? props.multiLineYAxisTicks : undefined,
-                linePaddingLeft: typeof props.multiLinePaddingLeft === "number" ? props.multiLinePaddingLeft : undefined,
-                linePaddingRight: typeof props.multiLinePaddingRight === "number" ? props.multiLinePaddingRight : undefined,
-                linePaddingTop: typeof props.multiLinePaddingTop === "number" ? props.multiLinePaddingTop : undefined,
-                linePaddingBottom: typeof props.multiLinePaddingBottom === "number" ? props.multiLinePaddingBottom : undefined,
-                lineYAxisLabelOffsetX: typeof props.multiLineYAxisLabelOffsetX === "number" ? props.multiLineYAxisLabelOffsetX : undefined,
-                lineYAxisLabelOffsetY: typeof props.multiLineYAxisLabelOffsetY === "number" ? props.multiLineYAxisLabelOffsetY : undefined,
-                lineSelectedIndex: typeof props.multiLineSelectedDayIndex === "number" ? props.multiLineSelectedDayIndex : 9,
-                lineXAxisTickIndices: Array.isArray(props.multiLineXAxisTickIndices) ? props.multiLineXAxisTickIndices : undefined,
-                lineXAxisTickLabels: Array.isArray(props.multiLineXAxisTickLabels) ? props.multiLineXAxisTickLabels : undefined,
-                lineXAxisLabelOffsetY: typeof props.multiLineXAxisLabelOffsetY === "number" ? props.multiLineXAxisLabelOffsetY : undefined,
-                lineXAxisLabelCenterAdjust: typeof props.multiLineXAxisLabelCenterAdjust === "number" ? props.multiLineXAxisLabelCenterAdjust : undefined,
-                lineShowTooltip: props.multiLineShowTooltip !== false,
-                lineTooltipLines: Array.isArray(props.multiLineTooltipLines) ? props.multiLineTooltipLines : undefined,
-                lineTooltipX: typeof props.multiLineTooltipX === "number" ? props.multiLineTooltipX : undefined,
-                lineTooltipY: typeof props.multiLineTooltipY === "number" ? props.multiLineTooltipY : undefined,
-                lineTooltipOffsetX: typeof props.multiLineTooltipOffsetX === "number" ? props.multiLineTooltipOffsetX : undefined,
-                lineTooltipOffsetY: typeof props.multiLineTooltipOffsetY === "number" ? props.multiLineTooltipOffsetY : undefined,
-                lineShowCursor: props.multiLineShowCursor !== false,
-                lineCursorOffsetX: typeof props.multiLineCursorOffsetX === "number" ? props.multiLineCursorOffsetX : undefined,
-                lineCursorHeightExtra: typeof props.multiLineCursorHeightExtra === "number" ? props.multiLineCursorHeightExtra : undefined,
-                lineShowMarkers: props.multiLineShowMarkers !== false,
-                lineMarkerRadius: typeof props.multiLineMarkerRadius === "number" ? props.multiLineMarkerRadius : undefined,
-                lineMarkerOffsetX: typeof props.multiLineMarkerOffsetX === "number" ? props.multiLineMarkerOffsetX : undefined,
-                lineMarkerOffsetY: typeof props.multiLineMarkerOffsetY === "number" ? props.multiLineMarkerOffsetY : undefined,
-                lineStrokeWidth: typeof props.multiLineStrokeWidth === "number" ? props.multiLineStrokeWidth : undefined,
-                lineStrokeColor: typeof props.multiLineStrokeColor === "object" ? props.multiLineStrokeColor : undefined,
-                lineStrokeColors: Array.isArray(props.multiLineStrokeColors) ? props.multiLineStrokeColors : undefined,
-                showChartShadow: false
+                curve: "smooth",
+                series: [
+                    {
+                        label: "Spend",
+                        tooltipLabel: "Spend",
+                        strokeColor: { r: 0.42, g: 0.33, b: 0.56 },
+                        strokeWidth: 5,
+                        showArea: false,
+                        dataPoints: splineSpend
+                    },
+                    {
+                        label: "Cashback",
+                        tooltipLabel: "Cash back",
+                        strokeColor: { r: 0.67, g: 0.62, b: 0.95 },
+                        strokeWidth: 5,
+                        showArea: true,
+                        areaFillType: "gradient",
+                        areaStartColor: { r: 0.67, g: 0.62, b: 0.95 },
+                        areaEndColor: { r: 0.84, g: 0.82, b: 0.98 },
+                        areaStartOpacity: 0.2,
+                        areaEndOpacity: 0.04,
+                        dataPoints: splineCashback
+                    }
+                ],
+                plot: {
+                    paddingLeft: 52,
+                    paddingRight: 10,
+                    paddingTop: 10,
+                    paddingBottom: 28
+                },
+                domain: {
+                    min: 0,
+                    max: 56000,
+                    headroomPct: 0.03
+                },
+                axes: {
+                    showX: true,
+                    showY: true,
+                    xTickIndices: [0, 2, 4, 6, 8, 10, 12, 14, 15],
+                    xTickLabels: intersectionDateLabels
+                },
+                interaction: {
+                    selectedIndex: intersectionSelectedIndex,
+                    focus: {
+                        show: true,
+                        seriesIndex: 0
+                    },
+                    cursor: {
+                        show: true
+                    },
+                    markers: {
+                        show: true,
+                        scope: "all"
+                    },
+                    tooltip: {
+                        show: true,
+                        minTop: 4,
+                        lines: [
+                            `Date: ${intersectionDateLabels[intersectionSelectedIndex]}`,
+                            `Spend: $${Math.round(splineSpend[intersectionSelectedIndex]).toLocaleString("en-US")}`,
+                            `Cash back: $${Math.round(splineCashback[intersectionSelectedIndex]).toLocaleString("en-US")}`
+                        ]
+                    }
+                },
+                stroke: {
+                    showUnderlays: false
+                },
+                area: {
+                    fillType: "none",
+                    shadow: false
+                }
             } as GraphChartProps
         );
 
@@ -223,6 +284,94 @@ export class GraphChartsDemo extends BaseComponent {
         section.appendChild(descText);
 
         root.appendChild(section);
+    }
+
+    private buildMultiLineChartProps(pageProps: ComponentProps, defaultLineSeries: GraphLineSeries[]): GraphChartProps {
+        const configuredSeries = Array.isArray(pageProps.multiLineSeries) ? pageProps.multiLineSeries : defaultLineSeries;
+        const requestedCount = typeof pageProps.multiLineLineCount === "number"
+            ? Math.max(1, Math.floor(pageProps.multiLineLineCount))
+            : undefined;
+        const clippedSeries = typeof requestedCount === "number" ? configuredSeries.slice(0, requestedCount) : configuredSeries;
+        const palette: RGB[] = [
+            { r: 0.45, g: 0.36, b: 0.56 },
+            { r: 0.69, g: 0.64, b: 0.94 },
+            { r: 0.25, g: 0.62, b: 0.88 },
+            { r: 0.94, g: 0.55, b: 0.16 }
+        ];
+        const series = clippedSeries.map((line, index) => ({
+            ...line,
+            strokeColor: line.strokeColor ?? palette[index % palette.length]
+        }));
+        const focusEnabled = pageProps.multiLineFocusDotAndLabel !== false;
+        const focusSeriesIndex = typeof pageProps.multiLineFocusSeriesIndex === "number"
+            ? Math.max(0, Math.floor(pageProps.multiLineFocusSeriesIndex))
+            : 0;
+        const markerScope = pageProps.multiLineMarkerScope === "focus" ? "focus" : "all";
+        const useCustomTooltipLines = pageProps.multiLineUseCustomTooltipLines === true;
+        const tooltipLines = useCustomTooltipLines && Array.isArray(pageProps.multiLineTooltipLines)
+            ? pageProps.multiLineTooltipLines
+            : undefined;
+
+        return {
+            type: "line",
+            height: 320,
+            series,
+            domain: {
+                min: typeof pageProps.multiLineYAxisMin === "number" ? pageProps.multiLineYAxisMin : 0,
+                max: typeof pageProps.multiLineYAxisMax === "number" ? pageProps.multiLineYAxisMax : 50000
+            },
+            plot: {
+                paddingLeft: typeof pageProps.multiLinePaddingLeft === "number" ? pageProps.multiLinePaddingLeft : undefined,
+                paddingRight: typeof pageProps.multiLinePaddingRight === "number" ? pageProps.multiLinePaddingRight : undefined,
+                paddingTop: typeof pageProps.multiLinePaddingTop === "number" ? pageProps.multiLinePaddingTop : undefined,
+                paddingBottom: typeof pageProps.multiLinePaddingBottom === "number" ? pageProps.multiLinePaddingBottom : undefined
+            },
+            axes: {
+                yTicks: Array.isArray(pageProps.multiLineYAxisTicks) ? pageProps.multiLineYAxisTicks : undefined,
+                yLabelOffsetX: typeof pageProps.multiLineYAxisLabelOffsetX === "number" ? pageProps.multiLineYAxisLabelOffsetX : undefined,
+                yLabelOffsetY: typeof pageProps.multiLineYAxisLabelOffsetY === "number" ? pageProps.multiLineYAxisLabelOffsetY : undefined,
+                xTickIndices: Array.isArray(pageProps.multiLineXAxisTickIndices) ? pageProps.multiLineXAxisTickIndices : undefined,
+                xTickLabels: Array.isArray(pageProps.multiLineXAxisTickLabels) ? pageProps.multiLineXAxisTickLabels : undefined,
+                xLabelOffsetY: typeof pageProps.multiLineXAxisLabelOffsetY === "number" ? pageProps.multiLineXAxisLabelOffsetY : undefined,
+                xLabelCenterAdjust: typeof pageProps.multiLineXAxisLabelCenterAdjust === "number" ? pageProps.multiLineXAxisLabelCenterAdjust : undefined
+            },
+            interaction: {
+                selectedIndex: typeof pageProps.multiLineSelectedDayIndex === "number" ? pageProps.multiLineSelectedDayIndex : 9,
+                tooltip: {
+                    show: pageProps.multiLineShowTooltip !== false,
+                    lines: tooltipLines,
+                    x: typeof pageProps.multiLineTooltipX === "number" ? pageProps.multiLineTooltipX : undefined,
+                    y: typeof pageProps.multiLineTooltipY === "number" ? pageProps.multiLineTooltipY : undefined,
+                    offsetX: typeof pageProps.multiLineTooltipOffsetX === "number" ? pageProps.multiLineTooltipOffsetX : undefined,
+                    offsetY: typeof pageProps.multiLineTooltipOffsetY === "number" ? pageProps.multiLineTooltipOffsetY : undefined,
+                    minTop: typeof pageProps.multiLineTooltipMinTop === "number" ? pageProps.multiLineTooltipMinTop : undefined
+                },
+                cursor: {
+                    show: pageProps.multiLineShowCursor !== false,
+                    offsetX: typeof pageProps.multiLineCursorOffsetX === "number" ? pageProps.multiLineCursorOffsetX : undefined,
+                    heightExtra: typeof pageProps.multiLineCursorHeightExtra === "number" ? pageProps.multiLineCursorHeightExtra : undefined
+                },
+                markers: {
+                    show: pageProps.multiLineShowMarkers !== false,
+                    scope: markerScope,
+                    radius: typeof pageProps.multiLineMarkerRadius === "number" ? pageProps.multiLineMarkerRadius : undefined,
+                    offsetX: typeof pageProps.multiLineMarkerOffsetX === "number" ? pageProps.multiLineMarkerOffsetX : undefined,
+                    offsetY: typeof pageProps.multiLineMarkerOffsetY === "number" ? pageProps.multiLineMarkerOffsetY : undefined
+                },
+                focus: {
+                    show: focusEnabled,
+                    seriesIndex: focusSeriesIndex
+                }
+            },
+            stroke: {
+                width: typeof pageProps.multiLineStrokeWidth === "number" ? pageProps.multiLineStrokeWidth : undefined,
+                color: typeof pageProps.multiLineStrokeColor === "object" ? pageProps.multiLineStrokeColor : undefined,
+                colors: Array.isArray(pageProps.multiLineStrokeColors) ? pageProps.multiLineStrokeColors : undefined
+            },
+            area: {
+                shadow: false
+            }
+        };
     }
 
     private addCustomSection(root: FrameNode, label: string, description: string, content: FrameNode) {
