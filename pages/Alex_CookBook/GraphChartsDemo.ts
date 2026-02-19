@@ -107,6 +107,76 @@ export class GraphChartsDemo extends BaseComponent {
             "Micro Bar Chart • Dense slim bars with subtle grid for dashboard widgets",
             this.createCompactMiniBarsCard(rootContentWidth)
         );
+        const defaultLineSeries = [
+            {
+                label: "Spend",
+                tooltipLabel: "Spend",
+                strokeColor: { r: 0.45, g: 0.36, b: 0.56 },
+                strokeWidth: 5,
+                dataPoints: [
+                    25000, 23500, 21000, 18500, 17500, 18000, 19500, 22000, 28000, 37000,
+                    42000, 43500, 42000, 39000, 35000, 31000, 27000, 23000, 20000, 17000,
+                    14500, 12500, 12000, 12500, 14500, 19000, 22500, 23500, 21000, 18000
+                ]
+            },
+            {
+                label: "Cashback",
+                tooltipLabel: "Cash back",
+                strokeColor: { r: 0.69, g: 0.64, b: 0.94 },
+                strokeWidth: 5,
+                showArea: true,
+                areaStartOpacity: 0.2,
+                areaEndOpacity: 0.02,
+                dataPoints: [
+                    17000, 19500, 22000, 24500, 26000, 26500, 25000, 22500, 20500, 20000,
+                    22000, 27000, 33000, 37000, 39500, 41500, 44000, 45000, 43500, 42000,
+                    42500, 45500, 49000, 52000, 53500, 52000, 47000, 40000, 34500, 33000
+                ]
+            }
+        ];
+        await this.addSection(
+            root,
+            graphCreator,
+            "Daily Trends (Multi-Line)",
+            "Configurable Line Chart • Pass lineSeries and lineSeriesCount via props to control how many lines render",
+            {
+                type: "line",
+                height: 320,
+                lineSeries: Array.isArray(props.multiLineSeries) ? props.multiLineSeries : defaultLineSeries,
+                lineSeriesCount: typeof props.multiLineLineCount === "number" ? props.multiLineLineCount : undefined,
+                lineYAxisMin: typeof props.multiLineYAxisMin === "number" ? props.multiLineYAxisMin : 0,
+                lineYAxisMax: typeof props.multiLineYAxisMax === "number" ? props.multiLineYAxisMax : 50000,
+                lineYAxisTicks: Array.isArray(props.multiLineYAxisTicks) ? props.multiLineYAxisTicks : undefined,
+                linePaddingLeft: typeof props.multiLinePaddingLeft === "number" ? props.multiLinePaddingLeft : undefined,
+                linePaddingRight: typeof props.multiLinePaddingRight === "number" ? props.multiLinePaddingRight : undefined,
+                linePaddingTop: typeof props.multiLinePaddingTop === "number" ? props.multiLinePaddingTop : undefined,
+                linePaddingBottom: typeof props.multiLinePaddingBottom === "number" ? props.multiLinePaddingBottom : undefined,
+                lineYAxisLabelOffsetX: typeof props.multiLineYAxisLabelOffsetX === "number" ? props.multiLineYAxisLabelOffsetX : undefined,
+                lineYAxisLabelOffsetY: typeof props.multiLineYAxisLabelOffsetY === "number" ? props.multiLineYAxisLabelOffsetY : undefined,
+                lineSelectedIndex: typeof props.multiLineSelectedDayIndex === "number" ? props.multiLineSelectedDayIndex : 9,
+                lineXAxisTickIndices: Array.isArray(props.multiLineXAxisTickIndices) ? props.multiLineXAxisTickIndices : undefined,
+                lineXAxisTickLabels: Array.isArray(props.multiLineXAxisTickLabels) ? props.multiLineXAxisTickLabels : undefined,
+                lineXAxisLabelOffsetY: typeof props.multiLineXAxisLabelOffsetY === "number" ? props.multiLineXAxisLabelOffsetY : undefined,
+                lineXAxisLabelCenterAdjust: typeof props.multiLineXAxisLabelCenterAdjust === "number" ? props.multiLineXAxisLabelCenterAdjust : undefined,
+                lineShowTooltip: props.multiLineShowTooltip !== false,
+                lineTooltipLines: Array.isArray(props.multiLineTooltipLines) ? props.multiLineTooltipLines : undefined,
+                lineTooltipX: typeof props.multiLineTooltipX === "number" ? props.multiLineTooltipX : undefined,
+                lineTooltipY: typeof props.multiLineTooltipY === "number" ? props.multiLineTooltipY : undefined,
+                lineTooltipOffsetX: typeof props.multiLineTooltipOffsetX === "number" ? props.multiLineTooltipOffsetX : undefined,
+                lineTooltipOffsetY: typeof props.multiLineTooltipOffsetY === "number" ? props.multiLineTooltipOffsetY : undefined,
+                lineShowCursor: props.multiLineShowCursor !== false,
+                lineCursorOffsetX: typeof props.multiLineCursorOffsetX === "number" ? props.multiLineCursorOffsetX : undefined,
+                lineCursorHeightExtra: typeof props.multiLineCursorHeightExtra === "number" ? props.multiLineCursorHeightExtra : undefined,
+                lineShowMarkers: props.multiLineShowMarkers !== false,
+                lineMarkerRadius: typeof props.multiLineMarkerRadius === "number" ? props.multiLineMarkerRadius : undefined,
+                lineMarkerOffsetX: typeof props.multiLineMarkerOffsetX === "number" ? props.multiLineMarkerOffsetX : undefined,
+                lineMarkerOffsetY: typeof props.multiLineMarkerOffsetY === "number" ? props.multiLineMarkerOffsetY : undefined,
+                lineStrokeWidth: typeof props.multiLineStrokeWidth === "number" ? props.multiLineStrokeWidth : undefined,
+                lineStrokeColor: typeof props.multiLineStrokeColor === "object" ? props.multiLineStrokeColor : undefined,
+                lineStrokeColors: Array.isArray(props.multiLineStrokeColors) ? props.multiLineStrokeColors : undefined,
+                showChartShadow: false
+            } as GraphChartProps
+        );
 
 
         root.x = props.x ?? 0;
@@ -583,4 +653,5 @@ export class GraphChartsDemo extends BaseComponent {
 
         return card;
     }
+
 }
