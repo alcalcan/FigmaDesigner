@@ -18,6 +18,7 @@ export interface RasterizePageIntoSlideOptions {
     cornerRadius?: number;
     strokeColor?: RGB;
     strokeWeight?: number;
+    showShadow?: boolean;
 }
 
 export interface RasterizedPagePlacement {
@@ -108,6 +109,17 @@ export async function rasterizeNodeIntoSlide(
         imageNode.strokes = [{
             type: "SOLID",
             color: options.strokeColor || { r: 0.76, g: 0.78, b: 0.82 }
+        }];
+    }
+
+    if (options.showShadow) {
+        imageNode.effects = [{
+            type: "DROP_SHADOW",
+            color: { r: 0, g: 0, b: 0.1, a: 0.15 },
+            offset: { x: 0, y: 12 },
+            radius: 32,
+            visible: true,
+            blendMode: "NORMAL"
         }];
     }
 
