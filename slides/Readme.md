@@ -90,3 +90,46 @@ To add new slides:
 1.  Study the Python implementation in `PresStyle/styles/UEFA`.
 2.  Create a new directory implementation here (e.g., `Slide_Content_Simple`).
 3.  Use `theme.ts` for all layout coordinates and colors to ensure consistency.
+
+## Page Raster (High Detail + Freeze Safe)
+
+Use:
+`/Users/alexandrucalcan/Library/CloudStorage/OneDrive-ENDAVA/About ME/PERSONAL/APPS/FigmaDesigner/slides/pageRaster.ts`
+
+Recommended call:
+
+```ts
+const result = await rasterizePageFactoryIntoSlide(slide, createPageNode, {
+  targetBox: { x: 64, y: 64, width: 1600, height: 900 },
+  preferMaxResolution: true
+});
+```
+
+Default behavior:
+1. Tries high-detail raster by scale.
+2. If export fails, falls back automatically to the highest accepted scale.
+3. If `createImage` fails with `Image is too large`, retries at smaller scales.
+4. Applies safe defaults:
+   - `maxExportPixels: 16000000`
+   - `maxExportSidePx: 4096`
+
+Option priority:
+1. `exportConstraint` (highest priority)
+2. `quality`
+3. `preferMaxResolution` (default mode when `quality` is not set)
+
+Useful output metadata:
+- `exportedPixelWidth`
+- `exportedPixelHeight`
+- `exportScale`
+
+Freeze-safe tuning example:
+
+```ts
+const result = await rasterizePageFactoryIntoSlide(slide, createPageNode, {
+  targetBox,
+  preferMaxResolution: true,
+  maxExportPixels: 12000000,
+  maxExportSidePx: 3072
+});
+```

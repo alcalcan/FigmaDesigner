@@ -98,7 +98,7 @@ export class Slide_Page_Raster_Demo_extra extends BaseComponent {
 
         const PageClass = (props.pageComponentClass as PageComponentCtor | undefined) || UEFA_Academy_online_Summary;
         const pageProps = (props.pageProps as ComponentProps | undefined) || { x: 0, y: 0 };
-        const quality = typeof props.rasterQuality === "number" ? props.rasterQuality : 2;
+        const quality = typeof props.rasterQuality === "number" ? props.rasterQuality : undefined;
 
         const margin = 64;
         const rasterResult = await rasterizePageFactoryIntoSlide(
@@ -114,7 +114,10 @@ export class Slide_Page_Raster_Demo_extra extends BaseComponent {
                     width: rightWidth - margin * 2,
                     height: Layout.SLIDE_HEIGHT - margin * 2
                 },
-                quality,
+                ...(typeof quality === "number" ? { quality } : {}),
+                preferMaxResolution: true,
+                maxExportPixels: 12_000_000,
+                maxExportSidePx: 3072,
                 cornerRadius: 12,
                 strokeWeight: 0,
                 showShadow: true
@@ -123,6 +126,7 @@ export class Slide_Page_Raster_Demo_extra extends BaseComponent {
 
         footer.characters =
             `Source ${Math.round(rasterResult.sourceWidth)}x${Math.round(rasterResult.sourceHeight)} px | ` +
+            `Export ${rasterResult.exportedPixelWidth}x${rasterResult.exportedPixelHeight} px | ` +
             `Fit ${rasterResult.fitScale.toFixed(3)}x`;
 
         return slide;
