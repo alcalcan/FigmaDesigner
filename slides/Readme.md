@@ -6,6 +6,7 @@ These are ported from the Python `PresStyle` library to allow native generation 
 ## Structure
 
 *   `theme.ts`: Contains the ported style constants (Colors, Fonts, Layout) from `PresStyle/styles/UEFA/theme.py`. Emu units have been converted to Pixels.
+*   `pageRaster.ts`: Utility to rasterize a generated page/frame and contain-fit it into a slide viewport while preserving aspect ratio.
 *   `Slide_*/`: Subdirectories for each specific slide type.
 
 ## PresStyle Source Path

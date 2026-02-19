@@ -432,6 +432,7 @@ export { Slide_Divider_Subtle_Gray } from "../slides/UEFA_Light_template/Slide_D
 export { Slide_Divider_Subtle_Gray_extra } from "../slides/UEFA_Light_extra/Slide_Divider_Subtle_Gray";
 export { Slide_MetricCards_4up_extra } from "../slides/UEFA_Light_extra/Slide_MetricCards_4up_extra";
 export { Slide_Object_System_extra } from "../slides/UEFA_Light_extra/Slide_Object_System_extra";
+export { Slide_Page_Raster_Demo_extra } from "../slides/UEFA_Light_extra/Slide_Page_Raster_Demo_extra";
 export { Slide_Picture_BeforeAfter_extra } from "../slides/UEFA_Light_extra/Slide_Picture_BeforeAfter_extra";
 export { Slide_Picture_FullBleed_extra } from "../slides/UEFA_Light_extra/Slide_Picture_FullBleed_extra";
 export { Slide_Picture_Layouts_extra } from "../slides/UEFA_Light_extra/Slide_Picture_Layouts_extra";
@@ -472,6 +473,7 @@ export { uefa_cards_4x } from "./UEFA_web/uefa_cards_4x/uefa_cards_4x";
 export { UEFA_IconShowcase } from "../pages/UEFA_icons/UEFA_IconShowcase";
 export { UEFA_Light_Extra_Presentation } from "../presentations/UEFA_extra/UEFA_Light_Extra_Presentation";
 export { UEFA_Light_Presentation } from "../presentations/UEFA_template/UEFA_Light_Presentation";
+export { UEFA_Page_Raster_Demo_Presentation } from "../presentations/UEFA_extra/UEFA_Page_Raster_Demo_Presentation";
 export { Union_Berlin } from "./Football_Crests/Union_Berlin/Union_Berlin";
 export { UserObservationStickyNote } from "./Miscellaneous/UserObservationStickyNote/UserObservationStickyNote";
 export { VAR_progress } from "./UEFA_icons/VAR_progress/VAR_progress";
