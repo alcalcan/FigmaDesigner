@@ -619,10 +619,6 @@ export abstract class BaseComponent {
       const align = def.layoutProps.layoutAlign ?? def.props?.layoutAlign;
       const sizingHorizontal = def.layoutProps.layoutSizingHorizontal ?? def.props?.layoutSizingHorizontal;
       const sizingVertical = def.layoutProps.layoutSizingVertical ?? def.props?.layoutSizingVertical;
-      const shouldApplyLayoutSizingShorthand =
-        node.type === "TEXT" ||
-        (grow === undefined && align === undefined);
-
       if (grow !== undefined && "layoutGrow" in node) {
         try { (node as LayoutMixin).layoutGrow = grow; } catch (e) { /* ignore */ }
       }
@@ -631,20 +627,22 @@ export abstract class BaseComponent {
           (node as LayoutMixin).layoutAlign = align as "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
         } catch (e) { /* ignore */ }
       }
-      if (shouldApplyLayoutSizingShorthand) {
-        if (sizingHorizontal && "layoutSizingHorizontal" in node) {
-          try {
-            const canApply = sizingHorizontal !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
-            if (canApply) (node as LayoutMixin).layoutSizingHorizontal = sizingHorizontal;
-          } catch (e) { /* ignore */ }
-        }
-        if (sizingVertical && "layoutSizingVertical" in node) {
-          try {
-            const canApply = sizingVertical !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
-            if (canApply) (node as LayoutMixin).layoutSizingVertical = sizingVertical;
-          } catch (e) { /* ignore */ }
-        }
+
+      // Apply layoutSizing shorthands if provided. We removed the restrictive 'shouldApplyLayoutSizingShorthand'
+      // check to ensure these are always honored if specified.
+      if (sizingHorizontal && "layoutSizingHorizontal" in node) {
+        try {
+          const canApply = sizingHorizontal !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
+          if (canApply) (node as LayoutMixin).layoutSizingHorizontal = sizingHorizontal;
+        } catch (e) { /* ignore */ }
       }
+      if (sizingVertical && "layoutSizingVertical" in node) {
+        try {
+          const canApply = sizingVertical !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
+          if (canApply) (node as LayoutMixin).layoutSizingVertical = sizingVertical;
+        } catch (e) { /* ignore */ }
+      }
+
       if (def.layoutProps.constraints && "constraints" in node) {
         (node as ConstraintMixin).constraints = def.layoutProps.constraints;
       }
