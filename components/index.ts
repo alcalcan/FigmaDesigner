@@ -217,6 +217,8 @@ export { Girona } from "./Football_Crests/Girona/Girona";
 export { GQ_2026_Demo } from "../pages/GQ_2026/GQ_2026_Demo";
 export { GQ_Banner_Shirts_Aligned } from "./Alex_CookBook/GQ_Banner_Shirts_Aligned/GQ_Banner_Shirts_Aligned";
 export { Granada } from "./Football_Crests/Granada/Granada";
+export { graph_chart } from "./Alex_CookBook/graph_chart/graph_chart";
+export { GraphChartsDemo } from "../pages/Alex_CookBook/GraphChartsDemo";
 export { Header } from "./UEFA_Academy_online/Header/Header";
 export { Header_Sponsor_Banner_Demo } from "../pages/UEFA_web/Header_Sponsor_Banner_Demo";
 export { Header_SponsorStrip_Combinations } from "../pages/UEFA_web/Header_SponsorStrip_Combinations";
