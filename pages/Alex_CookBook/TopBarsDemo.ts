@@ -45,17 +45,18 @@ export class TopBarsDemo extends BaseComponent {
 
         // --- Navigation Top Bars ---
         await this.addSection(root, "Navigation Headers", "Includes main global links.", async (container) => {
-            container.appendChild(await tb.create({ variant: "navigation" }));
+            container.appendChild(await tb.create({ variant: "navigation", showSearchAction: true }));
             container.appendChild(await tb.create({
                 variant: "navigation",
-                navItems: ["Home", "Products", "Solutions", "Pricing", "Contact"]
+                navItems: ["Home", "Products", "Solutions", "Pricing", "Contact"],
+                showSearchAction: true
             }));
         });
 
         // --- Search Top Bars ---
         await this.addSection(root, "Search & Utility Headers", "Includes search bars for deep exploration.", async (container) => {
-            container.appendChild(await tb.create({ variant: "search" }));
-            container.appendChild(await tb.create({ variant: "full", showMenu: true }));
+            container.appendChild(await tb.create({ variant: "search", searchCornerRadius: 100 }));
+            container.appendChild(await tb.create({ variant: "full", showMenu: true, searchCornerRadius: 8 }));
         });
 
         root.x = props.x ?? 0;

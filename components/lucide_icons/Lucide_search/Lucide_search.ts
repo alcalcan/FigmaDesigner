@@ -15,7 +15,9 @@ export class Lucide_search extends BaseComponent {
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
@@ -31,7 +33,8 @@ export class Lucide_search extends BaseComponent {
                     },
                     "layoutProps": {
                         "width": iconSize,
-                        "height": iconSize
+                        "height": iconSize,
+                        "parentIsAutoLayout": true
                     },
                     "svgContent": SVG_CONTENT,
                     "postCreate": (node: SceneNode, nodeProps: any) => {

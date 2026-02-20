@@ -14,6 +14,8 @@ export interface TopBarProps extends ComponentProps {
     showProfile?: boolean;
     showNotifications?: boolean;
     showMenu?: boolean;
+    searchCornerRadius?: number;
+    showSearchAction?: boolean;
 }
 
 export class top_bar extends BaseComponent {
@@ -24,6 +26,10 @@ export class top_bar extends BaseComponent {
         const showProfile = props.showProfile ?? true;
         const showNotifications = props.showNotifications ?? true;
         const showMenu = props.showMenu ?? false;
+        const showSearchAction = props.showSearchAction ?? false;
+
+        const hasNavItems = (variant === "navigation" || variant === "full" || variant === "floating") && navItems.length > 0;
+        const finalShowMenu = showMenu && !hasNavItems;
 
         const isDark = theme === "dark";
         const bgColor = isDark ? { r: 0.1, g: 0.1, b: 0.12 } : { r: 1, g: 1, b: 1 };
@@ -113,15 +119,6 @@ export class top_bar extends BaseComponent {
             children: []
         };
 
-        if (showMenu) {
-            leftSection.children!.push({
-                type: "COMPONENT",
-                component: button,
-                name: "Menu Button",
-                props: { variant: "ghost", frontIcon: Lucide_menu, size: "small" } // Adjusted to use ghost button with icon
-            });
-        }
-
         // Professional Brand Logo (Instead of Placeholder)
         const logoIconPath = "M 12 2 L 2 7 L 12 12 L 22 7 L 12 2 Z M 2 17 L 12 22 L 22 17 M 2 12 L 12 17 L 22 12"; // Sleek geometric isometric box
 
@@ -169,6 +166,21 @@ export class top_bar extends BaseComponent {
                 }
             ]
         });
+
+        if (finalShowMenu) {
+            leftSection.children!.push({
+                type: "COMPONENT",
+                component: button,
+                name: "Menu Button",
+                props: {
+                    variant: "ghost",
+                    frontIcon: Lucide_menu,
+                    size: "small",
+                    label: "Menu",
+                    textColor: textColor // Use the main text color (darker) instead of brand green
+                }
+            });
+        }
 
         children.push(leftSection);
 
@@ -248,7 +260,8 @@ export class top_bar extends BaseComponent {
                             placeholder: "Search...",
                             type: "simple",
                             showSearchIcon: true,
-                            width: variant === "full" ? 240 : 320
+                            width: variant === "full" ? 240 : 320,
+                            cornerRadius: props.searchCornerRadius
                         }
                     }
                 ]
@@ -277,7 +290,7 @@ export class top_bar extends BaseComponent {
                 counterAxisAlignItems: "CENTER",
                 primaryAxisSizingMode: "AUTO", // Width Hug
                 counterAxisSizingMode: isFloating ? "FIXED" : "AUTO", // Height Hug
-                itemSpacing: 16,
+                itemSpacing: 24, // 24px gap between icon group and profile
                 fills: [],
                 ...islandProps
             },
@@ -287,13 +300,53 @@ export class top_bar extends BaseComponent {
             children: []
         };
 
+        const actionGroup: NodeDefinition = {
+            type: "FRAME",
+            name: "Utility Icons",
+            props: {
+                layoutMode: "HORIZONTAL",
+                counterAxisAlignItems: "CENTER",
+                primaryAxisSizingMode: "AUTO",
+                counterAxisSizingMode: "AUTO",
+                itemSpacing: 8, // 8px gap between social icons
+                fills: [],
+                clipsContent: false
+            },
+            children: []
+        };
+
+        if (showSearchAction) {
+            actionGroup.children!.push({
+                type: "COMPONENT",
+                component: button,
+                name: "Search",
+                props: {
+                    variant: "ghost",
+                    frontIcon: Lucide_search,
+                    size: "small",
+                    label: undefined,
+                    textColor: { r: 0.2, g: 0.2, b: 0.2 }
+                }
+            });
+        }
+
         if (showNotifications) {
-            rightSection.children!.push({
+            actionGroup.children!.push({
                 type: "COMPONENT",
                 component: button,
                 name: "Notifications",
-                props: { variant: "ghost", frontIcon: Lucide_bell, size: "small" }
+                props: {
+                    variant: "ghost",
+                    frontIcon: Lucide_bell,
+                    size: "small",
+                    label: undefined, // Explicitly no label for icon-only
+                    textColor: { r: 0.2, g: 0.2, b: 0.2 } // Solid dark color as requested
+                }
             });
+        }
+
+        if (actionGroup.children!.length > 0) {
+            rightSection.children!.push(actionGroup);
         }
 
         if (showProfile) {

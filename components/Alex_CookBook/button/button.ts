@@ -9,6 +9,7 @@ export interface ButtonProps extends ComponentProps {
     frontIcon?: any;
     backIcon?: any;
     iconSize?: number;
+    textColor?: RGB;
 }
 
 export class button extends BaseComponent {
@@ -16,7 +17,7 @@ export class button extends BaseComponent {
         const variant = props.variant || "primary";
         const size = props.size || "medium";
         const state = props.state || "default";
-        const labelText = props.label || "Button";
+        const labelText = props.label;
         const iconSize = props.iconSize || (size === "small" ? 16 : size === "large" ? 24 : 20);
 
         // Style tokens
@@ -70,6 +71,10 @@ export class button extends BaseComponent {
             }
         }
 
+        if (props.textColor) {
+            textColor = props.textColor;
+        }
+
         const children: NodeDefinition[] = [];
 
         // Front Icon
@@ -95,16 +100,18 @@ export class button extends BaseComponent {
         }
 
         // Text Label
-        children.push({
-            type: "TEXT",
-            name: "Button Label",
-            props: {
-                characters: state === "loading" ? "Loading..." : labelText,
-                fontSize: currentSize.fontSize,
-                font: { family: "Open Sans", style: "Bold" },
-                fills: [{ type: "SOLID", color: textColor }]
-            }
-        });
+        if (labelText !== undefined) {
+            children.push({
+                type: "TEXT",
+                name: "Button Label",
+                props: {
+                    characters: state === "loading" ? "Loading..." : labelText,
+                    fontSize: currentSize.fontSize,
+                    font: { family: "Open Sans", style: "Bold" },
+                    fills: [{ type: "SOLID", color: textColor }]
+                }
+            });
+        }
 
         // Back Icon
         if (props.backIcon) {

@@ -26,6 +26,7 @@ export interface InputFieldProps extends ComponentProps {
     height?: number | "auto";
     clear?: boolean;
     iconSize?: number;
+    cornerRadius?: number;
 }
 
 export class input_field extends BaseComponent {
@@ -173,7 +174,7 @@ export class input_field extends BaseComponent {
                             }
                         ],
                         "effects": [],
-                        "cornerRadius": 4
+                        "cornerRadius": props.cornerRadius ?? 4
                     },
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
