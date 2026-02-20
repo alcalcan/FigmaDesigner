@@ -265,24 +265,27 @@ export class sidebar extends BaseComponent {
             name: "Sidebar",
             props: {
                 visible: true,
-                clipsContent: false, // Ensure shadow isn't accidentally clipped
-                fills: [{ type: "SOLID", color: bgColor }],
-                strokes: [{ type: "SOLID", color: borderColor }],
+                clipsContent: !isFloating, // Ensure shadow isn't accidentally clipped
+                fills: isFloating ? [{
+                    type: "GRADIENT_LINEAR",
+                    gradientStops: [
+                        { position: 0, color: { r: 1, g: 1, b: 1, a: 1 } },
+                        { position: 1, color: { r: 0.98, g: 0.99, b: 1, a: 0.96 } }
+                    ],
+                    gradientTransform: [[0, 1, 0], [-1, 0, 1]]
+                } as any] : [{ type: "SOLID", color: bgColor }],
+                strokes: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: isFloating ? 0.8 : 0.1 }],
                 strokeWeight: 1,
                 strokeRightWeight: isFloating ? 1 : 1, // Explicit to override 0
                 strokeTopWeight: isFloating ? 1 : 0,
                 strokeBottomWeight: isFloating ? 1 : 0,
                 strokeLeftWeight: isFloating ? 1 : 0,
-                cornerRadius: isFloating ? 24 : 0,
-                effects: isFloating ? [{
-                    type: "DROP_SHADOW",
-                    color: { r: 0, g: 0, b: 0, a: 0.08 },
-                    offset: { x: 0, y: 8 },
-                    radius: 24,
-                    spread: 0,
-                    visible: true,
-                    blendMode: "NORMAL"
-                }] : [],
+                cornerRadius: isFloating ? 32 : 0,
+                effects: isFloating ? [
+                    { type: "BACKGROUND_BLUR", radius: 24, visible: true },
+                    { type: "DROP_SHADOW", color: { r: 0.05, g: 0.1, b: 0.2, a: 0.06 }, offset: { x: 0, y: 16 }, radius: 32, showShadowBehindNode: true },
+                    { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.02 }, offset: { x: 0, y: 4 }, radius: 4, showShadowBehindNode: true }
+                ] : [],
                 layoutMode: "VERTICAL",
                 primaryAxisAlignItems: isFloating ? "CENTER" : "MIN",
                 counterAxisAlignItems: "CENTER",
