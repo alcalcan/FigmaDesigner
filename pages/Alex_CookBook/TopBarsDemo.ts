@@ -1,39 +1,20 @@
-import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
-import { Page_title } from "../../components/Alex_CookBook/Page_title/Page_title";
+import { ComponentProps } from "../../components/BaseComponent";
 import { top_bar } from "../../components/Alex_CookBook/top_bar/top_bar";
+import { BaseDemoPage } from "./BaseDemoPage";
 
-export class TopBarsDemo extends BaseComponent {
+export class TopBarsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
         // Essential fonts
         await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
         await figma.loadFontAsync({ family: "Inter", style: "Regular" });
 
-        const root = figma.createFrame();
-        root.name = "Alex CookBook - TopBars Demo";
-        root.layoutMode = "VERTICAL";
-        root.itemSpacing = 64;
-        root.paddingTop = 80;
-        root.paddingLeft = 80;
-        root.paddingRight = 80;
-        root.paddingBottom = 80;
-        root.counterAxisSizingMode = "FIXED";
-        root.resize(1680, 100);
+        const root = await this.initPage("Alex CookBook - TopBars Demo");
 
-        root.primaryAxisSizingMode = "AUTO";
-        root.fills = [{ type: "SOLID", color: { r: 0.949, g: 0.960, b: 0.980 } }]; // #F2F5FA
-
-        root.layoutAlign = "STRETCH";
-        root.clipsContent = false;
-
-        // Ensure root hugs height
-        root.primaryAxisSizingMode = "AUTO";
-
-        const pageTitle = new Page_title();
-        const titleNode = await pageTitle.create({
-            title: "Top Bars & Headers",
-            subtitle: "Global navigation patterns for the modern web."
-        });
-        root.appendChild(titleNode);
+        await this.addHeader(
+            root,
+            "Top Bars & Headers",
+            "Global navigation patterns for the modern web."
+        );
 
         const tb = new top_bar();
 
@@ -77,69 +58,5 @@ export class TopBarsDemo extends BaseComponent {
         });
 
         return root;
-    }
-
-    private async addSection(root: FrameNode, title: string, description: string, contentBuilder: (container: FrameNode) => Promise<void>) {
-        const section = figma.createFrame();
-        section.name = `Section: ${title}`;
-        section.layoutMode = "VERTICAL";
-        section.itemSpacing = 24;
-        section.fills = [];
-        section.layoutAlign = "STRETCH";
-        section.primaryAxisSizingMode = "AUTO"; // Height Hug
-        section.counterAxisSizingMode = "FIXED"; // Width Fill
-        section.clipsContent = false;
-
-        const headerContainer = figma.createFrame();
-        headerContainer.name = "Header";
-        headerContainer.layoutMode = "VERTICAL";
-        headerContainer.itemSpacing = 8;
-        headerContainer.fills = [];
-        headerContainer.layoutAlign = "STRETCH";
-        headerContainer.primaryAxisSizingMode = "AUTO";
-        headerContainer.counterAxisSizingMode = "FIXED";
-
-        const label = figma.createText();
-        await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
-        label.characters = title;
-        label.fontSize = 24;
-        label.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.12 } }];
-        label.layoutAlign = "STRETCH";
-        label.textAutoResize = "HEIGHT";
-        headerContainer.appendChild(label);
-
-        const desc = figma.createText();
-        await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-        desc.characters = description;
-        desc.fontSize = 16;
-        desc.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.45 } }];
-        desc.layoutAlign = "STRETCH";
-        desc.textAutoResize = "HEIGHT";
-        headerContainer.appendChild(desc);
-
-        section.appendChild(headerContainer);
-
-        // Add a subtle border container around content to distinguish it from the page
-        const shadowWrapper = figma.createFrame();
-        shadowWrapper.name = "Demo Preview Container";
-        shadowWrapper.layoutMode = "VERTICAL";
-        shadowWrapper.itemSpacing = 24; // 24px gap between examples as requested
-        shadowWrapper.fills = []; // Let page background show through
-        shadowWrapper.layoutAlign = "STRETCH"; // Width Fill
-        shadowWrapper.primaryAxisSizingMode = "AUTO"; // Height Hug
-        shadowWrapper.counterAxisSizingMode = "FIXED"; // Width Fill
-        shadowWrapper.paddingLeft = 24;
-        shadowWrapper.paddingRight = 24;
-        shadowWrapper.paddingTop = 24;
-        shadowWrapper.paddingBottom = 24;
-        shadowWrapper.clipsContent = false;
-        shadowWrapper.cornerRadius = 16;
-        shadowWrapper.strokes = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
-        shadowWrapper.strokeWeight = 1;
-
-        await contentBuilder(shadowWrapper);
-        section.appendChild(shadowWrapper);
-
-        root.appendChild(section);
     }
 }
