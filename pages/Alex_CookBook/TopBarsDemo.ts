@@ -20,7 +20,7 @@ export class TopBarsDemo extends BaseComponent {
         root.resize(1680, 100);
 
         root.primaryAxisSizingMode = "AUTO";
-        root.fills = [{ type: "SOLID", color: { r: 0.95, g: 0.96, b: 0.98 } }];
+        root.fills = [{ type: "SOLID", color: { r: 0.949, g: 0.960, b: 0.980 } }]; // #F2F5FA
 
         root.layoutAlign = "STRETCH";
         root.clipsContent = false;
@@ -64,21 +64,16 @@ export class TopBarsDemo extends BaseComponent {
 
         // --- Floating Island Top Bars ---
         await this.addSection(root, "Floating Islands", "Super rounded navigation patterns separating logo, search, and profile.", async (container) => {
-            // Because floating variant relies on FILL width, we wrap it in a container that forces a width to simulate a browser window
-            const windowSim = figma.createFrame();
-            windowSim.name = "Browser Window Sim";
-            windowSim.fills = [{ type: "SOLID", color: { r: 0.95, g: 0.95, b: 0.97 } }];
-            windowSim.layoutMode = "VERTICAL";
-            windowSim.layoutAlign = "STRETCH"; // Fill Width
-            windowSim.primaryAxisSizingMode = "AUTO"; // Hug Height
-            windowSim.counterAxisSizingMode = "FIXED"; // Required for STRETCH
-            windowSim.paddingBottom = 40;
+            container.itemSpacing = 24;
+            container.appendChild(await tb.create({ variant: "floating" }));
+            container.appendChild(await tb.create({ variant: "floating", navItems: [], showMenu: true, showNotifications: false }));
+        });
 
-            windowSim.appendChild(await tb.create({ variant: "floating" }));
-            windowSim.appendChild(await tb.create({ variant: "floating", navItems: [], showMenu: true, showNotifications: false }));
-
-            container.appendChild(windowSim);
-            windowSim.layoutSizingHorizontal = "FILL";
+        // --- Unified Island Top Bar ---
+        await this.addSection(root, "Unified Island", "A single cohesive floating pill for the entire header.", async (container) => {
+            container.itemSpacing = 24;
+            container.appendChild(await tb.create({ variant: "island", showSearchAction: true, showNotifications: true, showProfile: true, navItems: ["Dashboard", "Projects", "Team"] }));
+            container.appendChild(await tb.create({ variant: "island", showHamburgerMenu: true, showProfile: false, showNotifications: false, navItems: [] }));
         });
 
         return root;
@@ -124,34 +119,27 @@ export class TopBarsDemo extends BaseComponent {
 
         section.appendChild(headerContainer);
 
-        const contentContainer = figma.createFrame();
-        contentContainer.name = "Content";
-        contentContainer.layoutMode = "VERTICAL";
-        contentContainer.itemSpacing = 32;
-        contentContainer.fills = [];
-        contentContainer.layoutAlign = "STRETCH"; // Width Fill
-        contentContainer.primaryAxisSizingMode = "AUTO"; // Height Hug
-        contentContainer.counterAxisSizingMode = "FIXED"; // Width Fill
-        contentContainer.clipsContent = false;
-
         // Add a subtle border container around content to distinguish it from the page
         const shadowWrapper = figma.createFrame();
         shadowWrapper.name = "Demo Preview Container";
         shadowWrapper.layoutMode = "VERTICAL";
-        shadowWrapper.itemSpacing = 0; // Seamless
-        shadowWrapper.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.98, b: 0.98 } }];
+        shadowWrapper.itemSpacing = 24; // 24px gap between examples as requested
+        shadowWrapper.fills = []; // Let page background show through
         shadowWrapper.layoutAlign = "STRETCH"; // Width Fill
         shadowWrapper.primaryAxisSizingMode = "AUTO"; // Height Hug
         shadowWrapper.counterAxisSizingMode = "FIXED"; // Width Fill
+        shadowWrapper.paddingLeft = 24;
+        shadowWrapper.paddingRight = 24;
+        shadowWrapper.paddingTop = 24;
+        shadowWrapper.paddingBottom = 24;
         shadowWrapper.clipsContent = false;
         shadowWrapper.cornerRadius = 16;
         shadowWrapper.strokes = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
         shadowWrapper.strokeWeight = 1;
 
         await contentBuilder(shadowWrapper);
-        contentContainer.appendChild(shadowWrapper);
+        section.appendChild(shadowWrapper);
 
-        section.appendChild(contentContainer);
         root.appendChild(section);
     }
 }

@@ -6,9 +6,10 @@ import { Lucide_bell } from "../../lucide_icons/Lucide_bell/Lucide_bell";
 import { Lucide_menu } from "../../lucide_icons/Lucide_menu/Lucide_menu";
 import { Action___profile } from "../../UEFA_icons/Action___profile/Action___profile";
 import { Lucide_search } from "../../lucide_icons/Lucide_search/Lucide_search";
+import { Lucide_more_vertical } from "../../lucide_icons/Lucide_more_vertical/Lucide_more_vertical";
 
 export interface TopBarProps extends ComponentProps {
-    variant?: "simple" | "navigation" | "search" | "full" | "floating";
+    variant?: "simple" | "navigation" | "search" | "full" | "floating" | "island";
     theme?: "light" | "dark";
     navItems?: string[];
     showProfile?: boolean;
@@ -16,6 +17,8 @@ export interface TopBarProps extends ComponentProps {
     showMenu?: boolean;
     searchCornerRadius?: number;
     showSearchAction?: boolean;
+    showKebabMenu?: boolean;
+    showHamburgerMenu?: boolean;
 }
 
 export class top_bar extends BaseComponent {
@@ -30,6 +33,8 @@ export class top_bar extends BaseComponent {
 
         const hasNavItems = (variant === "navigation" || variant === "full" || variant === "floating") && navItems.length > 0;
         const finalShowMenu = showMenu && !hasNavItems;
+        const showKebabMenu = props.showKebabMenu ?? false;
+        const showHamburgerMenu = props.showHamburgerMenu ?? false;
 
         const isDark = theme === "dark";
         const bgColor = isDark ? { r: 0.1, g: 0.1, b: 0.12 } : { r: 1, g: 1, b: 1 };
@@ -38,6 +43,7 @@ export class top_bar extends BaseComponent {
         const borderColor = isDark ? { r: 0.2, g: 0.2, b: 0.22 } : { r: 0.9, g: 0.9, b: 0.9 };
 
         const isFloating = variant === "floating";
+        const isUnifiedIsland = variant === "island";
 
         const rootProps: NodeDefinition["props"] = {
             visible: true,
@@ -49,7 +55,7 @@ export class top_bar extends BaseComponent {
             strokeTopWeight: 0,
             strokeLeftWeight: 0,
             strokeRightWeight: 0,
-            effects: isFloating ? [] : [{
+            effects: (isFloating || isUnifiedIsland) ? [] : [{
                 type: "DROP_SHADOW",
                 color: { r: 0, g: 0, b: 0, a: 0.05 },
                 offset: { x: 0, y: 4 },
@@ -68,10 +74,10 @@ export class top_bar extends BaseComponent {
             primaryAxisAlignItems: "CENTER",
             counterAxisAlignItems: "CENTER",
             itemSpacing: 48,
-            paddingLeft: 32,
-            paddingRight: 32,
-            paddingTop: isFloating ? 32 : 16,
-            paddingBottom: isFloating ? 0 : 16,
+            paddingLeft: (isFloating || isUnifiedIsland) ? 0 : 32,
+            paddingRight: (isFloating || isUnifiedIsland) ? 0 : 32,
+            paddingTop: (isFloating || isUnifiedIsland) ? 0 : 16,
+            paddingBottom: (isFloating || isUnifiedIsland) ? 0 : 16,
         };
 
         const islandProps = isFloating ? {
@@ -98,6 +104,27 @@ export class top_bar extends BaseComponent {
             height: 64
         } : {};
 
+        if (isUnifiedIsland) {
+            // Apply island styling directly to root
+            rootProps.fills = [{ type: "SOLID", color: bgColor }];
+            rootProps.cornerRadius = 100;
+            rootProps.paddingLeft = 24;
+            rootProps.paddingRight = 24;
+            rootProps.paddingTop = 12;
+            rootProps.paddingBottom = 12;
+            rootProps.strokes = [{ type: "SOLID", color: borderColor }];
+            rootProps.strokeWeight = 1;
+            rootProps.effects = [{
+                type: "DROP_SHADOW",
+                color: { r: 0, g: 0, b: 0, a: 0.08 },
+                offset: { x: 0, y: 8 },
+                radius: 24,
+                spread: 0,
+                visible: true,
+                blendMode: "NORMAL"
+            }];
+        }
+
         const children: NodeDefinition[] = [];
 
         // 1. Left Section: Menu & Logo
@@ -114,7 +141,7 @@ export class top_bar extends BaseComponent {
                 ...islandProps
             },
             layoutProps: {
-                ...islandLayoutProps
+                ...(isFloating ? islandLayoutProps : {})
             },
             children: []
         };
@@ -191,7 +218,7 @@ export class top_bar extends BaseComponent {
             props: {
                 layoutMode: "HORIZONTAL",
                 counterAxisAlignItems: "CENTER",
-                primaryAxisAlignItems: variant === "navigation" || isFloating ? "CENTER" : variant === "search" || variant === "full" ? "MIN" : "CENTER",
+                primaryAxisAlignItems: (variant === "navigation" || isFloating || isUnifiedIsland) ? "CENTER" : variant === "search" || variant === "full" ? "MIN" : "CENTER",
                 primaryAxisSizingMode: "FIXED", // Parent controls width because layoutGrow = 1
                 counterAxisSizingMode: (isFloating && (navItems.length > 0)) ? "FIXED" : "AUTO", // Height Hug
                 itemSpacing: 32,
@@ -205,7 +232,7 @@ export class top_bar extends BaseComponent {
             children: []
         };
 
-        if ((variant === "navigation" || variant === "full" || variant === "floating") && navItems.length > 0) {
+        if ((variant === "navigation" || variant === "full" || variant === "floating" || isUnifiedIsland) && navItems.length > 0) {
             const navGroup: NodeDefinition = {
                 type: "FRAME",
                 name: "Navigation Links",
@@ -295,7 +322,7 @@ export class top_bar extends BaseComponent {
                 ...islandProps
             },
             layoutProps: {
-                ...islandLayoutProps
+                ...(isFloating ? islandLayoutProps : {})
             },
             children: []
         };
@@ -345,6 +372,36 @@ export class top_bar extends BaseComponent {
             });
         }
 
+        if (showKebabMenu) {
+            actionGroup.children!.push({
+                type: "COMPONENT",
+                component: button,
+                name: "More Actions",
+                props: {
+                    variant: "ghost",
+                    frontIcon: Lucide_more_vertical,
+                    size: "small",
+                    label: undefined,
+                    textColor: { r: 0.2, g: 0.2, b: 0.2 }
+                }
+            });
+        }
+
+        if (showHamburgerMenu) {
+            actionGroup.children!.push({
+                type: "COMPONENT",
+                component: button,
+                name: "Hamburger Menu",
+                props: {
+                    variant: "ghost",
+                    frontIcon: Lucide_menu,
+                    size: "small",
+                    label: undefined,
+                    textColor: { r: 0.2, g: 0.2, b: 0.2 }
+                }
+            });
+        }
+
         if (actionGroup.children!.length > 0) {
             rightSection.children!.push(actionGroup);
         }
@@ -390,14 +447,14 @@ export class top_bar extends BaseComponent {
             name: "TopBar",
             props: {
                 ...rootProps,
-                primaryAxisAlignItems: finalPrimaryAxisAlignItems, // Apply conditional rule here
-                primaryAxisSizingMode: "FIXED", // Standard Fill Width rule
-                counterAxisSizingMode: "AUTO",  // Height Hug
+                primaryAxisAlignItems: isUnifiedIsland ? "SPACE_BETWEEN" : finalPrimaryAxisAlignItems,
+                primaryAxisSizingMode: "FIXED",
+                counterAxisSizingMode: "AUTO",
             },
             layoutProps: {
                 width: props.width,
                 height: props.height,
-                layoutAlign: "STRETCH", // Explicitly define Fill Width to parent via layoutProps
+                layoutAlign: "STRETCH",
             },
             children: children
         };
