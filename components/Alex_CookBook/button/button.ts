@@ -135,6 +135,8 @@ export class button extends BaseComponent {
                 layoutMode: "HORIZONTAL",
                 primaryAxisAlignItems: "CENTER",
                 counterAxisAlignItems: "CENTER",
+                primaryAxisSizingMode: props.width === "fill" ? "FIXED" : "AUTO",
+                counterAxisSizingMode: "AUTO",
                 itemSpacing: currentSize.gap,
                 paddingTop: currentSize.v,
                 paddingBottom: currentSize.v,
@@ -148,7 +150,6 @@ export class button extends BaseComponent {
             },
             layoutProps: {
                 width: props.width === "fill" ? undefined : (typeof props.width === "number" ? props.width : undefined),
-                height: currentSize.height,
                 parentIsAutoLayout: true
             },
             children

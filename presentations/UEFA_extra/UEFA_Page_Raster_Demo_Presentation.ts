@@ -3,6 +3,7 @@ import { Slide_Page_Raster_Demo_extra } from "../../slides/UEFA_Light_extra/Slid
 import { Slide_Title_extra } from "../../slides/UEFA_Light_extra/Slide_Title";
 import { Layout } from "../../slides/theme";
 import { MetricCardsDesign1Demo } from "../../pages/Alex_CookBook/MetricCardsDesign1Demo";
+import { GraphChartsDemo } from "../../pages/Alex_CookBook/GraphChartsDemo";
 
 export class UEFA_Page_Raster_Demo_Presentation extends BaseComponent {
     async create(props: ComponentProps): Promise<FrameNode> {
@@ -50,6 +51,15 @@ export class UEFA_Page_Raster_Demo_Presentation extends BaseComponent {
                 body: "Showing the Modern Glassmorphic (Design 1) metric cards with various customizations.",
                 number: "1.2",
                 pageComponentClass: MetricCardsDesign1Demo,
+                rasterQuality: props.rasterQuality
+            }),
+            await pageRasterSlide.create({
+                x: 0,
+                y: 0,
+                title: "Graph Charts Showcase",
+                body: "Showcasing chart rendering logic adapted for full-width contexts, including spline area and bar charts.",
+                number: "1.3",
+                pageComponentClass: GraphChartsDemo,
                 rasterQuality: props.rasterQuality
             })
         ];

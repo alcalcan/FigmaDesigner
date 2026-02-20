@@ -31,6 +31,8 @@ export class GraphChartsDemo extends BaseComponent {
         titleContainer.itemSpacing = 8;
         titleContainer.fills = [];
         titleContainer.layoutAlign = "STRETCH";
+        titleContainer.primaryAxisSizingMode = "AUTO";
+        titleContainer.counterAxisSizingMode = "FIXED";
 
         const title = figma.createText();
         title.name = "Page Title";
@@ -38,6 +40,8 @@ export class GraphChartsDemo extends BaseComponent {
         title.fontSize = 32;
         title.fontName = { family: "Inter", style: "Bold" };
         title.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.1 } }];
+        title.layoutAlign = "STRETCH";
+        title.textAutoResize = "HEIGHT";
         titleContainer.appendChild(title);
 
         const subtitle = figma.createText();
@@ -45,6 +49,8 @@ export class GraphChartsDemo extends BaseComponent {
         subtitle.characters = "Showcasing chart rendering logic adapted for full-width contexts.";
         subtitle.fontSize = 16;
         subtitle.fills = [{ type: "SOLID", color: { r: 0.45, g: 0.5, b: 0.6 } }];
+        subtitle.layoutAlign = "STRETCH";
+        subtitle.textAutoResize = "HEIGHT";
         titleContainer.appendChild(subtitle);
 
         root.appendChild(titleContainer);
@@ -381,6 +387,8 @@ export class GraphChartsDemo extends BaseComponent {
         section.itemSpacing = 12;
         section.fills = [];
         section.layoutAlign = "STRETCH";
+        section.primaryAxisSizingMode = "AUTO";
+        section.counterAxisSizingMode = "FIXED";
         section.clipsContent = false;
 
         const labelText = figma.createText();
@@ -390,6 +398,8 @@ export class GraphChartsDemo extends BaseComponent {
         labelText.letterSpacing = { unit: "PERCENT", value: 10 };
         labelText.fontName = { family: "Inter", style: "Bold" };
         labelText.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.1 } }];
+        labelText.layoutAlign = "STRETCH";
+        labelText.textAutoResize = "HEIGHT";
         section.appendChild(labelText);
 
         content.name = `${label} Content`;
@@ -402,8 +412,9 @@ export class GraphChartsDemo extends BaseComponent {
         descText.fontSize = 13;
         descText.fontName = { family: "Inter", style: "Medium" };
         descText.fills = [{ type: "SOLID", color: { r: 0.45, g: 0.5, b: 0.6 } }];
-        descText.layoutAlign = "STRETCH";
         descText.textAlignHorizontal = "CENTER";
+        descText.layoutAlign = "STRETCH";
+        descText.textAutoResize = "HEIGHT";
         section.appendChild(descText);
 
         root.appendChild(section);
@@ -418,7 +429,7 @@ export class GraphChartsDemo extends BaseComponent {
         card.paddingRight = 18;
         card.paddingBottom = 18;
         card.paddingLeft = 18;
-        card.primaryAxisSizingMode = "FIXED";
+        card.primaryAxisSizingMode = "AUTO";
         card.counterAxisSizingMode = "FIXED";
         card.resize(width, 350);
         card.cornerRadius = 14;
@@ -650,7 +661,7 @@ export class GraphChartsDemo extends BaseComponent {
         card.paddingRight = 20;
         card.paddingBottom = 20;
         card.paddingLeft = 20;
-        card.primaryAxisSizingMode = "FIXED";
+        card.primaryAxisSizingMode = "AUTO";
         card.counterAxisSizingMode = "FIXED";
         card.resize(width, 290);
         card.cornerRadius = 16;
@@ -736,7 +747,7 @@ export class GraphChartsDemo extends BaseComponent {
         card.paddingRight = 18;
         card.paddingBottom = 18;
         card.paddingLeft = 18;
-        card.primaryAxisSizingMode = "FIXED";
+        card.primaryAxisSizingMode = "AUTO";
         card.counterAxisSizingMode = "FIXED";
         card.resize(width, 220);
         card.cornerRadius = 14;

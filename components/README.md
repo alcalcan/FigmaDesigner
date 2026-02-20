@@ -86,14 +86,24 @@ children: [
 ]
 ```
 
-### Step 3: Icons with Scaling
-To make icons look perfect, we use `VECTOR` and `shouldFlatten: true`:
-```typescript
 {
   type: "VECTOR",
   shouldFlatten: true,
   svgContent: SVG_timer_icon,
   layoutProps: { width: 18, height: 18 }
+}
+```
+
+### Step 4: Using Frames for Scalable Icons (SVG Tip) 🖼️
+If an icon has specific internal padding (like hamburger lines not touching edges), using `type: "VECTOR"` might flatten the paths and lose that padding, resulting in distortion when resized.
+- **Solution:** Wrap SVG content in a `FRAME` instead of a `VECTOR` to preserve the aspect ratio and intended alignment.
+
+```typescript
+{
+  type: "FRAME",
+  name: "Icon Wrapper",
+  svgContent: SVG_icon,
+  layoutProps: { width: 24, height: 24 }
 }
 ```
 
@@ -191,7 +201,68 @@ If you want children to `Fill Container`, the Parent **MUST** have a fixed size 
 
 ---
 
-## 9. Design Principles 🎨
+## 9. Handling Gaps Dynamically (The Top Bar Rule) ↔️
+
+In complex components like `top_bar`, you might need the gap between elements to behave differently depending on what is rendered:
+
+### The Problem
+If a Top Bar has a `Left Section`, a `Center Section`, and a `Right Section`, you want a fixed gap (e.g., `itemSpacing: 48`) between them so they don't look awkwardly spaced.
+If a Top Bar **only** has a `Left Section` and a `Right Section`, a fixed 48px gap will put them right next to each other, leaving the rest of the Top Bar empty. We want them pushed to opposite edges!
+
+### The Solution: Conditional Alignment
+Figma uses `primaryAxisAlignItems: "SPACE_BETWEEN"` to implement "Auto Gap" (pushing elements to opposite edges). To make a component adaptable, evaluate its structure before returning the definition:
+
+```typescript
+// 1. Check if the middle element exists
+const hasCenterSection = centerSection.children && centerSection.children.length > 0;
+
+// 2. Conditionally set the alignment
+const finalAlignItems = hasCenterSection ? "CENTER" : "SPACE_BETWEEN";
+
+// 3. Apply to the root structure
+const structure: NodeDefinition = {
+    type: "FRAME",
+    props: {
+        primaryAxisAlignItems: finalAlignItems, 
+        itemSpacing: 48 // Only respected when align is NOT SPACE_BETWEEN
+    },
+    // ...
+}
+```
+**Rule of thumb:** If the center is empty, let Auto Gap (`SPACE_BETWEEN`) take over. If the center is present, strictly enforce your `itemSpacing` with `CENTER`.
+
+---
+
+## 10. The "Empty Frame" 100x100 Gotcha (Hugging Heights) 📦
+
+When building containers that should dynamically `HUG` their contents vertically (like a `counterAxisSizingMode: "AUTO"` in a horizontal `TopBar`), beware of empty frames!
+
+### The Problem
+If your API attempts to create an empty `FRAME` (for example, a `Center Section` that has no navigation links to display), Figma will instantiate it with a default intrinsic size of **100x100 pixels**. 
+Because your `TopBar` is set to `HUG` its height around its tallest child, that invisible 100px empty spacer will immediately stretch your entire TopBar to be 100px tall!
+
+### The Solution: Omit Empty Containers
+Before adding structural sections or spacers to your final `children` array, you must explicitly check if they have content:
+
+```typescript
+// ❌ WRONG: Pushing a frame unconditionally
+children.push(centerSection); 
+// If centerSection has no children, it becomes 100x100 and destroys your height hug!
+
+// ✅ RIGHT: Omit empty frames entirely
+if (centerSection.children && centerSection.children.length > 0) {
+    children.push(centerSection);
+}
+```
+**Rule of thumb:** If a frame is strictly for Auto Layout wrapping and contains no fills or UI elements, do not push it to the `children` array unless it has at least one child inside it.
+
+### The "Shadow Clipping" Trap 🌑
+If your component has children with high-radius shadows (like floating islands), the parent frame might clip those shadows if `clipsContent: true`.
+- **Solution:** Always set `clipsContent: false` on components and their demo wrappers if they contain floating or shadowed elements.
+
+---
+
+## 11. Design Principles 🎨
 
 To create professional-looking components, follow these visual rules:
 
@@ -205,7 +276,7 @@ To create professional-looking components, follow these visual rules:
 
 ---
 
-## 10. Pro Tips
+## 12. Pro Tips
 - **Use HUG vs FILL**: If you want a frame to take the size of its children, don't set a `width`/`height` in `layoutProps` and use `primaryAxisSizingMode: "AUTO"`.
 - **Absolute Positioning**: If you need a badge in the corner of an image, use `layoutPositioning: "ABSOLUTE"` in the child's `layoutProps`. 
     > [!IMPORTANT]
@@ -215,7 +286,7 @@ To create professional-looking components, follow these visual rules:
 
 ---
 
-## 11. Lessons Learned: Structural Identity vs. Visual Approximation 🏗️
+## 13. Lessons Learned: Structural Identity vs. Visual Approximation 🏗️
 
 When replicating complex Figma components, especially those with multiple variants (like "Aligned" vs "Centered"), you might be tempted to just **scale** a shared group to visually match the target.
 
@@ -246,7 +317,7 @@ shirtWidth = 176.95; // Match the source children
 
 ---
 
-## 12. Lessons Learned: The Silent Build Failure & Font Loading 🕵️‍♂️
+## 14. Lessons Learned: The Silent Build Failure & Font Loading 🕵️‍♂️
 
 ### The Incident
 We spent hours debugging why a font ("Champions Display") wasn't loading. The code looked perfect, logs were added, but **nothing appeared in the console**.

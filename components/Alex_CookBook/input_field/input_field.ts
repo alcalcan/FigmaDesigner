@@ -4,7 +4,12 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 import CARET_LEFT from "./assets/caret_left.svg";
 
 // Lucide Icons
-import { Lucide_alert_circle, Lucide_alert_triangle, Lucide_check_circle, Lucide_info, Lucide_search, Lucide_x } from "../../index";
+import { Lucide_alert_circle } from "../../lucide_icons/Lucide_alert_circle/Lucide_alert_circle";
+import { Lucide_alert_triangle } from "../../lucide_icons/Lucide_alert_triangle/Lucide_alert_triangle";
+import { Lucide_check_circle } from "../../lucide_icons/Lucide_check_circle/Lucide_check_circle";
+import { Lucide_info } from "../../lucide_icons/Lucide_info/Lucide_info";
+import { Lucide_search } from "../../lucide_icons/Lucide_search/Lucide_search";
+import { Lucide_x } from "../../lucide_icons/Lucide_x/Lucide_x";
 
 export interface InputFieldProps extends ComponentProps {
     placeholder?: string;
@@ -34,7 +39,7 @@ export class input_field extends BaseComponent {
         let widthProp = props.width ?? 320;
         if (widthProp === "auto") widthProp = "hug"; // Alias auto -> hug
 
-        const heightProp = props.height ?? 40; // Default height 40
+        const heightProp = props.height ?? "auto"; // Default height auto
 
         const iconSize = props.iconSize ?? 24; // Default to 24
 
@@ -213,7 +218,7 @@ export class input_field extends BaseComponent {
                             },
                             "layoutProps": {
                                 "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                "width": undefined, "height": 24
+                                "width": undefined, "height": undefined
                             },
                             "children": [
                                 {
@@ -245,7 +250,7 @@ export class input_field extends BaseComponent {
                                     },
                                     "layoutProps": {
                                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                        "width": undefined, "height": 21
+                                        "width": undefined, "height": undefined
                                     }
                                 }
                             ]
