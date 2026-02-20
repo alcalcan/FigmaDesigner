@@ -6,11 +6,21 @@ import { Lucide_settings } from "../../lucide_icons/Lucide_settings/Lucide_setti
 import { Lucide_users } from "../../lucide_icons/Lucide_users/Lucide_users";
 import { Lucide_folder } from "../../lucide_icons/Lucide_folder/Lucide_folder";
 import { Action___profile } from "../../UEFA_icons/Action___profile/Action___profile";
+import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
+import { Lucide_chevron_up } from "../../lucide_icons/Lucide_chevron_up/Lucide_chevron_up";
+
+export interface NavItem {
+    label: string;
+    icon: any;
+    subItems?: { label: string }[];
+}
 
 export interface SidebarProps extends ComponentProps {
     variant?: "default" | "collapsed" | "floating" | "floating-collapsed";
     theme?: "light" | "dark";
-    navItems?: { label: string, icon: any }[];
+    navItems?: NavItem[];
+    expandedItems?: string[];
+    activeItem?: string;
     showLogo?: boolean;
     showProfile?: boolean;
 }
@@ -22,14 +32,22 @@ export class sidebar extends BaseComponent {
         const isCollapsed = variant === "collapsed" || variant === "floating-collapsed";
         const isFloating = variant === "floating" || variant === "floating-collapsed";
 
-        const defaultNavItems = [
+        const defaultNavItems: NavItem[] = [
             { label: "Dashboard", icon: Lucide_home },
-            { label: "Projects", icon: Lucide_folder },
+            {
+                label: "Projects", icon: Lucide_folder, subItems: [
+                    { label: "Internal" },
+                    { label: "Client" },
+                    { label: "Archive" }
+                ]
+            },
             { label: "Team", icon: Lucide_users },
             { label: "Settings", icon: Lucide_settings }
         ];
 
         const navItems = props.navItems || defaultNavItems;
+        const expandedItems = props.expandedItems || [];
+        const activeItemStr = props.activeItem || navItems[0]?.label;
         const showLogo = props.showLogo ?? true;
         const showProfile = props.showProfile ?? true;
 
@@ -139,14 +157,18 @@ export class sidebar extends BaseComponent {
                 layoutGrow: 1
             },
             children: navItems.map((item, index) => {
-                const isActive = index === 0;
-                return {
+                const isActive = item.label === activeItemStr;
+                const matchesSubItem = item.subItems?.some(s => s.label === activeItemStr);
+                const isExpanded = expandedItems.includes(item.label) || matchesSubItem;
+
+                const parentNode: NodeDefinition = {
                     type: "COMPONENT",
                     component: button,
                     name: `Nav Item: ${item.label}`,
                     props: {
                         variant: isActive ? "primary" : "ghost",
                         frontIcon: item.icon,
+                        backIcon: (!isCollapsed && item.subItems) ? (isExpanded ? Lucide_chevron_up : Lucide_chevron_down) : undefined,
                         size: "medium",
                         iconSize: 24,
                         label: isCollapsed ? undefined : item.label,
@@ -160,6 +182,56 @@ export class sidebar extends BaseComponent {
                         layoutAlign: "STRETCH"
                     }
                 };
+
+                if (!isCollapsed && item.subItems && isExpanded) {
+                    const subItemNodes: NodeDefinition[] = item.subItems.map((sub) => {
+                        const isSubActive = sub.label === activeItemStr;
+                        return {
+                            type: "FRAME",
+                            name: `Sub Item Wrapper: ${sub.label}`,
+                            props: {
+                                layoutMode: "VERTICAL",
+                                paddingLeft: 42, // Aligns small button text (starts at 12) with medium button text (starts at 54)
+                                fills: []
+                            },
+                            layoutProps: {
+                                layoutAlign: "STRETCH"
+                            },
+                            children: [
+                                {
+                                    type: "COMPONENT",
+                                    component: button,
+                                    name: `Sub Item: ${sub.label}`,
+                                    props: {
+                                        variant: isSubActive ? "primary" : "ghost",
+                                        size: "small", // Make sub-items less tall
+                                        label: sub.label,
+                                        textColor: isSubActive ? undefined : (isDark ? { r: 0.6, g: 0.6, b: 0.6 } : { r: 0.45, g: 0.5, b: 0.55 }), // Muted text color for hierarchy
+                                        cornerRadius: isFloating ? 100 : 8,
+                                        width: "fill",
+                                        justifyContent: "MIN"
+                                    }
+                                }
+                            ]
+                        };
+                    });
+
+                    return {
+                        type: "FRAME",
+                        name: `Nav Item Group: ${item.label}`,
+                        props: {
+                            layoutMode: "VERTICAL",
+                            itemSpacing: 2, // Tight grouping for parent and children
+                            fills: []
+                        },
+                        layoutProps: {
+                            layoutAlign: "STRETCH"
+                        },
+                        children: [parentNode, ...subItemNodes]
+                    };
+                }
+
+                return parentNode;
             })
         };
 

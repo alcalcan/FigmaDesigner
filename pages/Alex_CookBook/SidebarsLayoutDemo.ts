@@ -1,5 +1,9 @@
 import { ComponentProps } from "../../components/BaseComponent";
 import { sidebar } from "../../components/Alex_CookBook/sidebar/sidebar";
+import { Lucide_home } from "../../components/lucide_icons/Lucide_home/Lucide_home";
+import { Lucide_folder } from "../../components/lucide_icons/Lucide_folder/Lucide_folder";
+import { Lucide_users } from "../../components/lucide_icons/Lucide_users/Lucide_users";
+import { Lucide_settings } from "../../components/lucide_icons/Lucide_settings/Lucide_settings";
 import { BaseDemoPage } from "./BaseDemoPage";
 
 export class SidebarsLayoutDemo extends BaseDemoPage {
@@ -34,6 +38,35 @@ export class SidebarsLayoutDemo extends BaseDemoPage {
             row.fills = [];
             row.appendChild(await sb.create({ variant: "floating", height: 672 }));
             row.appendChild(await sb.create({ variant: "floating-collapsed", height: 672 }));
+        });
+
+        // --- Submenus / Multi-level Navigation ---
+        await this.addSection(root, "Submenus / Multi-level Navigation", "Support for nested sub-items and expandable sections.", async (container) => {
+            container.layoutMode = "HORIZONTAL";
+            const row = this.createRow(container, 32);
+            row.fills = [];
+
+            // Standard with expanded Projects
+            row.appendChild(await sb.create({
+                variant: "default",
+                height: 720,
+                expandedItems: ["Projects"],
+                activeItem: "Projects"
+            }));
+
+            // Expanded Team
+            row.appendChild(await sb.create({
+                variant: "default",
+                height: 720,
+                navItems: [
+                    { label: "Dashboard", icon: Lucide_home },
+                    { label: "Projects", icon: Lucide_folder },
+                    { label: "Team", icon: Lucide_users, subItems: [{ label: "Active" }, { label: "Invitations" }] },
+                    { label: "Settings", icon: Lucide_settings }
+                ],
+                expandedItems: ["Team"],
+                activeItem: "Active"
+            }));
         });
 
         root.x = props.x ?? 0;
