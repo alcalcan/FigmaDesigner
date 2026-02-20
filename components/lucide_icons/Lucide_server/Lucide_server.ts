@@ -20,32 +20,44 @@ export class Lucide_server extends BaseComponent {
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
-                    "type": "VECTOR",
-                    "name": "Icon",
+                    "type": "FRAME",
+                    "name": "Icon Wrapper",
                     "props": {
                         "visible": true,
-                        "strokeWeight": strokeWeight,
-                        "strokeAlign": "CENTER",
-                        "strokes": [{ "type": "SOLID", "color": color }]
+                        "clipsContent": false,
+                        "fills": [],
+                        "strokes": [{ "type": "SOLID", "color": color }],
+                        "strokeWeight": strokeWeight
                     },
                     "layoutProps": {
-                        "width": iconSize,
-                        "height": iconSize,
-                        "layoutPositioning": "ABSOLUTE",
-                        "constraints": { horizontal: "SCALE", vertical: "SCALE" }
+                        "width": iconSize, 
+                        "height": iconSize
                     },
                     "svgContent": SVG_CONTENT,
                     "postCreate": (node: SceneNode, nodeProps: any) => {
-                        if (node.type === "VECTOR" || node.type === "FRAME") {
-                            // Propagate styles to children if frame, or self if vector
-                            const target = node.type === "FRAME" ? node.children : [node];
-
-                            // Iterate through children (or self) to set strokes explicitly
-                            // This is a simplified version of what I saw in Lucide_home, adapted
-                            if ('strokes' in node) node.strokes = [{ type: "SOLID", color: color }];
-                            if ('strokeWeight' in node) node.strokeWeight = strokeWeight;
-                            if ('strokeJoin' in node) node.strokeJoin = "ROUND";
-                            if ('strokeCap' in node) node.strokeCap = "ROUND";
+                        if (node.type === "FRAME") {
+                            node.clipsContent = false;
+                            
+                            for (const child of node.children) {
+                                if ("constraints" in child) {
+                                    child.constraints = { horizontal: "SCALE", vertical: "SCALE" };
+                                }
+                                
+                                // Apply stroke properties to vector children
+                                if ("strokes" in child && nodeProps.strokes) {
+                                    child.strokes = nodeProps.strokes;
+                                }
+                                if ("strokeWeight" in child && nodeProps.strokeWeight) {
+                                    child.strokeWeight = nodeProps.strokeWeight;
+                                }
+                                
+                                // Ensure standard Lucide rounded look
+                                if ("strokeJoin" in child) (child as any).strokeJoin = "ROUND";
+                                if ("strokeCap" in child) (child as any).strokeCap = "ROUND";
+                            }
+                            
+                            // Remove strokes from the wrapper frame itself
+                            node.strokes = [];
                         }
                     }
                 }

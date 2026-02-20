@@ -13,11 +13,10 @@ export abstract class BaseDemoPage extends BaseComponent {
         root.paddingLeft = 80;
         root.paddingRight = 80;
         root.paddingBottom = 80;
-        root.counterAxisSizingMode = "FIXED";
-        root.resize(Math.max(1, width), 100); // Applied Math.max(1, width) to root.resize
+        root.counterAxisSizingMode = "AUTO";
         root.primaryAxisSizingMode = "AUTO";
         root.fills = [{ type: "SOLID", color: { r: 0.949, g: 0.960, b: 0.980 } }]; // #F2F5FA
-        root.layoutAlign = "STRETCH";
+        root.layoutAlign = "INHERIT";
         root.clipsContent = false;
         return root;
     }
@@ -36,18 +35,11 @@ export abstract class BaseDemoPage extends BaseComponent {
         row.layoutMode = "HORIZONTAL";
         row.itemSpacing = itemSpacing;
         row.fills = [];
-        row.layoutAlign = "STRETCH";
-        row.primaryAxisSizingMode = "FIXED"; // Width is controlled by parent AL via STRETCH
+        row.layoutAlign = "INHERIT";
+        row.primaryAxisSizingMode = "AUTO";
         row.primaryAxisAlignItems = "MIN";
         row.counterAxisAlignItems = "MIN";
         row.clipsContent = false;
-
-        // Explicitly set width to match parent's internal width to avoid collapse
-        const parentInternalWidth = container.width - (container.paddingLeft + container.paddingRight);
-        // Use a minimum width to ensure layoutGrow children have something to grab onto
-        // 1000 is a safe bet for a 1200 or 1600 page
-        const safeWidth = Math.max(1000, parentInternalWidth);
-        row.resize(Math.max(1, safeWidth), 100); // Applied Math.max(1, safeWidth)
         row.counterAxisSizingMode = "AUTO";  // Height hugs content
 
         container.appendChild(row);
@@ -66,9 +58,9 @@ export abstract class BaseDemoPage extends BaseComponent {
         section.layoutMode = "VERTICAL";
         section.itemSpacing = 24;
         section.fills = [];
-        section.layoutAlign = "STRETCH";
+        section.layoutAlign = "INHERIT";
         section.primaryAxisSizingMode = "AUTO";
-        section.counterAxisSizingMode = "FIXED";
+        section.counterAxisSizingMode = "AUTO";
         section.clipsContent = false;
 
         const headerContainer = figma.createFrame();
@@ -76,17 +68,17 @@ export abstract class BaseDemoPage extends BaseComponent {
         headerContainer.layoutMode = "VERTICAL";
         headerContainer.itemSpacing = 8;
         headerContainer.fills = [];
-        headerContainer.layoutAlign = "STRETCH";
+        headerContainer.layoutAlign = "INHERIT";
         headerContainer.primaryAxisSizingMode = "AUTO";
-        headerContainer.counterAxisSizingMode = "FIXED";
+        headerContainer.counterAxisSizingMode = "AUTO";
 
         const label = figma.createText();
         await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
         label.characters = title;
         label.fontSize = 24;
         label.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.12 } }];
-        label.layoutAlign = "STRETCH";
-        label.textAutoResize = "HEIGHT";
+        label.layoutAlign = "INHERIT";
+        label.textAutoResize = "WIDTH_AND_HEIGHT";
         headerContainer.appendChild(label);
 
         const desc = figma.createText();
@@ -94,8 +86,8 @@ export abstract class BaseDemoPage extends BaseComponent {
         desc.characters = description;
         desc.fontSize = 16;
         desc.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.45 } }];
-        desc.layoutAlign = "STRETCH";
-        desc.textAutoResize = "HEIGHT";
+        desc.layoutAlign = "INHERIT";
+        desc.textAutoResize = "WIDTH_AND_HEIGHT";
         headerContainer.appendChild(desc);
 
         section.appendChild(headerContainer);
@@ -105,13 +97,11 @@ export abstract class BaseDemoPage extends BaseComponent {
         previewContainer.layoutMode = "VERTICAL";
         previewContainer.itemSpacing = options.itemSpacing ?? 24;
         previewContainer.fills = [];
-        previewContainer.layoutAlign = "STRETCH";
+        previewContainer.layoutAlign = "INHERIT";
         const padding = options.padding ?? 24;
-        const rootPadding = root.paddingLeft + root.paddingRight;
-        const safeWidth = Math.max(100, (root.width || 1200) - rootPadding);
-        previewContainer.resize(Math.max(1, safeWidth), 100); // Applied Math.max(1, safeWidth)
 
-        previewContainer.counterAxisSizingMode = "FIXED";
+        previewContainer.primaryAxisSizingMode = "AUTO";
+        previewContainer.counterAxisSizingMode = "AUTO";
 
         previewContainer.paddingLeft = padding;
         previewContainer.paddingRight = padding;

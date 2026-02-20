@@ -47,14 +47,18 @@ async function generate() {
         return;
     }
 
-    // Clean up existing directory to ensure only selected icons remain
+    let allSelectedIcons = Object.values(CATEGORIES).flat();
+
+    // Also include any previously generated icons that exist in the directory
     if (fs.existsSync(targetDir)) {
+        const existingDirs = fs.readdirSync(targetDir).filter(d => d.startsWith('Lucide_'));
+        const existingIcons = existingDirs.map(d => d.replace('Lucide_', '').replace(/_/g, '-'));
+        allSelectedIcons = [...new Set([...allSelectedIcons, ...existingIcons])];
         console.log("🧹 Cleaning up existing Lucide icons...");
         fs.rmSync(targetDir, { recursive: true, force: true });
     }
     fs.mkdirSync(targetDir, { recursive: true });
 
-    const allSelectedIcons = Object.values(CATEGORIES).flat();
     console.log(`📦 Processing ${allSelectedIcons.length} essential icons.`);
 
     let count = 0;
@@ -102,14 +106,14 @@ export class ${className} extends BaseComponent {
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
-                    "type": "VECTOR",
-                    "name": "Icon",
+                    "type": "FRAME",
+                    "name": "Icon Wrapper",
                     "props": {
                         "visible": true,
-                        // Apply strokes to the frame temporarily, postCreate will move them to paths
-                        "strokeWeight": strokeWeight,
-                        "strokeAlign": "CENTER",
-                        "strokes": [{ "type": "SOLID", "color": color }]
+                        "clipsContent": false,
+                        "fills": [],
+                        "strokes": [{ "type": "SOLID", "color": color }],
+                        "strokeWeight": strokeWeight
                     },
                     "layoutProps": {
                         "width": iconSize, 
@@ -118,10 +122,8 @@ export class ${className} extends BaseComponent {
                     "svgContent": SVG_CONTENT,
                     "postCreate": (node: SceneNode, nodeProps: any) => {
                         if (node.type === "FRAME") {
-                            // Ensure the SVG wrapper doesn't clip its own strokes
                             node.clipsContent = false;
                             
-                            // Propagate styles to all paths and set SCALE constraints
                             for (const child of node.children) {
                                 if ("constraints" in child) {
                                     child.constraints = { horizontal: "SCALE", vertical: "SCALE" };
@@ -140,7 +142,7 @@ export class ${className} extends BaseComponent {
                                 if ("strokeCap" in child) (child as any).strokeCap = "ROUND";
                             }
                             
-                            // Remove strokes from the wrapper frame itself to avoid "contours"
+                            // Remove strokes from the wrapper frame itself
                             node.strokes = [];
                         }
                     }

@@ -3,6 +3,7 @@ import { MetricCardsDesign1Demo } from "../../pages/Alex_CookBook/MetricCardsDes
 import { CookbookComponentsDemo } from "../../pages/Alex_CookBook/CookbookComponentsDemo";
 import { GraphChartsDemo } from "../../pages/Alex_CookBook/GraphChartsDemo";
 import { TopBarsDemo } from "../../pages/Alex_CookBook/TopBarsDemo";
+import { SidebarsLayoutDemo } from "../../pages/Alex_CookBook/SidebarsLayoutDemo";
 import { Layout } from "../../slides/theme";
 
 export class DemoFlow extends BaseComponent {
@@ -25,12 +26,14 @@ export class DemoFlow extends BaseComponent {
         // Instantiate the individual pages
         const metricsDemo = new MetricCardsDesign1Demo();
         const topBarsDemo = new TopBarsDemo();
+        const sidebarsDemo = new SidebarsLayoutDemo();
         const graphsDemo = new GraphChartsDemo();
 
         // Create the pages
         const pages = [
             await metricsDemo.create({}),
             await topBarsDemo.create({}),
+            await sidebarsDemo.create({}),
             await graphsDemo.create({})
         ];
 

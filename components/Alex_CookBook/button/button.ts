@@ -10,6 +10,8 @@ export interface ButtonProps extends ComponentProps {
     backIcon?: any;
     iconSize?: number;
     textColor?: RGB;
+    cornerRadius?: number;
+    justifyContent?: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
 }
 
 export class button extends BaseComponent {
@@ -140,7 +142,7 @@ export class button extends BaseComponent {
             name: `Button/${variant}/${size}/${state}`,
             props: {
                 layoutMode: "HORIZONTAL",
-                primaryAxisAlignItems: "CENTER",
+                primaryAxisAlignItems: props.justifyContent || "CENTER",
                 counterAxisAlignItems: "CENTER",
                 primaryAxisSizingMode: props.width === "fill" ? "FIXED" : "AUTO",
                 counterAxisSizingMode: "AUTO",
@@ -149,7 +151,7 @@ export class button extends BaseComponent {
                 paddingBottom: currentSize.v,
                 paddingLeft: currentSize.h,
                 paddingRight: currentSize.h,
-                cornerRadius: 4,
+                cornerRadius: props.cornerRadius ?? 4,
                 fills,
                 strokes,
                 strokeWeight: strokes.length > 0 ? 1 : 0,
