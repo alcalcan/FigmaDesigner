@@ -1,130 +1,110 @@
-import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
+import { ComponentProps } from "../../components/BaseComponent";
 import { graph_chart, GraphChartProps, GraphLineSeries } from "../../components/Alex_CookBook/graph_chart/graph_chart";
+import { BaseDemoPage } from "./BaseDemoPage";
 
-export class GraphChartsDemo extends BaseComponent {
+export class GraphChartsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
         // Essential fonts
         await figma.loadFontAsync({ family: "Inter", style: "Regular" });
         await figma.loadFontAsync({ family: "Inter", style: "Medium" });
         await figma.loadFontAsync({ family: "Inter", style: "Bold" });
 
-        const root = figma.createFrame();
-        root.name = "Graph Charts Showcase - Full Width";
-        root.layoutMode = "VERTICAL";
-        root.itemSpacing = 64;
-        root.paddingTop = 80;
-        root.paddingLeft = 80;
-        root.paddingRight = 80;
-        root.paddingBottom = 80;
-        root.counterAxisSizingMode = "FIXED";
-        root.resize(1200, 800);
-        root.primaryAxisSizingMode = "AUTO";
-        root.clipsContent = false;
-        root.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.98, b: 0.99 } }];
+        const root = await this.initPage("Graph Charts Showcase - Full Width", 1200);
 
         const graphCreator = new graph_chart();
 
-        // --- TITLE ---
-        const titleContainer = figma.createFrame();
-        titleContainer.name = "Page Header";
-        titleContainer.layoutMode = "VERTICAL";
-        titleContainer.itemSpacing = 8;
-        titleContainer.fills = [];
-        titleContainer.layoutAlign = "STRETCH";
-        titleContainer.primaryAxisSizingMode = "AUTO";
-        titleContainer.counterAxisSizingMode = "FIXED";
-
-        const title = figma.createText();
-        title.name = "Page Title";
-        title.characters = "Graph Charts - Full Page Width Rendering";
-        title.fontSize = 32;
-        title.fontName = { family: "Inter", style: "Bold" };
-        title.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.1 } }];
-        title.layoutAlign = "STRETCH";
-        title.textAutoResize = "HEIGHT";
-        titleContainer.appendChild(title);
-
-        const subtitle = figma.createText();
-        subtitle.name = "Page Subtitle";
-        subtitle.characters = "Showcasing chart rendering logic adapted for full-width contexts.";
-        subtitle.fontSize = 16;
-        subtitle.fills = [{ type: "SOLID", color: { r: 0.45, g: 0.5, b: 0.6 } }];
-        subtitle.layoutAlign = "STRETCH";
-        subtitle.textAutoResize = "HEIGHT";
-        titleContainer.appendChild(subtitle);
-
-        root.appendChild(titleContainer);
+        await this.addHeader(
+            root,
+            "Graph Charts - Full Page Width Rendering",
+            "Showcasing chart rendering logic adapted for full-width contexts."
+        );
 
         // --- SECTION 1: Standard Variation ---
-        await this.addSection(root, graphCreator, "Standard Performance Tracking", "Fluid Spline Area Chart • Gradient Fill, Soft Shadow, 16px Roundness", {
-            type: "spline",
-            series: [{ dataPoints: [0.1, 0.3, 0.2, 0.5, 0.4, 0.8, 0.7, 0.9, 0.85, 1.0] }],
-            height: 240,
-            area: {
-                startColor: { r: 0.1, g: 0.4, b: 0.9 },
-                endColor: { r: 0.4, g: 0.8, b: 1 },
-                shadow: true
-            }
+        await this.addSection(root, "Standard Performance Tracking", "Fluid Spline Area Chart • Gradient Fill, Soft Shadow, 16px Roundness", async (container) => {
+            const chart = await graphCreator.create({
+                cornerRadius: 16,
+                width: container.width - (container.paddingLeft + container.paddingRight),
+                type: "spline",
+                series: [{ dataPoints: [0.1, 0.3, 0.2, 0.5, 0.4, 0.8, 0.7, 0.9, 0.85, 1.0] }],
+                height: 240,
+                area: {
+                    startColor: { r: 0.1, g: 0.4, b: 0.9 },
+                    endColor: { r: 0.4, g: 0.8, b: 1 },
+                    shadow: true
+                }
+            });
+            container.appendChild(chart);
         });
 
         // --- SECTION 2: Compact Dense Data ---
-        await this.addSection(root, graphCreator, "High-Density API Metrics (Shortened)", "Fluid Spline Area Chart • Solid Gradient, No Shadow, Compact Height (120px)", {
-            type: "spline",
-            series: [{ dataPoints: Array.from({ length: 40 }, () => Math.random() * 0.5 + 0.2) }],
-            height: 120,
-            area: {
-                startColor: { r: 0.02, g: 0.08, b: 0.25 },
-                endColor: { r: 0.15, g: 0.35, b: 0.8 },
-                shadow: false
-            }
+        await this.addSection(root, "High-Density API Metrics (Shortened)", "Fluid Spline Area Chart • Solid Gradient, No Shadow, Compact Height (120px)", async (container) => {
+            const chart = await graphCreator.create({
+                cornerRadius: 16,
+                width: container.width - (container.paddingLeft + container.paddingRight),
+                type: "spline",
+                series: [{ dataPoints: Array.from({ length: 40 }, () => Math.random() * 0.5 + 0.2) }],
+                height: 120,
+                area: {
+                    startColor: { r: 0.02, g: 0.08, b: 0.25 },
+                    endColor: { r: 0.15, g: 0.35, b: 0.8 },
+                    shadow: false
+                }
+            });
+            container.appendChild(chart);
         });
 
         // --- SECTION 3: Warning State ---
-        await this.addSection(root, graphCreator, "Critical Load Peak", "Fluid Spline Area Chart • Warning Colors, Glow Shadow, Peak Data Visualization", {
-            type: "spline",
-            series: [{ dataPoints: [0.2, 0.25, 0.3, 0.4, 0.9, 0.85, 0.95, 0.8, 0.3, 0.2] }],
-            height: 200,
-            area: {
-                startColor: { r: 0.8, g: 0.1, b: 0.1 },
-                endColor: { r: 1, g: 0.4, b: 0.1 },
-                fillType: "gradient",
-                shadow: true
-            }
+        await this.addSection(root, "Critical Load Peak", "Fluid Spline Area Chart • Warning Colors, Glow Shadow, Peak Data Visualization", async (container) => {
+            const chart = await graphCreator.create({
+                cornerRadius: 16,
+                width: container.width - (container.paddingLeft + container.paddingRight),
+                type: "spline",
+                series: [{ dataPoints: [0.2, 0.25, 0.3, 0.4, 0.9, 0.85, 0.95, 0.8, 0.3, 0.2] }],
+                height: 200,
+                area: {
+                    startColor: { r: 0.8, g: 0.1, b: 0.1 },
+                    endColor: { r: 1, g: 0.4, b: 0.1 },
+                    fillType: "gradient",
+                    shadow: true
+                }
+            });
+            container.appendChild(chart);
         });
 
         // --- SECTION 4: Solid Style ---
-        await this.addSection(root, graphCreator, "Disk Read Latency (Solid Style)", "Fluid Spline Area Chart • Transparent Solid Fill, No Shadow, Custom Opacity", {
-            type: "spline",
-            series: [{ dataPoints: [0.4, 0.45, 0.42, 0.5, 0.48, 0.55, 0.52, 0.6, 0.58] }],
-            height: 180,
-            area: {
-                startColor: { r: 0.4, g: 0.1, b: 0.9 },
-                fillType: "solid",
-                opacity: 0.2,
-                shadow: false
-            }
+        await this.addSection(root, "Disk Read Latency (Solid Style)", "Fluid Spline Area Chart • Transparent Solid Fill, No Shadow, Custom Opacity", async (container) => {
+            const chart = await graphCreator.create({
+                cornerRadius: 16,
+                width: container.width - (container.paddingLeft + container.paddingRight),
+                type: "spline",
+                series: [{ dataPoints: [0.4, 0.45, 0.42, 0.5, 0.48, 0.55, 0.52, 0.6, 0.58] }],
+                height: 180,
+                area: {
+                    startColor: { r: 0.4, g: 0.1, b: 0.9 },
+                    fillType: "solid",
+                    opacity: 0.2,
+                    shadow: false
+                }
+            });
+            container.appendChild(chart);
         });
 
         // --- BAR CHART EXAMPLES (REFERENCE-STYLE) ---
-        const rootContentWidth = Math.max(1, root.width - root.paddingLeft - root.paddingRight);
-        this.addCustomSection(
-            root,
-            "Ticket Statistics (Reference Style)",
-            "Card Bar Chart • Monthly columns with y-axis, month labels, highlighted month and tooltip",
-            this.createTicketStatisticsCard(rootContentWidth)
-        );
-        this.addCustomSection(
-            root,
-            "Weekly Activity (Rounded Tracks)",
-            "Pill Track Bars • Background tracks with colored day bars and weekday labels",
-            this.createWeeklyActivityTracksCard(rootContentWidth)
-        );
-        this.addCustomSection(
-            root,
-            "Compact Mini Bars",
-            "Micro Bar Chart • Dense slim bars with subtle grid for dashboard widgets",
-            this.createCompactMiniBarsCard(rootContentWidth)
-        );
+        await this.addSection(root, "Ticket Statistics (Reference Style)", "Card Bar Chart • Monthly columns with y-axis, month labels, highlighted month and tooltip", async (container) => {
+            const chart = this.createTicketStatisticsCard(container.width - (container.paddingLeft + container.paddingRight));
+            container.appendChild(chart);
+        });
+
+        await this.addSection(root, "Weekly Activity (Rounded Tracks)", "Pill Track Bars • Background tracks with colored day bars and weekday labels", async (container) => {
+            const chart = this.createWeeklyActivityTracksCard(container.width - (container.paddingLeft + container.paddingRight));
+            container.appendChild(chart);
+        });
+
+        await this.addSection(root, "Compact Mini Bars", "Micro Bar Chart • Dense slim bars with subtle grid for dashboard widgets", async (container) => {
+            const chart = this.createCompactMiniBarsCard(container.width - (container.paddingLeft + container.paddingRight));
+            container.appendChild(chart);
+        });
+
         const defaultLineSeries = [
             {
                 label: "Spend",
@@ -152,23 +132,26 @@ export class GraphChartsDemo extends BaseComponent {
                 ]
             }
         ];
-        await this.addSection(
-            root,
-            graphCreator,
-            "Daily Trends (Multi-Line)",
-            "Configurable Line Chart • Nested props API with backward-compatible demo controls",
-            this.buildMultiLineChartProps(props, defaultLineSeries)
-        );
+
+        await this.addSection(root, "Daily Trends (Multi-Line)", "Configurable Line Chart • Nested props API with backward-compatible demo controls", async (container) => {
+            const chartProps = this.buildMultiLineChartProps(props, defaultLineSeries);
+            const chart = await graphCreator.create({
+                cornerRadius: 16,
+                width: container.width - (container.paddingLeft + container.paddingRight),
+                ...chartProps
+            });
+            container.appendChild(chart);
+        });
+
         const intersectionDateLabels = ["01", "03", "05", "07", "09", "11", "13", "15", "17", "19", "21", "23", "25", "27", "29", "30"];
         const intersectionSelectedIndex = 7;
         const splineSpend = [18000, 20500, 23200, 24800, 22100, 17600, 20800, 36200, 43800, 45200, 40900, 32500, 23800, 17200, 11900, 9800];
         const splineCashback = [12600, 14900, 18600, 22100, 25200, 26200, 24600, 20500, 28400, 37200, 42800, 39500, 45200, 51800, 56300, 48700];
-        await this.addSection(
-            root,
-            graphCreator,
-            "Spline Intersections (Date Tooltip)",
-            "Spline-style two-line intersection • One filled trend + two distinct strokes + date/value tooltip",
-            {
+
+        await this.addSection(root, "Spline Intersections (Date Tooltip)", "Spline-style two-line intersection • One filled trend + two distinct strokes + date/value tooltip", async (container) => {
+            const chart = await graphCreator.create({
+                cornerRadius: 16,
+                width: container.width - (container.paddingLeft + container.paddingRight),
                 type: "spline",
                 height: 320,
                 curve: "smooth",
@@ -242,8 +225,9 @@ export class GraphChartsDemo extends BaseComponent {
                     fillType: "none",
                     shadow: false
                 }
-            } as GraphChartProps
-        );
+            } as GraphChartProps);
+            container.appendChild(chart);
+        });
 
 
         root.x = props.x ?? 0;
@@ -252,45 +236,6 @@ export class GraphChartsDemo extends BaseComponent {
         return root;
     }
 
-    private async addSection(root: FrameNode, creator: graph_chart, label: string, description: string, props: GraphChartProps) {
-        const rootContentWidth = Math.max(1, root.width - root.paddingLeft - root.paddingRight);
-        const section = figma.createFrame();
-        section.name = label;
-        section.layoutMode = "VERTICAL";
-        section.itemSpacing = 12;
-        section.fills = [];
-        section.layoutAlign = "STRETCH";
-        section.clipsContent = false;
-
-        const labelText = figma.createText();
-        labelText.name = `${label} Label`;
-        labelText.characters = label.toUpperCase();
-        labelText.fontSize = 14;
-        labelText.letterSpacing = { unit: "PERCENT", value: 10 };
-        labelText.fontName = { family: "Inter", style: "Bold" };
-        labelText.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.1 } }];
-        section.appendChild(labelText);
-
-        const chart = await creator.create({
-            cornerRadius: 16,
-            width: props.width ?? rootContentWidth,
-            ...props
-        });
-        chart.name = `${label} Chart`;
-        section.appendChild(chart);
-
-        const descText = figma.createText();
-        descText.name = `${label} Description`;
-        descText.characters = description;
-        descText.fontSize = 13;
-        descText.fontName = { family: "Inter", style: "Medium" };
-        descText.fills = [{ type: "SOLID", color: { r: 0.45, g: 0.5, b: 0.6 } }];
-        descText.layoutAlign = "STRETCH";
-        descText.textAlignHorizontal = "CENTER";
-        section.appendChild(descText);
-
-        root.appendChild(section);
-    }
 
     private buildMultiLineChartProps(pageProps: ComponentProps, defaultLineSeries: GraphLineSeries[]): GraphChartProps {
         const configuredSeries = Array.isArray(pageProps.multiLineSeries) ? pageProps.multiLineSeries : defaultLineSeries;
@@ -380,45 +325,6 @@ export class GraphChartsDemo extends BaseComponent {
         };
     }
 
-    private addCustomSection(root: FrameNode, label: string, description: string, content: FrameNode) {
-        const section = figma.createFrame();
-        section.name = label;
-        section.layoutMode = "VERTICAL";
-        section.itemSpacing = 12;
-        section.fills = [];
-        section.layoutAlign = "STRETCH";
-        section.primaryAxisSizingMode = "AUTO";
-        section.counterAxisSizingMode = "FIXED";
-        section.clipsContent = false;
-
-        const labelText = figma.createText();
-        labelText.name = `${label} Label`;
-        labelText.characters = label.toUpperCase();
-        labelText.fontSize = 14;
-        labelText.letterSpacing = { unit: "PERCENT", value: 10 };
-        labelText.fontName = { family: "Inter", style: "Bold" };
-        labelText.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.1 } }];
-        labelText.layoutAlign = "STRETCH";
-        labelText.textAutoResize = "HEIGHT";
-        section.appendChild(labelText);
-
-        content.name = `${label} Content`;
-        content.layoutAlign = "STRETCH";
-        section.appendChild(content);
-
-        const descText = figma.createText();
-        descText.name = `${label} Description`;
-        descText.characters = description;
-        descText.fontSize = 13;
-        descText.fontName = { family: "Inter", style: "Medium" };
-        descText.fills = [{ type: "SOLID", color: { r: 0.45, g: 0.5, b: 0.6 } }];
-        descText.textAlignHorizontal = "CENTER";
-        descText.layoutAlign = "STRETCH";
-        descText.textAutoResize = "HEIGHT";
-        section.appendChild(descText);
-
-        root.appendChild(section);
-    }
 
     private createTicketStatisticsCard(width: number): FrameNode {
         const card = figma.createFrame();
