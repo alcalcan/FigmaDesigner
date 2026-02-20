@@ -67,6 +67,28 @@ export class SidebarsLayoutDemo extends BaseDemoPage {
                 expandedItems: ["Team"],
                 activeItem: "Active"
             }));
+
+            // Floating with expanded Projects
+            row.appendChild(await sb.create({
+                variant: "floating",
+                height: 672,
+                expandedItems: ["Projects"],
+                activeItem: "Projects"
+            }));
+
+            // Floating Expanded Team
+            row.appendChild(await sb.create({
+                variant: "floating",
+                height: 672,
+                navItems: [
+                    { label: "Dashboard", icon: Lucide_home },
+                    { label: "Projects", icon: Lucide_folder },
+                    { label: "Team", icon: Lucide_users, subItems: [{ label: "Active" }, { label: "Invitations" }] },
+                    { label: "Settings", icon: Lucide_settings }
+                ],
+                expandedItems: ["Team"],
+                activeItem: "Active"
+            }));
         });
 
         root.x = props.x ?? 0;
