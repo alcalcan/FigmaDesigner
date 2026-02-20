@@ -406,7 +406,7 @@ export class GraphChartsDemo extends BaseDemoPage {
         const rightGutter = 8;
         const topGutter = 10;
         const bottomGutter = 36;
-        const chartWidth = plot.width - leftGutter - rightGutter;
+        const chartWidth = Math.max(1, plot.width - leftGutter - rightGutter);
         const chartHeight = plot.height - topGutter - bottomGutter;
 
         const yTicks = [1000, 2000, 3000, 4000, 5000, 6000];
@@ -587,7 +587,7 @@ export class GraphChartsDemo extends BaseDemoPage {
         plot.primaryAxisSizingMode = "FIXED";
         plot.counterAxisSizingMode = "FIXED";
         plot.layoutAlign = "STRETCH";
-        plot.resize(width - 40, 210);
+        plot.resize(Math.max(1, width - 40), 210);
         plot.fills = [];
         plot.clipsContent = false;
         card.appendChild(plot);
@@ -599,7 +599,7 @@ export class GraphChartsDemo extends BaseDemoPage {
         const labelY = trackTop + trackHeight + 12;
         const trackWidth = 34;
         const totalTrackWidth = trackWidth * days.length;
-        const gap = (plot.width - totalTrackWidth - 24) / (days.length - 1);
+        const gap = Math.max(0, (plot.width - totalTrackWidth - 24) / (days.length - 1));
         const startX = 12;
 
         days.forEach((day, i) => {
@@ -675,7 +675,7 @@ export class GraphChartsDemo extends BaseDemoPage {
         plot.primaryAxisSizingMode = "FIXED";
         plot.counterAxisSizingMode = "FIXED";
         plot.layoutAlign = "STRETCH";
-        plot.resize(width - 36, 150);
+        plot.resize(Math.max(1, width - 36), 150);
         plot.fills = [];
         plot.clipsContent = false;
         card.appendChild(plot);
@@ -686,7 +686,7 @@ export class GraphChartsDemo extends BaseDemoPage {
         const chartRight = 8;
         const chartBottom = 18;
         const chartTop = 8;
-        const chartWidth = plot.width - chartLeft - chartRight;
+        const chartWidth = Math.max(1, plot.width - chartLeft - chartRight);
         const chartHeight = plot.height - chartTop - chartBottom;
 
         [0.25, 0.5, 0.75].forEach(ratio => {

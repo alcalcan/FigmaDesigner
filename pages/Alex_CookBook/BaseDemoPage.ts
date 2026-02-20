@@ -14,7 +14,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         root.paddingRight = 80;
         root.paddingBottom = 80;
         root.counterAxisSizingMode = "FIXED";
-        root.resize(width, 100);
+        root.resize(Math.max(1, width), 100); // Applied Math.max(1, width) to root.resize
         root.primaryAxisSizingMode = "AUTO";
         root.fills = [{ type: "SOLID", color: { r: 0.949, g: 0.960, b: 0.980 } }]; // #F2F5FA
         root.layoutAlign = "STRETCH";
@@ -47,7 +47,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         // Use a minimum width to ensure layoutGrow children have something to grab onto
         // 1000 is a safe bet for a 1200 or 1600 page
         const safeWidth = Math.max(1000, parentInternalWidth);
-        row.resize(safeWidth, 100);
+        row.resize(Math.max(1, safeWidth), 100); // Applied Math.max(1, safeWidth)
         row.counterAxisSizingMode = "AUTO";  // Height hugs content
 
         container.appendChild(row);
@@ -61,7 +61,6 @@ export abstract class BaseDemoPage extends BaseComponent {
         contentBuilder: (container: FrameNode) => Promise<void>,
         options: { itemSpacing?: number; padding?: number } = {}
     ) {
-        // ... rest of the file ...
         const section = figma.createFrame();
         section.name = `Section: ${title}`;
         section.layoutMode = "VERTICAL";
@@ -107,10 +106,13 @@ export abstract class BaseDemoPage extends BaseComponent {
         previewContainer.itemSpacing = options.itemSpacing ?? 24;
         previewContainer.fills = [];
         previewContainer.layoutAlign = "STRETCH";
-        previewContainer.primaryAxisSizingMode = "AUTO";
+        const padding = options.padding ?? 24;
+        const rootPadding = root.paddingLeft + root.paddingRight;
+        const safeWidth = Math.max(100, (root.width || 1200) - rootPadding);
+        previewContainer.resize(Math.max(1, safeWidth), 100); // Applied Math.max(1, safeWidth)
+
         previewContainer.counterAxisSizingMode = "FIXED";
 
-        const padding = options.padding ?? 24;
         previewContainer.paddingLeft = padding;
         previewContainer.paddingRight = padding;
         previewContainer.paddingTop = padding;
