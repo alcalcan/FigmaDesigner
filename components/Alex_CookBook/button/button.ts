@@ -12,6 +12,7 @@ export interface ButtonProps extends ComponentProps {
     textColor?: RGB;
     cornerRadius?: number;
     justifyContent?: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
+    fontWeight?: "Regular" | "Bold";
 }
 
 export class button extends BaseComponent {
@@ -109,7 +110,7 @@ export class button extends BaseComponent {
                 props: {
                     characters: state === "loading" ? "Loading..." : labelText,
                     fontSize: currentSize.fontSize,
-                    font: { family: "Open Sans", style: "Bold" },
+                    font: { family: "Open Sans", style: props.fontWeight || "Bold" },
                     fills: [{ type: "SOLID", color: textColor }]
                 }
             });

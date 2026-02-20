@@ -176,7 +176,8 @@ export class sidebar extends BaseComponent {
                         textColor: isActive ? undefined : textColor,
                         cornerRadius: isFloating ? 100 : 8,
                         width: "fill",
-                        justifyContent: isCollapsed ? "CENTER" : "MIN"
+                        justifyContent: isCollapsed ? "CENTER" : "MIN",
+                        fontWeight: isActive ? "Bold" : "Regular"
                     },
                     layoutProps: {
                         layoutAlign: "STRETCH"
@@ -191,7 +192,7 @@ export class sidebar extends BaseComponent {
                             name: `Sub Item Wrapper: ${sub.label}`,
                             props: {
                                 layoutMode: "VERTICAL",
-                                paddingLeft: 42, // Aligns small button text (starts at 12) with medium button text (starts at 54)
+                                paddingLeft: 42, // Move the 42px left padding directly to the sub-item wrapper so the active box stretches full width.
                                 fills: []
                             },
                             layoutProps: {
@@ -209,13 +210,17 @@ export class sidebar extends BaseComponent {
                                         textColor: isSubActive ? undefined : (isDark ? { r: 0.6, g: 0.6, b: 0.6 } : { r: 0.45, g: 0.5, b: 0.55 }), // Muted text color for hierarchy
                                         cornerRadius: isFloating ? 100 : 8,
                                         width: "fill",
-                                        justifyContent: "MIN"
+                                        justifyContent: "MIN",
+                                        fontWeight: isSubActive ? "Bold" : "Regular"
                                     }
                                 }
                             ]
                         };
                     });
 
+                    // To align the line with the center of the 24px icon (which is padded by 12px or 16px depending on button size)
+                    // The medium button has 20px horizontal padding. So icon center is 20 + (24/2) = 32px from the left edge of the button.
+                    // We need the vertical line (2px wide) to be centered at 32px. So it needs 31px padding left.
                     return {
                         type: "FRAME",
                         name: `Nav Item Group: ${item.label}`,
@@ -227,7 +232,66 @@ export class sidebar extends BaseComponent {
                         layoutProps: {
                             layoutAlign: "STRETCH"
                         },
-                        children: [parentNode, ...subItemNodes]
+                        children: [
+                            parentNode,
+                            {
+                                type: "FRAME",
+                                name: "Sub Items List Wrapper",
+                                props: {
+                                    layoutMode: "VERTICAL",
+                                    itemSpacing: 2,
+                                    fills: []
+                                },
+                                layoutProps: {
+                                    layoutAlign: "STRETCH"
+                                },
+                                children: [
+                                    {
+                                        type: "FRAME",
+                                        name: "Hierarchy Line Container",
+                                        // We use absolute positioning for the line so it doesn't affect the width of the sub-items
+                                        props: {
+                                            layoutMode: "NONE", // Absolute layout
+                                            fills: [],
+                                            clipsContent: false
+                                        },
+                                        layoutProps: {
+                                            layoutAlign: "STRETCH",
+                                            height: 0 // Zero height so it doesn't mess up vertical flow
+                                        },
+                                        children: [
+                                            {
+                                                type: "FRAME",
+                                                name: "Hierarchy Line",
+                                                props: {
+                                                    layoutMode: "VERTICAL",
+                                                    fills: [{ type: "SOLID", color: isDark ? { r: 0.8, g: 0.82, b: 0.85 } : { r: 0.1, g: 0.1, b: 0.1 } }],
+                                                    cornerRadius: 0,
+                                                },
+                                                layoutProps: {
+                                                    width: 1,
+                                                },
+                                                // We must manually size the absolute line because it can't stretch automatically in a NONE layout.
+                                                // Subitems are 32px tall, with 2px gap.
+                                                // Total height = (32 * N) + (2 * (N-1))
+                                                postCreate: async (node: SceneNode) => {
+                                                    if (node.type === "FRAME" && item.subItems) {
+                                                        const numItems = item.subItems.length;
+                                                        const totalHeight = (32 * numItems) + (2 * (numItems - 1));
+                                                        node.resize(1, totalHeight);
+                                                        // Absolute position: center of the 24px icon (which implies it's at 32px from left)
+                                                        // A 1px line starting at 31.5 is exactly centered.
+                                                        node.x = 31.5;
+                                                        node.y = 0;
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    ...subItemNodes
+                                ]
+                            }
+                        ]
                     };
                 }
 
