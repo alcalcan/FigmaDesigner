@@ -326,6 +326,7 @@ const pageList = document.getElementById('page-list');
 const refreshSlidesBtn = document.getElementById('refresh-slides-btn');
 const slideList = document.getElementById('slide-list');
 const refreshPresentationsBtn = document.getElementById('refresh-presentations-btn');
+const refreshFlowsBtn = document.getElementById('refresh-flows-btn');
 const presentationList = document.getElementById('presentation-list');
 
 // File Browser Elements
@@ -387,6 +388,8 @@ const editComponentsBtn = document.getElementById('edit-components-btn');
 const editPagesBtn = document.getElementById('edit-pages-btn');
 const editSlidesBtn = document.getElementById('edit-slides-btn');
 const editPresentationsBtn = document.getElementById('edit-presentations-btn');
+const editFlowsBtn = document.getElementById('edit-flows-btn');
+const batchDeleteFlowsBtn = document.getElementById('batch-delete-flows-btn');
 const batchActionsBar = document.getElementById('batch-actions-bar');
 const selectionCountSpan = document.getElementById('selection-count');
 const batchDeleteBtn = document.getElementById('batch-delete-btn');
@@ -444,6 +447,9 @@ function updateBatchBar() {
     const pageBar = document.getElementById('pages-batch-bar');
     const slideBar = document.getElementById('slides-batch-bar');
     const presentationBar = document.getElementById('presentations-batch-bar');
+    const flowBar = document.getElementById('flows-batch-bar');
+    if (flowBar) flowBar.style.display = isEditMode ? 'flex' : 'none';
+
 
 
     fileBar.style.display = 'none';
@@ -505,6 +511,16 @@ batchDeleteBtn.onclick = async () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ names: comps })
             });
+        }
+
+        const flows = items.filter(i => i.t === 'flow' || i.type === 'flow').map(i => i.id);
+        if (flows.length > 0) {
+            await fetch('http://localhost:4000/batch-delete-components', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ names: flows })
+            });
+            deletedAny = true;
         }
         if (pages.length > 0) {
             await fetch('http://127.0.0.1:4000/batch-delete-pages', {
@@ -691,6 +707,10 @@ refreshSlidesBtn.onclick = () => {
 }
 
 refreshPresentationsBtn.onclick = () => {
+    loadComponents();
+}
+
+refreshFlowsBtn.onclick = () => {
     loadComponents();
 }
 
@@ -909,6 +929,8 @@ async function loadComponents() {
         pageList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>`;
         slideList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see slides</div>`;
         presentationList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see presentations</div>`;
+        const flowList = document.getElementById('flow-list');
+        if (flowList) flowList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see flows</div>`;
         return;
     }
     if (componentList.innerHTML.includes("Connect to server") || componentList.innerHTML.includes("Error")) {
@@ -921,7 +943,9 @@ async function loadComponents() {
     try {
         const response = await fetch(`http://127.0.0.1:4000/list-components?t=${Date.now()}`);
         if (!response.ok) throw new Error("Failed");
-        const { components, pages, slides, presentations } = await response.json();
+        const jsonResponse = await response.json();
+        console.log('[DEBUG] list-components response flows:', jsonResponse.flows);
+        const { components, pages, slides, presentations, flows } = jsonResponse;
 
         const seen = new Set();
         const mapItems = (list, type) => {
@@ -946,6 +970,11 @@ async function loadComponents() {
             return items;
         };
 
+        const flowList = document.getElementById('flow-list');
+        if (flowList) {
+            console.log('Rendering flows:', flows);
+            renderGroupedList(flowList, mapItems(flows || [], 'flow'));
+        }
         renderGroupedList(componentList, mapItems(components || [], 'component'));
         renderGroupedList(pageList, mapItems(pages || [], 'page'));
         renderGroupedList(slideList, mapItems(slides || [], 'slide'));
@@ -1359,6 +1388,8 @@ function startPolling() {
                     pageList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>`;
                     slideList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see slides</div>`;
                     presentationList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see presentations</div>`;
+                    const flowList = document.getElementById('flow-list');
+                    if (flowList) flowList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see flows</div>`;
                     bridgeActiveToolsDiv.style.display = "none";
                     hintTextDiv.style.display = "block";
                 }
@@ -1380,6 +1411,8 @@ function stopPolling() {
     pageList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see pages</div>`;
     slideList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see slides</div>`;
     presentationList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see presentations</div>`;
+    const flowList = document.getElementById('flow-list');
+    if (flowList) flowList.innerHTML = `<div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">Connect to server to see flows</div>`;
     fileActions.style.display = "none";
 }
 

@@ -8,10 +8,12 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
         const pagesDir = path.join(process.cwd(), 'pages');
         const slidesDir = path.join(process.cwd(), 'slides');
         const presentationsDir = path.join(process.cwd(), 'presentations');
+        const flowsDir = path.join(process.cwd(), 'flows');
         const components: string[] = [];
         const pages: string[] = [];
         const slides: string[] = [];
         const presentations: string[] = [];
+        const flows: string[] = [];
 
         const walk = (dir: string, baseDir: string, list: string[]) => {
             if (!fs.existsSync(dir)) return;
@@ -39,9 +41,10 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
         walk(pagesDir, pagesDir, pages);
         walk(slidesDir, slidesDir, slides);
         walk(presentationsDir, presentationsDir, presentations);
+        walk(flowsDir, flowsDir, flows);
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ components, pages, slides, presentations }));
+        res.end(JSON.stringify({ components, pages, slides, presentations, flows }));
     } catch (e) {
         console.error("Error in /list-components:", e);
         res.writeHead(500);
@@ -196,6 +199,7 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
             if (type === 'page') rootDir = 'pages';
             if (type === 'slide') rootDir = 'slides';
             if (type === 'presentation') rootDir = 'presentations';
+            if (type === 'flow') rootDir = 'flows';
 
             const baseDir = path.join(process.cwd(), rootDir);
             const fullPath = path.join(baseDir, folder);
@@ -241,6 +245,7 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
                     if (type === 'page') folderPrefix = `../pages/${folder}/`;
                     if (type === 'slide') folderPrefix = `../slides/${folder}/`;
                     if (type === 'presentation') folderPrefix = `../presentations/${folder}/`;
+                    if (type === 'flow') folderPrefix = `../flows/${folder}/`;
 
                     const forwardedContent = lines.filter(line => {
                         return !line.includes(`"${folderPrefix}`) && !line.includes(`'${folderPrefix}`);
