@@ -13,10 +13,11 @@ export abstract class BaseDemoPage extends BaseComponent {
         root.paddingLeft = 80;
         root.paddingRight = 80;
         root.paddingBottom = 80;
-        root.counterAxisSizingMode = "AUTO";
+        root.resize(width, 100); // Initial height, will grow
+        root.counterAxisSizingMode = "FIXED";
         root.primaryAxisSizingMode = "AUTO";
         root.fills = [{ type: "SOLID", color: { r: 0.949, g: 0.960, b: 0.980 } }]; // #F2F5FA
-        root.layoutAlign = "INHERIT";
+        root.layoutAlign = "STRETCH";
         root.clipsContent = false;
         return root;
     }
@@ -35,14 +36,20 @@ export abstract class BaseDemoPage extends BaseComponent {
         row.layoutMode = "HORIZONTAL";
         row.itemSpacing = itemSpacing;
         row.fills = [];
-        row.layoutAlign = "INHERIT";
-        row.primaryAxisSizingMode = "AUTO";
+        row.layoutAlign = "STRETCH";
         row.primaryAxisAlignItems = "MIN";
         row.counterAxisAlignItems = "MIN";
         row.clipsContent = false;
-        row.counterAxisSizingMode = "AUTO";  // Height hugs content
 
         container.appendChild(row);
+
+        const availableWidth = container.width - (container.paddingLeft + container.paddingRight);
+        row.resize(Math.max(1, availableWidth), 100);
+
+        // Apply sizing modes AFTER resize to ensure they are not overridden
+        row.primaryAxisSizingMode = "FIXED";
+        row.counterAxisSizingMode = "AUTO";  // Height hugs content
+
         return row;
     }
 
@@ -58,17 +65,21 @@ export abstract class BaseDemoPage extends BaseComponent {
         section.layoutMode = "VERTICAL";
         section.itemSpacing = 24;
         section.fills = [];
-        section.layoutAlign = "INHERIT";
-        section.primaryAxisSizingMode = "AUTO";
-        section.counterAxisSizingMode = "AUTO";
+        section.layoutAlign = "STRETCH";
         section.clipsContent = false;
+        root.appendChild(section);
+
+        // Projected width for immediate height/layout calculations
+        const rootPadding = root.paddingLeft + root.paddingRight;
+        const sectionWidth = root.width - rootPadding;
+        section.resize(sectionWidth, 100);
 
         const headerContainer = figma.createFrame();
         headerContainer.name = "Header";
         headerContainer.layoutMode = "VERTICAL";
         headerContainer.itemSpacing = 8;
         headerContainer.fills = [];
-        headerContainer.layoutAlign = "INHERIT";
+        headerContainer.layoutAlign = "STRETCH";
         headerContainer.primaryAxisSizingMode = "AUTO";
         headerContainer.counterAxisSizingMode = "AUTO";
 
@@ -77,7 +88,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         label.characters = title;
         label.fontSize = 24;
         label.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.12 } }];
-        label.layoutAlign = "INHERIT";
+        label.layoutAlign = "STRETCH";
         label.textAutoResize = "WIDTH_AND_HEIGHT";
         headerContainer.appendChild(label);
 
@@ -86,7 +97,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         desc.characters = description;
         desc.fontSize = 16;
         desc.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.45 } }];
-        desc.layoutAlign = "INHERIT";
+        desc.layoutAlign = "STRETCH";
         desc.textAutoResize = "WIDTH_AND_HEIGHT";
         headerContainer.appendChild(desc);
 
@@ -97,8 +108,10 @@ export abstract class BaseDemoPage extends BaseComponent {
         previewContainer.layoutMode = "VERTICAL";
         previewContainer.itemSpacing = options.itemSpacing ?? 24;
         previewContainer.fills = [];
-        previewContainer.layoutAlign = "INHERIT";
+        previewContainer.layoutAlign = "STRETCH";
+
         const padding = options.padding ?? 24;
+        previewContainer.resize(sectionWidth, 100);
 
         previewContainer.primaryAxisSizingMode = "AUTO";
         previewContainer.counterAxisSizingMode = "AUTO";
@@ -113,9 +126,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         previewContainer.strokes = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
         previewContainer.strokeWeight = 1;
 
-        await contentBuilder(previewContainer);
         section.appendChild(previewContainer);
-
-        root.appendChild(section);
+        await contentBuilder(previewContainer);
     }
 }

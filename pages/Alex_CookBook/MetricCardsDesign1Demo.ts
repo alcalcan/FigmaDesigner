@@ -240,6 +240,9 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
         // Append to row first so layout props below are valid
         row.appendChild(container);
 
+        // Ensure container doesn't default to 100px
+        container.resize(row.width, 100);
+
         const card = await design.create({ ...props, height: "hug" });
         container.appendChild(card);
 

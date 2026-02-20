@@ -64,7 +64,7 @@ export class CookbookComponentsDemo extends BaseComponent {
                 subtitle: "A comprehensive showcase of all available components and their variations."
             }));
 
-            const logoRow = this.createRow();
+            const logoRow = this.createRow(container);
             logoRow.paddingTop = 20;
             logoRow.paddingBottom = 20;
             logoRow.paddingLeft = 20;
@@ -116,8 +116,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             container.appendChild(row);
 
             // States and Professional Inputs
-            const stateRow = this.createRow();
-            stateRow.layoutAlign = "STRETCH";
+            const stateRow = this.createRow(container);
             stateRow.appendChild(await inputComp.create({ placeholder: "Error State", state: "error", helperText: "This field is required", width: 320 }));
             stateRow.appendChild(await inputComp.create({ placeholder: "Warning State", state: "warning", helperText: "Check your input", width: 320 }));
             stateRow.appendChild(await inputComp.create({ placeholder: "Success State", state: "success", helperText: "Looking good!", width: 320 }));
@@ -159,7 +158,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             const btn = new button();
 
             // Variants Row
-            const variantRow = this.createRow();
+            const variantRow = this.createRow(container);
             variantRow.appendChild(await btn.create({ label: "Primary", variant: "primary" }));
             variantRow.appendChild(await btn.create({ label: "Secondary", variant: "secondary" }));
             variantRow.appendChild(await btn.create({ label: "Ghost", variant: "ghost" }));
@@ -167,7 +166,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             container.appendChild(variantRow);
 
             // States Row
-            const stateRow = this.createRow();
+            const stateRow = this.createRow(container);
             stateRow.appendChild(await btn.create({ label: "Default", state: "default" }));
             stateRow.appendChild(await btn.create({ label: "Hover State", state: "hover" }));
             stateRow.appendChild(await btn.create({ label: "Disabled", state: "disabled" }));
@@ -175,14 +174,14 @@ export class CookbookComponentsDemo extends BaseComponent {
             container.appendChild(stateRow);
 
             // Sizes Row
-            const sizeRow = this.createRow();
+            const sizeRow = this.createRow(container);
             sizeRow.appendChild(await btn.create({ label: "Small Button", size: "small" }));
             sizeRow.appendChild(await btn.create({ label: "Medium Button", size: "medium" }));
             sizeRow.appendChild(await btn.create({ label: "Large Button", size: "large" }));
             container.appendChild(sizeRow);
 
             // Icons Showcase Row
-            const iconRow = this.createRow();
+            const iconRow = this.createRow(container);
             iconRow.appendChild(await btn.create({ label: "Add Recipe", variant: "primary", frontIcon: Lucide_plus }));
             iconRow.appendChild(await btn.create({ label: "Select Option", variant: "secondary", backIcon: Lucide_chevron_down }));
             iconRow.appendChild(await btn.create({ label: "Continue", variant: "primary", backIcon: Lucide_arrow_right }));
@@ -199,7 +198,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             const b = new badge();
 
             // Subtle Badges
-            const subtleRow = this.createRow();
+            const subtleRow = this.createRow(container);
             subtleRow.appendChild(await b.create({ label: "Neutral", variant: "neutral", type: "subtle" }));
             subtleRow.appendChild(await b.create({ label: "Success", variant: "success", type: "subtle" }));
             subtleRow.appendChild(await b.create({ label: "Warning", variant: "warning", type: "subtle" }));
@@ -208,7 +207,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             container.appendChild(subtleRow);
 
             // Solid Badges
-            const solidRow = this.createRow();
+            const solidRow = this.createRow(container);
             solidRow.appendChild(await b.create({ label: "Neutral Solid", variant: "neutral", type: "solid" }));
             solidRow.appendChild(await b.create({ label: "Success Solid", variant: "success", type: "solid" }));
             solidRow.appendChild(await b.create({ label: "Warning Solid", variant: "warning", type: "solid" }));
@@ -223,7 +222,7 @@ export class CookbookComponentsDemo extends BaseComponent {
 
         // --- CONTROLS ---
         await this.addSection(root, "Controls", async (container) => {
-            const row = this.createRow();
+            const row = this.createRow(container);
 
             // Checkboxes
             const cb = new checkbox();
@@ -255,22 +254,22 @@ export class CookbookComponentsDemo extends BaseComponent {
         await this.addSection(root, "Sliders", async (container) => {
             const sl = new slider();
 
-            const simpleRow = this.createRow();
+            const simpleRow = this.createRow(container);
             simpleRow.appendChild(await sl.create({ type: "simple", value: 30, width: 300 }));
             simpleRow.appendChild(await sl.create({ type: "simple", value: 70, width: 300 }));
             container.appendChild(simpleRow);
 
-            const rangeRow = this.createRow();
+            const rangeRow = this.createRow(container);
             rangeRow.appendChild(await sl.create({ type: "range", rangeValue: [10, 40], width: 300 }));
             rangeRow.appendChild(await sl.create({ type: "range", rangeValue: [30, 90], width: 300 }));
             container.appendChild(rangeRow);
 
-            const inputRow = this.createRow();
+            const inputRow = this.createRow(container);
             inputRow.appendChild(await sl.create({ type: "with-input", value: 45, width: 300 }));
             inputRow.appendChild(await sl.create({ type: "with-input", value: 82, width: 300 }));
             container.appendChild(inputRow);
 
-            const rangeInputRow = this.createRow();
+            const rangeInputRow = this.createRow(container);
             rangeInputRow.appendChild(await sl.create({ type: "range-with-inputs", rangeValue: [15, 65], width: 480 }));
             rangeInputRow.appendChild(await sl.create({ type: "range-with-inputs", rangeValue: [40, 95], width: 480 }));
             container.appendChild(rangeInputRow);
@@ -278,7 +277,7 @@ export class CookbookComponentsDemo extends BaseComponent {
 
         // --- NAVIGATION ---
         await this.addSection(root, "Navigation & Menus", async (container) => {
-            const row = this.createRow();
+            const row = this.createRow(container);
 
             // Chips
             const chip = new chip_expand();
@@ -323,7 +322,7 @@ export class CookbookComponentsDemo extends BaseComponent {
 
         // --- CONTENT CARDS ---
         await this.addSection(root, "Content Cards", async (container) => {
-            const cardRow = this.createRow();
+            const cardRow = this.createRow(container);
             cardRow.itemSpacing = 32;
 
             const recipe = new recipe_card();
@@ -353,7 +352,6 @@ export class CookbookComponentsDemo extends BaseComponent {
         });
 
         // --- DATA VISUALIZATION ---
-        // --- DATA VISUALIZATION ---
         await this.addSection(root, "Data Visualization", async (container) => {
             // 2. Dashboard Container for standard metrics
             const dashboard = figma.createFrame();
@@ -370,7 +368,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             const metric = new metric_card();
             const chart = new line_chart_card();
 
-            const createDashboardRow = (name: string): FrameNode => {
+            const createDashboardRow = (name: string, container: FrameNode): FrameNode => {
                 const row = figma.createFrame();
                 row.name = name;
                 row.layoutMode = "HORIZONTAL";
@@ -381,6 +379,9 @@ export class CookbookComponentsDemo extends BaseComponent {
                 row.counterAxisAlignItems = "MIN"; // Keep cards top-aligned when content height differs
                 row.fills = [];
                 row.clipsContent = false;
+
+                container.appendChild(row);
+                row.resize(container.width, 100);
                 return row;
             };
 
@@ -398,8 +399,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             ];
 
             for (let r = 0; r < 3; r++) {
-                const row = createDashboardRow(`Row ${r + 1}`);
-                dashboard.appendChild(row);
+                const row = createDashboardRow(`Row ${r + 1}`, dashboard);
 
                 for (let c = 0; c < 3; c++) {
                     const idx = r * 3 + c;
@@ -426,8 +426,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             }
 
             // Line Chart and Compact Metrics below the grid
-            const secondaryRow = createDashboardRow("Secondary Row");
-            dashboard.appendChild(secondaryRow);
+            const secondaryRow = createDashboardRow("Secondary Row", dashboard);
 
             secondaryRow.appendChild(await chart.create({
                 title: "Weekly Engagement",
@@ -528,7 +527,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             const design1 = new metric_card_design1_Alex_CookBook();
 
             // 1. Standard Variations Row
-            const standardRow = this.createRow();
+            const standardRow = this.createRow(container);
             standardRow.layoutAlign = "STRETCH";
             standardRow.name = "Standard Variations";
 
@@ -577,7 +576,7 @@ export class CookbookComponentsDemo extends BaseComponent {
             container.appendChild(standardRow);
 
             // 2. Compact Variations Row
-            const compactRow = this.createRow();
+            const compactRow = this.createRow(container);
             compactRow.layoutAlign = "STRETCH";
             compactRow.name = "Compact Variations";
 
@@ -659,7 +658,12 @@ export class CookbookComponentsDemo extends BaseComponent {
         section.layoutAlign = "STRETCH";
         section.primaryAxisSizingMode = "AUTO";
         section.counterAxisSizingMode = "FIXED";
-        section.clipsContent = false; // Allow dropdowns to overflow
+        section.clipsContent = false;
+
+        root.appendChild(section);
+
+        const availableWidth = root.width - (root.paddingLeft + root.paddingRight);
+        section.resize(availableWidth, 100);
 
         const label = figma.createText();
         await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
@@ -677,25 +681,32 @@ export class CookbookComponentsDemo extends BaseComponent {
         contentContainer.layoutAlign = "STRETCH";
         contentContainer.primaryAxisSizingMode = "AUTO";
         contentContainer.counterAxisSizingMode = "FIXED";
-        contentContainer.clipsContent = false; // Allow dropdowns to overflow
-        contentContainer.itemReverseZIndex = true; // Ensure top items (like dropdowns) stack OVER bottom items
-
-        await contentBuilder(contentContainer);
+        contentContainer.clipsContent = false;
+        contentContainer.itemReverseZIndex = true;
 
         section.appendChild(contentContainer);
-        root.appendChild(section);
+        contentContainer.resize(availableWidth, 100);
+
+        await contentBuilder(contentContainer);
     }
 
-    private createRow(): FrameNode {
+    private createRow(container: FrameNode): FrameNode {
         const row = figma.createFrame();
         row.layoutMode = "HORIZONTAL";
         row.itemSpacing = 24;
         row.fills = [];
         row.layoutAlign = "STRETCH";
-        row.primaryAxisSizingMode = "FIXED";
-        row.counterAxisSizingMode = "AUTO";
         row.counterAxisAlignItems = "MIN";
         row.clipsContent = false;
+
+        container.appendChild(row);
+        const availableWidth = container.width - (container.paddingLeft + container.paddingRight);
+        row.resize(Math.max(1, availableWidth), 100);
+
+        // Apply sizing modes AFTER resize to ensure they are not overridden
+        row.primaryAxisSizingMode = "FIXED";
+        row.counterAxisSizingMode = "AUTO"; // Height hugs content
+
         return row;
     }
 
