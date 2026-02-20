@@ -24,7 +24,6 @@ export class SidebarsLayoutDemo extends BaseDemoPage {
 
         // --- Standard Variants ---
         await this.addSection(root, "Standard Variants", "Standard expanded and collapsed vertical navigation.", async (container) => {
-            container.layoutMode = "HORIZONTAL";
             const row = this.createRow(container, 32);
             row.appendChild(await sb.create({ variant: "default", height: 720 }));
             row.appendChild(await sb.create({ variant: "collapsed", height: 720 }));
@@ -32,7 +31,6 @@ export class SidebarsLayoutDemo extends BaseDemoPage {
 
         // --- Floating / Centered Menus ---
         await this.addSection(root, "Floating / Centered Menus", "A modern floating panel with middle-aligned navigation items.", async (container) => {
-            container.layoutMode = "HORIZONTAL";
             const row = this.createRow(container, 32);
             // Let the demo page background color shine through
             row.fills = [];
@@ -42,7 +40,6 @@ export class SidebarsLayoutDemo extends BaseDemoPage {
 
         // --- Submenus / Multi-level Navigation ---
         await this.addSection(root, "Submenus / Multi-level Navigation", "Support for nested sub-items and expandable sections.", async (container) => {
-            container.layoutMode = "HORIZONTAL";
             const row = this.createRow(container, 32);
             row.fills = [];
 

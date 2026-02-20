@@ -113,8 +113,8 @@ export abstract class BaseDemoPage extends BaseComponent {
         const padding = options.padding ?? 24;
         previewContainer.resize(sectionWidth, 100);
 
-        previewContainer.primaryAxisSizingMode = "AUTO";
-        previewContainer.counterAxisSizingMode = "AUTO";
+        previewContainer.primaryAxisSizingMode = "AUTO"; // Height = Hug
+        previewContainer.counterAxisSizingMode = "FIXED"; // Width = Fixed (Stretch)
 
         previewContainer.paddingLeft = padding;
         previewContainer.paddingRight = padding;
