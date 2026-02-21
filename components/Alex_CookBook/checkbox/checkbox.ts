@@ -128,20 +128,24 @@ export class checkbox extends BaseComponent {
     // Inner Shell (the actual square box)
     const wrapper = (root as FrameNode).children.find(n => n.name === "Checkbox Container") as FrameNode;
     if (wrapper) {
-      // Create the background box
-      const box = figma.createRectangle();
+      // Create the background box as an Auto Layout frame for perfect centering
+      const box = figma.createFrame();
       box.name = "Box";
       box.resize(16, 16);
       box.cornerRadius = 2;
+      box.layoutMode = "VERTICAL";
+      box.primaryAxisAlignItems = "CENTER";
+      box.counterAxisAlignItems = "CENTER";
 
       if (props.checked) {
         box.fills = [{ type: "SOLID", color: { r: 0, g: 0.635, b: 0.588 } }]; // Brand green
         box.strokes = [];
       } else {
-        box.fills = [];
+        box.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }]; // White
         box.strokes = [{ type: "SOLID", color: { r: 0.102, g: 0.192, b: 0.235 } }]; // Blue
         box.strokeWeight = 1.5;
       }
+
       wrapper.appendChild(box);
       box.x = 2;
       box.y = 2;
@@ -152,13 +156,11 @@ export class checkbox extends BaseComponent {
         const checkNode = await checkIcon.create({
           width: 12,
           height: 12,
-          strokeWeight: 1.5,
+          strokeWeight: 2,
           color: { r: 1, g: 1, b: 1 }
         });
         checkNode.name = "Checkmark Icon";
-        wrapper.appendChild(checkNode);
-        checkNode.x = 4;
-        checkNode.y = 4;
+        box.appendChild(checkNode);
       }
     }
 

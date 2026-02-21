@@ -9,19 +9,21 @@ export class Lucide_check_circle extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Lucide / check-circle",
+            "name": "Check Circle Icon",
             "props": {
                 "visible": true,
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Icon Wrapper",
+                    "name": "Check Circle SVG",
                     "props": {
                         "visible": true,
                         "clipsContent": false,

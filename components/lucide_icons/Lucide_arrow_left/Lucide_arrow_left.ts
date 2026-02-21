@@ -9,19 +9,21 @@ export class Lucide_arrow_left extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Lucide / arrow-left",
+            "name": "Arrow Left Icon",
             "props": {
                 "visible": true,
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Icon Wrapper",
+                    "name": "Arrow Left SVG",
                     "props": {
                         "visible": true,
                         "clipsContent": false,

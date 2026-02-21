@@ -9,19 +9,21 @@ export class Lucide_chevron_up extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Lucide / chevron-up",
+            "name": "Chevron Up Icon",
             "props": {
                 "visible": true,
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Icon Wrapper",
+                    "name": "Chevron Up SVG",
                     "props": {
                         "visible": true,
                         "clipsContent": false,

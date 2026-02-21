@@ -9,19 +9,21 @@ export class Lucide_check extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Lucide / check",
+            "name": "Check Icon",
             "props": {
                 "visible": true,
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Icon Wrapper",
+                    "name": "Check SVG",
                     "props": {
                         "visible": true,
                         "clipsContent": false,

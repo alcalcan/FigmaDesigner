@@ -9,19 +9,21 @@ export class Lucide_chevron_right extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Lucide / chevron-right",
+            "name": "Chevron Right Icon",
             "props": {
                 "visible": true,
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Icon Wrapper",
+                    "name": "Chevron Right SVG",
                     "props": {
                         "visible": true,
                         "clipsContent": false,

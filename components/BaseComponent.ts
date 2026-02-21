@@ -538,8 +538,8 @@ export abstract class BaseComponent {
         relativeTransform?: T2x3;
         preserveAutoLayoutTranslation?: boolean;
       } = {
-        width: (isSvgContainerNode || preSizedNonAutoLayoutContainer) ? undefined : def.layoutProps.width,
-        height: (isSvgContainerNode || preSizedNonAutoLayoutContainer) ? undefined : def.layoutProps.height,
+        width: preSizedNonAutoLayoutContainer ? undefined : def.layoutProps.width,
+        height: preSizedNonAutoLayoutContainer ? undefined : def.layoutProps.height,
         relativeTransform: def.layoutProps.relativeTransform,
         preserveAutoLayoutTranslation: def.layoutProps.preserveAutoLayoutTranslation
       };

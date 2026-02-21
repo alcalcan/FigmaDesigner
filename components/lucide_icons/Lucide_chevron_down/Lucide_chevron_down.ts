@@ -9,19 +9,21 @@ export class Lucide_chevron_down extends BaseComponent {
 
         const structure: NodeDefinition = {
             "type": "FRAME",
-            "name": "Lucide / chevron-down",
+            "name": "Chevron Down Icon",
             "props": {
                 "visible": true,
                 "fills": [],
                 "strokes": [],
                 "clipsContent": false,
-                "layoutMode": "NONE"
+                "layoutMode": "VERTICAL",
+                "primaryAxisAlignItems": "CENTER",
+                "counterAxisAlignItems": "CENTER"
             },
             "layoutProps": { "width": iconSize, "height": iconSize },
             "children": [
                 {
                     "type": "FRAME",
-                    "name": "Icon Wrapper",
+                    "name": "Chevron Down SVG",
                     "props": {
                         "visible": true,
                         "clipsContent": false,
@@ -30,19 +32,19 @@ export class Lucide_chevron_down extends BaseComponent {
                         "strokeWeight": strokeWeight
                     },
                     "layoutProps": {
-                        "width": iconSize, 
+                        "width": iconSize,
                         "height": iconSize
                     },
                     "svgContent": SVG_CONTENT,
                     "postCreate": (node: SceneNode, nodeProps: any) => {
                         if (node.type === "FRAME") {
                             node.clipsContent = false;
-                            
+
                             for (const child of node.children) {
                                 if ("constraints" in child) {
                                     child.constraints = { horizontal: "SCALE", vertical: "SCALE" };
                                 }
-                                
+
                                 // Apply stroke properties to vector children
                                 if ("strokes" in child && nodeProps.strokes) {
                                     child.strokes = nodeProps.strokes;
@@ -50,12 +52,12 @@ export class Lucide_chevron_down extends BaseComponent {
                                 if ("strokeWeight" in child && nodeProps.strokeWeight) {
                                     child.strokeWeight = nodeProps.strokeWeight;
                                 }
-                                
+
                                 // Ensure standard Lucide rounded look
                                 if ("strokeJoin" in child) (child as any).strokeJoin = "ROUND";
                                 if ("strokeCap" in child) (child as any).strokeCap = "ROUND";
                             }
-                            
+
                             // Remove strokes from the wrapper frame itself
                             node.strokes = [];
                         }
