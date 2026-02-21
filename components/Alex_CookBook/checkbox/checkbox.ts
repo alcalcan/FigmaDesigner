@@ -136,6 +136,8 @@ export class checkbox extends BaseComponent {
       box.layoutMode = "VERTICAL";
       box.primaryAxisAlignItems = "CENTER";
       box.counterAxisAlignItems = "CENTER";
+      box.primaryAxisSizingMode = "FIXED";
+      box.counterAxisSizingMode = "FIXED";
 
       if (props.checked) {
         box.fills = [{ type: "SOLID", color: { r: 0, g: 0.635, b: 0.588 } }]; // Brand green
