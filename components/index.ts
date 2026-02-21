@@ -128,11 +128,13 @@ export { checkbox_element } from "./UEFA_Academy_online/checkbox_element/checkbo
 export { Chelsea } from "./Football_Crests/Chelsea/Chelsea";
 export { chip_dropdown } from "./UEFA_Academy_online/chip_dropdown/chip_dropdown";
 export { chip_expand } from "./Alex_CookBook/chip_expand/chip_expand";
+export { ChipsDemo } from "../pages/Alex_CookBook/ChipsDemo";
 export { Club_Brugge } from "./Football_Crests/Club_Brugge/Club_Brugge";
 export { ComparisonStats } from "./Newsletters_competititon/ComparisonStats/ComparisonStats";
 export { competitions_2026 } from "./captures/competitions_2026/competitions_2026";
 export { competitions_2026_no_refactor_for_inspect } from "./captures/competitions_2026_no_refactor_for_inspect/competitions_2026_no_refactor_for_inspect";
 export { Content_container } from "./UEFA_Academy_online/Content_container/Content_container";
+export { ControlsDemo } from "../pages/Alex_CookBook/ControlsDemo";
 export { CookbookComponentsDemo } from "../pages/Alex_CookBook/CookbookComponentsDemo";
 export { Copenhagen } from "./Football_Crests/Copenhagen/Copenhagen";
 export { Crvena_zvezda } from "./Football_Crests/Crvena_zvezda/Crvena_zvezda";
@@ -387,6 +389,7 @@ export { Product___Flat___Support } from "./UEFA_icons/Product___Flat___Support/
 export { Product___Flat___Trophy } from "./UEFA_icons/Product___Flat___Trophy/Product___Flat___Trophy";
 export { Profile_Card } from "./Alex_CookBook/Profile_Card/Profile_Card";
 export { progress_stepper } from "./Alex_CookBook/progress_stepper/progress_stepper";
+export { ProgressStepperDemo } from "../pages/Alex_CookBook/ProgressStepperDemo";
 export { PSG_Paris } from "./Football_Crests/PSG_Paris/PSG_Paris";
 export { PSV } from "./Football_Crests/PSV/PSV";
 export { Qarabag } from "./Football_Crests/Qarabag/Qarabag";

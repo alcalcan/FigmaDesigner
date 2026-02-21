@@ -154,9 +154,13 @@ export class chip_expand extends BaseComponent {
         textNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
       }
 
-      const vectorNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
-      if (vectorNode) {
-        vectorNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+      const iconNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron");
+      if (iconNode && ("findAll" in iconNode)) {
+        // Target all vectors inside the expanding icon and change their strokes to white
+        const vectors = (iconNode as FrameNode).findAll(n => n.type === "VECTOR") as VectorNode[];
+        for (const v of vectors) {
+          v.strokes = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+        }
       }
     }
     // Handle Selected State (Darker Gray + Dark Text)
@@ -170,9 +174,13 @@ export class chip_expand extends BaseComponent {
         textNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
       }
 
-      const vectorNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
-      if (vectorNode) {
-        vectorNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
+      const iconNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron");
+      if (iconNode && ("findAll" in iconNode)) {
+        // Target all vectors inside the expanding icon and change their strokes to dark
+        const vectors = (iconNode as FrameNode).findAll(n => n.type === "VECTOR") as VectorNode[];
+        for (const v of vectors) {
+          v.strokes = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
+        }
       }
     }
 

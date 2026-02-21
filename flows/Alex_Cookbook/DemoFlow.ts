@@ -6,6 +6,9 @@ import { TopBarsDemo } from "../../pages/Alex_CookBook/TopBarsDemo";
 import { SidebarsLayoutDemo } from "../../pages/Alex_CookBook/SidebarsLayoutDemo";
 import { ButtonsDemo } from "../../pages/Alex_CookBook/ButtonsDemo";
 import { OptionsDemo } from "../../pages/Alex_CookBook/OptionsDemo";
+import { ControlsDemo } from "../../pages/Alex_CookBook/ControlsDemo";
+import { ChipsDemo } from "../../pages/Alex_CookBook/ChipsDemo";
+import { ProgressStepperDemo } from "../../pages/Alex_CookBook/ProgressStepperDemo";
 import { Layout } from "../../slides/theme";
 
 export class DemoFlow extends BaseComponent {
@@ -32,6 +35,9 @@ export class DemoFlow extends BaseComponent {
         const graphsDemo = new GraphChartsDemo();
         const buttonsDemo = new ButtonsDemo();
         const optionsDemo = new OptionsDemo();
+        const controlsDemo = new ControlsDemo();
+        const chipsDemo = new ChipsDemo();
+        const stepperDemo = new ProgressStepperDemo();
 
         // Create the pages
         const pages = [
@@ -40,7 +46,10 @@ export class DemoFlow extends BaseComponent {
             await sidebarsDemo.create({}),
             await graphsDemo.create({}),
             await buttonsDemo.create({}),
-            await optionsDemo.create({})
+            await optionsDemo.create({}),
+            await controlsDemo.create({}),
+            await chipsDemo.create({}),
+            await stepperDemo.create({})
         ];
 
         // Append pages to the flow container

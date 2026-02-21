@@ -2,17 +2,30 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 import { checkbox } from "../checkbox/checkbox";
 import { radio_button } from "../radio_button/radio_button";
 
+type OptionType = { name: string, selected: boolean, hoverState?: boolean, boxCornerRadius?: number, boxShadow?: boolean, labelMaxWidth?: number, rowCornerRadius?: number, rowShadow?: boolean };
+
 export class dropdown_options extends BaseComponent {
-    async create(props: ComponentProps & { options?: { name: string, selected: boolean, hoverState?: boolean }[], selectionType?: "checkbox" | "radio", width?: number, bodyPadding?: number }): Promise<SceneNode> {
+    async create(props: ComponentProps & {
+        options?: OptionType[],
+        selectionType?: "checkbox" | "radio",
+        width?: number,
+        bodyPadding?: number,
+        bodyPaddingTop?: number,
+        bodyPaddingBottom?: number,
+        bodyPaddingLeft?: number,
+        bodyPaddingRight?: number,
+        bodyCornerRadius?: number,
+        bodyShadow?: boolean | "PREMIUM"
+    }): Promise<SceneNode> {
         // Default dummy options if none provided
-        const defaultOptions = [
+        const defaultOptions: OptionType[] = [
             { name: "Default Option 1", selected: false },
             { name: "Default Option 2", selected: true },
             { name: "Default Option 3", selected: false },
             { name: "Default Option 4", selected: false }
         ];
 
-        const options: { name: string, selected: boolean, hoverState?: boolean }[] = (props.options && props.options.length > 0) ? props.options : defaultOptions;
+        const options: OptionType[] = (props.options && props.options.length > 0) ? props.options : defaultOptions;
         const selectionType = props.selectionType || "checkbox"; // Default to checkbox
         console.log(`[dropdown_options] Creating dropdown with ${options.length} options (${props.options ? 'prop-driven' : 'defaults'}) as ${selectionType}`);
 
@@ -22,7 +35,10 @@ export class dropdown_options extends BaseComponent {
             "props": {
                 "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH",
                 "layoutMode": "VERTICAL", "itemSpacing": 4,
-                "paddingTop": props.bodyPadding ?? 8, "paddingRight": props.bodyPadding ?? 8, "paddingBottom": props.bodyPadding ?? 8, "paddingLeft": props.bodyPadding ?? 8,
+                "paddingTop": props.bodyPaddingTop ?? props.bodyPadding ?? 8,
+                "paddingRight": props.bodyPaddingRight ?? props.bodyPadding ?? 8,
+                "paddingBottom": props.bodyPaddingBottom ?? props.bodyPadding ?? 8,
+                "paddingLeft": props.bodyPaddingLeft ?? props.bodyPadding ?? 8,
                 "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
                 "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                 "fills": [
@@ -37,15 +53,22 @@ export class dropdown_options extends BaseComponent {
                         "color": { "r": 0.9, "g": 0.92, "b": 0.94 }
                     }
                 ],
-                "effects": [
+                "effects": props.bodyShadow === "PREMIUM" ? [
+                    {
+                        "visible": true, "blendMode": "NORMAL", "type": "DROP_SHADOW",
+                        "color": { "r": 0, "g": 0, "b": 0, "a": 0.15 },
+                        "offset": { "x": 0, "y": 8 },
+                        "radius": 24
+                    }
+                ] : (props.bodyShadow === false ? [] : [
                     {
                         "visible": true, "blendMode": "NORMAL", "type": "DROP_SHADOW",
                         "color": { "r": 0, "g": 0, "b": 0, "a": 0.1 },
                         "offset": { "x": 0, "y": 4 },
                         "radius": 12
                     }
-                ],
-                "cornerRadius": 12
+                ]),
+                "cornerRadius": props.bodyCornerRadius ?? 12
             },
             "layoutProps": { "width": props.width ?? 200, "height": 100, "parentIsAutoLayout": false },
             "children": options.map(auth => ({
@@ -54,7 +77,12 @@ export class dropdown_options extends BaseComponent {
                 "props": {
                     "characterOverride": auth.name,
                     "checked": auth.selected,
-                    "hoverState": auth.hoverState
+                    "hoverState": auth.hoverState,
+                    "boxCornerRadius": auth.boxCornerRadius,
+                    "boxShadow": auth.boxShadow,
+                    "labelMaxWidth": auth.labelMaxWidth,
+                    "rowCornerRadius": auth.rowCornerRadius,
+                    "rowShadow": auth.rowShadow
                 },
                 "postCreate": (node: SceneNode) => {
                     const frame = node as FrameNode;

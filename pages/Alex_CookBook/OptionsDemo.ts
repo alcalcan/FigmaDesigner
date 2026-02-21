@@ -2,9 +2,7 @@ import { ComponentProps } from "../../components/BaseComponent";
 import { BaseDemoPage } from "./BaseDemoPage";
 
 // Components
-import { checkbox } from "../../components/Alex_CookBook/checkbox/checkbox";
-import { radio_button } from "../../components/Alex_CookBook/radio_button/radio_button";
-import { toggle } from "../../components/Alex_CookBook/toggle/toggle";
+import { dropdown_options } from "../../components/Alex_CookBook/dropdown_options/dropdown_options";
 import { dropdown_input } from "../../components/Alex_CookBook/dropdown_input/dropdown_input";
 
 export class OptionsDemo extends BaseDemoPage {
@@ -18,16 +16,16 @@ export class OptionsDemo extends BaseDemoPage {
         await figma.loadFontAsync({ family: "Inter", style: "Medium" });
         await figma.loadFontAsync({ family: "Inter", style: "Bold" });
 
-        const root = await this.initPage("Options & Controls Showcase", 1200);
+        const root = await this.initPage("Options Demo", 1200);
 
         await this.addHeader(
             root,
-            "Options & Controls",
-            "Showcasing dropdown inputs, checkboxes, radio buttons, and toggles."
+            "Options & Select Menus",
+            "Showcasing dropdown inputs and raw option menu lists with interactive states and layout variations."
         );
 
         // --- SECTION 1: Dropdown Inputs ---
-        await this.addSection(root, "Dropdown Inputs", "Professional dropdown inputs with various options.", async (container) => {
+        await this.addSection(root, "Dropdown Inputs", "Complete dropdown inputs with placeholders and integrated option menus.", async (container) => {
             const di = new dropdown_input();
 
             const row = this.createRow(container);
@@ -57,44 +55,112 @@ export class OptionsDemo extends BaseDemoPage {
             container.appendChild(row);
         });
 
-        // --- SECTION 2: Checkboxes ---
-        await this.addSection(root, "Checkboxes", "Standard checkbox controls for multiple selections.", async (container) => {
-            const cb = new checkbox();
+        // --- SECTION 2: Raw Options Menus ---
+        await this.addSection(root, "Dropdown Options Lists", "Standalone configurable menu lists demonstrating hover states, selection, and padding structure.", async (container) => {
+            const drp = new dropdown_options();
+            const row1 = this.createRow(container);
+
+            // Full Width Options Menu (padding on individual options, 0 on body sides, but some TB padding)
+            row1.appendChild(await drp.create({
+                width: 280,
+                bodyPaddingLeft: 0,
+                bodyPaddingRight: 0,
+                bodyPaddingTop: 8,
+                bodyPaddingBottom: 8,
+                selectionType: "radio",
+                options: [
+                    { name: "Default Option (No Body Padding)", selected: false },
+                    { name: "Hovered Option", selected: false, hoverState: true },
+                    { name: "Selected Option", selected: true }
+                ]
+            }));
+
+            // Padded Body Options Menu
+            row1.appendChild(await drp.create({
+                width: 280,
+                bodyPadding: 16,
+                selectionType: "checkbox",
+                options: [
+                    { name: "Checkbox Option (16px Body Padding)", selected: false },
+                    { name: "Hovered Checkbox", selected: false, hoverState: true },
+                    { name: "Checked Checkbox", selected: true }
+                ]
+            }));
+
+            container.appendChild(row1);
+        });
+
+        // --- SECTION 3: Styled Options ---
+        await this.addSection(root, "Styled Dropdown Options", "Custom rounded corners, shadows, and label truncation for checkboxes.", async (container) => {
+            const drp = new dropdown_options();
             const row = this.createRow(container);
-            const stack = this.createStack();
 
-            stack.appendChild(await cb.create({ characterOverride: "Unchecked Checkbox", checked: false }));
-            stack.appendChild(await cb.create({ characterOverride: "Checked Checkbox", checked: true }));
-            stack.appendChild(await cb.create({ characterOverride: "Hover State Checkbox", hoverState: true }));
+            // Rounded & Shadowed Rows
+            row.appendChild(await drp.create({
+                width: 280,
+                bodyPadding: 16,
+                options: [
+                    { name: "Row Rounded (8px)", selected: false, hoverState: true, rowCornerRadius: 8 },
+                    { name: "Row Rounded (100px)", selected: false, hoverState: true, rowCornerRadius: 100 },
+                    { name: "Row with Shadow", selected: false, hoverState: true, rowShadow: true, rowCornerRadius: 8 },
+                    { name: "Box Shadow (Legacy)", selected: false, boxShadow: true }
+                ]
+            }));
 
-            row.appendChild(stack);
+            // Ellipsis / Truncation
+            row.appendChild(await drp.create({
+                width: 280,
+                bodyPadding: 16,
+                options: [
+                    { name: "Checkbox Options with automatically truncated text that is very long", selected: false },
+                    { name: "This is a very long label that should be truncated with ellipsis", selected: true, labelMaxWidth: 180 }
+                ]
+            }));
+
             container.appendChild(row);
         });
 
-        // --- SECTION 3: Radio Buttons ---
-        await this.addSection(root, "Radio Buttons", "Standard radio buttons for single selections.", async (container) => {
-            const rb = new radio_button();
+        // --- SECTION 4: Dropdown Body Styles ---
+        await this.addSection(root, "Dropdown Body Styles", "Custom corner radius and shadow effects for the entire dropdown container.", async (container) => {
+            const drp = new dropdown_options();
             const row = this.createRow(container);
-            const stack = this.createStack();
 
-            stack.appendChild(await rb.create({ characterOverride: "Unselected Radio", checked: false }));
-            stack.appendChild(await rb.create({ characterOverride: "Selected Radio", checked: true }));
-            stack.appendChild(await rb.create({ characterOverride: "Hover State Radio", hoverState: true }));
+            // High Rounding
+            row.appendChild(await drp.create({
+                width: 250,
+                bodyCornerRadius: 32,
+                bodyPadding: 24,
+                options: [
+                    { name: "Super Rounded (32px)", selected: true },
+                    { name: "Secondary Action", selected: false },
+                    { name: "Tertiary Item", selected: false }
+                ]
+            }));
 
-            row.appendChild(stack);
-            container.appendChild(row);
-        });
+            // Premium Shadow
+            row.appendChild(await drp.create({
+                width: 250,
+                bodyShadow: "PREMIUM",
+                bodyCornerRadius: 16,
+                options: [
+                    { name: "Premium Soft Shadow", selected: false },
+                    { name: "Another Premium Item", selected: true },
+                    { name: "List Item 3", selected: false }
+                ]
+            }));
 
-        // --- SECTION 4: Toggles ---
-        await this.addSection(root, "Toggles", "Switch toggles for boolean settings.", async (container) => {
-            const tg = new toggle();
-            const row = this.createRow(container);
-            const stack = this.createStack();
+            // Square & No Shadow
+            row.appendChild(await drp.create({
+                width: 250,
+                bodyCornerRadius: 0,
+                bodyShadow: false,
+                options: [
+                    { name: "Square & No Shadow", selected: false },
+                    { name: "Minimal Item 2", selected: false },
+                    { name: "Minimal Item 3", selected: false }
+                ]
+            }));
 
-            stack.appendChild(await tg.create({ isOn: false }));
-            stack.appendChild(await tg.create({ isOn: true }));
-
-            row.appendChild(stack);
             container.appendChild(row);
         });
 
@@ -102,16 +168,5 @@ export class OptionsDemo extends BaseDemoPage {
         root.y = props.y ?? 0;
 
         return root;
-    }
-
-    private createStack(): FrameNode {
-        const stack = figma.createFrame();
-        stack.name = "Stack";
-        stack.layoutMode = "VERTICAL";
-        stack.itemSpacing = 16;
-        stack.fills = [];
-        stack.primaryAxisSizingMode = "AUTO";
-        stack.counterAxisSizingMode = "AUTO";
-        return stack;
     }
 }

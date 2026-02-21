@@ -57,10 +57,10 @@ export class checkbox extends BaseComponent {
             "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
             "isMask": false, "maskType": "ALPHA",
             "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "layoutAlign": "INHERIT", "layoutGrow": 0,
+            "layoutAlign": "INHERIT", "layoutGrow": 1,
             "characters": "Item 1", "fontSize": 16,
             "textCase": "ORIGINAL", "textDecoration": "NONE",
-            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
+            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "NONE",
             "paragraphSpacing": 0, "paragraphIndent": 0,
             "fills": [
               {
@@ -104,6 +104,24 @@ export class checkbox extends BaseComponent {
     // Allow generic prop overrides
     structure.props = { ...structure.props, ...props };
 
+    // Apply row styling refinements
+    if (props.rowCornerRadius !== undefined) {
+      structure.props.cornerRadius = props.rowCornerRadius;
+    }
+    if (props.rowShadow) {
+      structure.props.effects = [
+        ...(structure.props.effects || []),
+        {
+          type: "DROP_SHADOW",
+          color: { r: 0, g: 0, b: 0, a: 0.1 },
+          offset: { x: 0, y: 4 },
+          radius: 12,
+          visible: true,
+          blendMode: "NORMAL"
+        }
+      ];
+    }
+
     // Handle Hug Contents
     if (props.hugContents) {
       structure.props.primaryAxisSizingMode = "AUTO";
@@ -114,15 +132,30 @@ export class checkbox extends BaseComponent {
       }
     }
 
+    // Handle Label Ellipsis / Max Width
+    if (props.labelMaxWidth !== undefined) {
+      const label = structure.children?.find(c => c.name === "Checkbox Label");
+      if (label && label.props) {
+        label.props.textAutoResize = "NONE";
+        label.layoutProps = {
+          ...label.layoutProps,
+          width: props.labelMaxWidth,
+          parentIsAutoLayout: true // Ensure it's explicitly set
+        };
+      }
+    }
+
     const root = await this.renderDefinition(structure);
 
-    // Update Label if provided
-    if (props.characterOverride !== undefined) {
-      const text = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
-      if (text) {
-        await figma.loadFontAsync(text.fontName as FontName);
+    // Update Label properties (Characters, Truncation)
+    const text = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+    if (text) {
+      await figma.loadFontAsync(text.fontName as FontName);
+      if (props.characterOverride !== undefined) {
         text.characters = props.characterOverride;
       }
+      // Always enable truncation by default to prevent overflow
+      text.textTruncation = "ENDING";
     }
 
     // Inner Shell (the actual square box)
@@ -132,12 +165,24 @@ export class checkbox extends BaseComponent {
       const box = figma.createFrame();
       box.name = "Box";
       box.resize(16, 16);
-      box.cornerRadius = 2;
+      box.cornerRadius = props.boxCornerRadius !== undefined ? props.boxCornerRadius : 2;
       box.layoutMode = "VERTICAL";
       box.primaryAxisAlignItems = "CENTER";
       box.counterAxisAlignItems = "CENTER";
       box.primaryAxisSizingMode = "FIXED";
       box.counterAxisSizingMode = "FIXED";
+
+      // Add Shadow if requested
+      if (props.boxShadow) {
+        box.effects = [{
+          type: "DROP_SHADOW",
+          color: { r: 0, g: 0, b: 0, a: 0.15 },
+          offset: { x: 0, y: 2 },
+          radius: 4,
+          visible: true,
+          blendMode: "NORMAL"
+        }];
+      }
 
       if (props.checked) {
         box.fills = [{ type: "SOLID", color: { r: 0, g: 0.635, b: 0.588 } }]; // Brand green
