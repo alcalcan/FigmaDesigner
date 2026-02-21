@@ -1,7 +1,6 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
-// SVG Assets
-import CARET_LEFT from "./assets/caret_left.svg";
+import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
 
 // Lucide Icons
 import { Lucide_alert_circle } from "../../lucide_icons/Lucide_alert_circle/Lucide_alert_circle";
@@ -16,8 +15,8 @@ export interface InputFieldProps extends ComponentProps {
     value?: string;
     helperText?: string;
     type?: "simple" | "dropdown";
-    frontIcon?: string;
-    backIcon?: string;
+    frontIcon?: any;
+    backIcon?: any;
     showSearchIcon?: boolean;
     searchIconPosition?: "front" | "back";
     helperType?: "info" | "error" | "warning";
@@ -27,6 +26,8 @@ export interface InputFieldProps extends ComponentProps {
     clear?: boolean;
     iconSize?: number;
     cornerRadius?: number;
+    hasBorder?: boolean;
+    withShadow?: boolean;
 }
 
 export class input_field extends BaseComponent {
@@ -166,14 +167,25 @@ export class input_field extends BaseComponent {
                                 "boundVariables": {}
                             }
                         ],
-                        "strokes": [
+                        "strokes": props.hasBorder === false ? [] : [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
                                 "color": strokeColor,
                                 "boundVariables": {}
                             }
                         ],
-                        "effects": [],
+                        "effects": props.withShadow ? [
+                            {
+                                "type": "DROP_SHADOW",
+                                "color": { "r": 0, "g": 0, "b": 0, "a": 0.05 },
+                                "offset": { "x": 0, "y": 2 },
+                                "radius": 8,
+                                "spread": 0,
+                                "visible": true,
+                                "blendMode": "NORMAL",
+                                "showShadowBehindNode": true
+                            }
+                        ] : [],
                         "cornerRadius": props.cornerRadius ?? 4
                     },
                     "layoutProps": {
@@ -275,62 +287,19 @@ export class input_field extends BaseComponent {
                         ] : []),
                         ...(type === "dropdown" ? [
                             {
-                                "type": "FRAME",
-                                "name": "Caret Area",
+                                "type": "COMPONENT",
+                                "name": "Dropdown Icon",
+                                "component": Lucide_chevron_down,
                                 "props": {
-                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                                    "layoutMode": "NONE",
-                                    "fills": [
-                                        {
-                                            "visible": false, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                            "color": { "r": 1, "g": 1, "b": 1 },
-                                            "boundVariables": {}
-                                        }
-                                    ],
-                                    "strokes": [],
-                                    "effects": [],
-                                    "cornerRadius": 0
+                                    "width": iconSize,
+                                    "height": iconSize,
+                                    "strokeWeight": 1.5,
                                 },
                                 "layoutProps": {
-                                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                                    "width": 24, "height": 24
-                                },
-                                "children": [
-                                    {
-                                        "type": "VECTOR",
-                                        "shouldFlatten": true,
-                                        "name": "Caret Icon",
-                                        "props": {
-                                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                            "isMask": false, "maskType": "ALPHA",
-                                            "strokeWeight": 0, "strokeAlign": "CENTER", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                            "x": 7, "y": 16,
-                                            "fills": [
-                                                {
-                                                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                                    "color": { "r": 0, "g": 0, "b": 0 },
-                                                    "boundVariables": {}
-                                                }
-                                            ],
-                                            "strokes": [],
-                                            "effects": [],
-                                            "cornerRadius": 0,
-                                            "vectorPaths": [
-                                                { "windingRule": "EVENODD", "data": "M 0 5.161276340484619 L 6 0 L 6 10 L 0 5.161276340484619 Z" }
-                                            ]
-                                        },
-                                        "layoutProps": {
-                                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                            "width": 6, "height": 10,
-                                            "relativeTransform": [[-1.8369701465288538e-16, 1, 7], [-1, -1.8369701465288538e-16, 16]]
-                                        },
-                                        "svgContent": CARET_LEFT
-                                    }
-                                ]
+                                    "parentIsAutoLayout": true,
+                                    "width": iconSize,
+                                    "height": iconSize
+                                }
                             } as NodeDefinition
                         ] : [])
                     ]

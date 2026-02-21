@@ -9,6 +9,8 @@ import { OptionsDemo } from "../../pages/Alex_CookBook/OptionsDemo";
 import { ControlsDemo } from "../../pages/Alex_CookBook/ControlsDemo";
 import { ChipsDemo } from "../../pages/Alex_CookBook/ChipsDemo";
 import { ProgressStepperDemo } from "../../pages/Alex_CookBook/ProgressStepperDemo";
+import { InputDemo } from "../../pages/Alex_CookBook/InputDemo";
+import { TableDemo } from "../../pages/Alex_CookBook/TableDemo";
 import { Layout } from "../../slides/theme";
 
 export class DemoFlow extends BaseComponent {
@@ -38,6 +40,8 @@ export class DemoFlow extends BaseComponent {
         const controlsDemo = new ControlsDemo();
         const chipsDemo = new ChipsDemo();
         const stepperDemo = new ProgressStepperDemo();
+        const inputDemo = new InputDemo();
+        const tableDemo = new TableDemo();
 
         // Create the pages
         const pages = [
@@ -49,7 +53,9 @@ export class DemoFlow extends BaseComponent {
             await optionsDemo.create({}),
             await controlsDemo.create({}),
             await chipsDemo.create({}),
-            await stepperDemo.create({})
+            await stepperDemo.create({}),
+            await inputDemo.create({}),
+            await tableDemo.create({})
         ];
 
         // Append pages to the flow container
