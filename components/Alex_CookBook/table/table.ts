@@ -3,13 +3,22 @@ import { createFrame, createText } from "../../ComponentHelpers";
 import { badge } from "../badge/badge";
 import { checkbox } from "../checkbox/checkbox";
 import { input_field } from "../input_field/input_field";
+import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
 import { Lucide_star } from "../../lucide_icons/Lucide_star/Lucide_star";
+import { Lucide_trash_2 } from "../../lucide_icons/Lucide_trash_2/Lucide_trash_2";
+import { Lucide_move } from "../../lucide_icons/Lucide_move/Lucide_move";
+import { Lucide_filter } from "../../lucide_icons/Lucide_filter/Lucide_filter";
+import { Lucide_more_vertical } from "../../lucide_icons/Lucide_more_vertical/Lucide_more_vertical";
+import { Lucide_edit_2 } from "../../lucide_icons/Lucide_edit_2/Lucide_edit_2";
+import { Lucide_external_link } from "../../lucide_icons/Lucide_external_link/Lucide_external_link";
 
 export interface TableColumn {
     label: string;
     key: string;
-    type?: "text" | "badge" | "checkbox" | "star" | "input";
-    width?: number | "fill";
+    type?: "text" | "badge" | "checkbox" | "star" | "input" | "action" | "drag" | "dropdown";
+    isStepper?: boolean;
+    filterable?: boolean;
+    width?: number | "fill" | "hug";
     align?: "LEFT" | "CENTER" | "RIGHT";
 }
 
@@ -24,6 +33,7 @@ export interface TableProps extends ComponentProps {
     hoverRowIndex?: number;
     cornerRadius?: number;
     shadow?: "none" | "light" | "medium" | "heavy";
+    openedDropdownRowIndex?: number;
 }
 
 export class table extends BaseComponent {
@@ -42,13 +52,18 @@ export class table extends BaseComponent {
         const checkboxComp = new checkbox();
         const inputComp = new input_field();
         const starComp = new Lucide_star();
+        const trashComp = new Lucide_trash_2();
+        const moveComp = new Lucide_move();
+        const filterComp = new Lucide_filter();
+        const chevronDownComp = new Lucide_chevron_down();
 
         // Store sub-components to inject after renderDefinition
         const complexCells: { slotId: string, node: SceneNode }[] = [];
 
-        const renderCell = async (col: TableColumn, value: any, isHeader: boolean = false, isHovered: boolean = false): Promise<NodeDefinition> => {
+        const renderCell = async (col: TableColumn, value: any, isHeader: boolean = false, isHovered: boolean = false, rowIndex: number = -1): Promise<NodeDefinition> => {
             const isCellFill = col.width === "fill";
-            const cellWidth = isCellFill ? undefined : (col.width || 200);
+            const isCellHug = col.width === "hug";
+            const cellWidth = (isCellFill || isCellHug) ? undefined : (col.width || 200);
             const align = col.align || "LEFT";
 
             // Base cell frame
@@ -60,7 +75,7 @@ export class table extends BaseComponent {
                 paddingRight: 16,
                 // CRITICAL: Table columns MUST have fixed width or grow to align across rows.
                 // AUTO (Hug) would cause inconsistent widths between rows.
-                primaryAxisSizingMode: "FIXED",
+                primaryAxisSizingMode: isCellHug ? "AUTO" : "FIXED",
                 counterAxisSizingMode: "FIXED", // Fixed height
                 fills: [],
                 layoutProps: {
@@ -72,13 +87,30 @@ export class table extends BaseComponent {
             };
 
             if (isHeader) {
-                const headerColor = (isMinimalist) ? { r: 1, g: 1, b: 1 } : { r: 0.2, g: 0.2, b: 0.25 };
-                return createFrame(`HeaderCell/${col.label}`, cellProps, [
+                const headerColor = (isMinimalist) ? { r: 0.05, g: 0.05, b: 0.08 } : { r: 0.2, g: 0.2, b: 0.25 };
+                const headerChildren: any[] = [
                     createText("Label", col.label, 12, "Bold", headerColor, {
                         font: { family: "Open Sans", style: "Bold" },
                         textCase: "UPPER"
                     })
-                ]);
+                ];
+
+                if (col.filterable) {
+                    const filterNode = await filterComp.create({
+                        width: 12,
+                        height: 12,
+                        color: headerColor,
+                        strokeWeight: 1.5
+                    });
+                    headerChildren.push(filterNode);
+                }
+
+                return createFrame(`HeaderCell/${col.label}`, {
+                    ...cellProps,
+                    layoutMode: "HORIZONTAL",
+                    counterAxisAlignItems: "CENTER",
+                    itemSpacing: 6
+                }, headerChildren);
             }
 
             // Data Cell content
@@ -108,9 +140,12 @@ export class table extends BaseComponent {
                 const inputNode = await inputComp.create({
                     value: String(value),
                     type: "simple",
-                    hasBorder: false,
-                    width: typeof cellWidth === 'number' ? (cellWidth - 32) : "fill", // adjust for padding
-                    height: 32
+                    hasBorder: true,
+                    backgroundColor: { r: 0.97, g: 0.98, b: 0.99, a: 1 },
+                    cornerRadius: 6,
+                    isStepper: !!col.isStepper,
+                    width: isCellHug ? "hug" : 128, // 128px as requested
+                    height: 36
                 });
 
                 // Force no clipping on the input field so dropdowns or inner things don't get hidden
@@ -172,6 +207,51 @@ export class table extends BaseComponent {
                 complexCells.push({ slotId, node: starWrapper });
 
                 return createFrame(slotId, cellProps, []);
+            } else if (col.type === "action") {
+                const iconColor = isHovered ? { r: 1, g: 1, b: 1 } : { r: 0.6, g: 0.6, b: 0.7 };
+                const trashNode = await trashComp.create({
+                    width: 18,
+                    strokeWeight: 1.5,
+                    color: iconColor
+                });
+                const slotId = `action_${Math.random().toString(36).substr(2, 6)}`;
+                complexCells.push({ slotId, node: trashNode });
+
+                return createFrame(slotId, cellProps, []);
+            } else if (col.type === "drag") {
+                const iconColor = isHovered ? { r: 1, g: 1, b: 1 } : { r: 0.6, g: 0.65, b: 0.7 };
+                const moveNode = await moveComp.create({
+                    width: 18,
+                    strokeWeight: 1.5,
+                    color: iconColor
+                });
+                const slotId = `drag_${Math.random().toString(36).substr(2, 6)}`;
+                complexCells.push({ slotId, node: moveNode });
+
+                return createFrame(slotId, cellProps, []);
+            } else if (col.type === "dropdown") {
+                const slotId = `dropdown_${Math.random().toString(36).substr(2, 6)}`;
+                const isOpened = !isHeader && props.openedDropdownRowIndex === rowIndex;
+
+                const dropdownAction = await inputComp.create({
+                    value: isOpened ? String(value || "Select...") : "",
+                    type: "dropdown",
+                    hasBorder: isOpened,
+                    backgroundColor: isOpened ? { r: 1, g: 1, b: 1, a: 0.1 } : { r: 0.97, g: 0.98, b: 0.99, a: 0 },
+                    cornerRadius: 6,
+                    width: isOpened ? 160 : "hug", // 160px for open menu
+                    height: 32,
+                    frontIcon: isOpened ? null : Lucide_more_vertical,
+                    isOpen: isOpened,
+                    options: isOpened ? [
+                        { label: "Edit", icon: Lucide_edit_2 },
+                        { label: "View", icon: Lucide_external_link },
+                        { label: "Delete", icon: Lucide_trash_2 }
+                    ] : []
+                });
+                complexCells.push({ slotId, node: dropdownAction });
+
+                return createFrame(slotId, cellProps, []);
             }
 
             // Text content
@@ -189,14 +269,14 @@ export class table extends BaseComponent {
 
         const renderRow = async (rowData: any, index: number, isHeader: boolean = false): Promise<NodeDefinition> => {
             const isHovered = props.hoverRowIndex === index;
-            const cells = await Promise.all(columns.map(col => renderCell(col, isHeader ? null : rowData[col.key], isHeader, isHovered)));
+            const cells = await Promise.all(columns.map(col => renderCell(col, isHeader ? null : rowData[col.key], isHeader, isHovered, index)));
 
 
 
             // Background logic
             let bgFills: any[] = [];
             if (isHeader) {
-                bgFills = isMinimalist ? [{ type: "SOLID", color: { r: 0.05, g: 0.05, b: 0.08 } }] : [{ type: "SOLID", color: { r: 0.96, g: 0.97, b: 0.98 } }];
+                bgFills = isMinimalist ? [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }] : [{ type: "SOLID", color: { r: 0.96, g: 0.97, b: 0.98 } }];
             } else if (isHovered) {
                 // Dark accessible hover shade (dark purple)
                 bgFills = [{ type: "SOLID", color: { r: 0.35, g: 0.20, b: 0.75 } }];
@@ -208,9 +288,9 @@ export class table extends BaseComponent {
             if (isHovered) {
                 effects = [{
                     type: "DROP_SHADOW",
-                    color: { r: 0, g: 0, b: 0, a: 0.08 },
-                    offset: { x: 0, y: 4 },
-                    radius: 12,
+                    color: { r: 0.35, g: 0.20, b: 0.75, a: 0.2 },
+                    offset: { x: 0, y: 8 },
+                    radius: 20,
                     showShadowBehindNode: true,
                     spread: 0,
                     visible: true,
@@ -225,8 +305,9 @@ export class table extends BaseComponent {
                 primaryAxisSizingMode: isFill ? "FIXED" : "AUTO",
                 counterAxisSizingMode: "FIXED", // Fixed height
                 fills: bgFills,
-                strokeBottomWeight: isMinimalist && !isHeader ? 0 : 1,
-                strokes: isMinimalist ? [] : [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.93 } }],
+                cornerRadius: isHovered ? 16 : 0,
+                strokeBottomWeight: (isMinimalist && !isHeader) || isHovered ? 0 : 1,
+                strokes: isMinimalist || isHovered ? [] : [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.93 } }],
                 effects: effects,
                 layoutProps: {
                     width: tableWidth,
@@ -320,6 +401,8 @@ export class table extends BaseComponent {
             if (targetIndex < mainNode.children.length) {
                 const row = mainNode.children[targetIndex] as FrameNode;
                 if (row) {
+                    // Move to front/ensure parentage BEFORE setting absolute
+                    mainNode.appendChild(row);
                     row.layoutPositioning = "ABSOLUTE";
                     // Calculate Y based on previous rows
                     let yPos = 0;
@@ -327,8 +410,6 @@ export class table extends BaseComponent {
                         yPos += mainNode.children[i].height;
                     }
                     row.y = yPos;
-                    // Move to front so shadow casts correctly
-                    mainNode.appendChild(row);
                 }
             }
         }

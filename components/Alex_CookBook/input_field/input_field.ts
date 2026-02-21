@@ -1,6 +1,6 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { createText } from "../../ComponentHelpers";
 
-import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
 
 // Lucide Icons
 import { Lucide_alert_circle } from "../../lucide_icons/Lucide_alert_circle/Lucide_alert_circle";
@@ -9,6 +9,8 @@ import { Lucide_check_circle } from "../../lucide_icons/Lucide_check_circle/Luci
 import { Lucide_info } from "../../lucide_icons/Lucide_info/Lucide_info";
 import { Lucide_search } from "../../lucide_icons/Lucide_search/Lucide_search";
 import { Lucide_x } from "../../lucide_icons/Lucide_x/Lucide_x";
+import { Lucide_chevron_up } from "../../lucide_icons/Lucide_chevron_up/Lucide_chevron_up";
+import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
 
 export interface InputFieldProps extends ComponentProps {
     placeholder?: string;
@@ -28,6 +30,9 @@ export interface InputFieldProps extends ComponentProps {
     cornerRadius?: number;
     hasBorder?: boolean;
     withShadow?: boolean;
+    backgroundColor?: RGB | RGBA;
+    isStepper?: boolean;
+    options?: (string | { label: string, icon?: any })[];
 }
 
 export class input_field extends BaseComponent {
@@ -38,7 +43,7 @@ export class input_field extends BaseComponent {
         const state = props.state ?? "default";
         const helperType = props.helperType ?? (state === "error" ? "error" : state === "warning" ? "warning" : "info");
 
-        let widthProp = props.width ?? 320;
+        let widthProp = props.width ?? 128; // Default to 128px as requested
         if (widthProp === "auto") widthProp = "hug"; // Alias auto -> hug
 
         const heightProp = props.height ?? "auto"; // Default height auto
@@ -160,10 +165,10 @@ export class input_field extends BaseComponent {
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                         "layoutAlign": inputContainerLayoutAlign, "layoutGrow": 0,
-                        "fills": props.hasBorder === false && !props.withShadow ? [] : [
+                        "fills": props.hasBorder === false && !props.withShadow && !props.backgroundColor ? [] : [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 1, "g": 1, "b": 1 },
+                                "color": props.backgroundColor ?? { "r": 1, "g": 1, "b": 1 },
                                 "boundVariables": {}
                             }
                         ],
@@ -301,6 +306,39 @@ export class input_field extends BaseComponent {
                                     "height": iconSize
                                 }
                             } as NodeDefinition
+                        ] : []),
+                        ...(props.isStepper ? [
+                            {
+                                "type": "FRAME",
+                                "name": "Stepper Controls",
+                                "props": {
+                                    "layoutMode": "VERTICAL",
+                                    "itemSpacing": 0,
+                                    "primaryAxisSizingMode": "AUTO",
+                                    "counterAxisSizingMode": "AUTO",
+                                    "counterAxisAlignItems": "CENTER",
+                                    "primaryAxisAlignItems": "CENTER",
+                                    "paddingTop": 0,
+                                    "paddingRight": 4,
+                                    "paddingBottom": 0,
+                                    "paddingLeft": 0,
+                                    "fills": []
+                                },
+                                "children": [
+                                    {
+                                        "type": "COMPONENT",
+                                        "name": "Up",
+                                        "component": Lucide_chevron_up,
+                                        "props": { "width": 14, "height": 14, "strokeWeight": 1.5, "color": { r: 0.5, g: 0.5, b: 0.6 } }
+                                    },
+                                    {
+                                        "type": "COMPONENT",
+                                        "name": "Down",
+                                        "component": Lucide_chevron_down,
+                                        "props": { "width": 14, "height": 14, "strokeWeight": 1.5, "color": { r: 0.5, g: 0.5, b: 0.6 } }
+                                    }
+                                ]
+                            } as NodeDefinition
                         ] : [])
                     ]
                 },
@@ -377,7 +415,80 @@ export class input_field extends BaseComponent {
             ]
         };
 
-        const root = await this.renderDefinition(structure);
+        const root = await this.renderDefinition(structure) as FrameNode;
+
+        // Render Dropdown Options if isOpen
+        if (props.isOpen && props.options && props.options.length > 0) {
+            const container = root.findOne(n => n.name === "Field Container") as FrameNode;
+            if (container) {
+                const menu = figma.createFrame();
+                menu.name = "Dropdown Menu";
+                menu.layoutMode = "VERTICAL";
+                menu.paddingTop = 4;
+                menu.paddingBottom = 4;
+                menu.itemSpacing = 0;
+                menu.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+                menu.strokes = [{ type: "SOLID", color: { r: 0.8, g: 0.8, b: 0.85 } }];
+                menu.cornerRadius = 8;
+                menu.effects = [{
+                    type: "DROP_SHADOW",
+                    color: { r: 0, g: 0, b: 0, a: 0.1 },
+                    offset: { x: 0, y: 10 },
+                    radius: 20,
+                    visible: true,
+                    blendMode: "NORMAL"
+                }];
+
+                // Positioning
+                root.appendChild(menu);
+                menu.layoutPositioning = "ABSOLUTE";
+                menu.x = 0;
+                menu.y = container.height + 4;
+                // Match width
+                menu.resize(container.width, (props.options.length * 32) + 8);
+
+                for (const option of props.options) {
+                    const label = typeof option === 'string' ? option : option.label;
+                    const IconComp = typeof option === 'string' ? null : option.icon;
+
+                    const item = figma.createFrame();
+                    item.name = `Option/${label}`;
+                    item.layoutMode = "HORIZONTAL";
+                    item.primaryAxisAlignItems = "MIN";
+                    item.counterAxisAlignItems = "CENTER";
+                    item.paddingLeft = 12;
+                    item.paddingRight = 12;
+                    item.itemSpacing = 8;
+                    item.layoutAlign = "STRETCH";
+                    item.primaryAxisSizingMode = "FIXED";
+                    item.counterAxisSizingMode = "FIXED";
+                    item.resize(container.width, 32);
+                    item.fills = [];
+
+                    if (IconComp) {
+                        const icon = new IconComp();
+                        const iconNode = await icon.create({
+                            width: 16,
+                            height: 16,
+                            strokeWeight: 1.5,
+                            color: { r: 0.3, g: 0.3, b: 0.35 }
+                        });
+                        item.appendChild(iconNode);
+                    }
+
+                    const text = createText("Label", label, 13, "Regular", { r: 0.2, g: 0.2, b: 0.25 }, {
+                        font: { family: "Open Sans", style: "Regular" }
+                    });
+                    const textNode = await this.renderDefinition(text);
+                    item.appendChild(textNode);
+                    menu.appendChild(item);
+                }
+
+                // Ensure root doesn't clip the menu
+                root.clipsContent = false;
+            }
+        }
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
         return root;

@@ -400,8 +400,10 @@ export abstract class BaseComponent {
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
           if (skipSvgContainerPaintHydration) continue;
-          // Allow overriding paints even for SVG content if explicit props are provided
-          finalNode[key] = await this.hydratePaints(value);
+          const hydrated = await this.hydratePaints(value);
+          finalNode[key] = hydrated;
+          // Apply hydration back to def.props so postCreate hooks see safe colors
+          def.props[key] = hydrated;
         } else if (key === "effects") {
           // Prefer exact captured effects (including newer effect types). If the runtime rejects
           // those payloads, fall back to conservative legacy-safe hydration.

@@ -41,19 +41,20 @@ export class TableDemo extends BaseDemoPage {
         ];
 
         const advancedColumns: TableColumn[] = [
-            { label: "Select", key: "approved", type: "checkbox", width: 80, align: "CENTER" },
-            { label: "Product", key: "product", type: "text", width: 250, align: "LEFT" },
-            { label: "Rating", key: "rating", type: "star", width: 140, align: "LEFT" },
-            { label: "Quantity", key: "qty", type: "input", width: 160, align: "LEFT" },
-            { label: "Status", key: "status", type: "badge", width: "fill", align: "RIGHT" }
+            { label: "", key: "drag", type: "drag", width: 40, align: "CENTER" },
+            { label: "Select", key: "approved", type: "checkbox", width: 60, align: "CENTER" },
+            { label: "Product", key: "product", type: "text", width: "fill", align: "LEFT", filterable: true },
+            { label: "Rating", key: "rating", type: "star", width: 120, align: "LEFT" },
+            { label: "Quantity", key: "qty", type: "input", width: "hug", align: "LEFT", isStepper: true },
+            { label: "Status", key: "status", type: "badge", width: 110, align: "RIGHT", filterable: true },
+            { label: "Options", key: "options", type: "dropdown", width: "hug", align: "CENTER" }
         ];
-
         const advancedData = [
-            { product: "Figma Designer Pro", rating: 5, qty: "2", status: "Active", approved: true },
-            { product: "UI Kit Essential", rating: 4, qty: "1", status: "Active", approved: false },
-            { product: "Icon Set Bundle", rating: 3, qty: "5", status: "Pending", approved: true },
-            { product: "UX Research Pack", rating: 5, qty: "10", status: "Active", approved: true },
-            { product: "Development Scripts", rating: 2, qty: "1", status: "Error", approved: false }
+            { product: "Figma Designer Pro", rating: 5, qty: "2", status: "Active", approved: true, options: "Edit" },
+            { product: "UI Kit Essential", rating: 4, qty: "1", status: "Active", approved: false, options: "View" },
+            { product: "Icon Set Bundle", rating: 3, qty: "5", status: "Pending", approved: true, options: "Delete" },
+            { product: "UX Research Pack", rating: 5, qty: "10", status: "Active", approved: true, options: "Review" },
+            { product: "Development Scripts", rating: 2, qty: "1", status: "Error", approved: false, options: "Fix" }
         ];
 
         // --- SECTION 1: Standard Table ---
@@ -97,9 +98,14 @@ export class TableDemo extends BaseDemoPage {
         });
 
         // --- SECTION 3: Interactive & Minimalist ---
-        await this.addSection(root, "Interactive & Minimalist", "Showcasing a dark header, clean layout, and deep contrast hover states with white accessible text.", async (container) => {
+        await this.addSection(root, "Interactive & Minimalist", "Showcasing a clean white header, black text labels, and vibrant hover states with inline delete actions.", async (container) => {
+            const minimalistCols: TableColumn[] = [
+                ...columns,
+                { label: "Actions", key: "actions", type: "action", width: 80, align: "CENTER" }
+            ];
+
             const tableNode = await tbl.create({
-                columns,
+                columns: minimalistCols,
                 data: data.slice(0, 4), // 4 rows
                 variant: "minimalist",
                 hoverRowIndex: 1, // Simulate a hover on the second data row
@@ -113,6 +119,7 @@ export class TableDemo extends BaseDemoPage {
             const tableNode = await tbl.create({
                 columns: advancedColumns,
                 data: advancedData,
+                openedDropdownRowIndex: 0,
                 width: 1000
             });
             container.appendChild(tableNode);
