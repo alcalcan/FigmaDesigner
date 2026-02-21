@@ -160,7 +160,7 @@ export class input_field extends BaseComponent {
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                         "layoutAlign": inputContainerLayoutAlign, "layoutGrow": 0,
-                        "fills": [
+                        "fills": props.hasBorder === false && !props.withShadow ? [] : [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
                                 "color": { "r": 1, "g": 1, "b": 1 },

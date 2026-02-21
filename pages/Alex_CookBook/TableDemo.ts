@@ -40,6 +40,22 @@ export class TableDemo extends BaseDemoPage {
             { status: "Error", customer: "Sarah Wilson", amount: "$0.00", date: "Feb 08, 2026", approved: false }
         ];
 
+        const advancedColumns: TableColumn[] = [
+            { label: "Select", key: "approved", type: "checkbox", width: 80, align: "CENTER" },
+            { label: "Product", key: "product", type: "text", width: 250, align: "LEFT" },
+            { label: "Rating", key: "rating", type: "star", width: 140, align: "LEFT" },
+            { label: "Quantity", key: "qty", type: "input", width: 160, align: "LEFT" },
+            { label: "Status", key: "status", type: "badge", width: "fill", align: "RIGHT" }
+        ];
+
+        const advancedData = [
+            { product: "Figma Designer Pro", rating: 5, qty: "2", status: "Active", approved: true },
+            { product: "UI Kit Essential", rating: 4, qty: "1", status: "Active", approved: false },
+            { product: "Icon Set Bundle", rating: 3, qty: "5", status: "Pending", approved: true },
+            { product: "UX Research Pack", rating: 5, qty: "10", status: "Active", approved: true },
+            { product: "Development Scripts", rating: 2, qty: "1", status: "Error", approved: false }
+        ];
+
         // --- SECTION 1: Standard Table ---
         await this.addSection(root, "Standard Data Table", "A clean layout with header and varying column types.", async (container) => {
             const row = this.createRow(container);
@@ -80,7 +96,29 @@ export class TableDemo extends BaseDemoPage {
             container.appendChild(row);
         });
 
-        // --- SECTION 3: Full Width ---
+        // --- SECTION 3: Interactive & Minimalist ---
+        await this.addSection(root, "Interactive & Minimalist", "Showcasing a dark header, clean layout, and deep contrast hover states with white accessible text.", async (container) => {
+            const tableNode = await tbl.create({
+                columns,
+                data: data.slice(0, 4), // 4 rows
+                variant: "minimalist",
+                hoverRowIndex: 1, // Simulate a hover on the second data row
+                width: 1000
+            });
+            container.appendChild(tableNode);
+        });
+
+        // --- SECTION 4: Advanced Cell Types ---
+        await this.addSection(root, "Advanced Cell Types", "Tables with dynamic inline inputs and star ratings.", async (container) => {
+            const tableNode = await tbl.create({
+                columns: advancedColumns,
+                data: advancedData,
+                width: 1000
+            });
+            container.appendChild(tableNode);
+        });
+
+        // --- SECTION 5: Full Width ---
         await this.addSection(root, "Stretched Layout", "Table that fills the entire container width.", async (container) => {
             const tableNode = await tbl.create({
                 columns,
@@ -88,6 +126,43 @@ export class TableDemo extends BaseDemoPage {
                 width: "fill"
             });
             container.appendChild(tableNode);
+        });
+
+        // --- SECTION 6: Elevated & Corners ---
+        await this.addSection(root, "Elevated & Corners", "Custom corner radius and shadow intensity variations.", async (container) => {
+            const rowWrapper = this.createRow(container);
+
+            // Sub-columns for variations
+            const variationCols: TableColumn[] = [
+                { label: "Product", key: "product", type: "text", width: 200 },
+                { label: "Status", key: "status", type: "badge", width: 120 }
+            ];
+
+            rowWrapper.appendChild(await tbl.create({
+                columns: variationCols,
+                data: advancedData.slice(0, 2),
+                cornerRadius: 16,
+                shadow: "none",
+                width: 350
+            }));
+
+            rowWrapper.appendChild(await tbl.create({
+                columns: variationCols,
+                data: advancedData.slice(0, 2),
+                cornerRadius: 24,
+                shadow: "medium",
+                width: 350
+            }));
+
+            rowWrapper.appendChild(await tbl.create({
+                columns: variationCols,
+                data: advancedData.slice(0, 2),
+                cornerRadius: 0,
+                shadow: "heavy",
+                width: 350
+            }));
+
+            container.appendChild(rowWrapper);
         });
 
         root.x = props.x ?? 0;
