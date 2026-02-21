@@ -3,7 +3,7 @@ import { checkbox } from "../checkbox/checkbox";
 import { radio_button } from "../radio_button/radio_button";
 
 export class dropdown_options extends BaseComponent {
-    async create(props: ComponentProps & { options?: { name: string, selected: boolean }[], selectionType?: "checkbox" | "radio", width?: number }): Promise<SceneNode> {
+    async create(props: ComponentProps & { options?: { name: string, selected: boolean, hoverState?: boolean }[], selectionType?: "checkbox" | "radio", width?: number, bodyPadding?: number }): Promise<SceneNode> {
         // Default dummy options if none provided
         const defaultOptions = [
             { name: "Default Option 1", selected: false },
@@ -12,7 +12,7 @@ export class dropdown_options extends BaseComponent {
             { name: "Default Option 4", selected: false }
         ];
 
-        const options = (props.options && props.options.length > 0) ? props.options : defaultOptions;
+        const options: { name: string, selected: boolean, hoverState?: boolean }[] = (props.options && props.options.length > 0) ? props.options : defaultOptions;
         const selectionType = props.selectionType || "checkbox"; // Default to checkbox
         console.log(`[dropdown_options] Creating dropdown with ${options.length} options (${props.options ? 'prop-driven' : 'defaults'}) as ${selectionType}`);
 
@@ -22,7 +22,7 @@ export class dropdown_options extends BaseComponent {
             "props": {
                 "visible": true, "opacity": 1, "blendMode": "PASS_THROUGH",
                 "layoutMode": "VERTICAL", "itemSpacing": 4,
-                "paddingTop": 8, "paddingRight": 8, "paddingBottom": 8, "paddingLeft": 8,
+                "paddingTop": props.bodyPadding ?? 8, "paddingRight": props.bodyPadding ?? 8, "paddingBottom": props.bodyPadding ?? 8, "paddingLeft": props.bodyPadding ?? 8,
                 "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
                 "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
                 "fills": [
@@ -53,7 +53,8 @@ export class dropdown_options extends BaseComponent {
                 "component": selectionType === "radio" ? radio_button : checkbox,
                 "props": {
                     "characterOverride": auth.name,
-                    "checked": auth.selected
+                    "checked": auth.selected,
+                    "hoverState": auth.hoverState
                 },
                 "postCreate": (node: SceneNode) => {
                     const frame = node as FrameNode;

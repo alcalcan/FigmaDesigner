@@ -4,6 +4,7 @@ export interface BadgeProps extends ComponentProps {
     variant?: "neutral" | "success" | "warning" | "error" | "info";
     type?: "solid" | "subtle";
     label?: string;
+    cornerRadius?: number;
 }
 
 export class badge extends BaseComponent {
@@ -41,7 +42,7 @@ export class badge extends BaseComponent {
                 paddingBottom: 4,
                 paddingLeft: 12,
                 paddingRight: 12,
-                cornerRadius: 12,
+                cornerRadius: props.cornerRadius ?? 12,
                 fills: [{ type: "SOLID", color: currentColors.bg }],
                 primaryAxisSizingMode: "AUTO",
                 counterAxisSizingMode: "AUTO"

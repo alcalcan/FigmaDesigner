@@ -27,6 +27,7 @@ import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
 import { table } from "../../components/Alex_CookBook/table/table";
 import { metric_card_design1 as metric_card_design1_Alex_CookBook } from "../../components/Alex_CookBook/metric_card_design1/metric_card_design1";
+import { dropdown_options } from "../../components/Alex_CookBook/dropdown_options/dropdown_options";
 
 import { Features___store, Features___stats, Lucide_users, Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings } from "../../components/index";
 
@@ -301,23 +302,12 @@ export class CookbookComponentsDemo extends BaseComponent {
 
         // --- STATUS & PROGRESS ---
         await this.addSection(root, "Status & Progress", async (container) => {
-            const ps = new progress_stepper();
-            container.appendChild(await ps.create({
-                steps: ["Research", "Design", "Develop", "Test", "Deploy"],
-                currentStep: 2
-            }));
-            container.appendChild(await ps.create({
-                steps: ["Step A", "Step B", "Step C"],
-                currentStep: 1,
-                indicatorShape: "SQUARE",
-                indicatorContent: "LETTER"
-            }));
-            container.appendChild(await ps.create({
-                steps: ["Start", "Middle", "End"],
-                currentStep: 3,
-                indicatorContent: "DOT",
-                activeColor: { r: 0, g: 0.6, b: 1 }
-            }));
+            // Note: Progress stepper moved to its own dedicated section below.
+            const b = new badge();
+            const row = this.createRow(container);
+            row.appendChild(await b.create({ label: "Loading...", variant: "info" }));
+            row.appendChild(await b.create({ label: "In Progress", variant: "warning" }));
+            container.appendChild(row);
         });
 
         // --- CONTENT CARDS ---
@@ -641,6 +631,105 @@ export class CookbookComponentsDemo extends BaseComponent {
             }));
 
             container.appendChild(compactRow);
+        });
+
+        // --- OPTIONS ---
+        await this.addSection(root, "Options (Checkbox & Radio Group Menus)", async (container) => {
+            const drp = new dropdown_options();
+            const row1 = this.createRow(container);
+
+            // Full Width Options Menu (padding on individual options, 0 on body)
+            row1.appendChild(await drp.create({
+                width: 240,
+                bodyPadding: 0,
+                selectionType: "radio",
+                options: [
+                    { name: "Default Option (No Padding Body)", selected: false },
+                    { name: "Hovered Option", selected: false, hoverState: true },
+                    { name: "Selected Option", selected: true }
+                ]
+            }));
+
+            // Padded Body Options Menu
+            row1.appendChild(await drp.create({
+                width: 240,
+                bodyPadding: 8,
+                selectionType: "checkbox",
+                options: [
+                    { name: "Checkbox Option (Padded Body)", selected: false },
+                    { name: "Hovered Checkbox", selected: false, hoverState: true },
+                    { name: "Checked Checkbox", selected: true }
+                ]
+            }));
+
+            container.appendChild(row1);
+        });
+
+        // --- CHIPS ---
+        await this.addSection(root, "Chips & Status Badges", async (container) => {
+            const b = new badge();
+            const chip = new chip_expand();
+
+            // Status Chips Variations (Roundness + Styles)
+            const styleRow = this.createRow(container);
+            styleRow.name = "Status Chips Styles";
+            styleRow.appendChild(await b.create({ label: "Default Round (Solid)", variant: "success", type: "solid" }));
+            styleRow.appendChild(await b.create({ label: "Default Round (Subtle)", variant: "success", type: "subtle" }));
+            styleRow.appendChild(await b.create({ label: "Square Corners (Solid)", variant: "info", type: "solid", cornerRadius: 4 }));
+            styleRow.appendChild(await b.create({ label: "Square Corners (Subtle)", variant: "info", type: "subtle", cornerRadius: 4 }));
+            styleRow.appendChild(await b.create({ label: "Pilled (Solid)", variant: "warning", type: "solid", cornerRadius: 100 }));
+            container.appendChild(styleRow);
+
+            // Expanding / Interaction Chips
+            const chipRow = this.createRow(container);
+            chipRow.name = "Interactive Chips";
+            chipRow.appendChild(await chip.create({ text: "Default interactive chip" }));
+            chipRow.appendChild(await chip.create({ text: "Hovered chip", hover: true }));
+            chipRow.appendChild(await chip.create({ text: "Selected chip", selected: true }));
+            chipRow.appendChild(await chip.create({ text: "Expanded chip", expanded: true }));
+            chipRow.appendChild(await chip.create({ text: "More Round Chip", cornerRadius: 100 }));
+            container.appendChild(chipRow);
+        });
+
+        // --- PROGRESS STEPPER ---
+        await this.addSection(root, "Progress Stepper", async (container) => {
+            const ps = new progress_stepper();
+
+            // Default
+            container.appendChild(await ps.create({
+                width: 700,
+                steps: ["Cart", "Checkout", "Payment", "Review", "Complete"],
+                currentStep: 2
+            }));
+
+            // Square + Letter
+            container.appendChild(await ps.create({
+                width: 700,
+                steps: ["Registration", "Verification", "Onboarding"],
+                currentStep: 1,
+                indicatorShape: "SQUARE",
+                indicatorContent: "LETTER"
+            }));
+
+            // Circle Dots + Custom Colors
+            container.appendChild(await ps.create({
+                width: 700,
+                steps: ["Step 1", "Step 2", "Step 3", "Step 4"],
+                currentStep: 3,
+                indicatorContent: "DOT",
+                completedStepContent: "DOT",
+                activeColor: { r: 0.9, g: 0.2, b: 0.2 }, // Red active
+                completedColor: { r: 0.1, g: 0.7, b: 0.3 } // Green completed
+            }));
+
+            // Just Numbers everywhere
+            container.appendChild(await ps.create({
+                width: 700,
+                steps: ["Phase 1", "Phase 2", "Phase 3"],
+                currentStep: 1,
+                completedStepContent: "NUMBER",
+                activeColor: { r: 0.5, g: 0.1, b: 0.9 } // Purple
+            }));
         });
 
         root.x = props.x ?? 0;

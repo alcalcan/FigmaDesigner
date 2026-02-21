@@ -29,7 +29,7 @@ export class chip_expand extends BaseComponent {
         ],
         "strokes": [],
         "effects": [],
-        "cornerRadius": 8
+        "cornerRadius": (props as any).cornerRadius ?? 8
       },
       "layoutProps": { "width": 117, "height": 32, "parentIsAutoLayout": false },
       "children": [
