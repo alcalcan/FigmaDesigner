@@ -11,12 +11,15 @@ import { Lucide_search } from "../../lucide_icons/Lucide_search/Lucide_search";
 import { Lucide_x } from "../../lucide_icons/Lucide_x/Lucide_x";
 import { Lucide_chevron_up } from "../../lucide_icons/Lucide_chevron_up/Lucide_chevron_up";
 import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
+import { Lucide_calendar } from "../../lucide_icons/Lucide_calendar/Lucide_calendar";
+import { Lucide_clock } from "../../lucide_icons/Lucide_clock/Lucide_clock";
+import { Lucide_upload } from "../../lucide_icons/Lucide_upload/Lucide_upload";
 
 export interface InputFieldProps extends ComponentProps {
     placeholder?: string;
     value?: string;
     helperText?: string;
-    type?: "simple" | "dropdown";
+    type?: "simple" | "dropdown" | "textarea" | "date" | "time" | "password" | "file";
     frontIcon?: any;
     backIcon?: any;
     showSearchIcon?: boolean;
@@ -37,9 +40,14 @@ export interface InputFieldProps extends ComponentProps {
 
 export class input_field extends BaseComponent {
     async create(props: InputFieldProps): Promise<SceneNode> {
-        const displayValue = props.value || props.placeholder;
+        let displayValue = props.value || props.placeholder || "";
         const isPlaceholder = !props.value;
         const type = props.type ?? "dropdown";
+
+        if (type === "password" && props.value) {
+            displayValue = "•".repeat(props.value.length);
+        }
+
         const state = props.state ?? "default";
         const helperType = props.helperType ?? (state === "error" ? "error" : state === "warning" ? "warning" : "info");
 
@@ -53,6 +61,10 @@ export class input_field extends BaseComponent {
         let BackIconClass: any = props.backIcon;
         if (props.clear && !BackIconClass) {
             BackIconClass = Lucide_x;
+        } else if (type === "date" && !BackIconClass) {
+            BackIconClass = Lucide_calendar;
+        } else if (type === "time" && !BackIconClass) {
+            BackIconClass = Lucide_clock;
         }
 
         // State-based icons
@@ -62,7 +74,10 @@ export class input_field extends BaseComponent {
         else if (state === "success") StateIconClass = Lucide_check_circle;
         // else if (state === "default" && props.helperType === "info") StateIconClass = Lucide_info; // Optional
 
-        const FrontIconClass = props.frontIcon || (props.showSearchIcon && props.searchIconPosition !== "back" ? Lucide_search : undefined);
+        let FrontIconClass = props.frontIcon || (props.showSearchIcon && props.searchIconPosition !== "back" ? Lucide_search : undefined);
+        if (type === "file" && !FrontIconClass) {
+            FrontIconClass = Lucide_upload;
+        }
         const SearchBackIconClass = (props.showSearchIcon && props.searchIconPosition === "back") ? Lucide_search : undefined;
 
         // Layout props based on width
@@ -104,12 +119,19 @@ export class input_field extends BaseComponent {
         let inputContainerCounterAxisSizingMode: "FIXED" | "AUTO";
 
         if (heightProp === "auto") {
-            inputHeight = undefined;
-            inputContainerCounterAxisSizingMode = "AUTO";
+            if (type === "textarea") {
+                inputHeight = 100;
+                inputContainerCounterAxisSizingMode = "FIXED";
+            } else {
+                inputHeight = undefined;
+                inputContainerCounterAxisSizingMode = "AUTO";
+            }
         } else {
             inputHeight = heightProp as number;
             inputContainerCounterAxisSizingMode = "FIXED";
         }
+
+        const inputContainerCounterAxisAlignItems = type === "textarea" ? "MIN" : "CENTER";
 
         const stateColors = {
             default: { r: 0.7019608020782471, g: 0.7529411911964417, b: 0.772549033164978 },
@@ -161,7 +183,7 @@ export class input_field extends BaseComponent {
                         "layoutMode": "HORIZONTAL", "itemSpacing": 12, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                         "paddingTop": 8, "paddingRight": 12, "paddingBottom": 8, "paddingLeft": 12,
                         "primaryAxisSizingMode": inputContainerPrimaryAxisSizingMode, "counterAxisSizingMode": inputContainerCounterAxisSizingMode,
-                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": inputContainerCounterAxisAlignItems,
                         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                         "layoutAlign": inputContainerLayoutAlign, "layoutGrow": 0,
@@ -225,7 +247,7 @@ export class input_field extends BaseComponent {
                                 "layoutMode": "HORIZONTAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                                 "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
                                 "primaryAxisSizingMode": inputContainerPrimaryAxisSizingMode, "counterAxisSizingMode": "AUTO",
-                                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
+                                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": inputContainerCounterAxisAlignItems,
                                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
                                 "layoutAlign": "INHERIT", "layoutGrow": textLayoutGrow,

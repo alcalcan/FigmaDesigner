@@ -55,7 +55,59 @@ export class InputDemo extends BaseDemoPage {
             container.appendChild(row);
         });
 
-        // --- SECTION 2: States & Feedback ---
+        // --- SECTION 3: Advanced Types ---
+        await this.addSection(root, "Advanced Types", "Commonly used inputs like text area, date & time, password, and file upload.", async (container) => {
+            const row1 = this.createRow(container);
+            row1.appendChild(await input.create({
+                placeholder: "Enter long text here...",
+                value: "This is a text area.\nIt supports multiple lines of content\nand is vertically aligned to the top.",
+                type: "textarea",
+                width: 300,
+                height: 100
+            }));
+
+            const col = figma.createFrame();
+            col.name = "Date & Time Column";
+            col.layoutMode = "VERTICAL";
+            col.itemSpacing = 16;
+            col.fills = [];
+            col.primaryAxisSizingMode = "AUTO";
+            col.counterAxisSizingMode = "AUTO";
+            col.clipsContent = false;
+
+            col.appendChild(await input.create({
+                placeholder: "Select Date",
+                value: "10/24/2026",
+                type: "date",
+                width: 300
+            }));
+            col.appendChild(await input.create({
+                placeholder: "Select Time",
+                value: "14:30",
+                type: "time",
+                width: 300
+            }));
+
+            row1.appendChild(col);
+            container.appendChild(row1);
+
+            const row2 = this.createRow(container);
+            row2.appendChild(await input.create({
+                placeholder: "Password",
+                value: "securepassword123",
+                type: "password",
+                width: 300
+            }));
+            row2.appendChild(await input.create({
+                placeholder: "Upload Document",
+                value: "proposal_v2.pdf",
+                type: "file",
+                width: 300
+            }));
+            container.appendChild(row2);
+        });
+
+        // --- SECTION 4: States & Feedback ---
         await this.addSection(root, "States & Validation", "Visual feedback for different validation states.", async (container) => {
             const row = this.createRow(container);
 
@@ -89,7 +141,7 @@ export class InputDemo extends BaseDemoPage {
             container.appendChild(row);
         });
 
-        // --- SECTION 3: Icon Integration ---
+        // --- SECTION 5: Icon Integration ---
         await this.addSection(root, "Icon Variations", "Front and back icons with flexible positioning.", async (container) => {
             const row1 = this.createRow(container);
             row1.appendChild(await input.create({
@@ -133,7 +185,7 @@ export class InputDemo extends BaseDemoPage {
             container.appendChild(row2);
         });
 
-        // --- SECTION 4: Styling & Sizing ---
+        // --- SECTION 6: Styling & Sizing ---
         await this.addSection(root, "Styling & Corner Radius", "Customizing the look and feel through corner radius and widths.", async (container) => {
             const row = this.createRow(container);
 
@@ -161,7 +213,7 @@ export class InputDemo extends BaseDemoPage {
             container.appendChild(row);
         });
 
-        // --- SECTION 5: Shadow & Borderless Variations ---
+        // --- SECTION 7: Shadow & Borderless Variations ---
         await this.addSection(root, "Shadow & Borderless", "Modern input fields without borders and with drop shadows.", async (container) => {
             const row = this.createRow(container);
 
