@@ -108,7 +108,9 @@ export class date_picker extends BaseComponent {
                 header.fills = [];
                 header.resize(268, 24);
 
-                const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+                const today = new Date();
+                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                const currentMonth = monthNames[today.getMonth()];
                 const mockDateText = `${currentMonth} 2026`;
 
                 const monthYear = await this.renderDefinition(

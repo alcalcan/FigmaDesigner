@@ -194,7 +194,8 @@ export class OptionsDemo extends BaseDemoPage {
             const row = this.createRow(container);
 
             const today = new Date();
-            const monthStr = today.toLocaleString('default', { month: 'long' });
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const monthStr = monthNames[today.getMonth()];
             const dayNum = today.getDate();
             const mockDateVal = `${monthStr} ${dayNum}, 2026`;
 
