@@ -56,6 +56,7 @@ export class table extends BaseComponent {
         const moveComp = new Lucide_move();
         const filterComp = new Lucide_filter();
         const chevronDownComp = new Lucide_chevron_down();
+        const moreComp = new Lucide_more_vertical();
 
         // Store sub-components to inject after renderDefinition
         const complexCells: { slotId: string, node: SceneNode }[] = [];
@@ -105,8 +106,12 @@ export class table extends BaseComponent {
                     headerChildren.push(filterNode);
                 }
 
+                // Adjust padding for LEFT aligned input headers to match internal input padding (12px)
+                const headerPaddingLeft = (col.type === "input" && align === "LEFT") ? 28 : 16;
+
                 return createFrame(`HeaderCell/${col.label}`, {
                     ...cellProps,
+                    paddingLeft: headerPaddingLeft,
                     layoutMode: "HORIZONTAL",
                     counterAxisAlignItems: "CENTER",
                     itemSpacing: 6
@@ -130,7 +135,8 @@ export class table extends BaseComponent {
                 const cbNode = await checkboxComp.create({
                     checked: !!value,
                     characterOverride: "", // Empty label
-                    hugContents: true
+                    hugContents: true,
+                    paddingLeft: 0 // Remove default 8px padding when in table cell
                 });
                 const slotId = `checkbox_${Math.random().toString(36).substr(2, 6)}`;
                 complexCells.push({ slotId, node: cbNode });
@@ -233,23 +239,32 @@ export class table extends BaseComponent {
                 const slotId = `dropdown_${Math.random().toString(36).substr(2, 6)}`;
                 const isOpened = !isHeader && props.openedDropdownRowIndex === rowIndex;
 
-                const dropdownAction = await inputComp.create({
-                    value: isOpened ? String(value || "Select...") : "",
-                    type: "dropdown",
-                    hasBorder: isOpened,
-                    backgroundColor: isOpened ? { r: 1, g: 1, b: 1, a: 0.1 } : { r: 0.97, g: 0.98, b: 0.99, a: 0 },
-                    cornerRadius: 6,
-                    width: isOpened ? 160 : "hug", // 160px for open menu
-                    height: 32,
-                    frontIcon: isOpened ? null : Lucide_more_vertical,
-                    isOpen: isOpened,
-                    options: isOpened ? [
-                        { label: "Edit", icon: Lucide_edit_2 },
-                        { label: "View", icon: Lucide_external_link },
-                        { label: "Delete", icon: Lucide_trash_2 }
-                    ] : []
-                });
-                complexCells.push({ slotId, node: dropdownAction });
+                if (!isOpened) {
+                    // Simple kebab icon with no background/border when closed
+                    const moreNode = await moreComp.create({
+                        width: 18,
+                        strokeWeight: 1.5,
+                        color: isHovered ? { r: 1, g: 1, b: 1 } : { r: 0.6, g: 0.65, b: 0.7 }
+                    });
+                    complexCells.push({ slotId, node: moreNode });
+                } else {
+                    const dropdownAction = await inputComp.create({
+                        value: String(value || "Select..."),
+                        type: "dropdown",
+                        hasBorder: true,
+                        backgroundColor: { r: 1, g: 1, b: 1, a: 1 },
+                        cornerRadius: 6,
+                        width: 160, // 160px for open menu
+                        height: 32,
+                        isOpen: true,
+                        options: [
+                            { label: "Edit", icon: Lucide_edit_2 },
+                            { label: "View", icon: Lucide_external_link },
+                            { label: "Delete", icon: Lucide_trash_2 }
+                        ]
+                    });
+                    complexCells.push({ slotId, node: dropdownAction });
+                }
 
                 return createFrame(slotId, cellProps, []);
             }

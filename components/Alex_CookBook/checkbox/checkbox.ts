@@ -10,7 +10,7 @@ export class checkbox extends BaseComponent {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
         "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 8,
+        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": props.paddingLeft ?? 8,
         "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
         "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
