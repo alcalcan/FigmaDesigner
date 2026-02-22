@@ -25,10 +25,10 @@ export class TableDemo extends BaseDemoPage {
 
         // Sample Data
         const columns: TableColumn[] = [
-            { label: "Approved", key: "approved", type: "checkbox", width: 100, align: "CENTER" },
+            { label: "Approved", key: "approved", type: "checkbox", width: 100, align: "LEFT" },
             { label: "Customer", key: "customer", type: "text", width: "fill", align: "LEFT" },
             { label: "Amount", key: "amount", type: "text", width: 150, align: "RIGHT" },
-            { label: "Date", key: "date", type: "text", width: 150, align: "CENTER" },
+            { label: "Date", key: "date", type: "text", width: 150, align: "RIGHT" },
             { label: "Status", key: "status", type: "badge", width: 120, align: "RIGHT" }
         ];
 
@@ -41,13 +41,13 @@ export class TableDemo extends BaseDemoPage {
         ];
 
         const advancedColumns: TableColumn[] = [
-            { label: "", key: "drag", type: "drag", width: 40, align: "CENTER" },
-            { label: "Select", key: "approved", type: "checkbox", width: 60, align: "CENTER" },
+            { label: "", key: "drag", type: "drag", width: 40, align: "LEFT" },
+            { label: "Select", key: "approved", type: "checkbox", width: 60, align: "LEFT" },
             { label: "Product", key: "product", type: "text", width: "fill", align: "LEFT" },
             { label: "Rating", key: "rating", type: "star", width: 120, align: "LEFT" },
-            { label: "Quantity", key: "qty", type: "input", width: "hug", align: "CENTER", isStepper: true },
-            { label: "", key: "status", type: "badge", width: 110, align: "RIGHT" },
-            { label: "Options", key: "options", type: "dropdown", width: 140, align: "CENTER" }
+            { label: "Quantity", key: "qty", type: "input", width: 144, align: "LEFT", isStepper: true },
+            { label: "Status", key: "status", type: "badge", width: 110, align: "RIGHT" },
+            { label: "Options", key: "options", type: "dropdown", width: 140, align: "RIGHT" }
         ];
         const advancedData = [
             { product: "Figma Designer Pro", rating: 5, qty: "2", status: "Active", approved: true, options: "Edit" },
@@ -60,11 +60,11 @@ export class TableDemo extends BaseDemoPage {
         // --- SECTION 1: Standard Table ---
         await this.addSection(root, "Standard Data Table", "A clean layout with header and varying column types.", async (container) => {
             const row = this.createRow(container);
-            row.appendChild(await tbl.create({
+            await tbl.create({
                 columns,
                 data,
                 width: 1000
-            }));
+            }, row);
             container.appendChild(row);
         });
 
@@ -78,21 +78,21 @@ export class TableDemo extends BaseDemoPage {
                 { label: "Status", key: "status", type: "badge", width: 120 }
             ];
 
-            row.appendChild(await tbl.create({
+            await tbl.create({
                 columns: compactCols,
                 data: data.slice(0, 3),
                 showHeader: false,
                 rowHeight: 40,
                 width: 450
-            }));
+            }, row);
 
-            row.appendChild(await tbl.create({
+            await tbl.create({
                 columns: columns.slice(1, 3),
                 data: data.slice(0, 3),
                 showHeader: true,
                 rowHeight: 64,
                 width: 450
-            }));
+            }, row);
 
             container.appendChild(row);
         });
@@ -104,35 +104,32 @@ export class TableDemo extends BaseDemoPage {
                 { label: "Actions", key: "actions", type: "action", width: 80, align: "CENTER" }
             ];
 
-            const tableNode = await tbl.create({
+            await tbl.create({
                 columns: minimalistCols,
                 data: data.slice(0, 4), // 4 rows
                 variant: "minimalist",
                 hoverRowIndex: 1, // Simulate a hover on the second data row
                 width: 1000
-            });
-            container.appendChild(tableNode);
+            }, container);
         });
 
         // --- SECTION 4: Advanced Cell Types ---
         await this.addSection(root, "Advanced Cell Types", "Tables with dynamic inline inputs and star ratings.", async (container) => {
-            const tableNode = await tbl.create({
+            await tbl.create({
                 columns: advancedColumns,
                 data: advancedData,
                 openedDropdownRowIndex: 0,
                 width: 1000
-            });
-            container.appendChild(tableNode);
+            }, container);
         });
 
         // --- SECTION 5: Full Width ---
         await this.addSection(root, "Stretched Layout", "Table that fills the entire container width.", async (container) => {
-            const tableNode = await tbl.create({
+            await tbl.create({
                 columns,
                 data: data.slice(0, 2),
                 width: "fill"
-            });
-            container.appendChild(tableNode);
+            }, container);
         });
 
         // --- SECTION 6: Elevated & Corners ---
@@ -145,29 +142,29 @@ export class TableDemo extends BaseDemoPage {
                 { label: "Status", key: "status", type: "badge", width: 120 }
             ];
 
-            rowWrapper.appendChild(await tbl.create({
+            await tbl.create({
                 columns: variationCols,
                 data: advancedData.slice(0, 2),
                 cornerRadius: 16,
                 shadow: "none",
-                width: 350
-            }));
+                width: "fill"
+            }, rowWrapper);
 
-            rowWrapper.appendChild(await tbl.create({
+            await tbl.create({
                 columns: variationCols,
                 data: advancedData.slice(0, 2),
                 cornerRadius: 24,
                 shadow: "medium",
-                width: 350
-            }));
+                width: "fill"
+            }, rowWrapper);
 
-            rowWrapper.appendChild(await tbl.create({
+            await tbl.create({
                 columns: variationCols,
                 data: advancedData.slice(0, 2),
                 cornerRadius: 0,
                 shadow: "heavy",
-                width: 350
-            }));
+                width: "fill"
+            }, rowWrapper);
 
             container.appendChild(rowWrapper);
         });

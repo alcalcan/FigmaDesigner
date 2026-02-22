@@ -37,13 +37,13 @@ export interface TableProps extends ComponentProps {
 }
 
 export class table extends BaseComponent {
-    async create(props: TableProps): Promise<SceneNode> {
+    async create(props: TableProps, parent?: SceneNode): Promise<SceneNode> {
         const columns = props.columns || [];
         const data = props.data || [];
         const showHeader = props.showHeader !== false;
         const rowHeight = props.rowHeight || 52;
         const isFill = props.width === "fill";
-        const tableWidth = isFill ? undefined : (props.width || 1440);
+        const tableWidth = isFill ? 100 : (props.width || 1440);
         const variant = props.variant || "default";
         const isMinimalist = variant === "minimalist";
 
@@ -89,12 +89,12 @@ export class table extends BaseComponent {
 
             if (isHeader) {
                 const headerColor = (isMinimalist) ? { r: 0.05, g: 0.05, b: 0.08 } : { r: 0.2, g: 0.2, b: 0.25 };
-                const headerChildren: any[] = [
+                const headerChildren: any[] = col.label ? [
                     createText("Label", col.label, 12, "Bold", headerColor, {
                         font: { family: "Open Sans", style: "Bold" },
                         textCase: "UPPER"
                     })
-                ];
+                ] : [];
 
                 if (col.filterable) {
                     const filterNode = await filterComp.create({
@@ -106,12 +106,16 @@ export class table extends BaseComponent {
                     headerChildren.push(filterNode);
                 }
 
-                // Adjust padding for LEFT aligned input headers to match internal input padding (12px)
-                const headerPaddingLeft = (col.type === "input" && align === "LEFT") ? 28 : 16;
+                // Adjust padding for alignment
+                // Standard 16px padding for both LEFT/RIGHT headers
+                const headerPaddingLeft = (align === "LEFT") ? 16 : 0;
+                const headerPaddingRight = (align === "RIGHT") ? 16 : 0;
 
                 return createFrame(`HeaderCell/${col.label}`, {
                     ...cellProps,
                     paddingLeft: headerPaddingLeft,
+                    paddingRight: headerPaddingRight,
+                    primaryAxisAlignItems: align === "LEFT" ? "MIN" : align === "CENTER" ? "CENTER" : "MAX",
                     layoutMode: "HORIZONTAL",
                     counterAxisAlignItems: "CENTER",
                     itemSpacing: 6
@@ -150,7 +154,7 @@ export class table extends BaseComponent {
                     backgroundColor: { r: 0.97, g: 0.98, b: 0.99, a: 1 },
                     cornerRadius: 6,
                     isStepper: !!col.isStepper,
-                    width: isCellHug ? 112 : "fill", // 112px fixed width for hug cells, else fill
+                    width: isCellHug ? 112 : (col.type === "input" && typeof col.width === "number" ? col.width - 32 : "fill"), // Subtract 16px padding from both sides
                     height: 36
                 });
 
@@ -286,8 +290,6 @@ export class table extends BaseComponent {
             const isHovered = props.hoverRowIndex === index;
             const cells = await Promise.all(columns.map(col => renderCell(col, isHeader ? null : rowData[col.key], isHeader, isHovered, index)));
 
-
-
             // Background logic
             let bgFills: any[] = [];
             if (isHeader) {
@@ -316,8 +318,7 @@ export class table extends BaseComponent {
             return createFrame(isHeader ? "HeaderRow" : `Row/${index}`, {
                 layoutMode: "HORIZONTAL",
                 layoutAlign: "STRETCH",
-                // Width sizing: if filling, Figma handles it (Fixed). If hugging, it hugs child cells (Auto).
-                primaryAxisSizingMode: isFill ? "FIXED" : "AUTO",
+                primaryAxisSizingMode: "FIXED", // Always fixed to match container width
                 counterAxisSizingMode: "FIXED", // Fixed height
                 fills: bgFills,
                 cornerRadius: isHovered ? 16 : 0,
@@ -330,9 +331,7 @@ export class table extends BaseComponent {
                     parentIsAutoLayout: true,
                     // elevate the hovered row
                     layoutPositioning: isHovered ? "ABSOLUTE" : "AUTO"
-                },
-                // Add bottom border radius if it's the last row AND hover isn't triggering a break in the container shape.
-                // For simplicity, we keep rows rectangular but respect outer container clipping or we clip in container
+                }
             }, cells);
         };
 
@@ -371,33 +370,35 @@ export class table extends BaseComponent {
                     offset: { x: 0, y: 4 },
                     radius: 12,
                     showShadowBehindNode: true,
-                    spread: 0,
                     visible: true,
                     blendMode: "NORMAL"
                 }];
             }
         }
 
-        const structure: NodeDefinition = createFrame("TableContainer", {
+        const structure = createFrame("TableContainer", {
             layoutMode: "VERTICAL",
             fills: isMinimalist ? [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }] : [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
             cornerRadius: isMinimalist ? 0 : (props.cornerRadius ?? 8),
             strokes: isMinimalist ? [] : [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.93 } }],
             strokeWeight: isMinimalist ? 0 : 1,
             primaryAxisSizingMode: "AUTO", // Hug rows vertically
-            counterAxisSizingMode: isFill ? "FIXED" : "AUTO", // Width: fixed for stretching, auto for hugging
+            counterAxisSizingMode: "FIXED", // Width: always fixed to avoid hugging inconsistencies
+            primaryAxisAlignItems: "MIN",
+            itemSpacing: 0,
             effects: containerShadows,
             clipsContent: true, // Crucial for corner radius clipping rows
             layoutProps: {
                 width: tableWidth,
-                layoutAlign: isFill ? "STRETCH" : "INHERIT"
+                layoutSizingHorizontal: isFill ? "FILL" : "FIXED",
+                layoutSizingVertical: "HUG"
             }
         }, [
             showHeader ? await renderRow(null, -1, true) : null,
             ...await Promise.all(data.map((item, i) => renderRow(item, i)))
         ].filter(Boolean) as NodeDefinition[]);
 
-        const mainNode = await this.renderDefinition(structure) as FrameNode;
+        const mainNode = await this.renderDefinition(structure, parent) as FrameNode;
 
         // Post-render: inject complex cells
         for (const complex of complexCells) {

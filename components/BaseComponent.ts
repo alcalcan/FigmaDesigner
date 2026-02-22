@@ -634,14 +634,12 @@ export abstract class BaseComponent {
       // check to ensure these are always honored if specified.
       if (sizingHorizontal && "layoutSizingHorizontal" in node) {
         try {
-          const canApply = sizingHorizontal !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
-          if (canApply) (node as LayoutMixin).layoutSizingHorizontal = sizingHorizontal;
+          (node as LayoutMixin).layoutSizingHorizontal = sizingHorizontal;
         } catch (e) { /* ignore */ }
       }
       if (sizingVertical && "layoutSizingVertical" in node) {
         try {
-          const canApply = sizingVertical !== "FILL" || (node.parent && "layoutMode" in node.parent && (node.parent as FrameNode).layoutMode !== "NONE");
-          if (canApply) (node as LayoutMixin).layoutSizingVertical = sizingVertical;
+          (node as LayoutMixin).layoutSizingVertical = sizingVertical;
         } catch (e) { /* ignore */ }
       }
 
