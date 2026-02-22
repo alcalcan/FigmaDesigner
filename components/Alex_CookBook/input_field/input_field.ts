@@ -313,7 +313,7 @@ export class input_field extends BaseComponent {
                                 "name": "Stepper Controls",
                                 "props": {
                                     "layoutMode": "VERTICAL",
-                                    "itemSpacing": -2,
+                                    "itemSpacing": 0,
                                     "primaryAxisSizingMode": "AUTO",
                                     "counterAxisSizingMode": "AUTO",
                                     "counterAxisAlignItems": "CENTER",
@@ -322,20 +322,21 @@ export class input_field extends BaseComponent {
                                     "paddingRight": 4,
                                     "paddingBottom": 0,
                                     "paddingLeft": 0,
-                                    "fills": []
+                                    "fills": [],
+                                    "clipsContent": false
                                 },
                                 "children": [
                                     {
                                         "type": "COMPONENT",
                                         "name": "Up",
                                         "component": Lucide_chevron_up,
-                                        "props": { "width": 10, "height": 10, "strokeWeight": 1.5, "color": { r: 0.5, g: 0.5, b: 0.6 } }
+                                        "props": { "width": 10, "height": 10, "strokeWeight": 1.5, "color": { r: 0.12, g: 0.12, b: 0.18 } }
                                     },
                                     {
                                         "type": "COMPONENT",
                                         "name": "Down",
                                         "component": Lucide_chevron_down,
-                                        "props": { "width": 10, "height": 10, "strokeWeight": 1.5, "color": { r: 0.5, g: 0.5, b: 0.6 } }
+                                        "props": { "width": 10, "height": 10, "strokeWeight": 1.5, "color": { r: 0.12, g: 0.12, b: 0.18 } }
                                     }
                                 ]
                             } as NodeDefinition

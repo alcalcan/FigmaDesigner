@@ -40,16 +40,14 @@ export class Lucide_chevron_down extends BaseComponent {
                         if (node.type === "FRAME") {
                             node.clipsContent = false;
 
-                            const hydratedStrokes = (node as any).strokes;
-
                             for (const child of node.children) {
                                 if ("constraints" in child) {
                                     child.constraints = { horizontal: "SCALE", vertical: "SCALE" };
                                 }
 
                                 // Apply stroke properties to vector children
-                                if ("strokes" in child && hydratedStrokes) {
-                                    child.strokes = hydratedStrokes;
+                                if ("strokes" in child && nodeProps.strokes) {
+                                    child.strokes = nodeProps.strokes;
                                 }
                                 if ("strokeWeight" in child && nodeProps.strokeWeight) {
                                     child.strokeWeight = nodeProps.strokeWeight;
