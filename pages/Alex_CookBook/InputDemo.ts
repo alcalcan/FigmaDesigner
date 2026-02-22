@@ -40,6 +40,21 @@ export class InputDemo extends BaseDemoPage {
             container.appendChild(row);
         });
 
+        // --- SECTION 2: Numerical & Stepper ---
+        await this.addSection(root, "Numerical & Stepper", "Input fields with built-in numerical controls.", async (container) => {
+            const row = this.createRow(container);
+            row.appendChild(await input.create({
+                value: "1",
+                placeholder: "Quantity",
+                type: "simple",
+                isStepper: true,
+                backgroundColor: { r: 0.97, g: 0.98, b: 0.99, a: 1 },
+                cornerRadius: 6,
+                width: 300
+            }));
+            container.appendChild(row);
+        });
+
         // --- SECTION 2: States & Feedback ---
         await this.addSection(root, "States & Validation", "Visual feedback for different validation states.", async (container) => {
             const row = this.createRow(container);
