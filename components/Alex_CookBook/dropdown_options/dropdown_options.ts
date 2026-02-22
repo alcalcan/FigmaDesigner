@@ -2,7 +2,7 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 import { checkbox } from "../checkbox/checkbox";
 import { radio_button } from "../radio_button/radio_button";
 
-type OptionType = { name: string, selected: boolean, hoverState?: boolean, boxCornerRadius?: number, boxShadow?: boolean, labelMaxWidth?: number, rowCornerRadius?: number, rowShadow?: boolean };
+type OptionType = { name: string, selected: boolean, icon?: new () => BaseComponent, hoverState?: boolean, boxCornerRadius?: number, boxShadow?: boolean, labelMaxWidth?: number, rowCornerRadius?: number, rowShadow?: boolean };
 
 export class dropdown_options extends BaseComponent {
     async create(props: ComponentProps & {
@@ -77,6 +77,7 @@ export class dropdown_options extends BaseComponent {
                 "props": {
                     "characterOverride": auth.name,
                     "checked": auth.selected,
+                    "icon": auth.icon,
                     "hoverState": auth.hoverState,
                     "boxCornerRadius": auth.boxCornerRadius,
                     "boxShadow": auth.boxShadow,

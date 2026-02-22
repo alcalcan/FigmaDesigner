@@ -266,9 +266,9 @@ export class table extends BaseComponent {
                     const dropdownOpts = new dropdown_options();
                     const menuNode = await dropdownOpts.create({
                         options: [
-                            { name: "Edit", selected: false, hoverState: true },
-                            { name: "View", selected: false },
-                            { name: "Delete", selected: false }
+                            { name: "Edit", selected: false, icon: Lucide_edit_2, hoverState: true },
+                            { name: "View", selected: false, icon: Lucide_external_link },
+                            { name: "Delete", selected: false, icon: Lucide_trash_2 }
                         ],
                         selectionType: "radio", // Using radio style for normal list items
                         width: 140,
@@ -355,8 +355,7 @@ export class table extends BaseComponent {
                     height: isHeader ? 44 : rowHeight,
                     layoutSizingHorizontal: isFill ? "FILL" : "FIXED",
                     parentIsAutoLayout: true,
-                    // elevate the hovered row
-                    layoutPositioning: isHovered ? "ABSOLUTE" : "AUTO"
+                    layoutPositioning: "AUTO"
                 }
             }, cells);
         };
@@ -437,25 +436,7 @@ export class table extends BaseComponent {
             }
         }
 
-        // Deal with absolute positioning for highlighted row correctly
-        if (props.hoverRowIndex !== undefined && props.hoverRowIndex >= 0) {
-            const rowIndexOffset = showHeader ? 1 : 0;
-            const targetIndex = props.hoverRowIndex + rowIndexOffset;
-            if (targetIndex < mainNode.children.length) {
-                const row = mainNode.children[targetIndex] as FrameNode;
-                if (row) {
-                    // Move to front/ensure parentage BEFORE setting absolute
-                    mainNode.appendChild(row);
-                    row.layoutPositioning = "ABSOLUTE";
-                    // Calculate Y based on previous rows
-                    let yPos = 0;
-                    for (let i = 0; i < targetIndex; i++) {
-                        yPos += mainNode.children[i].height;
-                    }
-                    row.y = yPos;
-                }
-            }
-        }
+
 
         mainNode.x = props.x ?? 0;
         mainNode.y = props.y ?? 0;

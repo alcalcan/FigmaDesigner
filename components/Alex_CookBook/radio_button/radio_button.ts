@@ -1,7 +1,11 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 
+export interface RadioButtonProps extends ComponentProps {
+    icon?: new () => BaseComponent;
+}
+
 export class radio_button extends BaseComponent {
-    async create(props: ComponentProps): Promise<SceneNode> {
+    async create(props: RadioButtonProps): Promise<SceneNode> {
         const structure: NodeDefinition = {
             "type": "FRAME",
             "name": "Radio Button Component",
@@ -122,11 +126,28 @@ export class radio_button extends BaseComponent {
             }
         }
 
-        // Handle Checked State
-        if (props.checked !== undefined) {
+        // Handle Checked State & Icon override
+        const wrapper = (root as FrameNode).children.find(n => n.name === "Radio Button Container") as FrameNode;
+        if (wrapper && props.icon) {
+            // Completely replace the radio button visuals with an icon
+            wrapper.children.forEach(c => c.remove());
+            const IconClass = props.icon;
+            const iconInstance = new IconClass();
+            const iconNode = await iconInstance.create({
+                width: 16,
+                height: 16,
+                strokeWeight: 1.5,
+                color: { r: 0.10196, g: 0.19216, b: 0.23529 }
+            });
+            wrapper.appendChild(iconNode);
+            // Center the icon strictly
+            if (iconNode.type === "FRAME" || iconNode.type === "VECTOR" || iconNode.type === "BOOLEAN_OPERATION") {
+                iconNode.x = (wrapper.width - iconNode.width) / 2;
+                iconNode.y = (wrapper.height - iconNode.height) / 2;
+            }
+        } else if (props.checked !== undefined && wrapper) {
             // Use name-based search with type check
-            const wrapper = (root as FrameNode).children.find(n => n.name === "Radio Button Container") as FrameNode;
-            const outerCircle = wrapper?.children.find(n => n.name === "Outer Circle" && n.type === "RECTANGLE") as RectangleNode;
+            const outerCircle = wrapper.children.find(n => n.name === "Outer Circle" && n.type === "RECTANGLE") as RectangleNode;
 
             if (outerCircle) {
                 if (props.checked) {
@@ -143,22 +164,14 @@ export class radio_button extends BaseComponent {
                 console.warn(`[radio_button] Could not find RadioOuter rectangle in ${props.characterOverride || 'unnamed'} radio button`);
             }
 
-            if (props.checked && wrapper) {
+            if (props.checked) {
                 // Create inner white dot
-                // 16x16 outer, let's make the dot 6x6 or 8x8. Let's go with 6x6 for a standard look.
-
-                // Using an ellipse or a rectangle with corner radius. Since we used Rectangle with radius for outer, let's do same for consistency or just Ellipse.
-                // Actually BaseComponent definitions often use Frames/Rectangles. I'll stick to Figma API calls here since I'm manipulating the node directly.
-
                 const dot = figma.createEllipse();
                 dot.name = "Checked Indicator Dot";
                 dot.resize(6, 6);
                 dot.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
 
                 wrapper.appendChild(dot);
-
-                // Center the dot relative to the wrapper (20x20)
-                // Wrapper 20x20. Dot 6x6. 
                 dot.x = (wrapper.width - dot.width) / 2;
                 dot.y = (wrapper.height - dot.height) / 2;
             }

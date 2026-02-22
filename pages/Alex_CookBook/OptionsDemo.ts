@@ -4,6 +4,9 @@ import { BaseDemoPage } from "./BaseDemoPage";
 // Components
 import { dropdown_options } from "../../components/Alex_CookBook/dropdown_options/dropdown_options";
 import { dropdown_input } from "../../components/Alex_CookBook/dropdown_input/dropdown_input";
+import { Lucide_edit_2 } from "../../components/lucide_icons/Lucide_edit_2/Lucide_edit_2";
+import { Lucide_external_link } from "../../components/lucide_icons/Lucide_external_link/Lucide_external_link";
+import { Lucide_trash_2 } from "../../components/lucide_icons/Lucide_trash_2/Lucide_trash_2";
 
 export class OptionsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -158,6 +161,26 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Square & No Shadow", selected: false },
                     { name: "Minimal Item 2", selected: false },
                     { name: "Minimal Item 3", selected: false }
+                ]
+            }));
+
+            container.appendChild(row);
+        });
+
+        // --- SECTION 5: Icon Options Menus ---
+        await this.addSection(root, "Icon Options Menus", "Dropdowns utilizing vector icons instead of traditional radio or checkbox indicators.", async (container) => {
+            const drp = new dropdown_options();
+            const row = this.createRow(container);
+
+            row.appendChild(await drp.create({
+                width: 250,
+                bodyCornerRadius: 16,
+                bodyPadding: 12,
+                selectionType: "radio", // the component delegates icons via the radio_button component
+                options: [
+                    { name: "Edit Item", selected: false, icon: Lucide_edit_2, hoverState: true },
+                    { name: "Open Externally", selected: false, icon: Lucide_external_link },
+                    { name: "Delete Item", selected: false, icon: Lucide_trash_2 }
                 ]
             }));
 
