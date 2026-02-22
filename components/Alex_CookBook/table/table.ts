@@ -150,7 +150,7 @@ export class table extends BaseComponent {
                     backgroundColor: { r: 0.97, g: 0.98, b: 0.99, a: 1 },
                     cornerRadius: 6,
                     isStepper: !!col.isStepper,
-                    width: isCellHug ? "hug" : 128, // 128px as requested
+                    width: isCellHug ? 112 : "fill", // 112px fixed width for hug cells, else fill
                     height: 36
                 });
 

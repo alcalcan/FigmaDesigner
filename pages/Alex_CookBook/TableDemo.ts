@@ -45,7 +45,7 @@ export class TableDemo extends BaseDemoPage {
             { label: "Select", key: "approved", type: "checkbox", width: 60, align: "CENTER" },
             { label: "Product", key: "product", type: "text", width: "fill", align: "LEFT" },
             { label: "Rating", key: "rating", type: "star", width: 120, align: "LEFT" },
-            { label: "Quantity", key: "qty", type: "input", width: 100, align: "LEFT", isStepper: true },
+            { label: "Quantity", key: "qty", type: "input", width: "hug", align: "CENTER", isStepper: true },
             { label: "", key: "status", type: "badge", width: 110, align: "RIGHT" },
             { label: "Options", key: "options", type: "dropdown", width: 140, align: "CENTER" }
         ];
