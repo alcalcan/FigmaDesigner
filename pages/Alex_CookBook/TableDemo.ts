@@ -124,11 +124,10 @@ export class TableDemo extends BaseDemoPage {
         });
 
         // --- SECTION 5: Full Width ---
-        await this.addSection(root, "Stretched Layout", "Table that fills the entire container width.", async (container) => {
+        await this.addSection(root, "Stretched Layout", "Table that fills the entire container width by default.", async (container) => {
             await tbl.create({
                 columns,
-                data: data.slice(0, 2),
-                width: "fill"
+                data: data.slice(0, 2)
             }, container);
         });
 

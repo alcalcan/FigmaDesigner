@@ -42,8 +42,9 @@ export class table extends BaseComponent {
         const data = props.data || [];
         const showHeader = props.showHeader !== false;
         const rowHeight = props.rowHeight || 52;
-        const isFill = props.width === "fill";
-        const tableWidth = isFill ? 100 : (props.width || 1440);
+        const widthProp = props.width ?? "fill";
+        const isFill = widthProp === "fill";
+        const tableWidth = isFill ? 100 : (widthProp as number);
         const variant = props.variant || "default";
         const isMinimalist = variant === "minimalist";
 
@@ -92,7 +93,8 @@ export class table extends BaseComponent {
                 const headerChildren: any[] = col.label ? [
                     createText("Label", col.label, 12, "Bold", headerColor, {
                         font: { family: "Open Sans", style: "Bold" },
-                        textCase: "UPPER"
+                        textCase: "UPPER",
+                        textAlignHorizontal: align
                     })
                 ] : [];
 
@@ -154,7 +156,7 @@ export class table extends BaseComponent {
                     backgroundColor: { r: 0.97, g: 0.98, b: 0.99, a: 1 },
                     cornerRadius: 6,
                     isStepper: !!col.isStepper,
-                    width: isCellHug ? 112 : (col.type === "input" && typeof col.width === "number" ? col.width - 32 : "fill"), // Subtract 16px padding from both sides
+                    width: isCellHug ? 112 : "fill",
                     height: 36
                 });
 
@@ -281,7 +283,8 @@ export class table extends BaseComponent {
 
             return createFrame(`Cell/${col.key}`, cellProps, [
                 createText("Value", String(value), 14, "Regular", textColor, {
-                    font: { family: "Open Sans", style: "Regular" }
+                    font: { family: "Open Sans", style: "Regular" },
+                    textAlignHorizontal: align
                 })
             ]);
         };
@@ -317,8 +320,7 @@ export class table extends BaseComponent {
 
             return createFrame(isHeader ? "HeaderRow" : `Row/${index}`, {
                 layoutMode: "HORIZONTAL",
-                layoutAlign: "STRETCH",
-                primaryAxisSizingMode: "FIXED", // Always fixed to match container width
+                primaryAxisSizingMode: "FIXED",
                 counterAxisSizingMode: "FIXED", // Fixed height
                 fills: bgFills,
                 cornerRadius: isHovered ? 16 : 0,
@@ -328,6 +330,7 @@ export class table extends BaseComponent {
                 layoutProps: {
                     width: tableWidth,
                     height: isHeader ? 44 : rowHeight,
+                    layoutSizingHorizontal: isFill ? "FILL" : "FIXED",
                     parentIsAutoLayout: true,
                     // elevate the hovered row
                     layoutPositioning: isHovered ? "ABSOLUTE" : "AUTO"
