@@ -11,6 +11,7 @@ import { Lucide_filter } from "../../lucide_icons/Lucide_filter/Lucide_filter";
 import { Lucide_more_vertical } from "../../lucide_icons/Lucide_more_vertical/Lucide_more_vertical";
 import { Lucide_edit_2 } from "../../lucide_icons/Lucide_edit_2/Lucide_edit_2";
 import { Lucide_external_link } from "../../lucide_icons/Lucide_external_link/Lucide_external_link";
+import { dropdown_options } from "../dropdown_options/dropdown_options";
 
 export interface TableColumn {
     label: string;
@@ -80,6 +81,7 @@ export class table extends BaseComponent {
                 primaryAxisSizingMode: isCellHug ? "AUTO" : "FIXED",
                 counterAxisSizingMode: "FIXED", // Fixed height
                 fills: [],
+                clipsContent: false, // Don't crop floating elements
                 layoutProps: {
                     width: cellWidth,
                     height: isHeader ? 44 : rowHeight,
@@ -254,22 +256,41 @@ export class table extends BaseComponent {
                     });
                     complexCells.push({ slotId, node: moreNode });
                 } else {
-                    const dropdownAction = await inputComp.create({
-                        value: String(value || "Select..."),
-                        type: "dropdown",
-                        hasBorder: true,
-                        backgroundColor: { r: 1, g: 1, b: 1, a: 1 },
-                        cornerRadius: 6,
-                        width: 160, // 160px for open menu
-                        height: 32,
-                        isOpen: true,
-                        options: [
-                            { label: "Edit", icon: Lucide_edit_2 },
-                            { label: "View", icon: Lucide_external_link },
-                            { label: "Delete", icon: Lucide_trash_2 }
-                        ]
+                    const moreNode = await moreComp.create({
+                        width: 18,
+                        strokeWeight: 1.5,
+                        color: { r: 0.1, g: 0.1, b: 0.1 } // Active color
                     });
-                    complexCells.push({ slotId, node: dropdownAction });
+
+                    // Create floating dropdown menu
+                    const dropdownOpts = new dropdown_options();
+                    const menuNode = await dropdownOpts.create({
+                        options: [
+                            { name: "Edit", selected: false, hoverState: true },
+                            { name: "View", selected: false },
+                            { name: "Delete", selected: false }
+                        ],
+                        selectionType: "radio", // Using radio style for normal list items
+                        width: 140,
+                        bodyShadow: "PREMIUM"
+                    });
+
+                    const wrapper = figma.createFrame();
+                    wrapper.name = "DropdownWrapper";
+                    wrapper.fills = [];
+                    wrapper.layoutMode = "NONE"; // Use NONE so we can absolutely position children
+                    wrapper.resize(18, 18);
+                    wrapper.clipsContent = false;
+
+                    wrapper.appendChild(moreNode);
+
+                    if (menuNode.type === "FRAME") {
+                        wrapper.appendChild(menuNode);
+                        menuNode.x = -122; // Align relative to 18px kebab icon (140px - 18px = 122)
+                        menuNode.y = 24 + 18;   // Below kebab icon
+                    }
+
+                    complexCells.push({ slotId, node: wrapper });
                 }
 
                 return createFrame(slotId, cellProps, []);
@@ -324,6 +345,8 @@ export class table extends BaseComponent {
                 counterAxisSizingMode: "FIXED", // Fixed height
                 fills: bgFills,
                 cornerRadius: isHovered ? 16 : 0,
+                clipsContent: false,
+                itemReverseZIndex: true, // "order first level first"
                 strokeBottomWeight: (isMinimalist && !isHeader) || isHovered ? 0 : 1,
                 strokes: isMinimalist || isHovered ? [] : [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.93 } }],
                 effects: effects,
@@ -390,7 +413,8 @@ export class table extends BaseComponent {
             primaryAxisAlignItems: "MIN",
             itemSpacing: 0,
             effects: containerShadows,
-            clipsContent: true, // Crucial for corner radius clipping rows
+            clipsContent: false, // DO NOT crop rows so dropdowns are visible
+            itemReverseZIndex: true, // "order first level first"
             layoutProps: {
                 width: tableWidth,
                 layoutSizingHorizontal: isFill ? "FILL" : "FIXED",
