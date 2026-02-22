@@ -4,6 +4,7 @@ import { BaseDemoPage } from "./BaseDemoPage";
 // Components
 import { dropdown_options } from "../../components/Alex_CookBook/dropdown_options/dropdown_options";
 import { dropdown_input } from "../../components/Alex_CookBook/dropdown_input/dropdown_input";
+import { date_picker } from "../../components/Alex_CookBook/date_picker/date_picker";
 import { Lucide_edit_2 } from "../../components/lucide_icons/Lucide_edit_2/Lucide_edit_2";
 import { Lucide_external_link } from "../../components/lucide_icons/Lucide_external_link/Lucide_external_link";
 import { Lucide_trash_2 } from "../../components/lucide_icons/Lucide_trash_2/Lucide_trash_2";
@@ -184,6 +185,38 @@ export class OptionsDemo extends BaseDemoPage {
                 ]
             }));
 
+            container.appendChild(row);
+        });
+
+        // --- SECTION 6: Date & Time Pickers ---
+        await this.addSection(root, "Date & Time Pickers", "Inputs providing context-specific dropdowns for date and time selection.", async (container) => {
+            const dp = new date_picker();
+            const row = this.createRow(container);
+
+            const today = new Date();
+            const monthStr = today.toLocaleString('default', { month: 'long' });
+            const dayNum = today.getDate();
+            const mockDateVal = `${monthStr} ${dayNum}, 2026`;
+
+            // Date Picker
+            row.appendChild(await dp.create({
+                type: "date",
+                width: 320,
+                isOpen: true,
+                value: mockDateVal
+            }));
+
+            // Time Picker
+            row.appendChild(await dp.create({
+                type: "time",
+                width: 320,
+                isOpen: true,
+                value: "10:30",
+                timeOptions: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30"]
+            }));
+
+            // Give the container enough padding for absolute dropdowns
+            container.paddingBottom = 300;
             container.appendChild(row);
         });
 
