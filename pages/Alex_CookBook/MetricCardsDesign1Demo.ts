@@ -335,19 +335,17 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
         // Ensure container doesn't default to 100px width; height is auto (HUG)
         container.resize(row.width, 100);
 
-        const card = await design.create(props);
-        container.appendChild(card);
-
         // All variant wrappers should grow to fill available row width
         (container as any).layoutGrow = 1;
-        container.counterAxisAlignItems = "CENTER";
 
-        // Mimic sizing: if card is set to fill (width), card should stretch inside the container
-        if (props.width === "fill") {
-            // Inside the vertical container, card should stretch to fill width
-            if ('layoutAlign' in card) {
-                (card as any).layoutAlign = "STRETCH";
-            }
+        // Force fill width and hug height behavior for all show-cased cards in the demo
+        const cardProps = { ...props, width: "fill", height: "hug" };
+        const card = await design.create(cardProps);
+        container.appendChild(card);
+
+        // Inside the vertical container, card should stretch to fill width
+        if ('layoutAlign' in card) {
+            (card as any).layoutAlign = "STRETCH";
         }
 
         if ("layoutSizingVertical" in container) {
@@ -357,7 +355,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
 
         // Only override the card to hug vertically if it's explicitly filling horizontal space 
         // to prevent large blank areas. If fixed size (default), leave it as-is.
-        if (props.width === "fill" || props.height === "hug") {
+        if (cardProps.width === "fill" || cardProps.height === "hug") {
             if ("layoutSizingVertical" in card) {
                 (card as any).layoutSizingVertical = "HUG";
             }

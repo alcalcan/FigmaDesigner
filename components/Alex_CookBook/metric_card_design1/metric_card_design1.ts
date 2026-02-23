@@ -408,9 +408,9 @@ export class metric_card_design1 extends BaseComponent {
             },
             layoutProps: {
                 width: isFillWidth ? undefined : (typeof props.width === "number" ? props.width : rootWidth),
-                height: isHugHeight || (typeof props.height === "undefined") || isFillHeight ? undefined : (typeof props.height === "number" ? props.height : rootHeight),
+                height: (typeof props.height === "number") ? props.height : undefined,
                 layoutSizingHorizontal: isFillWidth ? "FILL" : "FIXED",
-                layoutSizingVertical: isFillHeight ? "FILL" : (isHugHeight || (typeof props.height === "undefined")) ? "HUG" : "FIXED",
+                layoutSizingVertical: isFillHeight ? "FILL" : "HUG",
                 layoutGrow: isFillWidth ? 1 : 0,
                 parentIsAutoLayout: true
             },
