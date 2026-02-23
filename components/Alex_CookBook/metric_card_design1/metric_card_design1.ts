@@ -15,7 +15,7 @@ export interface MetricCardDesign1Props extends ComponentProps {
     trendDirection?: "up" | "down" | "neutral";
     trendValue?: string;
     variant?: "standard" | "compact";
-    layoutDirection?: "vertical" | "horizontal";
+    layoutDirection?: "vertical" | "horizontal" | "hero";
     width?: number | "fill";
     height?: number | "fill" | "hug";
     chartWidth?: number;
@@ -45,7 +45,8 @@ export interface MetricCardDesign1Props extends ComponentProps {
 export class metric_card_design1 extends BaseComponent {
     async create(props: MetricCardDesign1Props): Promise<SceneNode> {
         const isCompact = props.variant === "compact";
-        const isHorizontal = props.layoutDirection === "horizontal";
+        const isHorizontal = props.layoutDirection === "horizontal" || props.layoutDirection === "hero";
+        const isHero = props.layoutDirection === "hero";
         const isFillWidth = props.width === "fill" || props.layoutSizingHorizontal === "FILL";
         const isFillHeight = props.height === "fill" || props.layoutSizingVertical === "FILL";
         const isHugHeight = props.height === "hug" || props.layoutSizingVertical === "HUG";
@@ -134,9 +135,11 @@ export class metric_card_design1 extends BaseComponent {
 
         const chartNodes: NodeDefinition[] = [];
         if (props.chartType === "circle") {
+            const circleSize = (typeof props.chartWidth === 'number' && props.chartWidth > 0) ? props.chartWidth :
+                ((typeof props.chartHeight === 'number' && props.chartHeight > 0) ? props.chartHeight : (isHero ? 120 : (isCompact ? 48 : 80)));
             const circleNode = this.renderCircle(
                 (props.dataPoints && props.dataPoints.length > 0) ? props.dataPoints[props.dataPoints.length - 1] : 0.75,
-                (typeof props.chartHeight === 'number') ? props.chartHeight : (isCompact ? 48 : 64),
+                circleSize,
                 { start: startColor, end: endColor }
             );
             if (circleNode) chartNodes.push(circleNode);
@@ -163,8 +166,8 @@ export class metric_card_design1 extends BaseComponent {
             primaryAxisAlignItems: "CENTER",
             counterAxisAlignItems: "CENTER",
             clipsContent: false, // Allow glow/shadow to bleed out
-            layoutSizingHorizontal: "FILL",
-            layoutSizingVertical: isChartFill ? "FILL" : "FIXED",
+            layoutSizingHorizontal: isHero ? "HUG" : "FILL",
+            layoutSizingVertical: isChartFill ? "FILL" : ((isHero && !isFillHeight && typeof props.height !== 'number') ? "HUG" : "FIXED"),
             cornerRadius: sparklineCornerRadius,
             fills: [],
             effects: props.showChartShadow !== false ? [{
@@ -320,7 +323,33 @@ export class metric_card_design1 extends BaseComponent {
             ].filter(Boolean) as NodeDefinition[])
         ]) : null;
 
-        const bodyComponent = isHorizontal ? createFrame("Body", {
+        const bodyContentForHero = isHero ? createFrame("Info Stack", {
+            layoutMode: "VERTICAL",
+            primaryAxisAlignItems: "MIN",
+            counterAxisAlignItems: "MIN",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            itemSpacing: 12,
+            fills: []
+        }, [
+            headerComponent,
+            contentComponent,
+            footerComponent
+        ].filter(Boolean) as NodeDefinition[]) : null;
+
+        const bodyComponent = isHero ? createFrame("Body", {
+            layoutMode: "HORIZONTAL",
+            primaryAxisAlignItems: "SPACE_BETWEEN",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: (isFillHeight || typeof props.height === 'number') ? "FILL" : "HUG",
+            itemSpacing: 24,
+            clipsContent: false,
+            fills: []
+        }, [
+            bodyContentForHero,
+            showChart ? sparklineContainer : null
+        ].filter(Boolean) as NodeDefinition[]) : (isHorizontal ? createFrame("Body", {
             layoutMode: "HORIZONTAL",
             primaryAxisAlignItems: "MIN",
             counterAxisAlignItems: "CENTER",
@@ -332,7 +361,7 @@ export class metric_card_design1 extends BaseComponent {
         }, [
             contentComponent,
             showChart ? sparklineContainer : null
-        ].filter(Boolean) as NodeDefinition[]) : contentComponent;
+        ].filter(Boolean) as NodeDefinition[]) : contentComponent);
 
         const structure: NodeDefinition = {
             type: "FRAME",
@@ -414,7 +443,7 @@ export class metric_card_design1 extends BaseComponent {
                 layoutGrow: isFillWidth ? 1 : 0,
                 parentIsAutoLayout: true
             },
-            children: [
+            children: isHero ? [bodyComponent] : [
                 headerComponent,
                 bodyComponent,
                 footerComponent
@@ -524,7 +553,7 @@ ${!isSolid ? `
     }
 
     private renderCircle(percentage: number, targetSize: number, customStyle?: { start?: RGB, end?: RGB }): NodeDefinition | null {
-        const strokeWidth = Math.max(6, targetSize * 0.18);
+        const strokeWidth = Math.max(4, targetSize * 0.10);
         const innerRadiusRatio = 1 - (strokeWidth * 2 / targetSize);
 
         const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
