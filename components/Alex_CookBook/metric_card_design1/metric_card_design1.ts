@@ -90,10 +90,10 @@ export class metric_card_design1 extends BaseComponent {
 
         const headerComponent: NodeDefinition = createFrame("Header", {
             layoutMode: "HORIZONTAL",
-            primaryAxisAlignItems: isHeaderCircle ? "SPACE_BETWEEN" : "MIN",
+            primaryAxisAlignItems: "MIN",
             counterAxisAlignItems: isHeaderCircle ? "MIN" : "CENTER",
-            itemSpacing: isHeaderCircle ? 0 : 8,
-            layoutSizingHorizontal: (isHeroCentered || isHeaderCircle) ? "FILL" : "HUG",
+            itemSpacing: 8,
+            layoutSizingHorizontal: isHeroCentered ? "FILL" : "HUG",
             layoutSizingVertical: "HUG",
             fills: []
         }, [
@@ -156,12 +156,7 @@ export class metric_card_design1 extends BaseComponent {
                     circleNode.children = [...(circleNode.children || []), valueInside];
                 }
 
-                if (isHeaderCircle) {
-                    // Push to header instead of standard list
-                    headerComponent.children = [...(headerComponent.children || []), circleNode];
-                } else {
-                    chartNodes.push(circleNode);
-                }
+                chartNodes.push(circleNode);
             }
         } else {
             const waveNode = this.renderWave(
@@ -354,10 +349,10 @@ export class metric_card_design1 extends BaseComponent {
 
         const bodyContentForHero = isHero ? createFrame("Info Stack", {
             layoutMode: "VERTICAL",
-            primaryAxisAlignItems: (isHeroCentered || isHeaderCircle) ? "SPACE_BETWEEN" : "MIN",
+            primaryAxisAlignItems: (isHeroCentered || isHeaderCircle) ? (isHeaderCircle ? "MIN" : "SPACE_BETWEEN") : "MIN",
             counterAxisAlignItems: "MIN",
             layoutSizingHorizontal: (isHeroCentered || isHeaderCircle) ? "FILL" : "HUG",
-            layoutSizingVertical: (isHeroCentered || isHeaderCircle) ? "FILL" : "HUG",
+            layoutSizingVertical: isHeaderCircle ? "HUG" : ((isHeroCentered || isHeaderCircle) ? "FILL" : "HUG"),
             itemSpacing: isHeroCentered ? 0 : 8,
             fills: []
         }, [
@@ -377,14 +372,14 @@ export class metric_card_design1 extends BaseComponent {
             clipsContent: false,
             fills: []
         }, [
-            showChart && !isHeaderCircle ? sparklineContainer : null,
+            showChart ? sparklineContainer : null,
             (!isHeroCentered && !isHeaderCircle && props.showFooter !== false) ? trendPillFrame : null
         ].filter(Boolean) as NodeDefinition[]) : null;
 
         const bodyComponent = isHero ? createFrame("Body", {
             layoutMode: "HORIZONTAL",
             primaryAxisAlignItems: "SPACE_BETWEEN",
-            counterAxisAlignItems: "CENTER",
+            counterAxisAlignItems: isHeaderCircle ? "MIN" : "CENTER",
             layoutSizingHorizontal: "FILL",
             layoutSizingVertical: (isFillHeight || typeof props.height === 'number') ? "FILL" : "HUG",
             itemSpacing: 24,
@@ -392,7 +387,7 @@ export class metric_card_design1 extends BaseComponent {
             fills: []
         }, [
             bodyContentForHero,
-            isHeaderCircle ? null : visualGroupForHero
+            visualGroupForHero
         ].filter(Boolean) as NodeDefinition[]) : (isHorizontal ? createFrame("Body", {
             layoutMode: "HORIZONTAL",
             primaryAxisAlignItems: "MIN",
