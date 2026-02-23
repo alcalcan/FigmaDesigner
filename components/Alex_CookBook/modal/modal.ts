@@ -119,7 +119,8 @@ export class modal extends BaseComponent {
                     name: "Status Icon",
                     svgContent: props.statusIcon,
                     props: {
-                        fills: [{ type: "SOLID", color: { r: 0.8, g: 0.2, b: 0.2 } }] // Default red/alert color
+                        strokes: [{ type: "SOLID", color: { r: 0.8, g: 0.2, b: 0.2 } }], // Apply red to strokes instead of fills
+                        strokeWeight: 2,
                     },
                     layoutProps: { width: 24, height: 24, parentIsAutoLayout: true }
                 }

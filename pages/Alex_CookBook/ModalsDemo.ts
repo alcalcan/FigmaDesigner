@@ -11,6 +11,33 @@ export class ModalsDemo extends BaseDemoPage {
 
         await this.addHeader(root, "Modals", "A versatile modal component supporting standard and separated layouts.");
 
+        // Helper function to wrap modals with descriptive text labels underneath
+        const wrapWithCaption = async (modalNode: SceneNode, captionText: string, wrapperName = "Modal Wrapper"): Promise<FrameNode> => {
+            const wrapperDef: NodeDefinition = {
+                type: "FRAME",
+                name: wrapperName,
+                props: {
+                    layoutMode: "VERTICAL",
+                    itemSpacing: 16,
+                    primaryAxisSizingMode: "AUTO",
+                    counterAxisSizingMode: "AUTO",
+                    primaryAxisAlignItems: "CENTER",
+                    counterAxisAlignItems: "CENTER",
+                    fills: [],
+                },
+                layoutProps: { parentIsAutoLayout: true },
+                children: [
+                    createText("Caption", captionText, 14, "Medium", { r: 0.4, g: 0.4, b: 0.4 }, {
+                        font: { family: "Inter", style: "Medium" }
+                    })
+                ]
+            };
+
+            const wrapper = await this.renderDefinition(wrapperDef) as FrameNode;
+            wrapper.insertChild(0, modalNode);
+            return wrapper;
+        };
+
         // Form fields to reuse across examples
         const firstNameInput: NodeDefinition = {
             type: "COMPONENT",
@@ -31,18 +58,19 @@ export class ModalsDemo extends BaseDemoPage {
         // Section 1: Standard Modals
         await this.addSection(root, "Standard Unified Modals", "Basic alert and confirmation modals.", async (container) => {
             const basicModal = new modal();
-            container.appendChild(await basicModal.create({
+            const basicModalNode = await basicModal.create({
                 title: "Are you sure you want to delete this?",
                 description: "This action cannot be undone.",
                 variant: "unified",
                 primaryCtaText: "Delete",
                 secondaryCtaText: "Cancel",
                 width: 480
-            }));
+            });
+            container.appendChild(await wrapWithCaption(basicModalNode, "Standard Danger Modal"));
 
             // Icon Modal Example
             const iconModal = new modal();
-            container.appendChild(await iconModal.create({
+            const iconModalNode = await iconModal.create({
                 title: "Critical System Error",
                 description: "The database connection could not be established. Please check your network and try again.",
                 variant: "unified",
@@ -50,9 +78,11 @@ export class ModalsDemo extends BaseDemoPage {
                 secondaryCtaText: "Dismiss",
                 statusIcon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
                 width: 480
-            }));
+            });
+            container.appendChild(await wrapWithCaption(iconModalNode, "Icon Alert Modal"));
+
             const formModal = new modal();
-            container.appendChild(await formModal.create({
+            const formModalNode = await formModal.create({
                 title: "Create Account",
                 description: "Enter your details to register.",
                 variant: "unified",
@@ -60,13 +90,14 @@ export class ModalsDemo extends BaseDemoPage {
                 secondaryCtaText: "Cancel",
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 480
-            }));
+            });
+            container.appendChild(await wrapWithCaption(formModalNode, "Standard Form Modal"));
         });
 
         // Section 2: Unified with Dividers
         await this.addSection(root, "Unified Modals with Dividers", "A solid background split by subtle lines.", async (container) => {
             const unifiedDividerModal = new modal();
-            container.appendChild(await unifiedDividerModal.create({
+            const unifiedDividerModalNode = await unifiedDividerModal.create({
                 title: "Account Settings",
                 description: "Manage your personal information and preferences.",
                 variant: "unified_with_dividers",
@@ -74,13 +105,14 @@ export class ModalsDemo extends BaseDemoPage {
                 secondaryCtaText: "Discard",
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 500
-            }));
+            });
+            container.appendChild(await wrapWithCaption(unifiedDividerModalNode, "Divided Sections Layout"));
         });
 
         // Section 3: Separated Modals
         await this.addSection(root, "Separated Modals", "Visually distinguishes the header, body, and footer.", async (container) => {
             const separatedModal = new modal();
-            container.appendChild(await separatedModal.create({
+            const separatedModalNode = await separatedModal.create({
                 title: "Edit Profile",
                 description: "Update your personal information below.",
                 variant: "separated",
@@ -88,11 +120,12 @@ export class ModalsDemo extends BaseDemoPage {
                 secondaryCtaText: "Discard",
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 500
-            }));
+            });
+            container.appendChild(await wrapWithCaption(separatedModalNode, "Separated Layout Demo"));
 
             // Custom Confirmation Modal based on User Snippet
             const confirmationModal = new modal();
-            container.appendChild(await confirmationModal.create({
+            const confirmationModalNode = await confirmationModal.create({
                 title: "Configure Offer 13",
                 variant: "separated",
                 showCloseIcon: false,
@@ -177,13 +210,14 @@ export class ModalsDemo extends BaseDemoPage {
                         ]
                     }
                 ]
-            }));
+            });
+            container.appendChild(await wrapWithCaption(confirmationModalNode, "DEKO Custom Component", "DEKO"));
         });
 
         // Section 4: Edge-to-edge content
         await this.addSection(root, "Edge-to-Edge Content", "Using bodyPadding = 'none' for full-width content.", async (container) => {
             const edgeModal = new modal();
-            container.appendChild(await edgeModal.create({
+            const edgeModalNode = await edgeModal.create({
                 title: "Full Width Media/Data",
                 description: "This modal uses bodyPadding = 'none'",
                 variant: "separated",
@@ -216,7 +250,8 @@ export class ModalsDemo extends BaseDemoPage {
                     }
                 ],
                 width: 600
-            }));
+            });
+            container.appendChild(await wrapWithCaption(edgeModalNode, "Zero Padding Container"));
         });
 
         return root;
