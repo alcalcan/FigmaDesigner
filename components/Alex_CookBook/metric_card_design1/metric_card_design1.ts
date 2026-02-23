@@ -214,6 +214,105 @@ export class metric_card_design1 extends BaseComponent {
             (!isHorizontal && showChart && sparklineContainer) ? sparklineContainer : null
         ].filter(Boolean) as NodeDefinition[]);
 
+        const platformFrame = createFrame("Platform Name", {
+            layoutMode: "HORIZONTAL",
+            itemSpacing: 8,
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            fills: []
+        }, [
+            createFrame("Icon Wrapper", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                paddingTop: 1,
+                paddingRight: 1,
+                paddingBottom: 1,
+                paddingLeft: 1,
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG",
+                fills: []
+            }, [
+                {
+                    type: "COMPONENT",
+                    name: "Platform Icon",
+                    component: Lucide_settings,
+                    props: {
+                        width: platformIconSize,
+                        height: platformIconSize,
+                        color: iconBlack,
+                    },
+                    layoutProps: {
+                        width: platformIconSize,
+                        height: platformIconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true,
+                        constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                    }
+                }
+            ]),
+            createText("Platform Name Text", platformName, isCompact ? 11 : 12, "Medium", platformTextColor, {
+                font: { family: "Inter", style: "Medium" }
+            })
+        ]);
+
+        const trendPillFrame = createFrame("Trend Pill", {
+            layoutMode: "HORIZONTAL",
+            itemSpacing: isCompact ? 4 : 6,
+            paddingTop: isCompact ? 6 : 8,
+            paddingBottom: isCompact ? 6 : 8,
+            paddingLeft: isCompact ? 8 : 12,
+            paddingRight: isCompact ? 8 : 12,
+            cornerRadius: props.trendPillRadius ?? (isCompact ? 12 : 16),
+            primaryAxisAlignItems: "CENTER",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            fills: [{ type: "SOLID", color: trendColor, opacity: 0.1 }]
+        }, [
+            createFrame("Icon Wrapper", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                paddingTop: 1,
+                paddingRight: 1,
+                paddingBottom: 1,
+                paddingLeft: 1,
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG",
+                fills: []
+            }, [
+                {
+                    type: "COMPONENT",
+                    name: "Trend Icon",
+                    component: trendDirection === "up" ? Lucide_arrow_up : trendDirection === "down" ? Lucide_arrow_down : Lucide_minus,
+                    props: {
+                        width: trendIconSize,
+                        height: trendIconSize,
+                        color: trendColor,
+                    },
+                    layoutProps: {
+                        width: trendIconSize,
+                        height: trendIconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true,
+                        constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                    }
+                }
+            ]),
+            createText("Trend %", trendValue, isCompact ? 12 : 13, "Bold", trendColor, {
+                font: { family: "Inter", style: "Bold" }
+            }),
+            !isCompact
+                ? createText("Trend Abs", trendDirection === "up" ? "(+8ms)" : trendDirection === "down" ? "(-8ms)" : "(0ms)", 13, "Medium", platformTextColor, {
+                    font: { family: "Inter", style: "Medium" }
+                })
+                : null
+        ].filter(Boolean) as NodeDefinition[]);
+
         const footerComponent: NodeDefinition | null = props.showFooter !== false ? createFrame("Footer", {
             layoutMode: "HORIZONTAL",
             primaryAxisAlignItems: props.footerGap === "auto" || (typeof props.footerGap === "undefined" && isHorizontal) ? "SPACE_BETWEEN" : "MIN",
@@ -223,104 +322,8 @@ export class metric_card_design1 extends BaseComponent {
             itemSpacing: typeof props.footerGap === "number" ? props.footerGap : 20,
             fills: []
         }, [
-            createFrame("Platform Name", {
-                layoutMode: "HORIZONTAL",
-                itemSpacing: 8,
-                counterAxisAlignItems: "CENTER",
-                layoutSizingHorizontal: "HUG",
-                layoutSizingVertical: "HUG",
-                fills: []
-            }, [
-                createFrame("Icon Wrapper", {
-                    layoutMode: "HORIZONTAL",
-                    primaryAxisAlignItems: "CENTER",
-                    counterAxisAlignItems: "CENTER",
-                    paddingTop: 1,
-                    paddingRight: 1,
-                    paddingBottom: 1,
-                    paddingLeft: 1,
-                    layoutSizingHorizontal: "HUG",
-                    layoutSizingVertical: "HUG",
-                    fills: []
-                }, [
-                    {
-                        type: "COMPONENT",
-                        name: "Platform Icon",
-                        component: Lucide_settings,
-                        props: {
-                            width: platformIconSize,
-                            height: platformIconSize,
-                            color: iconBlack,
-                        },
-                        layoutProps: {
-                            width: platformIconSize,
-                            height: platformIconSize,
-                            layoutSizingHorizontal: "FIXED",
-                            layoutSizingVertical: "FIXED",
-                            parentIsAutoLayout: true,
-                            constraints: { horizontal: "CENTER", vertical: "CENTER" }
-                        }
-                    }
-                ]),
-                createText("Platform Name Text", platformName, isCompact ? 11 : 12, "Medium", platformTextColor, {
-                    font: { family: "Inter", style: "Medium" }
-                })
-            ]),
-
-            createFrame("Trend Pill", {
-                layoutMode: "HORIZONTAL",
-                itemSpacing: isCompact ? 4 : 6,
-                paddingTop: isCompact ? 6 : 8,
-                paddingBottom: isCompact ? 6 : 8,
-                paddingLeft: isCompact ? 8 : 12,
-                paddingRight: isCompact ? 8 : 12,
-                cornerRadius: props.trendPillRadius ?? (isCompact ? 12 : 16),
-                primaryAxisAlignItems: "CENTER",
-                counterAxisAlignItems: "CENTER",
-                layoutSizingHorizontal: "HUG",
-                layoutSizingVertical: "HUG",
-                fills: [{ type: "SOLID", color: trendColor, opacity: 0.1 }]
-            }, [
-                createFrame("Icon Wrapper", {
-                    layoutMode: "HORIZONTAL",
-                    primaryAxisAlignItems: "CENTER",
-                    counterAxisAlignItems: "CENTER",
-                    paddingTop: 1,
-                    paddingRight: 1,
-                    paddingBottom: 1,
-                    paddingLeft: 1,
-                    layoutSizingHorizontal: "HUG",
-                    layoutSizingVertical: "HUG",
-                    fills: []
-                }, [
-                    {
-                        type: "COMPONENT",
-                        name: "Trend Icon",
-                        component: trendDirection === "up" ? Lucide_arrow_up : trendDirection === "down" ? Lucide_arrow_down : Lucide_minus,
-                        props: {
-                            width: trendIconSize,
-                            height: trendIconSize,
-                            color: trendColor,
-                        },
-                        layoutProps: {
-                            width: trendIconSize,
-                            height: trendIconSize,
-                            layoutSizingHorizontal: "FIXED",
-                            layoutSizingVertical: "FIXED",
-                            parentIsAutoLayout: true,
-                            constraints: { horizontal: "CENTER", vertical: "CENTER" }
-                        }
-                    }
-                ]),
-                createText("Trend %", trendValue, isCompact ? 12 : 13, "Bold", trendColor, {
-                    font: { family: "Inter", style: "Bold" }
-                }),
-                !isCompact
-                    ? createText("Trend Abs", trendDirection === "up" ? "(+8ms)" : trendDirection === "down" ? "(-8ms)" : "(0ms)", 13, "Medium", platformTextColor, {
-                        font: { family: "Inter", style: "Medium" }
-                    })
-                    : null
-            ].filter(Boolean) as NodeDefinition[])
+            platformFrame,
+            trendPillFrame
         ]) : null;
 
         const bodyContentForHero = isHero ? createFrame("Info Stack", {
@@ -334,7 +337,20 @@ export class metric_card_design1 extends BaseComponent {
         }, [
             headerComponent,
             contentComponent,
-            footerComponent
+            props.showFooter !== false ? platformFrame : null
+        ].filter(Boolean) as NodeDefinition[]) : null;
+
+        const visualGroupForHero = isHero ? createFrame("Visual Group", {
+            layoutMode: "VERTICAL",
+            primaryAxisAlignItems: "MIN",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            itemSpacing: 12,
+            fills: []
+        }, [
+            showChart ? sparklineContainer : null,
+            props.showFooter !== false ? trendPillFrame : null
         ].filter(Boolean) as NodeDefinition[]) : null;
 
         const bodyComponent = isHero ? createFrame("Body", {
@@ -348,7 +364,7 @@ export class metric_card_design1 extends BaseComponent {
             fills: []
         }, [
             bodyContentForHero,
-            showChart ? sparklineContainer : null
+            visualGroupForHero
         ].filter(Boolean) as NodeDefinition[]) : (isHorizontal ? createFrame("Body", {
             layoutMode: "HORIZONTAL",
             primaryAxisAlignItems: "MIN",
