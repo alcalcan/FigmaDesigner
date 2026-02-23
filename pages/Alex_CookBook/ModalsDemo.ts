@@ -24,6 +24,7 @@ export class ModalsDemo extends BaseDemoPage {
                     primaryAxisAlignItems: "CENTER",
                     counterAxisAlignItems: "CENTER",
                     fills: [],
+                    clipsContent: false,
                 },
                 layoutProps: { parentIsAutoLayout: true },
                 children: [
