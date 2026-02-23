@@ -352,6 +352,58 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
             }, "Hero Layout (Circle - Green)");
         });
 
+        await this.addSection(root, "Centered Hero Variant", "Percentage value inside circle with large prominent title.", async (container) => {
+            const row = this.createRow(container);
+
+            await this.createCardWithCaption(design1, row, {
+                title: "Database Cluster",
+                value: "75%",
+                period: "Memory Used",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill",
+                height: 220,
+                layoutDirection: "hero-centered",
+                chartType: "circle",
+                dataPoints: [0.75],
+                gap: 24,
+                gradientStart: { r: 0.15, g: 0.45, b: 0.95 },
+                gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
+            }, "Hero Layout (Centered)");
+
+            await this.createCardWithCaption(design1, row, {
+                title: "API Reliability",
+                value: "98%",
+                period: "Global Performance",
+                trendDirection: "up",
+                trendValue: "Healthy",
+                width: "fill",
+                height: 220,
+                layoutDirection: "hero-centered",
+                chartType: "circle",
+                dataPoints: [0.98],
+                gap: 24,
+                gradientStart: { r: 0.05, g: 0.6, b: 0.3 },
+                gradientEnd: { r: 0.2, g: 0.8, b: 0.5 }
+            }, "Hero Layout (Centered - Green)");
+
+            await this.createCardWithCaption(design1, row, {
+                title: "System Cache",
+                value: "25%",
+                period: "Hit Rate",
+                trendDirection: "down",
+                trendValue: "Critical",
+                width: "fill",
+                height: 220,
+                layoutDirection: "hero-centered",
+                chartType: "circle",
+                dataPoints: [0.25],
+                gap: 24,
+                gradientStart: { r: 1.0, g: 0.2, b: 0.2 },
+                gradientEnd: { r: 1.0, g: 0.5, b: 0.0 }
+            }, "Hero Layout (Centered - Red)");
+        });
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 

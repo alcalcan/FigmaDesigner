@@ -15,7 +15,7 @@ export interface MetricCardDesign1Props extends ComponentProps {
     trendDirection?: "up" | "down" | "neutral";
     trendValue?: string;
     variant?: "standard" | "compact";
-    layoutDirection?: "vertical" | "horizontal" | "hero";
+    layoutDirection?: "vertical" | "horizontal" | "hero" | "hero-centered";
     width?: number | "fill";
     height?: number | "fill" | "hug";
     chartWidth?: number;
@@ -45,8 +45,9 @@ export interface MetricCardDesign1Props extends ComponentProps {
 export class metric_card_design1 extends BaseComponent {
     async create(props: MetricCardDesign1Props): Promise<SceneNode> {
         const isCompact = props.variant === "compact";
-        const isHorizontal = props.layoutDirection === "horizontal" || props.layoutDirection === "hero";
-        const isHero = props.layoutDirection === "hero";
+        const isHorizontal = props.layoutDirection === "horizontal" || props.layoutDirection === "hero" || props.layoutDirection === "hero-centered";
+        const isHero = props.layoutDirection === "hero" || props.layoutDirection === "hero-centered";
+        const isHeroCentered = props.layoutDirection === "hero-centered";
         const isFillWidth = props.width === "fill" || props.layoutSizingHorizontal === "FILL";
         const isFillHeight = props.height === "fill" || props.layoutSizingVertical === "FILL";
         const isHugHeight = props.height === "hug" || props.layoutSizingVertical === "HUG";
@@ -91,7 +92,7 @@ export class metric_card_design1 extends BaseComponent {
             primaryAxisAlignItems: "MIN",
             counterAxisAlignItems: "CENTER",
             itemSpacing: 8,
-            layoutSizingHorizontal: "HUG",
+            layoutSizingHorizontal: isHeroCentered ? "FILL" : "HUG",
             layoutSizingVertical: "HUG",
             fills: []
         }, [
@@ -142,7 +143,19 @@ export class metric_card_design1 extends BaseComponent {
                 circleSize,
                 { start: startColor, end: endColor }
             );
-            if (circleNode) chartNodes.push(circleNode);
+            if (circleNode) {
+                if (isHeroCentered && props.value) {
+                    // Add value inside circle
+                    const valueInside = createText("Centered Value", props.value, 28, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+                        textAlignHorizontal: "CENTER",
+                        textAlignVertical: "CENTER",
+                        layoutSizingHorizontal: "HUG",
+                        layoutSizingVertical: "HUG"
+                    });
+                    circleNode.children = [...(circleNode.children || []), valueInside];
+                }
+                chartNodes.push(circleNode);
+            }
         } else {
             const waveNode = this.renderWave(
                 props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
@@ -326,17 +339,24 @@ export class metric_card_design1 extends BaseComponent {
             trendPillFrame
         ]) : null;
 
+        const heroCenteredTitleComponent = isHeroCentered ? createText("Hero Title", title, 32, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+            font: { family: "Inter", style: "Bold" },
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: "HUG"
+        }) : null;
+
         const bodyContentForHero = isHero ? createFrame("Info Stack", {
             layoutMode: "VERTICAL",
             primaryAxisAlignItems: "MIN",
             counterAxisAlignItems: "MIN",
-            layoutSizingHorizontal: "HUG",
+            layoutSizingHorizontal: isHeroCentered ? "FILL" : "HUG",
             layoutSizingVertical: "HUG",
-            itemSpacing: 12,
+            itemSpacing: isHeroCentered ? 8 : 12,
             fills: []
         }, [
             headerComponent,
-            contentComponent,
+            heroCenteredTitleComponent,
+            !isHeroCentered ? contentComponent : null,
             props.showFooter !== false ? platformFrame : null
         ].filter(Boolean) as NodeDefinition[]) : null;
 
@@ -347,6 +367,7 @@ export class metric_card_design1 extends BaseComponent {
             layoutSizingHorizontal: "HUG",
             layoutSizingVertical: "HUG",
             itemSpacing: 12,
+            clipsContent: false,
             fills: []
         }, [
             showChart ? sparklineContainer : null,
@@ -637,6 +658,9 @@ ${!isSolid ? `
             type: "FRAME",
             name: "Circle Chart",
             props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
                 fills: [],
                 clipsContent: false
             },
