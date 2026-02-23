@@ -19,11 +19,12 @@ export class SpecializedBlocksDemo extends BaseDemoPage {
                     layoutMode: "VERTICAL",
                     itemSpacing: 16,
                     primaryAxisSizingMode: "AUTO",
-                    counterAxisSizingMode: "AUTO",
+                    counterAxisSizingMode: "FIXED",
                     primaryAxisAlignItems: "CENTER",
                     counterAxisAlignItems: "CENTER",
                     fills: [],
                     clipsContent: false,
+                    layoutAlign: "STRETCH",
                 },
                 layoutProps: { parentIsAutoLayout: true },
                 children: [
