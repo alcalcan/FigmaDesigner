@@ -506,6 +506,12 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 chartType: "icon",
                 icon: "Lucide_activity",
                 gap: 24,
+                showHeader: false, // Take out header
+                titleFontSize: 20, // Change font to 20px
+                titleTextAlign: "LEFT", // Left align text
+                showValueBesideInfo: true, // Prominent value between info and trend
+                trendPillStyle: "outline",
+                trendPillFontSize: 10,
                 gradientStart: { r: 0.05, g: 0.6, b: 0.3 },
                 gradientEnd: { r: 0.2, g: 0.8, b: 0.5 }
             }, "27. Hero Triple with Icon");

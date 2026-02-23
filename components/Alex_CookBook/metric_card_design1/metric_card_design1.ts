@@ -45,6 +45,12 @@ export interface MetricCardDesign1Props extends ComponentProps {
     strokeColor?: RGB;
     showFooter?: boolean;
     chartCornerRadius?: number;
+    showHeader?: boolean;
+    titleFontSize?: number;
+    titleTextAlign?: "LEFT" | "CENTER" | "RIGHT";
+    showValueBesideInfo?: boolean;
+    trendPillStyle?: "solid" | "outline";
+    trendPillFontSize?: number;
 }
 
 export class metric_card_design1 extends BaseComponent {
@@ -94,7 +100,9 @@ export class metric_card_design1 extends BaseComponent {
 
         const sparklineWidth = props.chartWidth ?? (isHorizontal ? (isCompact ? 100 : 180) : (isCompact ? 320 - 24 : 490.6667 - 32));
 
-        const headerComponent: NodeDefinition = createFrame("Header", {
+        const showHeader = props.showHeader !== false;
+
+        const headerComponent: NodeDefinition | null = showHeader ? createFrame("Header", {
             layoutMode: "HORIZONTAL",
             primaryAxisAlignItems: "MIN",
             counterAxisAlignItems: isHeaderCircle ? "MIN" : "CENTER",
@@ -139,7 +147,7 @@ export class metric_card_design1 extends BaseComponent {
                     }
                 }
             ])
-        ].filter(Boolean) as NodeDefinition[]);
+        ].filter(Boolean) as NodeDefinition[]) : null;
 
         const chartNodes: NodeDefinition[] = [];
         if (props.chartType === "circle") {
@@ -292,19 +300,26 @@ export class metric_card_design1 extends BaseComponent {
             })
         ]);
 
+        const isTrendPillOutline = props.trendPillStyle === "outline";
+        const trendPillTextColor = isTrendPillOutline ? { r: 0.55, g: 0.6, b: 0.7 } : trendColor;
+        const trendPillStrokeColor = isTrendPillOutline ? { r: 0.55, g: 0.6, b: 0.7 } : trendColor;
+        const trendPillIconColor = isTrendPillOutline ? { r: 0.55, g: 0.6, b: 0.7 } : trendColor;
+
         const trendPillFrame = createFrame("Trend Pill", {
             layoutMode: "HORIZONTAL",
-            itemSpacing: isCompact ? 4 : 6,
-            paddingTop: isCompact ? 6 : 8,
-            paddingBottom: isCompact ? 6 : 8,
-            paddingLeft: isCompact ? 8 : 12,
-            paddingRight: isCompact ? 8 : 12,
-            cornerRadius: props.trendPillRadius ?? (isCompact ? 12 : 16),
+            itemSpacing: (isTrendPillOutline ? 4 : (isCompact ? 4 : 6)),
+            paddingTop: isTrendPillOutline ? 4 : (isCompact ? 6 : 8),
+            paddingBottom: isTrendPillOutline ? 4 : (isCompact ? 6 : 8),
+            paddingLeft: isTrendPillOutline ? 8 : (isCompact ? 8 : 12),
+            paddingRight: isTrendPillOutline ? 12 : (isCompact ? 8 : 12),
+            cornerRadius: props.trendPillRadius ?? (isTrendPillOutline ? 16 : (isCompact ? 12 : 16)),
             primaryAxisAlignItems: "CENTER",
             counterAxisAlignItems: "CENTER",
             layoutSizingHorizontal: "HUG",
             layoutSizingVertical: "HUG",
-            fills: [{ type: "SOLID", color: trendColor, opacity: 0.1 }]
+            fills: isTrendPillOutline ? [] : [{ type: "SOLID", color: trendColor, opacity: 0.1 }],
+            strokes: isTrendPillOutline ? [{ type: "SOLID", color: trendPillStrokeColor, opacity: 1 }] : [],
+            strokeWeight: isTrendPillOutline ? 1 : 0
         }, [
             createFrame("Icon Wrapper", {
                 layoutMode: "HORIZONTAL",
@@ -325,7 +340,7 @@ export class metric_card_design1 extends BaseComponent {
                     props: {
                         width: trendIconSize,
                         height: trendIconSize,
-                        color: trendColor,
+                        color: trendPillIconColor,
                     },
                     layoutProps: {
                         width: trendIconSize,
@@ -337,10 +352,10 @@ export class metric_card_design1 extends BaseComponent {
                     }
                 }
             ]),
-            createText("Trend %", trendValue, isCompact ? 12 : 13, "Bold", trendColor, {
+            createText("Trend %", trendValue, props.trendPillFontSize ?? (isCompact ? 12 : 13), "Bold", trendPillTextColor, {
                 font: { family: "Inter", style: "Bold" }
             }),
-            !isCompact
+            (!isCompact && !isTrendPillOutline)
                 ? createText("Trend Abs", trendDirection === "up" ? "(+8ms)" : trendDirection === "down" ? "(-8ms)" : "(0ms)", 13, "Medium", platformTextColor, {
                     font: { family: "Inter", style: "Medium" }
                 })
@@ -360,10 +375,11 @@ export class metric_card_design1 extends BaseComponent {
             trendPillFrame
         ]) : null;
 
-        const heroCenteredTitleComponent = (isHeroCentered || isHeaderCircle || isHeroTriple) ? createText("Hero Title", title, 24, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+        const heroCenteredTitleComponent = (isHeroCentered || isHeaderCircle || isHeroTriple) ? createText("Hero Title", title, props.titleFontSize ?? 24, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
             font: { family: "Inter", style: "Bold" },
             layoutSizingHorizontal: "FILL",
-            layoutSizingVertical: "HUG"
+            layoutSizingVertical: "HUG",
+            textAlignHorizontal: props.titleTextAlign ?? "LEFT"
         }) : null;
 
         const bodyContentForHero = isHero ? createFrame("Info Stack", {
@@ -407,6 +423,11 @@ export class metric_card_design1 extends BaseComponent {
         }, [
             bodyContentForHero,
             isHeroTriple ? trendPillFrame : null,
+            props.showValueBesideInfo ? createText("Prominent Value", value, 24, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+                font: { family: "Inter", style: "Bold" },
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG"
+            }) : null,
             visualGroupForHero
         ].filter(Boolean) as NodeDefinition[]) : (isHorizontal ? createFrame("Body", {
             layoutMode: "HORIZONTAL",
