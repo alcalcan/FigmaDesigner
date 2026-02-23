@@ -18,9 +18,9 @@ export interface ComponentProps {
 export interface NodeDefinition {
   type: "FRAME" | "TEXT" | "VECTOR" | "RECTANGLE" | "ELLIPSE" | "LINE" | "STAR" | "POLYGON" | "INSTANCE" | "COMPONENT" | "GROUP" | "BOOLEAN_OPERATION";
   name?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: Record<string, any> & {
     richTextSpans?: { start: number; end: number; font?: FontName; fills?: Paint[]; fontSize?: number }[];
+    arcData?: { startingAngle: number; endingAngle: number; innerRadius: number };
   };
   booleanOperation?: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
   layoutProps?: {

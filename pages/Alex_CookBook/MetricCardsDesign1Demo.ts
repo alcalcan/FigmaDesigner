@@ -10,7 +10,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
         await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
         await figma.loadFontAsync({ family: "Inter", style: "Bold" });
 
-        const root = await this.initPage("Metric Cards Design 1 Showcase", 1200);
+        const root = await this.initPage("Metric Cards Design 1 Showcase", 1440);
 
         await this.addHeader(
             root,
@@ -30,7 +30,6 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 period: "Component Default",
                 trendDirection: "up",
                 trendValue: "Stable",
-                height: "hug",
                 gap: 24
             }, "Default component behavior (Gap 24)");
 
@@ -40,7 +39,6 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 period: "Component Default",
                 trendDirection: "neutral",
                 trendValue: "Stable",
-                height: "hug",
                 gap: 24,
                 gradientStart: { r: 0.02, g: 0.08, b: 0.25 }, // Dark Blue
                 gradientEnd: { r: 0.15, g: 0.35, b: 0.8 }    // Rich Blue
@@ -227,7 +225,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
         await this.addSection(root, "Horizontal Layout", "Text on the left, chart element on the right.", async (container) => {
             const row = this.createRow(container);
 
-            // 1. Horizontal Default
+            // 1. Horizontal Default (Area Chart)
             await this.createCardWithCaption(design1, row, {
                 title: "Server Latency",
                 value: "42ms",
@@ -239,6 +237,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 layoutDirection: "horizontal",
                 chartWidth: 160,
                 chartHeight: "fill", // Map height fill
+                chartType: "area",
                 gap: 24,
                 gradientStart: { r: 0.1, g: 0.7, b: 0.4 }, // Greenish
                 gradientEnd: { r: 0.2, g: 0.9, b: 0.6 }
@@ -271,11 +270,49 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 trendDirection: "neutral",
                 trendValue: "Stable",
                 width: "fill",
-                height: "hug",
+                height: 200,
                 layoutDirection: "horizontal",
                 showChart: false,
                 gap: 24
             }, "Horizontal Layout (No Chart)");
+
+            const row2 = this.createRow(container);
+
+            // 4. Horizontal Line Chart
+            await this.createCardWithCaption(design1, row2, {
+                title: "CPU Usage",
+                value: "68%",
+                period: "Current Server",
+                trendDirection: "up",
+                trendValue: "+12%",
+                width: "fill",
+                height: 260,
+                layoutDirection: "horizontal",
+                chartWidth: 160,
+                chartHeight: "fill",
+                chartType: "line", // Using line chart
+                gap: 24,
+                gradientStart: { r: 0.4, g: 0.1, b: 0.9 }, // Purple
+                gradientEnd: { r: 0.6, g: 0.4, b: 1.0 }
+            }, "Horizontal Layout (Line Chart)");
+
+            // 5. Horizontal Circle Chart
+            await this.createCardWithCaption(design1, row2, {
+                title: "Memory Used",
+                value: "75%",
+                period: "Database Cluster",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill",
+                height: 200,
+                layoutDirection: "horizontal",
+                chartWidth: 100,
+                chartType: "circle", // Circle donut chart
+                dataPoints: [0.75], // 75% filled segment
+                gap: 24,
+                gradientStart: { r: 0.15, g: 0.45, b: 0.95 }, // Blue
+                gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
+            }, "Horizontal Layout (Circle)");
         });
 
         root.x = props.x ?? 0;
@@ -295,23 +332,22 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
         // Append to row first so layout props below are valid
         row.appendChild(container);
 
-        // Ensure container doesn't default to 100px
+        // Ensure container doesn't default to 100px width; height is auto (HUG)
         container.resize(row.width, 100);
 
-        const card = await design.create({ ...props, height: "hug" });
+        const card = await design.create(props);
         container.appendChild(card);
 
-        // Mimic sizing: if card is set to fill (width), container must grow in the row
-        if (props.width === "fill") {
-            (container as any).layoutGrow = 1;
+        // All variant wrappers should grow to fill available row width
+        (container as any).layoutGrow = 1;
+        container.counterAxisAlignItems = "CENTER";
 
+        // Mimic sizing: if card is set to fill (width), card should stretch inside the container
+        if (props.width === "fill") {
             // Inside the vertical container, card should stretch to fill width
             if ('layoutAlign' in card) {
                 (card as any).layoutAlign = "STRETCH";
             }
-        } else {
-            // For fixed width (like the original 491px), hug the card
-            container.counterAxisSizingMode = "AUTO";
         }
 
         if ("layoutSizingVertical" in container) {
@@ -319,11 +355,15 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
         }
         container.primaryAxisSizingMode = "AUTO";
 
-        if ("layoutSizingVertical" in card) {
-            (card as any).layoutSizingVertical = "HUG";
-        }
-        if ("primaryAxisSizingMode" in card && (card as any).layoutMode === "VERTICAL") {
-            (card as any).primaryAxisSizingMode = "AUTO";
+        // Only override the card to hug vertically if it's explicitly filling horizontal space 
+        // to prevent large blank areas. If fixed size (default), leave it as-is.
+        if (props.width === "fill" || props.height === "hug") {
+            if ("layoutSizingVertical" in card) {
+                (card as any).layoutSizingVertical = "HUG";
+            }
+            if ("primaryAxisSizingMode" in card && (card as any).layoutMode === "VERTICAL") {
+                (card as any).primaryAxisSizingMode = "AUTO";
+            }
         }
 
         const text = figma.createText();

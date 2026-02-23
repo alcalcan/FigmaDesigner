@@ -23,6 +23,7 @@ export interface MetricCardDesign1Props extends ComponentProps {
     footerGap?: number | "auto";
     dataPoints?: number[];
     showChart?: boolean;
+    chartType?: "area" | "line" | "circle";
     chartHeight?: number | "fill";
     gradientStart?: RGB;
     gradientEnd?: RGB;
@@ -69,7 +70,7 @@ export class metric_card_design1 extends BaseComponent {
         const startColor = props.gradientStart || defaultGradientStart;
         const endColor = props.gradientEnd || defaultGradientEnd;
 
-        const rootWidth = isCompact ? 320 : 490.6667;
+        const rootWidth = isCompact ? 320 : 491;
         const rootHeight = isCompact ? 200 : 304;
         const isChartFill = props.chartHeight === "fill";
         const sparklineHeight = (typeof props.chartHeight === 'number') ? props.chartHeight : (isCompact ? 40 : 70);
@@ -131,11 +132,37 @@ export class metric_card_design1 extends BaseComponent {
             ])
         ]);
 
+        const chartNodes: NodeDefinition[] = [];
+        if (props.chartType === "circle") {
+            const circleNode = this.renderCircle(
+                (props.dataPoints && props.dataPoints.length > 0) ? props.dataPoints[props.dataPoints.length - 1] : 0.75,
+                (typeof props.chartHeight === 'number') ? props.chartHeight : (isCompact ? 48 : 64),
+                { start: startColor, end: endColor }
+            );
+            if (circleNode) chartNodes.push(circleNode);
+        } else {
+            const waveNode = this.renderWave(
+                props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
+                sparklineWidth,
+                sparklineHeight,
+                {
+                    start: startColor,
+                    end: endColor,
+                    fillType: props.chartFillType,
+                    opacity: props.chartOpacity,
+                    gradientOpacityStart: props.chartGradientOpacityStart,
+                    gradientOpacityEnd: props.chartGradientOpacityEnd
+                },
+                props.chartType === "line" ? "line" : "area"
+            );
+            if (waveNode) chartNodes.push(waveNode);
+        }
+
         const sparklineContainer: NodeDefinition | null = showChart ? createFrame("Sparkline Container", {
             layoutMode: "VERTICAL",
             primaryAxisAlignItems: "CENTER",
             counterAxisAlignItems: "CENTER",
-            clipsContent: true,
+            clipsContent: false, // Allow glow/shadow to bleed out
             layoutSizingHorizontal: "FILL",
             layoutSizingVertical: isChartFill ? "FILL" : "FIXED",
             cornerRadius: sparklineCornerRadius,
@@ -156,21 +183,7 @@ export class metric_card_design1 extends BaseComponent {
                 layoutSizingVertical: isChartFill ? "FILL" : "FIXED",
                 parentIsAutoLayout: true
             }
-        }, [
-            this.renderWave(
-                props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
-                sparklineWidth,
-                sparklineHeight,
-                {
-                    start: startColor,
-                    end: endColor,
-                    fillType: props.chartFillType,
-                    opacity: props.chartOpacity,
-                    gradientOpacityStart: props.chartGradientOpacityStart,
-                    gradientOpacityEnd: props.chartGradientOpacityEnd
-                }
-            ) as NodeDefinition
-        ]) : null;
+        }, chartNodes) : null;
 
         const contentComponent: NodeDefinition = createFrame("Content", {
             layoutMode: "VERTICAL",
@@ -332,7 +345,7 @@ export class metric_card_design1 extends BaseComponent {
                 paddingBottom: padding,
                 paddingLeft: padding,
                 primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
-                counterAxisSizingMode: isFillWidth ? "FIXED" : "AUTO",
+                counterAxisSizingMode: "FIXED",
                 primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : "MIN",
                 counterAxisAlignItems: "MIN",
                 clipsContent: false,
@@ -421,17 +434,19 @@ export class metric_card_design1 extends BaseComponent {
         opacity?: number,
         gradientOpacityStart?: number,
         gradientOpacityEnd?: number
-    }): NodeDefinition | null {
+    }, chartType: "area" | "line" = "area"): NodeDefinition | null {
         if (data.length < 2) return null;
 
         const step = width / (data.length - 1);
-        const points = data.map((d, i) => ({ x: i * step, y: height - (d * height) }));
+        const vPaddingTop = 6;
+        const vPaddingBottom = chartType === "line" ? 6 : 0;
+        const points = data.map((d, i) => ({
+            x: i * step,
+            y: vPaddingTop + (1 - d) * (height - vPaddingTop - vPaddingBottom)
+        }));
 
-        // Start from bottom-left corner
-        let pathData = `M 0 ${height} `;
-
-        // Line to the first point
-        pathData += `L ${points[0].x} ${points[0].y} `;
+        // Start from bottom-left corner for area, or first y for line
+        let pathData = chartType === "line" ? `M 0 ${points[0].y} ` : `M 0 ${height} L 0 ${points[0].y} `;
 
         // Use cubic beziers for smoothing
         for (let i = 0; i < points.length - 1; i++) {
@@ -450,8 +465,10 @@ export class metric_card_design1 extends BaseComponent {
             pathData += `C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} `;
         }
 
-        // Close back to bottom
-        pathData += `L ${width} ${height} Z`;
+        // Close back to bottom for area
+        if (chartType !== "line") {
+            pathData += `L ${width} ${height} Z`;
+        }
 
         const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
         const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
@@ -463,10 +480,24 @@ export class metric_card_design1 extends BaseComponent {
         const startRGB = `rgb(${Math.round(startColor.r * 255)}, ${Math.round(startColor.g * 255)}, ${Math.round(startColor.b * 255)})`;
         const endRGB = `rgb(${Math.round(endColor.r * 255)}, ${Math.round(endColor.g * 255)}, ${Math.round(endColor.b * 255)})`;
 
-        const fillValue = isSolid ? startRGB : "url(#paint0_linear_dynamic)";
-        const fillOpacity = isSolid ? baseOpacity : 1;
-
-        return createVector("Area Fill", `
+        let svgContent = '';
+        if (chartType === "line") {
+            const strokeColor = isSolid ? startRGB : "url(#paint0_linear_dynamic)";
+            svgContent = `
+<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="${pathData}" stroke="${strokeColor}" stroke-width="3" fill="none" stroke-linecap="round"/>
+${!isSolid ? `
+<defs>
+<linearGradient id="paint0_linear_dynamic" x1="0" y1="0" x2="${width}" y2="0" gradientUnits="userSpaceOnUse">
+<stop stop-color="${startRGB}"/>
+<stop offset="1" stop-color="${endRGB}"/>
+</linearGradient>
+</defs>` : ""}
+</svg>`;
+        } else {
+            const fillValue = isSolid ? startRGB : "url(#paint0_linear_dynamic)";
+            const fillOpacity = isSolid ? baseOpacity : 1;
+            svgContent = `
 <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="${pathData}" fill="${fillValue}" fill-opacity="${fillOpacity}"/>
 ${!isSolid ? `
@@ -476,7 +507,10 @@ ${!isSolid ? `
 <stop offset="1" stop-color="${endRGB}" stop-opacity="${gradOpacityEnd * baseOpacity}"/>
 </linearGradient>
 </defs>` : ""}
-</svg>`, {
+</svg>`;
+        }
+
+        return createVector(chartType === "line" ? "Line Chart" : "Area Fill", svgContent, {
             layoutProps: {
                 width: undefined,
                 height: undefined,
@@ -487,5 +521,87 @@ ${!isSolid ? `
                 constraints: { horizontal: "STRETCH", vertical: "STRETCH" }
             }
         });
+    }
+
+    private renderCircle(percentage: number, targetSize: number, customStyle?: { start?: RGB, end?: RGB }): NodeDefinition | null {
+        const strokeWidth = Math.max(6, targetSize * 0.18);
+        const innerRadiusRatio = 1 - (strokeWidth * 2 / targetSize);
+
+        const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
+        const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
+
+        const trackFill = [{ type: "SOLID", color: startColor, opacity: 0.15 }];
+        const gradientFill = [{
+            type: "GRADIENT_LINEAR",
+            gradientTransform: [[1, 0, 0], [0, 1, 0]],
+            gradientStops: [
+                { position: 0, color: { ...startColor, a: 1 } },
+                { position: 1, color: { ...endColor, a: 1 } }
+            ]
+        }];
+
+        const startingAngle = -Math.PI / 2;
+        const sweepAngle = Math.min(Math.max(percentage, 0), 1) * 2 * Math.PI;
+
+        const ellipses: NodeDefinition[] = [
+            {
+                type: "ELLIPSE",
+                name: "Track",
+                props: {
+                    fills: trackFill,
+                    arcData: {
+                        startingAngle: 0,
+                        endingAngle: 2 * Math.PI,
+                        innerRadius: innerRadiusRatio
+                    }
+                },
+                layoutProps: {
+                    width: targetSize,
+                    height: targetSize,
+                    layoutPositioning: "ABSOLUTE",
+                    x: 0,
+                    y: 0
+                }
+            }
+        ];
+
+        if (percentage > 0) {
+            ellipses.push({
+                type: "ELLIPSE",
+                name: "Progress",
+                props: {
+                    fills: gradientFill,
+                    cornerRadius: targetSize, // fully rounded caps
+                    arcData: {
+                        startingAngle: startingAngle,
+                        endingAngle: startingAngle + sweepAngle,
+                        innerRadius: innerRadiusRatio
+                    }
+                },
+                layoutProps: {
+                    width: targetSize,
+                    height: targetSize,
+                    layoutPositioning: "ABSOLUTE",
+                    x: 0,
+                    y: 0
+                }
+            });
+        }
+
+        return {
+            type: "FRAME",
+            name: "Circle Chart",
+            props: {
+                fills: [],
+                clipsContent: false
+            },
+            layoutProps: {
+                width: targetSize,
+                height: targetSize,
+                parentIsAutoLayout: true,
+                layoutPositioning: "AUTO"
+            },
+            children: ellipses
+        };
     }
 }
