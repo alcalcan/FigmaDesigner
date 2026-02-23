@@ -5,6 +5,9 @@ import { Lucide_settings } from "../../lucide_icons/Lucide_settings/Lucide_setti
 import { Lucide_arrow_up } from "../../lucide_icons/Lucide_arrow_up/Lucide_arrow_up";
 import { Lucide_arrow_down } from "../../lucide_icons/Lucide_arrow_down/Lucide_arrow_down";
 import { Lucide_minus } from "../../lucide_icons/Lucide_minus/Lucide_minus";
+import { Lucide_activity } from "../../lucide_icons/Lucide_activity/Lucide_activity";
+import { Lucide_server } from "../../lucide_icons/Lucide_server/Lucide_server";
+import { Lucide_hard_drive } from "../../lucide_icons/Lucide_hard_drive/Lucide_hard_drive";
 import SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig from "../../captures/metric_card_design1/assets/metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig.svg";
 
 export interface MetricCardDesign1Props extends ComponentProps {
@@ -23,7 +26,9 @@ export interface MetricCardDesign1Props extends ComponentProps {
     footerGap?: number | "auto";
     dataPoints?: number[];
     showChart?: boolean;
-    chartType?: "area" | "line" | "circle";
+    chartType?: "area" | "line" | "circle" | "icon";
+    icon?: string;
+    iconStrokeWeight?: number;
     chartHeight?: number | "fill";
     gradientStart?: RGB;
     gradientEnd?: RGB;
@@ -159,6 +164,19 @@ export class metric_card_design1 extends BaseComponent {
 
                 chartNodes.push(circleNode);
             }
+        } else if (props.chartType === "icon") {
+            const circleSize = (typeof props.chartWidth === 'number' && props.chartWidth > 0) ? props.chartWidth :
+                ((typeof props.chartHeight === 'number' && props.chartHeight > 0) ? props.chartHeight : (isHeaderCircle || isHeroTriple ? 48 : (isHero ? 120 : (isCompact ? 48 : 80))));
+            const iconNode = await this.renderIconCircle(
+                props.icon || "Lucide_activity",
+                circleSize,
+                {
+                    start: startColor,
+                    end: endColor,
+                    strokeWeight: props.iconStrokeWeight
+                }
+            );
+            if (iconNode) chartNodes.push(iconNode);
         } else {
             const waveNode = this.renderWave(
                 props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
@@ -675,6 +693,69 @@ ${!isSolid ? `
                 layoutPositioning: "AUTO"
             },
             children: ellipses
+        };
+    }
+
+    private async renderIconCircle(iconName: string, targetSize: number, customStyle?: { start?: RGB, end?: RGB, strokeWeight?: number }): Promise<NodeDefinition | null> {
+        const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
+        const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
+
+        const gradientFill = [{
+            type: "GRADIENT_LINEAR",
+            gradientTransform: [[1, 0, 0], [0, 1, 0]],
+            gradientStops: [
+                { position: 0, color: { ...startColor, a: 1 } },
+                { position: 1, color: { ...endColor, a: 1 } }
+            ]
+        }];
+
+        const iconSize = Math.round(targetSize * 0.5);
+
+        // Map string names to components
+        let iconComponent: any = Lucide_activity;
+        if (iconName === "Lucide_server") iconComponent = Lucide_server;
+        if (iconName === "Lucide_database") iconComponent = Lucide_hard_drive;
+        if (iconName === "Lucide_hard_drive") iconComponent = Lucide_hard_drive;
+
+        const strokeWeight = customStyle?.strokeWeight ?? (targetSize > 80 ? 3.5 : 2);
+
+        return {
+            type: "FRAME",
+            name: "Icon Circle",
+            props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                fills: gradientFill,
+                cornerRadius: targetSize,
+                clipsContent: true
+            },
+            layoutProps: {
+                width: targetSize,
+                height: targetSize,
+                parentIsAutoLayout: true,
+                layoutPositioning: "AUTO"
+            },
+            children: [
+                {
+                    type: "COMPONENT",
+                    name: "Icon",
+                    component: iconComponent,
+                    props: {
+                        width: iconSize,
+                        height: iconSize,
+                        color: { r: 1, g: 1, b: 1 },
+                        strokeWeight: strokeWeight
+                    },
+                    layoutProps: {
+                        width: iconSize,
+                        height: iconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true
+                    }
+                }
+            ]
         };
     }
 }

@@ -476,6 +476,90 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
             }, "25. Hero Triple (Green)");
         });
 
+        await this.addSection(root, "Icon Indicator Variants", "Solid gradient circle with white icons representing data types.", async (container) => {
+            const row = this.createRow(container);
+
+            await this.createCardWithCaption(design1, row, {
+                title: "Database Cluster",
+                value: "75%",
+                period: "Global Health",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill",
+                height: 140,
+                layoutDirection: "header-circle",
+                chartType: "icon",
+                icon: "Lucide_server",
+                gradientStart: { r: 0.15, g: 0.45, b: 0.95 },
+                gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
+            }, "26. Side Indicator with Icon");
+
+            await this.createCardWithCaption(design1, row, {
+                title: "API Performance",
+                value: "98.2%",
+                period: "Global Health",
+                trendDirection: "up",
+                trendValue: "Healthy",
+                width: "fill",
+                height: 220,
+                layoutDirection: "hero-triple",
+                chartType: "icon",
+                icon: "Lucide_activity",
+                gap: 24,
+                gradientStart: { r: 0.05, g: 0.6, b: 0.3 },
+                gradientEnd: { r: 0.2, g: 0.8, b: 0.5 }
+            }, "27. Hero Triple with Icon");
+
+            const secondRow = this.createRow(container);
+            await this.createCardWithCaption(design1, secondRow, {
+                title: "System Activity",
+                value: "Optimal",
+                period: "Network Performance",
+                trendDirection: "up",
+                trendValue: "Healthy",
+                width: "fill",
+                height: 320,
+                layoutDirection: "hero-centered",
+                chartType: "icon",
+                icon: "Lucide_activity",
+                iconStrokeWeight: 3.5,
+                gradientStart: { r: 0.25, g: 0.25, b: 0.95 },
+                gradientEnd: { r: 0.45, g: 0.45, b: 1.0 }
+            }, "28. Activity Hero (Centered)");
+
+            await this.createCardWithCaption(design1, secondRow, {
+                title: "Server Clusters",
+                value: "P3-092",
+                period: "Global Instances",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill",
+                height: 320,
+                layoutDirection: "hero-centered",
+                chartType: "icon",
+                icon: "Lucide_server",
+                iconStrokeWeight: 3.5,
+                gradientStart: { r: 0.45, g: 0.15, b: 0.95 },
+                gradientEnd: { r: 0.65, g: 0.35, b: 1.0 }
+            }, "29. Server Hero (Centered)");
+
+            await this.createCardWithCaption(design1, secondRow, {
+                title: "Database Hub",
+                value: "Syncing",
+                period: "Regional Replicas",
+                trendDirection: "up",
+                trendValue: "12ms",
+                width: "fill",
+                height: 320,
+                layoutDirection: "hero-centered",
+                chartType: "icon",
+                icon: "Lucide_database",
+                iconStrokeWeight: 3.5,
+                gradientStart: { r: 0.98, g: 0.25, b: 0.15 },
+                gradientEnd: { r: 1.0, g: 0.45, b: 0.35 }
+            }, "30. Database Hero (Centered)");
+        });
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 
