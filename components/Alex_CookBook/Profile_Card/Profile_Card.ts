@@ -59,6 +59,7 @@ export class Profile_Card extends BaseComponent {
       primaryAxisSizingMode: "AUTO",
       counterAxisSizingMode: "AUTO",
       layoutAlign: "STRETCH",
+      clipsContent: false,
       paddingLeft: isArticle ? 24 : 0,
       paddingRight: isArticle ? 24 : 0
     }, [
@@ -76,6 +77,7 @@ export class Profile_Card extends BaseComponent {
       primaryAxisAlignItems: "SPACE_BETWEEN",
       counterAxisAlignItems: "CENTER",
       layoutProps: { layoutAlign: "STRETCH" },
+      clipsContent: false,
       paddingLeft: isArticle ? 24 : 0,
       paddingRight: isArticle ? 24 : 0,
       paddingBottom: isArticle ? 24 : 0
@@ -221,6 +223,7 @@ export class Profile_Card extends BaseComponent {
       paddingLeft: isHorizontal ? 24 : (isArticle ? 0 : 24),
       primaryAxisSizingMode: isHorizontal ? "FIXED" : "AUTO",
       counterAxisSizingMode: isHorizontal ? "AUTO" : "FIXED",
+      clipsContent: false,
       fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
       cornerRadius: 16,
       effects: [{
