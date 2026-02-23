@@ -404,6 +404,42 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
             }, "21. Hero Layout (Centered - Red)");
         });
 
+        await this.addSection(root, "Header Circle Variant", "Small 40px indicator integrated directly into the header.", async (container) => {
+            const row = this.createRow(container);
+
+            await this.createCardWithCaption(design1, row, {
+                title: "Database Cluster",
+                value: "75%",
+                period: "Memory Used",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill",
+                height: 220,
+                layoutDirection: "header-circle",
+                chartType: "circle",
+                dataPoints: [0.75],
+                gap: 24,
+                gradientStart: { r: 0.15, g: 0.45, b: 0.95 },
+                gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
+            }, "22. Header Circle (Blue)");
+
+            await this.createCardWithCaption(design1, row, {
+                title: "API Performance",
+                value: "98.2%",
+                period: "Global Reliability",
+                trendDirection: "up",
+                trendValue: "Healthy",
+                width: "fill",
+                height: 220,
+                layoutDirection: "header-circle",
+                chartType: "circle",
+                dataPoints: [0.982],
+                gap: 24,
+                gradientStart: { r: 0.05, g: 0.6, b: 0.3 },
+                gradientEnd: { r: 0.2, g: 0.8, b: 0.5 }
+            }, "23. Header Circle (Green)");
+        });
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 
