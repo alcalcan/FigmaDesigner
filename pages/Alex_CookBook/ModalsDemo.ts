@@ -1,7 +1,8 @@
 import { BaseDemoPage } from "./BaseDemoPage";
 import { modal } from "../../components/Alex_CookBook/modal/modal";
-import { createText } from "../../components/ComponentHelpers";
+import { createText, createFrame } from "../../components/ComponentHelpers";
 import { input_field } from "../../components/Alex_CookBook/input_field/input_field";
+import { button } from "../../components/Alex_CookBook/button/button";
 import { ComponentProps, NodeDefinition } from "../../components/BaseComponent";
 
 export class ModalsDemo extends BaseDemoPage {
@@ -31,19 +32,23 @@ export class ModalsDemo extends BaseDemoPage {
         await this.addSection(root, "Standard Unified Modals", "Basic alert and confirmation modals.", async (container) => {
             const basicModal = new modal();
             container.appendChild(await basicModal.create({
-                title: "Alert",
-                description: "This is a basic alert with just a title and body.",
+                title: "Are you sure you want to delete this?",
+                description: "This action cannot be undone.",
                 variant: "unified",
-                width: 400
+                primaryCtaText: "Delete",
+                secondaryCtaText: "Cancel",
+                width: 480
             }));
 
-            const footerModal = new modal();
-            container.appendChild(await footerModal.create({
-                title: "Are you sure?",
-                description: "This action cannot be undone. Are you sure you wish to proceed?",
+            // Icon Modal Example
+            const iconModal = new modal();
+            container.appendChild(await iconModal.create({
+                title: "Critical System Error",
+                description: "The database connection could not be established. Please check your network and try again.",
                 variant: "unified",
-                primaryCtaText: "Yes, Delete",
-                secondaryCtaText: "Cancel",
+                primaryCtaText: "Retry Connection",
+                secondaryCtaText: "Dismiss",
+                statusIcon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
                 width: 480
             }));
             const formModal = new modal();
@@ -83,6 +88,95 @@ export class ModalsDemo extends BaseDemoPage {
                 secondaryCtaText: "Discard",
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 500
+            }));
+
+            // Custom Confirmation Modal based on User Snippet
+            const confirmationModal = new modal();
+            container.appendChild(await confirmationModal.create({
+                title: "Configure Offer 13",
+                variant: "separated",
+                showCloseIcon: false,
+                width: 292,
+                rootCornerRadius: 0,
+                rootStrokes: [{ type: "SOLID", color: { r: 19 / 255, g: 55 / 255, b: 66 / 255 } }], // Dark Teal stroke
+                headerFill: { r: 19 / 255, g: 55 / 255, b: 66 / 255 }, // Dark Teal
+                titleColorOverride: { r: 1, g: 1, b: 1 }, // White text
+                bodyFill: { r: 248 / 255, g: 248 / 255, b: 249 / 255 }, // Light Grey
+                bodyContent: [
+                    {
+                        type: "COMPONENT",
+                        component: input_field,
+                        name: "Subsidy Rate",
+                        props: { label: "Subsidy rate", placeholder: "0 - 100 <%>", type: "simple" },
+                        layoutProps: { layoutAlign: "STRETCH" }
+                    },
+                    {
+                        type: "COMPONENT",
+                        component: input_field,
+                        name: "Min Loan",
+                        props: { label: "Min loan value", placeholder: "Please type a value <£>", type: "simple" },
+                        layoutProps: { layoutAlign: "STRETCH" }
+                    },
+                    {
+                        type: "COMPONENT",
+                        component: input_field,
+                        name: "Max Loan",
+                        props: { label: "Max loan value", placeholder: "Please type a value <£>", type: "simple" },
+                        layoutProps: { layoutAlign: "STRETCH" }
+                    }
+                ],
+                customFooterContent: [
+                    {
+                        type: "FRAME",
+                        name: "BTN_standard",
+                        props: {
+                            layoutMode: "HORIZONTAL",
+                            itemSpacing: 8,
+                            paddingTop: 4,
+                            paddingRight: 16,
+                            paddingBottom: 4,
+                            paddingLeft: 16,
+                            cornerRadius: 2,
+                            fills: [{ type: "SOLID", color: { r: 93 / 255, g: 111 / 255, b: 117 / 255 } }], // #5D6F75
+                            primaryAxisSizingMode: "AUTO",
+                            counterAxisSizingMode: "AUTO",
+                        },
+                        layoutProps: { parentIsAutoLayout: true },
+                        children: [
+                            createText("BTN_label", "Attach Offer", 16, "Bold", { r: 1, g: 1, b: 1 }, {
+                                font: { family: "Inter", style: "Bold" },
+                                letterSpacing: { unit: "PERCENT", value: 1.25 },
+                                lineHeight: { unit: "PIXELS", value: 24 }
+                            })
+                        ]
+                    },
+                    {
+                        type: "FRAME",
+                        name: "BTN_standard",
+                        props: {
+                            layoutMode: "HORIZONTAL",
+                            itemSpacing: 8,
+                            paddingTop: 4,
+                            paddingRight: 16,
+                            paddingBottom: 4,
+                            paddingLeft: 16,
+                            cornerRadius: 2,
+                            fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+                            strokes: [{ type: "SOLID", color: { r: 19 / 255, g: 55 / 255, b: 66 / 255 } }], // #133742
+                            strokeWeight: 1,
+                            primaryAxisSizingMode: "AUTO",
+                            counterAxisSizingMode: "AUTO",
+                        },
+                        layoutProps: { parentIsAutoLayout: true },
+                        children: [
+                            createText("BTN_label", "Cancel", 16, "Bold", { r: 19 / 255, g: 55 / 255, b: 66 / 255 }, {
+                                font: { family: "Inter", style: "Bold" },
+                                letterSpacing: { unit: "PERCENT", value: 1.25 },
+                                lineHeight: { unit: "PIXELS", value: 24 }
+                            })
+                        ]
+                    }
+                ]
             }));
         });
 

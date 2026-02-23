@@ -6,6 +6,7 @@ import { Lucide_x } from "../../lucide_icons/Lucide_x/Lucide_x";
 export interface ModalProps extends ComponentProps {
     title: string;
     description?: string;
+    statusIcon?: string; // Optional SVG string for alert/status icons
 
     variant?: "unified" | "unified_with_dividers" | "separated";
     showCloseIcon?: boolean;
@@ -20,6 +21,13 @@ export interface ModalProps extends ComponentProps {
 
     // Width
     width?: number; // default 480
+
+    // Custom Styling & Overrides
+    titleColorOverride?: RGB;
+    descColorOverride?: RGB;
+    rootStrokes?: Paint[];
+    rootCornerRadius?: number;
+    customFooterContent?: NodeDefinition[];
 
     // Custom Colors
     headerFill?: RGB;
@@ -55,10 +63,11 @@ export class modal extends BaseComponent {
             layoutMode: "VERTICAL",
             primaryAxisSizingMode: "AUTO", // Hug height
             counterAxisSizingMode: "FIXED", // Fixed width
+            itemSpacing: isUnified ? 24 : 0, // Gap between header, body, and footer
             fills: isUnified ? [{ type: "SOLID", color: defaultBg }] : [],
-            strokes: [{ type: "SOLID", color: dividerColor }],
+            strokes: props.rootStrokes ?? [{ type: "SOLID", color: dividerColor }],
             strokeWeight: 1,
-            cornerRadius: 16,
+            cornerRadius: props.rootCornerRadius !== undefined ? props.rootCornerRadius : 16,
             clipsContent: true, // IMPORTANT: Clip children so body/footer background doesn't leak out of the curved corners
             effects: [
                 { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.1 }, offset: { x: 0, y: 12 }, radius: 24, showShadowBehindNode: false },
@@ -77,21 +86,57 @@ export class modal extends BaseComponent {
         // --- HEADER ---
         const headerContent: NodeDefinition[] = [];
         const headerTitleStack: NodeDefinition[] = [
-            createText("Title", props.title, 18, "Semi Bold", titleColor, { font: { family: "Inter", style: "Semi Bold" } })
+            createText("Title", props.title, 18, "Semi Bold", props.titleColorOverride || titleColor, { font: { family: "Inter", style: "Semi Bold" } })
         ];
 
         if (props.description) {
             headerTitleStack.push(
-                createText("Description", props.description, 14, "Regular", descColor, { font: { family: "Inter", style: "Regular" } })
+                createText("Description", props.description, 14, "Regular", props.descColorOverride || descColor, { font: { family: "Inter", style: "Regular" } })
             );
         }
 
-        headerContent.push(createFrame("Title Stack", {
+        const titleStackContainer = createFrame("Title Stack", {
             layoutMode: "VERTICAL",
             itemSpacing: 4,
             fills: [],
             layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
-        }, headerTitleStack));
+        }, headerTitleStack);
+
+        // If statusIcon exists, encapsulate title and icon in a horizontal group
+        if (props.statusIcon) {
+            const iconContainer = createFrame("Status Icon Wrapper", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                primaryAxisSizingMode: "FIXED",
+                counterAxisSizingMode: "FIXED",
+                cornerRadius: 24, // Round container
+                fills: [{ type: "SOLID", color: { r: 0.98, g: 0.9, b: 0.92 } }], // Soft alert bg (customizable later if needed)
+                layoutProps: { width: 48, height: 48, parentIsAutoLayout: true }
+            }, [
+                {
+                    type: "VECTOR",
+                    name: "Status Icon",
+                    svgContent: props.statusIcon,
+                    props: {
+                        fills: [{ type: "SOLID", color: { r: 0.8, g: 0.2, b: 0.2 } }] // Default red/alert color
+                    },
+                    layoutProps: { width: 24, height: 24, parentIsAutoLayout: true }
+                }
+            ]);
+
+            headerContent.push(createFrame("Header Title Section", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "MIN",
+                counterAxisAlignItems: "MIN", // Align to top for multi-line descriptions
+                itemSpacing: 16,
+                fills: [],
+                layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
+            }, [iconContainer, titleStackContainer]));
+        } else {
+            // Standard title stack
+            headerContent.push(titleStackContainer);
+        }
 
         if (showCloseIcon) {
             headerContent.push({
@@ -102,6 +147,7 @@ export class modal extends BaseComponent {
                     variant: "ghost",
                     frontIcon: Lucide_x,
                     size: "small",
+                    frontIconColor: props.titleColorOverride // Inherit close icon color from title color override if provided
                 }
             });
         }
@@ -145,7 +191,26 @@ export class modal extends BaseComponent {
 
 
         // --- FOOTER ---
-        if (props.primaryCtaText || props.secondaryCtaText) {
+        if (props.customFooterContent) {
+            children.push(createFrame("Modal Footer", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "MAX",
+                counterAxisAlignItems: "CENTER",
+                itemSpacing: 12,
+                layoutAlign: "STRETCH",
+                primaryAxisSizingMode: "FIXED",
+                counterAxisSizingMode: "AUTO",
+                paddingTop: isUnified ? (showDivider ? 24 : 16) : (showDivider ? 24 : 16),
+                paddingRight: isUnified ? 0 : 24,
+                paddingBottom: isUnified ? 0 : 24,
+                paddingLeft: isUnified ? 0 : 24,
+                fills: variant === "separated" ? [{ type: "SOLID", color: footerFill }] : [],
+                strokes: showDivider ? [{ type: "SOLID", color: dividerColor }] : [],
+                strokeTopWeight: showDivider ? 1 : 0,
+                strokeBottomWeight: 0, strokeLeftWeight: 0, strokeRightWeight: 0,
+            }, props.customFooterContent));
+
+        } else if (props.primaryCtaText || props.secondaryCtaText) {
             const footerContent: NodeDefinition[] = [];
 
             if (props.secondaryCtaText) {
