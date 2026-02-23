@@ -386,7 +386,7 @@ export class metric_card_design1 extends BaseComponent {
             layoutMode: "VERTICAL",
             primaryAxisAlignItems: (isHeroCentered || isHeaderCircle || isHeroTriple) ? (isHeaderCircle || isHeroTriple ? "MIN" : "SPACE_BETWEEN") : "MIN",
             counterAxisAlignItems: "MIN",
-            layoutSizingHorizontal: (isHeroCentered || isHeaderCircle || isHeroTriple) ? "FILL" : "HUG",
+            layoutSizingHorizontal: "FILL",
             layoutSizingVertical: (isHeaderCircle || isHeroTriple) ? "HUG" : ((isHeroCentered || isHeaderCircle) ? "FILL" : "HUG"),
             itemSpacing: isHeroCentered ? 0 : 8,
             fills: []
