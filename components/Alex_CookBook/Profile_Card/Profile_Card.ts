@@ -7,6 +7,15 @@ export interface ProfileCardProps extends ComponentProps {
   avatarUrl?: string;
   bio?: string;
   followerCount?: string;
+
+  // CTA Variations
+  ctaText?: string; // Primary button text (e.g., "Follow", "Add")
+  ctaVariant?: "primary" | "secondary"; // Colors
+
+  // Secondary Actions (Icons)
+  showSecondaryAction?: boolean;
+  secondaryActionIcon?: any;
+  secondaryActionPosition?: "topLeft" | "topRight"; // e.g. a Delete icon vs a Settings icon
 }
 
 export class Profile_Card extends BaseComponent {
@@ -29,8 +38,18 @@ export class Profile_Card extends BaseComponent {
         radius: 20,
         showShadowBehindNode: false
       }],
-      layoutProps: { width: 400 }
+      layoutProps: { width: 400, position: "relative" }
     }, [
+      // Optional Top-Right / Top-Left absolute icon
+      ...(props.showSecondaryAction && props.secondaryActionIcon ? [
+        createFrame("Secondary Action", {
+          // Absolute positioning simulation by relying on Figma layout behavior 
+          // (or actually adding absolute position if supported, but here sticking to standard structure)
+          // Since we are in a vertical auto-layout, appending an absolute node would require 
+          // `position: "ABSOLUTE"` in our ComponentHelpers structure if supported.
+          // For now, let's inject it into the header instead for cleaner layout without absolute hacking.
+        }, [])
+      ] : []),
       // Header
       createFrame("Header", {
         layoutMode: "HORIZONTAL",
@@ -64,7 +83,10 @@ export class Profile_Card extends BaseComponent {
             layoutAlign: "STRETCH",
             textAutoResize: "HEIGHT"
           })
-        ])
+        ]),
+        ...(props.showSecondaryAction && props.secondaryActionIcon ? [
+          props.secondaryActionIcon
+        ] : [])
       ]),
       // Bio
       createText("Bio", props.bio || "Designing the future of UI with AI-powered tools.", 15, "Regular", { r: 0.2, g: 0.2, b: 0.25 }, {
@@ -91,14 +113,19 @@ export class Profile_Card extends BaseComponent {
           paddingRight: 20,
           paddingBottom: 10,
           paddingLeft: 20,
-          fills: [{ type: "SOLID", color: { r: 0, g: 0.4, b: 1 } }],
+          fills: props.ctaVariant === "secondary"
+            ? [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.92 } }]
+            : [{ type: "SOLID", color: { r: 0, g: 0.4, b: 1 } }],
           cornerRadius: 10,
           primaryAxisSizingMode: "AUTO",
           counterAxisSizingMode: "AUTO"
         }, [
-          createText("Follow", "Follow", 14, "Bold", { r: 1, g: 1, b: 1 }, {
-            textAutoResize: "WIDTH_AND_HEIGHT"
-          })
+          createText("Follow", props.ctaText || "Follow", 14, "Bold",
+            props.ctaVariant === "secondary" ? { r: 0.1, g: 0.1, b: 0.1 } : { r: 1, g: 1, b: 1 },
+            {
+              textAutoResize: "WIDTH_AND_HEIGHT"
+            }
+          )
         ])
       ])
     ]);

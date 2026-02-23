@@ -1,364 +1,197 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { createFrame, createText } from "../../ComponentHelpers";
 
+// Icons
+import { Lucide_info } from "../../lucide_icons/Lucide_info/Lucide_info";
+import { Lucide_alert_triangle } from "../../lucide_icons/Lucide_alert_triangle/Lucide_alert_triangle";
+import { Lucide_alert_circle } from "../../lucide_icons/Lucide_alert_circle/Lucide_alert_circle";
+import { Lucide_x } from "../../lucide_icons/Lucide_x/Lucide_x";
 
-// SVG Assets
-import SVG_Info_generated_assets_icon_Vector_926_12320_svg_20x20 from "./assets/Info_generated_assets_icon_Vector_926_12320_svg_20x20.svg";
-import SVG_Info_generated_assets_icon_Vector_926_12329_svg_18_715295791625977x19_192251205444336 from "./assets/Info_generated_assets_icon_Vector_926_12329_svg_18_715295791625977x19_192251205444336.svg";
+export type InfoVariant = "simple" | "complex";
+export type InfoColorTheme = "blue" | "red" | "yellow";
 
+export interface InfoProps extends ComponentProps {
+  variant?: InfoVariant;
+  colorTheme?: InfoColorTheme;
+  title?: string;
+  description?: string;
+  showDismiss?: boolean;
+}
 
 export class Info_generated extends BaseComponent {
-    async create(props: ComponentProps): Promise<SceneNode> {
-        const structure: NodeDefinition = {
-          "type": "FRAME",
-          "name": "Info_generated",
-          "props": {
-            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-            "layoutMode": "HORIZONTAL", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-            "paddingTop": 0, "paddingRight": 120, "paddingBottom": 0, "paddingLeft": 120,
-            "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-            "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
-            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-            "fills": [
-              {
-                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.780392, "g": 0.917647, "b": 0.984313 },
-                "boundVariables": {}
-              }
-            ],
-            "strokes": [],
-            "effects": [],
-            "cornerRadius": 4
-          },
-          "layoutProps": { "width": 1680, "height": 90, "parentIsAutoLayout": false },
-          "children": [
-            {
-              "type": "FRAME",
-              "name": "AV / play-circle",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "INHERIT", "layoutGrow": 0,
-                "layoutMode": "NONE",
-                "fills": [],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0,
-                "layoutPositioning": "ABSOLUTE"
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "ABSOLUTE",
-                "width": 64, "height": 64,
-                "relativeTransform": [[1, 0, 120], [0, 1, 0]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              }
-            },
-            {
-              "type": "FRAME",
-              "name": "Frame 1615",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": true,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 16, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                "paddingTop": 16, "paddingRight": 0, "paddingBottom": 16, "paddingLeft": 0,
-                "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
-                "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "STRETCH", "layoutGrow": 1,
-                "fills": [],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 1440, "height": 90,
-                "relativeTransform": [[1, 0, 120], [0, 1, 0]],
-                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-              },
-              "children": [
-                {
-                  "type": "FRAME",
-                  "name": "Frame 1924",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "layoutMode": "VERTICAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                    "paddingTop": 6, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                    "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
-                    "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 0,
-                    "fills": [],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 24, "height": 30,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 16]],
-                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                  },
-                  "children": [
-                    {
-                      "type": "FRAME",
-                      "name": "Support / information",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                        "layoutAlign": "INHERIT", "layoutGrow": 0,
-                        "layoutMode": "NONE",
-                        "fills": [],
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 24, "height": 24,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 6]],
-                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                      },
-                      "children": [
-                        {
-                          "type": "VECTOR",
-                          "shouldFlatten": true,
-                          "name": "Vector",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "x": 2, "y": 2,
-                            "strokes": [],
-                            "effects": [],
-                            "cornerRadius": 0
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                            "width": 20, "height": 20,
-                            "relativeTransform": [[1, 0, 2], [0, 1, 2]],
-                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                          },
-                          "svgContent": SVG_Info_generated_assets_icon_Vector_926_12320_svg_20x20
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "Frame 1923",
-                  "props": {
-                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                    "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                    "layoutMode": "VERTICAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                    "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                    "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-                    "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "MIN",
-                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                    "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                    "layoutAlign": "INHERIT", "layoutGrow": 1,
-                    "fills": [],
-                    "strokes": [],
-                    "effects": [],
-                    "cornerRadius": 0
-                  },
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 1400, "height": 58,
-                    "relativeTransform": [[1, 0, 40], [0, 1, 16]],
-                    "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                  },
-                  "children": [
-                    {
-                      "type": "TEXT",
-                      "name": "Don’t miss out!",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA",
-                        "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "layoutAlign": "INHERIT", "layoutGrow": 0,
-                        "characters": "Don’t miss out!", "fontSize": 20,
-                        "textCase": "ORIGINAL", "textDecoration": "NONE",
-                        "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "WIDTH_AND_HEIGHT",
-                        "paragraphSpacing": 0, "paragraphIndent": 0,
-                        "fills": [
-                          {
-                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                            "color": { "r": 0, "g": 0, "b": 0 },
-                            "boundVariables": {}
-                          }
-                        ],
-                        "strokes": [],
-                        "effects": [],
-                        "letterSpacing": { "unit": "PIXELS", "value": -0.100000 },
-                        "lineHeight": { "unit": "PERCENT", "value": 150 },
-                        "font": { "family": "Manrope", "style": "Bold" }
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 146, "height": 30,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                      }
-                    },
-                    {
-                      "type": "FRAME",
-                      "name": "Frame 1925",
-                      "props": {
-                        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                        "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                        "layoutMode": "HORIZONTAL", "itemSpacing": 4, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                        "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                        "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "AUTO",
-                        "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
-                        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                        "layoutAlign": "STRETCH", "layoutGrow": 0,
-                        "fills": [],
-                        "strokes": [],
-                        "effects": [],
-                        "cornerRadius": 0
-                      },
-                      "layoutProps": {
-                        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 1400, "height": 24,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 34]],
-                        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                      },
-                      "children": [
-                        {
-                          "type": "TEXT",
-                          "name": "Click on the bell icon",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "layoutAlign": "INHERIT", "layoutGrow": 0,
-                            "characters": "Click on the bell icon", "fontSize": 16,
-                            "textCase": "ORIGINAL", "textDecoration": "NONE",
-                            "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "WIDTH_AND_HEIGHT",
-                            "paragraphSpacing": 0, "paragraphIndent": 0,
-                            "fills": [
-                              {
-                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0, "g": 0, "b": 0 },
-                                "boundVariables": {}
-                              }
-                            ],
-                            "strokes": [],
-                            "effects": [],
-                            "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                            "lineHeight": { "unit": "PERCENT", "value": 129.999995 },
-                            "font": { "family": "Manrope", "style": "SemiBold" }
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                            "width": 157, "height": 21,
-                            "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                          }
-                        },
-                        {
-                          "type": "FRAME",
-                          "name": "Notifications / notifications-active",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                            "layoutAlign": "INHERIT", "layoutGrow": 0,
-                            "layoutMode": "NONE",
-                            "fills": [],
-                            "strokes": [],
-                            "effects": [],
-                            "cornerRadius": 0
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                            "width": 24, "height": 24,
-                            "relativeTransform": [[1, 0, 161], [0, 1, 0]],
-                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                          },
-                          "children": [
-                            {
-                              "type": "VECTOR",
-                              "shouldFlatten": true,
-                              "name": "Vector",
-                              "props": {
-                                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                                "isMask": false, "maskType": "ALPHA",
-                                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                                "x": 2.642333, "y": 2.5,
-                                "strokes": [],
-                                "effects": [],
-                                "cornerRadius": 0
-                              },
-                              "layoutProps": {
-                                "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 18.715295, "height": 19.192251,
-                                "relativeTransform": [[1, 0, 2.642333], [0, 1, 2.5]],
-                                "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                              },
-                              "svgContent": SVG_Info_generated_assets_icon_Vector_926_12329_svg_18_715295791625977x19_192251205444336
-                            }
-                          ]
-                        },
-                        {
-                          "type": "TEXT",
-                          "name": "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.",
-                          "props": {
-                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                            "isMask": false, "maskType": "ALPHA",
-                            "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                            "layoutAlign": "INHERIT", "layoutGrow": 1,
-                            "characters": "in the top-right corner on the page. Use it to choose what you want to follow and we’ll notify you when new resources are added that match your interests.", "fontSize": 16,
-                            "textCase": "ORIGINAL", "textDecoration": "NONE",
-                            "textAlignHorizontal": "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
-                            "paragraphSpacing": 0, "paragraphIndent": 0,
-                            "fills": [
-                              {
-                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0, "g": 0, "b": 0 },
-                                "boundVariables": {}
-                              }
-                            ],
-                            "strokes": [],
-                            "effects": [],
-                            "letterSpacing": { "unit": "PIXELS", "value": 0 },
-                            "lineHeight": { "unit": "PERCENT", "value": 129.999995 },
-                            "font": { "family": "Manrope", "style": "SemiBold" }
-                          },
-                          "layoutProps": {
-                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                            "width": 1211, "height": 21,
-                            "relativeTransform": [[1, 0, 189], [0, 1, 0]],
-                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+  private getThemeConfig(theme: InfoColorTheme) {
+    switch (theme) {
+      case "red":
+        return {
+          iconColor: { r: 0.8, g: 0.1, b: 0.1 },
+          bgColor: { r: 0.99, g: 0.9, b: 0.9 }, // Light Red bg
+          iconClass: new Lucide_alert_circle()
         };
-
-        const root = await this.renderDefinition(structure);
-        
-        // Final positioning
-        root.x = props.x ?? 0;
-        root.y = props.y ?? 0;
-
-        return root;
+      case "yellow":
+        return {
+          iconColor: { r: 0.8, g: 0.5, b: 0.1 },
+          bgColor: { r: 0.99, g: 0.95, b: 0.8 }, // Light Yellow bg
+          iconClass: new Lucide_alert_triangle()
+        };
+      case "blue":
+      default:
+        return {
+          iconColor: { r: 0.1, g: 0.4, b: 0.8 },
+          bgColor: { r: 0.9, g: 0.95, b: 0.99 }, // Light Blue bg
+          iconClass: new Lucide_info()
+        };
     }
+  }
+
+  async create(props: InfoProps): Promise<SceneNode> {
+    const variant = props.variant || "simple";
+    const theme = props.colorTheme || "blue";
+    const config = this.getThemeConfig(theme);
+
+    // --- ICON ---
+    const iconNode = await config.iconClass.create({
+      color: config.iconColor,
+      width: 20,
+      height: 20
+    });
+
+    // --- DISMISS (X) ICON ---
+    let dismissNode: SceneNode | null = null;
+    if (props.showDismiss !== false) { // Default true
+      const closeClass = new Lucide_x();
+      dismissNode = await closeClass.create({
+        color: { r: 0.4, g: 0.4, b: 0.45 },
+        width: 16,
+        height: 16
+      });
+    }
+
+    // --- CONTENT LAYOUT ---
+    let contentDefinition: NodeDefinition[];
+    const titleText = props.title || "Information";
+    const descText = props.description || "This is some information text that provides context.";
+
+    if (variant === "complex") {
+      // Complex: Icon on title row, body text below filling the width
+      contentDefinition = [
+        createFrame("Header Row", {
+          layoutMode: "HORIZONTAL",
+          itemSpacing: 8,
+          primaryAxisSizingMode: "AUTO",
+          counterAxisSizingMode: "AUTO",
+          primaryAxisAlignItems: "MIN",
+          counterAxisAlignItems: "CENTER",
+          layoutAlign: "STRETCH"
+        }, [
+          // Icon Placeholder
+          createFrame("Icon Container", {
+            layoutMode: "HORIZONTAL",
+            fills: [],
+            primaryAxisSizingMode: "AUTO",
+            counterAxisSizingMode: "AUTO",
+            primaryAxisAlignItems: "CENTER",
+            counterAxisAlignItems: "CENTER"
+          }, []),
+          createText("Title", titleText, 16, "Semi Bold", { r: 0.1, g: 0.1, b: 0.12 }, {
+            textAutoResize: "HEIGHT",
+            layoutGrow: 1
+          })
+        ]),
+        createText("Body", descText, 14, "Regular", { r: 0.2, g: 0.2, b: 0.25 }, {
+          layoutAlign: "STRETCH",
+          textAutoResize: "HEIGHT",
+          lineHeight: { unit: "PERCENT", value: 140 }
+        })
+      ];
+    } else {
+      // Simple variant: Icon, inline text
+      contentDefinition = [
+        createFrame("Icon Container", {
+          layoutMode: "HORIZONTAL",
+          fills: [],
+          primaryAxisSizingMode: "AUTO",
+          counterAxisSizingMode: "AUTO",
+          primaryAxisAlignItems: "CENTER",
+          counterAxisAlignItems: "CENTER",
+          paddingTop: 2 // visual alignment tweak
+        }, []),
+        createText("Inline Text", descText, 14, "Medium", { r: 0.1, g: 0.1, b: 0.15 }, {
+          layoutGrow: 1, // Fill remaining width
+          textAutoResize: "HEIGHT",
+          lineHeight: { unit: "PERCENT", value: 140 }
+        })
+      ];
+    }
+
+    // --- ROOT STRUCTURE ---
+    const structure: NodeDefinition = createFrame("Info Block", {
+      layoutMode: variant === "complex" ? "VERTICAL" : "HORIZONTAL",
+      itemSpacing: variant === "complex" ? 8 : 12,
+      paddingTop: 16,
+      paddingRight: 16,
+      paddingBottom: 16,
+      paddingLeft: 16,
+      primaryAxisSizingMode: variant === "complex" ? "AUTO" : "FIXED", // For VERTICAL, primary is HEIGHT (hug). For HORIZONTAL, primary is WIDTH (fixed/stretch).
+      counterAxisSizingMode: variant === "complex" ? "FIXED" : "AUTO", // For VERTICAL, counter is WIDTH (fixed/stretch). For HORIZONTAL, counter is HEIGHT (hug).
+      primaryAxisAlignItems: "MIN",
+      counterAxisAlignItems: "MIN",
+      fills: [{ type: "SOLID", color: config.bgColor }],
+      cornerRadius: 8,
+      layoutProps: { width: props.width && props.width !== "fill" ? props.width : undefined }
+    }, [
+      // Embedded structure based on variant
+      ...(variant === "complex" ? contentDefinition : [
+        ...contentDefinition,
+        // Add Dismiss placeholder natively to the horizontal root layout if Simple
+        ...(dismissNode ? [
+          createFrame("Dismiss Container", {
+            layoutMode: "HORIZONTAL",
+            fills: [],
+            primaryAxisSizingMode: "AUTO",
+            counterAxisSizingMode: "AUTO",
+            paddingTop: 2,
+            primaryAxisAlignItems: "CENTER",
+            counterAxisAlignItems: "CENTER"
+          }, [])
+        ] : [])
+      ])
+    ]);
+
+    const root = await this.renderDefinition(structure) as FrameNode;
+
+    // INJECTION: Complex variant needs its dismiss injected differently if wanted, 
+    // usually top right. For now, if complex we inject dismiss to Header Row
+    if (variant === "complex" && dismissNode) {
+      const headerRow = root.findOne(n => n.name === "Header Row") as FrameNode;
+      if (headerRow) {
+        const dismissWrapper = figma.createFrame();
+        dismissWrapper.name = "Dismiss Container";
+        dismissWrapper.layoutMode = "HORIZONTAL";
+        dismissWrapper.primaryAxisSizingMode = "AUTO";
+        dismissWrapper.counterAxisSizingMode = "AUTO";
+        dismissWrapper.primaryAxisAlignItems = "CENTER";
+        dismissWrapper.counterAxisAlignItems = "CENTER";
+        dismissWrapper.fills = [];
+        dismissWrapper.appendChild(dismissNode);
+        headerRow.appendChild(dismissWrapper);
+      }
+    }
+
+    // INJECTION: Icons
+    const iconContainer = root.findOne(n => n.name === "Icon Container" && n.type === "FRAME") as FrameNode;
+    if (iconContainer) iconContainer.appendChild(iconNode);
+
+    const dismissContainer = root.findOne(n => n.name === "Dismiss Container" && n.type === "FRAME") as FrameNode;
+    if (dismissContainer && dismissNode && variant === "simple") dismissContainer.appendChild(dismissNode);
+
+    // Apply fill
+    if (props.width === "fill") {
+      root.layoutAlign = "STRETCH";
+    }
+
+    root.x = props.x ?? 0;
+    root.y = props.y ?? 0;
+
+    return root;
+  }
 }
