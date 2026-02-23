@@ -351,6 +351,9 @@ export { metric_card_design1 as metric_card_design1_captures } from "./captures/
 export { MetricCardsDesign1Demo } from "../pages/Alex_CookBook/MetricCardsDesign1Demo";
 export { Midtjylland } from "./Football_Crests/Midtjylland/Midtjylland";
 export { Milan } from "./Football_Crests/Milan/Milan";
+export { modal } from "./Alex_CookBook/modal/modal";
+export { ModalsDemo } from "../pages/Alex_CookBook/ModalsDemo";
+export { ModalsFlow } from "../flows/Alex_Cookbook/ModalsFlow";
 export { Molde } from "./Football_Crests/Molde/Molde";
 export { Monaco } from "./Football_Crests/Monaco/Monaco";
 export { Monchengladbach } from "./Football_Crests/Monchengladbach/Monchengladbach";

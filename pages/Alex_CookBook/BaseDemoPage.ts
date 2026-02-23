@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
+import { BaseComponent } from "../../components/BaseComponent";
 import { Page_title } from "../../components/Alex_CookBook/Page_title/Page_title";
 
 export abstract class BaseDemoPage extends BaseComponent {
@@ -84,7 +84,9 @@ export abstract class BaseDemoPage extends BaseComponent {
         headerContainer.counterAxisSizingMode = "AUTO";
 
         const label = figma.createText();
-        await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+        const titleFont = { family: "Inter", style: "Semi Bold" };
+        await figma.loadFontAsync(titleFont);
+        label.fontName = titleFont;
         label.characters = title;
         label.fontSize = 24;
         label.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.12 } }];
@@ -93,8 +95,12 @@ export abstract class BaseDemoPage extends BaseComponent {
         headerContainer.appendChild(label);
 
         const desc = figma.createText();
-        await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-        desc.characters = description;
+        const descFont = { family: "Inter", style: "Regular" };
+        await figma.loadFontAsync(descFont);
+        desc.fontName = descFont;
+        if (description) {
+            desc.characters = description;
+        }
         desc.fontSize = 16;
         desc.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.45 } }];
         desc.layoutAlign = "STRETCH";
