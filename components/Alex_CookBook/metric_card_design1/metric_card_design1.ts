@@ -183,13 +183,13 @@ export class metric_card_design1 extends BaseComponent {
             layoutSizingVertical: isChartFill ? "FILL" : ((isHero && !isFillHeight && typeof props.height !== 'number') ? "HUG" : "FIXED"),
             cornerRadius: sparklineCornerRadius,
             fills: [],
-            effects: props.showChartShadow !== false ? [{
+            effects: (props.showChartShadow !== false && !isHeroCentered) ? [{
                 visible: true,
                 blendMode: "NORMAL",
                 type: "DROP_SHADOW",
-                radius: 18.899999618530273,
-                color: { ...endColor, a: 0.8 },
-                offset: { x: 0, y: 5 },
+                radius: 20,
+                color: { ...endColor, a: 0.2 },
+                offset: { x: 0, y: 4 },
                 spread: 0,
                 showShadowBehindNode: false
             }] : [],
