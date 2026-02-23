@@ -104,6 +104,36 @@ export class InfoAndToastsDemo extends BaseDemoPage {
             container.appendChild(row2);
         });
 
+        // --- SLIM INFO BLOCKS ---
+        await this.addSection(root, "Slim Info Blocks", "Compact, single-row informational bars.", async (container) => {
+            const rowSlim = figma.createFrame();
+            rowSlim.name = "Row Slim";
+            rowSlim.layoutMode = "HORIZONTAL";
+            rowSlim.itemSpacing = 24;
+            rowSlim.layoutAlign = "STRETCH";
+            rowSlim.primaryAxisSizingMode = "FIXED";
+            rowSlim.counterAxisSizingMode = "AUTO";
+            rowSlim.fills = [];
+            rowSlim.clipsContent = false;
+
+            const info = new Info_generated();
+
+            rowSlim.appendChild(await wrapWithCaption(
+                await info.create({ width: 280, variant: "slim", colorTheme: "blue", description: "Operation successful." }),
+                "7. Slim Blue"
+            ));
+            rowSlim.appendChild(await wrapWithCaption(
+                await info.create({ width: 280, variant: "slim", colorTheme: "red", description: "Failed to connect." }),
+                "8. Slim Red"
+            ));
+            rowSlim.appendChild(await wrapWithCaption(
+                await info.create({ width: 280, variant: "slim", colorTheme: "yellow", description: "Syncing data..." }),
+                "9. Slim Yellow"
+            ));
+
+            container.appendChild(rowSlim);
+        });
+
         // --- TOAST NOTIFICATIONS (RIGHT ALIGNED) ---
         await this.addSection(root, "Right-Aligned Toasts & Notifications", "Absolute positioning on the right side.", async (container) => {
             const toastWrapper = figma.createFrame();
@@ -128,14 +158,14 @@ export class InfoAndToastsDemo extends BaseDemoPage {
                 await toastBlock.create({
                     width: 400, variant: "success", title: "Changes Saved", description: "Your profile has been updated successfully."
                 }),
-                "7. Success Toast (Right)"
+                "10. Success Toast (Right)"
             ));
 
             toastWrapper.appendChild(await wrapWithCaption(
                 await toastBlock.create({
                     width: 400, variant: "error", title: "Upload Failed", description: "The image size exceeds the 5MB limit.", actionText: "Retry"
                 }),
-                "8. Error Toast with Action"
+                "11. Error Toast with Action"
             ));
 
             container.appendChild(toastWrapper);
@@ -165,14 +195,14 @@ export class InfoAndToastsDemo extends BaseDemoPage {
                 await toastBlock.create({
                     width: 360, variant: "info", title: "New Feature", description: "Check out our new dark mode settings in the preferences menu.", actionText: "View"
                 }),
-                "9. Info Toast (Left)"
+                "12. Info Toast (Left)"
             ));
 
             toastWrapper.appendChild(await wrapWithCaption(
                 await toastBlock.create({
                     width: 360, variant: "warning", title: "Storage Almost Full", description: "You have used 90% of your available storage.", actionText: "Upgrade"
                 }),
-                "10. Warning Toast with Action"
+                "13. Warning Toast with Action"
             ));
 
             container.appendChild(toastWrapper);

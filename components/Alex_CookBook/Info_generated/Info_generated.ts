@@ -7,7 +7,7 @@ import { Lucide_alert_triangle } from "../../lucide_icons/Lucide_alert_triangle/
 import { Lucide_alert_circle } from "../../lucide_icons/Lucide_alert_circle/Lucide_alert_circle";
 import { Lucide_x } from "../../lucide_icons/Lucide_x/Lucide_x";
 
-export type InfoVariant = "simple" | "complex";
+export type InfoVariant = "simple" | "complex" | "slim";
 export type InfoColorTheme = "blue" | "red" | "yellow";
 
 export interface InfoProps extends ComponentProps {
@@ -103,6 +103,22 @@ export class Info_generated extends BaseComponent {
           lineHeight: { unit: "PERCENT", value: 140 }
         })
       ];
+    } else if (variant === "slim") {
+      // Slim variant: Icon, inline text, centered
+      contentDefinition = [
+        createFrame("Icon Container", {
+          layoutMode: "HORIZONTAL",
+          fills: [],
+          primaryAxisSizingMode: "AUTO",
+          counterAxisSizingMode: "AUTO",
+          primaryAxisAlignItems: "CENTER",
+          counterAxisAlignItems: "CENTER",
+        }, []),
+        createText("Inline Text", descText, 14, "Medium", { r: 0.1, g: 0.1, b: 0.2 }, {
+          layoutGrow: 1,
+          textAutoResize: "HEIGHT"
+        })
+      ];
     } else {
       // Simple variant: Icon, inline text
       contentDefinition = [
@@ -127,29 +143,29 @@ export class Info_generated extends BaseComponent {
     const structure: NodeDefinition = createFrame("Info Block", {
       layoutMode: variant === "complex" ? "VERTICAL" : "HORIZONTAL",
       itemSpacing: variant === "complex" ? 8 : 12,
-      paddingTop: 16,
-      paddingRight: 16,
-      paddingBottom: 16,
-      paddingLeft: 16,
+      paddingTop: variant === "slim" ? 6 : 16,
+      paddingRight: variant === "slim" ? 12 : 16,
+      paddingBottom: variant === "slim" ? 6 : 16,
+      paddingLeft: variant === "slim" ? 12 : 16,
       primaryAxisSizingMode: variant === "complex" ? "AUTO" : "FIXED", // For VERTICAL, primary is HEIGHT (hug). For HORIZONTAL, primary is WIDTH (fixed/stretch).
       counterAxisSizingMode: variant === "complex" ? "FIXED" : "AUTO", // For VERTICAL, counter is WIDTH (fixed/stretch). For HORIZONTAL, counter is HEIGHT (hug).
       primaryAxisAlignItems: "MIN",
-      counterAxisAlignItems: "MIN",
+      counterAxisAlignItems: variant === "slim" ? "CENTER" : "MIN",
       fills: [{ type: "SOLID", color: config.bgColor }],
-      cornerRadius: 8,
+      cornerRadius: variant === "slim" ? 6 : 8,
       layoutProps: { width: props.width && props.width !== "fill" ? props.width : undefined }
     }, [
       // Embedded structure based on variant
       ...(variant === "complex" ? contentDefinition : [
         ...contentDefinition,
-        // Add Dismiss placeholder natively to the horizontal root layout if Simple
+        // Add Dismiss placeholder natively to the horizontal root layout if Simple/Slim
         ...(dismissNode ? [
           createFrame("Dismiss Container", {
             layoutMode: "HORIZONTAL",
             fills: [],
             primaryAxisSizingMode: "AUTO",
             counterAxisSizingMode: "AUTO",
-            paddingTop: 2,
+            paddingTop: variant === "slim" ? 0 : 2,
             primaryAxisAlignItems: "CENTER",
             counterAxisAlignItems: "CENTER"
           }, [])
@@ -182,7 +198,7 @@ export class Info_generated extends BaseComponent {
     if (iconContainer) iconContainer.appendChild(iconNode);
 
     const dismissContainer = root.findOne(n => n.name === "Dismiss Container" && n.type === "FRAME") as FrameNode;
-    if (dismissContainer && dismissNode && variant === "simple") dismissContainer.appendChild(dismissNode);
+    if (dismissContainer && dismissNode && (variant === "simple" || variant === "slim")) dismissContainer.appendChild(dismissNode);
 
     // Apply fill
     if (props.width === "fill") {

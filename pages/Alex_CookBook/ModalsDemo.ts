@@ -4,6 +4,7 @@ import { createText, createFrame } from "../../components/ComponentHelpers";
 import { input_field } from "../../components/Alex_CookBook/input_field/input_field";
 import { button } from "../../components/Alex_CookBook/button/button";
 import { ComponentProps, NodeDefinition } from "../../components/BaseComponent";
+import { Info_generated } from "../../components/Alex_CookBook/Info_generated/Info_generated";
 
 export class ModalsDemo extends BaseDemoPage {
     async create(_props: ComponentProps): Promise<FrameNode> {
@@ -89,7 +90,22 @@ export class ModalsDemo extends BaseDemoPage {
                 variant: "unified",
                 primaryCtaText: "Register",
                 secondaryCtaText: "Cancel",
-                bodyContent: [firstNameInput, lastNameInput],
+                bodyContent: [
+                    {
+                        type: "COMPONENT",
+                        component: Info_generated,
+                        name: "Registration Warning",
+                        props: {
+                            variant: "slim",
+                            colorTheme: "yellow",
+                            description: "Your data will be stored securely.",
+                            showDismiss: false
+                        },
+                        layoutProps: { layoutAlign: "STRETCH" }
+                    },
+                    firstNameInput,
+                    lastNameInput
+                ],
                 width: 480
             });
             container.appendChild(await wrapWithCaption(formModalNode, "3. Standard Form Modal"));
