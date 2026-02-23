@@ -1,63 +1,51 @@
 import { BaseDemoPage } from "./BaseDemoPage";
-import { ComponentProps } from "../../components/BaseComponent";
+import { ComponentProps, NodeDefinition } from "../../components/BaseComponent";
+import { createFrame, createText } from "../../components/ComponentHelpers";
 
 // Components
-import { date_picker } from "../../components/Alex_CookBook/date_picker/date_picker";
 import { Browser } from "../../components/Alex_CookBook/Browser/Browser";
-import { GQ_Banner_Shirts_Aligned } from "../../components/Alex_CookBook/GQ_Banner_Shirts_Aligned/GQ_Banner_Shirts_Aligned";
 
 export class SpecializedBlocksDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
-        const root = await this.initPage("Specialized Blocks & Widgets");
-        await this.addHeader(root, "Specialized Blocks & Widgets", "Showcasing deeply custom, complex, and specialized components.");
+        const root = await this.initPage("Containers & Wrappers");
+        await this.addHeader(root, "Containers & Wrappers", "Showcasing structural containers and shell mockups.");
 
-        // --- DATE & TIME PICKERS ---
-        await this.addSection(root, "Date & Time Pickers", "Standard form inputs for time ranges.", async (container) => {
-            const row = figma.createFrame();
-            row.name = "Pickers Row";
-            row.layoutMode = "HORIZONTAL";
-            row.itemSpacing = 24;
-            row.layoutAlign = "STRETCH";
-            row.primaryAxisSizingMode = "FIXED";
-            row.counterAxisSizingMode = "AUTO";
-            row.counterAxisAlignItems = "MIN";
-            row.fills = [];
+        // Helper function to wrap components with descriptive text labels underneath
+        const wrapWithCaption = async (node: SceneNode, captionText: string, wrapperName = "Wrapper"): Promise<FrameNode> => {
+            const wrapperDef: NodeDefinition = {
+                type: "FRAME",
+                name: wrapperName,
+                props: {
+                    layoutMode: "VERTICAL",
+                    itemSpacing: 16,
+                    primaryAxisSizingMode: "AUTO",
+                    counterAxisSizingMode: "AUTO",
+                    primaryAxisAlignItems: "CENTER",
+                    counterAxisAlignItems: "CENTER",
+                    fills: [],
+                    clipsContent: false,
+                },
+                layoutProps: { parentIsAutoLayout: true },
+                children: [
+                    createText("Caption", captionText, 14, "Medium", { r: 0.4, g: 0.4, b: 0.4 }, {
+                        font: { family: "Inter", style: "Medium" }
+                    })
+                ]
+            };
 
-            const dp = new date_picker();
-
-            row.appendChild(await dp.create({
-                type: "date",
-                placeholder: "Select Date",
-                isOpen: true,
-            }));
-
-            row.appendChild(await dp.create({
-                type: "time",
-                placeholder: "Select Time",
-                value: "14:30",
-                isOpen: true,
-            }));
-
-            container.appendChild(row);
-        });
+            const wrapper = await this.renderDefinition(wrapperDef) as FrameNode;
+            wrapper.insertChild(0, node);
+            return wrapper;
+        };
 
         // --- BROWSER MOCKUP ---
         await this.addSection(root, "Browser Container", "Wrapper for showing generic screens.", async (container) => {
             const browser = new Browser();
-            // Just displaying the default browser states since it's a large container
             const browserNode = await browser.create({});
             (browserNode as FrameNode).layoutAlign = "STRETCH";
-            container.appendChild(browserNode);
-        });
 
-        // --- PROMOTIONAL BANNERS ---
-        await this.addSection(root, "Promotional Banners", "Marketing banners with dynamic configurations.", async (container) => {
-            const banner = new GQ_Banner_Shirts_Aligned();
-            const bannerNode = await banner.create({});
-            (bannerNode as FrameNode).layoutAlign = "STRETCH";
-            container.appendChild(bannerNode);
+            container.appendChild(await wrapWithCaption(browserNode, "1. Responsive Browser Shell"));
         });
-
 
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;

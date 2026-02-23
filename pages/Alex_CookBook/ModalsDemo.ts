@@ -67,7 +67,7 @@ export class ModalsDemo extends BaseDemoPage {
                 secondaryCtaText: "Cancel",
                 width: 480
             });
-            container.appendChild(await wrapWithCaption(basicModalNode, "Standard Danger Modal"));
+            container.appendChild(await wrapWithCaption(basicModalNode, "1. Standard Danger Modal"));
 
             // Icon Modal Example
             const iconModal = new modal();
@@ -80,7 +80,7 @@ export class ModalsDemo extends BaseDemoPage {
                 statusIcon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
                 width: 480
             });
-            container.appendChild(await wrapWithCaption(iconModalNode, "Icon Alert Modal"));
+            container.appendChild(await wrapWithCaption(iconModalNode, "2. Icon Alert Modal"));
 
             const formModal = new modal();
             const formModalNode = await formModal.create({
@@ -92,7 +92,7 @@ export class ModalsDemo extends BaseDemoPage {
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 480
             });
-            container.appendChild(await wrapWithCaption(formModalNode, "Standard Form Modal"));
+            container.appendChild(await wrapWithCaption(formModalNode, "3. Standard Form Modal"));
         });
 
         // Section 2: Unified with Dividers
@@ -107,7 +107,7 @@ export class ModalsDemo extends BaseDemoPage {
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 500
             });
-            container.appendChild(await wrapWithCaption(unifiedDividerModalNode, "Divided Sections Layout"));
+            container.appendChild(await wrapWithCaption(unifiedDividerModalNode, "4. Divided Sections Layout"));
         });
 
         // Section 3: Separated Modals
@@ -122,7 +122,7 @@ export class ModalsDemo extends BaseDemoPage {
                 bodyContent: [firstNameInput, lastNameInput],
                 width: 500
             });
-            container.appendChild(await wrapWithCaption(separatedModalNode, "Separated Layout Demo"));
+            container.appendChild(await wrapWithCaption(separatedModalNode, "5. Separated Layout Demo"));
 
             // Custom Confirmation Modal based on User Snippet
             const confirmationModal = new modal();
@@ -212,7 +212,7 @@ export class ModalsDemo extends BaseDemoPage {
                     }
                 ]
             });
-            container.appendChild(await wrapWithCaption(confirmationModalNode, "DEKO Custom Component", "DEKO"));
+            container.appendChild(await wrapWithCaption(confirmationModalNode, "6. DEKO Custom Component", "DEKO"));
         });
 
         // Section 4: Edge-to-edge content
@@ -252,7 +252,7 @@ export class ModalsDemo extends BaseDemoPage {
                 ],
                 width: 600
             });
-            container.appendChild(await wrapWithCaption(edgeModalNode, "Zero Padding Container"));
+            container.appendChild(await wrapWithCaption(edgeModalNode, "7. Zero Padding Container"));
         });
 
         return root;
