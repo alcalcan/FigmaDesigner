@@ -291,8 +291,10 @@ export abstract class BaseComponent {
           ];
 
         for (const key of layoutKeys) {
-          if (def.props[key] !== undefined) {
-            safeNode[key] = def.props[key];
+          // Check both props and layoutProps (where ComponentHelpers puts defaults)
+          const val = def.props[key] !== undefined ? def.props[key] : def.layoutProps?.[key as keyof typeof def.layoutProps];
+          if (val !== undefined) {
+            safeNode[key] = val;
           }
         }
       } else if (def.props.layoutMode === "NONE") {
@@ -557,16 +559,20 @@ export abstract class BaseComponent {
         delete layoutOpts.height;
       }
 
-      // Force fixed sizing modes before resize
       if (
         "layoutMode" in node &&
-        (node as FrameNode).layoutMode !== "NONE" &&
-        (typeof layoutOpts.width === "number" || typeof layoutOpts.height === "number")
+        (node as FrameNode).layoutMode !== "NONE"
       ) {
         const frame = node as FrameNode;
         try {
-          if (frame.primaryAxisSizingMode !== "FIXED") frame.primaryAxisSizingMode = "FIXED";
-          if (frame.counterAxisSizingMode !== "FIXED") frame.counterAxisSizingMode = "FIXED";
+          // Only force FIXED on the axis we are explicitly resizing with a number.
+          // This prevents Figma from overriding HUG/FILL on the other axis.
+          if (typeof layoutOpts.width === "number" && frame.primaryAxisSizingMode !== "FIXED") {
+            frame.primaryAxisSizingMode = "FIXED";
+          }
+          if (typeof layoutOpts.height === "number" && frame.counterAxisSizingMode !== "FIXED") {
+            frame.counterAxisSizingMode = "FIXED";
+          }
         } catch (e) { /* ignore */ }
       }
 
@@ -591,7 +597,10 @@ export abstract class BaseComponent {
           ];
         const frameMutable = frame as unknown as Record<string, unknown>;
         for (const key of autoLayoutKeys) {
-          if (def.props[key] !== undefined) frameMutable[key] = def.props[key];
+          const val = def.props[key] !== undefined ? def.props[key] : def.layoutProps?.[key as keyof typeof def.layoutProps];
+          if (val !== undefined) {
+            frameMutable[key] = val;
+          }
         }
         if (!isGrid && def.props.layoutWrap !== undefined && "layoutWrap" in frame) {
           frameMutable.layoutWrap = def.props.layoutWrap;

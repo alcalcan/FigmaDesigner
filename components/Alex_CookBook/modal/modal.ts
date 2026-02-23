@@ -54,7 +54,7 @@ export class modal extends BaseComponent {
 
         // Darkened per user feedback (Audio #1)
         const titleColor: RGB = { r: 0.02, g: 0.04, b: 0.08 }; // Almost black
-        const descColor: RGB = { r: 0.3, g: 0.35, b: 0.4 };   // Darker grey for better readability
+        const descColor: RGB = { r: 0, g: 0, b: 0 };         // Pure black for maximum readability
 
         // Wrapper Properties based on variant
         const isUnified = variant === "unified" || variant === "unified_with_dividers";
@@ -99,6 +99,7 @@ export class modal extends BaseComponent {
             layoutMode: "VERTICAL",
             itemSpacing: 4,
             fills: [],
+            counterAxisSizingMode: "AUTO", // Ensure HUG
             layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
         }, headerTitleStack);
 
@@ -132,6 +133,7 @@ export class modal extends BaseComponent {
                 counterAxisAlignItems: "MIN", // Align to top for multi-line descriptions
                 itemSpacing: 16,
                 fills: [],
+                counterAxisSizingMode: "AUTO", // Ensure HUG
                 layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
             }, [iconContainer, titleStackContainer]));
         } else {
@@ -161,7 +163,8 @@ export class modal extends BaseComponent {
             counterAxisAlignItems: props.description ? "MIN" : "CENTER",
             layoutAlign: "STRETCH", // Fill width
             primaryAxisSizingMode: "FIXED",
-            counterAxisSizingMode: "AUTO", // Hug height
+            counterAxisSizingMode: "AUTO", // Hug height (Ensure this is AUTO for Hug)
+            layoutSizingVertical: "HUG",   // Explicitly set for newer Figma API compatibility
             paddingTop: isUnified ? 0 : 24,
             paddingRight: isUnified ? 0 : 24,
             paddingBottom: isUnified ? (showDivider ? 24 : 16) : (showDivider ? 24 : 16),
@@ -176,7 +179,7 @@ export class modal extends BaseComponent {
         // --- BODY ---
         const bodyContent = props.bodyContent && props.bodyContent.length > 0
             ? props.bodyContent
-            : [createText("Empty Body", "Put modal content here.", 16, "Regular", descColor, { font: { family: "Inter", style: "Regular" }, textAutoResize: "WIDTH_AND_HEIGHT" })];
+            : [createText("Empty Body", "Put modal content here.", 16, "Regular", { r: 0, g: 0, b: 0 }, { font: { family: "Inter", style: "Regular" }, textAutoResize: "WIDTH_AND_HEIGHT" })];
 
         children.push(createFrame("Modal Body", {
             layoutMode: "VERTICAL",
