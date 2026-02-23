@@ -339,7 +339,7 @@ export class metric_card_design1 extends BaseComponent {
             trendPillFrame
         ]) : null;
 
-        const heroCenteredTitleComponent = isHeroCentered ? createText("Hero Title", title, 32, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+        const heroCenteredTitleComponent = isHeroCentered ? createText("Hero Title", title, 24, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
             font: { family: "Inter", style: "Bold" },
             layoutSizingHorizontal: "FILL",
             layoutSizingVertical: "HUG"
@@ -347,17 +347,17 @@ export class metric_card_design1 extends BaseComponent {
 
         const bodyContentForHero = isHero ? createFrame("Info Stack", {
             layoutMode: "VERTICAL",
-            primaryAxisAlignItems: "MIN",
+            primaryAxisAlignItems: isHeroCentered ? "SPACE_BETWEEN" : "MIN",
             counterAxisAlignItems: "MIN",
             layoutSizingHorizontal: isHeroCentered ? "FILL" : "HUG",
-            layoutSizingVertical: "HUG",
-            itemSpacing: isHeroCentered ? 8 : 12,
+            layoutSizingVertical: isHeroCentered ? "FILL" : "HUG",
+            itemSpacing: isHeroCentered ? 0 : 8,
             fills: []
         }, [
             headerComponent,
             heroCenteredTitleComponent,
             !isHeroCentered ? contentComponent : null,
-            props.showFooter !== false ? platformFrame : null
+            isHeroCentered ? trendPillFrame : (props.showFooter !== false ? platformFrame : null)
         ].filter(Boolean) as NodeDefinition[]) : null;
 
         const visualGroupForHero = isHero ? createFrame("Visual Group", {
@@ -371,7 +371,7 @@ export class metric_card_design1 extends BaseComponent {
             fills: []
         }, [
             showChart ? sparklineContainer : null,
-            props.showFooter !== false ? trendPillFrame : null
+            (!isHeroCentered && props.showFooter !== false) ? trendPillFrame : null
         ].filter(Boolean) as NodeDefinition[]) : null;
 
         const bodyComponent = isHero ? createFrame("Body", {
