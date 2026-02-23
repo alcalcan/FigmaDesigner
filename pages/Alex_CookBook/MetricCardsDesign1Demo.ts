@@ -31,7 +31,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 trendDirection: "up",
                 trendValue: "Stable",
                 gap: 24
-            }, "Default component behavior (Gap 24)");
+            }, "1. Default component behavior (Gap 24)");
 
             await this.createCardWithCaption(design1, row, {
                 title: "Original Size 2",
@@ -42,7 +42,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.02, g: 0.08, b: 0.25 }, // Dark Blue
                 gradientEnd: { r: 0.15, g: 0.35, b: 0.8 }    // Rich Blue
-            }, "Custom Blue gradient (Gap 24)");
+            }, "2. Custom Blue gradient (Gap 24)");
         });
 
 
@@ -64,7 +64,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 dataPoints: [0.1, 0.3, 0.2, 0.9, 0.8, 1.0, 0.95],
                 gradientStart: { r: 0.8, g: 0.1, b: 0.1 },
                 gradientEnd: { r: 1, g: 0.4, b: 0.1 }
-            }, "Tall Chart (Height: 120px)");
+            }, "3. Tall Chart (Height: 120px)");
 
             // Short Chart
             await this.createCardWithCaption(design1, row, {
@@ -80,7 +80,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 dataPoints: [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
                 gradientStart: { r: 0.1, g: 0.6, b: 0.8 },
                 gradientEnd: { r: 0.4, g: 0.9, b: 1 }
-            }, "Short Chart (Height: 30px)");
+            }, "4. Short Chart (Height: 30px)");
 
             // No Chart
             await this.createCardWithCaption(design1, row, {
@@ -95,7 +95,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.5, g: 0.5, b: 0.5 },
                 gradientEnd: { r: 0.8, g: 0.8, b: 0.8 }
-            }, "No Chart (Hidden)");
+            }, "5. No Chart (Hidden)");
         });
 
         // --- ADVANCED CHART STYLES ---
@@ -116,7 +116,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gradientStart: { r: 1, g: 0.6, b: 0.1 }, // Orange-ish
                 gap: 24,
                 dataPoints: [0.2, 0.4, 0.5, 0.7, 0.8, 0.82, 0.84]
-            }, "Solid Fill, No Shadow");
+            }, "6. Solid Fill, No Shadow");
 
             // Transparent Gradient - Refined (Blue, No Shadow)
             await this.createCardWithCaption(design1, row, {
@@ -132,7 +132,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.1, g: 0.4, b: 0.9 }, // Deep Blue
                 gradientEnd: { r: 0.4, g: 0.8, b: 1 }
-            }, "Transparent Blue, No Shadow");
+            }, "7. Transparent Blue, No Shadow");
 
             // Fading Effect - Refined (No Shadow)
             await this.createCardWithCaption(design1, row, {
@@ -150,7 +150,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gradientStart: { r: 0.4, g: 0.1, b: 0.9 },
                 gradientEnd: { r: 0.6, g: 0.4, b: 1 },
                 dataPoints: [0.1, 0.2, 0.4, 0.5, 0.8, 0.9, 1.0]
-            }, "Gradient Fading, No Shadow");
+            }, "8. Gradient Fading, No Shadow");
         });
 
         // --- FLAT VARIATIONS ---
@@ -177,7 +177,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0, g: 0.6, b: 1 },
                 gradientEnd: { r: 0.4, g: 0.8, b: 1 }
-            }, "Flat Style (Gradient Graph)");
+            }, "9. Flat Style (Gradient Graph)");
 
             // 2. Border on Card
             await this.createCardWithCaption(design1, row, {
@@ -198,7 +198,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 strokeColor: { r: 0.92, g: 0.94, b: 0.96 }, // Consistent light border
                 gap: 24,
                 gradientStart: { r: 0.5, g: 0.3, b: 0.9 }
-            }, "Flat Style (Outline Border)");
+            }, "10. Flat Style (Outline Border)");
 
             // 3. Small Shadow
             await this.createCardWithCaption(design1, row, {
@@ -218,7 +218,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 strokeColor: { r: 0.92, g: 0.94, b: 0.96 }, // Consistent light border
                 gap: 24,
                 gradientStart: { r: 1, g: 0.5, b: 0 }
-            }, "Flat Style (Small Shadow)");
+            }, "11. Flat Style (Small Shadow)");
         });
 
         // --- HORIZONTAL VARIATIONS ---
@@ -241,7 +241,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.1, g: 0.7, b: 0.4 }, // Greenish
                 gradientEnd: { r: 0.2, g: 0.9, b: 0.6 }
-            }, "Horizontal Layout (Standard)");
+            }, "12. Horizontal Layout (Standard)");
 
             // 2. Horizontal Compact
             await this.createCardWithCaption(design1, row, {
@@ -260,7 +260,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 footerGap: "auto", // Spaced-out footer
                 gradientStart: { r: 0.8, g: 0.1, b: 0.1 },
                 gradientEnd: { r: 1, g: 0.4, b: 0.1 }
-            }, "Horizontal Layout (Compact)");
+            }, "13. Horizontal Layout (Compact)");
 
             // 3. Horizontal No Chart
             await this.createCardWithCaption(design1, row, {
@@ -274,7 +274,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 layoutDirection: "horizontal",
                 showChart: false,
                 gap: 24
-            }, "Horizontal Layout (No Chart)");
+            }, "14. Horizontal Layout (No Chart)");
 
             const row2 = this.createRow(container);
 
@@ -294,7 +294,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.4, g: 0.1, b: 0.9 }, // Purple
                 gradientEnd: { r: 0.6, g: 0.4, b: 1.0 }
-            }, "Horizontal Layout (Line Chart)");
+            }, "15. Horizontal Layout (Line Chart)");
 
             // 5. Horizontal Circle Chart
             await this.createCardWithCaption(design1, row2, {
@@ -312,7 +312,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.15, g: 0.45, b: 0.95 }, // Blue
                 gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
-            }, "Horizontal Layout (Circle)");
+            }, "16. Horizontal Layout (Circle)");
         });
 
         // --- HERO CIRCLE VARIANT ---
@@ -333,7 +333,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.15, g: 0.45, b: 0.95 },
                 gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
-            }, "Hero Layout (Circle)");
+            }, "17. Hero Layout (Circle)");
 
             await this.createCardWithCaption(design1, row, {
                 title: "API Performance",
@@ -349,7 +349,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.05, g: 0.6, b: 0.3 },
                 gradientEnd: { r: 0.2, g: 0.8, b: 0.5 }
-            }, "Hero Layout (Circle - Green)");
+            }, "18. Hero Layout (Circle - Green)");
         });
 
         await this.addSection(root, "Centered Hero Variant", "Percentage value inside circle with large prominent title.", async (container) => {
@@ -369,7 +369,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.15, g: 0.45, b: 0.95 },
                 gradientEnd: { r: 0.35, g: 0.65, b: 1.0 }
-            }, "Hero Layout (Centered)");
+            }, "19. Hero Layout (Centered)");
 
             await this.createCardWithCaption(design1, row, {
                 title: "API Reliability",
@@ -385,7 +385,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 0.05, g: 0.6, b: 0.3 },
                 gradientEnd: { r: 0.2, g: 0.8, b: 0.5 }
-            }, "Hero Layout (Centered - Green)");
+            }, "20. Hero Layout (Centered - Green)");
 
             await this.createCardWithCaption(design1, row, {
                 title: "System Cache",
@@ -401,7 +401,7 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
                 gap: 24,
                 gradientStart: { r: 1.0, g: 0.2, b: 0.2 },
                 gradientEnd: { r: 1.0, g: 0.5, b: 0.0 }
-            }, "Hero Layout (Centered - Red)");
+            }, "21. Hero Layout (Centered - Red)");
         });
 
         root.x = props.x ?? 0;
