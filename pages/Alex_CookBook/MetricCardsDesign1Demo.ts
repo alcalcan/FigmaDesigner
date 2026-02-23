@@ -223,6 +223,61 @@ export class MetricCardsDesign1Demo extends BaseDemoPage {
             }, "Flat Style (Small Shadow)");
         });
 
+        // --- HORIZONTAL VARIATIONS ---
+        await this.addSection(root, "Horizontal Layout", "Text on the left, chart element on the right.", async (container) => {
+            const row = this.createRow(container);
+
+            // 1. Horizontal Default
+            await this.createCardWithCaption(design1, row, {
+                title: "Server Latency",
+                value: "42ms",
+                period: "Global Avg.",
+                trendDirection: "down",
+                trendValue: "Decreasing",
+                width: "fill",
+                height: 260, // Fixed height to show fill behaviors
+                layoutDirection: "horizontal",
+                chartWidth: 160,
+                chartHeight: "fill", // Map height fill
+                gap: 24,
+                gradientStart: { r: 0.1, g: 0.7, b: 0.4 }, // Greenish
+                gradientEnd: { r: 0.2, g: 0.9, b: 0.6 }
+            }, "Horizontal Layout (Standard)");
+
+            // 2. Horizontal Compact
+            await this.createCardWithCaption(design1, row, {
+                title: "Active Connections",
+                value: "12.4k",
+                period: "Real-time",
+                trendDirection: "up",
+                trendValue: "+4%",
+                variant: "compact", // Compact horizontal
+                width: "fill",
+                height: 200, // Fixed height to show fill behaviors
+                layoutDirection: "horizontal",
+                chartWidth: 120, // Smaller chart for compact
+                chartHeight: "fill", // Map height fill
+                gap: 12, // Fixed vertical gap for the card
+                footerGap: "auto", // Spaced-out footer
+                gradientStart: { r: 0.8, g: 0.1, b: 0.1 },
+                gradientEnd: { r: 1, g: 0.4, b: 0.1 }
+            }, "Horizontal Layout (Compact)");
+
+            // 3. Horizontal No Chart
+            await this.createCardWithCaption(design1, row, {
+                title: "Node Status",
+                value: "Online",
+                period: "Cluster B",
+                trendDirection: "neutral",
+                trendValue: "Stable",
+                width: "fill",
+                height: "hug",
+                layoutDirection: "horizontal",
+                showChart: false,
+                gap: 24
+            }, "Horizontal Layout (No Chart)");
+        });
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 
