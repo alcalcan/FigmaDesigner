@@ -6,6 +6,12 @@ import { createFrame, createText } from "../../components/ComponentHelpers";
 import { Info_generated } from "../../components/Alex_CookBook/Info_generated/Info_generated";
 import { Toast } from "../../components/Alex_CookBook/toast/toast";
 
+// Icons
+import { Lucide_info } from "../../components/lucide_icons/Lucide_info/Lucide_info";
+import { Lucide_check_circle } from "../../components/lucide_icons/Lucide_check_circle/Lucide_check_circle";
+import { Lucide_star } from "../../components/lucide_icons/Lucide_star/Lucide_star";
+import { Lucide_x } from "../../components/lucide_icons/Lucide_x/Lucide_x";
+
 export class InfoAndToastsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
         const root = await this.initPage("Info & Toasts");
@@ -204,6 +210,151 @@ export class InfoAndToastsDemo extends BaseDemoPage {
                 }),
                 "13. Warning Toast with Action"
             ));
+
+            container.appendChild(toastWrapper);
+        });
+
+        // --- PREMIUM INFO TOASTS (METRIC CARD STYLE) ---
+        await this.addSection(root, "Premium Info Toasts", "Adopting the premium visual language of the metric card components.", async (container) => {
+            const toastWrapper = figma.createFrame();
+            toastWrapper.name = "Premium Environment";
+            toastWrapper.layoutMode = "VERTICAL";
+            toastWrapper.itemSpacing = 24;
+            toastWrapper.layoutAlign = "STRETCH";
+            toastWrapper.primaryAxisSizingMode = "AUTO";
+            toastWrapper.counterAxisSizingMode = "AUTO";
+            toastWrapper.primaryAxisAlignItems = "MIN";
+            toastWrapper.paddingTop = 40;
+            toastWrapper.paddingBottom = 40;
+            toastWrapper.paddingLeft = 40;
+            toastWrapper.paddingRight = 40;
+            toastWrapper.fills = [{ type: "SOLID", color: { r: 0.94, g: 0.95, b: 0.98 } }];
+            toastWrapper.cornerRadius = 16;
+            toastWrapper.clipsContent = false;
+
+            const createPremiumToast = async (nodes: (NodeDefinition | SceneNode | null)[], width = 450): Promise<FrameNode> => {
+                const toastDef: NodeDefinition = {
+                    type: "FRAME",
+                    name: "Premium Toast",
+                    props: {
+                        layoutMode: "HORIZONTAL",
+                        primaryAxisAlignItems: "MIN",
+                        counterAxisAlignItems: "CENTER",
+                        itemSpacing: 12,
+                        paddingTop: 8,
+                        paddingBottom: 8,
+                        paddingLeft: 16,
+                        paddingRight: 16,
+                        cornerRadius: 32,
+                        fills: [
+                            {
+                                visible: true,
+                                opacity: 1,
+                                blendMode: "NORMAL",
+                                type: "GRADIENT_LINEAR",
+                                gradientStops: [
+                                    { color: { r: 1, g: 1, b: 1, a: 1 }, position: 0 },
+                                    { color: { r: 0.98, g: 0.99, b: 1, a: 0.96 }, position: 1 }
+                                ],
+                                gradientTransform: [
+                                    [1, 0, 0],
+                                    [0, 1, 0]
+                                ]
+                            }
+                        ],
+                        strokes: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 1 }],
+                        strokeWeight: 2,
+                        strokeAlign: "OUTSIDE",
+                        effects: [
+                            { visible: true, type: "BACKGROUND_BLUR", radius: 24 },
+                            {
+                                visible: true,
+                                blendMode: "NORMAL",
+                                type: "DROP_SHADOW",
+                                radius: 32,
+                                color: { r: 0.05, g: 0.1, b: 0.2, a: 0.06 },
+                                offset: { x: 0, y: 16 },
+                                spread: 0,
+                                showShadowBehindNode: true
+                            },
+                            {
+                                visible: true,
+                                blendMode: "NORMAL",
+                                type: "DROP_SHADOW",
+                                radius: 4,
+                                color: { r: 0, g: 0, b: 0, a: 0.02 },
+                                offset: { x: 0, y: 4 },
+                                spread: 0,
+                                showShadowBehindNode: true
+                            }
+                        ]
+                    },
+                    layoutProps: {
+                        width: width,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "HUG",
+                        parentIsAutoLayout: true
+                    },
+                    children: nodes.filter(n => n !== null) as NodeDefinition[]
+                };
+                return await this.renderDefinition(toastDef) as FrameNode;
+            };
+
+            // Variant 1: [Icon] [Bold Text] [X] (Small icon on right)
+            const iconSize = 20;
+            const xIconSize = 16;
+
+            const variant1 = await createPremiumToast([
+                {
+                    type: "COMPONENT",
+                    name: "Info Icon",
+                    component: Lucide_info,
+                    props: { width: iconSize, height: iconSize, color: { r: 0.15, g: 0.45, b: 0.95 } },
+                    layoutProps: { parentIsAutoLayout: true }
+                },
+                createText("Label", "Component successfully updated.", 14, "Bold", { r: 0.05, g: 0.08, b: 0.15 }, {
+                    font: { family: "Inter", style: "Bold" },
+                    layoutGrow: 1,
+                    layoutSizingHorizontal: "FILL"
+                }),
+                {
+                    type: "COMPONENT",
+                    name: "Close Icon",
+                    component: Lucide_x,
+                    props: { width: xIconSize, height: xIconSize, color: { r: 0.45, g: 0.5, b: 0.6 } },
+                    layoutProps: { parentIsAutoLayout: true }
+                }
+            ]);
+
+            // Variant 2: [Regular Text] [Large 48px Icon]
+            const largeIconSize = 48;
+            const variant2 = await createPremiumToast([
+                createText("Description", "Your special achievement has been unlocked!", 14, "Regular", { r: 0.45, g: 0.5, b: 0.6 }, {
+                    font: { family: "Inter", style: "Regular" },
+                    layoutGrow: 1,
+                    layoutSizingHorizontal: "FILL"
+                }),
+                {
+                    type: "COMPONENT",
+                    name: "Celebration Icon",
+                    component: Lucide_star,
+                    props: {
+                        width: largeIconSize,
+                        height: largeIconSize,
+                        color: { r: 0.95, g: 0.75, b: 0.1 }
+                    },
+                    layoutProps: {
+                        width: largeIconSize,
+                        height: largeIconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true
+                    }
+                }
+            ]);
+
+            toastWrapper.appendChild(await wrapWithCaption(variant1, "14. Premium Success (Bold + X)"));
+            toastWrapper.appendChild(await wrapWithCaption(variant2, "15. Achievement Unlock (Large Icon)"));
 
             container.appendChild(toastWrapper);
         });

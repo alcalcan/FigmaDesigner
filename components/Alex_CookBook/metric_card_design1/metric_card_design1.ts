@@ -359,7 +359,7 @@ export class metric_card_design1 extends BaseComponent {
         }, [
             headerComponent,
             heroCenteredTitleComponent,
-            (!isHeroCentered && !isHeroTriple) ? contentComponent : null,
+            (!isHeroCentered && !isHeroTriple && !isHeaderCircle) ? contentComponent : null,
             (isHeroCentered || isHeaderCircle) ? trendPillFrame : (isHeroTriple ? null : (props.showFooter !== false ? platformFrame : null))
         ].filter(Boolean) as NodeDefinition[]) : null;
 
