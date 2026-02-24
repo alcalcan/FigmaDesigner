@@ -89,6 +89,7 @@ export class Card extends BaseComponent {
         root.layoutMode = (imageNode && (imagePosition === "left" || imagePosition === "right")) ? "HORIZONTAL" : "VERTICAL";
         root.primaryAxisSizingMode = "AUTO";
         root.counterAxisSizingMode = "AUTO";
+        root.itemSpacing = gap;
 
         root.layoutAlign = fillWidth ? "STRETCH" : "INHERIT";
         root.layoutGrow = fillHeight ? 1 : 0;
@@ -221,28 +222,6 @@ export class Card extends BaseComponent {
             }
         }
 
-        if (props.overlayNode) {
-            root.appendChild(props.overlayNode);
-            if ("layoutPositioning" in props.overlayNode) {
-                const overlay = props.overlayNode as FrameNode;
-                overlay.layoutPositioning = "ABSOLUTE";
-
-                // Reset its position and make it fill width
-                overlay.x = 0;
-                if (typeof width === "number") {
-                    overlay.resize(width, overlay.height);
-                } else {
-                    overlay.resize(root.width, overlay.height);
-                }
-
-                // Anchoring to bottom and stretching width
-                overlay.constraints = { horizontal: "STRETCH", vertical: "MAX" };
-
-                // Position it at the bottom
-                const finalHeight = typeof height === "number" ? height : root.height;
-                overlay.y = finalHeight - overlay.height;
-            }
-        }
 
         // --- Final Radius Sync ---
         // If we have paddingMode "all" and an image, let's make sure the image is rounded nicely too
@@ -259,6 +238,24 @@ export class Card extends BaseComponent {
         }
         if (height !== undefined) {
             root.resize(root.width, height);
+        }
+
+        if (props.overlayNode) {
+            root.appendChild(props.overlayNode);
+            if ("layoutPositioning" in props.overlayNode) {
+                const overlay = props.overlayNode as FrameNode;
+                overlay.layoutPositioning = "ABSOLUTE";
+
+                // Reset its position and make it fill width - using the FINAL root.width
+                overlay.x = 0;
+                overlay.resize(root.width, overlay.height);
+
+                // Anchoring to bottom and stretching width
+                overlay.constraints = { horizontal: "STRETCH", vertical: "MAX" };
+
+                // Position it at the bottom using FINAL root.height
+                overlay.y = root.height - overlay.height;
+            }
         }
 
         return root;
