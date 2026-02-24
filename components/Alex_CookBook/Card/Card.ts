@@ -18,6 +18,7 @@ export interface CardProps extends ComponentProps {
     paddingMode?: "all-in-one" | "all" | "multi-part" | "none";
     padding?: number;
     gap?: number;
+    contentGap?: number; // Decoupled gap for internal content
     cornerRadius?: number | { topLeft: number, topRight: number, bottomLeft: number, bottomRight: number };
 
     // Width / Height
@@ -38,6 +39,7 @@ export class Card extends BaseComponent {
             paddingMode = "all-in-one",
             padding = 24, // Standard default padding
             gap = 16,
+            contentGap = 16, // Default content gap
             cornerRadius = 16,
             fillWidth = false,
             fillHeight = false,
@@ -101,7 +103,7 @@ export class Card extends BaseComponent {
         contentContainer.layoutMode = "VERTICAL";
         contentContainer.primaryAxisSizingMode = "AUTO";
         contentContainer.counterAxisSizingMode = "AUTO";
-        contentContainer.itemSpacing = gap;
+        contentContainer.itemSpacing = contentGap; // Use decoupled contentGap
         contentContainer.fills = [];
 
         // Apply Padding to the wrapper

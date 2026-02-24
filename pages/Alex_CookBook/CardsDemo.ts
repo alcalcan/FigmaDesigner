@@ -352,7 +352,8 @@ export class CardsDemo extends BaseDemoPage {
                     imagePosition: "left",
                     paddingMode: "all-in-one", // Padding around the whole content area
                     variant: "elevated",
-                    gap: 16, // Gap of 16px as requested
+                    gap: 0, // No gap (0px) between stub and content
+                    contentGap: 16, // Internal content spacing restored to 16px
                     imageNode: ticketStub,
                     headerNode: eventHeader,
                     bodyNode: eventInfo,
