@@ -14,6 +14,7 @@ import { Lucide_heart } from "../../components/lucide_icons/Lucide_heart/Lucide_
 import { Lucide_message_circle } from "../../components/lucide_icons/Lucide_message_circle/Lucide_message_circle";
 import { Lucide_share_2 } from "../../components/lucide_icons/Lucide_share_2/Lucide_share_2";
 import { Lucide_save } from "../../components/lucide_icons/Lucide_save/Lucide_save";
+import { Lucide_more_horizontal } from "../../components/lucide_icons/Lucide_more_horizontal/Lucide_more_horizontal";
 
 export class CardsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -718,6 +719,160 @@ export class CardsDemo extends BaseDemoPage {
             ));
 
             container.appendChild(eventRow);
+
+            // --- Cards 13-15: Additional Real-World Patterns ---
+            const modernPatternsRow = this.createRow(container, 32);
+
+            // Card 13: Primary Action Media Card
+            const card13Body = figma.createFrame();
+            card13Body.name = "Card 13 Body";
+            card13Body.layoutMode = "VERTICAL";
+            card13Body.itemSpacing = 8;
+            card13Body.fills = [];
+            card13Body.layoutAlign = "STRETCH";
+            card13Body.appendChild(await createText("Headphone Drop X9", 20, "Bold", { r: 0.1, g: 0.12, b: 0.18 }));
+            card13Body.appendChild(await createText("Limited launch with adaptive noise canceling and 40h battery life.", 14, "Regular", { r: 0.32, g: 0.35, b: 0.42 }));
+
+            const card13Actions = createHorizontalRow(8, "MIN");
+            card13Actions.appendChild(await new Lucide_heart().create({ width: 16, color: { r: 0.35, g: 0.39, b: 0.46 }, strokeWeight: 2 }));
+            card13Actions.appendChild(await new Lucide_message_circle().create({ width: 16, color: { r: 0.35, g: 0.39, b: 0.46 }, strokeWeight: 2 }));
+            card13Actions.appendChild(await new Lucide_share_2().create({ width: 16, color: { r: 0.35, g: 0.39, b: 0.46 }, strokeWeight: 2 }));
+            card13Body.appendChild(card13Actions);
+
+            modernPatternsRow.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 360,
+                    variant: "outlined",
+                    cornerRadius: 20,
+                    paddingMode: "all-in-one",
+                    padding: 16,
+                    gap: 0,
+                    imageNode: await createPlaceholderImage(360, 220, "STRETCH", "Primary Action Media", "#66707D"),
+                    chipCell: { label: "NEW", inset: 12, cornerRadius: 999, paddingHorizontal: 10, paddingVertical: 4, fontSize: 11 },
+                    bodyNode: card13Body,
+                    footerNode: await btn.create({ label: "Shop Now", variant: "primary", width: "fill", cornerRadius: 999 })
+                }),
+                "13. Primary Action Media Card",
+                "Media + CTA",
+                false
+            ));
+
+            // Card 14: Structured Header/Body/Footer Card
+            const card14Header = createHorizontalRow(8, "SPACE_BETWEEN");
+            card14Header.layoutAlign = "STRETCH";
+            card14Header.primaryAxisSizingMode = "FIXED";
+            card14Header.appendChild(await createText("Campaign Performance", 17, "Semi Bold", { r: 0.09, g: 0.11, b: 0.16 }, false));
+            card14Header.appendChild(await new Lucide_more_horizontal().create({ width: 18, color: { r: 0.45, g: 0.5, b: 0.58 }, strokeWeight: 2 }));
+
+            const card14Body = figma.createFrame();
+            card14Body.name = "Card 14 Body";
+            card14Body.layoutMode = "VERTICAL";
+            card14Body.itemSpacing = 10;
+            card14Body.fills = [];
+            card14Body.layoutAlign = "STRETCH";
+            card14Body.appendChild(await createText("Open rate increased by 12% this week compared to the last campaign run.", 14, "Regular", { r: 0.33, g: 0.36, b: 0.43 }));
+            const card14Meta = createHorizontalRow(8, "MIN");
+            card14Meta.appendChild(await bdg.create({ variant: "success", type: "solid", label: "+12%" }));
+            card14Meta.appendChild(await createText("Updated 2h ago", 12, "Regular", { r: 0.5, g: 0.54, b: 0.61 }, false));
+            card14Body.appendChild(card14Meta);
+
+            const card14Footer = createHorizontalRow(10, "SPACE_BETWEEN");
+            card14Footer.layoutAlign = "STRETCH";
+            card14Footer.primaryAxisSizingMode = "FIXED";
+            card14Footer.appendChild(await btn.create({ label: "Details", variant: "secondary", size: "small", cornerRadius: 999 }));
+            card14Footer.appendChild(await btn.create({ label: "Approve", variant: "primary", size: "small", cornerRadius: 999 }));
+
+            modernPatternsRow.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 360,
+                    variant: "elevated",
+                    cornerRadius: 20,
+                    paddingMode: "all-in-one",
+                    padding: 18,
+                    gap: 0,
+                    headerNode: card14Header,
+                    bodyNode: card14Body,
+                    footerNode: card14Footer
+                }),
+                "14. Structured Header/Body/Footer",
+                "Dashboard Pattern",
+                false
+            ));
+
+            // Card 15: Media Layer Stack Card (Overlay Preset Style)
+            const card15Image = await createPlaceholderImage(360, 420, "STRETCH", "Layer Stack Media", "#66707D");
+            card15Image.cornerRadius = 20;
+
+            const card15Overlay = figma.createFrame();
+            card15Overlay.name = "Card 15 Overlay";
+            card15Overlay.layoutMode = "NONE";
+            card15Overlay.fills = [];
+            card15Overlay.resize(360, 420);
+
+            const card15Scrim = figma.createRectangle();
+            card15Scrim.resize(360, 190);
+            card15Scrim.y = 230;
+            card15Scrim.fills = [{
+                type: "GRADIENT_LINEAR",
+                gradientStops: [
+                    { position: 0, color: { r: 0.05, g: 0.08, b: 0.12, a: 0.5 } },
+                    { position: 1, color: { r: 0, g: 0, b: 0, a: 0 } }
+                ],
+                gradientTransform: [[1, 0, 0], [0, 1, 0]]
+            }];
+            card15Overlay.appendChild(card15Scrim);
+
+            const card15Chip = await bdg.create({ variant: "info", type: "solid", label: "TRENDING" });
+            card15Chip.x = 16;
+            card15Chip.y = 16;
+            card15Overlay.appendChild(card15Chip);
+
+            const card15Title = await createText("Minimal Sound Studio", 24, "Bold", { r: 1, g: 1, b: 1 }, false);
+            card15Title.x = 16;
+            card15Title.y = 314;
+            card15Overlay.appendChild(card15Title);
+
+            const card15Meta = await createText("Playlist · 128 tracks", 14, "Regular", { r: 0.9, g: 0.92, b: 0.97 }, false);
+            card15Meta.x = 16;
+            card15Meta.y = 352;
+            card15Overlay.appendChild(card15Meta);
+
+            const card15Fab = await btn.create({
+                variant: "fab",
+                size: "small",
+                frontIcon: Lucide_heart,
+                baseColor: { r: 1, g: 1, b: 1 },
+                textColor: { r: 0.12, g: 0.12, b: 0.12 },
+                withShadow: true
+            }) as FrameNode;
+            card15Fab.x = 360 - card15Fab.width - 16;
+            card15Fab.y = 16;
+            card15Overlay.appendChild(card15Fab);
+
+            modernPatternsRow.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 360,
+                    height: 420,
+                    variant: "elevated",
+                    cornerRadius: 20,
+                    paddingMode: "none",
+                    gap: 0,
+                    imageNode: card15Image,
+                    overlayNode: card15Overlay,
+                    overlay: {
+                        enabled: true,
+                        horizontal: "left",
+                        vertical: "top",
+                        insetX: 0,
+                        insetY: 0
+                    }
+                }),
+                "15. Media Layer Stack Card",
+                "Overlay Preset",
+                false
+            ));
+
+            container.appendChild(modernPatternsRow);
         });
 
         root.x = props.x ?? 0;
