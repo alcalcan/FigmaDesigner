@@ -93,6 +93,8 @@ export class CardsDemo extends BaseDemoPage {
                     width: 320,
                     paddingMode: "all-in-one",
                     variant: "elevated",
+                    gap: 0, // No gap between image and content
+                    contentGap: 16, // Spacing within content restored to 16px
                     imageNode: await createPlaceholderImage(320, 180, "STRETCH", "Image Placeholder"),
                     headerNode: await createText("Standard Layout", 20, "Bold"),
                     bodyNode: await createText("Image is full width at the top. Content wrapper underneath has consistent padding.", 14, "Regular")
@@ -152,6 +154,8 @@ export class CardsDemo extends BaseDemoPage {
                 imagePosition: "left",
                 paddingMode: "all-in-one",
                 variant: "elevated",
+                gap: 0,
+                contentGap: 16,
                 imageNode: await createPlaceholderImage(240, 200, "INHERIT", "Image Placeholder"),
                 headerNode: await createText("Horizontal Highlight", 20, "Bold"),
                 bodyNode: await createText("In horizontal mode, the content area fills the available space.", 14, "Regular")
@@ -210,6 +214,8 @@ export class CardsDemo extends BaseDemoPage {
                     width: 380,
                     paddingMode: "all-in-one",
                     variant: "elevated",
+                    gap: 0,
+                    contentGap: 16,
                     imageNode: await createPlaceholderImage(380, 320, "STRETCH", "Recipe Image", "#D1E7DD", "🥑"),
                     overlayNode: undefined, // Badge moved to header
                     headerNode: recipeHeaderStack,
@@ -269,6 +275,8 @@ export class CardsDemo extends BaseDemoPage {
                     width: 360,
                     paddingMode: "all-in-one",
                     variant: "outlined",
+                    gap: 0,
+                    contentGap: 16,
                     imageNode: await createPlaceholderImage(360, 360, "STRETCH", "Product Image", "#E2E3E5", "🎧"),
                     overlayNode: saleBadgeOverlay,
                     overlayPosition: "custom", // Prevent Card.ts from forcing bottom-stretch
