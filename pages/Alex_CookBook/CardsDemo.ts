@@ -11,6 +11,9 @@ import { Lucide_activity } from "../../components/lucide_icons/Lucide_activity/L
 import { Lucide_image } from "../../components/lucide_icons/Lucide_image/Lucide_image";
 import { Lucide_home } from "../../components/lucide_icons/Lucide_home/Lucide_home";
 import { Lucide_heart } from "../../components/lucide_icons/Lucide_heart/Lucide_heart";
+import { Lucide_message_circle } from "../../components/lucide_icons/Lucide_message_circle/Lucide_message_circle";
+import { Lucide_share_2 } from "../../components/lucide_icons/Lucide_share_2/Lucide_share_2";
+import { Lucide_save } from "../../components/lucide_icons/Lucide_save/Lucide_save";
 
 export class CardsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -18,7 +21,7 @@ export class CardsDemo extends BaseDemoPage {
         await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
         await figma.loadFontAsync({ family: "Inter", style: "Bold" });
 
-        const root = await this.initPage("Cards Demo", 1300);
+        const root = await this.initPage("Cards Demo", 1920);
 
         await this.addHeader(
             root,
@@ -287,9 +290,351 @@ export class CardsDemo extends BaseDemoPage {
                 "6. Product/Shopping Card"
             ));
 
+            // Card 7: Casual Shirt Card (No Background, Split Price)
+            const shirtHeader = createHorizontalRow(0, "SPACE_BETWEEN");
+            shirtHeader.layoutAlign = "STRETCH";
+            shirtHeader.primaryAxisSizingMode = "FIXED";
+            shirtHeader.appendChild(await createText("Casual Shirt", 20, "Semi Bold", { r: 0.2, g: 0.25, b: 0.3 }, false));
+            shirtHeader.appendChild(await createText("$29", 28, "Bold", { r: 0.2, g: 0.25, b: 0.3 }, false));
+
+            const shirtMetaRow = createHorizontalRow(0, "SPACE_BETWEEN");
+            shirtMetaRow.layoutAlign = "STRETCH";
+            shirtMetaRow.primaryAxisSizingMode = "FIXED";
+            shirtMetaRow.appendChild(await createText("7 Colors", 16, "Regular", { r: 0.6, g: 0.6, b: 0.65 }, false));
+            const oldPriceNode = await createText("$35", 16, "Regular", { r: 0.6, g: 0.6, b: 0.65 }, false);
+            oldPriceNode.textDecoration = "STRIKETHROUGH";
+            shirtMetaRow.appendChild(oldPriceNode);
+
+            const shirtContent = figma.createFrame();
+            shirtContent.name = "Shirt Content";
+            shirtContent.layoutMode = "VERTICAL";
+            shirtContent.itemSpacing = 8;
+            shirtContent.fills = [];
+            shirtContent.layoutAlign = "STRETCH";
+            shirtContent.counterAxisSizingMode = "FIXED";
+            shirtContent.appendChild(shirtHeader);
+            shirtContent.appendChild(shirtMetaRow);
+
+            const shirtCardWidth = 320;
+            const shirtImageHeight = 320;
+            const shirtImage = await createPlaceholderImage(shirtCardWidth, shirtImageHeight, "STRETCH", "Casual Shirt", "#66707D");
+            shirtImage.cornerRadius = 24;
+
+            row.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: shirtCardWidth,
+                    variant: "none",
+                    paddingMode: "all-in-one",
+                    padding: 16, // Use 16px padding as per image
+                    gap: 0, // No structural gap on card
+                    imageNode: shirtImage,
+                    chipCell: { label: "SALE", inset: 12 },
+                    bodyNode: shirtContent
+                }),
+                "7. Casual Shirt (No Fill)",
+                "Transparent",
+                false
+            ));
+
+            // Card 8: Casual Shirt Card (Centered Text)
+            const shirtCenteredImage = await createPlaceholderImage(shirtCardWidth, shirtImageHeight, "STRETCH", "Casual Shirt Centered", "#66707D");
+            shirtCenteredImage.cornerRadius = 24;
+
+            const shirtCenteredContent = figma.createFrame();
+            shirtCenteredContent.name = "Shirt Centered Content";
+            shirtCenteredContent.layoutMode = "VERTICAL";
+            shirtCenteredContent.itemSpacing = 10;
+            shirtCenteredContent.fills = [];
+            shirtCenteredContent.layoutAlign = "STRETCH";
+            shirtCenteredContent.counterAxisSizingMode = "FIXED";
+            shirtCenteredContent.counterAxisAlignItems = "CENTER";
+
+            shirtCenteredContent.appendChild(await createText("Casual Shirt", 20, "Semi Bold", { r: 0.2, g: 0.25, b: 0.3 }, false));
+            shirtCenteredContent.appendChild(await createText("$29", 28, "Bold", { r: 0.2, g: 0.25, b: 0.3 }, false));
+            const centeredMeta = createHorizontalRow(12, "CENTER");
+            centeredMeta.primaryAxisSizingMode = "AUTO";
+            centeredMeta.layoutAlign = "INHERIT";
+            centeredMeta.counterAxisAlignItems = "CENTER";
+            centeredMeta.appendChild(await createText("7 Colors", 16, "Regular", { r: 0.6, g: 0.6, b: 0.65 }, false));
+            const centeredOldPrice = await createText("$35", 16, "Regular", { r: 0.6, g: 0.6, b: 0.65 }, false);
+            centeredOldPrice.textDecoration = "STRIKETHROUGH";
+            centeredMeta.appendChild(centeredOldPrice);
+            shirtCenteredContent.appendChild(centeredMeta);
+
+            row.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: shirtCardWidth,
+                    variant: "none",
+                    paddingMode: "all-in-one",
+                    padding: 16,
+                    gap: 0,
+                    imageNode: shirtCenteredImage,
+                    chipCell: { label: "SALE", inset: 12 },
+                    bodyNode: shirtCenteredContent
+                }),
+                "8. Casual Shirt (Centered Text)",
+                "Transparent",
+                false
+            ));
+
+            // Card 9: Social/Game Card (Avatar + Rating Chip)
+            const socialContent = figma.createFrame();
+            socialContent.name = "Social Game Content";
+            socialContent.layoutMode = "VERTICAL";
+            socialContent.itemSpacing = 16;
+            socialContent.fills = [];
+            socialContent.layoutAlign = "STRETCH";
+            socialContent.counterAxisSizingMode = "FIXED";
+
+            const authorRow = createHorizontalRow(12, "MIN");
+            authorRow.layoutAlign = "STRETCH";
+            authorRow.primaryAxisSizingMode = "FIXED";
+
+            const avatar = figma.createEllipse();
+            avatar.name = "User Avatar";
+            avatar.resize(32, 32);
+            avatar.fills = [{ type: "SOLID", color: { r: 0.96, g: 0.75, b: 0.20 } }];
+            avatar.strokes = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.7 }];
+            avatar.strokeWeight = 1;
+            authorRow.appendChild(avatar);
+            authorRow.appendChild(await createText("Ralph Edwards", 16, "Semi Bold", { r: 0.12, g: 0.12, b: 0.13 }, false));
+            socialContent.appendChild(authorRow);
+
+            const gameImage = figma.createFrame();
+            gameImage.name = "Game Image";
+            gameImage.resize(288, 300);
+            gameImage.layoutAlign = "STRETCH";
+            gameImage.layoutMode = "VERTICAL";
+            gameImage.primaryAxisSizingMode = "FIXED";
+            gameImage.counterAxisSizingMode = "FIXED";
+            gameImage.primaryAxisAlignItems = "CENTER";
+            gameImage.counterAxisAlignItems = "CENTER";
+            gameImage.cornerRadius = 36;
+            gameImage.fills = [{ type: "SOLID", color: { r: 0.40, g: 0.44, b: 0.49 } }];
+
+            const ratingChip = figma.createFrame();
+            ratingChip.name = "Chip Container";
+            ratingChip.layoutMode = "HORIZONTAL";
+            ratingChip.itemSpacing = 6;
+            ratingChip.primaryAxisSizingMode = "AUTO";
+            ratingChip.counterAxisSizingMode = "AUTO";
+            ratingChip.primaryAxisAlignItems = "CENTER";
+            ratingChip.counterAxisAlignItems = "CENTER";
+            ratingChip.paddingLeft = 10;
+            ratingChip.paddingRight = 10;
+            ratingChip.paddingTop = 5;
+            ratingChip.paddingBottom = 5;
+            ratingChip.cornerRadius = 999;
+            ratingChip.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+            ratingChip.effects = [{
+                type: "DROP_SHADOW",
+                color: { r: 0, g: 0, b: 0, a: 0.06 },
+                offset: { x: 0, y: 2 },
+                radius: 6,
+                spread: 0,
+                visible: true,
+                blendMode: "NORMAL"
+            }];
+            ratingChip.appendChild(await new Lucide_star().create({ width: 11, color: { r: 0.43, g: 0.26, b: 0.90 }, strokeWeight: 2 }));
+            ratingChip.appendChild(await createText("3.7", 11, "Bold", { r: 0.43, g: 0.26, b: 0.90 }, false));
+            gameImage.appendChild(ratingChip);
+            ratingChip.layoutPositioning = "ABSOLUTE";
+            ratingChip.constraints = { horizontal: "MAX", vertical: "MIN" };
+            ratingChip.x = gameImage.width - ratingChip.width - 16;
+            ratingChip.y = 14;
+            socialContent.appendChild(gameImage);
+
+            socialContent.appendChild(await createText("Candy Crush Friends Saga", 19, "Semi Bold", { r: 0.08, g: 0.08, b: 0.09 }, true));
+
+            const actionsRow = createHorizontalRow(0, "SPACE_BETWEEN");
+            actionsRow.layoutAlign = "STRETCH";
+            actionsRow.primaryAxisSizingMode = "FIXED";
+
+            const leftActions = createHorizontalRow(14, "MIN");
+            leftActions.appendChild(await new Lucide_heart().create({ width: 18, color: { r: 0.55, g: 0.55, b: 0.57 }, strokeWeight: 2 }));
+            leftActions.appendChild(await new Lucide_message_circle().create({ width: 18, color: { r: 0.55, g: 0.55, b: 0.57 }, strokeWeight: 2 }));
+            leftActions.appendChild(await new Lucide_share_2().create({ width: 18, color: { r: 0.55, g: 0.55, b: 0.57 }, strokeWeight: 2 }));
+
+            actionsRow.appendChild(leftActions);
+            actionsRow.appendChild(await new Lucide_save().create({ width: 18, color: { r: 0.55, g: 0.55, b: 0.57 }, strokeWeight: 2 }));
+            socialContent.appendChild(actionsRow);
+
+            const socialCard = await card.create({
+                width: 320,
+                variant: "none",
+                cornerRadius: 24,
+                paddingMode: "all-in-one",
+                padding: 16,
+                gap: 0,
+                bodyNode: socialContent
+            });
+            socialCard.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+            socialCard.strokes = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.8 }];
+            socialCard.strokeWeight = 1;
+            socialCard.effects = [
+                { type: "DROP_SHADOW", color: { r: 0.05, g: 0.1, b: 0.2, a: 0.06 }, offset: { x: 0, y: 16 }, radius: 32, spread: 0, visible: true, blendMode: "NORMAL" },
+                { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.02 }, offset: { x: 0, y: 4 }, radius: 4, spread: 0, visible: true, blendMode: "NORMAL" }
+            ];
+
+            row.appendChild(await this.wrapWithCaption(
+                socialCard,
+                "9. Social/Game Profile Card",
+                "Padded Layout",
+                false
+            ));
+
+            // Card 10 + 11: Absolute Overlay Actions Card (With and Without Gradient)
+            // IMPORTANT: Keep image and card corner radius in sync for overlay variants.
+            // If you adjust one, adjust the other to avoid visible corner mismatches.
+            const overlayCardCornerRadius = 24;
+
+            const createOverlayImage = async () => {
+                const image = await createPlaceholderImage(320, 420, "STRETCH", "Overlay Actions Image", "#66707D");
+                image.cornerRadius = overlayCardCornerRadius;
+                return image;
+            };
+
+            const createOverlayContent = async (withGradient: boolean, withTopRightHeartFab: boolean = false) => {
+                const overlayActions = figma.createFrame();
+                overlayActions.name = withGradient ? "Absolute Overlay Content (Gradient)" : "Absolute Overlay Content (Flat)";
+                overlayActions.layoutMode = "NONE";
+                overlayActions.fills = [];
+                overlayActions.resize(320, 420);
+                overlayActions.clipsContent = false;
+
+                if (withGradient) {
+                    const overlayScrim = figma.createRectangle();
+                    overlayScrim.name = "Bottom Scrim";
+                    overlayScrim.resize(320, 170);
+                    overlayScrim.y = 250;
+                    overlayScrim.fills = [{
+                        type: "GRADIENT_LINEAR",
+                        gradientStops: [
+                            { position: 0, color: { r: 0.05, g: 0.08, b: 0.12, a: 0.45 } },
+                            { position: 1, color: { r: 0, g: 0, b: 0, a: 0 } }
+                        ],
+                        gradientTransform: [[1, 0, 0], [0, 1, 0]]
+                    }];
+                    overlayActions.appendChild(overlayScrim);
+                }
+
+                const overlayTag = figma.createFrame();
+                overlayTag.name = "Overlay Tag";
+                overlayTag.layoutMode = "HORIZONTAL";
+                overlayTag.primaryAxisSizingMode = "AUTO";
+                overlayTag.counterAxisSizingMode = "AUTO";
+                overlayTag.primaryAxisAlignItems = "CENTER";
+                overlayTag.counterAxisAlignItems = "CENTER";
+                overlayTag.paddingLeft = 10;
+                overlayTag.paddingRight = 10;
+                overlayTag.paddingTop = 6;
+                overlayTag.paddingBottom = 6;
+                overlayTag.cornerRadius = 999;
+                overlayTag.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.14 }];
+                overlayTag.strokes = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.30 }];
+                overlayTag.appendChild(await createText("FEATURED", 11, "Bold", { r: 1, g: 1, b: 1 }, false));
+                overlayTag.x = 16;
+                overlayTag.y = 16;
+                overlayActions.appendChild(overlayTag);
+
+                const overlayTitle = await createText("Arctic Headphones", 22, "Bold", { r: 1, g: 1, b: 1 }, false);
+                overlayTitle.textAutoResize = "WIDTH_AND_HEIGHT";
+                overlayTitle.x = 16;
+                overlayTitle.y = 300;
+                overlayActions.appendChild(overlayTitle);
+
+                const overlayMeta = await createText("$29 · 7 colors", 16, "Regular", { r: 0.92, g: 0.94, b: 0.98 }, false);
+                overlayMeta.textAutoResize = "WIDTH_AND_HEIGHT";
+                overlayMeta.x = 16;
+                overlayMeta.y = 344;
+                overlayActions.appendChild(overlayMeta);
+
+                const overlayActionBar = figma.createFrame();
+                overlayActionBar.name = "Overlay Action Bar";
+                overlayActionBar.layoutMode = "HORIZONTAL";
+                overlayActionBar.itemSpacing = 16;
+                overlayActionBar.primaryAxisSizingMode = "AUTO";
+                overlayActionBar.counterAxisSizingMode = "AUTO";
+                overlayActionBar.fills = [{ type: "SOLID", color: { r: 0.10, g: 0.12, b: 0.18 }, opacity: 0.35 }];
+                overlayActionBar.cornerRadius = 999;
+                overlayActionBar.paddingLeft = 12;
+                overlayActionBar.paddingRight = 12;
+                overlayActionBar.paddingTop = 8;
+                overlayActionBar.paddingBottom = 8;
+                overlayActionBar.appendChild(await new Lucide_heart().create({ width: 16, color: { r: 1, g: 1, b: 1 }, strokeWeight: 2 }));
+                overlayActionBar.appendChild(await new Lucide_message_circle().create({ width: 16, color: { r: 1, g: 1, b: 1 }, strokeWeight: 2 }));
+                overlayActionBar.appendChild(await new Lucide_share_2().create({ width: 16, color: { r: 1, g: 1, b: 1 }, strokeWeight: 2 }));
+                overlayActionBar.appendChild(await new Lucide_save().create({ width: 16, color: { r: 1, g: 1, b: 1 }, strokeWeight: 2 }));
+                overlayActionBar.x = 16;
+                overlayActionBar.y = 374;
+                overlayActions.appendChild(overlayActionBar);
+
+                if (withTopRightHeartFab) {
+                    const overlayFab = await btn.create({
+                        variant: "fab",
+                        size: "small",
+                        frontIcon: Lucide_heart,
+                        baseColor: { r: 1, g: 1, b: 1 },
+                        textColor: { r: 0.12, g: 0.12, b: 0.12 },
+                        withShadow: true
+                    }) as FrameNode;
+                    overlayFab.x = 320 - overlayFab.width - 16;
+                    overlayFab.y = 16;
+                    overlayActions.appendChild(overlayFab);
+                }
+
+                return overlayActions;
+            };
+
+            row.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 320,
+                    height: 420,
+                    variant: "elevated",
+                    cornerRadius: overlayCardCornerRadius,
+                    paddingMode: "none",
+                    gap: 0,
+                    imageNode: await createOverlayImage(),
+                    overlayNode: await createOverlayContent(true),
+                    overlay: {
+                        enabled: true,
+                        horizontal: "left",
+                        vertical: "top",
+                        insetX: 0,
+                        insetY: 0
+                    }
+                }),
+                "10. Absolute Overlay Actions",
+                "Overlay",
+                false
+            ));
+
+            row.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 320,
+                    height: 420,
+                    variant: "elevated",
+                    cornerRadius: overlayCardCornerRadius,
+                    paddingMode: "none",
+                    gap: 0,
+                    imageNode: await createOverlayImage(),
+                    overlayNode: await createOverlayContent(false, true),
+                    overlay: {
+                        enabled: true,
+                        horizontal: "left",
+                        vertical: "top",
+                        insetX: 0,
+                        insetY: 0
+                    }
+                }),
+                "11. Absolute Overlay Actions (No Gradient)",
+                "Overlay",
+                false
+            ));
+
             container.appendChild(row);
 
-            // --- Card 7: Event Ticket Card (Own Row) ---
+            // --- Card 12: Event Ticket Card (Own Row) ---
             const eventRow = this.createRow(container, 32);
 
             // Ticket Stub Graphic (Replaces Image)
@@ -367,7 +712,7 @@ export class CardsDemo extends BaseDemoPage {
                     bodyNode: eventInfo,
                     footerNode: eventFooter
                 }),
-                "7. Event Ticket (Horizontal)",
+                "12. Event Ticket (Horizontal)",
                 "Wrapper",
                 false
             ));

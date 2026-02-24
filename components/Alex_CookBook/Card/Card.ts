@@ -1,7 +1,29 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
 
+export type CardVariant = "elevated" | "outlined" | "filled" | "none";
+
+export interface CardChipCellProps {
+    label: string;
+    inset?: number;
+    backgroundColor?: RGB | RGBA;
+    textColor?: RGB | RGBA;
+    cornerRadius?: number;
+    paddingHorizontal?: number;
+    paddingVertical?: number;
+    fontSize?: number;
+    fontWeight?: "Regular" | "Medium" | "Semi Bold" | "Bold";
+}
+
+export interface CardOverlayProps {
+    enabled?: boolean;
+    horizontal?: "left" | "center" | "right" | "stretch";
+    vertical?: "top" | "center" | "bottom" | "stretch";
+    insetX?: number;
+    insetY?: number;
+}
+
 export interface CardProps extends ComponentProps {
-    variant?: "elevated" | "outlined" | "flat";
+    variant?: CardVariant;
     backgroundColor?: RGB | RGBA;
 
     // Structure
@@ -12,7 +34,9 @@ export interface CardProps extends ComponentProps {
     bodyNode?: SceneNode;
     footerNode?: SceneNode;
     overlayNode?: SceneNode;
+    overlay?: CardOverlayProps;
     overlayPosition?: "bottom-stretch" | "custom"; // Define how overlay is positioned
+    chipCell?: CardChipCellProps;
 
     // Layout configuration
     paddingMode?: "all-in-one" | "all" | "multi-part" | "none";
@@ -41,6 +65,7 @@ export class Card extends BaseComponent {
             gap = 16,
             contentGap = 16, // Default content gap
             cornerRadius = 16,
+            chipCell,
             fillWidth = false,
             fillHeight = false,
             width,
@@ -53,7 +78,7 @@ export class Card extends BaseComponent {
         root.name = "Card";
 
         // Root Styles
-        root.fills = [await this.createSolidPaint(backgroundColor)];
+        // root.fills = [await this.createSolidPaint(backgroundColor)]; // This will be handled by variant logic
 
         if (typeof cornerRadius === "number") {
             root.cornerRadius = cornerRadius;
@@ -66,6 +91,7 @@ export class Card extends BaseComponent {
         root.clipsContent = true;
 
         if (variant === "elevated") {
+            root.fills = [await this.createSolidPaint(backgroundColor)]; // Use backgroundColor for elevated
             root.effects = [{
                 type: "DROP_SHADOW",
                 color: { r: 0, g: 0, b: 0, a: 0.08 },
@@ -76,8 +102,15 @@ export class Card extends BaseComponent {
                 blendMode: "NORMAL"
             }];
         } else if (variant === "outlined") {
+            root.fills = [await this.createSolidPaint(backgroundColor)]; // Use backgroundColor for outlined
             root.strokes = [await this.createSolidPaint({ r: 0.9, g: 0.9, b: 0.9 })];
             root.strokeWeight = 1;
+        } else if (variant === "filled") {
+            root.fills = [await this.createSolidPaint({ r: 0.96, g: 0.96, b: 0.96 })]; // Hardcoded fill for "filled"
+        } else if (variant === "none") {
+            root.fills = [];
+            root.effects = [];
+            root.strokes = [];
         }
 
         if (paddingMode === "all") {
@@ -238,13 +271,17 @@ export class Card extends BaseComponent {
             root.resize(root.width, height);
         }
 
-        if (props.overlayNode) {
+        const hasOverlay = Boolean(props.overlayNode) && (props.overlay?.enabled ?? true);
+        if (hasOverlay && props.overlayNode) {
+            const customOverlayX = ("x" in props.overlayNode) ? (props.overlayNode as SceneNode).x : 0;
+            const customOverlayY = ("y" in props.overlayNode) ? (props.overlayNode as SceneNode).y : 0;
             root.appendChild(props.overlayNode);
             if ("layoutPositioning" in props.overlayNode) {
                 const overlay = props.overlayNode as FrameNode;
                 overlay.layoutPositioning = "ABSOLUTE";
-
-                if (props.overlayPosition !== "custom") {
+                if (props.overlay) {
+                    this.applyOverlayPlacement(overlay, root, props.overlay);
+                } else if (props.overlayPosition !== "custom") {
                     // Default behavior: Bottom-stretch
                     // Reset its position and make it fill width - using the FINAL root.width
                     overlay.x = 0;
@@ -255,11 +292,62 @@ export class Card extends BaseComponent {
 
                     // Position it at the bottom using FINAL root.height
                     overlay.y = root.height - overlay.height;
+                } else {
+                    // Preserve caller-defined coordinates after switching to absolute positioning.
+                    overlay.constraints = { horizontal: "MIN", vertical: "MIN" };
+                    overlay.x = customOverlayX;
+                    overlay.y = customOverlayY;
                 }
             }
         }
 
+        if (chipCell?.label?.trim()) {
+            const chipNode = await this.createChipCell(chipCell);
+            root.appendChild(chipNode);
+            chipNode.layoutPositioning = "ABSOLUTE";
+            chipNode.constraints = { horizontal: "MIN", vertical: "MIN" };
+            const inset = chipCell.inset ?? 12;
+            chipNode.x = inset;
+            chipNode.y = inset;
+        }
+
         return root;
+    }
+
+    private applyOverlayPlacement(overlay: FrameNode, root: FrameNode, options: CardOverlayProps): void {
+        const insetX = options.insetX ?? 0;
+        const insetY = options.insetY ?? 0;
+        const horizontal = options.horizontal ?? "left";
+        const vertical = options.vertical ?? "top";
+
+        if (horizontal === "stretch") {
+            const targetWidth = Math.max(1, root.width - (insetX * 2));
+            overlay.x = insetX;
+            overlay.resize(targetWidth, overlay.height);
+        } else if (horizontal === "center") {
+            overlay.x = Math.round((root.width - overlay.width) / 2);
+        } else if (horizontal === "right") {
+            overlay.x = Math.max(0, root.width - overlay.width - insetX);
+        } else {
+            overlay.x = insetX;
+        }
+
+        if (vertical === "stretch") {
+            const targetHeight = Math.max(1, root.height - (insetY * 2));
+            overlay.y = insetY;
+            overlay.resize(overlay.width, targetHeight);
+        } else if (vertical === "center") {
+            overlay.y = Math.round((root.height - overlay.height) / 2);
+        } else if (vertical === "bottom") {
+            overlay.y = Math.max(0, root.height - overlay.height - insetY);
+        } else {
+            overlay.y = insetY;
+        }
+
+        overlay.constraints = {
+            horizontal: horizontal === "stretch" ? "STRETCH" : "MIN",
+            vertical: vertical === "stretch" ? "STRETCH" : "MIN"
+        };
     }
 
     private async createSolidPaint(color: RGB | RGBA): Promise<SolidPaint> {
@@ -270,5 +358,31 @@ export class Card extends BaseComponent {
             visible: true,
             blendMode: "NORMAL"
         };
+    }
+
+    private async createChipCell(chipCell: CardChipCellProps): Promise<FrameNode> {
+        const chip = figma.createFrame();
+        chip.name = "Chip Cell";
+        chip.layoutMode = "HORIZONTAL";
+        chip.primaryAxisSizingMode = "AUTO";
+        chip.counterAxisSizingMode = "AUTO";
+        chip.primaryAxisAlignItems = "CENTER";
+        chip.counterAxisAlignItems = "CENTER";
+        chip.paddingLeft = chipCell.paddingHorizontal ?? 10;
+        chip.paddingRight = chipCell.paddingHorizontal ?? 10;
+        chip.paddingTop = chipCell.paddingVertical ?? 6;
+        chip.paddingBottom = chipCell.paddingVertical ?? 6;
+        chip.cornerRadius = chipCell.cornerRadius ?? 6;
+        chip.fills = [await this.createSolidPaint(chipCell.backgroundColor ?? { r: 0.8, g: 0.1, b: 0.1 })];
+
+        const label = figma.createText();
+        label.characters = chipCell.label;
+        label.fontSize = chipCell.fontSize ?? 12;
+        await figma.loadFontAsync({ family: "Inter", style: chipCell.fontWeight ?? "Bold" });
+        label.fontName = { family: "Inter", style: chipCell.fontWeight ?? "Bold" };
+        label.fills = [await this.createSolidPaint(chipCell.textColor ?? { r: 1, g: 1, b: 1 })];
+        chip.appendChild(label);
+
+        return chip;
     }
 }

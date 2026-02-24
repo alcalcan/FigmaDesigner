@@ -40,6 +40,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         row.itemSpacing = itemSpacing;
         row.fills = [];
         row.layoutAlign = "STRETCH";
+        row.layoutGrow = 1;
         row.primaryAxisAlignItems = "MIN";
         row.counterAxisAlignItems = "MIN";
         row.clipsContent = false;
@@ -70,6 +71,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         section.itemSpacing = 24;
         section.fills = [];
         section.layoutAlign = "STRETCH";
+        section.counterAxisSizingMode = "FIXED";
         section.clipsContent = false;
         root.appendChild(section);
 
@@ -85,7 +87,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         headerContainer.fills = [];
         headerContainer.layoutAlign = "STRETCH";
         headerContainer.primaryAxisSizingMode = "AUTO";
-        headerContainer.counterAxisSizingMode = "AUTO";
+        headerContainer.counterAxisSizingMode = "FIXED";
 
         const label = figma.createText();
         const titleFont = { family: "Inter", style: "Semi Bold" };
