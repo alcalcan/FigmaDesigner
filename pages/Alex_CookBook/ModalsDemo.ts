@@ -5,6 +5,9 @@ import { input_field } from "../../components/Alex_CookBook/input_field/input_fi
 import { button } from "../../components/Alex_CookBook/button/button";
 import { ComponentProps, NodeDefinition } from "../../components/BaseComponent";
 import { Info_generated } from "../../components/Alex_CookBook/Info_generated/Info_generated";
+import { Lucide_check } from "../../components/lucide_icons/Lucide_check/Lucide_check";
+import { Lucide_git_commit_horizontal } from "../../components/lucide_icons/Lucide_git_commit_horizontal/Lucide_git_commit_horizontal";
+import { Lucide_x } from "../../components/lucide_icons/Lucide_x/Lucide_x";
 
 export class ModalsDemo extends BaseDemoPage {
     async create(_props: ComponentProps): Promise<FrameNode> {
@@ -231,7 +234,172 @@ export class ModalsDemo extends BaseDemoPage {
             container.appendChild(await wrapWithCaption(confirmationModalNode, "6. DEKO Custom Component", "DEKO"));
         });
 
-        // Section 4: Edge-to-edge content
+        // Section 4: Custom success summary
+        await this.addSection(root, "Commit Success Variant", "A custom status modal matching the commit confirmation style.", async (container) => {
+            const successCommitModalDef = createFrame("Modal Commit Success", {
+                layoutMode: "VERTICAL",
+                itemSpacing: 20,
+                primaryAxisSizingMode: "AUTO",
+                counterAxisSizingMode: "FIXED",
+                paddingTop: 34,
+                paddingRight: 34,
+                paddingBottom: 34,
+                paddingLeft: 34,
+                fills: [{ type: "SOLID", color: { r: 0.972, g: 0.972, b: 0.976 } }],
+                strokes: [{ type: "SOLID", color: { r: 0.88, g: 0.88, b: 0.9 } }],
+                strokeWeight: 1,
+                cornerRadius: 34,
+                clipsContent: true,
+                effects: [
+                    { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.12 }, offset: { x: 0, y: 14 }, radius: 34, showShadowBehindNode: false },
+                    { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.06 }, offset: { x: 0, y: 4 }, radius: 10, showShadowBehindNode: false }
+                ],
+                layoutProps: { width: 860, parentIsAutoLayout: true }
+            }, [
+                createFrame("Top Row", {
+                    layoutMode: "HORIZONTAL",
+                    primaryAxisAlignItems: "MAX",
+                    counterAxisAlignItems: "CENTER",
+                    layoutAlign: "STRETCH",
+                    primaryAxisSizingMode: "FIXED",
+                    counterAxisSizingMode: "AUTO",
+                    fills: [],
+                }, [
+                    {
+                        type: "COMPONENT",
+                        component: Lucide_x,
+                        name: "Dismiss Icon",
+                        props: {
+                            width: 22,
+                            height: 22,
+                            strokeWeight: 2.2,
+                            color: { r: 0.22, g: 0.22, b: 0.22 }
+                        }
+                    }
+                ]),
+                createFrame("Content", {
+                    layoutMode: "VERTICAL",
+                    itemSpacing: 18,
+                    layoutAlign: "STRETCH",
+                    primaryAxisSizingMode: "AUTO",
+                    counterAxisSizingMode: "AUTO",
+                    fills: [],
+                }, [
+                    createFrame("Success Badge", {
+                        layoutMode: "HORIZONTAL",
+                        primaryAxisAlignItems: "CENTER",
+                        counterAxisAlignItems: "CENTER",
+                        primaryAxisSizingMode: "FIXED",
+                        counterAxisSizingMode: "FIXED",
+                        cornerRadius: 18,
+                        fills: [{ type: "SOLID", color: { r: 0.82, g: 0.91, b: 0.84 } }],
+                        layoutProps: { width: 72, height: 72, parentIsAutoLayout: true }
+                    }, [
+                        {
+                            type: "COMPONENT",
+                            component: Lucide_check,
+                            name: "Success Check",
+                            props: {
+                                width: 36,
+                                height: 36,
+                                strokeWeight: 2.8,
+                                color: { r: 0.04, g: 0.66, b: 0.3 }
+                            }
+                        }
+                    ]),
+                    createText("Title", "Committed and pushed changes", 26, "Bold", { r: 0.05, g: 0.06, b: 0.08 }, {
+                        font: { family: "Inter", style: "Bold" }
+                    }),
+                    createFrame("Details", {
+                        layoutMode: "VERTICAL",
+                        itemSpacing: 14,
+                        layoutAlign: "STRETCH",
+                        primaryAxisSizingMode: "AUTO",
+                        counterAxisSizingMode: "AUTO",
+                        fills: [],
+                    }, [
+                        createFrame("Branch Row", {
+                            layoutMode: "HORIZONTAL",
+                            primaryAxisAlignItems: "SPACE_BETWEEN",
+                            counterAxisAlignItems: "CENTER",
+                            layoutAlign: "STRETCH",
+                            primaryAxisSizingMode: "FIXED",
+                            counterAxisSizingMode: "AUTO",
+                            fills: []
+                        }, [
+                            createText("Branch Label", "Branch", 20, "Semi Bold", { r: 0.09, g: 0.09, b: 0.1 }, {
+                                font: { family: "Inter", style: "Semi Bold" }
+                            }),
+                            createFrame("Branch Value", {
+                                layoutMode: "HORIZONTAL",
+                                itemSpacing: 10,
+                                primaryAxisAlignItems: "CENTER",
+                                counterAxisAlignItems: "CENTER",
+                                fills: []
+                            }, [
+                                {
+                                    type: "COMPONENT",
+                                    component: Lucide_git_commit_horizontal,
+                                    name: "Git Commit Icon",
+                                    props: { width: 20, height: 20, color: { r: 0.09, g: 0.09, b: 0.1 } }
+                                },
+                                createText("Branch Name", "main", 20, "Regular", { r: 0.09, g: 0.09, b: 0.1 }, {
+                                    font: { family: "Inter", style: "Regular" }
+                                })
+                            ])
+                        ]),
+                        createFrame("Changes Row", {
+                            layoutMode: "HORIZONTAL",
+                            primaryAxisAlignItems: "SPACE_BETWEEN",
+                            counterAxisAlignItems: "CENTER",
+                            layoutAlign: "STRETCH",
+                            primaryAxisSizingMode: "FIXED",
+                            counterAxisSizingMode: "AUTO",
+                            fills: []
+                        }, [
+                            createText("Changes Label", "Changes", 20, "Semi Bold", { r: 0.09, g: 0.09, b: 0.1 }, {
+                                font: { family: "Inter", style: "Semi Bold" }
+                            }),
+                            createFrame("Changes Value", {
+                                layoutMode: "HORIZONTAL",
+                                itemSpacing: 20,
+                                primaryAxisAlignItems: "CENTER",
+                                counterAxisAlignItems: "CENTER",
+                                fills: []
+                            }, [
+                                createText("Files Count", "2 files", 20, "Regular", { r: 0.53, g: 0.53, b: 0.53 }, {
+                                    font: { family: "Inter", style: "Regular" }
+                                }),
+                                createText("Additions", "+111", 20, "Regular", { r: 0.0, g: 0.64, b: 0.3 }, {
+                                    font: { family: "Inter", style: "Regular" }
+                                }),
+                                createText("Removals", "-4", 20, "Regular", { r: 0.78, g: 0.2, b: 0.2 }, {
+                                    font: { family: "Inter", style: "Regular" }
+                                })
+                            ])
+                        ])
+                    ])
+                ]),
+                {
+                    type: "COMPONENT",
+                    component: button,
+                    name: "Close CTA",
+                    props: {
+                        label: "Close",
+                        variant: "neutral",
+                        size: "large",
+                        width: "fill",
+                        cornerRadius: 20,
+                        textColor: { r: 1, g: 1, b: 1 }
+                    }
+                }
+            ]);
+
+            const successCommitModalNode = await this.renderDefinition(successCommitModalDef) as FrameNode;
+            container.appendChild(await wrapWithCaption(successCommitModalNode, "7. Commit & Push Success Variant"));
+        });
+
+        // Section 5: Edge-to-edge content
         await this.addSection(root, "Edge-to-Edge Content", "Using bodyPadding = 'none' for full-width content.", async (container) => {
             const edgeModal = new modal();
             const edgeModalNode = await edgeModal.create({
@@ -268,7 +436,7 @@ export class ModalsDemo extends BaseDemoPage {
                 ],
                 width: 600
             });
-            container.appendChild(await wrapWithCaption(edgeModalNode, "7. Zero Padding Container"));
+            container.appendChild(await wrapWithCaption(edgeModalNode, "8. Zero Padding Container"));
         });
 
         return root;

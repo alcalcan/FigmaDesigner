@@ -294,6 +294,8 @@ export { Lucide_folder } from "./lucide_icons/Lucide_folder/Lucide_folder";
 export { Lucide_folder_minus } from "./lucide_icons/Lucide_folder_minus/Lucide_folder_minus";
 export { Lucide_folder_open } from "./lucide_icons/Lucide_folder_open/Lucide_folder_open";
 export { Lucide_folder_plus } from "./lucide_icons/Lucide_folder_plus/Lucide_folder_plus";
+export { Lucide_git_branch } from "./lucide_icons/Lucide_git_branch/Lucide_git_branch";
+export { Lucide_git_commit_horizontal } from "./lucide_icons/Lucide_git_commit_horizontal/Lucide_git_commit_horizontal";
 export { Lucide_hard_drive } from "./lucide_icons/Lucide_hard_drive/Lucide_hard_drive";
 export { Lucide_heart } from "./lucide_icons/Lucide_heart/Lucide_heart";
 export { Lucide_help_circle } from "./lucide_icons/Lucide_help_circle/Lucide_help_circle";
