@@ -15,6 +15,7 @@ import { SpecializedBlocksDemo } from "../../pages/Alex_CookBook/SpecializedBloc
 import { ProfileCardsDemo } from "../../pages/Alex_CookBook/ProfileCardsDemo";
 import { InfoAndToastsDemo } from "../../pages/Alex_CookBook/InfoAndToastsDemo";
 import { ModalsDemo } from "../../pages/Alex_CookBook/ModalsDemo";
+import { CardsDemo } from "../../pages/Alex_CookBook/CardsDemo";
 import { Layout } from "../../slides/theme";
 
 export class DemoFlow extends BaseComponent {
@@ -50,6 +51,7 @@ export class DemoFlow extends BaseComponent {
         const profileCardsDemo = new ProfileCardsDemo();
         const infoAndToastsDemo = new InfoAndToastsDemo();
         const modalsDemo = new ModalsDemo();
+        const cardsDemo = new CardsDemo();
 
         // Create the pages
         const pages = [
@@ -67,7 +69,8 @@ export class DemoFlow extends BaseComponent {
             await specializedDemo.create({}),
             await profileCardsDemo.create({}),
             await infoAndToastsDemo.create({}),
-            await modalsDemo.create({})
+            await modalsDemo.create({}),
+            await cardsDemo.create({})
         ];
 
         // Append pages to the flow container

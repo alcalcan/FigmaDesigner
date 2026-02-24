@@ -40,6 +40,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         row.primaryAxisAlignItems = "MIN";
         row.counterAxisAlignItems = "MIN";
         row.clipsContent = false;
+        row.layoutWrap = "WRAP";
 
         container.appendChild(row);
 
@@ -134,5 +135,41 @@ export abstract class BaseDemoPage extends BaseComponent {
 
         section.appendChild(previewContainer);
         await contentBuilder(previewContainer);
+    }
+    protected async wrapWithCaption(node: SceneNode, captionText: string, wrapperName = "Wrapper", fillWidth: boolean = false): Promise<FrameNode> {
+        const wrapper = figma.createFrame();
+        wrapper.name = wrapperName;
+        wrapper.layoutMode = "VERTICAL";
+        wrapper.itemSpacing = 16;
+        wrapper.primaryAxisSizingMode = "AUTO";
+        wrapper.counterAxisSizingMode = "AUTO";
+        wrapper.primaryAxisAlignItems = "CENTER";
+        wrapper.counterAxisAlignItems = "CENTER";
+        wrapper.fills = [];
+        wrapper.clipsContent = false;
+
+        const caption = figma.createText();
+        caption.characters = captionText;
+        caption.fontSize = 14;
+        caption.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
+        await this.setFont(caption, { family: "Inter", style: "Medium" });
+
+        wrapper.appendChild(node);
+        wrapper.appendChild(caption);
+
+        if (fillWidth) {
+            // Use layoutGrow for horizontal parents (like rows) 
+            // and layoutAlign for vertical parents (like section containers)
+            wrapper.layoutGrow = 1;
+            wrapper.layoutAlign = "STRETCH";
+            if ("layoutAlign" in node) {
+                node.layoutAlign = "STRETCH";
+            }
+            if ("layoutGrow" in node) {
+                node.layoutGrow = 1;
+            }
+        }
+
+        return wrapper;
     }
 }
