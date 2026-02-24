@@ -28,7 +28,7 @@ export class Page_title extends BaseComponent {
         titleNode.name = "Title";
         titleNode.fontName = { family: "Open Sans", style: "Bold" };
         titleNode.characters = props.title || "Page Title";
-        titleNode.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.19, b: 0.24 } }]; // Using previous dark blue-ish color
+        titleNode.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }]; // Black
         root.appendChild(titleNode);
 
         // Subtitle
@@ -37,7 +37,7 @@ export class Page_title extends BaseComponent {
             subtitleNode.name = "Subtitle";
             subtitleNode.fontName = { family: "Open Sans", style: "Regular" };
             subtitleNode.characters = props.subtitle;
-            subtitleNode.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }]; // Grey color for subtitle
+            subtitleNode.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }]; // Black
             root.appendChild(subtitleNode);
         }
 

@@ -90,7 +90,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         label.fontName = titleFont;
         label.characters = title;
         label.fontSize = 24;
-        label.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.12 } }];
+        label.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         label.layoutAlign = "STRETCH";
         label.textAutoResize = "WIDTH_AND_HEIGHT";
         headerContainer.appendChild(label);
@@ -103,7 +103,7 @@ export abstract class BaseDemoPage extends BaseComponent {
             desc.characters = description;
         }
         desc.fontSize = 16;
-        desc.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.45 } }];
+        desc.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         desc.layoutAlign = "STRETCH";
         desc.textAutoResize = "WIDTH_AND_HEIGHT";
         headerContainer.appendChild(desc);
@@ -151,7 +151,7 @@ export abstract class BaseDemoPage extends BaseComponent {
         const caption = figma.createText();
         caption.characters = captionText;
         caption.fontSize = 14;
-        caption.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
+        caption.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         await this.setFont(caption, { family: "Inter", style: "Medium" });
 
         wrapper.appendChild(node);
@@ -161,12 +161,8 @@ export abstract class BaseDemoPage extends BaseComponent {
             // Use layoutGrow for horizontal parents (like rows) 
             // and layoutAlign for vertical parents (like section containers)
             wrapper.layoutGrow = 1;
-            wrapper.layoutAlign = "STRETCH";
             if ("layoutAlign" in node) {
                 node.layoutAlign = "STRETCH";
-            }
-            if ("layoutGrow" in node) {
-                node.layoutGrow = 1;
             }
         }
 

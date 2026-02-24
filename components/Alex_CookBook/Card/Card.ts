@@ -139,7 +139,11 @@ export class Card extends BaseComponent {
         const hasContent = contentNodes.length > 0;
 
         if (hasContent) {
-            contentContainer.layoutAlign = "STRETCH";
+            if (root.layoutMode === "VERTICAL") {
+                contentContainer.layoutAlign = "STRETCH";
+            } else {
+                contentContainer.layoutAlign = "INHERIT";
+            }
         }
 
         if (imageNode) {
@@ -157,7 +161,7 @@ export class Card extends BaseComponent {
                     imageNode.layoutAlign = "STRETCH";
                 } else if (root.layoutMode === "HORIZONTAL") {
                     // Left or right image
-                    imageNode.layoutAlign = "STRETCH";
+                    imageNode.layoutAlign = "INHERIT";
                     // If no explicit width on image node, and we are horizontal, we might need a default or fixed width
                     if (!("width" in imageNode && imageNode.width > 0)) {
                         (imageNode as any).resize(200, imageNode.height || 200);
@@ -174,14 +178,14 @@ export class Card extends BaseComponent {
                 root.layoutAlign = "STRETCH";
                 root.counterAxisSizingMode = "FIXED";
             } else { // HORIZONTAL
-                // In horizontal mode, to fill the parent's width, we grow
-                root.layoutGrow = 1;
+                // In horizontal mode, to fill the parent's width, we align
+                root.layoutAlign = "STRETCH";
                 root.primaryAxisSizingMode = "FIXED"; // Primary (width) becomes fixed/proportional
                 if (hasContent) {
                     contentContainer.layoutGrow = 1; // Content takes up remaining horizontal space
+                    contentContainer.counterAxisSizingMode = "FIXED"; // Width is controlled by layoutGrow
                 }
             }
-            if (hasContent) contentContainer.layoutAlign = "STRETCH";
         } else if (width !== undefined) {
             if (root.layoutMode === "VERTICAL") {
                 root.counterAxisSizingMode = "FIXED";

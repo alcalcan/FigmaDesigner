@@ -18,7 +18,7 @@ export class CardsDemo extends BaseDemoPage {
         );
 
         // Helper to create text nodes
-        const createText = async (text: string, size: number, weight: "Regular" | "Semi Bold" | "Bold" = "Regular", color: RGB = Colors.TEXT_MAIN, fillWidth: boolean = true) => {
+        const createText = async (text: string, size: number, weight: "Regular" | "Semi Bold" | "Bold" = "Regular", color: RGB = { r: 0, g: 0, b: 0 }, fillWidth: boolean = true) => {
             const node = figma.createText();
             node.characters = text;
             node.fontSize = size;
@@ -53,7 +53,7 @@ export class CardsDemo extends BaseDemoPage {
                     variant: "elevated",
                     imageNode: await createPlaceholderImage(320, 180, "STRETCH", "Image Placeholder"),
                     headerNode: await createText("Standard Layout", 20, "Bold"),
-                    bodyNode: await createText("Image is full width at the top. Content wrapper underneath has consistent padding.", 14, "Regular", Colors.TEXT_SECONDARY)
+                    bodyNode: await createText("Image is full width at the top. Content wrapper underneath has consistent padding.", 14, "Regular")
                 }),
                 "1. Standard Layout"
             ));
@@ -67,7 +67,7 @@ export class CardsDemo extends BaseDemoPage {
                     gap: 20,
                     imageNode: await createPlaceholderImage(272, 180, "STRETCH", "Image Placeholder"),
                     headerNode: await createText("Padded Card Content", 20, "Bold"),
-                    bodyNode: await createText("Root card has padding. The image inside is rounded automatically.", 14, "Regular", Colors.TEXT_SECONDARY)
+                    bodyNode: await createText("Root card has padding. The image inside is rounded automatically.", 14, "Regular")
                 }),
                 "2. Padded Layout"
             ));
@@ -82,8 +82,8 @@ export class CardsDemo extends BaseDemoPage {
             overlayContainer.paddingTop = 24; overlayContainer.paddingBottom = 24; overlayContainer.paddingLeft = 24; overlayContainer.paddingRight = 24;
 
             // Text inside overlay
-            overlayContainer.appendChild(await createText("Overlaid Card", 20, "Bold", Colors.WHITE, true));
-            overlayContainer.appendChild(await createText("Text is absolutely positioned at the bottom.", 14, "Regular", { r: 0.9, g: 0.9, b: 0.9 }, true));
+            overlayContainer.appendChild(await createText("Overlaid Card", 20, "Bold", { r: 0, g: 0, b: 0 }, true));
+            overlayContainer.appendChild(await createText("Text is absolutely positioned at the bottom.", 14, "Regular", { r: 0, g: 0, b: 0 }, true));
 
             row.appendChild(await this.wrapWithCaption(
                 await card.create({
@@ -112,7 +112,7 @@ export class CardsDemo extends BaseDemoPage {
                 variant: "elevated",
                 imageNode: await createPlaceholderImage(240, 200, "INHERIT", "Image Placeholder"),
                 headerNode: await createText("Horizontal Highlight", 20, "Bold"),
-                bodyNode: await createText("In horizontal mode, the content area fills the available space.", 14, "Regular", Colors.TEXT_SECONDARY)
+                bodyNode: await createText("In horizontal mode, the content area fills the available space.", 14, "Regular")
             });
 
             const wrapped = await this.wrapWithCaption(horizontalCard, "4. Horizontal Highlight", "Wrapper", true);
