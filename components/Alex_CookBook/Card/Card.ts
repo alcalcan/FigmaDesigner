@@ -141,11 +141,8 @@ export class Card extends BaseComponent {
         const hasContent = contentNodes.length > 0;
 
         if (hasContent) {
-            if (root.layoutMode === "VERTICAL") {
-                contentContainer.layoutAlign = "STRETCH";
-            } else {
-                contentContainer.layoutAlign = "INHERIT";
-            }
+            // Always stretch content container in its counter-axis to allow fill effects
+            contentContainer.layoutAlign = "STRETCH";
         }
 
         if (imageNode) {
@@ -159,12 +156,10 @@ export class Card extends BaseComponent {
 
             // Image Sizing Logic
             if ("layoutAlign" in imageNode) {
-                if (root.layoutMode === "VERTICAL") {
-                    imageNode.layoutAlign = "STRETCH";
-                } else if (root.layoutMode === "HORIZONTAL") {
-                    // Left or right image
-                    imageNode.layoutAlign = "INHERIT";
-                    // If no explicit width on image node, and we are horizontal, we might need a default or fixed width
+                // Always stretch image in its counter-axis to avoid weird gaps
+                imageNode.layoutAlign = "STRETCH";
+                if (root.layoutMode === "HORIZONTAL") {
+                    // If no explicit width on image node, and we are horizontal, we need a default
                     if (!("width" in imageNode && imageNode.width > 0)) {
                         (imageNode as any).resize(200, imageNode.height || 200);
                     }
@@ -180,12 +175,10 @@ export class Card extends BaseComponent {
                 root.layoutAlign = "STRETCH";
                 root.counterAxisSizingMode = "FIXED";
             } else { // HORIZONTAL
-                // In horizontal mode, to fill the parent's width, we align
                 root.layoutAlign = "STRETCH";
-                root.primaryAxisSizingMode = "FIXED"; // Primary (width) becomes fixed/proportional
+                root.primaryAxisSizingMode = "FIXED";
                 if (hasContent) {
-                    contentContainer.layoutGrow = 1; // Content takes up remaining horizontal space
-                    contentContainer.counterAxisSizingMode = "FIXED"; // Width is controlled by layoutGrow
+                    contentContainer.layoutGrow = 1;
                 }
             }
         } else if (width !== undefined) {
@@ -193,6 +186,9 @@ export class Card extends BaseComponent {
                 root.counterAxisSizingMode = "FIXED";
             } else { // HORIZONTAL
                 root.primaryAxisSizingMode = "FIXED";
+                if (hasContent) {
+                    contentContainer.layoutGrow = 1; // Allow content to fill remaining horizontal space
+                }
             }
         }
 
@@ -222,7 +218,6 @@ export class Card extends BaseComponent {
                 root.primaryAxisSizingMode = "AUTO";
             }
         }
-
 
         // --- Final Radius Sync ---
         // If we have paddingMode "all" and an image, let's make sure the image is rounded nicely too

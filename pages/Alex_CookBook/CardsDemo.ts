@@ -292,9 +292,10 @@ export class CardsDemo extends BaseDemoPage {
             ticketStub.counterAxisAlignItems = "CENTER";
             ticketStub.itemSpacing = 16;
             ticketStub.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.15 } }]; // Dark navy/black stub
-            ticketStub.resize(160, 260); // Increased bounds to fit barcode
-            ticketStub.layoutAlign = "STRETCH"; // Fill vertical space
+            ticketStub.resize(160, 200); // Height will be stretched by Card.ts
+            ticketStub.layoutAlign = "STRETCH";
 
+            // ... (rest of ticketStub children)
             ticketStub.appendChild(await createText("OCT", 24, "Bold", { r: 1, g: 0.4, b: 0.4 }, false)); // Red month
             ticketStub.appendChild(await createText("24", 48, "Bold", { r: 1, g: 1, b: 1 }, false)); // White large day
 
@@ -325,7 +326,7 @@ export class CardsDemo extends BaseDemoPage {
 
             const eventInfo = figma.createFrame();
             eventInfo.layoutMode = "VERTICAL";
-            eventInfo.itemSpacing = 4;
+            eventInfo.itemSpacing = 16; // Increased spacing back to 16
             eventInfo.fills = [];
             eventInfo.layoutAlign = "STRETCH";
             eventInfo.appendChild(await createText("Design Systems Conference 2024", 20, "Bold", { r: 0, g: 0, b: 0 }));
@@ -347,19 +348,19 @@ export class CardsDemo extends BaseDemoPage {
 
             eventRow.appendChild(await this.wrapWithCaption(
                 await card.create({
-                    fillWidth: true,
+                    width: 600,
                     imagePosition: "left",
                     paddingMode: "all-in-one", // Padding around the whole content area
                     variant: "elevated",
-                    gap: 32, // More gap between stub and text
-                    imageNode: ticketStub, // Pass the stub as the image Node
+                    gap: 16, // Gap of 16px as requested
+                    imageNode: ticketStub,
                     headerNode: eventHeader,
                     bodyNode: eventInfo,
                     footerNode: eventFooter
                 }),
                 "7. Event Ticket (Horizontal)",
                 "Wrapper",
-                true // Fill width of row
+                false
             ));
 
             container.appendChild(eventRow);
