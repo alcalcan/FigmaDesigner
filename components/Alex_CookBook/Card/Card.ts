@@ -12,6 +12,7 @@ export interface CardProps extends ComponentProps {
     bodyNode?: SceneNode;
     footerNode?: SceneNode;
     overlayNode?: SceneNode;
+    overlayPosition?: "bottom-stretch" | "custom"; // Define how overlay is positioned
 
     // Layout configuration
     paddingMode?: "all-in-one" | "all" | "multi-part" | "none";
@@ -246,15 +247,18 @@ export class Card extends BaseComponent {
                 const overlay = props.overlayNode as FrameNode;
                 overlay.layoutPositioning = "ABSOLUTE";
 
-                // Reset its position and make it fill width - using the FINAL root.width
-                overlay.x = 0;
-                overlay.resize(root.width, overlay.height);
+                if (props.overlayPosition !== "custom") {
+                    // Default behavior: Bottom-stretch
+                    // Reset its position and make it fill width - using the FINAL root.width
+                    overlay.x = 0;
+                    overlay.resize(root.width, overlay.height);
 
-                // Anchoring to bottom and stretching width
-                overlay.constraints = { horizontal: "STRETCH", vertical: "MAX" };
+                    // Anchoring to bottom and stretching width
+                    overlay.constraints = { horizontal: "STRETCH", vertical: "MAX" };
 
-                // Position it at the bottom using FINAL root.height
-                overlay.y = root.height - overlay.height;
+                    // Position it at the bottom using FINAL root.height
+                    overlay.y = root.height - overlay.height;
+                }
             }
         }
 

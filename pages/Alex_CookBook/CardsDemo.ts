@@ -1,6 +1,8 @@
 import { ComponentProps, BaseComponent } from "../../components/BaseComponent";
 import { BaseDemoPage } from "./BaseDemoPage";
 import { Card } from "../../components/Alex_CookBook/Card/Card";
+import { button } from "../../components/Alex_CookBook/button/button";
+import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { Colors } from "../../slides/theme";
 
 export class CardsDemo extends BaseDemoPage {
@@ -31,13 +33,46 @@ export class CardsDemo extends BaseDemoPage {
             return node;
         };
 
-        const createPlaceholderImage = async (width: number, height: number, layoutAlign: "INHERIT" | "STRETCH" = "STRETCH", name: string = "Image Placeholder") => {
-            const rect = figma.createRectangle();
+        const createPlaceholderImage = async (width: number, height: number, layoutAlign: "INHERIT" | "STRETCH" = "STRETCH", name: string = "Image Placeholder", bgHex: string = "#CCD8E5", emoji: string = "") => {
+            const rect = figma.createFrame();
             rect.name = name;
             rect.resize(width, height);
-            rect.fills = [{ type: "SOLID", color: { r: 0.8, g: 0.85, b: 0.9 } }];
+
+            // Convert Hex to RGB
+            const r = parseInt(bgHex.slice(1, 3), 16) / 255;
+            const g = parseInt(bgHex.slice(3, 5), 16) / 255;
+            const b = parseInt(bgHex.slice(5, 7), 16) / 255;
+            rect.fills = [{ type: "SOLID", color: { r, g, b } }];
+
             rect.layoutAlign = layoutAlign;
+            rect.layoutMode = "VERTICAL";
+            rect.primaryAxisAlignItems = "CENTER";
+            rect.counterAxisAlignItems = "CENTER";
+
+            if (emoji) {
+                const text = figma.createText();
+                text.characters = emoji;
+                text.fontSize = Math.min(width, height) * 0.4;
+                await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+                text.fontName = { family: "Inter", style: "Regular" };
+                rect.appendChild(text);
+            }
+
             return rect;
+        };
+
+        const createHorizontalRow = (spacing: number = 8, justifyContent: "MIN" | "MAX" | "CENTER" | "SPACE_BETWEEN" = "SPACE_BETWEEN") => {
+            const row = figma.createFrame();
+            row.name = "Horizontal Row";
+            row.layoutMode = "HORIZONTAL";
+            row.itemSpacing = spacing;
+            row.primaryAxisAlignItems = justifyContent;
+            row.counterAxisAlignItems = "CENTER";
+            row.primaryAxisSizingMode = "AUTO"; // Or FIXED if stretched
+            row.counterAxisSizingMode = "AUTO";
+            row.fills = [];
+            row.layoutAlign = "STRETCH"; // Fill width of parent container
+            return row;
         };
 
         // --- SECTION 1: Standard Layouts ---
@@ -119,6 +154,170 @@ export class CardsDemo extends BaseDemoPage {
             row.appendChild(wrapped);
 
             container.appendChild(row);
+        });
+
+        // --- SECTION 3: Complex Content Cards ---
+        await this.addSection(root, "Complex Content Cards", "Combining the Card component with buttons, badges, and complex layouts.", async (container) => {
+            const card = new Card();
+            const btn = new button();
+            const bdg = new badge();
+            const row = this.createRow(container, 32); // Increased spacing between complex cards
+
+            // Card 5: Recipe Card (Redesigned)
+            const recipeBadgeOverlay = figma.createFrame();
+            recipeBadgeOverlay.name = "Badge Overlay";
+            recipeBadgeOverlay.fills = [];
+            // layoutPositioning is handled by Card.ts to avoid Figma API crashes
+            recipeBadgeOverlay.x = 16;
+            recipeBadgeOverlay.y = 16;
+            recipeBadgeOverlay.appendChild(await bdg.create({ variant: "success", type: "solid", label: "VEGETARIAN" }));
+
+            const recipeMeta = createHorizontalRow(6, "MIN");
+            recipeMeta.appendChild(await createText("🕒 15 min", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+            recipeMeta.appendChild(await createText("•", 12, "Regular", { r: 0.8, g: 0.8, b: 0.8 }, false));
+            recipeMeta.appendChild(await createText("👨‍🍳 Chef Alex", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+            recipeMeta.appendChild(await createText("•", 12, "Regular", { r: 0.8, g: 0.8, b: 0.8 }, false));
+            recipeMeta.appendChild(await createText("⭐ 4.9", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+
+            const recipeBody = figma.createFrame();
+            recipeBody.layoutMode = "VERTICAL";
+            recipeBody.itemSpacing = 8;
+            recipeBody.fills = [];
+            recipeBody.layoutAlign = "STRETCH";
+            recipeBody.appendChild(recipeMeta);
+            recipeBody.appendChild(await createText("A simple, healthy, and delicious breakfast option packed with essential healthy fats.", 14, "Regular"));
+
+            row.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 380,
+                    paddingMode: "all-in-one",
+                    variant: "elevated",
+                    imageNode: await createPlaceholderImage(380, 320, "STRETCH", "Recipe Image", "#D1E7DD", "🥑"),
+                    overlayNode: recipeBadgeOverlay, // Positioned absolute top-left
+                    overlayPosition: "custom", // Prevent Card.ts from forcing bottom-stretch
+                    headerNode: await createText("Avocado Toast", 22, "Bold", { r: 0, g: 0, b: 0 }),
+                    bodyNode: recipeBody,
+                    footerNode: await btn.create({ label: "View Recipe", variant: "primary", width: "fill" })
+                }),
+                "5. Recipe Card"
+            ));
+
+            // Card 6: Shopping Card (Redesigned)
+            const saleBadgeOverlay = figma.createFrame();
+            saleBadgeOverlay.name = "Sale Overlay";
+            saleBadgeOverlay.fills = [];
+            // layoutPositioning is handled by Card.ts
+            saleBadgeOverlay.x = 16;
+            saleBadgeOverlay.y = 16;
+            saleBadgeOverlay.appendChild(await bdg.create({ variant: "error", type: "solid", label: "-20% OFF" }));
+
+            const shopBody = createHorizontalRow(12, "SPACE_BETWEEN");
+            const priceWrapper = createHorizontalRow(8, "MIN");
+            priceWrapper.appendChild(await createText("$129.99", 20, "Bold", { r: 0.8, g: 0.2, b: 0.2 }, false)); // Red discount price
+
+            const originalPrice = await createText("$149.99", 14, "Regular", { r: 0.6, g: 0.6, b: 0.6 }, false);
+            originalPrice.textDecoration = "STRIKETHROUGH";
+            priceWrapper.appendChild(originalPrice);
+
+            shopBody.appendChild(priceWrapper);
+            shopBody.appendChild(await createText("★★★★☆ (128)", 18, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false)); // Increased size to 18
+
+            const shopFooter = createHorizontalRow(12, "MIN");
+            shopFooter.appendChild(await btn.create({ label: "Add to Cart", variant: "primary", width: "fill" })); // Prominent CTA
+
+            const saveBtnNode = await btn.create({ label: "🤍", variant: "secondary", width: 44 }); // Compact icon button
+            shopFooter.appendChild(saveBtnNode);
+
+            row.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 360,
+                    paddingMode: "all-in-one",
+                    variant: "outlined",
+                    imageNode: await createPlaceholderImage(360, 360, "STRETCH", "Product Image", "#E2E3E5", "🎧"),
+                    overlayNode: saleBadgeOverlay,
+                    overlayPosition: "custom", // Prevent Card.ts from forcing bottom-stretch
+                    headerNode: await createText("Wireless Noise-Canceling Headphones", 18, "Semi Bold"),
+                    bodyNode: shopBody,
+                    footerNode: shopFooter
+                }),
+                "6. Product/Shopping Card"
+            ));
+
+            container.appendChild(row);
+
+            // --- Card 7: Event Ticket Card (Own Row) ---
+            const eventRow = this.createRow(container, 32);
+
+            // Ticket Stub Graphic (Replaces Image)
+            const ticketStub = figma.createFrame();
+            ticketStub.name = "Ticket Stub Graphic";
+            ticketStub.layoutMode = "VERTICAL";
+            ticketStub.primaryAxisAlignItems = "CENTER";
+            ticketStub.counterAxisAlignItems = "CENTER";
+            ticketStub.itemSpacing = 16;
+            ticketStub.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.15 } }]; // Dark navy/black stub
+            ticketStub.resize(160, 260); // Increased bounds to fit barcode
+            ticketStub.layoutAlign = "STRETCH"; // Fill vertical space
+
+            ticketStub.appendChild(await createText("OCT", 24, "Bold", { r: 1, g: 0.4, b: 0.4 }, false)); // Red month
+            ticketStub.appendChild(await createText("24", 48, "Bold", { r: 1, g: 1, b: 1 }, false)); // White large day
+
+            // Tiny barcode graphic (Moved to stub)
+            const barcode = figma.createFrame();
+            barcode.resize(80, 24);
+            barcode.fills = [];
+            barcode.layoutMode = "HORIZONTAL";
+            barcode.itemSpacing = 2;
+            for (let i = 0; i < 16; i++) {
+                const bar = figma.createRectangle();
+                bar.resize(Math.random() > 0.5 ? 2 : 4, 24);
+                bar.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }]; // white bars for dark stub
+                barcode.appendChild(bar);
+            }
+            ticketStub.appendChild(barcode);
+
+            // Perforated line effect (subtle dashed border on the right)
+            ticketStub.strokes = [{ type: "SOLID", color: { r: 0.3, g: 0.3, b: 0.35 } }];
+            ticketStub.strokeWeight = 2;
+            ticketStub.dashPattern = [4, 4];
+            ticketStub.strokeLeftWeight = 0; ticketStub.strokeTopWeight = 0; ticketStub.strokeBottomWeight = 0;
+
+            // Event Details (Right Side)
+            const eventHeader = createHorizontalRow(8, "MIN");
+            eventHeader.appendChild(await bdg.create({ variant: "info", type: "solid", label: "UPCOMING" }));
+            eventHeader.appendChild(await createText("• Valid for 1 Person", 12, "Regular", { r: 0.5, g: 0.5, b: 0.5 }, false));
+
+            const eventInfo = figma.createFrame();
+            eventInfo.layoutMode = "VERTICAL";
+            eventInfo.itemSpacing = 4;
+            eventInfo.fills = [];
+            eventInfo.layoutAlign = "STRETCH";
+            eventInfo.appendChild(await createText("Design Systems Conference 2024", 20, "Bold", { r: 0, g: 0, b: 0 }));
+            eventInfo.appendChild(await createText("📍 Moscone Center, San Francisco, CA", 14, "Regular", { r: 0.3, g: 0.3, b: 0.3 }));
+            eventInfo.appendChild(await createText("⏰ 09:00 AM - 05:00 PM PST", 14, "Regular", { r: 0.3, g: 0.3, b: 0.3 }));
+
+            // Footer with Button
+            const eventFooter = createHorizontalRow(16, "MIN");
+            eventFooter.appendChild(await btn.create({ label: "Buy Tickets", variant: "primary", width: 140 }));
+
+            eventRow.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    fillWidth: true,
+                    imagePosition: "left",
+                    paddingMode: "all-in-one", // Padding around the whole content area
+                    variant: "elevated",
+                    gap: 32, // More gap between stub and text
+                    imageNode: ticketStub, // Pass the stub as the image Node
+                    headerNode: eventHeader,
+                    bodyNode: eventInfo,
+                    footerNode: eventFooter
+                }),
+                "7. Event Ticket (Horizontal)",
+                "Wrapper",
+                true // Fill width of row
+            ));
+
+            container.appendChild(eventRow);
         });
 
         root.x = props.x ?? 0;
