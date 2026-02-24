@@ -15,6 +15,7 @@ export interface ButtonProps extends ComponentProps {
     fontWeight?: "Regular" | "SemiBold" | "Bold";
     baseColor?: RGB;
     withShadow?: boolean;
+    padding?: number | { v?: number, h?: number };
 }
 
 export class button extends BaseComponent {
@@ -178,10 +179,10 @@ export class button extends BaseComponent {
                 primaryAxisSizingMode: props.width === "fill" ? "FIXED" : (isSquare ? "FIXED" : "AUTO"),
                 counterAxisSizingMode: isSquare ? "FIXED" : "AUTO",
                 itemSpacing: currentSize.gap,
-                paddingTop: isSquare ? 0 : currentSize.v,
-                paddingBottom: isSquare ? 0 : currentSize.v,
-                paddingLeft: isSquare ? 0 : currentSize.h,
-                paddingRight: isSquare ? 0 : currentSize.h,
+                paddingTop: isSquare ? 0 : (typeof props.padding === 'number' ? props.padding : (props.padding?.v ?? currentSize.v)),
+                paddingBottom: isSquare ? 0 : (typeof props.padding === 'number' ? props.padding : (props.padding?.v ?? currentSize.v)),
+                paddingLeft: isSquare ? 0 : (typeof props.padding === 'number' ? props.padding : (props.padding?.h ?? currentSize.h)),
+                paddingRight: isSquare ? 0 : (typeof props.padding === 'number' ? props.padding : (props.padding?.h ?? currentSize.h)),
                 cornerRadius: cornerRounding,
                 fills,
                 strokes,

@@ -4,6 +4,13 @@ import { Card } from "../../components/Alex_CookBook/Card/Card";
 import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { Colors } from "../../slides/theme";
+import { Lucide_clock } from "../../components/lucide_icons/Lucide_clock/Lucide_clock";
+import { Lucide_user } from "../../components/lucide_icons/Lucide_user/Lucide_user";
+import { Lucide_star } from "../../components/lucide_icons/Lucide_star/Lucide_star";
+import { Lucide_activity } from "../../components/lucide_icons/Lucide_activity/Lucide_activity";
+import { Lucide_image } from "../../components/lucide_icons/Lucide_image/Lucide_image";
+import { Lucide_home } from "../../components/lucide_icons/Lucide_home/Lucide_home";
+import { Lucide_heart } from "../../components/lucide_icons/Lucide_heart/Lucide_heart";
 
 export class CardsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -164,20 +171,31 @@ export class CardsDemo extends BaseDemoPage {
             const row = this.createRow(container, 32); // Increased spacing between complex cards
 
             // Card 5: Recipe Card (Redesigned)
-            const recipeBadgeOverlay = figma.createFrame();
-            recipeBadgeOverlay.name = "Badge Overlay";
-            recipeBadgeOverlay.fills = [];
-            // layoutPositioning is handled by Card.ts to avoid Figma API crashes
-            recipeBadgeOverlay.x = 16;
-            recipeBadgeOverlay.y = 16;
-            recipeBadgeOverlay.appendChild(await bdg.create({ variant: "success", type: "solid", label: "VEGETARIAN" }));
+            const recipeHeaderStack = figma.createFrame();
+            recipeHeaderStack.name = "Recipe Header Stack";
+            recipeHeaderStack.layoutMode = "VERTICAL";
+            recipeHeaderStack.itemSpacing = 8;
+            recipeHeaderStack.fills = [];
+            recipeHeaderStack.layoutAlign = "STRETCH";
+            recipeHeaderStack.counterAxisSizingMode = "AUTO"; // Height: Hug
+
+            recipeHeaderStack.appendChild(await bdg.create({ variant: "success", type: "solid", label: "VEGETARIAN" }));
+            recipeHeaderStack.appendChild(await createText("Avocado Toast", 22, "Bold", { r: 0, g: 0, b: 0 }));
 
             const recipeMeta = createHorizontalRow(6, "MIN");
-            recipeMeta.appendChild(await createText("🕒 15 min", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+            const clockIcon = await new Lucide_clock().create({ width: 14, color: { r: 0.4, g: 0.4, b: 0.4 } });
+            recipeMeta.appendChild(clockIcon);
+            recipeMeta.appendChild(await createText("15 min", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
             recipeMeta.appendChild(await createText("•", 12, "Regular", { r: 0.8, g: 0.8, b: 0.8 }, false));
-            recipeMeta.appendChild(await createText("👨‍🍳 Chef Alex", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+
+            const chefIcon = await new Lucide_user().create({ width: 14, color: { r: 0.4, g: 0.4, b: 0.4 } });
+            recipeMeta.appendChild(chefIcon);
+            recipeMeta.appendChild(await createText("Chef Alex", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
             recipeMeta.appendChild(await createText("•", 12, "Regular", { r: 0.8, g: 0.8, b: 0.8 }, false));
-            recipeMeta.appendChild(await createText("⭐ 4.9", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+
+            const starIcon = await new Lucide_star().create({ width: 14, color: { r: 0.9, g: 0.6, b: 0 }, strokeWeight: 2 });
+            recipeMeta.appendChild(starIcon);
+            recipeMeta.appendChild(await createText("4.9", 12, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
 
             const recipeBody = figma.createFrame();
             recipeBody.layoutMode = "VERTICAL";
@@ -193,9 +211,8 @@ export class CardsDemo extends BaseDemoPage {
                     paddingMode: "all-in-one",
                     variant: "elevated",
                     imageNode: await createPlaceholderImage(380, 320, "STRETCH", "Recipe Image", "#D1E7DD", "🥑"),
-                    overlayNode: recipeBadgeOverlay, // Positioned absolute top-left
-                    overlayPosition: "custom", // Prevent Card.ts from forcing bottom-stretch
-                    headerNode: await createText("Avocado Toast", 22, "Bold", { r: 0, g: 0, b: 0 }),
+                    overlayNode: undefined, // Badge moved to header
+                    headerNode: recipeHeaderStack,
                     bodyNode: recipeBody,
                     footerNode: await btn.create({ label: "View Recipe", variant: "primary", width: "fill" })
                 }),
@@ -211,7 +228,12 @@ export class CardsDemo extends BaseDemoPage {
             saleBadgeOverlay.y = 16;
             saleBadgeOverlay.appendChild(await bdg.create({ variant: "error", type: "solid", label: "-20% OFF" }));
 
-            const shopBody = createHorizontalRow(12, "SPACE_BETWEEN");
+            const shopBody = figma.createFrame();
+            shopBody.name = "Shop Body";
+            shopBody.layoutMode = "VERTICAL";
+            shopBody.itemSpacing = 8;
+            shopBody.fills = [];
+            shopBody.layoutAlign = "STRETCH";
             const priceWrapper = createHorizontalRow(8, "MIN");
             priceWrapper.appendChild(await createText("$129.99", 20, "Bold", { r: 0.8, g: 0.2, b: 0.2 }, false)); // Red discount price
 
@@ -220,13 +242,27 @@ export class CardsDemo extends BaseDemoPage {
             priceWrapper.appendChild(originalPrice);
 
             shopBody.appendChild(priceWrapper);
-            shopBody.appendChild(await createText("★★★★☆ (128)", 18, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false)); // Increased size to 18
 
-            const shopFooter = createHorizontalRow(12, "MIN");
+            const ratingWrapper = createHorizontalRow(2, "MIN");
+            for (let i = 0; i < 4; i++) {
+                ratingWrapper.appendChild(await new Lucide_star().create({ width: 16, color: { r: 0.9, g: 0.6, b: 0 }, strokeWeight: 2 }));
+            }
+            ratingWrapper.appendChild(await new Lucide_star().create({ width: 16, color: { r: 0.7, g: 0.7, b: 0.7 }, strokeWeight: 1.5 })); // Last star outlined/grey
+            ratingWrapper.appendChild(await createText("(128)", 14, "Regular", { r: 0.4, g: 0.4, b: 0.4 }, false));
+
+            shopBody.appendChild(ratingWrapper);
+
+            const shopFooter = createHorizontalRow(12, "SPACE_BETWEEN");
+            shopFooter.layoutAlign = "STRETCH";
+            shopFooter.primaryAxisSizingMode = "FIXED"; // Fill parent width
             shopFooter.appendChild(await btn.create({ label: "Add to Cart", variant: "primary", width: "fill" })); // Prominent CTA
 
-            const saveBtnNode = await btn.create({ label: "🤍", variant: "secondary", width: 44 }); // Compact icon button
-            shopFooter.appendChild(saveBtnNode);
+            const heartBtn = await btn.create({
+                variant: "ghost",
+                frontIcon: Lucide_heart,
+                padding: 4
+            });
+            shopFooter.appendChild(heartBtn);
 
             row.appendChild(await this.wrapWithCaption(
                 await card.create({
@@ -293,8 +329,17 @@ export class CardsDemo extends BaseDemoPage {
             eventInfo.fills = [];
             eventInfo.layoutAlign = "STRETCH";
             eventInfo.appendChild(await createText("Design Systems Conference 2024", 20, "Bold", { r: 0, g: 0, b: 0 }));
-            eventInfo.appendChild(await createText("📍 Moscone Center, San Francisco, CA", 14, "Regular", { r: 0.3, g: 0.3, b: 0.3 }));
-            eventInfo.appendChild(await createText("⏰ 09:00 AM - 05:00 PM PST", 14, "Regular", { r: 0.3, g: 0.3, b: 0.3 }));
+            const locationIcon = await new Lucide_home().create({ width: 14, color: { r: 0.3, g: 0.3, b: 0.3 } });
+            const locRow = createHorizontalRow(6, "MIN");
+            locRow.appendChild(locationIcon);
+            locRow.appendChild(await createText("Moscone Center, San Francisco, CA", 14, "Regular", { r: 0.3, g: 0.3, b: 0.3 }));
+            eventInfo.appendChild(locRow);
+
+            const timeIcon = await new Lucide_clock().create({ width: 14, color: { r: 0.3, g: 0.3, b: 0.3 } });
+            const timeRow = createHorizontalRow(6, "MIN");
+            timeRow.appendChild(timeIcon);
+            timeRow.appendChild(await createText("09:00 AM - 05:00 PM PST", 14, "Regular", { r: 0.3, g: 0.3, b: 0.3 }));
+            eventInfo.appendChild(timeRow);
 
             // Footer with Button
             const eventFooter = createHorizontalRow(16, "MIN");

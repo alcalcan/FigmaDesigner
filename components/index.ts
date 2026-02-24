@@ -295,6 +295,7 @@ export { Lucide_folder_minus } from "./lucide_icons/Lucide_folder_minus/Lucide_f
 export { Lucide_folder_open } from "./lucide_icons/Lucide_folder_open/Lucide_folder_open";
 export { Lucide_folder_plus } from "./lucide_icons/Lucide_folder_plus/Lucide_folder_plus";
 export { Lucide_hard_drive } from "./lucide_icons/Lucide_hard_drive/Lucide_hard_drive";
+export { Lucide_heart } from "./lucide_icons/Lucide_heart/Lucide_heart";
 export { Lucide_help_circle } from "./lucide_icons/Lucide_help_circle/Lucide_help_circle";
 export { Lucide_home } from "./lucide_icons/Lucide_home/Lucide_home";
 export { Lucide_IconShowcase } from "../pages/lucide_icons/Lucide_IconShowcase";
