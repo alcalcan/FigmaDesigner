@@ -720,7 +720,7 @@ export class CardsDemo extends BaseDemoPage {
 
             container.appendChild(eventRow);
 
-            // --- Cards 13-15: Additional Real-World Patterns ---
+            // --- Cards 13-16: Additional Real-World Patterns ---
             const modernPatternsRow = this.createRow(container, 32);
 
             // Card 13: Primary Action Media Card
@@ -869,6 +869,113 @@ export class CardsDemo extends BaseDemoPage {
                 }),
                 "15. Media Layer Stack Card",
                 "Overlay Preset",
+                false
+            ));
+
+            const createProductImageArea = async () => {
+                const imageArea = figma.createFrame();
+                imageArea.name = "Product Image Area";
+                imageArea.layoutMode = "VERTICAL";
+                imageArea.primaryAxisSizingMode = "AUTO";
+                imageArea.counterAxisSizingMode = "FIXED";
+                imageArea.primaryAxisAlignItems = "CENTER";
+                imageArea.counterAxisAlignItems = "CENTER";
+                imageArea.fills = [];
+                imageArea.layoutAlign = "STRETCH";
+
+                const slot = figma.createFrame();
+                slot.name = "Product Image Slot (Replace with PNG)";
+                slot.resize(220, 180);
+                slot.layoutMode = "VERTICAL";
+                slot.primaryAxisAlignItems = "CENTER";
+                slot.counterAxisAlignItems = "CENTER";
+                slot.primaryAxisSizingMode = "FIXED";
+                slot.counterAxisSizingMode = "FIXED";
+                slot.fills = [{ type: "SOLID", color: { r: 0.40, g: 0.44, b: 0.49 } }];
+                slot.strokes = [{ type: "SOLID", color: { r: 0.78, g: 0.81, b: 0.86 } }];
+                slot.strokeWeight = 1;
+                slot.dashPattern = [6, 4];
+                slot.cornerRadius = 12;
+                slot.appendChild(await new Lucide_image().create({ width: 26, color: { r: 0.90, g: 0.92, b: 0.96 }, strokeWeight: 2 }));
+                slot.appendChild(await createText("Replace with PNG", 12, "Semi Bold", { r: 0.90, g: 0.92, b: 0.96 }, false));
+                imageArea.appendChild(slot);
+
+                return imageArea;
+            };
+
+            // Card 16: Product Slot Card (Centered Replaceable PNG Area)
+            const card16Body = figma.createFrame();
+            card16Body.name = "Card 16 Content";
+            card16Body.layoutMode = "VERTICAL";
+            card16Body.itemSpacing = 8;
+            card16Body.fills = [];
+            card16Body.layoutAlign = "STRETCH";
+            card16Body.counterAxisSizingMode = "FIXED";
+            card16Body.counterAxisAlignItems = "CENTER";
+            card16Body.appendChild(await createText("Xiaomi 12 Pro", 24, "Semi Bold", { r: 0.12, g: 0.12, b: 0.14 }, false));
+            card16Body.appendChild(await createText("Snapdragon 8 Gen 1", 16, "Regular", { r: 0.44, g: 0.45, b: 0.48 }, false));
+            card16Body.appendChild(await createText("Rp 12.599.000", 20, "Semi Bold", { r: 0.12, g: 0.12, b: 0.14 }, false));
+
+            const colorDots = createHorizontalRow(12, "CENTER");
+            colorDots.layoutAlign = "INHERIT";
+            colorDots.primaryAxisSizingMode = "AUTO";
+            const dot1 = figma.createEllipse(); dot1.resize(24, 24); dot1.fills = [{ type: "SOLID", color: { r: 0.50, g: 0.52, b: 0.54 } }];
+            const dot2 = figma.createEllipse(); dot2.resize(24, 24); dot2.fills = [{ type: "SOLID", color: { r: 0.26, g: 0.56, b: 0.94 } }];
+            const dot3 = figma.createEllipse(); dot3.resize(24, 24); dot3.fills = [{ type: "SOLID", color: { r: 0.74, g: 0.30, b: 0.84 } }];
+            colorDots.appendChild(dot1); colorDots.appendChild(dot2); colorDots.appendChild(dot3);
+            card16Body.appendChild(colorDots);
+
+            modernPatternsRow.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 360,
+                    variant: "outlined",
+                    cornerRadius: 16,
+                    paddingMode: "all",
+                    padding: 24,
+                    gap: 18,
+                    imageNode: await createProductImageArea(),
+                    bodyNode: card16Body
+                }),
+                "16. Product Slot Card (PNG Replace)",
+                "Centered Image Slot",
+                false
+            ));
+
+            // Card 17: Product Slot Card (Left-Aligned Content)
+            const card17Body = figma.createFrame();
+            card17Body.name = "Card 17 Content";
+            card17Body.layoutMode = "VERTICAL";
+            card17Body.itemSpacing = 8;
+            card17Body.fills = [];
+            card17Body.layoutAlign = "STRETCH";
+            card17Body.counterAxisSizingMode = "FIXED";
+            card17Body.counterAxisAlignItems = "MIN";
+            card17Body.appendChild(await createText("Xiaomi 12 Pro", 24, "Semi Bold", { r: 0.12, g: 0.12, b: 0.14 }, true));
+            card17Body.appendChild(await createText("Snapdragon 8 Gen 1", 16, "Regular", { r: 0.44, g: 0.45, b: 0.48 }, true));
+            card17Body.appendChild(await createText("Rp 12.599.000", 20, "Semi Bold", { r: 0.12, g: 0.12, b: 0.14 }, true));
+
+            const colorDotsLeft = createHorizontalRow(12, "MIN");
+            colorDotsLeft.layoutAlign = "STRETCH";
+            colorDotsLeft.primaryAxisSizingMode = "FIXED";
+            const leftDot1 = figma.createEllipse(); leftDot1.resize(24, 24); leftDot1.fills = [{ type: "SOLID", color: { r: 0.50, g: 0.52, b: 0.54 } }];
+            const leftDot2 = figma.createEllipse(); leftDot2.resize(24, 24); leftDot2.fills = [{ type: "SOLID", color: { r: 0.26, g: 0.56, b: 0.94 } }];
+            const leftDot3 = figma.createEllipse(); leftDot3.resize(24, 24); leftDot3.fills = [{ type: "SOLID", color: { r: 0.74, g: 0.30, b: 0.84 } }];
+            colorDotsLeft.appendChild(leftDot1); colorDotsLeft.appendChild(leftDot2); colorDotsLeft.appendChild(leftDot3);
+            card17Body.appendChild(colorDotsLeft);
+
+            modernPatternsRow.appendChild(await this.wrapWithCaption(
+                await card.create({
+                    width: 360,
+                    variant: "outlined",
+                    cornerRadius: 16,
+                    paddingMode: "all",
+                    padding: 24,
+                    gap: 18,
+                    imageNode: await createProductImageArea(),
+                    bodyNode: card17Body
+                }),
+                "17. Product Slot Card (Left Aligned)",
+                "Centered Image + Left Content",
                 false
             ));
 
