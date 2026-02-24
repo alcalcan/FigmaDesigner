@@ -27,6 +27,9 @@ export abstract class BaseDemoPage extends BaseComponent {
             title,
             subtitle
         });
+        if ("layoutAlign" in titleNode) {
+            titleNode.layoutAlign = "STRETCH";
+        }
         root.appendChild(titleNode);
     }
 

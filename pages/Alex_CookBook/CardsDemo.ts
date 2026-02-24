@@ -9,7 +9,7 @@ export class CardsDemo extends BaseDemoPage {
         await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
         await figma.loadFontAsync({ family: "Inter", style: "Bold" });
 
-        const root = await this.initPage("Cards Demo", 1200);
+        const root = await this.initPage("Cards Demo", 1300);
 
         await this.addHeader(
             root,
