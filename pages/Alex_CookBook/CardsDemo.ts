@@ -232,86 +232,6 @@ export class CardsDemo extends BaseDemoPage {
             return sep;
         };
 
-        const createManropeText = async (text: string, size: number, color: RGB, fillWidth: boolean = true, lineHeight?: LineHeight) => {
-            const node = figma.createText();
-            node.characters = text;
-            node.fontSize = size;
-            node.fills = [{ type: "SOLID", color }];
-            await figma.loadFontAsync({ family: "Manrope", style: "Regular" });
-            node.fontName = { family: "Manrope", style: "Regular" };
-            if (lineHeight) {
-                node.lineHeight = lineHeight;
-            }
-            if (fillWidth) {
-                node.layoutAlign = "STRETCH";
-                node.textAutoResize = "HEIGHT";
-            }
-            return node;
-        };
-
-        const buildDisciplinaryCardContent = async (category: string, title: string, date: string, color: RGB, bodyText: string) => {
-            const content = figma.createFrame();
-            content.name = "UEFA Card Content";
-            content.layoutMode = "VERTICAL";
-            content.itemSpacing = 0;
-            content.fills = [];
-            content.layoutAlign = "STRETCH";
-            content.counterAxisSizingMode = "FIXED";
-
-            const categoryText = await createManropeText(category, 16, color, true);
-            content.appendChild(categoryText);
-
-            const titleSection = figma.createFrame();
-            titleSection.name = "Title Section";
-            titleSection.layoutMode = "VERTICAL";
-            titleSection.itemSpacing = 16;
-            titleSection.paddingTop = 12;
-            titleSection.fills = [];
-            titleSection.layoutAlign = "STRETCH";
-            titleSection.layoutGrow = 1;
-
-            const titleText = await createManropeText(title, 24, { r: 0.07, g: 0.22, b: 0.52 }, true, { value: 26.4, unit: "PIXELS" });
-            const dateText = await createManropeText(date, 16, { r: 0.41, g: 0.50, b: 0.65 }, true, { value: 17.6, unit: "PIXELS" });
-            titleSection.appendChild(titleText);
-            titleSection.appendChild(dateText);
-            content.appendChild(titleSection);
-
-            const rectSection = figma.createFrame();
-            rectSection.name = "Rectangle Section";
-            rectSection.layoutMode = "VERTICAL";
-            rectSection.itemSpacing = 0;
-            rectSection.paddingTop = 16;
-            rectSection.fills = [];
-            rectSection.layoutAlign = "STRETCH";
-            rectSection.counterAxisSizingMode = "FIXED";
-
-            const colorRect = figma.createFrame();
-            colorRect.name = "UEFA Color Rectangle";
-            colorRect.resize(40, 4);
-            colorRect.fills = [{ type: "SOLID", color }];
-            if ("layoutSizingHorizontal" in colorRect) {
-                (colorRect as any).layoutSizingHorizontal = "FIXED";
-                (colorRect as any).layoutSizingVertical = "FIXED";
-            }
-            rectSection.appendChild(colorRect);
-            content.appendChild(rectSection);
-
-            const bodySection = figma.createFrame();
-            bodySection.name = "Body Section";
-            bodySection.layoutMode = "VERTICAL";
-            bodySection.itemSpacing = 0;
-            bodySection.paddingTop = 24;
-            bodySection.fills = [];
-            bodySection.layoutAlign = "STRETCH";
-            bodySection.layoutGrow = 1;
-
-            const bodyTextNode = await createManropeText(bodyText, 16, { r: 0.07, g: 0.22, b: 0.52 }, true, { value: 17.6, unit: "PIXELS" });
-            bodySection.appendChild(bodyTextNode);
-            content.appendChild(bodySection);
-
-            return content;
-        };
-
         const buildThreadCardBody = async (expanded: boolean) => {
             const thread = figma.createFrame();
             thread.name = expanded ? "Chat Thread Expanded" : "Chat Thread Collapsed";
@@ -1531,68 +1451,50 @@ export class CardsDemo extends BaseDemoPage {
             const card = new Card();
             const row = this.createRow(container);
 
-            const investigationsBody = await buildDisciplinaryCardContent(
-                "Investigations",
-                "UEFA Europa League: Supporter misconduct",
-                "06/12/2024 02:00",
-                { r: 0.796, g: 0.200, b: 0.231 },
-                "UEL: Manchester United"
-            );
-
             row.appendChild(await this.wrapWithCaption(
                 await card.create({
                     width: 340,
                     height: 284,
-                    variant: "outlined",
-                    cornerRadius: 16,
-                    paddingMode: "all-in-one",
-                    padding: 25,
-                    gap: 0,
-                    bodyNode: investigationsBody
+                    variant: "disciplinary",
+                    disciplinary: {
+                        category: "INVESTIGATIONS",
+                        title: "Olympiacos FC",
+                        date: "04/09/2024",
+                        themeColor: { r: 0.17, g: 0.35, b: 0.95 },
+                        bodyText: "Art. 16(2)(a) DR\nThrowing of objects\n\nArt. 16(2)(c) DR\nLighting of fireworks"
+                    }
                 }),
                 "22. Investigations Card",
             ));
 
-            const proceedingsBody1 = await buildDisciplinaryCardContent(
-                "Proceedings",
-                "Proceedings opened following Romania vs Kosovo match",
-                "01/12/2024 02:00",
-                { r: 0.588, g: 0.400, b: 0.671 },
-                "UEFA Nations League: Romania, Kosovo"
-            );
-
             row.appendChild(await this.wrapWithCaption(
                 await card.create({
                     width: 340,
                     height: 284,
-                    variant: "outlined",
-                    cornerRadius: 16,
-                    paddingMode: "all-in-one",
-                    padding: 25,
-                    gap: 0,
-                    bodyNode: proceedingsBody1
+                    variant: "disciplinary",
+                    disciplinary: {
+                        category: "PROCEEDINGS",
+                        title: "Olympique Lyonnais",
+                        date: "04/09/2024",
+                        themeColor: { r: 0.588, g: 0.400, b: 0.671 },
+                        bodyText: "Art. 16(2)(a) DR\nThrowing of objects"
+                    }
                 }),
                 "23. Proceedings Card",
             ));
 
-            const decisionsBody = await buildDisciplinaryCardContent(
-                "Decisions",
-                "UEFA Conference League disciplinary decisions",
-                "29/11/2024 02:00",
-                { r: 0.282, g: 0.749, b: 0.678 },
-                "UECL: Aston Villa, Lille"
-            );
-
             row.appendChild(await this.wrapWithCaption(
                 await card.create({
                     width: 340,
                     height: 284,
-                    variant: "outlined",
-                    cornerRadius: 16,
-                    paddingMode: "all-in-one",
-                    padding: 25,
-                    gap: 0,
-                    bodyNode: decisionsBody
+                    variant: "disciplinary",
+                    disciplinary: {
+                        category: "DECISIONS",
+                        title: "GNK Dinamo",
+                        date: "04/09/2024",
+                        themeColor: { r: 0.76, g: 0.17, b: 0.23 },
+                        bodyText: "Art. 16(2)(c) DR\nLighting of fireworks\n\n• Fine: € 15,000"
+                    }
                 }),
                 "24. Decisions Card",
             ));

@@ -1,6 +1,6 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
 
-export type CardVariant = "elevated" | "outlined" | "filled" | "none";
+export type CardVariant = "elevated" | "outlined" | "filled" | "none" | "disciplinary";
 
 export interface CardChipCellProps {
     label: string;
@@ -22,9 +22,18 @@ export interface CardOverlayProps {
     insetY?: number;
 }
 
+export interface DisciplinaryCardProps {
+    category: string;
+    title: string;
+    date: string;
+    themeColor: RGB;
+    bodyText: string;
+}
+
 export interface CardProps extends ComponentProps {
     variant?: CardVariant;
     backgroundColor?: RGB | RGBA;
+    disciplinary?: DisciplinaryCardProps;
 
     // Structure
     imageNode?: SceneNode;
@@ -58,12 +67,7 @@ export class Card extends BaseComponent {
             imageNode,
             imagePosition = "top",
             headerNode,
-            bodyNode,
             footerNode,
-            paddingMode = "all-in-one",
-            padding = 24, // Standard default padding
-            gap = 16,
-            contentGap = 16, // Default content gap
             cornerRadius = 16,
             chipCell,
             fillWidth = false,
@@ -73,6 +77,9 @@ export class Card extends BaseComponent {
             x = 0,
             y = 0
         } = props;
+
+        // Variables that variants might override or create internally
+        let { paddingMode = "all-in-one", padding = 24, gap = 16, contentGap = 16, bodyNode } = props;
 
         const root = figma.createFrame();
         root.name = "Card";
@@ -111,6 +118,16 @@ export class Card extends BaseComponent {
             root.fills = [];
             root.effects = [];
             root.strokes = [];
+        } else if (variant === "disciplinary") {
+            root.fills = [await this.createSolidPaint({ r: 1, g: 1, b: 1 })];
+            root.strokes = [await this.createSolidPaint({ r: 0.9, g: 0.9, b: 0.9 })];
+            root.strokeWeight = 1;
+            padding = props.padding ?? 25; // Default disciplinary padding
+            paddingMode = props.paddingMode ?? "all-in-one";
+            gap = 0;
+            if (props.disciplinary && !bodyNode) {
+                bodyNode = await this.createDisciplinaryBody(props.disciplinary);
+            }
         }
 
         if (paddingMode === "all") {
@@ -390,5 +407,85 @@ export class Card extends BaseComponent {
         chip.appendChild(label);
 
         return chip;
+    }
+
+    private async createManropeText(text: string, size: number, color: RGB, fillWidth: boolean = true, lineHeight?: LineHeight): Promise<TextNode> {
+        const node = figma.createText();
+        node.characters = text;
+        node.fontSize = size;
+        node.fills = [{ type: "SOLID", color }];
+        await figma.loadFontAsync({ family: "Manrope", style: "Regular" });
+        node.fontName = { family: "Manrope", style: "Regular" };
+        if (lineHeight) {
+            node.lineHeight = lineHeight;
+        }
+        if (fillWidth) {
+            node.layoutAlign = "STRETCH";
+            node.textAutoResize = "HEIGHT";
+        }
+        return node;
+    }
+
+    private async createDisciplinaryBody(props: DisciplinaryCardProps): Promise<FrameNode> {
+        const content = figma.createFrame();
+        content.name = "UEFA Card Content";
+        content.layoutMode = "VERTICAL";
+        content.itemSpacing = 0;
+        content.fills = [];
+        content.layoutAlign = "STRETCH";
+        content.layoutGrow = 1;
+
+        const categoryText = await this.createManropeText(props.category, 16, props.themeColor, true);
+        content.appendChild(categoryText);
+
+        const titleSection = figma.createFrame();
+        titleSection.name = "Title Section";
+        titleSection.layoutMode = "VERTICAL";
+        titleSection.itemSpacing = 16;
+        titleSection.paddingTop = 12;
+        titleSection.fills = [];
+        titleSection.layoutAlign = "STRETCH";
+        titleSection.layoutGrow = 1;
+
+        const titleText = await this.createManropeText(props.title, 24, { r: 0.07, g: 0.22, b: 0.52 }, true, { value: 26.4, unit: "PIXELS" });
+        const dateText = await this.createManropeText(props.date, 16, { r: 0.41, g: 0.50, b: 0.65 }, true, { value: 17.6, unit: "PIXELS" });
+        titleSection.appendChild(titleText);
+        titleSection.appendChild(dateText);
+        content.appendChild(titleSection);
+
+        const rectSection = figma.createFrame();
+        rectSection.name = "Rectangle Section";
+        rectSection.layoutMode = "VERTICAL";
+        rectSection.itemSpacing = 0;
+        rectSection.paddingTop = 16;
+        rectSection.fills = [];
+        rectSection.layoutAlign = "STRETCH";
+        rectSection.counterAxisSizingMode = "FIXED";
+
+        const colorRect = figma.createFrame();
+        colorRect.name = "UEFA Color Rectangle";
+        colorRect.resize(40, 4);
+        colorRect.fills = [{ type: "SOLID", color: props.themeColor }];
+        if ("layoutSizingHorizontal" in colorRect) {
+            (colorRect as any).layoutSizingHorizontal = "FIXED";
+            (colorRect as any).layoutSizingVertical = "FIXED";
+        }
+        rectSection.appendChild(colorRect);
+        content.appendChild(rectSection);
+
+        const bodySection = figma.createFrame();
+        bodySection.name = "Body Section";
+        bodySection.layoutMode = "VERTICAL";
+        bodySection.itemSpacing = 0;
+        bodySection.paddingTop = 24;
+        bodySection.fills = [];
+        bodySection.layoutAlign = "STRETCH";
+        bodySection.layoutGrow = 1;
+
+        const bodyTextNode = await this.createManropeText(props.bodyText, 16, { r: 0.07, g: 0.22, b: 0.52 }, true, { value: 17.6, unit: "PIXELS" });
+        bodySection.appendChild(bodyTextNode);
+        content.appendChild(bodySection);
+
+        return content;
     }
 }
