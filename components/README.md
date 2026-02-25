@@ -258,6 +258,29 @@ if (centerSection.children && centerSection.children.length > 0) {
 
 ### The "Shadow Clipping" Trap 🌑
 If your component has children with high-radius shadows (like floating islands), the parent frame might clip those shadows if `clipsContent: true`.
+
+---
+
+## 11. Lesson Learned: `layoutPositioning = "ABSOLUTE"` Runtime Error
+
+Error seen:
+`Can only set layoutPositioning = ABSOLUTE if the parent node has layoutMode !== NONE`
+
+### Why this happens
+- You set `node.layoutPositioning = "ABSOLUTE"` before the node is appended to an Auto Layout parent.
+- Or the target parent uses `layoutMode: "NONE"`.
+
+### Reliable pattern (always use this order)
+```typescript
+parent.appendChild(child);                  // parent must be HORIZONTAL or VERTICAL
+child.layoutPositioning = "ABSOLUTE";      // set AFTER append
+child.x = ...;
+child.y = ...;
+```
+
+### Extra reminder for connector/guide lines in threads
+- Never keep reply columns on `layoutGrow: 1` if line height is computed from content. It can inflate height and create giant tails.
+- Compute line end from concrete child heights (e.g., first reply + gap + second reply), not from a potentially stretched container.
 - **Solution:** Always set `clipsContent: false` on components and their demo wrappers if they contain floating or shadowed elements.
 
 ---

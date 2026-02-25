@@ -1,16 +1,15 @@
-import { ComponentProps, BaseComponent } from "../../components/BaseComponent";
+import { ComponentProps } from "../../components/BaseComponent";
 import { BaseDemoPage } from "./BaseDemoPage";
 import { Card } from "../../components/Alex_CookBook/Card/Card";
 import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
-import { Colors } from "../../slides/theme";
 import { Lucide_clock } from "../../components/lucide_icons/Lucide_clock/Lucide_clock";
 import { Lucide_user } from "../../components/lucide_icons/Lucide_user/Lucide_user";
 import { Lucide_star } from "../../components/lucide_icons/Lucide_star/Lucide_star";
-import { Lucide_activity } from "../../components/lucide_icons/Lucide_activity/Lucide_activity";
 import { Lucide_image } from "../../components/lucide_icons/Lucide_image/Lucide_image";
 import { Lucide_home } from "../../components/lucide_icons/Lucide_home/Lucide_home";
 import { Lucide_heart } from "../../components/lucide_icons/Lucide_heart/Lucide_heart";
+import { Lucide_arrow_left } from "../../components/lucide_icons/Lucide_arrow_left/Lucide_arrow_left";
 import { Lucide_message_circle } from "../../components/lucide_icons/Lucide_message_circle/Lucide_message_circle";
 import { Lucide_share_2 } from "../../components/lucide_icons/Lucide_share_2/Lucide_share_2";
 import { Lucide_save } from "../../components/lucide_icons/Lucide_save/Lucide_save";
@@ -84,6 +83,269 @@ export class CardsDemo extends BaseDemoPage {
             row.fills = [];
             row.layoutAlign = "STRETCH"; // Fill width of parent container
             return row;
+        };
+
+        const createAvatarPlaceholder = (size: number = 38) => {
+            const avatar = figma.createEllipse();
+            avatar.name = "Avatar Placeholder";
+            avatar.resize(size, size);
+            avatar.fills = [{ type: "SOLID", color: { r: 0.39, g: 0.46, b: 0.54 } }];
+            avatar.strokes = [{ type: "SOLID", color: { r: 0.87, g: 0.90, b: 0.94 } }];
+            avatar.strokeWeight = 1;
+
+            return avatar;
+        };
+
+        const createMetaAction = async (
+            label: string,
+            iconType: "heart" | "reply" | "none",
+            compact: boolean
+        ) => {
+            const row = figma.createFrame();
+            row.name = `Meta: ${label}`;
+            row.layoutMode = "HORIZONTAL";
+            row.itemSpacing = 4;
+            row.fills = [];
+            row.primaryAxisSizingMode = "AUTO";
+            row.counterAxisSizingMode = "AUTO";
+            row.primaryAxisAlignItems = "MIN";
+            row.counterAxisAlignItems = "CENTER";
+
+            const metaColor = { r: 0.52, g: 0.56, b: 0.62 };
+            const iconSize = compact ? 12 : 14;
+            if (iconType === "heart") {
+                row.appendChild(await new Lucide_heart().create({ width: iconSize, color: metaColor, strokeWeight: 1.8 }));
+            } else if (iconType === "reply") {
+                row.appendChild(await new Lucide_arrow_left().create({ width: iconSize, color: metaColor, strokeWeight: 1.8 }));
+            }
+
+            row.appendChild(await createText(label, compact ? 14 : 16, "Regular", metaColor, false));
+            return row;
+        };
+
+        const createThreadComment = async (
+            author: string,
+            message: string,
+            timeLabel: string,
+            likesLabel: string,
+            repliesLabel?: string,
+            withToggleLabel?: string,
+            compact: boolean = false
+        ) => {
+            const item = figma.createFrame();
+            item.name = `Comment: ${author}`;
+            item.layoutMode = "VERTICAL";
+            item.itemSpacing = 16;
+            item.fills = [];
+            item.layoutAlign = "STRETCH";
+            item.counterAxisSizingMode = "FIXED";
+
+            const contentRow = figma.createFrame();
+            contentRow.name = "Comment Content Row";
+            contentRow.layoutMode = "HORIZONTAL";
+            contentRow.itemSpacing = 12;
+            contentRow.fills = [];
+            contentRow.layoutAlign = "STRETCH";
+            contentRow.primaryAxisSizingMode = "FIXED";
+            contentRow.counterAxisSizingMode = "AUTO";
+            contentRow.counterAxisAlignItems = "MIN";
+            contentRow.appendChild(createAvatarPlaceholder(compact ? 38 : 44));
+
+            const textCol = figma.createFrame();
+            textCol.name = "Comment Text";
+            textCol.layoutMode = "VERTICAL";
+            textCol.itemSpacing = 16;
+            textCol.fills = [];
+            textCol.layoutGrow = 1;
+            textCol.layoutAlign = "STRETCH";
+            textCol.primaryAxisSizingMode = "AUTO";
+            textCol.counterAxisSizingMode = "FIXED";
+
+            const nameRow = createHorizontalRow(8, timeLabel ? "SPACE_BETWEEN" : "MIN");
+            nameRow.primaryAxisSizingMode = "FIXED";
+            nameRow.layoutAlign = "STRETCH";
+            nameRow.counterAxisAlignItems = "MIN";
+
+            const authorNode = await createText(
+                author,
+                compact ? 20 : 24,
+                "Semi Bold",
+                { r: 0.15, g: 0.20, b: 0.27 },
+                false
+            );
+            if ("layoutGrow" in authorNode) {
+                authorNode.layoutGrow = 1;
+            }
+            nameRow.appendChild(authorNode);
+
+            if (timeLabel) {
+                const time = await createText(timeLabel, compact ? 14 : 16, "Regular", { r: 0.54, g: 0.59, b: 0.65 }, false);
+                nameRow.appendChild(time);
+            }
+
+            const messageNode = await createText(
+                message,
+                compact ? 18 : 20,
+                "Regular",
+                { r: 0.15, g: 0.20, b: 0.27 },
+                true
+            );
+
+            const actions = createHorizontalRow(compact ? 10 : 14, "MIN");
+            actions.primaryAxisSizingMode = "AUTO";
+            actions.layoutAlign = "INHERIT";
+            actions.appendChild(await createMetaAction("Like", "heart", compact));
+            actions.appendChild(await createMetaAction("Reply", "reply", compact));
+            actions.appendChild(await createMetaAction(likesLabel, "none", compact));
+            if (repliesLabel) {
+                actions.appendChild(await createMetaAction(repliesLabel, "none", compact));
+            }
+
+            textCol.appendChild(nameRow);
+            textCol.appendChild(messageNode);
+            textCol.appendChild(actions);
+            contentRow.appendChild(textCol);
+            item.appendChild(contentRow);
+
+            if (withToggleLabel) {
+                const toggleRow = figma.createFrame();
+                toggleRow.name = "Replies Toggle";
+                toggleRow.layoutMode = "HORIZONTAL";
+                toggleRow.itemSpacing = 0;
+                toggleRow.fills = [];
+                toggleRow.layoutAlign = "STRETCH";
+                toggleRow.primaryAxisSizingMode = "FIXED";
+                toggleRow.counterAxisSizingMode = "AUTO";
+                toggleRow.paddingLeft = compact ? 50 : 56;
+                toggleRow.appendChild(await createText(withToggleLabel, compact ? 16 : 18, "Semi Bold", { r: 0.09, g: 0.12, b: 0.16 }, false));
+                item.appendChild(toggleRow);
+            }
+
+            return item;
+        };
+
+        const createThreadSeparator = () => {
+            const sep = figma.createRectangle();
+            sep.resize(100, 1);
+            sep.layoutAlign = "STRETCH";
+            sep.fills = [{ type: "SOLID", color: { r: 0.89, g: 0.91, b: 0.94 } }];
+            return sep;
+        };
+
+        const buildThreadCardBody = async (expanded: boolean) => {
+            const thread = figma.createFrame();
+            thread.name = expanded ? "Chat Thread Expanded" : "Chat Thread Collapsed";
+            thread.layoutMode = "VERTICAL";
+            thread.itemSpacing = 16;
+            thread.fills = [];
+            thread.layoutAlign = "STRETCH";
+            thread.counterAxisSizingMode = "FIXED";
+
+            thread.appendChild(await createThreadComment(
+                "Kathryn Murphy",
+                "The fit is perfect, and the quality is top-notch.",
+                "1 week ago",
+                "7 likes",
+                "3 replies",
+                "Show replies"
+            ));
+            thread.appendChild(createThreadSeparator());
+
+            const secondThread = figma.createFrame();
+            secondThread.name = "Comment with Replies";
+            secondThread.layoutMode = "VERTICAL";
+            secondThread.itemSpacing = 12;
+            secondThread.fills = [];
+            secondThread.layoutAlign = "STRETCH";
+            secondThread.counterAxisSizingMode = "FIXED";
+
+            secondThread.appendChild(await createThreadComment(
+                "Esther Howard",
+                "I recently purchased the grey blazer jacket for women, and I couldn't be happier with my purchase!",
+                "2 weeks ago",
+                "2 likes",
+                "2 replies",
+                expanded ? "Hide replies" : "Show replies"
+            ));
+
+            if (expanded) {
+                const repliesBlock = figma.createFrame();
+                repliesBlock.name = "Replies Block";
+                repliesBlock.layoutMode = "VERTICAL";
+                repliesBlock.itemSpacing = 0;
+                repliesBlock.fills = [];
+                repliesBlock.layoutAlign = "STRETCH";
+                repliesBlock.primaryAxisSizingMode = "AUTO";
+                repliesBlock.counterAxisSizingMode = "FIXED";
+                repliesBlock.paddingLeft = 56;
+
+                const repliesCol = figma.createFrame();
+                repliesCol.name = "Replies";
+                repliesCol.layoutMode = "VERTICAL";
+                repliesCol.itemSpacing = 12;
+                repliesCol.fills = [];
+                repliesCol.layoutGrow = 0;
+                repliesCol.layoutAlign = "STRETCH";
+                repliesCol.primaryAxisSizingMode = "AUTO";
+                repliesCol.counterAxisSizingMode = "FIXED";
+
+                const firstReply = await createThreadComment(
+                    "Cameron Williamson",
+                    "I've received multiple compliments on how stylish it looks.",
+                    "",
+                    "4 likes",
+                    undefined,
+                    undefined,
+                    true
+                );
+                const secondReply = await createThreadComment(
+                    "Jenny Wilson",
+                    "It's versatile enough to wear to work or dress up for a night out.",
+                    "",
+                    "5 likes",
+                    undefined,
+                    undefined,
+                    true
+                );
+                repliesCol.appendChild(firstReply);
+                repliesCol.appendChild(secondReply);
+                repliesBlock.appendChild(repliesCol);
+                secondThread.appendChild(repliesBlock);
+
+                const replyConnector = figma.createRectangle();
+                replyConnector.name = "Reply Connector";
+                replyConnector.fills = [{ type: "SOLID", color: { r: 0.86, g: 0.89, b: 0.93 } }];
+                secondThread.appendChild(replyConnector);
+                replyConnector.layoutPositioning = "ABSOLUTE";
+                replyConnector.x = 22; // Parent avatar centerline
+                const lineStartY = 56; // Under parent avatar
+                const repliesHeight = firstReply.height + repliesCol.itemSpacing + secondReply.height;
+                const lineEndY = repliesBlock.y + repliesHeight;
+                replyConnector.y = lineStartY;
+                replyConnector.resize(2, Math.max(2, lineEndY - lineStartY));
+            }
+
+            thread.appendChild(secondThread);
+            thread.appendChild(createThreadSeparator());
+
+            thread.appendChild(await createThreadComment(
+                "Kristin Watson",
+                "I highly recommend this blazer to any woman looking for a timeless and chic addition to their wardrobe.",
+                "2 weeks ago",
+                "1 likes",
+                "1 replies",
+                "Show replies"
+            ));
+            thread.appendChild(createThreadSeparator());
+
+            thread.appendChild(await createThreadComment(
+                "Dianne Russell",
+                "It provides just the right amount of warmth without making me too hot.",
+                "1 month ago",
+                "2 likes"
+            ));
+
+            return thread;
         };
 
         // --- SECTION 1: Standard Layouts ---
@@ -980,6 +1242,209 @@ export class CardsDemo extends BaseDemoPage {
             ));
 
             container.appendChild(modernPatternsRow);
+        });
+
+        await this.addSection(root, "Chat Thread Cards", "Last variants: collapsed and expanded chat/review cards with reply connector line.", async (container) => {
+            const row = this.createRow(container);
+            const card = new Card();
+
+            const createThreadCard = async (expanded: boolean, label: string) => {
+                const chatCard = await card.create({
+                    width: 820,
+                    variant: "outlined",
+                    cornerRadius: 14,
+                    paddingMode: "all-in-one",
+                    padding: 24,
+                    gap: 0,
+                    bodyNode: await buildThreadCardBody(expanded)
+                });
+
+                chatCard.fills = [{ type: "SOLID", color: { r: 0.98, g: 0.99, b: 1 } }];
+                chatCard.strokes = [{ type: "SOLID", color: { r: 0.87, g: 0.90, b: 0.94 } }];
+                chatCard.strokeWeight = 1;
+
+                return this.wrapWithCaption(chatCard, label, "Thread Variant", false);
+            };
+
+            row.appendChild(await createThreadCard(false, "18. Chat Thread (Collapsed)"));
+            row.appendChild(await createThreadCard(true, "19. Chat Thread (Expanded with replies)"));
+
+            container.appendChild(row);
+
+            const singleRow = this.createRow(container);
+            const singleCommentBody = figma.createFrame();
+            singleCommentBody.name = "Single Comment Body";
+            singleCommentBody.layoutMode = "VERTICAL";
+            singleCommentBody.itemSpacing = 0;
+            singleCommentBody.fills = [];
+            singleCommentBody.layoutAlign = "STRETCH";
+            singleCommentBody.counterAxisSizingMode = "FIXED";
+            singleCommentBody.appendChild(await createThreadComment(
+                "Kathryn Murphy",
+                "The fit is perfect, and the quality is top-notch.",
+                "1 week ago",
+                "7 likes",
+                "3 replies",
+                "Show replies"
+            ));
+
+            const singleCard = await card.create({
+                width: 620,
+                variant: "none",
+                cornerRadius: 16,
+                paddingMode: "all-in-one",
+                padding: 24,
+                gap: 0,
+                bodyNode: singleCommentBody
+            });
+            singleCard.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+            singleCard.strokes = [{ type: "SOLID", color: { r: 0.95, g: 0.96, b: 0.98 } }];
+            singleCard.strokeWeight = 1;
+            singleCard.effects = [
+                {
+                    type: "DROP_SHADOW",
+                    color: { r: 0.05, g: 0.10, b: 0.20, a: 0.06 },
+                    offset: { x: 0, y: 14 },
+                    radius: 30,
+                    spread: 0,
+                    visible: true,
+                    blendMode: "NORMAL"
+                },
+                {
+                    type: "DROP_SHADOW",
+                    color: { r: 0, g: 0, b: 0, a: 0.03 },
+                    offset: { x: 0, y: 3 },
+                    radius: 8,
+                    spread: 0,
+                    visible: true,
+                    blendMode: "NORMAL"
+                }
+            ];
+
+            singleRow.appendChild(await this.wrapWithCaption(
+                singleCard,
+                "20. Single Chat Card (White + Floaty)",
+                "Thread Variant",
+                false
+            ));
+
+            container.appendChild(singleRow);
+
+            const singleReplyRow = this.createRow(container);
+            const singleReplyBody = figma.createFrame();
+            singleReplyBody.name = "Single Expanded Reply Body";
+            singleReplyBody.layoutMode = "VERTICAL";
+            singleReplyBody.itemSpacing = 16;
+            singleReplyBody.fills = [];
+            singleReplyBody.layoutAlign = "STRETCH";
+            singleReplyBody.counterAxisSizingMode = "FIXED";
+
+            const parentComment = await createThreadComment(
+                "Esther Howard",
+                "I recently purchased the grey blazer jacket for women, and I couldn't be happier with my purchase!",
+                "2 weeks ago",
+                "2 likes",
+                "2 replies",
+                "Hide replies"
+            );
+            singleReplyBody.appendChild(parentComment);
+
+            const repliesHost = figma.createFrame();
+            repliesHost.name = "Single Replies Host";
+            repliesHost.layoutMode = "VERTICAL";
+            repliesHost.itemSpacing = 0;
+            repliesHost.fills = [];
+            repliesHost.layoutAlign = "STRETCH";
+            repliesHost.primaryAxisSizingMode = "AUTO";
+            repliesHost.counterAxisSizingMode = "FIXED";
+
+            const repliesBlock = figma.createFrame();
+            repliesBlock.name = "Single Replies Block";
+            repliesBlock.layoutMode = "VERTICAL";
+            repliesBlock.itemSpacing = 12;
+            repliesBlock.fills = [];
+            repliesBlock.layoutAlign = "STRETCH";
+            repliesBlock.primaryAxisSizingMode = "AUTO";
+            repliesBlock.counterAxisSizingMode = "FIXED";
+            repliesBlock.paddingLeft = 56;
+
+            const replyOne = await createThreadComment(
+                "Cameron Williamson",
+                "I've received multiple compliments on how stylish it looks.",
+                "",
+                "4 likes",
+                undefined,
+                undefined,
+                true
+            );
+            const replyTwo = await createThreadComment(
+                "Jenny Wilson",
+                "It's versatile enough to wear to work or dress up for a night out.",
+                "",
+                "5 likes",
+                undefined,
+                undefined,
+                true
+            );
+            repliesBlock.appendChild(replyOne);
+            repliesBlock.appendChild(replyTwo);
+            repliesHost.appendChild(repliesBlock);
+
+            singleReplyBody.appendChild(repliesHost);
+
+            const singleReplyConnector = figma.createRectangle();
+            singleReplyConnector.name = "Single Reply Connector";
+            singleReplyConnector.fills = [{ type: "SOLID", color: { r: 0.86, g: 0.89, b: 0.93 } }];
+            singleReplyBody.appendChild(singleReplyConnector);
+            singleReplyConnector.layoutPositioning = "ABSOLUTE";
+            singleReplyConnector.x = 22; // Esther avatar centerline
+            const singleLineStartY = 56; // Start under Esther avatar
+            const singleRepliesHeight = replyOne.height + repliesBlock.itemSpacing + replyTwo.height;
+            const singleLineEndY = repliesHost.y + singleRepliesHeight; // End at Jenny reply bottom area
+            singleReplyConnector.y = singleLineStartY;
+            singleReplyConnector.resize(2, Math.max(2, singleLineEndY - singleLineStartY));
+
+            const singleReplyCard = await card.create({
+                width: 620,
+                variant: "none",
+                cornerRadius: 16,
+                paddingMode: "all-in-one",
+                padding: 24,
+                gap: 0,
+                bodyNode: singleReplyBody
+            });
+            singleReplyCard.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+            singleReplyCard.strokes = [{ type: "SOLID", color: { r: 0.95, g: 0.96, b: 0.98 } }];
+            singleReplyCard.strokeWeight = 1;
+            singleReplyCard.effects = [
+                {
+                    type: "DROP_SHADOW",
+                    color: { r: 0.05, g: 0.10, b: 0.20, a: 0.06 },
+                    offset: { x: 0, y: 14 },
+                    radius: 30,
+                    spread: 0,
+                    visible: true,
+                    blendMode: "NORMAL"
+                },
+                {
+                    type: "DROP_SHADOW",
+                    color: { r: 0, g: 0, b: 0, a: 0.03 },
+                    offset: { x: 0, y: 3 },
+                    radius: 8,
+                    spread: 0,
+                    visible: true,
+                    blendMode: "NORMAL"
+                }
+            ];
+
+            singleReplyRow.appendChild(await this.wrapWithCaption(
+                singleReplyCard,
+                "21. Single Expanded Replies Card (White + Floaty)",
+                "Thread Variant",
+                false
+            ));
+
+            container.appendChild(singleReplyRow);
         });
 
         root.x = props.x ?? 0;
