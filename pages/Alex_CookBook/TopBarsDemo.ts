@@ -57,6 +57,22 @@ export class TopBarsDemo extends BaseDemoPage {
             container.appendChild(await tb.create({ variant: "island", showHamburgerMenu: true, showProfile: false, showNotifications: false, navItems: [] }));
         });
 
+        // --- UEFA Euro 28 Navigation ---
+        await this.addSection(root, "UEFA Euro 28 Navigation", "A specialized navigation bar recreated for UEFA Euro 28.", async (container) => {
+            // Desktop
+            container.appendChild(await tb.create({ variant: "main_navigation_28", platform: "desktop", width: 1440 }));
+            // Mobile
+            container.appendChild(await tb.create({ variant: "main_navigation_28", platform: "mobile", width: 375 }));
+        });
+
+        // --- UEFA Main Navigation ---
+        await this.addSection(root, "UEFA Main Navigation", "Standard UEFA wide top navigation bar.", async (container) => {
+            // Desktop
+            container.appendChild(await tb.create({ variant: "main_navigation", platform: "desktop", width: 1440 }));
+            // Mobile
+            container.appendChild(await tb.create({ variant: "main_navigation", platform: "mobile", width: 375 }));
+        });
+
         return root;
     }
 }
