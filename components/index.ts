@@ -122,6 +122,7 @@ export { card } from "./UEFA_Academy_online/card/card";
 export { Card } from "./Alex_CookBook/Card/Card";
 export { Card__Single_Card_Red } from "./UEFA_icons/Card__Single_Card_Red/Card__Single_Card_Red";
 export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
+export { Cards_Row_2 } from "./cards_disciplinary/Cards_Row_2/Cards_Row_2";
 export { CardsDemo } from "../pages/Alex_CookBook/CardsDemo";
 export { Celta_de_Vigo } from "./Football_Crests/Celta_de_Vigo/Celta_de_Vigo";
 export { Celtic_Glasgow } from "./Football_Crests/Celtic_Glasgow/Celtic_Glasgow";

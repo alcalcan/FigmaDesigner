@@ -166,8 +166,8 @@ export class Card extends BaseComponent {
             if ("layoutAlign" in node && paddingMode !== "none") {
                 node.layoutAlign = "STRETCH";
             }
-            if ("layoutMode" in node && "primaryAxisSizingMode" in node && fillHeight && contentNodes.length === 1) {
-                // If only 1 node, it could grow to fill height
+            if ("layoutMode" in node && "primaryAxisSizingMode" in node && (fillHeight || height !== undefined) && contentNodes.length === 1) {
+                // If only 1 node and height is fixed, it could grow to fill height
                 node.layoutGrow = 1;
             }
         }
@@ -242,8 +242,14 @@ export class Card extends BaseComponent {
         } else if (height !== undefined) {
             if (root.layoutMode === "VERTICAL") {
                 root.primaryAxisSizingMode = "FIXED";
+                if (hasContent) {
+                    contentContainer.layoutGrow = 1;
+                }
             } else { // HORIZONTAL
                 root.counterAxisSizingMode = "FIXED";
+                if (hasContent) {
+                    contentContainer.layoutAlign = "STRETCH";
+                }
             }
         } else {
             // Default: Hug height if not filling or set
