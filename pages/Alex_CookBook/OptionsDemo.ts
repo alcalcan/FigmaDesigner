@@ -19,6 +19,8 @@ export class OptionsDemo extends BaseDemoPage {
         await figma.loadFontAsync({ family: "Inter", style: "Regular" });
         await figma.loadFontAsync({ family: "Inter", style: "Medium" });
         await figma.loadFontAsync({ family: "Inter", style: "Bold" });
+        await figma.loadFontAsync({ family: "Manrope", style: "Regular" });
+        await figma.loadFontAsync({ family: "Manrope", style: "SemiBold" });
 
         const root = await this.initPage("Options Demo", 1200);
 
@@ -29,6 +31,30 @@ export class OptionsDemo extends BaseDemoPage {
         );
 
         // --- SECTION 1: Dropdown Inputs ---
+        let captCount = 1;
+        const wrapWithCaption = async (node: SceneNode, captionText: string): Promise<FrameNode> => {
+            const wrapper = figma.createFrame();
+            wrapper.name = "Wrapper";
+            wrapper.layoutMode = "VERTICAL";
+            wrapper.itemSpacing = 16;
+            wrapper.primaryAxisSizingMode = "AUTO";
+            wrapper.counterAxisSizingMode = "AUTO";
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
+            wrapper.fills = [];
+            wrapper.clipsContent = false;
+
+            const caption = figma.createText();
+            caption.fontName = { family: "Inter", style: "Medium" };
+            caption.characters = `${captCount++}. ${captionText}`;
+            caption.fontSize = 14;
+            caption.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
+
+            wrapper.appendChild(node);
+            wrapper.appendChild(caption);
+            return wrapper;
+        };
+
         await this.addSection(root, "Dropdown Inputs", "Complete dropdown inputs with placeholders and integrated option menus.", async (container) => {
             const di = new dropdown_input();
 
@@ -43,7 +69,7 @@ export class OptionsDemo extends BaseDemoPage {
                 ],
                 width: 320
             });
-            row.appendChild(diNode1);
+            row.appendChild(await wrapWithCaption(diNode1, "Standard Dropdown"));
 
             const diNode2 = await di.create({
                 placeholder: "Select Category...",
@@ -54,7 +80,7 @@ export class OptionsDemo extends BaseDemoPage {
                 ],
                 width: 320
             });
-            row.appendChild(diNode2);
+            row.appendChild(await wrapWithCaption(diNode2, "Category Select"));
 
             container.appendChild(row);
         });
@@ -65,7 +91,7 @@ export class OptionsDemo extends BaseDemoPage {
             const row1 = this.createRow(container);
 
             // Full Width Options Menu (padding on individual options, 0 on body sides, but some TB padding)
-            row1.appendChild(await drp.create({
+            row1.appendChild(await wrapWithCaption(await drp.create({
                 width: 280,
                 bodyPaddingLeft: 0,
                 bodyPaddingRight: 0,
@@ -77,10 +103,10 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Hovered Option", selected: false, hoverState: true },
                     { name: "Selected Option", selected: true }
                 ]
-            }));
+            }), "Radio Options List"));
 
             // Padded Body Options Menu
-            row1.appendChild(await drp.create({
+            row1.appendChild(await wrapWithCaption(await drp.create({
                 width: 280,
                 bodyPadding: 16,
                 selectionType: "checkbox",
@@ -89,9 +115,26 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Hovered Checkbox", selected: false, hoverState: true },
                     { name: "Checked Checkbox", selected: true }
                 ]
-            }));
+            }), "Checkbox Options List"));
 
             container.appendChild(row1);
+
+            const row2 = this.createRow(container);
+            row2.appendChild(await wrapWithCaption(await drp.create({
+                width: 154,
+                variant: "option_space",
+                selectionType: "text-only",
+                optionBottomStroke: true,
+                optionPaddingVertical: 19,
+                options: [
+                    { name: "2025", selected: false },
+                    { name: "2024", selected: false, hoverState: true },
+                    { name: "2023", selected: false },
+                    { name: "2022", selected: false }
+                ]
+            }), "Text Only List"));
+
+            container.appendChild(row2);
         });
 
         // --- SECTION 3: Styled Options ---
@@ -100,7 +143,7 @@ export class OptionsDemo extends BaseDemoPage {
             const row = this.createRow(container);
 
             // Rounded & Shadowed Rows
-            row.appendChild(await drp.create({
+            row.appendChild(await wrapWithCaption(await drp.create({
                 width: 280,
                 bodyPadding: 16,
                 options: [
@@ -109,17 +152,17 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Row with Shadow", selected: false, hoverState: true, rowShadow: true, rowCornerRadius: 8 },
                     { name: "Box Shadow (Legacy)", selected: false, boxShadow: true }
                 ]
-            }));
+            }), "Row Highlighting"));
 
             // Ellipsis / Truncation
-            row.appendChild(await drp.create({
+            row.appendChild(await wrapWithCaption(await drp.create({
                 width: 280,
                 bodyPadding: 16,
                 options: [
                     { name: "Checkbox Options with automatically truncated text that is very long", selected: false },
                     { name: "This is a very long label that should be truncated with ellipsis", selected: true, labelMaxWidth: 180 }
                 ]
-            }));
+            }), "Truncation & Ellipsis"));
 
             container.appendChild(row);
         });
@@ -130,7 +173,7 @@ export class OptionsDemo extends BaseDemoPage {
             const row = this.createRow(container);
 
             // High Rounding
-            row.appendChild(await drp.create({
+            row.appendChild(await wrapWithCaption(await drp.create({
                 width: 250,
                 bodyCornerRadius: 32,
                 bodyPadding: 24,
@@ -139,10 +182,10 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Secondary Action", selected: false },
                     { name: "Tertiary Item", selected: false }
                 ]
-            }));
+            }), "High Rounding (32px)"));
 
             // Premium Shadow
-            row.appendChild(await drp.create({
+            row.appendChild(await wrapWithCaption(await drp.create({
                 width: 250,
                 bodyShadow: "PREMIUM",
                 bodyCornerRadius: 16,
@@ -151,10 +194,10 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Another Premium Item", selected: true },
                     { name: "List Item 3", selected: false }
                 ]
-            }));
+            }), "Premium Shadow"));
 
             // Square & No Shadow
-            row.appendChild(await drp.create({
+            row.appendChild(await wrapWithCaption(await drp.create({
                 width: 250,
                 bodyCornerRadius: 0,
                 bodyShadow: false,
@@ -163,7 +206,7 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Minimal Item 2", selected: false },
                     { name: "Minimal Item 3", selected: false }
                 ]
-            }));
+            }), "Minimal Variant"));
 
             container.appendChild(row);
         });
@@ -173,7 +216,7 @@ export class OptionsDemo extends BaseDemoPage {
             const drp = new dropdown_options();
             const row = this.createRow(container);
 
-            row.appendChild(await drp.create({
+            row.appendChild(await wrapWithCaption(await drp.create({
                 width: 250,
                 bodyCornerRadius: 16,
                 bodyPadding: 12,
@@ -183,7 +226,7 @@ export class OptionsDemo extends BaseDemoPage {
                     { name: "Open Externally", selected: false, icon: Lucide_external_link },
                     { name: "Delete Item", selected: false, icon: Lucide_trash_2 }
                 ]
-            }));
+            }), "Custom Action Icons"));
 
             container.appendChild(row);
         });
@@ -200,21 +243,21 @@ export class OptionsDemo extends BaseDemoPage {
             const mockDateVal = `${monthStr} ${dayNum}, 2026`;
 
             // Date Picker
-            row.appendChild(await dp.create({
+            row.appendChild(await wrapWithCaption(await dp.create({
                 type: "date",
                 width: 320,
                 isOpen: true,
                 value: mockDateVal
-            }));
+            }), "Date Picker"));
 
             // Time Picker
-            row.appendChild(await dp.create({
+            row.appendChild(await wrapWithCaption(await dp.create({
                 type: "time",
                 width: 320,
                 isOpen: true,
                 value: "10:30",
                 timeOptions: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30"]
-            }));
+            }), "Time Picker"));
 
             // Give the container enough padding for absolute dropdowns
             container.paddingBottom = 300;
