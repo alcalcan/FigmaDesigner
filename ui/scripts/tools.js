@@ -6,3 +6,7 @@
         document.getElementById('tool-organize-grid').onclick = () => {
             parent.postMessage({ pluginMessage: { type: 'tools-organize-grid' } }, '*');
         };
+
+        document.getElementById('tool-extract-details').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'tools-extract-details' } }, '*');
+        };

@@ -383,6 +383,10 @@ document.getElementById('tool-check-accessibility').onclick = () => {
     parent.postMessage({ pluginMessage: { type: 'tools-check-accessibility' } }, '*')
 };
 
+document.getElementById('tool-extract-details').onclick = () => {
+    parent.postMessage({ pluginMessage: { type: 'tools-extract-details' } }, '*')
+};
+
 const editFilesBtn = document.getElementById('edit-files-btn');
 const editComponentsBtn = document.getElementById('edit-components-btn');
 const editPagesBtn = document.getElementById('edit-pages-btn');

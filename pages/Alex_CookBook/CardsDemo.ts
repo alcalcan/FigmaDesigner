@@ -235,40 +235,17 @@ export class CardsDemo extends BaseDemoPage {
                     undefined,
                     true
                 );
-
-                const lineStartY = 56;
-                const repliesHeight = firstReply.height + 12 + secondReply.height;
-                const repliesTop = secondComment.height + 12;
-                const connectorHeight = Math.max(2, repliesTop + repliesHeight - lineStartY);
-
-                secondThread = await cardApi.contentNode(
-                    Card.column([
-                        Card.node(secondComment),
-                        Card.column([
-                            Card.node(firstReply),
-                            Card.node(secondReply)
-                        ], {
-                            gap: 12,
-                            fill: true,
-                            crossAlign: "stretch",
-                            padding: { left: 56, right: 0, top: 0, bottom: 0 }
-                        }),
-                        Card.shape({
-                            name: "Reply Connector",
-                            width: 2,
-                            height: connectorHeight,
-                            fillColor: { r: 0.86, g: 0.89, b: 0.93 },
-                            position: "absolute",
-                            x: 22,
-                            y: lineStartY
-                        })
-                    ], {
-                        gap: 12,
-                        fill: true,
-                        crossAlign: "stretch"
-                    }),
-                    "Comment with Replies"
-                );
+                secondThread = await cardApi.threadWithReplies({
+                    parentComment: secondComment,
+                    replies: [firstReply, secondReply],
+                    name: "Comment with Replies",
+                    gap: 12,
+                    repliesGap: 12,
+                    repliesIndent: 56,
+                    connectorStartY: 56,
+                    connectorX: 22,
+                    connectorColor: { r: 0.86, g: 0.89, b: 0.93 }
+                });
             }
 
             const thirdComment = await createThreadComment(
@@ -608,7 +585,7 @@ export class CardsDemo extends BaseDemoPage {
                 return image;
             };
 
-            const createOverlayContent = async (withGradient: boolean, withTopRightHeartFab: boolean = false) => {
+            const createOverlayContent = async (withGradient: boolean) => {
                 const items: Array<ReturnType<typeof Card.shape> | ReturnType<typeof Card.row> | ReturnType<typeof Card.text> | ReturnType<typeof Card.component>> = [];
 
                 if (withGradient) {
@@ -662,17 +639,6 @@ export class CardsDemo extends BaseDemoPage {
                     })
                 );
 
-                if (withTopRightHeartFab) {
-                    items.push(Card.component(button, {
-                        variant: "fab",
-                        size: "small",
-                        frontIcon: Lucide_heart,
-                        baseColor: { r: 1, g: 1, b: 1 },
-                        textColor: { r: 0.12, g: 0.12, b: 0.12 },
-                        withShadow: true
-                    }, { position: "absolute", x: 262, y: 16 }));
-                }
-
                 return cardApi.contentNode(
                     {
                         type: "stack",
@@ -719,13 +685,25 @@ export class CardsDemo extends BaseDemoPage {
                     paddingMode: "none",
                     gap: 0,
                     imageNode: await createOverlayImage(),
-                    overlayNode: await createOverlayContent(false, true),
+                    overlayNode: await createOverlayContent(false),
                     overlay: {
                         enabled: true,
                         horizontal: "left",
                         vertical: "top",
                         insetX: 0,
                         insetY: 0
+                    },
+                    floatingActionButton: {
+                        props: {
+                            frontIcon: Lucide_heart,
+                            baseColor: { r: 1, g: 1, b: 1 },
+                            textColor: { r: 0.12, g: 0.12, b: 0.12 },
+                            withShadow: true
+                        },
+                        horizontal: "right",
+                        vertical: "top",
+                        insetX: 16,
+                        insetY: 16
                     }
                 }),
                 "11. Absolute Overlay Actions (No Gradient)",
@@ -906,27 +884,7 @@ export class CardsDemo extends BaseDemoPage {
                         }),
                         Card.component(badge, { variant: "info", type: "solid", label: "TRENDING" }, { position: "absolute", x: 16, y: 16, fill: false }),
                         Card.text("Minimal Sound Studio", { size: 24, weight: "Bold", color: { r: 1, g: 1, b: 1 }, fill: false, position: "absolute", x: 16, y: 314 }),
-                        Card.text("Playlist · 128 tracks", { size: 14, color: { r: 0.9, g: 0.92, b: 0.97 }, fill: false, position: "absolute", x: 16, y: 352 }),
-                        Card.row([
-                            Card.component(button, {
-                                variant: "fab",
-                                size: "small",
-                                frontIcon: Lucide_heart,
-                                baseColor: { r: 1, g: 1, b: 1 },
-                                textColor: { r: 0.12, g: 0.12, b: 0.12 },
-                                withShadow: true
-                            }, { fill: false })
-                        ], {
-                            gap: 0,
-                            fill: false,
-                            align: "end",
-                            crossAlign: "center",
-                            width: 360,
-                            position: "absolute",
-                            x: 0,
-                            y: 16,
-                            padding: { left: 0, right: 16, top: 0, bottom: 0 }
-                        })
+                        Card.text("Playlist · 128 tracks", { size: 14, color: { r: 0.9, g: 0.92, b: 0.97 }, fill: false, position: "absolute", x: 16, y: 352 })
                     ]
                 },
                 "Card 15 Overlay"
@@ -948,6 +906,18 @@ export class CardsDemo extends BaseDemoPage {
                         vertical: "top",
                         insetX: 0,
                         insetY: 0
+                    },
+                    floatingActionButton: {
+                        props: {
+                            frontIcon: Lucide_heart,
+                            baseColor: { r: 1, g: 1, b: 1 },
+                            textColor: { r: 0.12, g: 0.12, b: 0.12 },
+                            withShadow: true
+                        },
+                        horizontal: "right",
+                        vertical: "top",
+                        insetX: 16,
+                        insetY: 16
                     }
                 }),
                 "15. Media Layer Stack Card",
@@ -1146,39 +1116,17 @@ export class CardsDemo extends BaseDemoPage {
                 true
             );
 
-            const singleLineStartY = 56;
-            const singleRepliesHeight = replyOne.height + 12 + replyTwo.height;
-            const singleRepliesTop = parentComment.height + 16;
-            const singleConnectorHeight = Math.max(2, singleRepliesTop + singleRepliesHeight - singleLineStartY);
-
-            const singleReplyBody = await cardApi.contentNode(
-                Card.column([
-                    Card.node(parentComment),
-                    Card.column([
-                        Card.node(replyOne),
-                        Card.node(replyTwo)
-                    ], {
-                        gap: 12,
-                        fill: true,
-                        crossAlign: "stretch",
-                        padding: { left: 56, right: 0, top: 0, bottom: 0 }
-                    }),
-                    Card.shape({
-                        name: "Single Reply Connector",
-                        width: 2,
-                        height: singleConnectorHeight,
-                        fillColor: { r: 0.86, g: 0.89, b: 0.93 },
-                        position: "absolute",
-                        x: 22,
-                        y: singleLineStartY
-                    })
-                ], {
-                    gap: 16,
-                    fill: true,
-                    crossAlign: "stretch"
-                }),
-                "Single Expanded Reply Body"
-            );
+            const singleReplyBody = await cardApi.threadWithReplies({
+                parentComment,
+                replies: [replyOne, replyTwo],
+                name: "Single Expanded Reply Body",
+                gap: 16,
+                repliesGap: 12,
+                repliesIndent: 56,
+                connectorStartY: 56,
+                connectorX: 22,
+                connectorColor: { r: 0.86, g: 0.89, b: 0.93 }
+            });
 
             const singleReplyCard = await card.create({
                 width: 620,

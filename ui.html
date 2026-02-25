@@ -448,6 +448,10 @@
                     <span class="tool-icon">🔨</span>
                     <span>Check Color Contrast (AA/AAA)</span>
                 </div>
+                <div id="tool-extract-details" class="tool-row">
+                    <span class="tool-icon">🔨</span>
+                    <span>Extract Details</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1240,6 +1244,10 @@
 
         document.getElementById('tool-check-accessibility').onclick = () => {
             parent.postMessage({ pluginMessage: { type: 'tools-check-accessibility' } }, '*')
+        };
+
+        document.getElementById('tool-extract-details').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'tools-extract-details' } }, '*')
         };
 
         const editFilesBtn = document.getElementById('edit-files-btn');
@@ -2539,6 +2547,10 @@
 
         document.getElementById('tool-organize-grid').onclick = () => {
             parent.postMessage({ pluginMessage: { type: 'tools-organize-grid' } }, '*');
+        };
+
+        document.getElementById('tool-extract-details').onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'tools-extract-details' } }, '*');
         };
     </script>
 </body>

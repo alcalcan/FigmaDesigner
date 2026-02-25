@@ -92,6 +92,356 @@ const withTimeout = <T>(promise: Promise<T>, ms: number, errorMsg: string): Prom
   ]);
 };
 
+const roundTo = (value: number, precision: number = 2): number => {
+  const factor = 10 ** precision;
+  return Math.round(value * factor) / factor;
+};
+
+const formatPx = (value: unknown): string => {
+  if (typeof value !== "number") return value === undefined ? "n/a" : String(value);
+  return `${roundTo(value)}px`;
+};
+
+const formatDegrees = (value: unknown): string => {
+  if (typeof value !== "number") return value === undefined ? "n/a" : String(value);
+  return `${roundTo(value)}deg`;
+};
+
+const formatPercent = (value: unknown): string => {
+  if (typeof value !== "number") return value === undefined ? "n/a" : String(value);
+  return `${Math.round(Math.max(0, Math.min(1, value)) * 100)}%`;
+};
+
+const hexFromChannel = (value: number): string =>
+  Math.round(Math.max(0, Math.min(1, value)) * 255).toString(16).padStart(2, "0").toUpperCase();
+
+const rgbToHex = (color: RGB): string =>
+  `#${hexFromChannel(color.r)}${hexFromChannel(color.g)}${hexFromChannel(color.b)}`;
+
+const rgbaToHex = (color: RGBA): string =>
+  `#${hexFromChannel(color.r)}${hexFromChannel(color.g)}${hexFromChannel(color.b)}${hexFromChannel(color.a)}`;
+
+const isPaint = (value: unknown): value is Paint =>
+  typeof value === "object" && value !== null && "type" in value;
+
+const toVisiblePaints = (value: unknown): Paint[] => {
+  if (!Array.isArray(value)) return [];
+  return value.filter((paint): paint is Paint => isPaint(paint) && paint.visible !== false);
+};
+
+const describePaint = (paint: Paint): string => {
+  if (paint.type === "SOLID") {
+    const opacity = typeof paint.opacity === "number" ? paint.opacity : 1;
+    return `SOLID ${rgbToHex(paint.color)} (opacity ${formatPercent(opacity)})`;
+  }
+
+  if ("gradientStops" in paint) {
+    const stops = paint.gradientStops
+      .map((stop) => `${Math.round(stop.position * 100)}% ${rgbaToHex(stop.color)}`)
+      .join(", ");
+    return `${paint.type} [${stops}]`;
+  }
+
+  if (paint.type === "IMAGE") {
+    return `IMAGE (scaleMode ${paint.scaleMode})`;
+  }
+
+  return paint.type;
+};
+
+const describePaintList = (value: unknown): string[] => {
+  if (value === "mixed") return ["mixed"];
+  const visiblePaints = toVisiblePaints(value);
+  if (visiblePaints.length === 0) return ["none"];
+  return visiblePaints.map((paint, index) => `${index + 1}. ${describePaint(paint)}`);
+};
+
+const firstSolidHex = (value: unknown): string | null => {
+  const solid = toVisiblePaints(value).find((paint): paint is SolidPaint => paint.type === "SOLID");
+  return solid ? rgbToHex(solid.color) : null;
+};
+
+const formatLineHeight = (value: unknown): string => {
+  if (value === "mixed") return "mixed";
+  if (typeof value !== "object" || value === null) return "n/a";
+
+  const maybeValue = value as { unit?: unknown; value?: unknown };
+  if (maybeValue.unit === "AUTO") return "AUTO";
+  if (typeof maybeValue.value !== "number") return "n/a";
+  if (maybeValue.unit === "PIXELS") return `${roundTo(maybeValue.value)}px`;
+  if (maybeValue.unit === "PERCENT") return `${roundTo(maybeValue.value)}%`;
+  return String(maybeValue.unit ?? "n/a");
+};
+
+const formatLetterSpacing = (value: unknown): string => {
+  if (value === "mixed") return "mixed";
+  if (typeof value !== "object" || value === null) return "n/a";
+
+  const maybeValue = value as { unit?: unknown; value?: unknown };
+  if (typeof maybeValue.value !== "number") return "n/a";
+  if (maybeValue.unit === "PIXELS") return `${roundTo(maybeValue.value)}px`;
+  if (maybeValue.unit === "PERCENT") return `${roundTo(maybeValue.value)}%`;
+  return `${roundTo(maybeValue.value)}`;
+};
+
+const formatFontName = (value: unknown): string => {
+  if (value === "mixed") return "mixed";
+  if (typeof value !== "object" || value === null) return "n/a";
+
+  const maybeFont = value as { family?: unknown; style?: unknown };
+  if (typeof maybeFont.family === "string" && typeof maybeFont.style === "string") {
+    return `${maybeFont.family} ${maybeFont.style}`;
+  }
+
+  return "n/a";
+};
+
+const describeEffects = (value: unknown): string[] => {
+  if (value === "mixed") return ["mixed"];
+  if (!Array.isArray(value) || value.length === 0) return ["none"];
+
+  const lines: string[] = [];
+  for (const effect of value) {
+    if (typeof effect !== "object" || effect === null || !("type" in effect)) continue;
+    const typedEffect = effect as {
+      type?: unknown;
+      visible?: unknown;
+      radius?: unknown;
+      offset?: { x: number; y: number };
+      color?: RGBA;
+    };
+
+    const status = typedEffect.visible === false ? "hidden" : "visible";
+    const radius = formatPx(typedEffect.radius);
+    const offset = typedEffect.offset ? `${formatPx(typedEffect.offset.x)}, ${formatPx(typedEffect.offset.y)}` : "n/a";
+    const color = typedEffect.color ? rgbaToHex(typedEffect.color) : "n/a";
+    lines.push(`${String(typedEffect.type ?? "UNKNOWN")} (state ${status}, radius ${radius}, offset ${offset}, color ${color})`);
+  }
+
+  return lines.length > 0 ? lines : ["none"];
+};
+
+const getTextNodesForDetails = (sourceNode: SceneNode): TextNode[] => {
+  const textNodes: TextNode[] = [];
+  if (sourceNode.type === "TEXT") {
+    textNodes.push(sourceNode);
+  }
+
+  if ("findAll" in sourceNode) {
+    const descendants = sourceNode.findAll((node) => node.type === "TEXT") as TextNode[];
+    textNodes.push(...descendants);
+  }
+
+  return textNodes;
+};
+
+const buildNodeDetailsText = async (sourceNode: SceneNode): Promise<string> => {
+  const lines: string[] = [];
+  const fills = safeGet(sourceNode, "fills");
+  const strokes = safeGet(sourceNode, "strokes");
+  const paddingTop = safeGet(sourceNode, "paddingTop");
+  const paddingRight = safeGet(sourceNode, "paddingRight");
+  const paddingBottom = safeGet(sourceNode, "paddingBottom");
+  const paddingLeft = safeGet(sourceNode, "paddingLeft");
+  const layoutMode = safeGet(sourceNode, "layoutMode");
+  const cornerRadius = safeGet(sourceNode, "cornerRadius");
+
+  lines.push("DEVELOPER HANDOFF");
+  lines.push("");
+  lines.push(`Name: ${sourceNode.name}`);
+  lines.push(`Type: ${sourceNode.type}`);
+  lines.push(`Dimensions: ${formatPx(sourceNode.width)} x ${formatPx(sourceNode.height)}`);
+  lines.push(`Position: x ${formatPx(sourceNode.x)}, y ${formatPx(sourceNode.y)}`);
+  lines.push(`Opacity: ${formatPercent(safeGet(sourceNode, "opacity"))}`);
+  lines.push(`Rotation: ${formatDegrees(safeGet(sourceNode, "rotation"))}`);
+  lines.push(`Blend mode: ${String(safeGet(sourceNode, "blendMode") ?? "PASS_THROUGH")}`);
+
+  if (sourceNode.type === "INSTANCE") {
+    try {
+      const mainComponent = await sourceNode.getMainComponentAsync();
+      lines.push(`Main component: ${mainComponent ? mainComponent.name : "unknown"}`);
+    } catch (_error) {
+      lines.push("Main component: unknown");
+    }
+  }
+  if (sourceNode.type === "COMPONENT") {
+    lines.push(`Component key: ${sourceNode.key}`);
+  }
+  if ("defaultVariant" in sourceNode && sourceNode.defaultVariant) {
+    lines.push(`Default variant: ${sourceNode.defaultVariant.name}`);
+  }
+
+  lines.push("");
+  lines.push("Auto layout");
+  lines.push(`- mode: ${layoutMode === undefined ? "n/a" : String(layoutMode)}`);
+  lines.push(`- primary axis sizing: ${String(safeGet(sourceNode, "primaryAxisSizingMode") ?? "n/a")}`);
+  lines.push(`- counter axis sizing: ${String(safeGet(sourceNode, "counterAxisSizingMode") ?? "n/a")}`);
+  lines.push(`- item spacing: ${formatPx(safeGet(sourceNode, "itemSpacing"))}`);
+  lines.push(`- padding top/right/bottom/left: ${formatPx(paddingTop)} / ${formatPx(paddingRight)} / ${formatPx(paddingBottom)} / ${formatPx(paddingLeft)}`);
+
+  lines.push("");
+  lines.push("Corners");
+  lines.push(`- corner radius: ${formatPx(cornerRadius)}`);
+  lines.push(`- top-left radius: ${formatPx(safeGet(sourceNode, "topLeftRadius"))}`);
+  lines.push(`- top-right radius: ${formatPx(safeGet(sourceNode, "topRightRadius"))}`);
+  lines.push(`- bottom-right radius: ${formatPx(safeGet(sourceNode, "bottomRightRadius"))}`);
+  lines.push(`- bottom-left radius: ${formatPx(safeGet(sourceNode, "bottomLeftRadius"))}`);
+
+  lines.push("");
+  lines.push("Fills");
+  describePaintList(fills).forEach((line) => lines.push(`- ${line}`));
+
+  lines.push("");
+  lines.push("Borders");
+  lines.push(`- stroke weight: ${formatPx(safeGet(sourceNode, "strokeWeight"))}`);
+  lines.push(`- stroke align: ${String(safeGet(sourceNode, "strokeAlign") ?? "n/a")}`);
+  lines.push(`- stroke top/right/bottom/left: ${formatPx(safeGet(sourceNode, "strokeTopWeight"))} / ${formatPx(safeGet(sourceNode, "strokeRightWeight"))} / ${formatPx(safeGet(sourceNode, "strokeBottomWeight"))} / ${formatPx(safeGet(sourceNode, "strokeLeftWeight"))}`);
+  lines.push(`- stroke style id: ${String(safeGet(sourceNode, "strokeStyleId") ?? "n/a")}`);
+  describePaintList(strokes).forEach((line) => lines.push(`- ${line}`));
+
+  lines.push("");
+  lines.push("Effects");
+  describeEffects(safeGet(sourceNode, "effects")).forEach((line) => lines.push(`- ${line}`));
+
+  const textNodes = getTextNodesForDetails(sourceNode);
+  lines.push("");
+  lines.push(`Typography (${textNodes.length} text layer${textNodes.length === 1 ? "" : "s"})`);
+  if (textNodes.length === 0) {
+    lines.push("- none");
+  } else {
+    const maxTextRows = 20;
+    textNodes.slice(0, maxTextRows).forEach((textNode, index) => {
+      const textPreviewRaw = textNode.characters.replace(/\s+/g, " ").trim();
+      const textPreview = textPreviewRaw.length > 60 ? `${textPreviewRaw.slice(0, 57)}...` : textPreviewRaw;
+      const textColor = firstSolidHex(safeGet(textNode, "fills")) ?? "n/a";
+      lines.push(
+        `- ${index + 1}. ${textNode.name}: font ${formatFontName(safeGet(textNode, "fontName"))}, size ${formatPx(safeGet(textNode, "fontSize"))}, line-height ${formatLineHeight(safeGet(textNode, "lineHeight"))}, letter-spacing ${formatLetterSpacing(safeGet(textNode, "letterSpacing"))}, align ${String(safeGet(textNode, "textAlignHorizontal") ?? "n/a")}/${String(safeGet(textNode, "textAlignVertical") ?? "n/a")}, color ${textColor}, text "${textPreview}"`
+      );
+    });
+
+    if (textNodes.length > maxTextRows) {
+      lines.push(`- ... plus ${textNodes.length - maxTextRows} more text layers`);
+    }
+  }
+
+  lines.push("");
+  lines.push("Quick CSS");
+  lines.push(`width: ${formatPx(sourceNode.width)};`);
+  lines.push(`height: ${formatPx(sourceNode.height)};`);
+  lines.push(`opacity: ${formatPercent(safeGet(sourceNode, "opacity"))};`);
+  lines.push(`background: ${firstSolidHex(fills) ?? "transparent"};`);
+
+  const strokeWeight = safeGet(sourceNode, "strokeWeight");
+  const strokeColor = firstSolidHex(strokes);
+  if (typeof strokeWeight === "number" && strokeColor) {
+    lines.push(`border: ${formatPx(strokeWeight)} solid ${strokeColor};`);
+  } else {
+    lines.push("border: none;");
+  }
+
+  if (typeof cornerRadius === "number") {
+    lines.push(`border-radius: ${formatPx(cornerRadius)};`);
+  } else {
+    lines.push("border-radius: mixed;");
+  }
+
+  if ([paddingTop, paddingRight, paddingBottom, paddingLeft].every((value) => typeof value === "number")) {
+    lines.push(`padding: ${formatPx(paddingTop)} ${formatPx(paddingRight)} ${formatPx(paddingBottom)} ${formatPx(paddingLeft)};`);
+  } else {
+    lines.push("padding: n/a;");
+  }
+
+  return lines.join("\n");
+};
+
+const createNodePreviewCopy = (sourceNode: SceneNode): SceneNode => {
+  if (sourceNode.type === "COMPONENT") {
+    return sourceNode.createInstance();
+  }
+  if ("defaultVariant" in sourceNode && sourceNode.defaultVariant) {
+    return sourceNode.defaultVariant.createInstance();
+  }
+  return sourceNode.clone();
+};
+
+const loadDetailsFont = async (): Promise<FontName> => {
+  const fontCandidates: FontName[] = [
+    { family: "Inter", style: "Regular" },
+    { family: "Roboto", style: "Regular" }
+  ];
+
+  for (const font of fontCandidates) {
+    try {
+      await figma.loadFontAsync(font);
+      return font;
+    } catch (_error) {
+      // Try next candidate.
+    }
+  }
+
+  throw new Error("Unable to load a readable font for details text.");
+};
+
+const createExtractDetailsCard = async (sourceNode: SceneNode): Promise<FrameNode> => {
+  const previewNode = createNodePreviewCopy(sourceNode);
+  const font = await loadDetailsFont();
+
+  const previewWidth = Math.max(1, Math.ceil(previewNode.width));
+  const previewHeight = Math.max(1, Math.ceil(previewNode.height));
+  const contentWidth = Math.max(520, previewWidth);
+
+  const previewWrapper = figma.createFrame();
+  previewWrapper.name = "Element Preview";
+  previewWrapper.layoutMode = "NONE";
+  previewWrapper.primaryAxisSizingMode = "FIXED";
+  previewWrapper.counterAxisSizingMode = "FIXED";
+  previewWrapper.resizeWithoutConstraints(previewWidth, previewHeight);
+  previewWrapper.fills = [];
+  previewWrapper.strokes = [];
+  previewWrapper.clipsContent = false;
+  previewWrapper.appendChild(previewNode);
+  previewNode.x = 0;
+  previewNode.y = 0;
+
+  const detailsText = figma.createText();
+  detailsText.name = "Developer Details";
+  detailsText.fontName = font;
+  detailsText.fontSize = 13;
+  detailsText.lineHeight = { unit: "PIXELS", value: 20 };
+  detailsText.fills = [{ type: "SOLID", color: { r: 0.13, g: 0.13, b: 0.13 } }];
+  detailsText.characters = await buildNodeDetailsText(sourceNode);
+  detailsText.textAutoResize = "HEIGHT";
+  detailsText.resize(contentWidth, detailsText.height);
+  detailsText.layoutAlign = "STRETCH";
+
+  const detailsCard = figma.createFrame();
+  detailsCard.name = `${sourceNode.name} / Extract Details`;
+  detailsCard.layoutMode = "VERTICAL";
+  detailsCard.primaryAxisSizingMode = "AUTO";
+  detailsCard.counterAxisSizingMode = "FIXED";
+  detailsCard.resizeWithoutConstraints(contentWidth + 80, 100);
+  detailsCard.paddingTop = 40;
+  detailsCard.paddingRight = 40;
+  detailsCard.paddingBottom = 40;
+  detailsCard.paddingLeft = 40;
+  detailsCard.itemSpacing = 24;
+  detailsCard.cornerRadius = 24;
+  detailsCard.fills = [{ type: "SOLID", color: { r: 0.965, g: 0.965, b: 0.975 } }];
+  detailsCard.strokes = [{ type: "SOLID", color: { r: 0.85, g: 0.85, b: 0.88 } }];
+  detailsCard.strokeWeight = 1;
+  detailsCard.clipsContent = false;
+
+  detailsCard.appendChild(previewWrapper);
+  detailsCard.appendChild(detailsText);
+
+  const absoluteX = sourceNode.absoluteTransform[0][2];
+  const absoluteY = sourceNode.absoluteTransform[1][2];
+  detailsCard.x = absoluteX + sourceNode.width + 120;
+  detailsCard.y = absoluteY;
+
+  return detailsCard;
+};
+
 const captureNode = async (
   node: SceneNode,
   detailed: boolean,
@@ -558,6 +908,20 @@ figma.ui.onmessage = async (msg) => {
     if (msg.type === 'tools-check-accessibility') {
       const selection = figma.currentPage.selection;
       await runAccessibilityCheck(selection);
+    }
+
+    if (msg.type === 'tools-extract-details') {
+      const selection = figma.currentPage.selection;
+      if (selection.length !== 1) {
+        figma.notify("Select exactly one element to extract details.", { error: true });
+        return;
+      }
+
+      const sourceNode = selection[0];
+      const detailsCard = await createExtractDetailsCard(sourceNode);
+      figma.currentPage.selection = [detailsCard];
+      figma.viewport.scrollAndZoomIntoView([detailsCard]);
+      figma.notify(`Extracted details for "${sourceNode.name}".`);
     }
 
     // Handle Manual Capture (Download)

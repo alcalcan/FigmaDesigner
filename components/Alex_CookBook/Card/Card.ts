@@ -1,4 +1,5 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
+import { button, ButtonProps } from "../button/button";
 
 export type CardVariant = "elevated" | "outlined" | "filled" | "none" | "disciplinary";
 export type CardImagePosition = "top" | "bottom" | "left" | "right";
@@ -36,6 +37,27 @@ export interface CardOverlayProps {
     vertical?: "top" | "center" | "bottom" | "stretch";
     insetX?: number;
     insetY?: number;
+}
+
+export interface CardFloatingActionButtonProps {
+    enabled?: boolean;
+    props?: ButtonProps;
+    horizontal?: "left" | "center" | "right";
+    vertical?: "top" | "center" | "bottom";
+    insetX?: number;
+    insetY?: number;
+}
+
+export interface CardThreadRepliesProps {
+    parentComment: SceneNode;
+    replies: SceneNode[];
+    name?: string;
+    gap?: number;
+    repliesGap?: number;
+    repliesIndent?: number;
+    connectorStartY?: number;
+    connectorX?: number;
+    connectorColor?: RGB | RGBA;
 }
 
 export interface DisciplinaryCardProps {
@@ -254,6 +276,7 @@ export interface CardProps extends ComponentProps {
     overlay?: CardOverlayProps;
     overlayPosition?: "bottom-stretch" | "custom"; // Define how overlay is positioned
     chipCell?: CardChipCellProps;
+    floatingActionButton?: CardFloatingActionButtonProps;
 
     // Layout configuration
     paddingMode?: "all-in-one" | "all" | "multi-part" | "none";
@@ -339,6 +362,51 @@ export class Card extends BaseComponent {
     async placeholderNode(props: Omit<CardMediaPlaceholder, "type">): Promise<FrameNode> {
         const node = await this.createMediaNode({ type: "placeholder", ...props });
         return node as FrameNode;
+    }
+
+    async threadWithReplies(props: CardThreadRepliesProps): Promise<SceneNode> {
+        const gap = props.gap ?? 12;
+        const repliesGap = props.repliesGap ?? 12;
+        const repliesIndent = props.repliesIndent ?? 56;
+        const connectorStartY = props.connectorStartY ?? 56;
+        const connectorX = props.connectorX ?? 22;
+        const connectorColor = props.connectorColor ?? { r: 0.86, g: 0.89, b: 0.93 };
+
+        const repliesHeight = props.replies.reduce((total, reply, index) => {
+            const withCurrent = total + reply.height;
+            return index === 0 ? withCurrent : withCurrent + repliesGap;
+        }, 0);
+        const repliesTop = props.parentComment.height + gap;
+        const connectorHeight = Math.max(2, repliesTop + repliesHeight - connectorStartY);
+
+        return this.contentNode(
+            Card.column([
+                Card.node(props.parentComment),
+                Card.column(
+                    props.replies.map((reply) => Card.node(reply)),
+                    {
+                        gap: repliesGap,
+                        fill: true,
+                        crossAlign: "stretch",
+                        padding: { left: repliesIndent, right: 0, top: 0, bottom: 0 }
+                    }
+                ),
+                Card.shape({
+                    name: "Reply Connector",
+                    width: 2,
+                    height: connectorHeight,
+                    fillColor: connectorColor,
+                    position: "absolute",
+                    x: connectorX,
+                    y: connectorStartY
+                })
+            ], {
+                gap,
+                fill: true,
+                crossAlign: "stretch"
+            }),
+            props.name ?? "Thread With Replies"
+        );
     }
 
     async create(props: CardProps): Promise<FrameNode> {
@@ -688,6 +756,24 @@ export class Card extends BaseComponent {
             const inset = chipCell.inset ?? 12;
             chipNode.x = inset;
             chipNode.y = inset;
+        }
+
+        if (props.floatingActionButton && (props.floatingActionButton.enabled ?? true)) {
+            const fabConfig = props.floatingActionButton;
+            const fabComponent = new button();
+            const fabNode = await fabComponent.create({
+                variant: "fab",
+                size: "small",
+                withShadow: true,
+                ...fabConfig.props
+            });
+
+            root.appendChild(fabNode);
+            if ("layoutPositioning" in fabNode) {
+                const fab = fabNode as FrameNode;
+                fab.layoutPositioning = "ABSOLUTE";
+                this.applyFloatingActionButtonPlacement(fab, root, fabConfig);
+            }
         }
 
         return root;
@@ -1169,6 +1255,38 @@ export class Card extends BaseComponent {
         overlay.constraints = {
             horizontal: horizontal === "stretch" ? "STRETCH" : "MIN",
             vertical: vertical === "stretch" ? "STRETCH" : "MIN"
+        };
+    }
+
+    private applyFloatingActionButtonPlacement(
+        fab: FrameNode,
+        root: FrameNode,
+        options: CardFloatingActionButtonProps
+    ): void {
+        const insetX = options.insetX ?? 16;
+        const insetY = options.insetY ?? 16;
+        const horizontal = options.horizontal ?? "right";
+        const vertical = options.vertical ?? "top";
+
+        if (horizontal === "center") {
+            fab.x = Math.round((root.width - fab.width) / 2);
+        } else if (horizontal === "left") {
+            fab.x = insetX;
+        } else {
+            fab.x = Math.max(0, root.width - fab.width - insetX);
+        }
+
+        if (vertical === "center") {
+            fab.y = Math.round((root.height - fab.height) / 2);
+        } else if (vertical === "bottom") {
+            fab.y = Math.max(0, root.height - fab.height - insetY);
+        } else {
+            fab.y = insetY;
+        }
+
+        fab.constraints = {
+            horizontal: horizontal === "left" ? "MIN" : horizontal === "center" ? "CENTER" : "MAX",
+            vertical: vertical === "top" ? "MIN" : vertical === "center" ? "CENTER" : "MAX"
         };
     }
 
