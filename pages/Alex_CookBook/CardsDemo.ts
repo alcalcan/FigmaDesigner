@@ -9,7 +9,6 @@ import { Lucide_star } from "../../components/lucide_icons/Lucide_star/Lucide_st
 import { Lucide_image } from "../../components/lucide_icons/Lucide_image/Lucide_image";
 import { Lucide_home } from "../../components/lucide_icons/Lucide_home/Lucide_home";
 import { Lucide_heart } from "../../components/lucide_icons/Lucide_heart/Lucide_heart";
-import { Lucide_arrow_left } from "../../components/lucide_icons/Lucide_arrow_left/Lucide_arrow_left";
 import { Lucide_message_circle } from "../../components/lucide_icons/Lucide_message_circle/Lucide_message_circle";
 import { Lucide_share_2 } from "../../components/lucide_icons/Lucide_share_2/Lucide_share_2";
 import { Lucide_save } from "../../components/lucide_icons/Lucide_save/Lucide_save";
@@ -60,152 +59,24 @@ export class CardsDemo extends BaseDemoPage {
             emoji
         });
 
-        const createAvatarPlaceholder = (size: number = 38): CardContent => Card.shape({
-            shape: "ellipse",
-            name: "Avatar Placeholder",
-            width: size,
-            height: size,
-            fillColor: { r: 0.39, g: 0.46, b: 0.54 },
-            strokeColor: { r: 0.87, g: 0.90, b: 0.94 },
-            strokeWeight: 1,
-            fill: false
-        });
-
-        const createMetaAction = (
-            label: string,
-            iconType: "heart" | "reply" | "none",
-            compact: boolean
-        ): CardContent => {
-            const metaColor = { r: 0.52, g: 0.56, b: 0.62 };
-            const iconSize = compact ? 12 : 14;
-            const items: CardContent[] = [];
-            if (iconType === "heart") {
-                items.push(Card.component(Lucide_heart, { width: iconSize, color: metaColor, strokeWeight: 1.8 }, { fill: false }));
-            } else if (iconType === "reply") {
-                items.push(Card.component(Lucide_arrow_left, { width: iconSize, color: metaColor, strokeWeight: 1.8 }, { fill: false }));
-            }
-
-            items.push(Card.text(label, { size: compact ? 14 : 16, color: metaColor, fill: false }));
-            return Card.row(items, { gap: 4, fill: false, crossAlign: "center" });
-        };
-
-        const createThreadComment = async (
-            author: string,
-            message: string,
-            timeLabel: string,
-            likesLabel: string,
-            repliesLabel?: string,
-            withToggleLabel?: string,
-            compact: boolean = false
-        ) => {
-            const headingItems: CardContent[] = [
-                Card.text(author, {
-                    size: compact ? 20 : 24,
-                    weight: "Semi Bold",
-                    color: { r: 0.15, g: 0.20, b: 0.27 },
-                    fill: false
-                })
-            ];
-            if (timeLabel) {
-                headingItems.push(Card.text(timeLabel, {
-                    size: compact ? 14 : 16,
-                    color: { r: 0.54, g: 0.59, b: 0.65 },
-                    fill: false
-                }));
-            }
-
-            const actionItems: CardContent[] = [
-                createMetaAction("Like", "heart", compact),
-                createMetaAction("Reply", "reply", compact),
-                createMetaAction(likesLabel, "none", compact)
-            ];
-            if (repliesLabel) {
-                actionItems.push(createMetaAction(repliesLabel, "none", compact));
-            }
-
-            const items: CardContent[] = [
-                Card.row([
-                    createAvatarPlaceholder(compact ? 38 : 44),
-                    Card.column([
-                        Card.row(headingItems, {
-                            gap: 8,
-                            fill: true,
-                            crossAlign: "start",
-                            align: timeLabel ? "space-between" : "start"
-                        }),
-                        Card.text(message, {
-                            size: compact ? 18 : 20,
-                            color: { r: 0.15, g: 0.20, b: 0.27 },
-                            fill: true
-                        }),
-                        Card.row(actionItems, {
-                            gap: compact ? 10 : 14,
-                            fill: false,
-                            crossAlign: "center"
-                        })
-                    ], {
-                        gap: 16,
-                        fill: true,
-                        crossAlign: "stretch"
-                    })
-                ], {
-                    gap: 12,
-                    fill: true,
-                    crossAlign: "start"
-                })
-            ];
-
-            if (withToggleLabel) {
-                items.push(Card.row([
-                    Card.text(withToggleLabel, {
-                        size: compact ? 16 : 18,
-                        weight: "Semi Bold",
-                        color: { r: 0.09, g: 0.12, b: 0.16 },
-                        fill: false
-                    })
-                ], {
-                    gap: 0,
-                    fill: true,
-                    padding: { left: compact ? 50 : 56, right: 0, top: 0, bottom: 0 }
-                }));
-            }
-
-            return cardApi.contentNode(
-                Card.column(items, {
-                    gap: 16,
-                    fill: true,
-                    crossAlign: "stretch"
-                }),
-                `Comment: ${author}`
-            );
-        };
-
-        const createThreadSeparator = async () => cardApi.contentNode(Card.shape({
-            width: 100,
-            height: 1,
-            fill: true,
-            fillColor: { r: 0.89, g: 0.91, b: 0.94 },
-            name: "Thread Separator"
-        }), "Thread Separator");
-
         const buildThreadCardBody = async (expanded: boolean) => {
-            const firstComment = await createThreadComment(
-                "Kathryn Murphy",
-                "The fit is perfect, and the quality is top-notch.",
-                "1 week ago",
-                "7 likes",
-                "3 replies",
-                "Show replies"
-            );
+            const firstComment = await cardApi.threadCommentNode({
+                author: "Kathryn Murphy",
+                message: "The fit is perfect, and the quality is top-notch.",
+                timeLabel: "1 week ago",
+                likesLabel: "7 likes",
+                repliesLabel: "3 replies",
+                toggleLabel: "Show replies"
+            });
 
-            const secondComment = await createThreadComment(
-                "Esther Howard",
-                "I recently purchased the grey blazer jacket for women, and I couldn't be happier with my purchase!",
-                "2 weeks ago",
-                "2 likes",
-                "2 replies",
-                expanded ? "Hide replies" : "Show replies"
-            );
+            const secondComment = await cardApi.threadCommentNode({
+                author: "Esther Howard",
+                message: "I recently purchased the grey blazer jacket for women, and I couldn't be happier with my purchase!",
+                timeLabel: "2 weeks ago",
+                likesLabel: "2 likes",
+                repliesLabel: "2 replies",
+                toggleLabel: expanded ? "Hide replies" : "Show replies"
+            });
 
             let secondThread: SceneNode = await cardApi.contentNode(
                 Card.column([Card.node(secondComment)], {
@@ -217,24 +88,18 @@ export class CardsDemo extends BaseDemoPage {
             );
 
             if (expanded) {
-                const firstReply = await createThreadComment(
-                    "Cameron Williamson",
-                    "I've received multiple compliments on how stylish it looks.",
-                    "",
-                    "4 likes",
-                    undefined,
-                    undefined,
-                    true
-                );
-                const secondReply = await createThreadComment(
-                    "Jenny Wilson",
-                    "It's versatile enough to wear to work or dress up for a night out.",
-                    "",
-                    "5 likes",
-                    undefined,
-                    undefined,
-                    true
-                );
+                const firstReply = await cardApi.threadCommentNode({
+                    author: "Cameron Williamson",
+                    message: "I've received multiple compliments on how stylish it looks.",
+                    likesLabel: "4 likes",
+                    compact: true
+                });
+                const secondReply = await cardApi.threadCommentNode({
+                    author: "Jenny Wilson",
+                    message: "It's versatile enough to wear to work or dress up for a night out.",
+                    likesLabel: "5 likes",
+                    compact: true
+                });
                 secondThread = await cardApi.threadWithReplies({
                     parentComment: secondComment,
                     replies: [firstReply, secondReply],
@@ -248,30 +113,30 @@ export class CardsDemo extends BaseDemoPage {
                 });
             }
 
-            const thirdComment = await createThreadComment(
-                "Kristin Watson",
-                "I highly recommend this blazer to any woman looking for a timeless and chic addition to their wardrobe.",
-                "2 weeks ago",
-                "1 likes",
-                "1 replies",
-                "Show replies"
-            );
+            const thirdComment = await cardApi.threadCommentNode({
+                author: "Kristin Watson",
+                message: "I highly recommend this blazer to any woman looking for a timeless and chic addition to their wardrobe.",
+                timeLabel: "2 weeks ago",
+                likesLabel: "1 likes",
+                repliesLabel: "1 replies",
+                toggleLabel: "Show replies"
+            });
 
-            const fourthComment = await createThreadComment(
-                "Dianne Russell",
-                "It provides just the right amount of warmth without making me too hot.",
-                "1 month ago",
-                "2 likes"
-            );
+            const fourthComment = await cardApi.threadCommentNode({
+                author: "Dianne Russell",
+                message: "It provides just the right amount of warmth without making me too hot.",
+                timeLabel: "1 month ago",
+                likesLabel: "2 likes"
+            });
 
             return cardApi.contentNode(
                 Card.column([
                     Card.node(firstComment),
-                    Card.node(await createThreadSeparator()),
+                    Card.node(await cardApi.threadSeparatorNode()),
                     Card.node(secondThread),
-                    Card.node(await createThreadSeparator()),
+                    Card.node(await cardApi.threadSeparatorNode()),
                     Card.node(thirdComment),
-                    Card.node(await createThreadSeparator()),
+                    Card.node(await cardApi.threadSeparatorNode()),
                     Card.node(fourthComment)
                 ], {
                     gap: 16,
@@ -1036,14 +901,14 @@ export class CardsDemo extends BaseDemoPage {
             container.appendChild(row);
 
             const singleRow = this.createRow(container);
-            const singleCommentBody = await createThreadComment(
-                "Kathryn Murphy",
-                "The fit is perfect, and the quality is top-notch.",
-                "1 week ago",
-                "7 likes",
-                "3 replies",
-                "Show replies"
-            );
+            const singleCommentBody = await cardApi.threadCommentNode({
+                author: "Kathryn Murphy",
+                message: "The fit is perfect, and the quality is top-notch.",
+                timeLabel: "1 week ago",
+                likesLabel: "7 likes",
+                repliesLabel: "3 replies",
+                toggleLabel: "Show replies"
+            });
 
             const singleCard = await card.create({
                 width: 620,
@@ -1088,33 +953,27 @@ export class CardsDemo extends BaseDemoPage {
             container.appendChild(singleRow);
 
             const singleReplyRow = this.createRow(container);
-            const parentComment = await createThreadComment(
-                "Esther Howard",
-                "I recently purchased the grey blazer jacket for women, and I couldn't be happier with my purchase!",
-                "2 weeks ago",
-                "2 likes",
-                "2 replies",
-                "Hide replies"
-            );
+            const parentComment = await cardApi.threadCommentNode({
+                author: "Esther Howard",
+                message: "I recently purchased the grey blazer jacket for women, and I couldn't be happier with my purchase!",
+                timeLabel: "2 weeks ago",
+                likesLabel: "2 likes",
+                repliesLabel: "2 replies",
+                toggleLabel: "Hide replies"
+            });
 
-            const replyOne = await createThreadComment(
-                "Cameron Williamson",
-                "I've received multiple compliments on how stylish it looks.",
-                "",
-                "4 likes",
-                undefined,
-                undefined,
-                true
-            );
-            const replyTwo = await createThreadComment(
-                "Jenny Wilson",
-                "It's versatile enough to wear to work or dress up for a night out.",
-                "",
-                "5 likes",
-                undefined,
-                undefined,
-                true
-            );
+            const replyOne = await cardApi.threadCommentNode({
+                author: "Cameron Williamson",
+                message: "I've received multiple compliments on how stylish it looks.",
+                likesLabel: "4 likes",
+                compact: true
+            });
+            const replyTwo = await cardApi.threadCommentNode({
+                author: "Jenny Wilson",
+                message: "It's versatile enough to wear to work or dress up for a night out.",
+                likesLabel: "5 likes",
+                compact: true
+            });
 
             const singleReplyBody = await cardApi.threadWithReplies({
                 parentComment,

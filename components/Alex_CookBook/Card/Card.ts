@@ -1,5 +1,7 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
 import { button, ButtonProps } from "../button/button";
+import { Lucide_heart } from "../../lucide_icons/Lucide_heart/Lucide_heart";
+import { Lucide_arrow_left } from "../../lucide_icons/Lucide_arrow_left/Lucide_arrow_left";
 
 export type CardVariant = "elevated" | "outlined" | "filled" | "none" | "disciplinary";
 export type CardImagePosition = "top" | "bottom" | "left" | "right";
@@ -58,6 +60,24 @@ export interface CardThreadRepliesProps {
     connectorStartY?: number;
     connectorX?: number;
     connectorColor?: RGB | RGBA;
+}
+
+export type CardThreadMetaIcon = "heart" | "reply" | "none";
+
+export interface CardThreadCommentProps {
+    author: string;
+    message: string;
+    timeLabel?: string;
+    likesLabel: string;
+    repliesLabel?: string;
+    toggleLabel?: string;
+    compact?: boolean;
+}
+
+export interface CardThreadSeparatorProps {
+    width?: number;
+    color?: RGB | RGBA;
+    name?: string;
 }
 
 export interface DisciplinaryCardProps {
@@ -364,6 +384,111 @@ export class Card extends BaseComponent {
         return node as FrameNode;
     }
 
+    async threadCommentNode(props: CardThreadCommentProps): Promise<SceneNode> {
+        const compact = props.compact ?? false;
+        const timeLabel = props.timeLabel ?? "";
+
+        const headingItems: CardContent[] = [
+            Card.text(props.author, {
+                size: compact ? 20 : 24,
+                weight: "Semi Bold",
+                color: { r: 0.15, g: 0.20, b: 0.27 },
+                fill: false
+            })
+        ];
+        if (timeLabel) {
+            headingItems.push(Card.text(timeLabel, {
+                size: compact ? 14 : 16,
+                color: { r: 0.54, g: 0.59, b: 0.65 },
+                fill: false
+            }));
+        }
+
+        const actionItems: CardContent[] = [
+            this.createThreadMetaAction("Like", "heart", compact),
+            this.createThreadMetaAction("Reply", "reply", compact),
+            this.createThreadMetaAction(props.likesLabel, "none", compact)
+        ];
+        if (props.repliesLabel) {
+            actionItems.push(this.createThreadMetaAction(props.repliesLabel, "none", compact));
+        }
+
+        const items: CardContent[] = [
+            Card.row([
+                Card.shape({
+                    shape: "ellipse",
+                    name: "Avatar Placeholder",
+                    width: compact ? 38 : 44,
+                    height: compact ? 38 : 44,
+                    fillColor: { r: 0.39, g: 0.46, b: 0.54 },
+                    strokeColor: { r: 0.87, g: 0.90, b: 0.94 },
+                    strokeWeight: 1,
+                    fill: false
+                }),
+                Card.column([
+                    Card.row(headingItems, {
+                        gap: 8,
+                        fill: true,
+                        crossAlign: "start",
+                        align: timeLabel ? "space-between" : "start"
+                    }),
+                    Card.text(props.message, {
+                        size: compact ? 18 : 20,
+                        color: { r: 0.15, g: 0.20, b: 0.27 },
+                        fill: true
+                    }),
+                    Card.row(actionItems, {
+                        gap: compact ? 10 : 14,
+                        fill: false,
+                        crossAlign: "center"
+                    })
+                ], {
+                    gap: 16,
+                    fill: true,
+                    crossAlign: "stretch"
+                })
+            ], {
+                gap: 12,
+                fill: true,
+                crossAlign: "start"
+            })
+        ];
+
+        if (props.toggleLabel) {
+            items.push(Card.row([
+                Card.text(props.toggleLabel, {
+                    size: compact ? 16 : 18,
+                    weight: "Semi Bold",
+                    color: { r: 0.09, g: 0.12, b: 0.16 },
+                    fill: false
+                })
+            ], {
+                gap: 0,
+                fill: true,
+                padding: { left: compact ? 50 : 56, right: 0, top: 0, bottom: 0 }
+            }));
+        }
+
+        return this.contentNode(
+            Card.column(items, {
+                gap: 16,
+                fill: true,
+                crossAlign: "stretch"
+            }),
+            `Comment: ${props.author}`
+        );
+    }
+
+    async threadSeparatorNode(props: CardThreadSeparatorProps = {}): Promise<SceneNode> {
+        return this.contentNode(Card.shape({
+            width: props.width ?? 100,
+            height: 1,
+            fill: true,
+            fillColor: props.color ?? { r: 0.89, g: 0.91, b: 0.94 },
+            name: props.name ?? "Thread Separator"
+        }), props.name ?? "Thread Separator");
+    }
+
     async threadWithReplies(props: CardThreadRepliesProps): Promise<SceneNode> {
         const gap = props.gap ?? 12;
         const repliesGap = props.repliesGap ?? 12;
@@ -407,6 +532,21 @@ export class Card extends BaseComponent {
             }),
             props.name ?? "Thread With Replies"
         );
+    }
+
+    private createThreadMetaAction(label: string, iconType: CardThreadMetaIcon, compact: boolean): CardContent {
+        const metaColor = { r: 0.52, g: 0.56, b: 0.62 };
+        const iconSize = compact ? 12 : 14;
+        const items: CardContent[] = [];
+
+        if (iconType === "heart") {
+            items.push(Card.component(Lucide_heart, { width: iconSize, color: metaColor, strokeWeight: 1.8 }, { fill: false }));
+        } else if (iconType === "reply") {
+            items.push(Card.component(Lucide_arrow_left, { width: iconSize, color: metaColor, strokeWeight: 1.8 }, { fill: false }));
+        }
+
+        items.push(Card.text(label, { size: compact ? 14 : 16, color: metaColor, fill: false }));
+        return Card.row(items, { gap: 4, fill: false, crossAlign: "center" });
     }
 
     async create(props: CardProps): Promise<FrameNode> {
