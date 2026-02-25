@@ -235,6 +235,67 @@ const getTextNodesForDetails = (sourceNode: SceneNode): TextNode[] => {
   return textNodes;
 };
 
+const VECTOR_BOUND_TYPES = new Set<SceneNode["type"]>([
+  "VECTOR",
+  "BOOLEAN_OPERATION",
+  "STAR",
+  "POLYGON",
+  "ELLIPSE",
+  "LINE"
+]);
+
+interface VectorBoundsSummary {
+  nodeCount: number;
+  minX: number;
+  minY: number;
+  width: number;
+  height: number;
+  offsetX: number;
+  offsetY: number;
+}
+
+const getVectorBoundsSummary = (sourceNode: SceneNode): VectorBoundsSummary | null => {
+  const vectorNodes: SceneNode[] = [];
+
+  if (VECTOR_BOUND_TYPES.has(sourceNode.type)) {
+    vectorNodes.push(sourceNode);
+  }
+
+  if ("findAll" in sourceNode) {
+    const descendants = sourceNode.findAll((node) => VECTOR_BOUND_TYPES.has(node.type));
+    vectorNodes.push(...descendants);
+  }
+
+  if (vectorNodes.length === 0) return null;
+
+  const sourceAbsX = sourceNode.absoluteTransform[0][2];
+  const sourceAbsY = sourceNode.absoluteTransform[1][2];
+
+  let minX = Number.POSITIVE_INFINITY;
+  let minY = Number.POSITIVE_INFINITY;
+  let maxX = Number.NEGATIVE_INFINITY;
+  let maxY = Number.NEGATIVE_INFINITY;
+
+  for (const node of vectorNodes) {
+    const absX = node.absoluteTransform[0][2];
+    const absY = node.absoluteTransform[1][2];
+    minX = Math.min(minX, absX);
+    minY = Math.min(minY, absY);
+    maxX = Math.max(maxX, absX + node.width);
+    maxY = Math.max(maxY, absY + node.height);
+  }
+
+  return {
+    nodeCount: vectorNodes.length,
+    minX,
+    minY,
+    width: Math.max(0, maxX - minX),
+    height: Math.max(0, maxY - minY),
+    offsetX: minX - sourceAbsX,
+    offsetY: minY - sourceAbsY
+  };
+};
+
 const buildNodeDetailsText = async (sourceNode: SceneNode): Promise<string> => {
   const lines: string[] = [];
   const fills = safeGet(sourceNode, "fills");
@@ -278,6 +339,18 @@ const buildNodeDetailsText = async (sourceNode: SceneNode): Promise<string> => {
   lines.push(`- counter axis sizing: ${String(safeGet(sourceNode, "counterAxisSizingMode") ?? "n/a")}`);
   lines.push(`- item spacing: ${formatPx(safeGet(sourceNode, "itemSpacing"))}`);
   lines.push(`- padding top/right/bottom/left: ${formatPx(paddingTop)} / ${formatPx(paddingRight)} / ${formatPx(paddingBottom)} / ${formatPx(paddingLeft)}`);
+
+  const vectorBounds = getVectorBoundsSummary(sourceNode);
+  lines.push("");
+  lines.push("Vector bounds");
+  if (!vectorBounds) {
+    lines.push("- no vector geometry found");
+  } else {
+    lines.push(`- vector nodes found: ${vectorBounds.nodeCount}`);
+    lines.push(`- combined vector bbox: ${formatPx(vectorBounds.width)} x ${formatPx(vectorBounds.height)}`);
+    lines.push(`- bbox offset in selected element: x ${formatPx(vectorBounds.offsetX)}, y ${formatPx(vectorBounds.offsetY)}`);
+    lines.push(`- container vs vector delta: width ${formatPx(sourceNode.width - vectorBounds.width)}, height ${formatPx(sourceNode.height - vectorBounds.height)}`);
+  }
 
   lines.push("");
   lines.push("Corners");
