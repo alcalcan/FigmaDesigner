@@ -1,6 +1,22 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
 
 export type CardVariant = "elevated" | "outlined" | "filled" | "none" | "disciplinary";
+export type CardImagePosition = "top" | "bottom" | "left" | "right";
+export type CardLayoutDirection = "vertical" | "horizontal";
+export type CardFontWeight = "Regular" | "Medium" | "Semi Bold" | "Bold";
+export type CardStackDirection = "vertical" | "horizontal" | "free";
+export type CardStackMainAlign = "start" | "center" | "end" | "space-between";
+export type CardStackCrossAlign = "start" | "center" | "end" | "stretch";
+export type CardTextAlign = "left" | "center" | "right";
+export type CardContentMode = "block" | "overlay-bottom" | "overlay-fill";
+export type CardShapeKind = "rectangle" | "ellipse";
+
+export interface CardInsets {
+    top?: number;
+    right?: number;
+    bottom?: number;
+    left?: number;
+}
 
 export interface CardChipCellProps {
     label: string;
@@ -11,7 +27,7 @@ export interface CardChipCellProps {
     paddingHorizontal?: number;
     paddingVertical?: number;
     fontSize?: number;
-    fontWeight?: "Regular" | "Medium" | "Semi Bold" | "Bold";
+    fontWeight?: CardFontWeight;
 }
 
 export interface CardOverlayProps {
@@ -30,18 +46,210 @@ export interface DisciplinaryCardProps {
     bodyText: string;
 }
 
+export interface CardMediaPlaceholder {
+    type: "placeholder";
+    width?: number;
+    height?: number;
+    backgroundColor?: RGB | RGBA;
+    cornerRadius?: number;
+    label?: string;
+    labelColor?: RGB | RGBA;
+    labelWeight?: CardFontWeight;
+    labelSize?: number;
+    emoji?: string;
+    layoutAlign?: "INHERIT" | "STRETCH";
+}
+
+export interface CardMediaNode {
+    type: "node";
+    node: SceneNode;
+}
+
+export type CardMedia = CardMediaPlaceholder | CardMediaNode;
+
+export interface CardTextContent {
+    type: "text";
+    text: string;
+    size?: number;
+    weight?: CardFontWeight;
+    color?: RGB | RGBA;
+    align?: CardTextAlign;
+    fill?: boolean;
+    grow?: number;
+    position?: "auto" | "absolute";
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    constraints?: Constraints;
+    lineHeight?: number;
+    textDecoration?: TextDecoration;
+}
+
+export interface CardSpacerContent {
+    type: "spacer";
+    size: number;
+}
+
+export interface CardNodeContent {
+    type: "node";
+    node: SceneNode;
+    fill?: boolean;
+    grow?: number;
+    position?: "auto" | "absolute";
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    constraints?: Constraints;
+}
+
+export type CardComponentFactory = new () => {
+    create: (props: ComponentProps) => SceneNode | Promise<SceneNode>;
+};
+
+export interface CardComponentContent {
+    type: "component";
+    component: CardComponentFactory;
+    props?: ComponentProps;
+    fill?: boolean;
+    grow?: number;
+    position?: "auto" | "absolute";
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    constraints?: Constraints;
+}
+
+export interface CardShapeContent {
+    type: "shape";
+    shape?: CardShapeKind;
+    width: number;
+    height: number;
+    fillColor?: RGB | RGBA;
+    fills?: Paint[];
+    strokeColor?: RGB | RGBA;
+    strokes?: Paint[];
+    strokeWeight?: number;
+    dashPattern?: number[];
+    cornerRadius?: number;
+    effects?: Effect[];
+    fill?: boolean;
+    grow?: number;
+    position?: "auto" | "absolute";
+    x?: number;
+    y?: number;
+    constraints?: Constraints;
+    name?: string;
+}
+
+export interface CardStackContent {
+    type: "stack";
+    name?: string;
+    direction?: CardStackDirection;
+    gap?: number;
+    align?: CardStackMainAlign;
+    crossAlign?: CardStackCrossAlign;
+    fill?: boolean;
+    grow?: number;
+    position?: "auto" | "absolute";
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    constraints?: Constraints;
+    padding?: number | CardInsets;
+    fillColor?: RGB | RGBA;
+    fills?: Paint[];
+    strokeColor?: RGB | RGBA;
+    strokes?: Paint[];
+    strokeWeight?: number;
+    cornerRadius?: number;
+    effects?: Effect[];
+    clipsContent?: boolean;
+    items: CardContent[];
+}
+
+export type CardContent =
+    | CardTextContent
+    | CardSpacerContent
+    | CardNodeContent
+    | CardComponentContent
+    | CardShapeContent
+    | CardStackContent;
+
+export type CardContentInput = CardContent | CardContent[];
+
+export interface CardCornerRadius {
+    topLeft: number;
+    topRight: number;
+    bottomLeft: number;
+    bottomRight: number;
+}
+
+export interface CardCopyProps {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    price?: string;
+    previousPrice?: string;
+    footnote?: string;
+    align?: CardTextAlign;
+}
+
+export interface CardPriceTagProps {
+    price: string;
+    previousPrice?: string;
+    align?: CardTextAlign;
+}
+
+export interface CardTextNodeProps {
+    text: string;
+    size?: number;
+    weight?: CardFontWeight;
+    color?: RGB | RGBA;
+    align?: CardTextAlign;
+    fill?: boolean;
+    lineHeight?: number;
+    textDecoration?: TextDecoration;
+}
+
+export interface CardRowNodeProps {
+    gap?: number;
+    align?: CardStackMainAlign;
+    crossAlign?: CardStackCrossAlign;
+    fill?: boolean;
+}
+
 export interface CardProps extends ComponentProps {
     variant?: CardVariant;
     backgroundColor?: RGB | RGBA;
     disciplinary?: DisciplinaryCardProps;
+    layout?: CardLayoutDirection;
+    copy?: CardCopyProps;
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    eyebrow?: string;
+    footnote?: string;
+    priceTag?: CardPriceTagProps;
+    contentMode?: CardContentMode;
 
     // Structure
+    media?: CardMedia;
+    mediaPosition?: CardImagePosition;
     imageNode?: SceneNode;
-    imagePosition?: "top" | "bottom" | "left" | "right";
+    imagePosition?: CardImagePosition;
 
+    header?: CardContentInput;
+    body?: CardContentInput;
+    footer?: CardContentInput;
     headerNode?: SceneNode;
     bodyNode?: SceneNode;
     footerNode?: SceneNode;
+    overlayContent?: CardContentInput;
     overlayNode?: SceneNode;
     overlay?: CardOverlayProps;
     overlayPosition?: "bottom-stretch" | "custom"; // Define how overlay is positioned
@@ -49,10 +257,11 @@ export interface CardProps extends ComponentProps {
 
     // Layout configuration
     paddingMode?: "all-in-one" | "all" | "multi-part" | "none";
-    padding?: number;
+    padding?: number | CardInsets;
+    contentPadding?: number | CardInsets;
     gap?: number;
     contentGap?: number; // Decoupled gap for internal content
-    cornerRadius?: number | { topLeft: number, topRight: number, bottomLeft: number, bottomRight: number };
+    cornerRadius?: number | CardCornerRadius;
 
     // Width / Height
     fillWidth?: boolean;
@@ -60,14 +269,86 @@ export interface CardProps extends ComponentProps {
 }
 
 export class Card extends BaseComponent {
+    static text(text: string, options: Omit<CardTextContent, "type" | "text"> = {}): CardTextContent {
+        return { type: "text", text, ...options };
+    }
+
+    static node(node: SceneNode, options: Omit<CardNodeContent, "type" | "node"> = {}): CardNodeContent {
+        return { type: "node", node, ...options };
+    }
+
+    static component(
+        component: CardComponentFactory,
+        props: ComponentProps = {},
+        options: Omit<CardComponentContent, "type" | "component" | "props"> = {}
+    ): CardComponentContent {
+        return { type: "component", component, props, ...options };
+    }
+
+    static spacer(size: number): CardSpacerContent {
+        return { type: "spacer", size };
+    }
+
+    static column(
+        items: CardContent[],
+        options: Omit<CardStackContent, "type" | "direction" | "items"> = {}
+    ): CardStackContent {
+        return { type: "stack", direction: "vertical", items, ...options };
+    }
+
+    static row(
+        items: CardContent[],
+        options: Omit<CardStackContent, "type" | "direction" | "items"> = {}
+    ): CardStackContent {
+        return { type: "stack", direction: "horizontal", items, ...options };
+    }
+
+    static placeholder(options: Omit<CardMediaPlaceholder, "type">): CardMediaPlaceholder {
+        return { type: "placeholder", ...options };
+    }
+
+    static shape(options: Omit<CardShapeContent, "type">): CardShapeContent {
+        return { type: "shape", ...options };
+    }
+
+    async contentNode(content: CardContentInput, name: string = "Card Content"): Promise<SceneNode> {
+        return this.createContentNode(content, name);
+    }
+
+    async textNode(props: CardTextNodeProps): Promise<TextNode> {
+        const node = await this.createContentItem({ type: "text", ...props }, "Card Text Node");
+        return node as TextNode;
+    }
+
+    createRowNode(props: CardRowNodeProps = {}): FrameNode {
+        const row = figma.createFrame();
+        row.name = "Card Row";
+        row.layoutMode = "HORIZONTAL";
+        row.itemSpacing = props.gap ?? 8;
+        row.fills = [];
+        row.primaryAxisSizingMode = (props.align === "space-between" && props.fill === true) ? "FIXED" : "AUTO";
+        row.counterAxisSizingMode = "AUTO";
+        row.primaryAxisAlignItems = this.mapMainAxisAlign(props.align);
+        row.counterAxisAlignItems = this.mapCrossAxisAlign(props.crossAlign);
+        if (props.fill) {
+            row.layoutAlign = "STRETCH";
+        }
+        return row;
+    }
+
+    async placeholderNode(props: Omit<CardMediaPlaceholder, "type">): Promise<FrameNode> {
+        const node = await this.createMediaNode({ type: "placeholder", ...props });
+        return node as FrameNode;
+    }
+
     async create(props: CardProps): Promise<FrameNode> {
         const {
             variant = "elevated",
             backgroundColor = { r: 1, g: 1, b: 1 },
-            imageNode,
-            imagePosition = "top",
-            headerNode,
-            footerNode,
+            imageNode: directImageNode,
+            imagePosition: directImagePosition,
+            headerNode: directHeaderNode,
+            footerNode: directFooterNode,
             cornerRadius = 16,
             chipCell,
             fillWidth = false,
@@ -79,13 +360,67 @@ export class Card extends BaseComponent {
         } = props;
 
         // Variables that variants might override or create internally
-        let { paddingMode = "all-in-one", padding = 24, gap = 16, contentGap = 16, bodyNode } = props;
+        let {
+            paddingMode = "all-in-one",
+            padding = 24,
+            gap = 16
+        } = props;
+        const { contentGap = 16, bodyNode: directBodyNode } = props;
+        const contentMode: CardContentMode = props.contentMode ?? "block";
+        let contentPadding: number | CardInsets = props.contentPadding ?? padding;
+
+        const imageNode = directImageNode ?? (props.media ? await this.createMediaNode(props.media) : undefined);
+        const imagePosition = directImagePosition ?? props.mediaPosition ?? (props.layout === "horizontal" ? "left" : "top");
+
+        let headerNode = directHeaderNode;
+        if (!headerNode && props.header) {
+            headerNode = await this.createContentNode(props.header, "Header");
+        }
+
+        let bodyNode = directBodyNode;
+        if (!bodyNode && props.body) {
+            bodyNode = await this.createContentNode(props.body, "Body");
+        }
+
+        let footerNode = directFooterNode;
+        if (!footerNode && props.footer) {
+            footerNode = await this.createContentNode(props.footer, "Footer");
+        }
+
+        const semanticCopy: CardCopyProps | undefined = props.copy ?? (
+            props.title ||
+            props.subtitle ||
+            props.description ||
+            props.eyebrow ||
+            props.footnote ||
+            props.priceTag
+                ? {
+                    title: props.title,
+                    subtitle: props.subtitle,
+                    description: props.description,
+                    eyebrow: props.eyebrow,
+                    footnote: props.footnote,
+                    price: props.priceTag?.price,
+                    previousPrice: props.priceTag?.previousPrice,
+                    align: props.priceTag?.align
+                }
+                : undefined
+        );
+
+        if (semanticCopy) {
+            const copyNodes = await this.createCopyNodes(semanticCopy);
+            headerNode = headerNode ?? copyNodes.headerNode;
+            bodyNode = bodyNode ?? copyNodes.bodyNode;
+            footerNode = footerNode ?? copyNodes.footerNode;
+        }
+
+        let overlayNode = props.overlayNode;
+        if (!overlayNode && props.overlayContent) {
+            overlayNode = await this.createContentNode(props.overlayContent, "Overlay");
+        }
 
         const root = figma.createFrame();
         root.name = "Card";
-
-        // Root Styles
-        // root.fills = [await this.createSolidPaint(backgroundColor)]; // This will be handled by variant logic
 
         if (typeof cornerRadius === "number") {
             root.cornerRadius = cornerRadius;
@@ -124,6 +459,7 @@ export class Card extends BaseComponent {
             root.strokeWeight = 1;
             padding = props.padding ?? 25; // Default disciplinary padding
             paddingMode = props.paddingMode ?? "all-in-one";
+            contentPadding = props.contentPadding ?? padding;
             gap = 0;
             if (props.disciplinary && !bodyNode) {
                 bodyNode = await this.createDisciplinaryBody(props.disciplinary);
@@ -131,15 +467,14 @@ export class Card extends BaseComponent {
         }
 
         if (paddingMode === "all") {
-            root.paddingTop = padding;
-            root.paddingBottom = padding;
-            root.paddingLeft = padding;
-            root.paddingRight = padding;
+            this.applyPadding(root, padding);
         }
 
         // --- Auto Layout Config ---
-        // Image controls root flow direction if image is left/right
-        root.layoutMode = (imageNode && (imagePosition === "left" || imagePosition === "right")) ? "HORIZONTAL" : "VERTICAL";
+        const rootMode: CardLayoutDirection = imageNode
+            ? ((imagePosition === "left" || imagePosition === "right") ? "horizontal" : "vertical")
+            : (props.layout ?? "vertical");
+        root.layoutMode = rootMode === "horizontal" ? "HORIZONTAL" : "VERTICAL";
         root.primaryAxisSizingMode = "AUTO";
         root.counterAxisSizingMode = "AUTO";
         root.itemSpacing = gap;
@@ -158,10 +493,7 @@ export class Card extends BaseComponent {
 
         // Apply Padding to the wrapper
         if (paddingMode === "all-in-one") {
-            contentContainer.paddingTop = padding;
-            contentContainer.paddingBottom = padding;
-            contentContainer.paddingLeft = padding;
-            contentContainer.paddingRight = padding;
+            this.applyPadding(contentContainer, contentPadding);
         } else {
             // "none" or "multi-part" - multi-part means children handle padding
             contentContainer.paddingTop = 0;
@@ -191,6 +523,7 @@ export class Card extends BaseComponent {
 
         // --- Root Assembly ---
         const hasContent = contentNodes.length > 0;
+        const useContentOverlay = hasContent && Boolean(imageNode) && contentMode !== "block";
 
         if (hasContent) {
             // Always stretch content container in its counter-axis to allow fill effects
@@ -198,7 +531,9 @@ export class Card extends BaseComponent {
         }
 
         if (imageNode) {
-            if (imagePosition === "top" || imagePosition === "left") {
+            if (useContentOverlay) {
+                root.appendChild(imageNode);
+            } else if (imagePosition === "top" || imagePosition === "left") {
                 root.appendChild(imageNode);
                 if (hasContent) root.appendChild(contentContainer);
             } else {
@@ -213,7 +548,9 @@ export class Card extends BaseComponent {
                 if (root.layoutMode === "HORIZONTAL") {
                     // If no explicit width on image node, and we are horizontal, we need a default
                     if (!("width" in imageNode && imageNode.width > 0)) {
-                        (imageNode as any).resize(200, imageNode.height || 200);
+                        if ("resize" in imageNode) {
+                            imageNode.resize(200, imageNode.height || 200);
+                        }
                     }
                 }
             }
@@ -281,8 +618,11 @@ export class Card extends BaseComponent {
         // If we have paddingMode "all" and an image, let's make sure the image is rounded nicely too
         if (paddingMode === "all" && imageNode && "cornerRadius" in imageNode) {
             const r = typeof cornerRadius === "number" ? cornerRadius : 0;
-            const innerR = Math.max(0, r - padding / 2); // Simple heuristic for inner radius
-            (imageNode as any).cornerRadius = innerR || 8;
+            const paddingInset = this.resolvePadding(padding);
+            const maxInset = Math.max(paddingInset.top, paddingInset.right, paddingInset.bottom, paddingInset.left);
+            const innerR = Math.max(0, r - maxInset / 2); // Simple heuristic for inner radius
+            const cornerNode = imageNode as SceneNode & { cornerRadius: number };
+            cornerNode.cornerRadius = innerR || 8;
         }
 
         root.x = x;
@@ -294,13 +634,29 @@ export class Card extends BaseComponent {
             root.resize(root.width, height);
         }
 
-        const hasOverlay = Boolean(props.overlayNode) && (props.overlay?.enabled ?? true);
-        if (hasOverlay && props.overlayNode) {
-            const customOverlayX = ("x" in props.overlayNode) ? (props.overlayNode as SceneNode).x : 0;
-            const customOverlayY = ("y" in props.overlayNode) ? (props.overlayNode as SceneNode).y : 0;
-            root.appendChild(props.overlayNode);
-            if ("layoutPositioning" in props.overlayNode) {
-                const overlay = props.overlayNode as FrameNode;
+        if (useContentOverlay) {
+            root.appendChild(contentContainer);
+            contentContainer.layoutPositioning = "ABSOLUTE";
+            if (contentMode === "overlay-fill") {
+                contentContainer.x = 0;
+                contentContainer.y = 0;
+                contentContainer.resize(root.width, root.height);
+                contentContainer.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
+            } else {
+                contentContainer.x = 0;
+                contentContainer.resize(root.width, contentContainer.height);
+                contentContainer.y = root.height - contentContainer.height;
+                contentContainer.constraints = { horizontal: "STRETCH", vertical: "MAX" };
+            }
+        }
+
+        const hasOverlay = Boolean(overlayNode) && (props.overlay?.enabled ?? true);
+        if (hasOverlay && overlayNode) {
+            const customOverlayX = ("x" in overlayNode) ? overlayNode.x : 0;
+            const customOverlayY = ("y" in overlayNode) ? overlayNode.y : 0;
+            root.appendChild(overlayNode);
+            if ("layoutPositioning" in overlayNode) {
+                const overlay = overlayNode as FrameNode;
                 overlay.layoutPositioning = "ABSOLUTE";
                 if (props.overlay) {
                     this.applyOverlayPlacement(overlay, root, props.overlay);
@@ -335,6 +691,449 @@ export class Card extends BaseComponent {
         }
 
         return root;
+    }
+
+    private resolvePadding(value: number | CardInsets): Required<CardInsets> {
+        if (typeof value === "number") {
+            return { top: value, right: value, bottom: value, left: value };
+        }
+        return {
+            top: value.top ?? 0,
+            right: value.right ?? 0,
+            bottom: value.bottom ?? 0,
+            left: value.left ?? 0
+        };
+    }
+
+    private applyPadding(node: FrameNode, value: number | CardInsets): void {
+        const resolved = this.resolvePadding(value);
+        node.paddingTop = resolved.top;
+        node.paddingRight = resolved.right;
+        node.paddingBottom = resolved.bottom;
+        node.paddingLeft = resolved.left;
+    }
+
+    private async createMediaNode(media: CardMedia): Promise<SceneNode> {
+        if (media.type === "node") {
+            return media.node;
+        }
+
+        const frame = figma.createFrame();
+        frame.name = "Card Media Placeholder";
+        frame.resize(media.width ?? 320, media.height ?? 180);
+        frame.layoutMode = "VERTICAL";
+        frame.primaryAxisAlignItems = "CENTER";
+        frame.counterAxisAlignItems = "CENTER";
+        frame.primaryAxisSizingMode = "FIXED";
+        frame.counterAxisSizingMode = "FIXED";
+        frame.fills = [await this.createSolidPaint(media.backgroundColor ?? { r: 0.80, g: 0.85, b: 0.90 })];
+        frame.layoutAlign = media.layoutAlign ?? "STRETCH";
+
+        if (typeof media.cornerRadius === "number") {
+            frame.cornerRadius = media.cornerRadius;
+        }
+
+        if (media.emoji) {
+            const emoji = figma.createText();
+            emoji.characters = media.emoji;
+            emoji.fontSize = Math.min(frame.width, frame.height) * 0.35;
+            await this.setFont(emoji, { family: "Inter", style: "Regular" });
+            frame.appendChild(emoji);
+        }
+
+        if (media.label) {
+            const label = figma.createText();
+            label.characters = media.label;
+            label.fontSize = media.labelSize ?? 12;
+            label.fills = [await this.createSolidPaint(media.labelColor ?? { r: 0.95, g: 0.97, b: 1 })];
+            await this.setFont(label, { family: "Inter", style: media.labelWeight ?? "Semi Bold" });
+            label.textAutoResize = "WIDTH_AND_HEIGHT";
+            frame.appendChild(label);
+        }
+
+        return frame;
+    }
+
+    private async createContentNode(content: CardContentInput, name: string): Promise<SceneNode> {
+        if (Array.isArray(content)) {
+            return this.createContentNode({
+                type: "stack",
+                name,
+                direction: "vertical",
+                gap: 8,
+                fill: true,
+                crossAlign: "stretch",
+                items: content
+            }, name);
+        }
+
+        return this.createContentItem(content, name);
+    }
+
+    private async createCopyNodes(copy: CardCopyProps): Promise<{
+        headerNode?: SceneNode;
+        bodyNode?: SceneNode;
+        footerNode?: SceneNode;
+    }> {
+        const headerItems: CardContent[] = [];
+        const bodyItems: CardContent[] = [];
+
+        if (copy.eyebrow) {
+            headerItems.push({
+                type: "text",
+                text: copy.eyebrow,
+                size: 12,
+                weight: "Semi Bold",
+                color: { r: 0.45, g: 0.50, b: 0.58 },
+                align: copy.align ?? "left"
+            });
+        }
+
+        if (copy.title) {
+            headerItems.push({
+                type: "text",
+                text: copy.title,
+                size: 20,
+                weight: "Semi Bold",
+                color: { r: 0.12, g: 0.16, b: 0.22 },
+                align: copy.align ?? "left"
+            });
+        }
+
+        if (copy.subtitle) {
+            headerItems.push({
+                type: "text",
+                text: copy.subtitle,
+                size: 16,
+                weight: "Regular",
+                color: { r: 0.35, g: 0.39, b: 0.46 },
+                align: copy.align ?? "left"
+            });
+        }
+
+        if (copy.description) {
+            bodyItems.push({
+                type: "text",
+                text: copy.description,
+                size: 14,
+                weight: "Regular",
+                color: { r: 0.32, g: 0.36, b: 0.44 },
+                align: copy.align ?? "left"
+            });
+        }
+
+        if (copy.price || copy.previousPrice) {
+            const priceItems: CardContent[] = [];
+            if (copy.price) {
+                priceItems.push({
+                    type: "text",
+                    text: copy.price,
+                    size: 22,
+                    weight: "Bold",
+                    color: { r: 0.12, g: 0.16, b: 0.22 },
+                    fill: false
+                });
+            }
+            if (copy.previousPrice) {
+                priceItems.push({
+                    type: "text",
+                    text: copy.previousPrice,
+                    size: 14,
+                    weight: "Regular",
+                    color: { r: 0.55, g: 0.59, b: 0.65 },
+                    fill: false,
+                    textDecoration: "STRIKETHROUGH"
+                });
+            }
+
+            bodyItems.push({
+                type: "stack",
+                direction: "horizontal",
+                gap: 8,
+                crossAlign: "center",
+                fill: copy.align !== "center",
+                align: copy.align === "center" ? "center" : "start",
+                items: priceItems
+            });
+        }
+
+        if (copy.footnote) {
+            bodyItems.push({
+                type: "text",
+                text: copy.footnote,
+                size: 12,
+                weight: "Regular",
+                color: { r: 0.50, g: 0.54, b: 0.61 },
+                align: copy.align ?? "left"
+            });
+        }
+
+        const headerNode = headerItems.length
+            ? await this.createContentNode({
+                type: "stack",
+                name: "Copy Header",
+                direction: "vertical",
+                gap: 6,
+                crossAlign: copy.align === "center" ? "center" : "stretch",
+                fill: true,
+                items: headerItems
+            }, "Copy Header")
+            : undefined;
+
+        const bodyNode = bodyItems.length
+            ? await this.createContentNode({
+                type: "stack",
+                name: "Copy Body",
+                direction: "vertical",
+                gap: 8,
+                crossAlign: copy.align === "center" ? "center" : "stretch",
+                fill: true,
+                items: bodyItems
+            }, "Copy Body")
+            : undefined;
+
+        return { headerNode, bodyNode };
+    }
+
+    private async createContentItem(content: CardContent, fallbackName: string): Promise<SceneNode> {
+        if (content.type === "text") {
+            const textNode = figma.createText();
+            textNode.name = `Card Text: ${content.text.slice(0, 24)}`;
+            textNode.characters = content.text;
+            textNode.fontSize = content.size ?? 16;
+            textNode.fills = [await this.createSolidPaint(content.color ?? { r: 0.16, g: 0.20, b: 0.26 })];
+            await this.setFont(textNode, { family: "Inter", style: content.weight ?? "Regular" });
+            if (typeof content.lineHeight === "number") {
+                textNode.lineHeight = { value: content.lineHeight, unit: "PIXELS" };
+            }
+            if (content.textDecoration) {
+                textNode.textDecoration = content.textDecoration;
+            }
+
+            const fill = content.fill ?? true;
+            if (fill) {
+                textNode.layoutAlign = "STRETCH";
+                textNode.textAutoResize = "HEIGHT";
+            } else {
+                textNode.textAutoResize = "WIDTH_AND_HEIGHT";
+            }
+
+            if (content.align) {
+                const horizontalAlignMap: Record<CardTextAlign, "LEFT" | "CENTER" | "RIGHT"> = {
+                    left: "LEFT",
+                    center: "CENTER",
+                    right: "RIGHT"
+                };
+                textNode.textAlignHorizontal = horizontalAlignMap[content.align];
+            }
+
+            this.applyContentLayout(textNode, content);
+            return textNode;
+        }
+
+        if (content.type === "spacer") {
+            const spacer = figma.createFrame();
+            spacer.name = "Card Spacer";
+            spacer.resize(1, Math.max(0, content.size));
+            spacer.fills = [];
+            spacer.layoutAlign = "STRETCH";
+            return spacer;
+        }
+
+        if (content.type === "node") {
+            this.applyContentLayout(content.node, content);
+            return content.node;
+        }
+
+        if (content.type === "component") {
+            const instance = new content.component();
+            const node = await instance.create(content.props ?? {});
+            this.applyContentLayout(node, content);
+            return node;
+        }
+
+        if (content.type === "shape") {
+            const shape = content.shape === "ellipse" ? figma.createEllipse() : figma.createRectangle();
+            shape.name = content.name ?? "Card Shape";
+            shape.resize(content.width, content.height);
+            if (content.fills) {
+                shape.fills = content.fills;
+            } else if (content.fillColor) {
+                shape.fills = [await this.createSolidPaint(content.fillColor)];
+            } else {
+                shape.fills = [];
+            }
+            if (content.strokes) {
+                shape.strokes = content.strokes;
+            } else if (content.strokeColor) {
+                shape.strokes = [await this.createSolidPaint(content.strokeColor)];
+            }
+            if (typeof content.strokeWeight === "number") {
+                shape.strokeWeight = content.strokeWeight;
+            }
+            if (content.dashPattern) {
+                shape.dashPattern = content.dashPattern;
+            }
+            if (typeof content.cornerRadius === "number" && "cornerRadius" in shape) {
+                shape.cornerRadius = content.cornerRadius;
+            }
+            if (content.effects) {
+                shape.effects = content.effects;
+            }
+            this.applyContentLayout(shape, content);
+            return shape;
+        }
+
+        const stack = figma.createFrame();
+        stack.name = content.name ?? fallbackName;
+        stack.layoutMode = content.direction === "free"
+            ? "NONE"
+            : content.direction === "horizontal"
+                ? "HORIZONTAL"
+                : "VERTICAL";
+        if (stack.layoutMode !== "NONE") {
+            stack.itemSpacing = content.gap ?? 8;
+        }
+        if (content.fills) {
+            stack.fills = content.fills;
+        } else if (content.fillColor) {
+            stack.fills = [await this.createSolidPaint(content.fillColor)];
+        } else {
+            stack.fills = [];
+        }
+        if (content.strokes) {
+            stack.strokes = content.strokes;
+        } else if (content.strokeColor) {
+            stack.strokes = [await this.createSolidPaint(content.strokeColor)];
+        }
+        if (typeof content.strokeWeight === "number") {
+            stack.strokeWeight = content.strokeWeight;
+        }
+        if (typeof content.cornerRadius === "number") {
+            stack.cornerRadius = content.cornerRadius;
+        }
+        if (content.effects) {
+            stack.effects = content.effects;
+        }
+        if (typeof content.clipsContent === "boolean") {
+            stack.clipsContent = content.clipsContent;
+        }
+        // `SPACE_BETWEEN` only behaves as expected when the main axis is fixed.
+        const needsFixedMainAxis = content.align === "space-between" && content.fill === true;
+        if (stack.layoutMode !== "NONE") {
+            stack.primaryAxisSizingMode = needsFixedMainAxis ? "FIXED" : "AUTO";
+            stack.counterAxisSizingMode = "AUTO";
+            stack.primaryAxisAlignItems = this.mapMainAxisAlign(content.align);
+            stack.counterAxisAlignItems = this.mapCrossAxisAlign(content.crossAlign);
+        }
+
+        if (content.padding !== undefined) {
+            this.applyPadding(stack, content.padding);
+        }
+
+        for (const childContent of content.items) {
+            const child = await this.createContentItem(childContent, "Content Item");
+            stack.appendChild(child);
+            this.applyContentLayout(child, this.getContentLayout(childContent));
+
+            if (
+                stack.layoutMode === "VERTICAL" &&
+                (content.crossAlign ?? "stretch") === "stretch" &&
+                "layoutAlign" in child &&
+                child.layoutAlign !== "STRETCH"
+            ) {
+                child.layoutAlign = "STRETCH";
+            }
+        }
+
+        this.applyContentLayout(stack, content);
+        return stack;
+    }
+
+    private applyContentLayout(
+        node: SceneNode,
+        layout: {
+            fill?: boolean;
+            grow?: number;
+            position?: "auto" | "absolute";
+            x?: number;
+            y?: number;
+            width?: number;
+            height?: number;
+            constraints?: Constraints;
+        }
+    ): void {
+        if ("layoutAlign" in node && layout.fill) {
+            node.layoutAlign = "STRETCH";
+        }
+        if ("layoutGrow" in node && typeof layout.grow === "number") {
+            node.layoutGrow = layout.grow;
+        }
+        if ("layoutPositioning" in node && layout.position === "absolute") {
+            if (this.canUseAutoLayoutAbsolute(node)) {
+                node.layoutPositioning = "ABSOLUTE";
+            }
+            if (typeof layout.x === "number") node.x = layout.x;
+            if (typeof layout.y === "number") node.y = layout.y;
+            if (layout.constraints && "constraints" in node) node.constraints = layout.constraints;
+        }
+        if ("resize" in node) {
+            const nextWidth = typeof layout.width === "number" ? layout.width : node.width;
+            const nextHeight = typeof layout.height === "number" ? layout.height : node.height;
+            if (typeof layout.width === "number" || typeof layout.height === "number") {
+                node.resize(nextWidth, nextHeight);
+            }
+        }
+    }
+
+    private getContentLayout(content: CardContent): {
+        fill?: boolean;
+        grow?: number;
+        position?: "auto" | "absolute";
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+        constraints?: Constraints;
+    } {
+        if (content.type === "spacer") {
+            return {};
+        }
+
+        return {
+            fill: content.fill,
+            grow: content.grow,
+            position: content.position,
+            x: content.x,
+            y: content.y,
+            width: content.width,
+            height: content.height,
+            constraints: content.constraints
+        };
+    }
+
+    private canUseAutoLayoutAbsolute(node: SceneNode): boolean {
+        const parent = node.parent;
+        if (!parent || !("layoutMode" in parent)) {
+            return false;
+        }
+        return parent.layoutMode !== "NONE";
+    }
+
+    private mapMainAxisAlign(align: CardStackMainAlign | undefined): "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN" {
+        const value = align ?? "start";
+        if (value === "center") return "CENTER";
+        if (value === "end") return "MAX";
+        if (value === "space-between") return "SPACE_BETWEEN";
+        return "MIN";
+    }
+
+    private mapCrossAxisAlign(align: CardStackCrossAlign | undefined): "MIN" | "CENTER" | "MAX" | "BASELINE" {
+        const value = align ?? "stretch";
+        if (value === "center") return "CENTER";
+        if (value === "end") return "MAX";
+        if (value === "stretch") return "MIN";
+        return "MIN";
     }
 
     private applyOverlayPlacement(overlay: FrameNode, root: FrameNode, options: CardOverlayProps): void {
@@ -466,10 +1265,6 @@ export class Card extends BaseComponent {
         colorRect.name = "UEFA Color Rectangle";
         colorRect.resize(40, 4);
         colorRect.fills = [{ type: "SOLID", color: props.themeColor }];
-        if ("layoutSizingHorizontal" in colorRect) {
-            (colorRect as any).layoutSizingHorizontal = "FIXED";
-            (colorRect as any).layoutSizingVertical = "FIXED";
-        }
         rectSection.appendChild(colorRect);
         content.appendChild(rectSection);
 
