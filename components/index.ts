@@ -400,7 +400,9 @@ export { Product___Flat___Support } from "./UEFA_icons/Product___Flat___Support/
 export { Product___Flat___Trophy } from "./UEFA_icons/Product___Flat___Trophy/Product___Flat___Trophy";
 export { Profile_Card } from "./Alex_CookBook/Profile_Card/Profile_Card";
 export { ProfileCardsDemo } from "../pages/Alex_CookBook/ProfileCardsDemo";
+export { progress_bar } from "./Alex_CookBook/progress_bar/progress_bar";
 export { progress_stepper } from "./Alex_CookBook/progress_stepper/progress_stepper";
+export { ProgressBarDemo } from "../pages/Alex_CookBook/ProgressBarDemo";
 export { ProgressStepperDemo } from "../pages/Alex_CookBook/ProgressStepperDemo";
 export { PSG_Paris } from "./Football_Crests/PSG_Paris/PSG_Paris";
 export { PSV } from "./Football_Crests/PSV/PSV";
@@ -471,6 +473,8 @@ export { Slovan_Bratislava } from "./Football_Crests/Slovan_Bratislava/Slovan_Br
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
 export { Sparta_Praha } from "./Football_Crests/Sparta_Praha/Sparta_Praha";
 export { SpecializedBlocksDemo } from "../pages/Alex_CookBook/SpecializedBlocksDemo";
+export { spinner } from "./Alex_CookBook/spinner/spinner";
+export { SpinnerDemo } from "../pages/Alex_CookBook/SpinnerDemo";
 export { SponsorBanner } from "./UEFA_web/SponsorBanner/SponsorBanner";
 export { SponsorStrip } from "./UEFA_web/SponsorStrip/SponsorStrip";
 export { SponsorStripDemo } from "../pages/UEFA_web/SponsorStripDemo";
