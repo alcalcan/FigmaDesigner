@@ -18,7 +18,7 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Affinity Map
         await this.addSection(
             root,
-            "Affinity Map",
+            "1. Affinity Map",
             "Use this component to visualize groupings of user feedback, research insights, or brainstorming notes.",
             async (container) => {
                 const affinityMap = new AffinityMap();
@@ -32,7 +32,7 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Flow Diagram
         await this.addSection(
             root,
-            "User Flow Diagram",
+            "2. User Flow Diagram",
             "This component demonstrates a sequential journey a user takes through the application.",
             async (container) => {
                 const flowDiagram = new FlowDiagram();
@@ -46,7 +46,7 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Decision Map / Tree
         await this.addSection(
             root,
-            "Decision Map",
+            "3. Decision Map",
             "A branching logic structure useful for mapping out logic and routing within the application.",
             async (container) => {
                 const row = this.createRow(container, 48);
@@ -64,7 +64,7 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Site Architecture
         await this.addSection(
             root,
-            "Site Architecture",
+            "4. Site Architecture",
             "A structural view of the application's page hierarchy.",
             async (container) => {
                 const row = this.createRow(container, 48);

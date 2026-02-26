@@ -52,7 +52,7 @@ export class FlowDiagram extends BaseComponent {
 
             // Add arrow if not the last step
             if (i < steps.length - 1) {
-                const arrow = await arrowMaker.create({ width: 24, color: { r: 0.7, g: 0.7, b: 0.7 } }) as FrameNode;
+                const arrow = await arrowMaker.create({ width: 24, color: { r: 0, g: 0, b: 0 } }) as FrameNode;
                 container.appendChild(arrow);
             }
         }

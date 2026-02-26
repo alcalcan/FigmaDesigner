@@ -41,7 +41,7 @@ export class SiteArchitecture extends BaseComponent {
         // Small padding stem below root
         const rootStem = figma.createFrame();
         rootStem.resize(2, 24);
-        rootStem.fills = [{ type: "SOLID", color: { r: 0.7, g: 0.7, b: 0.7 } }];
+        rootStem.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         rootWrapper.appendChild(rootStem);
         container.appendChild(rootWrapper);
 
@@ -62,7 +62,7 @@ export class SiteArchitecture extends BaseComponent {
         const hBarWidth = 344 + 2; // +2 for line width endpoints
         const hBar = figma.createFrame();
         hBar.resize(hBarWidth, 2);
-        hBar.fills = [{ type: "SOLID", color: { r: 0.7, g: 0.7, b: 0.7 } }];
+        hBar.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         connectorGroup.appendChild(hBar);
 
         // Connectors down
@@ -75,7 +75,7 @@ export class SiteArchitecture extends BaseComponent {
         for (let i = 0; i < 3; i++) {
             const vLine = figma.createFrame();
             vLine.resize(2, 24);
-            vLine.fills = [{ type: "SOLID", color: { r: 0.7, g: 0.7, b: 0.7 } }];
+            vLine.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
             stemGroup.appendChild(vLine);
         }
         connectorGroup.appendChild(stemGroup);
