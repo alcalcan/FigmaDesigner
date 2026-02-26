@@ -19,6 +19,7 @@ import { CardsDemo } from "../../pages/Alex_CookBook/CardsDemo";
 import { SliderDemo } from "../../pages/Alex_CookBook/SliderDemo";
 import { ProgressBarDemo } from "../../pages/Alex_CookBook/ProgressBarDemo";
 import { SpinnerDemo } from "../../pages/Alex_CookBook/SpinnerDemo";
+import { UserExperienceDemo } from "../../pages/Alex_CookBook/UserExperienceDemo";
 import { Layout } from "../../slides/theme";
 
 export class DemoFlow extends BaseComponent {
@@ -58,6 +59,7 @@ export class DemoFlow extends BaseComponent {
         const sliderDemo = new SliderDemo();
         const progressBarDemo = new ProgressBarDemo();
         const spinnerDemo = new SpinnerDemo();
+        const userExperienceDemo = new UserExperienceDemo();
 
         // Create the pages
         const pages = [
@@ -79,7 +81,8 @@ export class DemoFlow extends BaseComponent {
             await cardsDemo.create({}),
             await sliderDemo.create({}),
             await progressBarDemo.create({}),
-            await spinnerDemo.create({})
+            await spinnerDemo.create({}),
+            await userExperienceDemo.create({})
         ];
 
         // Append pages to the flow container

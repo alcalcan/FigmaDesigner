@@ -163,9 +163,8 @@ export abstract class BaseDemoPage extends BaseComponent {
         wrapper.appendChild(caption);
 
         if (fillWidth) {
-            // Use layoutGrow for horizontal parents (like rows) 
-            // and layoutAlign for vertical parents (like section containers)
-            wrapper.layoutGrow = 1;
+            // Setting STRETCH assumes the parent is vertical and we want it to fill the width.
+            wrapper.layoutAlign = "STRETCH";
             if ("layoutAlign" in node) {
                 node.layoutAlign = "STRETCH";
             }
