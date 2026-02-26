@@ -7,7 +7,7 @@ import { SiteArchitecture } from "../../components/Alex_CookBook/miscellaneous/S
 
 export class UserExperienceDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<FrameNode> {
-        const root = await this.initPage("UX Components & Flow Demo", 1200);
+        const root = await this.initPage("UX Components & Flow Demo", 1920);
 
         await this.addHeader(
             root,

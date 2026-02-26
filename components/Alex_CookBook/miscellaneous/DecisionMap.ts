@@ -189,15 +189,47 @@ export class DecisionMap extends BaseComponent {
         noStem.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         branchNo.appendChild(noStem);
 
-        // Action No
-        const actionNo = await cardMaker.create({
+        // Action No 1
+        const actionNo1 = await cardMaker.create({
             variant: "outlined",
             padding: 16,
             cornerRadius: 8,
             body: [Card.text("Redirect to Login", { size: 14, color: { r: 0.2, g: 0.2, b: 0.2 }, align: "center" })],
             width: 200
         });
-        branchNo.appendChild(actionNo);
+        branchNo.appendChild(actionNo1);
+
+        // Stem to Action 2
+        const noStem2 = figma.createFrame();
+        noStem2.resize(2, 24);
+        noStem2.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+        branchNo.appendChild(noStem2);
+
+        // Action No 2
+        const actionNo2 = await cardMaker.create({
+            variant: "outlined",
+            padding: 16,
+            cornerRadius: 8,
+            body: [Card.text("Reset Password Flow", { size: 14, color: { r: 0.2, g: 0.2, b: 0.2 }, align: "center" })],
+            width: 200
+        });
+        branchNo.appendChild(actionNo2);
+
+        // Stem to Action 3
+        const noStem3 = figma.createFrame();
+        noStem3.resize(2, 24);
+        noStem3.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+        branchNo.appendChild(noStem3);
+
+        // Action No 3
+        const actionNo3 = await cardMaker.create({
+            variant: "outlined",
+            padding: 16,
+            cornerRadius: 8,
+            body: [Card.text("Verify Login Token", { size: 14, color: { r: 0.2, g: 0.2, b: 0.2 }, align: "center" })],
+            width: 200
+        });
+        branchNo.appendChild(actionNo3);
 
         branches.appendChild(branchYes);
         branches.appendChild(branchNo);
@@ -228,21 +260,33 @@ export class DecisionMap extends BaseComponent {
         // Center of branch No is 324. ActionNo left is 224, right is 424.
         outRight.x = 424;
         outRight.y = 100 + 24 + 100 + 8 + 48 + 8 + 24 + 20; // root(100) + gap(24) + stems(100) + branchGap(8) + label(48) + stem(24) + padding(16) -> roughly y=350. We can just guess the pixel height based on components.
-        // Let's calculate:
+        // Let's recalculate mathematical Y for center of Action No 3:
         // root rect = 100 (y = 0 to 100)
         // gap = 24 (y = 100 to 124)
         // connectorGroup = 124 to 224 (100h)
         // gap = 24 (224 to 248)
         // branches starts at 248.
-        // branchNo: label (48), gap (8), stem (24), gap (8), actionNo (height ~50).
-        // center of actionNo is roughly 248 + 48 + 8 + 24 + 8 + 25 = 361.
-        outRight.y = 361;
+        // branchNo layout: 
+        //   label (48) + gap(8) 
+        //   + stem(24) + gap(8)
+        //   + actionNo1(~50) + gap(8)
+        //   + stem(24) + gap(8)
+        //   + actionNo2(~50) + gap(8)
+        //   + stem(24) + gap(8)
+        //   + actionNo3(~50)
+        // Summing branch heights inside branchNo (which starts at 248):
+        // Top of branchNo = 248
+        // ActionNo3 center offset = 48+8 + 24+8 + 50+8 + 24+8 + 50+8 + 24+8 + 25 = 293
+        // Absolute y = 248 + 293 = 541
+        const pipelineOriginY = 541;
+
+        outRight.y = pipelineOriginY;
         pipelineWrapper.appendChild(outRight);
 
         // 2. Line going up
         const upLine = figma.createFrame();
         upLine.name = "Up Line";
-        upLine.resize(2, 361 - 50); // From actionNo center up to root center
+        upLine.resize(2, pipelineOriginY - 50); // From actionNo3 center up to root center
         upLine.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         upLine.x = 424 + 48 - 2; // Right edge of outRight
         upLine.y = 50; // Top aligns with center of root
