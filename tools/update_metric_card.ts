@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const filePath = './components/Alex_CookBook/metric_card_design1/metric_card_design1.ts';
+const filePath = './components/Alex_CookBook/metric_card/metric_card.ts';
 let code = fs.readFileSync(filePath, 'utf-8');
 
 // Fix sizing modes based on horizontal/vertical

@@ -1,5 +1,5 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
-import { MetricCardsDesign1Demo } from "../../pages/Alex_CookBook/MetricCardsDesign1Demo";
+import { MetricCardsDemo } from "../../pages/Alex_CookBook/MetricCardsDemo";
 import { CookbookComponentsDemo } from "../../pages/Alex_CookBook/CookbookComponentsDemo";
 import { GraphChartsDemo } from "../../pages/Alex_CookBook/GraphChartsDemo";
 import { TopBarsDemo } from "../../pages/Alex_CookBook/TopBarsDemo";
@@ -40,7 +40,7 @@ export class DemoFlow extends BaseComponent {
         flowContainer.paddingRight = 100;
 
         // Instantiate the individual pages
-        const metricsDemo = new MetricCardsDesign1Demo();
+        const metricsDemo = new MetricCardsDemo();
         const topBarsDemo = new TopBarsDemo();
         const sidebarsDemo = new SidebarsLayoutDemo();
         const graphsDemo = new GraphChartsDemo();

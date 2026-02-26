@@ -26,7 +26,7 @@ import { button } from "../../components/Alex_CookBook/button/button";
 import { badge } from "../../components/Alex_CookBook/badge/badge";
 import { tabs } from "../../components/Alex_CookBook/tabs/tabs";
 import { table } from "../../components/Alex_CookBook/table/table";
-import { metric_card_design1 as metric_card_design1_Alex_CookBook } from "../../components/Alex_CookBook/metric_card_design1/metric_card_design1";
+// export { metric_card } from "../../components/Alex_CookBook/metric_card/metric_card";
 import { dropdown_options } from "../../components/Alex_CookBook/dropdown_options/dropdown_options";
 
 import { Features___store, Features___stats, Lucide_users, Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings } from "../../components/index";
@@ -396,15 +396,10 @@ export class CookbookComponentsDemo extends BaseComponent {
                     const data = gridData[idx];
 
                     const metricNode = await metric.create({
-                        label: data.label,
+                        title: data.label,
                         value: data.value,
-                        trend: data.trend,
-                        trendValue: data.trendValue,
+                        trendValue: data.trend,
                         period: data.period,
-                        color: data.color,
-                        platformName: data.platform,
-                        platformIcon: data.icon,
-                        sparklineData: data.data,
                         width: "fill"
                     });
 
@@ -441,14 +436,10 @@ export class CookbookComponentsDemo extends BaseComponent {
             secondaryRow.appendChild(compactCol);
 
             compactCol.appendChild(await metric.create({
-                variant: "compact", width: "fill", label: "Store Visits", value: "1,240",
-                icon: Features___store, color: { r: 0.4, g: 0.7, b: 0.2 }, chartType: "line",
-                sparklineData: [0.2, 0.3, 0.25, 0.4, 0.5, 0.45, 0.6]
+                variant: "compact", width: "fill", title: "Store Visits", value: "1,240",
             }));
             compactCol.appendChild(await metric.create({
-                variant: "compact", width: "fill", label: "Referrals", value: "854",
-                icon: Lucide_users, color: { r: 0.9, g: 0.4, b: 0.1 }, chartType: "bar",
-                sparklineData: [0.1, 0.2, 0.4, 0.6, 0.5, 0.8, 0.7]
+                variant: "compact", width: "fill", title: "Referrals", value: "854",
             }));
 
             container.appendChild(dashboard);
@@ -514,7 +505,7 @@ export class CookbookComponentsDemo extends BaseComponent {
 
         // --- METRIC CARDS - MODERN GLASSMORPHIC (DESIGN 1) ---
         await this.addSection(root, "Metric Cards - Modern Glassmorphic (Design 1)", async (container) => {
-            const design1 = new metric_card_design1_Alex_CookBook();
+            const design1 = new metric_card();
 
             // 1. Standard Variations Row
             const standardRow = this.createRow(container);

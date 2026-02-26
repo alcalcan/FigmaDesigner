@@ -1,375 +1,782 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { createFrame, createText, createVector } from "../../ComponentHelpers";
-import {
-    Action___favourite,
-    Action___favourite_active,
-    Lucide_arrow_up,
-    Lucide_arrow_down,
-    Features___stats // Corrected from Action___stats
-} from "../../index";
+import { Lucide_star } from "../../lucide_icons/Lucide_star/Lucide_star";
+import { Lucide_settings } from "../../lucide_icons/Lucide_settings/Lucide_settings";
+import { Lucide_arrow_up } from "../../lucide_icons/Lucide_arrow_up/Lucide_arrow_up";
+import { Lucide_arrow_down } from "../../lucide_icons/Lucide_arrow_down/Lucide_arrow_down";
+import { Lucide_minus } from "../../lucide_icons/Lucide_minus/Lucide_minus";
+import { Lucide_activity } from "../../lucide_icons/Lucide_activity/Lucide_activity";
+import { Lucide_server } from "../../lucide_icons/Lucide_server/Lucide_server";
+import { Lucide_hard_drive } from "../../lucide_icons/Lucide_hard_drive/Lucide_hard_drive";
+import SVG_metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig from "../../captures/metric_card_design1/assets/metric_card_design1_assets_vector_Area_Fill_1578_10451_svg_orig.svg";
 
 export interface MetricCardProps extends ComponentProps {
-    label?: string; // e.g. "Active Users"
-    value?: string; // e.g. "436"
-    period?: string; // e.g. "Month to Date"
-    trend?: string; // e.g. "12%"
-    trendValue?: string; // e.g. "(150)"
+    title?: string;
+    value?: string;
+    period?: string;
+    platformName?: string;
     trendDirection?: "up" | "down" | "neutral";
-    isFavorite?: boolean;
-    platformName?: string; // e.g. "Google Analytics 4"
-    platformIcon?: any;
-    sparklineData?: number[]; // Array of 0-1 values
-    color?: RGB; // Primary accent color (for trend/sparkline)
-
-    // Layout Props
+    trendValue?: string;
+    variant?: "standard" | "compact";
+    layoutDirection?: "vertical" | "horizontal" | "hero" | "hero-centered" | "header-circle" | "hero-triple";
     width?: number | "fill";
     height?: number | "fill" | "hug";
+    chartWidth?: number;
     gap?: number | "auto";
-
-    // New Props for Compact Variant
-    variant?: "standard" | "compact";
-    chartType?: "line" | "bar" | "none"; // Defaults: standard->line, compact->none
-    icon?: any; // Icon for the compact left slot
+    footerGap?: number | "auto";
+    dataPoints?: number[];
+    showChart?: boolean;
+    chartType?: "area" | "line" | "circle" | "icon";
+    icon?: string;
+    iconStrokeWeight?: number;
+    chartHeight?: number | "fill";
+    gradientStart?: RGB;
+    gradientEnd?: RGB;
+    showChartShadow?: boolean;
+    chartFillType?: "gradient" | "solid";
+    chartOpacity?: number;
+    chartGradientOpacityStart?: number;
+    chartGradientOpacityEnd?: number;
+    trendPillRadius?: number;
+    cornerRadius?: number;
+    cardShadow?: "none" | "small" | "standard";
+    cardFillType?: "gradient" | "solid";
+    strokeWeight?: number;
+    strokeColor?: RGB;
+    showFooter?: boolean;
+    chartCornerRadius?: number;
+    showHeader?: boolean;
+    titleFontSize?: number;
+    titleTextAlign?: "LEFT" | "CENTER" | "RIGHT";
+    showValueBesideInfo?: boolean;
+    trendPillStyle?: "solid" | "outline";
+    trendPillFontSize?: number;
 }
 
 export class metric_card extends BaseComponent {
     async create(props: MetricCardProps): Promise<SceneNode> {
-        const primaryColor = props.color || { r: 0.05, g: 0.75, b: 0.45 }; // Default Green
-        const isUp = props.trendDirection === "up";
-        const isDown = props.trendDirection === "down";
+        const isCompact = props.variant === "compact";
+        const isHeaderCircle = props.layoutDirection === "header-circle";
+        const isHeroTriple = props.layoutDirection === "hero-triple";
+        const isHorizontal = props.layoutDirection === "horizontal" || props.layoutDirection === "hero" || props.layoutDirection === "hero-centered" || isHeaderCircle || isHeroTriple;
+        const isHero = props.layoutDirection === "hero" || props.layoutDirection === "hero-centered" || isHeaderCircle || isHeroTriple;
+        const isHeroCentered = props.layoutDirection === "hero-centered";
+        const isFillWidth = props.width === "fill" || props.layoutSizingHorizontal === "FILL";
+        const isFillHeight = props.height === "fill" || props.layoutSizingVertical === "FILL";
+        const isHugHeight = props.height === "hug" || props.layoutSizingVertical === "HUG";
 
-        // Define colors based on direction if not provided, or Use provided color
-        const stateColor = isDown
-            ? { r: 0.95, g: 0.25, b: 0.25 }
-            : isUp
-                ? { r: 0.1, g: 0.8, b: 0.5 }
-                : { r: 0.2, g: 0.5, b: 1 };
+        const title = props.title || "Server Latency";
+        const value = props.value || "24ms";
+        const period = props.period || "Global Avg.";
+        const platformName = props.platformName || "Cloudfront";
+        const trendDirection = props.trendDirection || "up";
+        const trendValue = props.trendValue || "Stable";
 
-        const chartColor = props.color || stateColor;
+        const primaryTextColor = { r: 0.05, g: 0.08, b: 0.15 };
+        const secondaryTextColor = { r: 0.45, g: 0.5, b: 0.6 };
+        const periodTextColor = { r: 0.5, g: 0.55, b: 0.65 };
+        const platformTextColor = { r: 0.55, g: 0.6, b: 0.7 };
+        const trendColor = { r: 0.2, g: 0.5, b: 1 };
+        const iconBlack = { r: 0, g: 0, b: 0 };
 
-        // Sparkline Generation Data
-        const data = props.sparklineData || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7];
+        const defaultGradientStart = { r: 0, g: 0, b: 0.388 }; // #000063
+        const defaultGradientEnd = { r: 0.68, g: 0.4, b: 1 }; // #AE67FF
 
-        const renderLineChart = (targetHeight: number = 40, fillHeight: boolean = false) => {
-            const width = 240; // Reference width for path generation
-            const step = width / (data.length - 1);
-            let areaData = `M 0 ${targetHeight} L 0 ${targetHeight - (data[0] * targetHeight)}`;
+        const startColor = props.gradientStart || defaultGradientStart;
+        const endColor = props.gradientEnd || defaultGradientEnd;
 
-            for (let i = 1; i < data.length; i++) {
-                const x = i * step;
-                const y = targetHeight - (data[i] * targetHeight);
-                areaData += ` L ${x} ${y}`;
-            }
-            areaData += ` L ${width} ${targetHeight} Z`;
+        const rootWidth = isCompact ? 320 : 491;
+        const rootHeight = isCompact ? 200 : 304;
+        const isChartFill = props.chartHeight === "fill";
+        const sparklineHeight = (typeof props.chartHeight === 'number') ? props.chartHeight : (isCompact ? 40 : 70);
+        const showChart = props.showChart !== false;
+        const defaultGap = isCompact ? 10 : 16;
+        const gap = typeof props.gap === "number" ? props.gap : defaultGap;
+        const padding = isCompact ? 12 : 16;
+        const sparklineCornerRadius = props.chartCornerRadius ?? (props.cornerRadius !== undefined ? Math.max(0, props.cornerRadius - padding) : (isCompact ? 12 : 16));
+        const starIconSize = 18;
+        const platformIconSize = 18;
+        const trendIconSize = isCompact ? 12 : 14;
 
-            const r = Math.round(chartColor.r * 255);
-            const g = Math.round(chartColor.g * 255);
-            const b = Math.round(chartColor.b * 255);
-            const colorStr = `rgb(${r},${g},${b})`;
+        const sparklineWidth = props.chartWidth ?? (isHorizontal ? (isCompact ? 100 : 180) : (isCompact ? 320 - 24 : 490.6667 - 32));
 
-            return createFrame("Chart_Container", {
-                layoutMode: "NONE",
-                fills: [],
-                layoutProps: {
-                    height: fillHeight ? undefined : targetHeight,
-                    layoutAlign: "STRETCH",
-                    layoutGrow: fillHeight ? 1 : 0,
-                    parentIsAutoLayout: true,
-                    counterAxisSizingMode: fillHeight ? "FIXED" : "FIXED"
-                }
-            }, [
-                // Area Fill - Solid color as requested
-                createVector("Chart_Area_Fill", `
-<svg width="100%" height="100%" viewBox="0 0 ${width} ${targetHeight}" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="${areaData}" fill="${colorStr}" fill-opacity="0.1"/>
-</svg>`, {
-                    layoutProps: { width: undefined, height: undefined, layoutAlign: "STRETCH", layoutPositioning: "AUTO", constraints: { horizontal: "STRETCH", vertical: "STRETCH" } }
-                })
-            ]);
-        };
+        const showHeader = props.showHeader !== false;
 
-        // -- Render Helper: Bar Chart --
-        const renderBarChart = (targetWidth: number = 60, targetHeight: number = 32) => {
-            const barWidth = (targetWidth / data.length) - 2;
-            return createFrame("Bar Chart Container", {
-                layoutMode: "HORIZONTAL",
-                itemSpacing: 2,
-                primaryAxisAlignItems: "SPACE_BETWEEN",
-                counterAxisAlignItems: "MAX",
-                layoutProps: {
-                    width: targetWidth,
-                    height: targetHeight,
-                    layoutAlign: "STRETCH",
-                    parentIsAutoLayout: true
-                }
-            }, data.map((d, i) => createFrame(`Bar ${i}`, {
-                cornerRadius: 1.5,
-                fills: [{ type: "SOLID", color: chartColor }],
-                layoutProps: { width: barWidth, height: Math.max(d * targetHeight, 4), parentIsAutoLayout: true }
-            })));
-        };
-
-        // --- COMPACT VARIANT ---
-        if (props.variant === "compact") {
-            const isFill = props.width === "fill";
-            const structure: NodeDefinition = createFrame("metric_card_compact", {
-                layoutMode: "HORIZONTAL",
-                itemSpacing: 16,
-                paddingTop: 20,
-                paddingRight: 20,
-                paddingBottom: 20,
-                paddingLeft: 20,
-                primaryAxisSizingMode: isFill ? "FIXED" : "AUTO",
-                counterAxisSizingMode: "AUTO",
-                fills: [{
-                    type: "GRADIENT_LINEAR",
-                    gradientStops: [
-                        { position: 0, color: { r: 1, g: 1, b: 1, a: 1 } },
-                        { position: 1, color: { r: 0.98, g: 0.99, b: 1, a: 0.95 } }
-                    ],
-                    gradientTransform: [[0, 1, 0], [-1, 0, 1]]
-                } as any],
-                strokes: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.5 }],
-                cornerRadius: 24,
-                effects: [
-                    { type: "BACKGROUND_BLUR", radius: 10, visible: true },
-                    { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.04 }, offset: { x: 0, y: 8 }, radius: 16, showShadowBehindNode: true }
-                ],
-                layoutProps: {
-                    width: isFill ? undefined : (typeof props.width === 'number' ? props.width : undefined),
-                    layoutAlign: isFill ? "STRETCH" : "INHERIT",
-                    layoutGrow: isFill ? 1 : 0,
-                    minWidth: 200
-                }
-            }, [
-                // 1. Icon Container
-                props.icon ? createFrame("Icon Container", {
-                    cornerRadius: 16,
-                    fills: [{ type: "SOLID", color: { ...chartColor, a: 0.1 } }],
-                    layoutMode: "HORIZONTAL",
-                    primaryAxisAlignItems: "CENTER",
-                    counterAxisAlignItems: "CENTER",
-                    clipsContent: false, // Prevent icon cropping
-                    layoutProps: { width: 44, height: 44 }
-                }, [
-                    {
-                        type: "COMPONENT",
-                        component: props.icon,
-                        name: "Icon",
-                        props: { width: 24, height: 24, color: chartColor, strokeWeight: 2 },
-                        layoutProps: { width: 24, height: 24, parentIsAutoLayout: true }
-                    }
-                ]) : null,
-
-                // 2. Text Stack
-                createFrame("Text Stack", {
-                    layoutMode: "VERTICAL",
-                    itemSpacing: 2,
-                    primaryAxisAlignItems: "CENTER",
-                    counterAxisAlignItems: "MIN",
-                    fills: [],
-                    layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
-                }, [
-                    createText("Label", props.label || "Label", 12, "Semi Bold", { r: 0.5, g: 0.55, b: 0.65 }, {
-                        font: { family: "Inter", style: "Semi Bold" }
-                    }),
-                    createText("Value", props.value || "$0.00", 22, "Bold", { r: 0.1, g: 0.12, b: 0.2 }, {
-                        font: { family: "Inter", style: "Bold" }
-                    })
-                ]),
-
-                // 3. Chart
-                props.chartType === "bar" ? renderBarChart(64, 32) :
-                    props.chartType === "line" ? renderLineChart(32, false) : null
-
-            ].filter(Boolean) as NodeDefinition[]);
-
-            const root = await this.renderDefinition(structure);
-            root.x = props.x ?? 0;
-            root.y = props.y ?? 0;
-            return root;
-        }
-
-        // --- STANDARD VARIANT ---
-        const isFillWidth = props.width === "fill";
-        const isFillHeight = props.height === "fill";
-
-        const structure: NodeDefinition = createFrame("metric_card", {
-            layoutMode: "VERTICAL",
-            itemSpacing: typeof props.gap === "number" ? props.gap : (props.gap === "auto" ? 0 : 16),
-            paddingTop: 32,
-            paddingRight: 32,
-            paddingBottom: 32,
-            paddingLeft: 32,
-            primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
-            counterAxisSizingMode: isFillWidth ? "FIXED" : "AUTO",
-            primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : (typeof props.gap === "number" ? "MIN" : "SPACE_BETWEEN"),
-            fills: [{
-                type: "GRADIENT_LINEAR",
-                gradientStops: [
-                    { position: 0, color: { r: 1, g: 1, b: 1, a: 1 } },
-                    { position: 1, color: { r: 0.98, g: 0.99, b: 1, a: 0.96 } }
-                ],
-                gradientTransform: [[0, 1, 0], [-1, 0, 1]]
-            } as any],
-            strokes: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 0.8 }],
-            strokeWeight: 1,
-            cornerRadius: 32,
-            effects: [
-                { type: "BACKGROUND_BLUR", radius: 24, visible: true },
-                { type: "DROP_SHADOW", color: { r: 0.05, g: 0.1, b: 0.2, a: 0.06 }, offset: { x: 0, y: 16 }, radius: 32, showShadowBehindNode: true },
-                { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.02 }, offset: { x: 0, y: 4 }, radius: 4, showShadowBehindNode: true }
-            ],
-            layoutProps: {
-                width: isFillWidth ? undefined : (typeof props.width === 'number' ? props.width : undefined),
-                height: isFillHeight ? undefined : (typeof props.height === 'number' ? props.height : undefined),
-                layoutAlign: isFillWidth ? "STRETCH" : "INHERIT",
-                layoutGrow: isFillWidth ? 1 : 0, // In horizontal parent, width fill is Grow
-                minWidth: 280
-            }
+        const headerComponent: NodeDefinition | null = showHeader ? createFrame("Header", {
+            layoutMode: "HORIZONTAL",
+            primaryAxisAlignItems: "MIN",
+            counterAxisAlignItems: isHeaderCircle ? "MIN" : "CENTER",
+            itemSpacing: 8,
+            layoutSizingHorizontal: isHeroCentered ? "FILL" : "HUG",
+            layoutSizingVertical: "HUG",
+            fills: []
         }, [
-            // Header
-            createFrame("Header", {
+            createText("Period", period, isCompact ? 11 : 12, "Medium", periodTextColor, {
+                font: { family: "Inter", style: "Medium" },
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG"
+            }),
+            isHeaderCircle ? null : createFrame("Icon Wrapper", {
                 layoutMode: "HORIZONTAL",
-                primaryAxisAlignItems: "SPACE_BETWEEN",
-                layoutAlign: "STRETCH",
-                primaryAxisSizingMode: "FIXED",
-                counterAxisSizingMode: "AUTO", // Hug height
-                counterAxisAlignItems: "CENTER",
-                fills: []
-            }, [
-                createText("Period", props.period || "Month to Date", 12, "Medium", { r: 0.5, g: 0.55, b: 0.65 }, {
-                    font: { family: "Inter", style: "Medium" }
-                }),
-                {
-                    type: "COMPONENT",
-                    component: props.isFavorite ? Action___favourite_active : Action___favourite,
-                    name: "Star Icon",
-                    props: {
-                        width: 22, height: 22,
-                        color: props.isFavorite ? { r: 0.98, g: 0.75, b: 0.15 } : { r: 0.82, g: 0.85, b: 0.9 }
-                    },
-                    layoutProps: { width: 22, height: 22, parentIsAutoLayout: true }
-                }
-            ]),
-
-            // Content
-            createFrame("Content", {
-                layoutMode: "VERTICAL",
                 primaryAxisAlignItems: "CENTER",
                 counterAxisAlignItems: "CENTER",
-                layoutAlign: "STRETCH",
-                itemSpacing: 8,
-                fills: [],
-                layoutProps: {
-                    layoutGrow: isFillHeight ? 1 : 0,
-                    parentIsAutoLayout: true
-                }
-            }, [
-                createText("Label", props.label || "Active Users", 16, "Semi Bold", { r: 0.45, g: 0.5, b: 0.6 }, {
-                    font: { family: "Inter", style: "Semi Bold" }
-                }),
-                createText("Value", props.value || "1,234", 48, "Bold", { r: 0.05, g: 0.08, b: 0.15 }, {
-                    font: { family: "Inter", style: "Bold" },
-                    letterSpacing: { unit: "PIXELS", value: -1.5 }
-                }),
-
-                // Sparkline
-                createFrame("Chart_Area_Wrapper", {
-                    layoutMode: "VERTICAL",
-                    layoutAlign: "STRETCH",
-                    layoutGrow: isFillHeight ? 1 : 0,
-                    primaryAxisSizingMode: "FIXED",
-                    counterAxisSizingMode: "FIXED",
-                    fills: [],
-                    clipsContent: false,
-                    layoutProps: {
-                        height: 70,
-                        parentIsAutoLayout: true
-                    }
-                }, [
-                    renderLineChart(70, isFillHeight)
-                ]),
-
-                // Trend Pill
-                createFrame("Trend Pill", {
-                    layoutMode: "HORIZONTAL",
-                    itemSpacing: 6,
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                    paddingLeft: 12,
-                    paddingRight: 12,
-                    cornerRadius: 100,
-                    fills: [{ type: "SOLID", color: { ...stateColor, a: 0.1 } } as any],
-                    primaryAxisSizingMode: "AUTO",
-                    counterAxisSizingMode: "AUTO", // Hug height
-                    primaryAxisAlignItems: "CENTER",
-                    counterAxisAlignItems: "CENTER",
-                    layoutProps: { parentIsAutoLayout: true }
-                }, [
-                    {
-                        type: "FRAME",
-                        name: "Trend Icon Wrapper",
-                        props: {
-                            layoutMode: "HORIZONTAL",
-                            primaryAxisAlignItems: "CENTER",
-                            counterAxisAlignItems: "CENTER",
-                            itemSpacing: 0,
-                            fills: []
-                        },
-                        layoutProps: { width: 14, height: 14, parentIsAutoLayout: true },
-                        children: [
-                            {
-                                type: "COMPONENT",
-                                name: "Trend Icon",
-                                component: isDown ? Lucide_arrow_down : Lucide_arrow_up,
-                                props: { width: 14, height: 14, color: stateColor, strokeWeight: 4 },
-                                layoutProps: { width: 14, height: 14, parentIsAutoLayout: true }
-                            }
-                        ]
-                    },
-                    createText("Trend %", props.trend || "10%", 13, "Bold", stateColor, {
-                        font: { family: "Inter", style: "Bold" }
-                    }),
-                    props.trendValue ? createText("Trend Abs", `(${props.trendValue})`, 13, "Medium", { r: 0.55, g: 0.6, b: 0.7 }, {
-                        font: { family: "Inter", style: "Medium" }
-                    }) : null
-                ].filter(Boolean) as NodeDefinition[])
-            ]),
-
-            // Footer
-            createFrame("Footer", {
-                layoutMode: "HORIZONTAL",
-                primaryAxisAlignItems: "MIN",
-                counterAxisAlignItems: "CENTER",
-                itemSpacing: 10,
-                layoutAlign: "STRETCH",
-                primaryAxisSizingMode: "FIXED",
-                counterAxisSizingMode: "AUTO", // Hug height
-                fills: [],
-                layoutProps: { parentIsAutoLayout: true }
+                paddingTop: 1,
+                paddingRight: 1,
+                paddingBottom: 1,
+                paddingLeft: 1,
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG",
+                fills: []
             }, [
                 {
                     type: "COMPONENT",
-                    component: props.platformIcon || Features___stats,
-                    name: "Platform Icon",
+                    name: "Star Icon",
+                    component: Lucide_star,
                     props: {
-                        width: 18, height: 18,
-                        color: props.platformName?.includes("Instagram") ? { r: 0.85, g: 0.25, b: 0.55 } :
-                            props.platformName?.includes("Facebook") ? { r: 0.25, g: 0.45, b: 0.85 } :
-                                { r: 0.98, g: 0.55, b: 0.05 }
+                        width: starIconSize,
+                        height: starIconSize,
+                        color: iconBlack,
                     },
-                    layoutProps: { width: 18, height: 18, parentIsAutoLayout: true }
+                    layoutProps: {
+                        width: starIconSize,
+                        height: starIconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true,
+                        constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                    }
+                }
+            ])
+        ].filter(Boolean) as NodeDefinition[]) : null;
+
+        const chartNodes: NodeDefinition[] = [];
+        if (props.chartType === "circle") {
+            const circleSize = (typeof props.chartWidth === 'number' && props.chartWidth > 0) ? props.chartWidth :
+                ((typeof props.chartHeight === 'number' && props.chartHeight > 0) ? props.chartHeight : (isHeaderCircle || isHeroTriple ? 48 : (isHero ? 120 : (isCompact ? 48 : 80))));
+            const circleNode = this.renderCircle(
+                (props.dataPoints && props.dataPoints.length > 0) ? props.dataPoints[props.dataPoints.length - 1] : 0.75,
+                circleSize,
+                { start: startColor, end: endColor }
+            );
+            if (circleNode) {
+                if ((isHeroCentered || isHeaderCircle || isHeroTriple) && props.value) {
+                    // Add value inside circle
+                    const valueInside = createText("Centered Value", props.value, isHeaderCircle || isHeroTriple ? 12 : 28, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+                        textAlignHorizontal: "CENTER",
+                        textAlignVertical: "CENTER",
+                        layoutSizingHorizontal: "HUG",
+                        layoutSizingVertical: "HUG"
+                    });
+                    circleNode.children = [...(circleNode.children || []), valueInside];
+                }
+
+                chartNodes.push(circleNode);
+            }
+        } else if (props.chartType === "icon") {
+            const circleSize = (typeof props.chartWidth === 'number' && props.chartWidth > 0) ? props.chartWidth :
+                ((typeof props.chartHeight === 'number' && props.chartHeight > 0) ? props.chartHeight : (isHeaderCircle || isHeroTriple ? 48 : (isHero ? 120 : (isCompact ? 48 : 80))));
+            const iconNode = await this.renderIconCircle(
+                props.icon || "Lucide_activity",
+                circleSize,
+                {
+                    start: startColor,
+                    end: endColor,
+                    strokeWeight: props.iconStrokeWeight
+                }
+            );
+            if (iconNode) chartNodes.push(iconNode);
+        } else {
+            const waveNode = this.renderWave(
+                props.dataPoints || [0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7],
+                sparklineWidth,
+                sparklineHeight,
+                {
+                    start: startColor,
+                    end: endColor,
+                    fillType: props.chartFillType,
+                    opacity: props.chartOpacity,
+                    gradientOpacityStart: props.chartGradientOpacityStart,
+                    gradientOpacityEnd: props.chartGradientOpacityEnd
                 },
-                createText("Platform Name", props.platformName || "Google Analytics 4", 12, "Medium", { r: 0.55, g: 0.6, b: 0.7 }, {
+                props.chartType === "line" ? "line" : "area"
+            );
+            if (waveNode) chartNodes.push(waveNode);
+        }
+
+        const sparklineContainer: NodeDefinition | null = showChart ? createFrame("Sparkline Container", {
+            layoutMode: "VERTICAL",
+            primaryAxisAlignItems: "CENTER",
+            counterAxisAlignItems: "CENTER",
+            clipsContent: false, // Allow glow/shadow to bleed out
+            layoutSizingHorizontal: isHero ? "HUG" : "FILL",
+            layoutSizingVertical: isChartFill ? "FILL" : ((isHero && !isFillHeight && typeof props.height !== 'number') ? "HUG" : "FIXED"),
+            cornerRadius: sparklineCornerRadius,
+            fills: [],
+            effects: (props.showChartShadow !== false && !isHeroCentered) ? [{
+                visible: true,
+                blendMode: "NORMAL",
+                type: "DROP_SHADOW",
+                radius: 20,
+                color: { ...endColor, a: 0.2 },
+                offset: { x: 0, y: 4 },
+                spread: 0,
+                showShadowBehindNode: false
+            }] : [],
+            layoutProps: {
+                width: undefined,
+                height: isChartFill ? undefined : sparklineHeight,
+                layoutSizingVertical: isChartFill ? "FILL" : "FIXED",
+                parentIsAutoLayout: true
+            }
+        }, chartNodes) : null;
+
+        const contentComponent: NodeDefinition = createFrame("Content", {
+            layoutMode: "VERTICAL",
+            itemSpacing: isCompact ? 4 : 8,
+            layoutSizingHorizontal: isHorizontal ? "HUG" : "FILL",
+            layoutSizingVertical: "HUG",
+            primaryAxisAlignItems: isHorizontal ? "MIN" : "CENTER",
+            counterAxisAlignItems: isHorizontal ? "MIN" : "CENTER",
+            primaryAxisSizingMode: "AUTO",
+            counterAxisSizingMode: isHorizontal ? "AUTO" : "FIXED",
+            clipsContent: false,
+            fills: []
+        }, [
+            createText("Label", title, isCompact ? 14 : 16, "Regular", secondaryTextColor, {
+                font: { family: "Inter", style: "Regular" },
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG"
+            }),
+            createText("Value", value, isCompact ? 38 : 48, "Bold", primaryTextColor, {
+                font: { family: "Inter", style: "Bold" },
+                letterSpacing: { unit: "PIXELS", value: isCompact ? -1.2 : -1.5 },
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG"
+            }),
+            (!isHorizontal && showChart && sparklineContainer) ? sparklineContainer : null
+        ].filter(Boolean) as NodeDefinition[]);
+
+        const platformFrame = createFrame("Platform Name", {
+            layoutMode: "HORIZONTAL",
+            itemSpacing: 8,
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            fills: []
+        }, [
+            createFrame("Icon Wrapper", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                paddingTop: 1,
+                paddingRight: 1,
+                paddingBottom: 1,
+                paddingLeft: 1,
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG",
+                fills: []
+            }, [
+                {
+                    type: "COMPONENT",
+                    name: "Platform Icon",
+                    component: Lucide_settings,
+                    props: {
+                        width: platformIconSize,
+                        height: platformIconSize,
+                        color: iconBlack,
+                    },
+                    layoutProps: {
+                        width: platformIconSize,
+                        height: platformIconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true,
+                        constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                    }
+                }
+            ]),
+            createText("Platform Name Text", platformName, isCompact ? 11 : 12, "Medium", platformTextColor, {
+                font: { family: "Inter", style: "Medium" }
+            })
+        ]);
+
+        const isTrendPillOutline = props.trendPillStyle === "outline";
+        const trendPillTextColor = isTrendPillOutline ? { r: 0.55, g: 0.6, b: 0.7 } : trendColor;
+        const trendPillStrokeColor = isTrendPillOutline ? { r: 0.55, g: 0.6, b: 0.7 } : trendColor;
+        const trendPillIconColor = isTrendPillOutline ? { r: 0.55, g: 0.6, b: 0.7 } : trendColor;
+
+        const trendPillFrame = createFrame("Trend Pill", {
+            layoutMode: "HORIZONTAL",
+            itemSpacing: (isTrendPillOutline ? 4 : (isCompact ? 4 : 6)),
+            paddingTop: isTrendPillOutline ? 4 : (isCompact ? 6 : 8),
+            paddingBottom: isTrendPillOutline ? 4 : (isCompact ? 6 : 8),
+            paddingLeft: isTrendPillOutline ? 8 : (isCompact ? 8 : 12),
+            paddingRight: isTrendPillOutline ? 12 : (isCompact ? 8 : 12),
+            cornerRadius: props.trendPillRadius ?? (isTrendPillOutline ? 16 : (isCompact ? 12 : 16)),
+            primaryAxisAlignItems: "CENTER",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            fills: isTrendPillOutline ? [] : [{ type: "SOLID", color: trendColor, opacity: 0.1 }],
+            strokes: isTrendPillOutline ? [{ type: "SOLID", color: trendPillStrokeColor, opacity: 1 }] : [],
+            strokeWeight: isTrendPillOutline ? 1 : 0
+        }, [
+            createFrame("Icon Wrapper", {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                paddingTop: 1,
+                paddingRight: 1,
+                paddingBottom: 1,
+                paddingLeft: 1,
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG",
+                fills: []
+            }, [
+                {
+                    type: "COMPONENT",
+                    name: "Trend Icon",
+                    component: trendDirection === "up" ? Lucide_arrow_up : trendDirection === "down" ? Lucide_arrow_down : Lucide_minus,
+                    props: {
+                        width: trendIconSize,
+                        height: trendIconSize,
+                        color: trendPillIconColor,
+                    },
+                    layoutProps: {
+                        width: trendIconSize,
+                        height: trendIconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true,
+                        constraints: { horizontal: "CENTER", vertical: "CENTER" }
+                    }
+                }
+            ]),
+            createText("Trend %", trendValue, props.trendPillFontSize ?? (isCompact ? 12 : 13), "Bold", trendPillTextColor, {
+                font: { family: "Inter", style: "Bold" }
+            }),
+            (!isCompact && !isTrendPillOutline)
+                ? createText("Trend Abs", trendDirection === "up" ? "(+8ms)" : trendDirection === "down" ? "(-8ms)" : "(0ms)", 13, "Medium", platformTextColor, {
                     font: { family: "Inter", style: "Medium" }
                 })
-            ])
-        ]);
+                : null
+        ].filter(Boolean) as NodeDefinition[]);
+
+        const footerComponent: NodeDefinition | null = props.showFooter !== false ? createFrame("Footer", {
+            layoutMode: "HORIZONTAL",
+            primaryAxisAlignItems: props.footerGap === "auto" || (typeof props.footerGap === "undefined" && isHorizontal) ? "SPACE_BETWEEN" : "MIN",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: "HUG",
+            itemSpacing: typeof props.footerGap === "number" ? props.footerGap : 20,
+            fills: []
+        }, [
+            platformFrame,
+            trendPillFrame
+        ]) : null;
+
+        const heroCenteredTitleComponent = (isHeroCentered || isHeaderCircle || isHeroTriple) ? createText("Hero Title", title, props.titleFontSize ?? 24, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+            font: { family: "Inter", style: "Bold" },
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: "HUG",
+            textAlignHorizontal: props.titleTextAlign ?? "LEFT"
+        }) : null;
+
+        const bodyContentForHero = isHero ? createFrame("Info Stack", {
+            layoutMode: "VERTICAL",
+            primaryAxisAlignItems: (isHeroCentered || isHeaderCircle || isHeroTriple) ? (isHeaderCircle || isHeroTriple ? "MIN" : "SPACE_BETWEEN") : "MIN",
+            counterAxisAlignItems: "MIN",
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: (isHeaderCircle || isHeroTriple) ? "HUG" : ((isHeroCentered || isHeaderCircle) ? "FILL" : "HUG"),
+            itemSpacing: isHeroCentered ? 0 : 8,
+            fills: []
+        }, [
+            headerComponent,
+            heroCenteredTitleComponent,
+            (!isHeroCentered && !isHeroTriple && !isHeaderCircle) ? contentComponent : null,
+            (isHeroCentered || isHeaderCircle) ? trendPillFrame : (isHeroTriple ? null : (props.showFooter !== false ? platformFrame : null))
+        ].filter(Boolean) as NodeDefinition[]) : null;
+
+        const visualGroupForHero = isHero ? createFrame("Visual Group", {
+            layoutMode: "VERTICAL",
+            primaryAxisAlignItems: "MIN",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "HUG",
+            layoutSizingVertical: "HUG",
+            itemSpacing: 12,
+            clipsContent: false,
+            fills: []
+        }, [
+            showChart ? sparklineContainer : null,
+            (!isHeroCentered && !isHeaderCircle && !isHeroTriple && props.showFooter !== false) ? trendPillFrame : null
+        ].filter(Boolean) as NodeDefinition[]) : null;
+
+        const bodyComponent = isHero ? createFrame("Body", {
+            layoutMode: "HORIZONTAL",
+            primaryAxisAlignItems: "MIN",
+            counterAxisAlignItems: isHeroTriple ? "CENTER" : (isHeaderCircle ? "MIN" : "CENTER"),
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: (isFillHeight || typeof props.height === 'number') ? "FILL" : "HUG",
+            itemSpacing: 24,
+            clipsContent: false,
+            fills: []
+        }, [
+            bodyContentForHero,
+            isHeroTriple ? trendPillFrame : null,
+            props.showValueBesideInfo ? createText("Prominent Value", value, 24, "Bold", { r: 0.1, g: 0.1, b: 0.1 }, {
+                font: { family: "Inter", style: "Bold" },
+                layoutSizingHorizontal: "HUG",
+                layoutSizingVertical: "HUG"
+            }) : null,
+            visualGroupForHero
+        ].filter(Boolean) as NodeDefinition[]) : (isHorizontal ? createFrame("Body", {
+            layoutMode: "HORIZONTAL",
+            primaryAxisAlignItems: "MIN",
+            counterAxisAlignItems: "CENTER",
+            layoutSizingHorizontal: "FILL",
+            layoutSizingVertical: "HUG",
+            itemSpacing: 8,
+            clipsContent: false,
+            fills: []
+        }, [
+            contentComponent,
+            showChart ? sparklineContainer : null
+        ].filter(Boolean) as NodeDefinition[]) : contentComponent);
+
+        const structure: NodeDefinition = {
+            type: "FRAME",
+            name: isCompact ? "metric_card_design1_compact" : "metric_card_design1",
+            props: {
+                layoutMode: "VERTICAL",
+                itemSpacing: gap,
+                paddingTop: padding,
+                paddingRight: padding,
+                paddingBottom: padding,
+                paddingLeft: padding,
+                primaryAxisSizingMode: (typeof props.height === 'number' || isFillHeight) ? "FIXED" : "AUTO",
+                counterAxisSizingMode: "FIXED",
+                primaryAxisAlignItems: props.gap === "auto" ? "SPACE_BETWEEN" : "MIN",
+                counterAxisAlignItems: "MIN",
+                clipsContent: false,
+                fills: props.cardFillType === "solid" ? [
+                    { type: "SOLID", color: { r: 1, g: 1, b: 1 }, opacity: 1 }
+                ] : [
+                    {
+                        visible: true,
+                        opacity: 1,
+                        blendMode: "NORMAL",
+                        type: "GRADIENT_LINEAR",
+                        gradientStops: [
+                            { color: { r: 1, g: 1, b: 1, a: 1 }, position: 0 },
+                            { color: { r: 0.98, g: 0.99, b: 1, a: 0.96 }, position: 1 }
+                        ],
+                        gradientTransform: [
+                            [0.690418004989624, 0.38661691546440125, -0.044504158198833466],
+                            [-0.38661691546440125, 0.37372609972953796, 0.49469995498657227]
+                        ]
+                    }
+                ],
+                strokes: [{ type: "SOLID", color: props.strokeColor ?? { r: 1, g: 1, b: 1 }, opacity: 1 }],
+                strokeWeight: props.strokeWeight ?? 2,
+                strokeAlign: "OUTSIDE",
+                cornerRadius: props.cornerRadius ?? (isCompact ? 24 : 32),
+                effects: (props.cardShadow === "small") ? [
+                    {
+                        visible: true,
+                        blendMode: "NORMAL",
+                        type: "DROP_SHADOW",
+                        radius: 12,
+                        color: { r: 0, g: 0, b: 0, a: 0.04 },
+                        offset: { x: 0, y: 4 },
+                        spread: 0,
+                        showShadowBehindNode: true
+                    }
+                ] : (props.cardShadow === "standard" || typeof props.cardShadow === "undefined") ? [
+                    { visible: true, type: "BACKGROUND_BLUR", radius: 24, blurType: "NORMAL" },
+                    {
+                        visible: true,
+                        blendMode: "NORMAL",
+                        type: "DROP_SHADOW",
+                        radius: 32,
+                        color: { r: 0.05, g: 0.1, b: 0.2, a: 0.06 },
+                        offset: { x: 0, y: 16 },
+                        spread: 0,
+                        showShadowBehindNode: true
+                    },
+                    {
+                        visible: true,
+                        blendMode: "NORMAL",
+                        type: "DROP_SHADOW",
+                        radius: 4,
+                        color: { r: 0, g: 0, b: 0, a: 0.02 },
+                        offset: { x: 0, y: 4 },
+                        spread: 0,
+                        showShadowBehindNode: true
+                    }
+                ] : []
+            },
+            layoutProps: {
+                width: isFillWidth ? undefined : (typeof props.width === "number" ? props.width : rootWidth),
+                height: (typeof props.height === "number") ? props.height : undefined,
+                layoutSizingHorizontal: isFillWidth ? "FILL" : "FIXED",
+                layoutSizingVertical: isFillHeight ? "FILL" : "HUG",
+                layoutGrow: isFillWidth ? 1 : 0,
+                parentIsAutoLayout: true
+            },
+            children: isHero ? [bodyComponent] : [
+                headerComponent,
+                bodyComponent,
+                footerComponent
+            ].filter(Boolean) as NodeDefinition[]
+        };
 
         const root = await this.renderDefinition(structure);
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
         return root;
+    }
+
+    private renderWave(data: number[], width: number, height: number, customStyle?: {
+        start?: RGB,
+        end?: RGB,
+        fillType?: "gradient" | "solid",
+        opacity?: number,
+        gradientOpacityStart?: number,
+        gradientOpacityEnd?: number
+    }, chartType: "area" | "line" = "area"): NodeDefinition | null {
+        if (data.length < 2) return null;
+
+        const step = width / (data.length - 1);
+        const vPaddingTop = 6;
+        const vPaddingBottom = chartType === "line" ? 6 : 0;
+        const points = data.map((d, i) => ({
+            x: i * step,
+            y: vPaddingTop + (1 - d) * (height - vPaddingTop - vPaddingBottom)
+        }));
+
+        // Start from bottom-left corner for area, or first y for line
+        let pathData = chartType === "line" ? `M 0 ${points[0].y} ` : `M 0 ${height} L 0 ${points[0].y} `;
+
+        // Use cubic beziers for smoothing
+        for (let i = 0; i < points.length - 1; i++) {
+            const p0 = points[i - 1] || points[i];
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            const p3 = points[i + 2] || points[i + 1];
+
+            const tension = 0.2;
+
+            const cp1x = p1.x + (p2.x - p0.x) * tension;
+            const cp1y = p1.y + (p2.y - p0.y) * tension;
+            const cp2x = p2.x - (p3.x - p1.x) * tension;
+            const cp2y = p2.y - (p3.y - p1.y) * tension;
+
+            pathData += `C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} `;
+        }
+
+        // Close back to bottom for area
+        if (chartType !== "line") {
+            pathData += `L ${width} ${height} Z`;
+        }
+
+        const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
+        const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
+        const isSolid = customStyle?.fillType === "solid";
+        const baseOpacity = customStyle?.opacity ?? 1;
+        const gradOpacityStart = customStyle?.gradientOpacityStart ?? 0.8;
+        const gradOpacityEnd = customStyle?.gradientOpacityEnd ?? 1.0;
+
+        const startRGB = `rgb(${Math.round(startColor.r * 255)}, ${Math.round(startColor.g * 255)}, ${Math.round(startColor.b * 255)})`;
+        const endRGB = `rgb(${Math.round(endColor.r * 255)}, ${Math.round(endColor.g * 255)}, ${Math.round(endColor.b * 255)})`;
+
+        let svgContent = '';
+        if (chartType === "line") {
+            const strokeColor = isSolid ? startRGB : "url(#paint0_linear_dynamic)";
+            svgContent = `
+<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="${pathData}" stroke="${strokeColor}" stroke-width="3" fill="none" stroke-linecap="round"/>
+${!isSolid ? `
+<defs>
+<linearGradient id="paint0_linear_dynamic" x1="0" y1="0" x2="${width}" y2="0" gradientUnits="userSpaceOnUse">
+<stop stop-color="${startRGB}"/>
+<stop offset="1" stop-color="${endRGB}"/>
+</linearGradient>
+</defs>` : ""}
+</svg>`;
+        } else {
+            const fillValue = isSolid ? startRGB : "url(#paint0_linear_dynamic)";
+            const fillOpacity = isSolid ? baseOpacity : 1;
+            svgContent = `
+<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="${pathData}" fill="${fillValue}" fill-opacity="${fillOpacity}"/>
+${!isSolid ? `
+<defs>
+<linearGradient id="paint0_linear_dynamic" x1="${width / 2}" y1="${height}" x2="${width / 2}" y2="0" gradientUnits="userSpaceOnUse">
+<stop stop-color="${startRGB}" stop-opacity="${gradOpacityStart * baseOpacity}"/>
+<stop offset="1" stop-color="${endRGB}" stop-opacity="${gradOpacityEnd * baseOpacity}"/>
+</linearGradient>
+</defs>` : ""}
+</svg>`;
+        }
+
+        return createVector(chartType === "line" ? "Line Chart" : "Area Fill", svgContent, {
+            layoutProps: {
+                width: undefined,
+                height: undefined,
+                parentIsAutoLayout: true,
+                layoutPositioning: "AUTO",
+                layoutAlign: "STRETCH",
+                layoutGrow: 1,
+                constraints: { horizontal: "STRETCH", vertical: "STRETCH" }
+            }
+        });
+    }
+
+    private renderCircle(percentage: number, targetSize: number, customStyle?: { start?: RGB, end?: RGB }): NodeDefinition | null {
+        const strokeWidth = Math.max(4, targetSize * 0.10);
+        const innerRadiusRatio = 1 - (strokeWidth * 2 / targetSize);
+
+        const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
+        const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
+
+        const trackFill = [{ type: "SOLID", color: startColor, opacity: 0.15 }];
+        const gradientFill = [{
+            type: "GRADIENT_LINEAR",
+            gradientTransform: [[1, 0, 0], [0, 1, 0]],
+            gradientStops: [
+                { position: 0, color: { ...startColor, a: 1 } },
+                { position: 1, color: { ...endColor, a: 1 } }
+            ]
+        }];
+
+        const startingAngle = -Math.PI / 2;
+        const sweepAngle = Math.min(Math.max(percentage, 0), 1) * 2 * Math.PI;
+
+        const ellipses: NodeDefinition[] = [
+            {
+                type: "ELLIPSE",
+                name: "Track",
+                props: {
+                    fills: trackFill,
+                    arcData: {
+                        startingAngle: 0,
+                        endingAngle: 2 * Math.PI,
+                        innerRadius: innerRadiusRatio
+                    }
+                },
+                layoutProps: {
+                    width: targetSize,
+                    height: targetSize,
+                    layoutPositioning: "ABSOLUTE",
+                    x: 0,
+                    y: 0
+                }
+            }
+        ];
+
+        if (percentage > 0) {
+            ellipses.push({
+                type: "ELLIPSE",
+                name: "Progress",
+                props: {
+                    fills: gradientFill,
+                    cornerRadius: targetSize, // fully rounded caps
+                    arcData: {
+                        startingAngle: startingAngle,
+                        endingAngle: startingAngle + sweepAngle,
+                        innerRadius: innerRadiusRatio
+                    }
+                },
+                layoutProps: {
+                    width: targetSize,
+                    height: targetSize,
+                    layoutPositioning: "ABSOLUTE",
+                    x: 0,
+                    y: 0
+                }
+            });
+        }
+
+        return {
+            type: "FRAME",
+            name: "Circle Chart",
+            props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                fills: [],
+                clipsContent: false
+            },
+            layoutProps: {
+                width: targetSize,
+                height: targetSize,
+                parentIsAutoLayout: true,
+                layoutPositioning: "AUTO"
+            },
+            children: ellipses
+        };
+    }
+
+    private async renderIconCircle(iconName: string, targetSize: number, customStyle?: { start?: RGB, end?: RGB, strokeWeight?: number }): Promise<NodeDefinition | null> {
+        const startColor = customStyle?.start || { r: 0, g: 0, b: 0.388 };
+        const endColor = customStyle?.end || { r: 0.68, g: 0.4, b: 1 };
+
+        const gradientFill = [{
+            type: "GRADIENT_LINEAR",
+            gradientTransform: [[1, 0, 0], [0, 1, 0]],
+            gradientStops: [
+                { position: 0, color: { ...startColor, a: 1 } },
+                { position: 1, color: { ...endColor, a: 1 } }
+            ]
+        }];
+
+        const iconSize = Math.round(targetSize * 0.5);
+
+        // Map string names to components
+        let iconComponent: any = Lucide_activity;
+        if (iconName === "Lucide_server") iconComponent = Lucide_server;
+        if (iconName === "Lucide_database") iconComponent = Lucide_hard_drive;
+        if (iconName === "Lucide_hard_drive") iconComponent = Lucide_hard_drive;
+
+        const strokeWeight = customStyle?.strokeWeight ?? (targetSize > 80 ? 3.5 : 2);
+
+        return {
+            type: "FRAME",
+            name: "Icon Circle",
+            props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                fills: gradientFill,
+                cornerRadius: targetSize,
+                clipsContent: true
+            },
+            layoutProps: {
+                width: targetSize,
+                height: targetSize,
+                parentIsAutoLayout: true,
+                layoutPositioning: "AUTO"
+            },
+            children: [
+                {
+                    type: "COMPONENT",
+                    name: "Icon",
+                    component: iconComponent,
+                    props: {
+                        width: iconSize,
+                        height: iconSize,
+                        color: { r: 1, g: 1, b: 1 },
+                        strokeWeight: strokeWeight
+                    },
+                    layoutProps: {
+                        width: iconSize,
+                        height: iconSize,
+                        layoutSizingHorizontal: "FIXED",
+                        layoutSizingVertical: "FIXED",
+                        parentIsAutoLayout: true
+                    }
+                }
+            ]
+        };
     }
 }
