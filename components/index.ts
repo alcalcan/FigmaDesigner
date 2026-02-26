@@ -466,6 +466,7 @@ export { Slide_TextLeft_ObjectsRight_extra } from "../slides/UEFA_Light_extra/Sl
 export { Slide_Title } from "../slides/UEFA_Light_template/Slide_Title";
 export { Slide_Title_extra } from "../slides/UEFA_Light_extra/Slide_Title";
 export { slider } from "./Alex_CookBook/slider/slider";
+export { SliderDemo } from "../pages/Alex_CookBook/SliderDemo";
 export { Slovan_Bratislava } from "./Football_Crests/Slovan_Bratislava/Slovan_Bratislava";
 export { social_profile_card } from "./Alex_CookBook/social_profile_card/social_profile_card";
 export { Sparta_Praha } from "./Football_Crests/Sparta_Praha/Sparta_Praha";
