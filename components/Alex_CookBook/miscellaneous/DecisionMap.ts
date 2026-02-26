@@ -3,6 +3,7 @@ import { Card } from "../Card/Card";
 
 export class DecisionMap extends BaseComponent {
     async create(props: ComponentProps): Promise<FrameNode> {
+        const connectorVariant = props.connectorVariant ?? "default";
         const container = figma.createFrame();
         container.name = "Decision Map";
         container.layoutMode = "VERTICAL";
@@ -12,6 +13,9 @@ export class DecisionMap extends BaseComponent {
         container.counterAxisAlignItems = "CENTER";
         container.primaryAxisSizingMode = "AUTO";
         container.counterAxisSizingMode = "AUTO";
+        // Reserve an internal right lane so loop connectors can bend clearly
+        // while still staying inside this component's bounds.
+        container.paddingRight = 56;
 
         const cardMaker = new Card();
 
@@ -158,15 +162,31 @@ export class DecisionMap extends BaseComponent {
         yesStem.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
         branchYes.appendChild(yesStem);
 
-        // Action Yes
-        const actionYes = await cardMaker.create({
+        // Action Yes 1
+        const actionYes1 = await cardMaker.create({
             variant: "outlined",
             padding: 16,
             cornerRadius: 8,
             body: [Card.text("Go to Dashboard", { size: 14, color: { r: 0.2, g: 0.2, b: 0.2 }, align: "center" })],
             width: 200
         });
-        branchYes.appendChild(actionYes);
+        branchYes.appendChild(actionYes1);
+
+        // Stem to Action 2
+        const yesStem2 = figma.createFrame();
+        yesStem2.resize(2, 24);
+        yesStem2.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+        branchYes.appendChild(yesStem2);
+
+        // Action Yes 2
+        const actionYes2 = await cardMaker.create({
+            variant: "outlined",
+            padding: 16,
+            cornerRadius: 8,
+            body: [Card.text("View Profile", { size: 14, color: { r: 0.2, g: 0.2, b: 0.2 }, align: "center" })],
+            width: 200
+        });
+        branchYes.appendChild(actionYes2);
 
         // Branch 2: No
         const branchNo = figma.createFrame();
@@ -236,81 +256,94 @@ export class DecisionMap extends BaseComponent {
         container.appendChild(branches);
 
         // --- Arrow Pipeline Loop ---
-        // We'll draw a line from the right side of Action No, up, and pointing to the root Rhombus.
-        // We can do this precisely with absolute positioning at the container level.
-        // Or simple: an absolute container overlaid on 'container'
         const pipelineWrapper = figma.createFrame();
         pipelineWrapper.name = "Pipeline Loop";
         container.appendChild(pipelineWrapper);
         pipelineWrapper.layoutPositioning = "ABSOLUTE";
-        // To cover the whole container space:
         pipelineWrapper.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
-        // We cannot use layoutAlign STRETCH easily with absolute, but we can resize it to match later, 
-        // or just let it sit at 0,0 and be big enough.
-        // Better: draw individual absolute lines.
+        pipelineWrapper.fills = [];
+        pipelineWrapper.clipsContent = true;
+        // Keep overlays scoped to this map only.
+        pipelineWrapper.resize(container.width, container.height);
+        pipelineWrapper.x = 0;
+        pipelineWrapper.y = 0;
 
-        // Actually, absolute positioned children inside AutoLayout container are positioned relative to the container.
-        // 1. Line sticking out right from actionNo
-        const outRight = figma.createFrame();
-        outRight.name = "Out Right";
-        outRight.resize(48, 2);
-        outRight.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        // Action No is 200px wide. Branches gap is 24.
-        // Total container width ~ 424. Right edge of ActionNo is at x=424.
-        // Center of branch No is 324. ActionNo left is 224, right is 424.
-        outRight.x = 424;
-        outRight.y = 100 + 24 + 100 + 8 + 48 + 8 + 24 + 20; // root(100) + gap(24) + stems(100) + branchGap(8) + label(48) + stem(24) + padding(16) -> roughly y=350. We can just guess the pixel height based on components.
-        // Let's recalculate mathematical Y for center of Action No 3:
-        // root rect = 100 (y = 0 to 100)
-        // gap = 24 (y = 100 to 124)
-        // connectorGroup = 124 to 224 (100h)
-        // gap = 24 (224 to 248)
-        // branches starts at 248.
-        // branchNo layout: 
-        //   label (48) + gap(8) 
-        //   + stem(24) + gap(8)
-        //   + actionNo1(~50) + gap(8)
-        //   + stem(24) + gap(8)
-        //   + actionNo2(~50) + gap(8)
-        //   + stem(24) + gap(8)
-        //   + actionNo3(~50)
-        // Summing branch heights inside branchNo (which starts at 248):
-        // Top of branchNo = 248
-        // ActionNo3 center offset = 48+8 + 24+8 + 50+8 + 24+8 + 50+8 + 24+8 + 25 = 293
-        // Absolute y = 248 + 293 = 541
-        const pipelineOriginY = 541;
+        const lineColor: RGB = { r: 0, g: 0, b: 0 };
+        const thickness = 2;
+        const addLine = (name: string, x: number, y: number, width: number, height: number) => {
+            const line = figma.createFrame();
+            line.name = name;
+            line.resize(width, height);
+            line.fills = [{ type: "SOLID", color: lineColor }];
+            line.x = x;
+            line.y = y;
+            pipelineWrapper.appendChild(line);
+        };
+        const addArrowHead = (x: number, y: number) => {
+            const arrowHead = figma.createVector();
+            arrowHead.vectorPaths = [{
+                windingRule: "EVENODD",
+                data: "M 10 0 L 10 10 L 0 5 Z"
+            }];
+            arrowHead.fills = [{ type: "SOLID", color: lineColor }];
+            arrowHead.x = x;
+            arrowHead.y = y;
+            pipelineWrapper.appendChild(arrowHead);
+        };
+        const toLocal = (node: SceneNode) => {
+            let x = node.x;
+            let y = node.y;
+            let current: BaseNode | null = node.parent;
+            while (current && current !== container) {
+                if ("x" in current && "y" in current) {
+                    x += current.x;
+                    y += current.y;
+                }
+                current = current.parent;
+            }
+            return { x, y, width: node.width, height: node.height };
+        };
+        const addH = (name: string, x1: number, x2: number, yMid: number) => {
+            const left = Math.min(x1, x2);
+            const width = Math.max(thickness, Math.abs(x2 - x1));
+            addLine(name, left, yMid - thickness / 2, width, thickness);
+        };
+        const addV = (name: string, xMid: number, y1: number, y2: number) => {
+            const top = Math.min(y1, y2);
+            const height = Math.max(thickness, Math.abs(y2 - y1));
+            addLine(name, xMid - thickness / 2, top, thickness, height);
+        };
 
-        outRight.y = pipelineOriginY;
-        pipelineWrapper.appendChild(outRight);
+        const rootBox = toLocal(rhombusWrapper);
+        const no1Box = toLocal(actionNo1);
+        const no2Box = toLocal(actionNo2);
+        const no3Box = toLocal(actionNo3);
 
-        // 2. Line going up
-        const upLine = figma.createFrame();
-        upLine.name = "Up Line";
-        upLine.resize(2, pipelineOriginY - 50); // From actionNo3 center up to root center
-        upLine.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        upLine.x = 424 + 48 - 2; // Right edge of outRight
-        upLine.y = 50; // Top aligns with center of root
-        pipelineWrapper.appendChild(upLine);
+        if (connectorVariant === "turn-up") {
+            // Variant: connector loops from the last step back up to an earlier step.
+            const sourceX = no3Box.x + no3Box.width;
+            const sourceY = no3Box.y + no3Box.height / 2;
+            const targetX = no1Box.x + no1Box.width;
+            const targetY = no1Box.y + no1Box.height / 2;
+            const elbowX = Math.max(8, Math.min(container.width - 12, Math.max(sourceX, targetX) + 28));
 
-        // 3. Line going left to root
-        const inLeft = figma.createFrame();
-        inLeft.name = "In Left";
-        inLeft.resize(424 + 48 - 2 - 100, 2); // from right line back to root right edge (x=100)
-        inLeft.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        inLeft.x = 100;
-        inLeft.y = 49;
-        pipelineWrapper.appendChild(inLeft);
+            addH("TurnUp Out Right", sourceX, elbowX, sourceY);
+            addV("TurnUp Vertical", elbowX, sourceY, targetY);
+            addH("TurnUp In Left", targetX, elbowX, targetY);
+            addArrowHead(targetX, targetY - 5);
+        } else {
+            // Default: connector loops from the last "No" step back to the decision node.
+            const sourceX = no3Box.x + no3Box.width;
+            const sourceY = no3Box.y + no3Box.height / 2;
+            const targetX = rootBox.x + rootBox.width;
+            const targetY = rootBox.y + rootBox.height / 2;
+            const elbowX = Math.max(8, Math.min(container.width - 12, Math.max(sourceX, targetX) + 28));
 
-        // Arrowhead
-        const arrowHead = figma.createVector();
-        arrowHead.vectorPaths = [{
-            windingRule: "EVENODD",
-            data: "M 10 0 L 10 10 L 0 5 Z"
-        }];
-        arrowHead.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        arrowHead.x = 100;
-        arrowHead.y = 45;
-        pipelineWrapper.appendChild(arrowHead);
+            addH("Out Right", sourceX, elbowX, sourceY);
+            addV("Up Line", elbowX, sourceY, targetY);
+            addH("In Left", targetX, elbowX, targetY);
+            addArrowHead(targetX, targetY - 5);
+        }
 
         return container;
     }

@@ -18,12 +18,12 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Affinity Map
         await this.addSection(
             root,
-            "1. Affinity Map",
+            "Affinity Map",
             "Use this component to visualize groupings of user feedback, research insights, or brainstorming notes.",
             async (container) => {
                 const affinityMap = new AffinityMap();
                 const node = await affinityMap.create({});
-                const wrapped = await this.wrapWithCaption(node, "Affinity / Concept Grouping", "AffinityMapWrapper", true);
+                const wrapped = await this.wrapWithCaption(node, "1. Affinity / Concept Grouping", "AffinityMapWrapper", true);
                 container.appendChild(wrapped);
             },
             { padding: 48 }
@@ -32,12 +32,12 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Flow Diagram
         await this.addSection(
             root,
-            "2. User Flow Diagram",
+            "User Flow Diagram",
             "This component demonstrates a sequential journey a user takes through the application.",
             async (container) => {
                 const flowDiagram = new FlowDiagram();
                 const node = await flowDiagram.create({});
-                const wrapped = await this.wrapWithCaption(node, "Linear User Flow", "FlowDiagramWrapper", true);
+                const wrapped = await this.wrapWithCaption(node, "2. Linear User Flow", "FlowDiagramWrapper", true);
                 container.appendChild(wrapped);
             },
             { padding: 48 }
@@ -46,17 +46,24 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Decision Map / Tree
         await this.addSection(
             root,
-            "3. Decision Map",
+            "Decision Map",
             "A branching logic structure useful for mapping out logic and routing within the application.",
             async (container) => {
                 const row = this.createRow(container, 48);
 
                 const decisionMap = new DecisionMap();
-                const node = await decisionMap.create({});
-                const wrapped = await this.wrapWithCaption(node, "Binary Logic Branching", "DecisionMapWrapper");
+                const defaultNode = await decisionMap.create({});
+                const defaultWrapped = await this.wrapWithCaption(defaultNode, "3. Binary Logic Branching", "DecisionMapWrapper");
 
-                // Add an alternate simpler flow just purely for visual balancing or keep it simple
-                row.appendChild(wrapped);
+                const turnUpNode = await decisionMap.create({ connectorVariant: "turn-up" });
+                const turnUpWrapped = await this.wrapWithCaption(
+                    turnUpNode,
+                    "3b. Turn-Up Connector (Returns to Earlier Step)",
+                    "DecisionMapTurnUpWrapper"
+                );
+
+                row.appendChild(defaultWrapped);
+                row.appendChild(turnUpWrapped);
             },
             { padding: 48 }
         );
@@ -64,14 +71,14 @@ export class UserExperienceDemo extends BaseDemoPage {
         // Site Architecture
         await this.addSection(
             root,
-            "4. Site Architecture",
+            "Site Architecture",
             "A structural view of the application's page hierarchy.",
             async (container) => {
                 const row = this.createRow(container, 48);
 
                 const siteArchitecture = new SiteArchitecture();
                 const node = await siteArchitecture.create({});
-                const wrapped = await this.wrapWithCaption(node, "Level 1 and Level 2 Pages", "SiteArchitectureWrapper");
+                const wrapped = await this.wrapWithCaption(node, "4. Level 1 and Level 2 Pages", "SiteArchitectureWrapper");
 
                 row.appendChild(wrapped);
             }
