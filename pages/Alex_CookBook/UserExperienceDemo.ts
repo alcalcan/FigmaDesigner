@@ -79,6 +79,27 @@ export class UserExperienceDemo extends BaseDemoPage {
                 const node = await flowDiagram.create({ model: flowModel, rowGap: 72, columnGap: 24 });
                 const wrapped = await this.wrapWithCaption(node, "2. User Flow with Downward Branches", "FlowDiagramWrapper", true);
                 container.appendChild(wrapped);
+
+                const flowModel2: FlowDiagramModel = {
+                    nodes: [
+                        FlowDiagram.node("landing", "Landing Page", { desc: "Initial view", row: 0, column: 0, color: { r: 0.1, g: 0.5, b: 0.8 } }),
+                        FlowDiagram.node("signup", "Sign Up", { desc: "New user registration", row: 0, column: 1, color: { r: 0.5, g: 0.3, b: 0.7 } }),
+                        FlowDiagram.node("onboarding", "Onboarding", { desc: "Feature discovery", row: 0, column: 2, color: { r: 0.8, g: 0.4, b: 0.2 } }),
+                        FlowDiagram.node("dashboard", "Dashboard", { desc: "Main landing", row: 0, column: 3, color: { r: 0.1, g: 0.6, b: 0.3 } }),
+                        FlowDiagram.node("login", "Login", { desc: "Returning user", row: 1, column: 0, color: { r: 0.4, g: 0.4, b: 0.4 } })
+                    ],
+                    connectors: [
+                        FlowDiagram.connector("landing", "signup"),
+                        FlowDiagram.connector("signup", "onboarding"),
+                        FlowDiagram.connector("onboarding", "dashboard"),
+                        FlowDiagram.connector("landing", "login", { fromAnchor: "bottom", toAnchor: "top", lane: "bottom" }),
+                        FlowDiagram.connector("login", "dashboard", { fromAnchor: "right", toAnchor: "bottom", lane: "right" })
+                    ]
+                };
+
+                const node2 = await flowDiagram.create({ model: flowModel2, rowGap: 80, columnGap: 32 });
+                const wrapped2 = await this.wrapWithCaption(node2, "2b. User Onboarding & Authentication Flow", "FlowDiagramWrapper2", true);
+                container.appendChild(wrapped2);
             },
             { padding: 48 }
         );
