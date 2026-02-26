@@ -62,21 +62,21 @@ export class UserExperienceDemo extends BaseDemoPage {
                         FlowDiagram.node("home", "Homepage", { desc: "Entry point", row: 0, column: 0, color: { r: 0.2, g: 0.6, b: 0.9 } }),
                         FlowDiagram.node("product", "Product", { desc: "Item details", row: 0, column: 1, color: { r: 0.6, g: 0.4, b: 0.8 } }),
                         FlowDiagram.node("cart", "Cart", { desc: "Review basket", row: 0, column: 2, color: { r: 0.9, g: 0.5, b: 0.2 } }),
-                        FlowDiagram.node("checkout", "Checkout", { desc: "Complete order", row: 0, column: 3, color: { r: 0.2, g: 0.7, b: 0.4 } }),
+                        FlowDiagram.node("checkout", "Checkout", { desc: "Complete order", row: 0, column: 4, color: { r: 0.2, g: 0.7, b: 0.4 } }),
                         FlowDiagram.node("saved", "Save For Later", { desc: "Cart stored", row: 1, column: 2, color: { r: 0.95, g: 0.65, b: 0.25 } }),
-                        FlowDiagram.node("assist", "Assisted Checkout", { desc: "Agent support", row: 1, column: 3, color: { r: 0.85, g: 0.45, b: 0.45 } })
+                        FlowDiagram.node("assist", "Assisted Checkout", { desc: "Agent support", row: 1, column: 4, color: { r: 0.85, g: 0.45, b: 0.45 } })
                     ],
                     connectors: [
                         FlowDiagram.connector("home", "product"),
                         FlowDiagram.connector("product", "cart"),
                         FlowDiagram.connector("cart", "checkout"),
                         FlowDiagram.connector("cart", "saved", { fromAnchor: "bottom", toAnchor: "top", lane: "bottom" }),
-                        FlowDiagram.connector("saved", "checkout", { fromAnchor: "right", toAnchor: "left", lane: "right" }),
+                        FlowDiagram.connector("saved", "checkout", { fromAnchor: "right", toAnchor: "left", lane: "right", toOffset: 20 }),
                         FlowDiagram.connector("checkout", "assist", { fromAnchor: "bottom", toAnchor: "top", lane: "bottom" })
                     ]
                 };
 
-                const node = await flowDiagram.create({ model: flowModel, rowGap: 72 });
+                const node = await flowDiagram.create({ model: flowModel, rowGap: 72, columnGap: 24 });
                 const wrapped = await this.wrapWithCaption(node, "2. User Flow with Downward Branches", "FlowDiagramWrapper", true);
                 container.appendChild(wrapped);
             },

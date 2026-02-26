@@ -23,6 +23,8 @@ export interface FlowDiagramConnector {
     lane?: FlowDiagramLane;
     arrowAt?: "start" | "end" | "none";
     color?: RGB;
+    fromOffset?: number;
+    toOffset?: number;
 }
 
 export interface FlowDiagramModel {
@@ -122,7 +124,7 @@ export class FlowDiagram extends BaseComponent {
         const maxRow = rows.length ? Math.max(...rows) : 0;
         const maxCol = cols.length ? Math.max(...cols) : 0;
         const rowHeights = new Array(maxRow + 1).fill(1);
-        const colWidths = new Array(maxCol + 1).fill(stepWidth);
+        const colWidths = new Array(maxCol + 1).fill(1);
 
         for (const node of model.nodes) {
             const card = nodeRegistry.get(node.id);
@@ -187,8 +189,8 @@ export class FlowDiagram extends BaseComponent {
             const toBox = this.getLocalBox(toNode, container);
             const fromAnchor = this.resolveAnchor(conn.fromAnchor ?? "auto", fromBox, toBox, true);
             const toAnchor = this.resolveAnchor(conn.toAnchor ?? "auto", fromBox, toBox, false);
-            const from = this.getAnchorPoint(fromBox, fromAnchor);
-            const to = this.getAnchorPoint(toBox, toAnchor);
+            const from = this.getAnchorPoint(fromBox, fromAnchor, conn.fromOffset ?? 0);
+            const to = this.getAnchorPoint(toBox, toAnchor, conn.toOffset ?? 0);
             const path = this.buildOrthogonalPath(from, to, fromAnchor, toAnchor, conn.lane ?? "auto", container.width, container.height);
             const endDir = this.drawPath(overlay, path, conn.color ?? lineColor, lineThickness, conn.id ?? `${conn.from}->${conn.to}`);
             const arrowAt = conn.arrowAt ?? "end";
@@ -259,12 +261,12 @@ export class FlowDiagram extends BaseComponent {
         return dy >= 0 ? "top" : "bottom";
     }
 
-    private getAnchorPoint(box: NodeBox, anchor: ResolvedAnchor): Point {
+    private getAnchorPoint(box: NodeBox, anchor: ResolvedAnchor, offset = 0): Point {
         switch (anchor) {
-            case "left": return { x: box.x, y: box.y + box.height / 2 };
-            case "right": return { x: box.x + box.width, y: box.y + box.height / 2 };
-            case "top": return { x: box.x + box.width / 2, y: box.y };
-            case "bottom": return { x: box.x + box.width / 2, y: box.y + box.height };
+            case "left": return { x: box.x, y: box.y + box.height / 2 + offset };
+            case "right": return { x: box.x + box.width, y: box.y + box.height / 2 + offset };
+            case "top": return { x: box.x + box.width / 2 + offset, y: box.y };
+            case "bottom": return { x: box.x + box.width / 2 + offset, y: box.y + box.height };
         }
     }
 
@@ -292,22 +294,36 @@ export class FlowDiagram extends BaseComponent {
         if (fromAnchor === "left" || fromAnchor === "right") {
             const needsBacktrack = fromAnchor === "right" ? toIn.x < fromOut.x : toIn.x > fromOut.x;
             let laneX = fromOut.x;
-            if (needsBacktrack || lane === "left" || lane === "right") {
-                const laneSide = lane === "left" || lane === "right" ? lane : fromAnchor;
-                laneX = laneSide === "right"
-                    ? Math.min(width - 8, Math.max(fromOut.x, toIn.x) + laneGap)
-                    : Math.max(8, Math.min(fromOut.x, toIn.x) - laneGap);
+            const forcedHorizontalLane = lane === "left" || lane === "right";
+            if (needsBacktrack || forcedHorizontalLane) {
+                const laneSide = forcedHorizontalLane ? lane : fromAnchor;
+                if (forcedHorizontalLane) {
+                    laneX = laneSide === "right"
+                        ? Math.min(width - 8, Math.max(fromOut.x, toIn.x))
+                        : Math.max(8, Math.min(fromOut.x, toIn.x));
+                } else {
+                    laneX = laneSide === "right"
+                        ? Math.min(width - 8, Math.max(fromOut.x, toIn.x) + laneGap)
+                        : Math.max(8, Math.min(fromOut.x, toIn.x) - laneGap);
+                }
             }
             return this.dedupe([from, fromOut, { x: laneX, y: fromOut.y }, { x: laneX, y: toIn.y }, toIn, to]);
         }
 
         const needsBacktrack = fromAnchor === "bottom" ? toIn.y < fromOut.y : toIn.y > fromOut.y;
         let laneY = fromOut.y;
-        if (needsBacktrack || lane === "top" || lane === "bottom") {
-            const laneSide = lane === "top" || lane === "bottom" ? lane : fromAnchor;
-            laneY = laneSide === "bottom"
-                ? Math.min(height - 8, Math.max(fromOut.y, toIn.y) + laneGap)
-                : Math.max(8, Math.min(fromOut.y, toIn.y) - laneGap);
+        const forcedVerticalLane = lane === "top" || lane === "bottom";
+        if (needsBacktrack || forcedVerticalLane) {
+            const laneSide = forcedVerticalLane ? lane : fromAnchor;
+            if (forcedVerticalLane) {
+                laneY = laneSide === "bottom"
+                    ? Math.min(height - 8, Math.max(fromOut.y, toIn.y))
+                    : Math.max(8, Math.min(fromOut.y, toIn.y));
+            } else {
+                laneY = laneSide === "bottom"
+                    ? Math.min(height - 8, Math.max(fromOut.y, toIn.y) + laneGap)
+                    : Math.max(8, Math.min(fromOut.y, toIn.y) - laneGap);
+            }
         }
         return this.dedupe([from, fromOut, { x: fromOut.x, y: laneY }, { x: toIn.x, y: laneY }, toIn, to]);
     }
