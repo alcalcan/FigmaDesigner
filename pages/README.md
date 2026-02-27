@@ -102,7 +102,7 @@ card.layoutAlign = "STRETCH";
 ### Where do variables come from?
 Our page files instantiate components imported from `../../components/`. 
 ```typescript
-import { top_bar } from "../../components/Alex_CookBook/top_bar/top_bar";
+
 const tb = new top_bar();
 const node = await tb.create({ variant: "simple" });
 ```
