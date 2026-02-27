@@ -10,6 +10,7 @@ import { OptionsDemo } from "../../pages/Alex_CookBook/OptionsDemo";
 import { ControlsDemo } from "../../pages/Alex_CookBook/ControlsDemo";
 import { ChipsDemo } from "../../pages/Alex_CookBook/ChipsDemo";
 import { ProgressStepperDemo } from "../../pages/Alex_CookBook/ProgressStepperDemo";
+import { TreeViewDemo } from "../../pages/Alex_CookBook/TreeViewDemo";
 import { InputDemo } from "../../pages/Alex_CookBook/InputDemo";
 import { TableDemo } from "../../pages/Alex_CookBook/TableDemo";
 import { SpecializedBlocksDemo } from "../../pages/Alex_CookBook/SpecializedBlocksDemo";
@@ -50,7 +51,7 @@ export class DemoFlow extends BaseComponent {
         const optionsDemo = new OptionsDemo();
         const controlsDemo = new ControlsDemo();
         const chipsDemo = new ChipsDemo();
-        const stepperDemo = new ProgressStepperDemo();
+        const treeViewDemo = new TreeViewDemo();
         const inputDemo = new InputDemo();
         const tableDemo = new TableDemo();
         const specializedDemo = new SpecializedBlocksDemo();
@@ -74,7 +75,7 @@ export class DemoFlow extends BaseComponent {
             await optionsDemo.create({}),
             await controlsDemo.create({}),
             await chipsDemo.create({}),
-            await stepperDemo.create({}),
+            await treeViewDemo.create({}),
             await inputDemo.create({}),
             await tableDemo.create({}),
             await specializedDemo.create({}),
