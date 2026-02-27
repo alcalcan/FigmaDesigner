@@ -1,5 +1,4 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
-import { Placeholder } from "../../Placeholder";
 import { button } from "../button/button";
 import { Lucide_home } from "../../lucide_icons/Lucide_home/Lucide_home";
 import { Lucide_settings } from "../../lucide_icons/Lucide_settings/Lucide_settings";
@@ -8,6 +7,8 @@ import { Lucide_folder } from "../../lucide_icons/Lucide_folder/Lucide_folder";
 import { Action___profile } from "../../UEFA_icons/Action___profile/Action___profile";
 import { Lucide_chevron_down } from "../../lucide_icons/Lucide_chevron_down/Lucide_chevron_down";
 import { Lucide_chevron_up } from "../../lucide_icons/Lucide_chevron_up/Lucide_chevron_up";
+import { Lucide_chevron_right } from "../../lucide_icons/Lucide_chevron_right/Lucide_chevron_right";
+import { Lucide_check } from "../../lucide_icons/Lucide_check/Lucide_check";
 
 export interface NavItem {
     label: string;
@@ -15,19 +16,330 @@ export interface NavItem {
     subItems?: { label: string }[];
 }
 
+export interface SidebarFilterItem {
+    label: string;
+    count?: string | number;
+    selected?: boolean;
+    expanded?: boolean;
+    items?: SidebarFilterItem[];
+    showChevron?: boolean;
+}
+
+export interface SidebarFilterCategory {
+    name: string;
+    expanded?: boolean;
+    items?: SidebarFilterItem[];
+}
+
 export interface SidebarProps extends ComponentProps {
-    variant?: "default" | "collapsed" | "floating" | "floating-collapsed";
+    variant?: "default" | "collapsed" | "floating" | "floating-collapsed" | "ecommerce-filter";
     theme?: "light" | "dark";
     navItems?: NavItem[];
     expandedItems?: string[];
     activeItem?: string;
     showLogo?: boolean;
     showProfile?: boolean;
+    filterCategories?: SidebarFilterCategory[];
 }
 
 export class sidebar extends BaseComponent {
+    private async createEcommerceFilter(props: SidebarProps): Promise<SceneNode> {
+        const panelWidth = props.width ?? 420;
+        const rowWidth = Math.max(240, panelWidth - 40);
+        const textColor = { r: 0.251, g: 0.286, b: 0.337 };
+        const iconColor = { r: 0.345, g: 0.373, b: 0.416 };
+        const borderColor = { r: 0.902, g: 0.914, b: 0.929 };
+        const checkboxColor = { r: 0.204, g: 0.235, b: 0.278 };
+
+        const defaultCategories: SidebarFilterCategory[] = [
+            {
+                name: "Category",
+                expanded: true,
+                items: [
+                    {
+                        label: "Woman",
+                        expanded: true,
+                        items: [
+                            { label: "Tops", count: "37", selected: true },
+                            { label: "Jackets", count: "22" },
+                            { label: "Sweaters", count: "31" }
+                        ]
+                    },
+                    { label: "Men" },
+                    { label: "Kids" },
+                    { label: "Sporty" },
+                    { label: "Casual" }
+                ]
+            },
+            { name: "Brands" },
+            { name: "Price" },
+            { name: "Size" }
+        ];
+
+        const categories = props.filterCategories && props.filterCategories.length > 0
+            ? props.filterCategories
+            : defaultCategories;
+
+        const createChevron = (direction: "right" | "down"): NodeDefinition => ({
+            type: "COMPONENT",
+            component: direction === "down" ? Lucide_chevron_down : Lucide_chevron_right,
+            props: {
+                width: 22,
+                height: 22,
+                strokeWeight: 2.3,
+                color: iconColor
+            }
+        });
+
+        const createDivider = (): NodeDefinition => ({
+            type: "FRAME",
+            name: "Divider",
+            props: {
+                fills: [{ type: "SOLID", color: borderColor }]
+            },
+            layoutProps: {
+                width: rowWidth,
+                height: 1,
+                parentIsAutoLayout: true
+            }
+        });
+
+        const createCountBadge = (count: string | number): NodeDefinition => ({
+            type: "FRAME",
+            name: `Count: ${count}`,
+            props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisSizingMode: "AUTO",
+                counterAxisSizingMode: "FIXED",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                paddingLeft: 10,
+                paddingRight: 10,
+                cornerRadius: 999,
+                fills: [{ type: "SOLID", color: { r: 0.945, g: 0.953, b: 0.969 } }]
+            },
+            layoutProps: {
+                parentIsAutoLayout: true,
+                height: 30
+            },
+            children: [
+                {
+                    type: "TEXT",
+                    name: "Count Text",
+                    props: {
+                        characters: String(count),
+                        fontSize: 11,
+                        font: { family: "Inter", style: "Semi Bold" },
+                        fills: [{ type: "SOLID", color: { r: 0.294, g: 0.333, b: 0.38 } }],
+                        textAutoResize: "WIDTH_AND_HEIGHT"
+                    }
+                }
+            ]
+        });
+
+        const createCheckbox = (selected: boolean): NodeDefinition => ({
+            type: "FRAME",
+            name: "Checkbox",
+            props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisSizingMode: "FIXED",
+                counterAxisSizingMode: "FIXED",
+                primaryAxisAlignItems: "CENTER",
+                counterAxisAlignItems: "CENTER",
+                cornerRadius: 7,
+                fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+                strokes: [{ type: "SOLID", color: checkboxColor }],
+                strokeWeight: 2
+            },
+            layoutProps: {
+                parentIsAutoLayout: true,
+                width: 24,
+                height: 24
+            },
+            children: selected
+                ? [{
+                    type: "COMPONENT",
+                    component: Lucide_check,
+                    props: {
+                        width: 14,
+                        height: 14,
+                        strokeWeight: 2.4,
+                        color: checkboxColor
+                    }
+                }]
+                : []
+        });
+
+        const createRow = (
+            label: string,
+            options: {
+                indent?: number;
+                chevron?: "right" | "down" | "none";
+                count?: string | number;
+                selected?: boolean;
+                emphasized?: boolean;
+            } = {}
+        ): NodeDefinition => {
+            const indent = options.indent ?? 0;
+            const chevron = options.chevron ?? "right";
+            const hasCount = options.count !== undefined;
+            const emphasized = options.emphasized ?? false;
+
+            const leftChildren: NodeDefinition[] = [];
+
+            if (hasCount) {
+                leftChildren.push(createCheckbox(Boolean(options.selected)));
+            }
+
+            leftChildren.push({
+                type: "TEXT",
+                name: "Label",
+                props: {
+                    characters: label,
+                    font: { family: "Inter", style: "Regular" },
+                    fontSize: 14,
+                    lineHeight: { unit: "PIXELS", value: 24 },
+                    fills: [{ type: "SOLID", color: textColor }],
+                    textAutoResize: "WIDTH_AND_HEIGHT"
+                }
+            });
+
+            const rowChildren: NodeDefinition[] = [
+                {
+                    type: "FRAME",
+                    name: "Left",
+                    props: {
+                        layoutMode: "HORIZONTAL",
+                        primaryAxisSizingMode: "AUTO",
+                        counterAxisSizingMode: "AUTO",
+                        counterAxisAlignItems: "CENTER",
+                        itemSpacing: 14,
+                        fills: []
+                    },
+                    layoutProps: {
+                        layoutGrow: 1
+                    },
+                    children: leftChildren
+                }
+            ];
+
+            if (hasCount) {
+                rowChildren.push(createCountBadge(options.count!));
+            } else if (chevron !== "none") {
+                rowChildren.push(createChevron(chevron));
+            }
+
+            return {
+                type: "FRAME",
+                name: `Row - ${label}`,
+                props: {
+                    layoutMode: "HORIZONTAL",
+                    primaryAxisSizingMode: "FIXED",
+                    counterAxisSizingMode: "FIXED",
+                    counterAxisAlignItems: "CENTER",
+                    primaryAxisAlignItems: "MIN",
+                    paddingLeft: 20 + indent,
+                    paddingRight: 20,
+                    itemSpacing: 12,
+                    cornerRadius: emphasized ? 12 : 0,
+                    fills: emphasized
+                        ? [{ type: "SOLID", color: { r: 0.945, g: 0.953, b: 0.969 } }]
+                        : []
+                },
+                layoutProps: {
+                    width: rowWidth,
+                    height: emphasized ? 58 : 56
+                },
+                children: rowChildren
+            };
+        };
+
+        const createRowsFromItems = (items: SidebarFilterItem[], indent: number): NodeDefinition[] => {
+            const rows: NodeDefinition[] = [];
+
+            for (const item of items) {
+                const hasChildren = Boolean(item.items && item.items.length > 0);
+                const isExpanded = hasChildren ? (item.expanded ?? true) : false;
+                const chevron = item.count !== undefined
+                    ? "none"
+                    : hasChildren
+                        ? (isExpanded ? "down" : "right")
+                        : (item.showChevron ?? true ? "right" : "none");
+
+                rows.push(createRow(item.label, {
+                    indent,
+                    chevron,
+                    count: item.count,
+                    selected: item.selected
+                }));
+
+                if (hasChildren && isExpanded) {
+                    rows.push(...createRowsFromItems(item.items!, indent + 24));
+                }
+            }
+
+            return rows;
+        };
+
+        const children: NodeDefinition[] = [];
+
+        categories.forEach((category, index) => {
+            const hasItems = Boolean(category.items && category.items.length > 0);
+            const isExpanded = hasItems ? (category.expanded ?? index === 0) : false;
+
+            if (hasItems && isExpanded) {
+                children.push(createRow(category.name, {
+                    emphasized: true,
+                    chevron: "down"
+                }));
+                children.push(...createRowsFromItems(category.items!, 18));
+            } else {
+                children.push(createRow(category.name, {
+                    chevron: "right"
+                }));
+            }
+
+            if (index < categories.length - 1) {
+                children.push(createDivider());
+            }
+        });
+
+        const structure: NodeDefinition = {
+            type: "FRAME",
+            name: "Sidebar - Ecommerce Filter",
+            props: {
+                layoutMode: "VERTICAL",
+                primaryAxisSizingMode: "AUTO",
+                counterAxisSizingMode: "FIXED",
+                itemSpacing: 6,
+                paddingTop: 20,
+                paddingRight: 20,
+                paddingBottom: 20,
+                paddingLeft: 20,
+                cornerRadius: 12,
+                fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+                strokes: [{ type: "SOLID", color: borderColor }],
+                strokeWeight: 1
+            },
+            layoutProps: {
+                width: panelWidth,
+                ...(typeof props.height === "number" ? { height: props.height } : {})
+            },
+            children
+        };
+
+        const root = await this.renderDefinition(structure);
+        root.x = props.x ?? 0;
+        root.y = props.y ?? 0;
+        return root;
+    }
+
     async create(props: SidebarProps): Promise<SceneNode> {
         const variant = props.variant || "default";
+        if (variant === "ecommerce-filter") {
+            return this.createEcommerceFilter(props);
+        }
+
         const theme = props.theme || "light";
         const isCollapsed = variant === "collapsed" || variant === "floating-collapsed";
         const isFloating = variant === "floating" || variant === "floating-collapsed";
