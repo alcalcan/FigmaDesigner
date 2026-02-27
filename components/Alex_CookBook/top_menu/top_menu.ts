@@ -49,18 +49,111 @@ export interface TopMenuProps extends ComponentProps {
     showProfile?: boolean;
     customRightElements?: NodeDefinition[]; // Array of nodes injected before actions
     customRightNode?: NodeDefinition; // Total custom override
+    customRightItems?: {
+        text?: string;
+        image?: string; // SVG content, data URI, or image path
+        space?: number; // horizontal spacer width
+        name?: string;
+        fontFamily?: string;
+        fontStyle?: string;
+        fontSize?: number;
+        textColor?: { r: number, g: number, b: number };
+        width?: number;
+        height?: number;
+    }[];
 
     // Override Layout properties directly from outside (paddings, gaps, sizing)
-    rootLayoutProps?: Partial<NodeDefinition["props"]>;
+    main_body?: Partial<NodeDefinition["props"]>;
+    containerProps?: Partial<NodeDefinition["props"]>; // Backward-compatible alias
+    rootLayoutProps?: Partial<NodeDefinition["props"]>; // Backward-compatible alias
     itemSpacing?: number;
     sectionSpacing?: number | "auto"; // Default gap between Left, Center and Right areas
 }
 
 export class top_menu extends BaseComponent {
+    private isSvgContent(value: string): boolean {
+        return value.trim().startsWith("<svg") || value.includes("<svg");
+    }
+
+    private wrapImageAsSvg(imageHref: string, width: number, height: number): string {
+        const escapedHref = imageHref.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+        return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"><image href="${escapedHref}" width="${width}" height="${height}" preserveAspectRatio="xMidYMid meet"/></svg>`;
+    }
+
+    private buildSimpleRightItems(
+        items: NonNullable<TopMenuProps["customRightItems"]>,
+        fallbackTextColor: { r: number, g: number, b: number }
+    ): NodeDefinition[] {
+        const nodes: NodeDefinition[] = [];
+
+        for (const item of items) {
+            if (item.space && item.space > 0) {
+                nodes.push({
+                    type: "FRAME",
+                    name: item.name ?? "Spacer",
+                    props: { fills: [] },
+                    layoutProps: { parentIsAutoLayout: true, width: item.space, height: 1 }
+                });
+                continue;
+            }
+
+            if (item.text) {
+                nodes.push({
+                    type: "TEXT",
+                    name: item.name ?? `Text: ${item.text}`,
+                    props: {
+                        characters: item.text,
+                        fontSize: item.fontSize ?? 14,
+                        font: { family: item.fontFamily ?? "Inter", style: item.fontStyle ?? "Regular" },
+                        fills: [{ type: "SOLID", color: item.textColor ?? fallbackTextColor }],
+                        textAutoResize: "WIDTH_AND_HEIGHT"
+                    },
+                    layoutProps: { parentIsAutoLayout: true }
+                });
+                continue;
+            }
+
+            if (item.image) {
+                const width = item.width ?? 16;
+                const height = item.height ?? 16;
+                const svgContent = this.isSvgContent(item.image)
+                    ? item.image
+                    : this.wrapImageAsSvg(item.image, width, height);
+
+                nodes.push({
+                    type: "VECTOR",
+                    name: item.name ?? "Icon",
+                    shouldFlatten: true,
+                    layoutProps: { parentIsAutoLayout: true, width, height },
+                    svgContent
+                });
+            }
+        }
+
+        return nodes;
+    }
+
     async create(props: TopMenuProps): Promise<SceneNode> {
 
         const isFloating = props.isFloating ?? false;
         const isIsland = props.isIsland ?? false; // The single cohesive island pill style
+        const mainBodyProps = props.main_body ?? props.containerProps ?? props.rootLayoutProps;
+        const mainBodyLayoutWidth = typeof mainBodyProps?.width === "number" ? mainBodyProps.width : undefined;
+        const mainBodyLayoutHeight = typeof mainBodyProps?.height === "number" ? mainBodyProps.height : undefined;
+        const sanitizedMainBodyProps: Partial<NodeDefinition["props"]> | undefined = mainBodyProps
+            ? {
+                ...mainBodyProps,
+                width: undefined,
+                height: undefined
+            }
+            : undefined;
+        const hasCenterIntent = Boolean(
+            props.customCenterNode ||
+            (props.navItems && props.navItems.length > 0) ||
+            props.showSearchInCenter
+        );
+        const effectiveSectionSpacing: number | "auto" =
+            props.sectionSpacing ?? (hasCenterIntent ? (props.itemSpacing ?? 48) : "auto");
 
         // Default colors
         const bgColor = props.backgroundColor ?? { r: 1, g: 1, b: 1 };
@@ -70,11 +163,14 @@ export class top_menu extends BaseComponent {
 
         const rootProps: NodeDefinition["props"] = {
             layoutMode: "HORIZONTAL",
-            primaryAxisSizingMode: (props.fillWidth || props.layoutType === "fill") ? "AUTO" : "FIXED",
+            // For fill layouts, keep a fixed width model so parent STRETCH can actually expand it.
+            // Using AUTO here causes hugging content in many parent auto-layout contexts.
+            primaryAxisSizingMode: "FIXED",
             counterAxisSizingMode: "AUTO",
-            primaryAxisAlignItems: props.sectionSpacing === "auto" ? "SPACE_BETWEEN" : "MIN", // Changed this to respect sectionSpacing
+            clipsContent: false,
+            primaryAxisAlignItems: effectiveSectionSpacing === "auto" ? "SPACE_BETWEEN" : "MIN",
             counterAxisAlignItems: "CENTER",
-            itemSpacing: props.sectionSpacing === "auto" ? 0 : (props.sectionSpacing ?? props.itemSpacing ?? 48), // Use 0 for strict auto SPACE_BETWEEN
+            itemSpacing: effectiveSectionSpacing === "auto" ? 0 : effectiveSectionSpacing, // Use 0 for strict auto SPACE_BETWEEN
             paddingLeft: (isFloating || isIsland) ? 0 : 32,
             paddingRight: (isFloating || isIsland) ? 0 : 32,
             paddingTop: (isFloating || isIsland) ? 0 : 16,
@@ -92,7 +188,7 @@ export class top_menu extends BaseComponent {
                 visible: true,
                 blendMode: "NORMAL"
             }],
-            ...props.rootLayoutProps // User override
+            ...sanitizedMainBodyProps // User override
         };
 
         const islandProps = isFloating || isIsland ? {
@@ -137,6 +233,7 @@ export class top_menu extends BaseComponent {
                 counterAxisSizingMode: isFloating ? "FIXED" : "AUTO",
                 itemSpacing: 16,
                 fills: [],
+                clipsContent: false,
                 ...(isFloating ? islandProps : {})
             },
             layoutProps: {
@@ -245,10 +342,12 @@ export class top_menu extends BaseComponent {
                     layoutMode: "HORIZONTAL",
                     counterAxisAlignItems: "CENTER",
                     primaryAxisAlignItems: primaryAlign,
-                    primaryAxisSizingMode: "FIXED",
+                    // Center section width should always hug content.
+                    primaryAxisSizingMode: "AUTO",
                     counterAxisSizingMode: (isFloating && hasNavItems) ? "FIXED" : "AUTO",
                     itemSpacing: 32,
                     fills: [],
+                    clipsContent: false,
                     ...(isFloating && hasNavItems ? islandProps : {})
                 },
                 layoutProps: {
@@ -269,6 +368,7 @@ export class top_menu extends BaseComponent {
                         primaryAxisAlignItems: primaryAlign === "SPACE_BETWEEN" ? "SPACE_BETWEEN" : "MIN",
                         itemSpacing: props.navItemSpacing ?? 24,
                         fills: [],
+                        clipsContent: false,
                     },
                     layoutProps: props.centerSectionGrow ? { layoutGrow: 1, parentIsAutoLayout: true } : undefined,
                     children: props.navItems!.map((itemArg, index) => {
@@ -286,7 +386,8 @@ export class top_menu extends BaseComponent {
                             props: {
                                 characters: itemName,
                                 fontSize: props.navFontSize ?? 14,
-                                fontName: { family: props.navFont ?? "Inter", style: isSelected ? (props.navFontWeight ?? "Semi Bold") : "Regular" },
+                                // Use `font` so BaseComponent can preload the font safely.
+                                font: { family: props.navFont ?? "Inter", style: isSelected ? (props.navFontWeight ?? "Semi Bold") : "Regular" },
                                 fills: [{ type: "SOLID", color: isSelected ? textColor : iconColor }],
                                 textAutoResize: "WIDTH_AND_HEIGHT"
                             },
@@ -309,6 +410,7 @@ export class top_menu extends BaseComponent {
                         primaryAxisSizingMode: "AUTO",
                         counterAxisSizingMode: "AUTO",
                         fills: [],
+                        clipsContent: false,
                         primaryAxisAlignItems: props.searchFullMode ? "MAX" : "MIN",
                     },
                     layoutProps: {
@@ -354,6 +456,7 @@ export class top_menu extends BaseComponent {
                     counterAxisSizingMode: isFloating ? "FIXED" : "AUTO",
                     itemSpacing: 24,
                     fills: [],
+                    clipsContent: false,
                     ...(isFloating ? islandProps : {})
                 },
                 layoutProps: {
@@ -376,6 +479,10 @@ export class top_menu extends BaseComponent {
                 },
                 children: []
             };
+
+            if (props.customRightItems && props.customRightItems.length > 0) {
+                actionGroup.children!.push(...this.buildSimpleRightItems(props.customRightItems, textColor));
+            }
 
             if (props.customRightElements) {
                 actionGroup.children!.push(...props.customRightElements);
@@ -485,12 +592,12 @@ export class top_menu extends BaseComponent {
         const derivedAlign = hasCenterSection ? "CENTER" : (isIsland ? "SPACE_BETWEEN" : "SPACE_BETWEEN");
 
         // Let explicit overrides or sectionSpacing dictate before falling back to heuristics
-        if (props.sectionSpacing !== "auto" && !props.rootLayoutProps?.primaryAxisAlignItems) {
+        if (effectiveSectionSpacing !== "auto" && !mainBodyProps?.primaryAxisAlignItems) {
             rootProps.primaryAxisAlignItems = "MIN"; // If fixed spacing, pack from left
-        } else if (props.sectionSpacing === "auto" && !props.rootLayoutProps?.primaryAxisAlignItems) {
+        } else if (effectiveSectionSpacing === "auto" && !mainBodyProps?.primaryAxisAlignItems) {
             rootProps.primaryAxisAlignItems = "SPACE_BETWEEN"; // Explicit auto pushes apart
         } else {
-            rootProps.primaryAxisAlignItems = props.rootLayoutProps?.primaryAxisAlignItems ?? derivedAlign;
+            rootProps.primaryAxisAlignItems = mainBodyProps?.primaryAxisAlignItems ?? derivedAlign;
         }
 
         const structure: NodeDefinition = {
@@ -498,8 +605,8 @@ export class top_menu extends BaseComponent {
             name: "TopMenu",
             props: rootProps,
             layoutProps: {
-                width: props.fillWidth ? undefined : props.width,
-                height: props.height,
+                width: props.fillWidth ? undefined : (props.width ?? mainBodyLayoutWidth),
+                height: props.height ?? mainBodyLayoutHeight,
                 layoutAlign: props.fillWidth ? "STRETCH" : (props.layoutType === "fill" ? "STRETCH" : "INHERIT"),
                 layoutGrow: props.fillWidth ? 1 : 0
             },
