@@ -208,118 +208,25 @@ export class TopMenuDemo extends BaseDemoPage {
                     layoutType: "fixed",
                     width: 375,
                     hasLogo: true,
-                    logoAsset: {
-                        type: "FRAME",
-                        name: "Link - UEFA EURO 2028",
-                        props: {
-                            layoutMode: "VERTICAL",
-                            primaryAxisAlignItems: "CENTER",
-                            counterAxisAlignItems: "CENTER",
-                            fills: []
-                        },
-                        layoutProps: { width: 44, height: 40, parentIsAutoLayout: true },
-                        children: [
-                            {
-                                type: "VECTOR",
-                                shouldFlatten: true,
-                                name: "Vector",
-                                layoutProps: { width: 23.7, height: 40, parentIsAutoLayout: true },
-                                svgContent: SVG_Mobile_Logo
-                            }
-                        ]
-                    },
+                    logoAsset: SVG_Mobile_Logo,
+                    logoWidth: 23.7,
+                    logoHeight: 40,
+                    logoContainerWidth: 44,
+                    logoContainerHeight: 40,
+                    logoContainerLayout: "VERTICAL",
                     navItems: [
+                        { text: "Video", paddingLeft: 8, paddingRight: 8, grow: true },
+                        { text: "News", paddingLeft: 8, paddingRight: 8, grow: true },
                         {
-                            type: "FRAME",
-                            name: "Menuitem - Video",
-                            props: {
-                                layoutMode: "HORIZONTAL",
-                                paddingLeft: 8,
-                                paddingRight: 8,
-                                primaryAxisAlignItems: "MIN",
-                                counterAxisAlignItems: "CENTER",
-                                fills: []
-                            },
-                            layoutProps: { parentIsAutoLayout: true, layoutGrow: 1 },
-                            children: [{
-                                type: "TEXT",
-                                props: {
-                                    characters: "Video",
-                                    fontSize: 14,
-                                    font: { family: "UEFA Euro Pro", style: "Book" },
-                                    fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
-                                    textAutoResize: "WIDTH_AND_HEIGHT"
-                                },
-                                layoutProps: { parentIsAutoLayout: true }
-                            }]
-                        },
-                        {
-                            type: "FRAME",
-                            name: "Menuitem - News",
-                            props: {
-                                layoutMode: "HORIZONTAL",
-                                paddingLeft: 8,
-                                paddingRight: 8,
-                                primaryAxisAlignItems: "MIN",
-                                counterAxisAlignItems: "CENTER",
-                                fills: []
-                            },
-                            layoutProps: { parentIsAutoLayout: true, layoutGrow: 1 },
-                            children: [{
-                                type: "TEXT",
-                                props: {
-                                    characters: "News",
-                                    fontSize: 14,
-                                    font: { family: "UEFA Euro Pro", style: "Book" },
-                                    fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
-                                    textAutoResize: "WIDTH_AND_HEIGHT"
-                                },
-                                layoutProps: { parentIsAutoLayout: true }
-                            }]
-                        },
-                        {
-                            type: "FRAME",
-                            name: "More-History Container",
-                            props: {
-                                layoutMode: "HORIZONTAL",
-                                itemSpacing: 8,
-                                paddingLeft: 8,
-                                paddingRight: 8,
-                                primaryAxisAlignItems: "MIN",
-                                counterAxisAlignItems: "CENTER",
-                                fills: []
-                            },
-                            layoutProps: { parentIsAutoLayout: true, layoutGrow: 1 },
-                            children: [
-                                {
-                                    type: "TEXT",
-                                    props: {
-                                        characters: "More",
-                                        fontSize: 14,
-                                        font: { family: "UEFA Euro Pro", style: "Book" },
-                                        fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
-                                        textAutoResize: "WIDTH_AND_HEIGHT"
-                                    },
-                                    layoutProps: { parentIsAutoLayout: true }
-                                },
-                                {
-                                    type: "FRAME",
-                                    name: "Icon Container",
-                                    props: {
-                                        layoutMode: "HORIZONTAL",
-                                        primaryAxisAlignItems: "CENTER",
-                                        counterAxisAlignItems: "CENTER",
-                                        fills: []
-                                    },
-                                    layoutProps: { width: 24, height: 24, parentIsAutoLayout: true },
-                                    children: [{
-                                        type: "VECTOR",
-                                        shouldFlatten: true,
-                                        layoutProps: { width: 18.75, height: 12.5, parentIsAutoLayout: true },
-                                        svgContent: SVG_Mobile_Menu_Icon
-                                    }]
-                                }
-                            ]
+                            text: "More",
+                            image: SVG_Mobile_Menu_Icon,
+                            imageWidth: 18.75,
+                            imageHeight: 12.5,
+                            iconPosition: "right",
+                            paddingLeft: 8,
+                            paddingRight: 8,
+                            gap: 8,
+                            grow: true
                         }
                     ],
                     navFont: "UEFA Euro Pro",

@@ -8,6 +8,26 @@ import { Action___profile } from "../../UEFA_icons/Action___profile/Action___pro
 import { Lucide_search } from "../../lucide_icons/Lucide_search/Lucide_search";
 import { Lucide_more_vertical } from "../../lucide_icons/Lucide_more_vertical/Lucide_more_vertical";
 
+interface TopMenuNavItem {
+    name?: string;
+    text?: string;
+    isSelected?: boolean;
+    image?: string;
+    imageWidth?: number;
+    imageHeight?: number;
+    iconPosition?: "left" | "right";
+    paddingLeft?: number;
+    paddingRight?: number;
+    paddingTop?: number;
+    paddingBottom?: number;
+    gap?: number;
+    grow?: boolean;
+    fontFamily?: string;
+    fontStyle?: string;
+    fontSize?: number;
+    textColor?: { r: number, g: number, b: number };
+}
+
 export interface TopMenuProps extends ComponentProps {
 
     // Overall Layout Rules
@@ -26,10 +46,15 @@ export interface TopMenuProps extends ComponentProps {
     hasLogo?: boolean;
     logoAsset?: string | NodeDefinition | null;  // SVG Content or full Custom Node
     logoText?: string | null;   // Next to standard logo
+    logoWidth?: number;
+    logoHeight?: number;
+    logoContainerWidth?: number;
+    logoContainerHeight?: number;
+    logoContainerLayout?: "HORIZONTAL" | "VERTICAL";
     showMenuOnLeft?: boolean;
 
     // Center Element Rules
-    navItems?: ({ name: string, isSelected?: boolean } | string | NodeDefinition)[];
+    navItems?: (TopMenuNavItem | string | NodeDefinition)[];
     navItemSpacing?: number;
     navFont?: string;
     navFontSize?: number;
@@ -131,6 +156,110 @@ export class top_menu extends BaseComponent {
         }
 
         return nodes;
+    }
+
+    private buildNavItemNode(
+        itemArg: TopMenuNavItem | string,
+        index: number,
+        props: TopMenuProps,
+        textColor: { r: number, g: number, b: number },
+        iconColor: { r: number, g: number, b: number }
+    ): NodeDefinition {
+        const item = typeof itemArg === "string" ? { text: itemArg } : itemArg;
+        const itemText = item.text ?? item.name ?? "";
+        const isSelected = item.isSelected ?? (typeof itemArg === "string" ? index === 0 : false);
+        const needsContainer = Boolean(
+            item.image ||
+            item.grow ||
+            item.paddingLeft !== undefined ||
+            item.paddingRight !== undefined ||
+            item.paddingTop !== undefined ||
+            item.paddingBottom !== undefined ||
+            item.gap !== undefined
+        );
+        const textNode: NodeDefinition | null = itemText
+            ? {
+                type: "TEXT",
+                name: `Nav Item: ${itemText}`,
+                props: {
+                    characters: itemText,
+                    fontSize: item.fontSize ?? props.navFontSize ?? 14,
+                    font: {
+                        family: item.fontFamily ?? props.navFont ?? "Inter",
+                        style: item.fontStyle ?? (isSelected ? (props.navFontWeight ?? "Semi Bold") : "Regular")
+                    },
+                    fills: [{ type: "SOLID", color: item.textColor ?? (isSelected ? textColor : iconColor) }],
+                    textAutoResize: "WIDTH_AND_HEIGHT"
+                },
+                layoutProps: { parentIsAutoLayout: true }
+            }
+            : null;
+
+        if (!needsContainer && !item.image && textNode) {
+            return textNode;
+        }
+
+        const children: NodeDefinition[] = [];
+        const hasImage = Boolean(item.image);
+        const iconFirst = (item.iconPosition ?? "right") === "left";
+
+        if (hasImage && iconFirst) {
+            const width = item.imageWidth ?? 16;
+            const height = item.imageHeight ?? 16;
+            const svgContent = this.isSvgContent(item.image!)
+                ? item.image!
+                : this.wrapImageAsSvg(item.image!, width, height);
+            children.push({
+                type: "VECTOR",
+                name: "Nav Icon",
+                shouldFlatten: true,
+                layoutProps: { parentIsAutoLayout: true, width, height },
+                svgContent
+            });
+        }
+
+        if (textNode) {
+            children.push(textNode);
+        }
+
+        if (hasImage && !iconFirst) {
+            const width = item.imageWidth ?? 16;
+            const height = item.imageHeight ?? 16;
+            const svgContent = this.isSvgContent(item.image!)
+                ? item.image!
+                : this.wrapImageAsSvg(item.image!, width, height);
+            children.push({
+                type: "VECTOR",
+                name: "Nav Icon",
+                shouldFlatten: true,
+                layoutProps: { parentIsAutoLayout: true, width, height },
+                svgContent
+            });
+        }
+
+        return {
+            type: "FRAME",
+            name: `Nav Item: ${itemText || "Icon"}`,
+            props: {
+                layoutMode: "HORIZONTAL",
+                primaryAxisSizingMode: "AUTO",
+                counterAxisSizingMode: "AUTO",
+                primaryAxisAlignItems: "MIN",
+                counterAxisAlignItems: "CENTER",
+                itemSpacing: item.gap ?? 8,
+                paddingLeft: item.paddingLeft ?? 0,
+                paddingRight: item.paddingRight ?? 0,
+                paddingTop: item.paddingTop ?? 0,
+                paddingBottom: item.paddingBottom ?? 0,
+                fills: [],
+                clipsContent: false
+            },
+            layoutProps: {
+                parentIsAutoLayout: true,
+                layoutGrow: item.grow ? 1 : 0
+            },
+            children
+        };
     }
 
     async create(props: TopMenuProps): Promise<SceneNode> {
@@ -253,7 +382,11 @@ export class top_menu extends BaseComponent {
                     type: "VECTOR",
                     name: "Logo Icon SVG",
                     props: {},
-                    layoutProps: { parentIsAutoLayout: true },
+                    layoutProps: {
+                        parentIsAutoLayout: true,
+                        ...(typeof props.logoWidth === "number" ? { width: props.logoWidth } : {}),
+                        ...(typeof props.logoHeight === "number" ? { height: props.logoHeight } : {})
+                    },
                     svgContent: props.logoAsset
                 };
             } else {
@@ -269,8 +402,8 @@ export class top_menu extends BaseComponent {
                         vectorPaths: [{ windingRule: "EVENODD", data: "M 12 2 L 2 7 L 12 12 L 22 7 L 12 2 Z M 2 17 L 12 22 L 22 17 M 2 12 L 12 17 L 22 12" }]
                     },
                     layoutProps: {
-                        width: 24,
-                        height: 24,
+                        width: props.logoWidth ?? 24,
+                        height: props.logoHeight ?? 24,
                         parentIsAutoLayout: true
                     }
                 };
@@ -280,7 +413,7 @@ export class top_menu extends BaseComponent {
                 type: "FRAME",
                 name: "Brand Logo",
                 props: {
-                    layoutMode: "HORIZONTAL",
+                    layoutMode: props.logoContainerLayout ?? "HORIZONTAL",
                     counterAxisAlignItems: "CENTER",
                     primaryAxisAlignItems: "MIN",
                     primaryAxisSizingMode: "AUTO",
@@ -288,6 +421,11 @@ export class top_menu extends BaseComponent {
                     itemSpacing: 10,
                     fills: [],
                     clipsContent: false,
+                },
+                layoutProps: {
+                    parentIsAutoLayout: true,
+                    ...(typeof props.logoContainerWidth === "number" ? { width: props.logoContainerWidth } : {}),
+                    ...(typeof props.logoContainerHeight === "number" ? { height: props.logoContainerHeight } : {})
                 },
                 children: [logoContent]
             };
@@ -376,23 +514,7 @@ export class top_menu extends BaseComponent {
                         if (typeof itemArg === "object" && itemArg !== null && "type" in itemArg) {
                             return itemArg as NodeDefinition;
                         }
-
-                        const itemName = typeof itemArg === "string" ? itemArg : (itemArg as { name: string, isSelected?: boolean }).name;
-                        const isSelected = typeof itemArg === "string" ? index === 0 : ((itemArg as { name: string, isSelected?: boolean }).isSelected ?? false);
-
-                        return {
-                            type: "TEXT",
-                            name: `Nav Item: ${itemName}`,
-                            props: {
-                                characters: itemName,
-                                fontSize: props.navFontSize ?? 14,
-                                // Use `font` so BaseComponent can preload the font safely.
-                                font: { family: props.navFont ?? "Inter", style: isSelected ? (props.navFontWeight ?? "Semi Bold") : "Regular" },
-                                fills: [{ type: "SOLID", color: isSelected ? textColor : iconColor }],
-                                textAutoResize: "WIDTH_AND_HEIGHT"
-                            },
-                            layoutProps: { parentIsAutoLayout: true }
-                        };
+                        return this.buildNavItemNode(itemArg as TopMenuNavItem | string, index, props, textColor, iconColor);
                     })
                 };
                 if (props.searchFullMode) {
