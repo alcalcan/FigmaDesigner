@@ -58,6 +58,28 @@ export abstract class BaseDemoPage extends BaseComponent {
         return row;
     }
 
+    protected createColumn(container: FrameNode, itemSpacing: number = 24): FrameNode {
+        const col = figma.createFrame();
+        col.name = "Column Container";
+        col.layoutMode = "VERTICAL";
+        col.itemSpacing = itemSpacing;
+        col.fills = [];
+        col.layoutAlign = "STRETCH";
+        col.primaryAxisAlignItems = "MIN";
+        col.counterAxisAlignItems = "MIN";
+        col.clipsContent = false;
+
+        container.appendChild(col);
+
+        const availableWidth = container.width - (container.paddingLeft + container.paddingRight);
+        col.resize(Math.max(1, availableWidth), 100);
+
+        col.primaryAxisSizingMode = "AUTO";  // Height hugs content
+        col.counterAxisSizingMode = "FIXED"; // Width is fixed to available
+
+        return col;
+    }
+
     protected async addSection(
         root: FrameNode,
         title: string,

@@ -1,6 +1,10 @@
 import { ComponentProps } from "../../components/BaseComponent";
 import { BaseDemoPage } from "./BaseDemoPage";
 import { tree_view } from "../../components/Alex_CookBook/tree_view/tree_view";
+import { input_field } from "../../components/Alex_CookBook/input_field/input_field";
+import { button } from "../../components/Alex_CookBook/button/button";
+import { progress_stepper } from "../../components/Alex_CookBook/progress_stepper/progress_stepper";
+import { Card } from "../../components/Alex_CookBook/Card/Card";
 
 export class TreeViewDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -19,10 +23,20 @@ export class TreeViewDemo extends BaseDemoPage {
 
         const tv = new tree_view();
 
+        const normalizeAutoLayoutChild = (node: SceneNode, align: "MIN" | "MAX" | "STRETCH" | "INHERIT" = "STRETCH") => {
+            if ("layoutPositioning" in node) {
+                node.layoutPositioning = "AUTO";
+            }
+            if ("layoutAlign" in node) {
+                node.layoutAlign = align;
+            }
+        };
+
         // --- SECTION 1: Iris Tree View ("body" variant) - Document Structure ---
         await this.addSection(root, "Iris Tree View ('body' variant)", "Flat document outline for Iris report structures.", async (container) => {
-            const wrapper = this.createRow(container, 32);
-            wrapper.paddingLeft = 40; wrapper.paddingRight = 40; wrapper.paddingTop = 40; wrapper.paddingBottom = 40;
+            const wrapper = this.createColumn(container, 32);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
 
             const bodyVariant = await tv.create({
                 width: 400,
@@ -38,14 +52,22 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Notes to the financial statements", iconType: "empty-circle", iconColor: "grey", status: "inactive" }
                 ]
             });
-            const bodyVariantCaption = await this.wrapWithCaption(bodyVariant, "01 - Flat Document Outline");
-            wrapper.appendChild(bodyVariantCaption);
+            const bodyVariantCaption = await this.wrapWithCaption(bodyVariant, "01 - Flat Document Outline", "Wrapper", true);
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 40,
+                fillWidth: true,
+                body: Card.node(bodyVariantCaption, { fill: true })
+            });
+            wrapper.appendChild(card);
         });
 
         // --- SECTION 2: Iris Tree View Original ("All_Notes" variant) - Flat Notes List ---
         await this.addSection(root, "Iris Tree View Original ('All_Notes')", "Detailed, selectable note sections.", async (container) => {
             const wrapper = this.createRow(container, 24);
-            wrapper.paddingLeft = 0; wrapper.paddingRight = 0; wrapper.paddingTop = 24; wrapper.paddingBottom = 24;
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "MIN";
 
             const topSelected = await tv.create({
                 width: 470,
@@ -67,8 +89,15 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Tangible fixed assets", iconType: "empty-circle", iconColor: "grey" }
                 ]
             });
-            const topSelectedCapture = await this.wrapWithCaption(topSelected, "02 - Selected At Top");
-            wrapper.appendChild(topSelectedCapture);
+            const topSelectedCapture = await this.wrapWithCaption(topSelected, "02 - Selected At Top", "Wrapper", true);
+
+            const card1 = await new Card().create({
+                variant: "elevated",
+                padding: 24,
+                body: Card.node(topSelectedCapture, { fill: true })
+            });
+            wrapper.appendChild(card1);
+            if ("layoutGrow" in card1) card1.layoutGrow = 1;
 
             const middleSelected = await tv.create({
                 width: 470,
@@ -90,14 +119,22 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Tangible fixed assets", iconType: "empty-circle", iconColor: "grey" }
                 ]
             });
-            const middleSelectedCapture = await this.wrapWithCaption(middleSelected, "03 - Selected In Middle");
-            wrapper.appendChild(middleSelectedCapture);
+            const middleSelectedCapture = await this.wrapWithCaption(middleSelected, "03 - Selected In Middle", "Wrapper", true);
+
+            const card2 = await new Card().create({
+                variant: "elevated",
+                padding: 24,
+                body: Card.node(middleSelectedCapture, { fill: true })
+            });
+            wrapper.appendChild(card2);
+            if ("layoutGrow" in card2) card2.layoutGrow = 1;
         });
 
         // --- SECTION 3: Iris Tree View V3 (Nested Tree) - Deep Nested Tree ---
         await this.addSection(root, "Iris Tree View V3 (Nested Tree)", "Deep nesting stress test for sibling/last-node connector behavior.", async (container) => {
-            const wrapper = this.createRow(container, 32);
-            wrapper.paddingLeft = 40; wrapper.paddingRight = 40; wrapper.paddingTop = 40; wrapper.paddingBottom = 40;
+            const wrapper = this.createColumn(container, 32);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
 
             const nestedVariant = await tv.create({
                 width: 460,
@@ -119,8 +156,308 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Archive", iconType: "chevron-right", iconColor: "grey", isExpanded: false, indentLevel: 1 }
                 ]
             });
-            const nestedVariantCaption = await this.wrapWithCaption(nestedVariant, "04 - Nested Hierarchy");
-            wrapper.appendChild(nestedVariantCaption);
+            const nestedVariantCaption = await this.wrapWithCaption(nestedVariant, "04 - Nested Hierarchy", "Wrapper", true);
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 40,
+                fillWidth: true,
+                body: Card.node(nestedVariantCaption, { fill: true })
+            });
+            wrapper.appendChild(card);
+        });
+
+        // --- SECTION 4: IDE File Explorer (VS Code Style) ---
+        await this.addSection(root, "IDE File Explorer", "Dense technical layout with custom icons, git decorators, and inline actions.", async (container) => {
+            const wrapper = this.createColumn(container, 16);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
+
+            const searchNode = await new input_field().create({
+                placeholder: "Search file by name...",
+                type: "simple",
+                showSearchIcon: true,
+                width: 324,
+                cornerRadius: 8
+            });
+            normalizeAutoLayoutChild(searchNode, "INHERIT");
+
+            const ideVariant = await tv.create({
+                width: 324,
+                dense: true,
+                paddingLeft: 4,
+                paddingRight: 4,
+                itemPaddingVertical: 8,
+                itemPaddingHorizontal: 8,
+                nodes: [
+                    {
+                        title: "src", iconType: "chevron-down", isExpanded: true, indentLevel: 0,
+                        rightContent: [
+                            tree_view.badge("Modified", "warning")
+                        ]
+                    },
+                    {
+                        title: "components", iconType: "chevron-down", isExpanded: true, indentLevel: 1, isHovered: true,
+                        rightContent: [
+                            tree_view.actionRow([
+                                tree_view.actionText("Add File"),
+                                tree_view.actionText("Add Folder")
+                            ])
+                        ]
+                    },
+                    {
+                        title: "App.tsx", indentLevel: 2,
+                        customIcon: tree_view.fileIcon("Re", { r: 0.2, g: 0.6, b: 0.8 }),
+                        rightContent: [
+                            tree_view.badge("M", "warning")
+                        ]
+                    },
+                    {
+                        title: "utils.ts", indentLevel: 2,
+                        customIcon: tree_view.fileIcon("TS", { r: 0.1, g: 0.4, b: 0.8 }),
+                        rightContent: [
+                            tree_view.badge("U")
+                        ]
+                    },
+                    {
+                        title: "package.json", indentLevel: 0,
+                        customIcon: tree_view.fileIcon("{}", { r: 0.8, g: 0.8, b: 0.2 })
+                    }
+                ]
+            });
+            normalizeAutoLayoutChild(ideVariant, "INHERIT");
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 18,
+                width: 360,
+                body: Card.column([Card.node(searchNode), Card.node(ideVariant)], { gap: 14 })
+            });
+            wrapper.appendChild(card);
+        });
+
+        // --- SECTION 5: E-commerce Faceted Filter ---
+        await this.addSection(root, "Modern E-commerce Filter", "Airy design with checkboxes and count badges.", async (container) => {
+            const wrapper = this.createColumn(container, 32);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
+
+            const filterVariant = await tv.create({
+                width: 456,
+                dense: false,
+                paddingTop: 6,
+                nodes: [
+                    { title: "CATEGORIES", iconType: "chevron-down", iconColor: "grey", indentLevel: 0, status: "active", isExpanded: true },
+                    {
+                        title: "Sneakers", checkbox: true, indentLevel: 1, rightContent: [
+                            tree_view.badge("37", "grey")
+                        ]
+                    },
+                    {
+                        title: "Running", checkbox: false, indentLevel: 1, rightContent: [
+                            tree_view.badge("14", "grey")
+                        ]
+                    },
+                    { title: "BRANDS", iconType: "chevron-down", iconColor: "grey", indentLevel: 0, status: "active", isExpanded: true },
+                    {
+                        title: "Nike", checkbox: true, indentLevel: 1, rightContent: [
+                            tree_view.badge("22", "grey")
+                        ]
+                    },
+                    {
+                        title: "Adidas", checkbox: false, indentLevel: 1, rightContent: [
+                            tree_view.badge("15", "grey")
+                        ]
+                    },
+                    {
+                        title: "Puma", checkbox: false, indentLevel: 1, rightContent: [
+                            tree_view.badge("8", "grey")
+                        ]
+                    },
+                    { title: "PRICE RANGE", iconType: "chevron-right", iconColor: "grey", indentLevel: 0, status: "active", isExpanded: false }
+                ]
+            });
+            normalizeAutoLayoutChild(filterVariant, "INHERIT");
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 24,
+                cornerRadius: 22,
+                width: 500,
+                body: Card.node(filterVariant)
+            });
+            wrapper.appendChild(card);
+        });
+
+        // --- SECTION 6: Enterprise SaaS Role Configurator ---
+        await this.addSection(root, "Enterprise SaaS Roles", "Configurator with indeterminate states and disabled badges.", async (container) => {
+            const wrapper = this.createColumn(container, 32);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
+
+            const saasVariant = await tv.create({
+                width: 596,
+                dense: true,
+                nodes: [
+                    { title: "Administrator Privileges", checkbox: "indeterminate", isExpanded: true, indentLevel: 0 },
+                    { title: "User Management", checkbox: true, isExpanded: true, indentLevel: 1 },
+                    { title: "Create Users", checkbox: true, indentLevel: 2 },
+                    { title: "Delete Users", checkbox: true, indentLevel: 2 },
+                    { title: "Billing", checkbox: false, isExpanded: true, indentLevel: 1 },
+                    { title: "View Invoices", checkbox: true, indentLevel: 2 },
+                    {
+                        title: "Change Plan", checkbox: false, isDisabled: true, indentLevel: 2, rightContent: [
+                            tree_view.badge("Pro Only", "warning")
+                        ]
+                    }
+                ]
+            });
+            normalizeAutoLayoutChild(saasVariant, "INHERIT");
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 22,
+                width: 640,
+                body: Card.node(saasVariant)
+            });
+            wrapper.appendChild(card);
+        });
+
+        // --- SECTION 7: Activity Log / Comment Thread ---
+        await this.addSection(root, "Activity Log", "Social timeline using thread lines and avatars.", async (container) => {
+            const wrapper = this.createColumn(container, 32);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
+
+            const getAvatar = (initials: string, color: { r: number, g: number, b: number }) => tree_view.avatar(initials, color);
+            const timestamp = (time: string) => [tree_view.textNode(time, { size: 12, color: { r: 0.6, g: 0.6, b: 0.6 } })];
+
+            const formNodes = tree_view.formRow([
+                { type: "COMPONENT", component: input_field, props: { placeholder: "Reply to thread...", width: "fill" }, layoutProps: { layoutGrow: 1, parentIsAutoLayout: true } },
+                { type: "COMPONENT", component: button, props: { label: "Reply", variant: "primary" }, layoutProps: { parentIsAutoLayout: true } }
+            ], "STRETCH");
+
+            const activityVariant = await tv.create({
+                width: 776,
+                lineColor: { r: 0.86, g: 0.89, b: 0.93 },
+                paddingLeft: 8,
+                itemContentPaddingLeft: 8,
+                itemContentPaddingRight: 16,
+                dense: false,
+                nodes: [
+                    { title: "Alex Calcan", subTitle: "Design System Lead", description: "I've updated the component library to support the new faceted filters. Let me know what you think.", customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }), isExpanded: true, indentLevel: 0, rightContent: timestamp("2h ago") },
+                    { title: "Sarah Jenkins", description: "Looks great! Did we account for the responsive views on mobile?", customIcon: getAvatar("SJ", { r: 0.8, g: 0.3, b: 0.5 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("1h ago") },
+                    { title: "Mike Ross", description: "The padding feels a bit tight for touch targets. Maybe increase it by 4px?", customIcon: getAvatar("MR", { r: 0.1, g: 0.6, b: 0.3 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("30m ago") },
+                    {
+                        title: "Alex Calcan",
+                        customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }), isExpanded: true, indentLevel: 2, rightContent: timestamp("Just now"),
+                        expandedContent: [formNodes]
+                    }
+                ]
+            });
+            normalizeAutoLayoutChild(activityVariant, "INHERIT");
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 22,
+                width: 820,
+                body: Card.node(activityVariant, { fill: true })
+            });
+            wrapper.appendChild(card);
+        });
+
+        // --- SECTION 8: Vertical Progress Stepper ---
+        await this.addSection(root, "Progress Stepper Flow", "Linear checkout steps using the dedicated progress_stepper component within a structured layout.", async (container) => {
+            const wrapper = this.createColumn(container, 32);
+            wrapper.primaryAxisAlignItems = "CENTER";
+            wrapper.counterAxisAlignItems = "CENTER";
+
+            const ps = new progress_stepper();
+
+            const stepperHeader = await ps.create({
+                width: 760,
+                steps: ["Account Details", "Shipping Address", "Payment Method", "Review Order"],
+                currentStep: 3,
+                indicatorSize: 20,
+                fontFamily: "Inter",
+                activeColor: { r: 0.12, g: 0.45, b: 0.9 },
+                completedColor: { r: 0.12, g: 0.45, b: 0.9 },
+                pendingColor: { r: 0.83, g: 0.86, b: 0.92 }
+            });
+            normalizeAutoLayoutChild(stepperHeader, "INHERIT");
+
+            const panelTitle = figma.createText();
+            await this.setFont(panelTitle, { family: "Inter", style: "Semi Bold" });
+            panelTitle.characters = "Payment Method";
+            panelTitle.fontSize = 16;
+            panelTitle.fills = [{ type: "SOLID", color: { r: 0.1, g: 0.1, b: 0.12 } }];
+            panelTitle.textAutoResize = "WIDTH_AND_HEIGHT";
+
+            const paymentMethodField = await new input_field().create({
+                placeholder: "Select payment method",
+                type: "dropdown",
+                width: 340,
+                cornerRadius: 8
+            });
+
+            const cardNumberField = await new input_field().create({
+                placeholder: "Card Number",
+                type: "simple",
+                width: 340,
+                cornerRadius: 8
+            });
+
+            const mmYyField = await new input_field().create({
+                placeholder: "MM/YY",
+                type: "simple",
+                width: 120,
+                cornerRadius: 8
+            });
+
+            const cvcField = await new input_field().create({
+                placeholder: "CVC",
+                type: "simple",
+                width: 90,
+                cornerRadius: 8
+            });
+
+            const compactRow = Card.row([Card.node(mmYyField), Card.node(cvcField)], { gap: 10, crossAlign: "center" });
+
+            const divider = Card.shape({ width: 728, height: 1, fillColor: { r: 0.91, g: 0.93, b: 0.96 } });
+
+            const continueButton = await new button().create({
+                label: "Continue",
+                variant: "primary",
+                width: 180
+            });
+
+            const actionRow = Card.row([Card.node(continueButton)], { gap: 0, align: "end", fill: true });
+
+            const checkoutPanel = await new Card().create({
+                variant: "outlined",
+                padding: 16,
+                cornerRadius: 12,
+                width: 760,
+                body: Card.column([
+                    Card.node(panelTitle),
+                    Card.node(paymentMethodField),
+                    Card.node(cardNumberField),
+                    compactRow,
+                    divider,
+                    actionRow
+                ], { gap: 12, crossAlign: "start" })
+            });
+
+            const card = await new Card().create({
+                variant: "elevated",
+                padding: 26,
+                width: 820,
+                body: Card.column([
+                    Card.node(stepperHeader),
+                    Card.node(checkoutPanel)
+                ], { gap: 24, crossAlign: "start" })
+            });
+            wrapper.appendChild(card);
         });
 
         root.x = props.x ?? 0;

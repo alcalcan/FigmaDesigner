@@ -567,11 +567,18 @@ export abstract class BaseComponent {
         try {
           // Only force FIXED on the axis we are explicitly resizing with a number.
           // This prevents Figma from overriding HUG/FILL on the other axis.
-          if (typeof layoutOpts.width === "number" && frame.primaryAxisSizingMode !== "FIXED") {
-            frame.primaryAxisSizingMode = "FIXED";
+          const isVertical = frame.layoutMode === "VERTICAL";
+          if (typeof layoutOpts.width === "number") {
+            const widthProp = isVertical ? "counterAxisSizingMode" : "primaryAxisSizingMode";
+            if (frame[widthProp] !== "FIXED") {
+              frame[widthProp] = "FIXED";
+            }
           }
-          if (typeof layoutOpts.height === "number" && frame.counterAxisSizingMode !== "FIXED") {
-            frame.counterAxisSizingMode = "FIXED";
+          if (typeof layoutOpts.height === "number") {
+            const heightProp = isVertical ? "primaryAxisSizingMode" : "counterAxisSizingMode";
+            if (frame[heightProp] !== "FIXED") {
+              frame[heightProp] = "FIXED";
+            }
           }
         } catch (e) { /* ignore */ }
       }
