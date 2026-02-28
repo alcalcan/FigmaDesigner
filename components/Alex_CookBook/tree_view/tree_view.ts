@@ -82,6 +82,23 @@ export class tree_view extends BaseComponent {
         const ancestorLines: boolean[][] = [];
         const activePathNodeByLevel: number[] = [];
 
+        const lineEndsAt: number[] = [];
+        for (let i = 0; i < levels.length; i++) {
+            const level = levels[i];
+            if (hasNextSibling[i]) {
+                lineEndsAt[i] = Infinity;
+            } else {
+                let lastChildIndex = i;
+                for (let j = i + 1; j < levels.length; j++) {
+                    if (levels[j] <= level) break;
+                    if (levels[j] === level + 1) {
+                        lastChildIndex = j;
+                    }
+                }
+                lineEndsAt[i] = lastChildIndex;
+            }
+        }
+
         for (let i = 0; i < levels.length; i++) {
             const level = levels[i];
 
@@ -89,7 +106,7 @@ export class tree_view extends BaseComponent {
                 activePathNodeByLevel.pop();
             }
 
-            ancestorLines[i] = activePathNodeByLevel.map((ancestorIndex) => hasNextSibling[ancestorIndex]);
+            ancestorLines[i] = activePathNodeByLevel.map((ancestorIndex) => i <= lineEndsAt[ancestorIndex]);
             activePathNodeByLevel[level] = i;
             activePathNodeByLevel.length = level + 1;
         }
@@ -178,7 +195,7 @@ export class tree_view extends BaseComponent {
                     },
                     children: [{
                         type: "COMPONENT",
-                        component: this.getIconComponent("plus"),
+                        component: this.getIconComponent("plus") ?? undefined,
                         name: "Plus",
                         props: { color: { r: 1, g: 1, b: 1 }, width: 14 }
                     }]
@@ -200,7 +217,7 @@ export class tree_view extends BaseComponent {
                     },
                     children: [{
                         type: "COMPONENT",
-                        component: this.getIconComponent(node.iconType),
+                        component: this.getIconComponent(node.iconType) ?? undefined,
                         name: "Icon",
                         props: { color: iconColor, width: isCheckIndicator ? 14 : 16, height: isCheckIndicator ? 14 : 16 }
                     }]
@@ -404,7 +421,7 @@ export class tree_view extends BaseComponent {
                             },
                             {
                                 type: "COMPONENT",
-                                component: this.getIconComponent("plus"),
+                                component: this.getIconComponent("plus") ?? undefined,
                                 name: "Action Icon",
                                 props: { color: { r: 1, g: 1, b: 1 }, width: 16 }
                             }
