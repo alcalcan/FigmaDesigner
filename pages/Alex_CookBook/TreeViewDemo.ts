@@ -338,8 +338,24 @@ export class TreeViewDemo extends BaseDemoPage {
             const timestamp = (time: string) => [tree_view.textNode(time, { size: 12, color: { r: 0.6, g: 0.6, b: 0.6 } })];
 
             const formNodes = tree_view.formRow([
-                { type: "COMPONENT", component: input_field, props: { placeholder: "Reply to thread...", width: "fill" }, layoutProps: { layoutGrow: 1, parentIsAutoLayout: true } },
-                { type: "COMPONENT", component: button, props: { label: "Reply", variant: "primary" }, layoutProps: { parentIsAutoLayout: true } }
+                getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }),
+                {
+                    type: "COMPONENT",
+                    component: input_field,
+                    props: {
+                        placeholder: "Reply to Fred...",
+                        width: "fill",
+                        type: "multiline",
+                        height: 80
+                    },
+                    layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
+                },
+                {
+                    type: "COMPONENT",
+                    component: button,
+                    props: { label: "Reply", variant: "primary" },
+                    layoutProps: { parentIsAutoLayout: true }
+                }
             ], "STRETCH");
 
             const activityVariant = await tv.create({
@@ -351,12 +367,15 @@ export class TreeViewDemo extends BaseDemoPage {
                 dense: false,
                 nodes: [
                     { title: "Alex Calcan", subTitle: "Design System Lead", description: "I've updated the component library to support the new faceted filters. Let me know what you think.", customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }), isExpanded: true, indentLevel: 0, rightContent: timestamp("2h ago") },
-                    { title: "Sarah Jenkins", description: "Looks great! Did we account for the responsive views on mobile?", customIcon: getAvatar("SJ", { r: 0.8, g: 0.3, b: 0.5 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("1h ago") },
+                    { title: "Fred Jenkins", description: "Looks great! Did we account for the responsive views on mobile?", customIcon: getAvatar("FJ", { r: 0.8, g: 0.3, b: 0.5 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("1h ago") },
                     { title: "Mike Ross", description: "The padding feels a bit tight for touch targets. Maybe increase it by 4px?", customIcon: getAvatar("MR", { r: 0.1, g: 0.6, b: 0.3 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("30m ago") },
                     {
-                        title: "Alex Calcan",
-                        customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }), isExpanded: true, indentLevel: 2, rightContent: timestamp("Just now"),
-                        expandedContent: [formNodes]
+                        title: "", // Empty title prevents it from looking like a standard row
+                        iconColor: "transparent", // Ensures no chevron or folder icon is drawn
+                        indentLevel: 2,
+                        expandedContent: [formNodes],
+                        isExpanded: true,
+                        extendGuideLines: true // Ensures the vertical thread lines wrap the entire text area
                     }
                 ]
             });

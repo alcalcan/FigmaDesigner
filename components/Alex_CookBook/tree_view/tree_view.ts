@@ -25,6 +25,7 @@ export interface TreeViewNodeItem {
     isDisabled?: boolean;
 
     hasTextArea?: boolean;
+    extendGuideLines?: boolean;
     bottomActionNode?: string;
 }
 
@@ -116,8 +117,10 @@ export class tree_view extends BaseComponent {
 
     static formRow(items: NodeDefinition[], align: "STRETCH" | "MIN" = "STRETCH", height?: number): NodeDefinition {
         return {
-            type: "FRAME", layoutProps: { layoutAlign: align, parentIsAutoLayout: true, height: height },
-            props: { layoutMode: "HORIZONTAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: height ? "FIXED" : "AUTO", itemSpacing: 8, fills: [] },
+            type: "FRAME",
+            name: "Form Row",
+            layoutProps: { layoutAlign: align, parentIsAutoLayout: true, height: height },
+            props: { layoutMode: "HORIZONTAL", primaryAxisSizingMode: align === "STRETCH" ? "FIXED" : "AUTO", counterAxisSizingMode: height ? "FIXED" : "AUTO", itemSpacing: 8, fills: [] },
             children: items
         };
     }
@@ -507,7 +510,10 @@ export class tree_view extends BaseComponent {
                 const isActive = connectorState.ancestorLines[i][k] ?? false;
                 const isLastInSubtree = connectorState.subtreeEnds[i][k] ?? false;
                 const ancestorHasNextSibling = connectorState.ancestorHasNextSibling[i][k] ?? false;
-                const shouldStopHalfway = isLastInSubtree && !ancestorHasNextSibling;
+
+                // A guide line should stop halfway if it's the end of a subtree that has no continuing siblings,
+                // UNLESS the node explicitly asks to extend guide lines through its entire height (like a tall form box).
+                const shouldStopHalfway = isLastInSubtree && !ancestorHasNextSibling && !node.extendGuideLines;
 
                 const guideLineHeight = shouldStopHalfway ? (iconTopCompensation + iconCenterY + Math.floor(connectorThickness / 2)) : 16;
                 const layoutGrow = shouldStopHalfway ? 0 : 1;
