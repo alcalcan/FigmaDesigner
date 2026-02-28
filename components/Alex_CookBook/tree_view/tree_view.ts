@@ -41,6 +41,7 @@ export interface TreeViewProps extends ComponentProps {
     itemPaddingVertical?: number;
     itemPaddingHorizontal?: number;
     dense?: boolean;
+    leftColumnPaddingTop?: number;
 }
 
 export class tree_view extends BaseComponent {
@@ -285,6 +286,10 @@ export class tree_view extends BaseComponent {
             const hasPreviousSibling = connectorState.hasPreviousSibling[i];
             const isSectionHeaderRow = level === 0 && isDisclosureIcon && node.status === "active" && !node.description && !node.subTitle && !node.checkbox;
 
+            const computedTopPadding = props.leftColumnPaddingTop !== undefined
+                ? props.leftColumnPaddingTop
+                : (hasPreviousSibling ? 0 : 4);
+
             const leftColumn: NodeDefinition = {
                 type: "FRAME",
                 name: `Left Column - Node ${i + 1}`,
@@ -295,7 +300,7 @@ export class tree_view extends BaseComponent {
                     counterAxisSizingMode: "FIXED",
                     primaryAxisAlignItems: "MIN",
                     counterAxisAlignItems: "CENTER",
-                    paddingTop: isDense ? 4 : 0,
+                    paddingTop: computedTopPadding,
                     fills: [],
                     clipsContent: false
                 },
@@ -500,13 +505,18 @@ export class tree_view extends BaseComponent {
                 const guideLineHeight = isLastInSubtree ? (iconTopCompensation + iconCenterY + Math.floor(connectorThickness / 2)) : 16;
                 const layoutGrow = isLastInSubtree ? 0 : 1;
 
+                const lineLayoutProps: any = { width: connectorThickness, layoutGrow, parentIsAutoLayout: true };
+                if (!layoutGrow) {
+                    lineLayoutProps.height = guideLineHeight;
+                }
+
                 guideCols.push({
                     type: "FRAME",
                     name: `Guide Level ${k}`,
                     layoutProps: { width: guideColumnWidth, layoutAlign: "STRETCH", parentIsAutoLayout: true },
                     props: {
                         layoutMode: "VERTICAL",
-                        primaryAxisSizingMode: "FIXED",
+                        primaryAxisSizingMode: "AUTO",
                         primaryAxisAlignItems: "MIN",
                         counterAxisAlignItems: "CENTER",
                         paddingLeft: 0,
@@ -517,7 +527,7 @@ export class tree_view extends BaseComponent {
                     children: isActive ? [{
                         type: "FRAME",
                         name: "Guide Line",
-                        layoutProps: { width: connectorThickness, height: guideLineHeight, layoutGrow, parentIsAutoLayout: true },
+                        layoutProps: lineLayoutProps,
                         props: { fills: [{ type: "SOLID", color: defaultLineColor }] }
                     }] : []
                 });
