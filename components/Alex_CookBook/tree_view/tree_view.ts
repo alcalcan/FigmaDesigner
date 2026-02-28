@@ -505,7 +505,13 @@ export class tree_view extends BaseComponent {
                 const guideLineHeight = isLastInSubtree ? (iconTopCompensation + iconCenterY + Math.floor(connectorThickness / 2)) : 16;
                 const layoutGrow = isLastInSubtree ? 0 : 1;
 
-                const lineLayoutProps: any = { width: connectorThickness, layoutGrow, parentIsAutoLayout: true };
+                const lineLayoutProps: any = {
+                    width: connectorThickness,
+                    layoutGrow,
+                    parentIsAutoLayout: true,
+                    layoutSizingHorizontal: "FIXED",
+                    layoutSizingVertical: layoutGrow ? "FILL" : "FIXED"
+                };
                 if (!layoutGrow) {
                     lineLayoutProps.height = guideLineHeight;
                 }
@@ -516,7 +522,7 @@ export class tree_view extends BaseComponent {
                     layoutProps: { width: guideColumnWidth, layoutAlign: "STRETCH", parentIsAutoLayout: true },
                     props: {
                         layoutMode: "VERTICAL",
-                        primaryAxisSizingMode: "AUTO",
+                        primaryAxisSizingMode: "FIXED",
                         primaryAxisAlignItems: "MIN",
                         counterAxisAlignItems: "CENTER",
                         paddingLeft: 0,
