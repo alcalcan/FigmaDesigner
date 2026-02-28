@@ -430,9 +430,7 @@ export class tree_view extends BaseComponent {
                 : 0;
             const connectorTopEndY = Math.max(0, iconCenterY - iconConnectorGap);
             const connectorBottomStartY = Math.min(iconWrapperHeight, iconCenterY + iconConnectorGap);
-            const branchTargetX = isDisclosureIcon ? Math.max(0, iconX - (isDense ? 2 : 3)) : iconX;
-            const branchStartX = level > 0 ? (-guideColumnWidth + centeredConnectorX) : connectorX;
-            const branchConnectorWidth = level > 0 ? Math.max(0, branchTargetX - branchStartX) : 0;
+            const branchConnectorWidth = 0;
 
             if (!isTransparent) {
                 const spaceAboveIconCenter = rightPaddingTop + (titleLineHeight / 2);
@@ -482,20 +480,6 @@ export class tree_view extends BaseComponent {
                     ]
                 };
 
-                if (branchConnectorWidth > 0) {
-                    configuredIconNode.children!.push({
-                        type: "FRAME",
-                        name: "Branch Connector",
-                        layoutProps: {
-                            width: branchConnectorWidth,
-                            height: connectorThickness,
-                            x: -branchConnectorWidth - iconConnectorGap,
-                            y: Math.floor((iconHeight - connectorThickness) / 2),
-                            layoutPositioning: "ABSOLUTE"
-                        },
-                        props: { fills: [{ type: "SOLID", color: defaultLineColor }] }
-                    });
-                }
 
                 leftColumn.children!.push(configuredIconNode);
 

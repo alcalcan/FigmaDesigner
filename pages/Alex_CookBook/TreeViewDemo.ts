@@ -52,15 +52,14 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Notes to the financial statements", iconType: "empty-circle", iconColor: "grey", status: "inactive" }
                 ]
             });
-            const bodyVariantCaption = await this.wrapWithCaption(bodyVariant, "01 - Flat Document Outline", "Wrapper", true);
-
             const card = await new Card().create({
                 variant: "elevated",
                 padding: 40,
                 fillWidth: true,
-                body: Card.node(bodyVariantCaption, { fill: true })
+                body: Card.node(bodyVariant, { fill: true })
             });
-            wrapper.appendChild(card);
+            const wrappedCard = await this.wrapWithCaption(card, "01 - Flat Document Outline", "Wrapper", true);
+            wrapper.appendChild(wrappedCard);
         });
 
         // --- SECTION 2: Iris Tree View Original ("All_Notes" variant) - Flat Notes List ---
@@ -89,15 +88,15 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Tangible fixed assets", iconType: "empty-circle", iconColor: "grey" }
                 ]
             });
-            const topSelectedCapture = await this.wrapWithCaption(topSelected, "02 - Selected At Top", "Wrapper", true);
-
             const card1 = await new Card().create({
                 variant: "elevated",
                 padding: 24,
-                body: Card.node(topSelectedCapture, { fill: true })
+                body: Card.node(topSelected, { fill: true })
             });
-            wrapper.appendChild(card1);
-            if ("layoutGrow" in card1) card1.layoutGrow = 1;
+
+            const wrappedCard1 = await this.wrapWithCaption(card1, "02 - Selected At Top", "Wrapper", true);
+            if ("layoutGrow" in wrappedCard1) wrappedCard1.layoutGrow = 1;
+            wrapper.appendChild(wrappedCard1);
 
             const middleSelected = await tv.create({
                 width: 470,
@@ -119,15 +118,15 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Tangible fixed assets", iconType: "empty-circle", iconColor: "grey" }
                 ]
             });
-            const middleSelectedCapture = await this.wrapWithCaption(middleSelected, "03 - Selected In Middle", "Wrapper", true);
-
             const card2 = await new Card().create({
                 variant: "elevated",
                 padding: 24,
-                body: Card.node(middleSelectedCapture, { fill: true })
+                body: Card.node(middleSelected, { fill: true })
             });
-            wrapper.appendChild(card2);
-            if ("layoutGrow" in card2) card2.layoutGrow = 1;
+
+            const wrappedCard2 = await this.wrapWithCaption(card2, "03 - Selected In Middle", "Wrapper", true);
+            if ("layoutGrow" in wrappedCard2) wrappedCard2.layoutGrow = 1;
+            wrapper.appendChild(wrappedCard2);
         });
 
         // --- SECTION 3: Iris Tree View V3 (Nested Tree) - Deep Nested Tree ---
@@ -156,15 +155,15 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Archive", iconType: "chevron-right", iconColor: "grey", isExpanded: false, indentLevel: 1 }
                 ]
             });
-            const nestedVariantCaption = await this.wrapWithCaption(nestedVariant, "04 - Nested Hierarchy", "Wrapper", true);
-
             const card = await new Card().create({
                 variant: "elevated",
                 padding: 40,
                 fillWidth: true,
-                body: Card.node(nestedVariantCaption, { fill: true })
+                body: Card.node(nestedVariant, { fill: true })
             });
-            wrapper.appendChild(card);
+
+            const wrappedCard = await this.wrapWithCaption(card, "04 - Nested Hierarchy", "Wrapper", true);
+            wrapper.appendChild(wrappedCard);
         });
 
         // --- SECTION 4: IDE File Explorer (VS Code Style) ---
@@ -233,7 +232,9 @@ export class TreeViewDemo extends BaseDemoPage {
                 width: 360,
                 body: Card.column([Card.node(searchNode), Card.node(ideVariant)], { gap: 14 })
             });
-            wrapper.appendChild(card);
+
+            const wrappedCard = await this.wrapWithCaption(card, "05 - IDE File Explorer");
+            wrapper.appendChild(wrappedCard);
         });
 
         // --- SECTION 5: E-commerce Faceted Filter ---
@@ -286,7 +287,9 @@ export class TreeViewDemo extends BaseDemoPage {
                 width: 500,
                 body: Card.node(filterVariant)
             });
-            wrapper.appendChild(card);
+
+            const wrappedCard = await this.wrapWithCaption(card, "06 - Modern E-commerce Filter");
+            wrapper.appendChild(wrappedCard);
         });
 
         // --- SECTION 6: Enterprise SaaS Role Configurator ---
@@ -320,7 +323,9 @@ export class TreeViewDemo extends BaseDemoPage {
                 width: 640,
                 body: Card.node(saasVariant)
             });
-            wrapper.appendChild(card);
+
+            const wrappedCard = await this.wrapWithCaption(card, "07 - Enterprise SaaS Roles");
+            wrapper.appendChild(wrappedCard);
         });
 
         // --- SECTION 7: Activity Log / Comment Thread ---
@@ -363,7 +368,9 @@ export class TreeViewDemo extends BaseDemoPage {
                 width: 820,
                 body: Card.node(activityVariant, { fill: true })
             });
-            wrapper.appendChild(card);
+
+            const wrappedCard = await this.wrapWithCaption(card, "08 - Activity Log");
+            wrapper.appendChild(wrappedCard);
         });
 
         // --- SECTION 8: Vertical Progress Stepper ---
@@ -457,7 +464,9 @@ export class TreeViewDemo extends BaseDemoPage {
                     Card.node(checkoutPanel)
                 ], { gap: 24, crossAlign: "start" })
             });
-            wrapper.appendChild(card);
+
+            const wrappedCard = await this.wrapWithCaption(card, "09 - Progress Stepper Flow");
+            wrapper.appendChild(wrappedCard);
         });
 
         root.x = props.x ?? 0;
