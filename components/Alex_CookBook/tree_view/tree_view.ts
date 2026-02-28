@@ -125,6 +125,16 @@ export class tree_view extends BaseComponent {
         };
     }
 
+    static formColumn(items: NodeDefinition[], align: "STRETCH" | "MIN" = "STRETCH", gap: number = 8): NodeDefinition {
+        return {
+            type: "FRAME",
+            name: "Form Column",
+            layoutProps: { layoutAlign: align, parentIsAutoLayout: true },
+            props: { layoutMode: "VERTICAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: align === "STRETCH" ? "FIXED" : "AUTO", itemSpacing: gap, fills: [] },
+            children: items
+        };
+    }
+
     // --------------------------------
     private getColor(colorArg: TreeViewNodeItem["iconColor"], fallback: { r: number, g: number, b: number }): { r: number, g: number, b: number } {
         if (!colorArg) return fallback;

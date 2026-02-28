@@ -337,8 +337,7 @@ export class TreeViewDemo extends BaseDemoPage {
             const getAvatar = (initials: string, color: { r: number, g: number, b: number }) => tree_view.avatar(initials, color);
             const timestamp = (time: string) => [tree_view.textNode(time, { size: 12, color: { r: 0.6, g: 0.6, b: 0.6 } })];
 
-            const formNodes = tree_view.formRow([
-                getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }),
+            const formNodes = tree_view.formColumn([
                 {
                     type: "COMPONENT",
                     component: input_field,
@@ -346,17 +345,31 @@ export class TreeViewDemo extends BaseDemoPage {
                         placeholder: "Reply to Fred...",
                         width: "fill",
                         type: "multiline",
-                        height: 80
+                        height: "auto"
                     },
                     layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
                 },
                 {
-                    type: "COMPONENT",
-                    component: button,
-                    props: { label: "Reply", variant: "primary" },
-                    layoutProps: { parentIsAutoLayout: true }
+                    type: "FRAME",
+                    name: "Action Bar",
+                    layoutProps: { parentIsAutoLayout: true, layoutAlign: "STRETCH" },
+                    props: {
+                        layoutMode: "HORIZONTAL",
+                        primaryAxisSizingMode: "AUTO",
+                        counterAxisSizingMode: "AUTO",
+                        primaryAxisAlignItems: "MAX", // Right align the button
+                        fills: []
+                    },
+                    children: [
+                        {
+                            type: "COMPONENT",
+                            component: button,
+                            props: { label: "Comment", variant: "primary", size: "small" },
+                            layoutProps: { parentIsAutoLayout: true }
+                        }
+                    ]
                 }
-            ], "STRETCH");
+            ], "STRETCH", 8);
 
             const activityVariant = await tv.create({
                 width: 776,
@@ -370,8 +383,8 @@ export class TreeViewDemo extends BaseDemoPage {
                     { title: "Fred Jenkins", description: "Looks great! Did we account for the responsive views on mobile?", customIcon: getAvatar("FJ", { r: 0.8, g: 0.3, b: 0.5 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("1h ago") },
                     { title: "Mike Ross", description: "The padding feels a bit tight for touch targets. Maybe increase it by 4px?", customIcon: getAvatar("MR", { r: 0.1, g: 0.6, b: 0.3 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("30m ago") },
                     {
-                        title: "", // Empty title prevents it from looking like a standard row
-                        iconColor: "transparent", // Ensures no chevron or folder icon is drawn
+                        title: "Reply to thread", // Placed next to avatar
+                        customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }),
                         indentLevel: 2,
                         expandedContent: [formNodes],
                         isExpanded: true,

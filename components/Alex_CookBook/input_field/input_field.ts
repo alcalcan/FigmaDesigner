@@ -119,13 +119,8 @@ export class input_field extends BaseComponent {
         let inputContainerCounterAxisSizingMode: "FIXED" | "AUTO";
 
         if (heightProp === "auto") {
-            if (type === "textarea") {
-                inputHeight = 100;
-                inputContainerCounterAxisSizingMode = "FIXED";
-            } else {
-                inputHeight = undefined;
-                inputContainerCounterAxisSizingMode = "AUTO";
-            }
+            inputHeight = undefined;
+            inputContainerCounterAxisSizingMode = "AUTO";
         } else {
             inputHeight = heightProp as number;
             inputContainerCounterAxisSizingMode = "FIXED";
