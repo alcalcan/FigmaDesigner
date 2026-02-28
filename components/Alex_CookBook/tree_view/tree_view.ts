@@ -180,6 +180,7 @@ export class tree_view extends BaseComponent {
         hasNextSibling: boolean[];
         ancestorLines: boolean[][];
         subtreeEnds: boolean[][];
+        ancestorHasNextSibling: boolean[][];
     } {
         const levels = nodes.map((node) => this.normalizeIndentLevel(node.indentLevel));
         const hasPreviousSibling = levels.map((_level, index) => this.nodeHasPreviousSibling(levels, index));
@@ -187,6 +188,7 @@ export class tree_view extends BaseComponent {
         const hasChildren = levels.map((level, index) => index < levels.length - 1 && levels[index + 1] > level);
         const ancestorLines: boolean[][] = [];
         const subtreeEnds: boolean[][] = [];
+        const ancestorHasNextSibling: boolean[][] = [];
         const activePathNodeByLevel: number[] = [];
         const subtreeEndByIndex: number[] = [];
 
@@ -209,17 +211,19 @@ export class tree_view extends BaseComponent {
 
             ancestorLines[i] = [];
             subtreeEnds[i] = [];
+            ancestorHasNextSibling[i] = [];
             for (let depth = 0; depth < level; depth++) {
                 const ancestorIndex = activePathNodeByLevel[depth];
                 ancestorLines[i][depth] = typeof ancestorIndex === "number" ? i <= subtreeEndByIndex[ancestorIndex] : false;
                 subtreeEnds[i][depth] = typeof ancestorIndex === "number" ? i === subtreeEndByIndex[ancestorIndex] : false;
+                ancestorHasNextSibling[i][depth] = typeof ancestorIndex === "number" ? hasNextSibling[ancestorIndex] : false;
             }
 
             activePathNodeByLevel[level] = i;
             activePathNodeByLevel.length = level + 1;
         }
 
-        return { levels, hasChildren, hasPreviousSibling, hasNextSibling, ancestorLines, subtreeEnds };
+        return { levels, hasChildren, hasPreviousSibling, hasNextSibling, ancestorLines, subtreeEnds, ancestorHasNextSibling };
     }
 
     private isSelectedPreviewNode(node: TreeViewNodeItem | undefined): boolean {
@@ -502,8 +506,11 @@ export class tree_view extends BaseComponent {
             for (let k = 0; k < level; k++) {
                 const isActive = connectorState.ancestorLines[i][k] ?? false;
                 const isLastInSubtree = connectorState.subtreeEnds[i][k] ?? false;
-                const guideLineHeight = isLastInSubtree ? (iconTopCompensation + iconCenterY + Math.floor(connectorThickness / 2)) : 16;
-                const layoutGrow = isLastInSubtree ? 0 : 1;
+                const ancestorHasNextSibling = connectorState.ancestorHasNextSibling[i][k] ?? false;
+                const shouldStopHalfway = isLastInSubtree && !ancestorHasNextSibling;
+
+                const guideLineHeight = shouldStopHalfway ? (iconTopCompensation + iconCenterY + Math.floor(connectorThickness / 2)) : 16;
+                const layoutGrow = shouldStopHalfway ? 0 : 1;
 
                 const lineLayoutProps: any = {
                     width: connectorThickness,
