@@ -76,7 +76,8 @@ export class TreeViewDemo extends BaseDemoPage {
                 nodes: [
                     {
                         title: "Notes to the financial statements", subTitle: "FRS102 - Section 1A", iconType: "empty-circle", iconColor: "blue", status: "active", isExpanded: true,
-                        description: "This is an Optional Section. To include it in your report, please fill at least the mandatory * fields from inside", bottomActionNode: "Edit"
+                        description: "This is an Optional Section. To include it in your report, please fill at least the mandatory * fields from inside", bottomActionNode: "Edit",
+                        rowStroke: { r: 0.1686, g: 0, b: 0.67451, a: 0.07 }, rowStrokeWeight: 1
                     },
                     { title: "Statutory information", iconType: "empty-circle", iconColor: "grey" },
                     { title: "Critical accounting judgements and estimates", iconType: "empty-circle", iconColor: "grey" },

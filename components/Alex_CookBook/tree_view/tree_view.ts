@@ -80,7 +80,7 @@ export class tree_view extends BaseComponent {
     static textNode(text: string, propsDef: any = {}): NodeDefinition {
         return {
             type: "TEXT",
-            props: { characters: text, fontSize: propsDef.size ?? 13, font: { family: "Inter", style: propsDef.weight ?? "Regular" }, fills: [{ type: "SOLID", color: propsDef.color ?? { r: 0.3, g: 0.3, b: 0.3 } }] }
+            props: { characters: text, fontSize: propsDef.size ?? 13, font: { family: "Inter", style: propsDef.weight ?? "Regular" }, fills: [{ type: "SOLID", color: propsDef.color ?? { r: 0.5, g: 0.5, b: 0.5 } }] }
         };
     }
 
@@ -686,7 +686,7 @@ export class tree_view extends BaseComponent {
                         textAutoResize: "HEIGHT",
                         fontSize: isDense ? 12 : 14,
                         font: { family: "Inter", style: "Regular" },
-                        fills: [{ type: "SOLID", color: { r: 0.3, g: 0.3, b: 0.3 } }]
+                        fills: [{ type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }]
                     }
                 });
             }
