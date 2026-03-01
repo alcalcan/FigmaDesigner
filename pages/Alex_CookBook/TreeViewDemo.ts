@@ -40,6 +40,7 @@ export class TreeViewDemo extends BaseDemoPage {
 
             const bodyVariant = await tv.create({
                 width: 400,
+                leftColumnPaddingTop: 0,
                 nodes: [
                     { title: "Cover Sheet", iconType: "check", iconColor: "blue", status: "completed" },
                     { title: "Information page", iconType: "check", iconColor: "blue", status: "completed" },
@@ -73,6 +74,7 @@ export class TreeViewDemo extends BaseDemoPage {
                 lineColor: { r: 0.9, g: 0.9, b: 0.9 }, // Lighter line for Iris
                 paddingRight: 0,
                 itemContentPaddingRight: 24,
+                leftColumnPaddingTop: 0,
                 nodes: [
                     {
                         title: "Notes to the financial statements", subTitle: "FRS102 - Section 1A", iconType: "empty-circle", iconColor: "blue", status: "active", isExpanded: true,
@@ -139,6 +141,7 @@ export class TreeViewDemo extends BaseDemoPage {
             const nestedVariant = await tv.create({
                 width: 460,
                 lineColor: { r: 0.84, g: 0.86, b: 0.9 },
+                leftColumnPaddingTop: 0,
                 nodes: [
                     { title: "Workspace", iconType: "chevron-down", iconColor: "black", isExpanded: true, indentLevel: 0 },
                     { title: "Design System", iconType: "chevron-down", iconColor: "black", isExpanded: true, indentLevel: 1 },
