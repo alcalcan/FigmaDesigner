@@ -333,43 +333,9 @@ export class TreeViewDemo extends BaseDemoPage {
             const wrapper = this.createColumn(container, 32);
             wrapper.primaryAxisAlignItems = "CENTER";
             wrapper.counterAxisAlignItems = "CENTER";
-
             const getAvatar = (initials: string, color: { r: number, g: number, b: number }) => tree_view.avatar(initials, color);
-            const timestamp = (time: string) => [tree_view.textNode(time, { size: 12, color: { r: 0.6, g: 0.6, b: 0.6 } })];
-
-            const formNodes = tree_view.formColumn([
-                {
-                    type: "COMPONENT",
-                    component: input_field,
-                    props: {
-                        placeholder: "Reply to Fred...",
-                        width: "fill",
-                        type: "multiline",
-                        height: "auto"
-                    },
-                    layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
-                },
-                {
-                    type: "FRAME",
-                    name: "Action Bar",
-                    layoutProps: { parentIsAutoLayout: true, layoutAlign: "STRETCH" },
-                    props: {
-                        layoutMode: "HORIZONTAL",
-                        primaryAxisSizingMode: "AUTO",
-                        counterAxisSizingMode: "AUTO",
-                        primaryAxisAlignItems: "MAX", // Right align the button
-                        fills: []
-                    },
-                    children: [
-                        {
-                            type: "COMPONENT",
-                            component: button,
-                            props: { label: "Comment", variant: "primary", size: "small" },
-                            layoutProps: { parentIsAutoLayout: true }
-                        }
-                    ]
-                }
-            ], "STRETCH", 8);
+            const rowBg = { r: 0, g: 0.106, b: 0.706, a: 0.02 };
+            const timestamp = (time: string) => [tree_view.textNode(time, { size: 12, color: { r: 0.5, g: 0.5, b: 0.5 } })];
 
             const activityVariant = await tv.create({
                 width: 776,
@@ -379,19 +345,101 @@ export class TreeViewDemo extends BaseDemoPage {
                 itemContentPaddingRight: 16,
                 dense: false,
                 nodes: [
-                    { title: "Alex Calcan", subTitle: "Design System Lead", description: "I've updated the component library to support the new faceted filters. Let me know what you think.", customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }), isExpanded: true, indentLevel: 0, rightContent: timestamp("2h ago") },
-                    { title: "Fred Jenkins", description: "Looks great! Did we account for the responsive views on mobile?", customIcon: getAvatar("FJ", { r: 0.8, g: 0.3, b: 0.5 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("1h ago") },
-                    { title: "Mike Ross", description: "The padding feels a bit tight for touch targets. Maybe increase it by 4px?", customIcon: getAvatar("MR", { r: 0.1, g: 0.6, b: 0.3 }), isExpanded: true, indentLevel: 1, rightContent: timestamp("30m ago") },
                     {
-                        title: "Reply to thread", // Placed next to avatar
+                        title: "Alex Calcan",
+                        subTitle: "Design System Lead",
+                        description: "I've updated the component library to support the new faceted filters. Let me know what you think.",
+                        customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }),
+                        isExpanded: true,
+                        indentLevel: 0,
+                        rightContent: timestamp("2h ago"),
+                        rowBackgroundColor: rowBg,
+                        rowPaddingTop: 16,
+                        topLeftRadius: 16,
+                        topRightRadius: 16
+                    },
+                    {
+                        title: "Fred Jenkins",
+                        description: "Looks great! Did we account for the responsive views on mobile?",
+                        customIcon: getAvatar("FJ", { r: 0.8, g: 0.3, b: 0.5 }),
+                        isExpanded: true,
+                        indentLevel: 1,
+                        rightContent: timestamp("1h ago"),
+                        rowBackgroundColor: rowBg
+                    },
+                    {
+                        title: "Mike Ross",
+                        description: "The padding feels a bit tight for touch targets. Maybe increase it by 4px?",
+                        customIcon: getAvatar("MR", { r: 0.1, g: 0.6, b: 0.3 }),
+                        isExpanded: true,
+                        indentLevel: 1,
+                        rightContent: timestamp("30m ago"),
+                        rowBackgroundColor: rowBg
+                    },
+                    {
+                        title: "Reply to Mike",
                         customIcon: getAvatar("AC", { r: 0.2, g: 0.4, b: 0.9 }),
                         indentLevel: 2,
-                        expandedContent: [formNodes],
                         isExpanded: true,
-                        extendGuideLines: true // Ensures the vertical thread lines wrap the entire text area
+                        extendGuideLines: true,
+                        rowFill: { r: 0.996, g: 0.996, b: 0.996, a: 1 },
+                        rowStroke: { r: 1, g: 1, b: 1, a: 1 },
+                        rowStrokeWeight: 3,
+                        rowStrokeAlign: "OUTSIDE",
+                        rowEffects: [
+                            {
+                                visible: true,
+                                blendMode: "NORMAL",
+                                type: "DROP_SHADOW",
+                                radius: 20,
+                                color: { r: 0, g: 0, b: 0, a: 0.11 },
+                                offset: { x: 0, y: 0 },
+                                spread: 0,
+                                showShadowBehindNode: true
+                            }
+                        ],
+                        rowCornerRadius: 16,
+                        rowPaddingTop: 16,
+                        rowPaddingBottom: 16,
+                        rowPaddingLeft: 16,
+                        rowPaddingRight: 16,
+                        expandedContent: [
+                            {
+                                type: "COMPONENT",
+                                component: input_field,
+                                props: {
+                                    placeholder: "Reply to Mike...",
+                                    width: "fill",
+                                    type: "multiline",
+                                    height: "auto"
+                                },
+                                layoutProps: { layoutGrow: 1, parentIsAutoLayout: true }
+                            },
+                            {
+                                type: "FRAME",
+                                name: "Action Bar",
+                                layoutProps: { parentIsAutoLayout: true, layoutAlign: "STRETCH" },
+                                props: {
+                                    layoutMode: "HORIZONTAL",
+                                    primaryAxisSizingMode: "AUTO",
+                                    counterAxisSizingMode: "AUTO",
+                                    primaryAxisAlignItems: "MAX",
+                                    fills: []
+                                },
+                                children: [
+                                    {
+                                        type: "COMPONENT",
+                                        component: button,
+                                        props: { label: "Comment", variant: "primary", size: "small" },
+                                        layoutProps: { parentIsAutoLayout: true }
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             });
+
             normalizeAutoLayoutChild(activityVariant, "INHERIT");
 
             const card = await new Card().create({

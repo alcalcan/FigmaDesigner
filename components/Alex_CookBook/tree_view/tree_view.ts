@@ -27,6 +27,36 @@ export interface TreeViewNodeItem {
     hasTextArea?: boolean;
     extendGuideLines?: boolean;
     bottomActionNode?: string;
+
+    // Visual Styling Overrides
+    rowBackgroundColor?: RGB | RGBA;
+    rowCornerRadius?: number;
+    topLeftRadius?: number;
+    topRightRadius?: number;
+    bottomLeftRadius?: number;
+    bottomRightRadius?: number;
+
+    rowFills?: Paint[];
+    rowStrokes?: SolidPaint[];
+    rowStrokeWeight?: number;
+    rowStrokeAlign?: "INSIDE" | "OUTSIDE" | "CENTER";
+    rowEffects?: Effect[];
+
+    contentFlow?: "nested" | "under";
+    rowPaddingTop?: number;
+    rowPaddingRight?: number;
+    rowPaddingBottom?: number;
+    rowPaddingLeft?: number;
+
+    // High-level Styling (Simplified Props)
+    rowFill?: RGB | RGBA;
+    rowStroke?: RGB | RGBA;
+    rowGradient?: {
+        from: RGB;
+        fromOpacity?: number;
+        to: RGB;
+        toOpacity?: number;
+    };
 }
 
 export interface TreeViewProps extends ComponentProps {
@@ -759,22 +789,50 @@ export class tree_view extends BaseComponent {
                     primaryAxisAlignItems: "MIN",
                     counterAxisAlignItems: "MIN", // STRETCH is invalid!
                     itemSpacing: 0,
-                    paddingTop: isAfterSelectedPreview && !isSelectedPreview ? 14 : 0,
-                    paddingRight: 0,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                    fills: node.isHovered || isSelectedPreview
-                        ? [{ type: "SOLID", color: { r: 0, g: 0, b: 0, a: 0.04 } }]
-                        : [],
-                    strokes: [],
-                    strokeWeight: 0,
-                    strokeAlign: "INSIDE",
-                    cornerRadius: node.isHovered ? 8 : 0,
-                    topLeftRadius: node.isHovered ? 8 : selectedTopRadius,
-                    topRightRadius: node.isHovered ? 8 : selectedTopRadius,
-                    bottomLeftRadius: node.isHovered ? 8 : selectedBottomRadius,
-                    bottomRightRadius: node.isHovered ? 8 : selectedBottomRadius,
-                    effects: [],
+                    itemReverseZIndex: false,
+                    strokesIncludedInLayout: false,
+                    paddingTop: node.rowPaddingTop ?? 0,
+                    paddingRight: node.rowPaddingRight ?? 16,
+                    paddingBottom: node.rowPaddingBottom ?? 0,
+                    paddingLeft: node.rowPaddingLeft ?? 16,
+                    fills: node.rowFills ?? (() => {
+                        if (node.rowGradient) {
+                            return [{
+                                type: "GRADIENT_LINEAR",
+                                gradientStops: [
+                                    { color: { ...node.rowGradient.from, a: node.rowGradient.fromOpacity ?? 1 }, position: 0 },
+                                    { color: { ...node.rowGradient.to, a: node.rowGradient.toOpacity ?? 1 }, position: 1 }
+                                ],
+                                gradientTransform: [[0, 1, 0], [-1, 0, 1]] // Vertical gradient
+                            }];
+                        }
+                        if (node.rowFill) {
+                            const fill = node.rowFill as any;
+                            return [{ type: "SOLID", color: { r: fill.r, g: fill.g, b: fill.b }, opacity: fill.a ?? 1 }];
+                        }
+                        if (node.rowBackgroundColor) {
+                            return [{ type: "SOLID", color: node.rowBackgroundColor }];
+                        }
+                        if (node.isHovered || isSelectedPreview) {
+                            return [{ type: "SOLID", color: { r: 0, g: 0.106, b: 0.706, a: 0.02 } }];
+                        }
+                        return [];
+                    })(),
+                    strokes: node.rowStrokes ?? (() => {
+                        if (node.rowStroke) {
+                            const stroke = node.rowStroke as any;
+                            return [{ type: "SOLID", color: { r: stroke.r, g: stroke.g, b: stroke.b }, opacity: stroke.a ?? 1 }];
+                        }
+                        return [];
+                    })(),
+                    strokeWeight: node.rowStrokeWeight ?? 0,
+                    strokeAlign: node.rowStrokeAlign ?? "INSIDE",
+                    cornerRadius: node.rowCornerRadius ?? (node.isHovered ? 8 : 0),
+                    topLeftRadius: node.topLeftRadius ?? node.rowCornerRadius ?? (node.isHovered ? 8 : selectedTopRadius),
+                    topRightRadius: node.topRightRadius ?? node.rowCornerRadius ?? (node.isHovered ? 8 : selectedTopRadius),
+                    bottomLeftRadius: node.bottomLeftRadius ?? node.rowCornerRadius ?? (node.isHovered ? 8 : selectedBottomRadius),
+                    bottomRightRadius: node.bottomRightRadius ?? node.rowCornerRadius ?? (node.isHovered ? 8 : selectedBottomRadius),
+                    effects: node.rowEffects ?? [],
                     clipsContent: false
                 },
                 children: [...guideCols, leftColumn, rightColumn]
