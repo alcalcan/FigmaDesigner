@@ -32,8 +32,19 @@ To maintain performance, code cleanliness, and reusability, `UCL_Newsletter_Head
 Because the component is heavily modularized, updating a specific visual element requires finding the correct file rather than searching through thousands of lines in the main file:
 
 - **Need to change the background gradients?** Go to `UCLBackground.ts`.
+- **Need to change the title or its typography?** Go to `HeaderTitle.ts`.
 - **Need to change the fonts or colors of the "See all stats" button?** Go to `StatsButton.ts`.
 - **Need to adjust the padding of the statistics data rows?** Go to `StatsTable.ts` or `StatRow.ts`.
+
+### How to Build a Header
+
+If you want to build a new header (for example, a completely different UEFA competition), you can reuse these foundational elements. Think of `UCL_Newsletter_Header_Stats.ts` as the "canvas", and the components as the elements you place on it.
+
+1. **Start with the background**: Import and place `UCLBackground` (or your new background).
+2. **Add the decorative footer**: Import and place `HeaderFooter` right after the background.
+3. **Add the header**: Place `TopBar`.
+4. **Add the title**: Place `HeaderTitle` (or a dynamic title component if you build one).
+5. **Add the content**: If you want the stats, you put the `StatsTable` over there! If you want a different content block, you simply swap `StatsTable` with your new component.
 
 ### Rendering Order (Z-Index equivalent)
 
@@ -43,7 +54,7 @@ The strict `children` array structure in `UCL_Newsletter_Header_Stats.ts` is:
 1. `UCLBackground` (Back)
 2. `HeaderFooter` (Back-Middle, placed here so shadows and opacities do not eclipse the text)
 3. `TopBar` 
-4. `UCL SEASON COMPARED` (Title Text)
+4. `HeaderTitle` (Title Text)
 5. `StatsButton`
 6. `StatsTable` (Front)
 
