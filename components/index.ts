@@ -504,6 +504,7 @@ export { Top_bar as Top_bar_Newsletters_competititon } from "./Newsletters_compe
 export { Top_bar as Top_bar_UEFA_Academy_online } from "./UEFA_Academy_online/Top_bar/Top_bar";
 export { Top_bar as Top_bar_UEFA_web } from "./UEFA_web/Top_bar/Top_bar";
 export { top_menu } from "./Alex_CookBook/top_menu/top_menu";
+export { TopBar } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/TopBar";
 export { TopMenuDemo } from "../pages/Alex_CookBook/TopMenuDemo";
 export { Torpedo_Moscu } from "./Football_Crests/Torpedo_Moscu/Torpedo_Moscu";
 export { Tottenham } from "./Football_Crests/Tottenham/Tottenham";
