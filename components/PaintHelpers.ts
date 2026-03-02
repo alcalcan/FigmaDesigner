@@ -82,7 +82,8 @@ export function handlesToGradientTransform(h: [GradientHandle, GradientHandle, G
 
 export async function processFills(
     fills: ReadonlyArray<Paint> | typeof figma.mixed,
-    assetStore: AssetStore
+    assetStore: AssetStore,
+    context?: { nodeWidth?: number; nodeHeight?: number; nodeName?: string }
 ): Promise<PortablePaints> {
     if (fills === figma.mixed) return "mixed";
 
@@ -104,12 +105,14 @@ export async function processFills(
         // 1) IMAGE paints
         if (p.type === "IMAGE") {
             const imageHash: string | undefined = p.imageHash;
+            let imageSize: { width: number; height: number } | null = null;
             if (imageHash) {
                 let assetRef = assetStore.imageHashToAssetRef.get(imageHash);
                 if (!assetRef) {
                     const img = figma.getImageByHash(imageHash);
                     if (img) {
                         try {
+                            imageSize = await withTimeout(img.getSizeAsync(), 2000);
                             // Add 5s timeout to image fetch
                             const bytes = await withTimeout(img.getBytesAsync(), 5000);
                             assetRef = `assets/img_${assetStore.nextId++}.png`;
@@ -117,6 +120,15 @@ export async function processFills(
                             assetStore.assets[assetRef] = { bytesBase64: bytesToBase64(bytes) };
                         } catch (err) {
                             console.error(`Failed to get bytes for image hash ${imageHash}`, err);
+                        }
+                    }
+                } else if (context?.nodeWidth && p.scaleMode === "CROP") {
+                    const img = figma.getImageByHash(imageHash);
+                    if (img) {
+                        try {
+                            imageSize = await withTimeout(img.getSizeAsync(), 2000);
+                        } catch (_err) {
+                            imageSize = null;
                         }
                     }
                 }
@@ -127,6 +139,35 @@ export async function processFills(
                     delete p.imageHash; // remove unstable hash
                 }
             }
+
+            // Normalize a recurring capture edge-case:
+            // very wide target frame + CROP image with neutral X transform leaves uncovered area.
+            if (
+                p.scaleMode === "CROP" &&
+                typeof context?.nodeWidth === "number" &&
+                imageSize &&
+                context.nodeWidth > imageSize.width * 1.02
+            ) {
+                const t = p.imageTransform;
+                const sx = Array.isArray(t) && Array.isArray(t[0]) ? t[0][0] : undefined;
+                const tx = Array.isArray(t) && Array.isArray(t[0]) ? t[0][2] : undefined;
+                const hasNeutralXTransform =
+                    typeof sx === "number" &&
+                    typeof tx === "number" &&
+                    Number.isFinite(sx) &&
+                    Number.isFinite(tx) &&
+                    Math.abs(sx - 1) < 0.02 &&
+                    Math.abs(tx) < 0.02;
+
+                if (hasNeutralXTransform) {
+                    p.scaleMode = "FILL";
+                    delete p.imageTransform;
+                    console.log(
+                        `[Capture] Normalized IMAGE crop -> fill for ${context?.nodeName || "node"} (${imageSize.width}w -> ${context.nodeWidth}w)`
+                    );
+                }
+            }
+
             out.push(p);
             continue;
         }

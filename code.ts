@@ -515,6 +515,137 @@ const createExtractDetailsCard = async (sourceNode: SceneNode): Promise<FrameNod
   return detailsCard;
 };
 
+const isFiniteNumber = (value: unknown): value is number =>
+  typeof value === "number" && Number.isFinite(value);
+
+const normalizeClippedHorizontalTrackData = (
+  node: SceneNode,
+  data: Record<string, unknown>
+): void => {
+  if (node.type !== "FRAME") return;
+
+  const parent = node.parent;
+  if (!parent || !("width" in parent)) return;
+
+  const layout = data.layout as {
+    mode?: string;
+    spacing?: number;
+    padding?: { left?: number; right?: number };
+  } | undefined;
+  if (!layout || layout.mode !== "HORIZONTAL") return;
+
+  const parentWidth = (parent as SceneNode).width;
+  const parentClips = safeGet(parent as SceneNode, "clipsContent");
+  const parentLayoutMode = safeGet(parent as SceneNode, "layoutMode") || "NONE";
+  if (parentClips !== true || parentLayoutMode !== "NONE") return;
+
+  const nodeX = data.x;
+  const nodeWidth = data.width;
+  if (!isFiniteNumber(nodeX) || !isFiniteNumber(nodeWidth) || !isFiniteNumber(parentWidth)) return;
+  if (nodeWidth <= parentWidth * 1.5 || nodeX >= -0.5) return;
+
+  const leftPad = layout.padding?.left;
+  if (!isFiniteNumber(leftPad) || leftPad <= 0) return;
+  const shift = Math.abs(nodeX);
+  if (Math.abs(leftPad - shift) > 2) return;
+
+  const flowChildren = "children" in node
+    ? (node as ChildrenMixin).children.filter(child =>
+      child.visible !== false && safeGet(child, "layoutPositioning") !== "ABSOLUTE"
+    )
+    : [];
+  if (flowChildren.length === 0) return;
+
+  const spacing = isFiniteNumber(layout.spacing) ? layout.spacing : 0;
+  const contentWidth = flowChildren.reduce((acc, child) => acc + child.width, 0)
+    + Math.max(0, flowChildren.length - 1) * spacing;
+  if (contentWidth <= 0) return;
+
+  const targetWidth = Math.abs(contentWidth - parentWidth) <= 2 ? parentWidth : contentWidth;
+  if (targetWidth > parentWidth * 1.25) return;
+
+  const oldX = nodeX;
+  const oldWidth = nodeWidth;
+  data.x = 0;
+  data.width = targetWidth;
+
+  const rt = data.relativeTransform;
+  if (
+    Array.isArray(rt) &&
+    rt.length === 2 &&
+    Array.isArray(rt[0]) &&
+    rt[0].length >= 3
+  ) {
+    (rt[0] as number[])[2] = 0;
+  }
+
+  if (layout.padding) {
+    layout.padding.left = 0;
+    if (isFiniteNumber(layout.padding.right)) layout.padding.right = 0;
+  }
+
+  console.log(
+    `[Capture] Normalized clipped track "${node.name}": x ${oldX} -> 0, width ${oldWidth} -> ${targetWidth}`
+  );
+};
+
+const normalizeClippedHorizontalTrackChildrenData = (
+  node: SceneNode,
+  data: Record<string, unknown>
+): void => {
+  if (node.type !== "FRAME") return;
+
+  const parent = node.parent;
+  if (!parent || !("width" in parent)) return;
+
+  const layout = data.layout as {
+    mode?: string;
+  } | undefined;
+  if (!layout || layout.mode !== "HORIZONTAL") return;
+
+  const parentWidth = (parent as SceneNode).width;
+  const parentClips = safeGet(parent as SceneNode, "clipsContent");
+  const parentLayoutMode = safeGet(parent as SceneNode, "layoutMode") || "NONE";
+  if (parentClips !== true || parentLayoutMode !== "NONE") return;
+
+  const children = Array.isArray(data.children) ? data.children as Record<string, unknown>[] : [];
+  if (children.length === 0) return;
+
+  const flowChildren = children.filter((child) => {
+    const childVisible = child.visible;
+    const layoutPositioning = child.layoutPositioning;
+    return childVisible !== false && layoutPositioning !== "ABSOLUTE" && isFiniteNumber(child.x);
+  });
+  if (flowChildren.length === 0) return;
+
+  const childXs = flowChildren
+    .map((child) => child.x)
+    .filter((value): value is number => isFiniteNumber(value));
+  if (childXs.length === 0) return;
+
+  const minChildX = Math.min(...childXs);
+  if (!isFiniteNumber(minChildX) || minChildX <= parentWidth * 0.5) return;
+
+  for (const child of flowChildren) {
+    child.x = (child.x as number) - minChildX;
+
+    const rt = child.relativeTransform;
+    if (
+      Array.isArray(rt) &&
+      rt.length === 2 &&
+      Array.isArray(rt[0]) &&
+      rt[0].length >= 3 &&
+      isFiniteNumber(rt[0][2])
+    ) {
+      (rt[0] as number[])[2] = ((rt[0] as number[])[2] as number) - minChildX;
+    }
+  }
+
+  console.log(
+    `[Capture] Rebased clipped track children "${node.name}": child minX ${minChildX} -> 0`
+  );
+};
+
 const captureNode = async (
   node: SceneNode,
   detailed: boolean,
@@ -664,13 +795,21 @@ const captureNode = async (
     }
   }
 
+  // Normalize slider-like tracks captured with large negative X + synthetic paddings.
+  // This preserves the visible viewport state while avoiding giant off-canvas bounds.
+  normalizeClippedHorizontalTrackData(node, data);
+
   // 3. Visuals: Fills (Images & Gradients)
   if ("fills" in node) {
     const nodeWithFills = node as GeometryMixin;
     try {
       // Add timeout to paint processing (images can hang)
       data.fills = await withTimeout(
-        processFills(nodeWithFills.fills as Readonly<Paint[]>, assetStore),
+        processFills(nodeWithFills.fills as Readonly<Paint[]>, assetStore, {
+          nodeWidth: node.width,
+          nodeHeight: node.height,
+          nodeName: node.name
+        }),
         5000,
         `Fills processing timeout for ${node.name}`
       );
@@ -914,6 +1053,10 @@ const captureNode = async (
     );
     const resolvedChildren = await Promise.all(childPromises);
     data.children = resolvedChildren.filter((c): c is Record<string, unknown> => c !== null);
+
+    // Fix partially normalized clipped-track captures where parent x was rebased to 0
+    // but direct children kept large inherited x offsets.
+    normalizeClippedHorizontalTrackChildrenData(node, data);
   }
 
   return data;

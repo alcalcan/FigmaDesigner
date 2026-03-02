@@ -40,12 +40,13 @@ export class ComponentGenerator {
             throw new Error(`JSON file not found: ${fullJsonPath}`);
         }
 
-        const data: SerializedNode = JSON.parse(fs.readFileSync(fullJsonPath, 'utf8'));
+        const rawData: SerializedNode = JSON.parse(fs.readFileSync(fullJsonPath, 'utf8'));
         // Sanitize project name to ensure consistent folder naming (e.g. "Alex_CookBook" instead of "Alex CookBook")
         this.projectName = (projectName || 'Default').replace(/[^a-z0-9]/gi, '_');
 
         this.componentName = (componentNameOverride || path.basename(jsonPath, path.extname(jsonPath))).replace(/[^a-z0-9]/gi, '_');
         this.sourceDir = path.dirname(fullJsonPath);
+        const data = this.normalizeCaptureEdgeCases(rawData);
 
         this.targetDir = path.join(process.cwd(), 'components', this.projectName, this.componentName);
         // Change to LOCAL assets folder (inside component folder)
@@ -170,7 +171,219 @@ export class ComponentGenerator {
         this.assetsToImport.clear();
         this.svgAssets.clear();
 
-        return this.generateComponentCode(data);
+        const normalizedData = this.normalizeCaptureEdgeCases(data);
+        return this.generateComponentCode(normalizedData);
+    }
+
+    private normalizeCaptureEdgeCases(data: SerializedNode): SerializedNode {
+        const clone = JSON.parse(JSON.stringify(data)) as SerializedNode;
+        this.normalizeNodeRecursive(clone, undefined);
+        return clone;
+    }
+
+    private normalizeNodeRecursive(node: SerializedNode | undefined, parent: SerializedNode | undefined): void {
+        if (!node) return;
+
+        this.normalizeClippedHorizontalTrack(node, parent);
+        this.normalizeOversizedImageCrop(node);
+
+        if (!node.children || node.children.length === 0) return;
+        node.children.forEach(child => this.normalizeNodeRecursive(child, node));
+    }
+
+    private normalizeClippedHorizontalTrack(node: SerializedNode, parent: SerializedNode | undefined): void {
+        if (!parent) return;
+        if (node.type !== "FRAME" || parent.type !== "FRAME") return;
+        if (node.layout?.mode !== "HORIZONTAL") return;
+        if (parent.clipsContent !== true) return;
+        if ((parent.layout?.mode || "NONE") !== "NONE") return;
+        if (!this.isFiniteNumber(node.width) || !this.isFiniteNumber(parent.width) || !this.isFiniteNumber(node.x)) return;
+
+        const nodeWidth = node.width as number;
+        const parentWidth = parent.width as number;
+        const nodeX = node.x as number;
+        const flowChildren = (node.children || []).filter(c => (c.layoutPositioning || "AUTO") !== "ABSOLUTE");
+        if (flowChildren.length === 0) return;
+
+        const spacing = this.isFiniteNumber(node.layout?.spacing) ? (node.layout?.spacing as number) : 0;
+        const contentWidth = flowChildren.reduce((acc, c) => acc + (this.isFiniteNumber(c.width) ? (c.width as number) : 0), 0)
+            + Math.max(0, flowChildren.length - 1) * spacing;
+        if (contentWidth <= 0) return;
+
+        const targetWidth = Math.abs(contentWidth - parentWidth) <= 2 ? parentWidth : contentWidth;
+        const padding = node.layout?.padding;
+        const leftPad = padding?.left;
+
+        // Pattern A: original clipped-track capture (negative x + synthetic left padding).
+        const shift = Math.abs(nodeX);
+        const looksLikeOriginalTrack =
+            nodeWidth > parentWidth * 1.5 &&
+            nodeX < -0.5 &&
+            this.isFiniteNumber(leftPad) &&
+            (leftPad as number) > 0 &&
+            Math.abs((leftPad as number) - shift) <= 2;
+
+        if (looksLikeOriginalTrack) {
+            if (targetWidth > parentWidth * 1.25) return;
+
+            const oldX = nodeX;
+            const oldWidth = nodeWidth;
+
+            node.x = 0;
+            node.width = targetWidth;
+
+            if (node.relativeTransform && Array.isArray(node.relativeTransform) && node.relativeTransform.length === 2) {
+                const t = node.relativeTransform as [[number, number, number], [number, number, number]];
+                if (Array.isArray(t[0]) && t[0].length >= 3) t[0][2] = 0;
+                if (Array.isArray(t[1]) && t[1].length >= 3 && !this.isFiniteNumber(t[1][2])) t[1][2] = 0;
+            }
+
+            if (padding) {
+                padding.left = 0;
+                if (this.isFiniteNumber(padding.right)) padding.right = 0;
+            }
+
+            // Rebase in-flow child x/transform so visible cards stay in the same viewport after node.x reset.
+            for (const child of flowChildren) {
+                if (this.isFiniteNumber(child.x)) child.x = (child.x as number) - shift;
+                if (Array.isArray(child.relativeTransform) && child.relativeTransform.length === 2) {
+                    const ct = child.relativeTransform as [[number, number, number], [number, number, number]];
+                    if (Array.isArray(ct[0]) && ct[0].length >= 3 && this.isFiniteNumber(ct[0][2])) {
+                        ct[0][2] = (ct[0][2] as number) - shift;
+                    }
+                }
+            }
+
+            console.log(
+                `[Generator] Normalized clipped track "${node.name || "Unnamed"}": x ${oldX} -> 0, width ${oldWidth} -> ${targetWidth}`
+            );
+            return;
+        }
+
+        // Pattern B: partially normalized capture (node already rebased, but children still offset by old shift).
+        const childXs = flowChildren
+            .map(child => child.x)
+            .filter((x): x is number => this.isFiniteNumber(x));
+        if (childXs.length === 0) return;
+
+        const minChildX = Math.min(...childXs);
+        if (minChildX <= parentWidth * 0.5) return;
+
+        for (const child of flowChildren) {
+            if (this.isFiniteNumber(child.x)) child.x = (child.x as number) - minChildX;
+            if (Array.isArray(child.relativeTransform) && child.relativeTransform.length === 2) {
+                const ct = child.relativeTransform as [[number, number, number], [number, number, number]];
+                if (Array.isArray(ct[0]) && ct[0].length >= 3 && this.isFiniteNumber(ct[0][2])) {
+                    ct[0][2] = (ct[0][2] as number) - minChildX;
+                }
+            }
+        }
+
+        console.log(
+            `[Generator] Rebased clipped track children "${node.name || "Unnamed"}": child minX ${minChildX} -> 0`
+        );
+    }
+
+    private isFiniteNumber(value: unknown): value is number {
+        return typeof value === "number" && Number.isFinite(value);
+    }
+
+    private normalizeOversizedImageCrop(node: SerializedNode): void {
+        if (!Array.isArray(node.fills) || node.fills.length === 0) return;
+        if (!this.isFiniteNumber(node.width) || !this.isFiniteNumber(node.height)) return;
+
+        const nodeWidth = node.width as number;
+
+        for (const fill of node.fills) {
+            if (!fill || fill.type !== "IMAGE" || fill.scaleMode !== "CROP") continue;
+            if (typeof fill.assetRef !== "string" || fill.assetRef.length === 0) continue;
+
+            const sourcePath = path.join(this.sourceDir, fill.assetRef);
+            const imageSize = this.readImageDimensions(sourcePath);
+            if (!imageSize) continue;
+            if (nodeWidth <= imageSize.width * 1.02) continue;
+
+            const transform = fill.imageTransform;
+            const sx = Array.isArray(transform) && Array.isArray(transform[0]) ? transform[0][0] : undefined;
+            const tx = Array.isArray(transform) && Array.isArray(transform[0]) ? transform[0][2] : undefined;
+            const hasNeutralXTransform =
+                this.isFiniteNumber(sx) &&
+                this.isFiniteNumber(tx) &&
+                Math.abs((sx as number) - 1) < 0.02 &&
+                Math.abs(tx as number) < 0.02;
+            if (!hasNeutralXTransform) continue;
+
+            fill.scaleMode = "FILL";
+            delete fill.imageTransform;
+
+            console.log(
+                `[Generator] Normalized image crop -> fill for "${node.name || "Unnamed"}" (${imageSize.width}x${imageSize.height} -> ${nodeWidth}w)`
+            );
+        }
+    }
+
+    private readImageDimensions(filePath: string): { width: number; height: number } | null {
+        try {
+            if (!fs.existsSync(filePath)) return null;
+            const bytes = fs.readFileSync(filePath);
+
+            // PNG signature starts with 0x89 50 4E 47.
+            if (
+                bytes.length >= 24 &&
+                bytes[0] === 0x89 &&
+                bytes[1] === 0x50 &&
+                bytes[2] === 0x4e &&
+                bytes[3] === 0x47
+            ) {
+                const width = bytes.readUInt32BE(16);
+                const height = bytes.readUInt32BE(20);
+                if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return null;
+                return { width, height };
+            }
+
+            // JPEG signature starts with 0xFF 0xD8.
+            if (bytes.length >= 4 && bytes[0] === 0xff && bytes[1] === 0xd8) {
+                let offset = 2;
+                while (offset + 9 < bytes.length) {
+                    if (bytes[offset] !== 0xff) {
+                        offset++;
+                        continue;
+                    }
+                    const marker = bytes[offset + 1];
+                    // Skip padding / restart markers.
+                    if (marker === 0xff || marker === 0x00) {
+                        offset++;
+                        continue;
+                    }
+                    // Standalone markers without payload.
+                    if (marker >= 0xd0 && marker <= 0xd9) {
+                        offset += 2;
+                        continue;
+                    }
+
+                    const segmentLength = bytes.readUInt16BE(offset + 2);
+                    if (segmentLength < 2 || offset + 2 + segmentLength > bytes.length) break;
+
+                    const isSof =
+                        (marker >= 0xc0 && marker <= 0xc3) ||
+                        (marker >= 0xc5 && marker <= 0xc7) ||
+                        (marker >= 0xc9 && marker <= 0xcb) ||
+                        (marker >= 0xcd && marker <= 0xcf);
+                    if (isSof && offset + 8 < bytes.length) {
+                        const height = bytes.readUInt16BE(offset + 5);
+                        const width = bytes.readUInt16BE(offset + 7);
+                        if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return null;
+                        return { width, height };
+                    }
+
+                    offset += 2 + segmentLength;
+                }
+            }
+
+            return null;
+        } catch (_err) {
+            return null;
+        }
     }
 
     private generateComponentCode(data: SerializedNode): string {

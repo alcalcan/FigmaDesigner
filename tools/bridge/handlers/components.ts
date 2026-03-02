@@ -2,6 +2,48 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 
+interface ComponentDeleteTarget {
+    className: string;
+    relativePath: string;
+}
+
+function isComponentSourceFile(fileName: string): boolean {
+    if (!fileName.endsWith('.ts')) return false;
+    if (!/^[A-Za-z]/.test(fileName)) return false;
+    if (fileName === 'index.ts' || fileName === 'BaseComponent.ts' || fileName === 'Placeholder.ts') return false;
+    if (fileName.includes('Helpers') || fileName.includes('JsonReconstructor')) return false;
+    return true;
+}
+
+function collectComponentDeleteTargets(rootDir: string, componentsRoot: string): ComponentDeleteTarget[] {
+    const targets: ComponentDeleteTarget[] = [];
+    if (!fs.existsSync(rootDir)) return targets;
+
+    const walk = (dir: string) => {
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const entryPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                walk(entryPath);
+                continue;
+            }
+            if (!entry.isFile() || !isComponentSourceFile(entry.name)) continue;
+
+            const source = fs.readFileSync(entryPath, 'utf8');
+            const classMatch = source.match(/export\s+class\s+([A-Za-z0-9_]+)/);
+            if (!classMatch) continue;
+
+            targets.push({
+                className: classMatch[1],
+                relativePath: path.relative(componentsRoot, entryPath).replace(/\\/g, '/').replace(/\.ts$/, '')
+            });
+        }
+    };
+
+    walk(rootDir);
+    return targets;
+}
+
 export function handleListComponents(req: http.IncomingMessage, res: http.ServerResponse) {
     try {
         const componentsDir = path.join(process.cwd(), 'components');
@@ -201,13 +243,13 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
             if (type === 'presentation') rootDir = 'presentations';
             if (type === 'flow') rootDir = 'flows';
 
-            const baseDir = path.join(process.cwd(), rootDir);
-            const fullPath = path.join(baseDir, folder);
+            const baseDir = path.resolve(process.cwd(), rootDir);
+            const fullPath = path.resolve(baseDir, folder);
 
             // Registry is always in components/index.ts
             const registryPath = path.join(process.cwd(), 'components', 'index.ts');
 
-            if (!fullPath.startsWith(baseDir)) {
+            if (fullPath === baseDir || (!fullPath.startsWith(baseDir + path.sep) && fullPath !== baseDir)) {
                 res.writeHead(403);
                 res.end(JSON.stringify({ error: "Invalid path" }));
                 return;
@@ -265,13 +307,40 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
                 }
             }
 
-            // 2. Cascade Delete: Cleanup source extraction project folder
+            // 2. Cleanup usages where deleted components are instantiated/imported.
+            if (type === 'component') {
+                try {
+                    const componentsRoot = path.join(process.cwd(), 'components');
+                    const deleteTargets = collectComponentDeleteTargets(fullPath, componentsRoot);
+                    if (deleteTargets.length > 0) {
+                        const servicePath = require.resolve('../server_tools/CleaningService');
+                        delete require.cache[servicePath];
+                        const { CleaningService } = require('../server_tools/CleaningService');
+                        const cleaner = new CleaningService();
+                        const touchedPages = new Set<string>();
+
+                        for (const target of deleteTargets) {
+                            const { updatedFiles } = cleaner.cleanup(target.className, target.relativePath);
+                            updatedFiles.forEach((filePath: string) => touchedPages.add(filePath));
+                        }
+
+                        if (touchedPages.size > 0) {
+                            console.log(`[Delete Folder] Cleaned ${deleteTargets.length} components from ${touchedPages.size} pages.`);
+                        }
+                    }
+                } catch (cleanupErr) {
+                    console.warn("[Delete Folder] CleaningService execution failed:", cleanupErr);
+                }
+            }
+
+            // 3. Cascade Delete: Cleanup source extraction project folder
             // Only relevant for Components usually, or if pages/slides follow same structure.
             // Assuming extraction uses same folder name at root of tools/extraction?
             // Existing logic assumed folder name matches extraction folder name.
             try {
-                const extractionFolder = path.join(process.cwd(), 'tools', 'extraction', folder);
-                if (fs.existsSync(extractionFolder)) {
+                const extractionRoot = path.resolve(process.cwd(), 'tools', 'extraction');
+                const extractionFolder = path.resolve(extractionRoot, folder);
+                if (extractionFolder.startsWith(extractionRoot + path.sep) && fs.existsSync(extractionFolder)) {
                     fs.rmSync(extractionFolder, { recursive: true, force: true });
                     console.log(`[Delete Folder] Cascade: Removed extraction folder: ${folder}`);
                 }
@@ -279,7 +348,7 @@ export function handleDeleteComponentFolder(req: http.IncomingMessage, res: http
                 console.warn("[Delete Folder] Cascade extraction cleanup failed:", extractErr);
             }
 
-            // 3. Delete Directory
+            // 4. Delete Directory
             fs.rmSync(fullPath, { recursive: true, force: true });
             console.log(`Deleted ${type} folder: ${folder}`);
 

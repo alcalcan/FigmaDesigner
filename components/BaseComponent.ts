@@ -18,7 +18,7 @@ export interface ComponentProps {
 export interface NodeDefinition {
   type: "FRAME" | "TEXT" | "VECTOR" | "RECTANGLE" | "ELLIPSE" | "LINE" | "STAR" | "POLYGON" | "INSTANCE" | "COMPONENT" | "GROUP" | "BOOLEAN_OPERATION";
   name?: string;
-  props?: Record<string, any> & {
+  props?: Record<string, unknown> & {
     richTextSpans?: { start: number; end: number; font?: FontName; fills?: Paint[]; fontSize?: number }[];
     arcData?: { startingAngle: number; endingAngle: number; innerRadius: number };
   };
@@ -659,8 +659,52 @@ export abstract class BaseComponent {
         } catch (e) { /* ignore */ }
       }
 
-      if (def.layoutProps.constraints && "constraints" in node) {
+      // Constraints are meaningful for ABSOLUTE children and non-auto-layout parents.
+      // Applying SCALE constraints to in-flow auto-layout children can trigger extreme resizing.
+      const parentIsAutoLayout = !!(
+        node.parent &&
+        "layoutMode" in node.parent &&
+        (node.parent as FrameNode).layoutMode !== "NONE"
+      );
+      const inFlowAutoLayoutChild = parentIsAutoLayout &&
+        ("layoutPositioning" in node ? (node as LayoutMixin).layoutPositioning !== "ABSOLUTE" : true);
+      if (def.layoutProps.constraints && "constraints" in node && !inFlowAutoLayoutChild) {
         (node as ConstraintMixin).constraints = def.layoutProps.constraints;
+      }
+
+      // Runtime safety net for pathological size explosions observed in certain captures:
+      // if an image-filled node is many times larger than its captured layout dimensions,
+      // restore captured size to avoid giant horizontal strips.
+      if (
+        "fills" in node &&
+        Array.isArray((node as GeometryMixin).fills) &&
+        typeof def.layoutProps.width === "number" &&
+        Number.isFinite(def.layoutProps.width) &&
+        def.layoutProps.width > 0
+      ) {
+        const paints = (node as GeometryMixin).fills as ReadonlyArray<Paint>;
+        const hasImageFill = paints.some(p => p?.type === "IMAGE");
+        const expectedW = def.layoutProps.width;
+        const expectedH = (typeof def.layoutProps.height === "number" && Number.isFinite(def.layoutProps.height) && def.layoutProps.height > 0)
+          ? def.layoutProps.height
+          : node.height;
+        const widthBlown = node.width > Math.max(expectedW * 4, expectedW + 2000);
+        const heightBlown = node.height > Math.max(expectedH * 4, expectedH + 2000);
+
+        if (hasImageFill && (widthBlown || heightBlown) && "resizeWithoutConstraints" in node) {
+          try {
+            node.resizeWithoutConstraints(Math.max(expectedW, 0.01), Math.max(expectedH, node.type === "LINE" ? 0 : 0.01));
+            if (def.layoutProps.relativeTransform) {
+              applySizeAndTransform(node as SceneNode & LayoutMixin, {
+                relativeTransform: def.layoutProps.relativeTransform,
+                preserveAutoLayoutTranslation: def.layoutProps.preserveAutoLayoutTranslation
+              });
+            }
+            console.warn(`[BaseComponent] Normalized pathological size on ${def.name || def.type}: ${node.width}x${node.height} -> ${expectedW}x${expectedH}`);
+          } catch (resizeErr) {
+            console.warn(`[BaseComponent] Failed pathological-size normalization for ${def.name || def.type}`, resizeErr);
+          }
+        }
       }
 
       const parentIsGrid = !!(

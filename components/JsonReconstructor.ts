@@ -844,7 +844,16 @@ export class JsonReconstructor extends BaseComponent {
             }
 
             // 3. Layout Positioning (Child Properties)
-            if ("constraints" in node && data.constraints) {
+            const constraintParent = parent ?? node.parent;
+            const parentIsAutoLayoutForConstraints = !!(
+                constraintParent &&
+                "layoutMode" in constraintParent &&
+                (constraintParent as FrameNode).layoutMode !== "NONE"
+            );
+            const inFlowAutoLayoutChildForConstraints =
+                parentIsAutoLayoutForConstraints &&
+                (data.layoutPositioning || "AUTO") !== "ABSOLUTE";
+            if ("constraints" in node && data.constraints && !inFlowAutoLayoutChildForConstraints) {
                 try {
                     node.constraints = data.constraints;
                 } catch (e) {
@@ -947,6 +956,41 @@ export class JsonReconstructor extends BaseComponent {
                     const deltaH = Math.abs(node.height - data.height);
                     if (deltaW > 0.1 || deltaH > 0.1) {
                         node.resizeWithoutConstraints(Math.max(data.width, 0.01), Math.max(data.height, 0.01));
+                    }
+                }
+            }
+
+            // Runtime safety net: guard against pathological size expansion on image-backed nodes.
+            if (
+                "fills" in node &&
+                Array.isArray((node as GeometryMixin).fills) &&
+                typeof data.width === "number" &&
+                Number.isFinite(data.width) &&
+                data.width > 0
+            ) {
+                const paints = (node as GeometryMixin).fills as ReadonlyArray<Paint>;
+                const hasImageFill = paints.some(p => p?.type === "IMAGE");
+                const expectedW = data.width;
+                const expectedH = (typeof data.height === "number" && Number.isFinite(data.height) && data.height > 0)
+                    ? data.height
+                    : node.height;
+                const widthBlown = node.width > Math.max(expectedW * 4, expectedW + 2000);
+                const heightBlown = node.height > Math.max(expectedH * 4, expectedH + 2000);
+
+                if (hasImageFill && (widthBlown || heightBlown) && "resizeWithoutConstraints" in node) {
+                    try {
+                        node.resizeWithoutConstraints(Math.max(expectedW, 0.01), Math.max(expectedH, node.type === "LINE" ? 0 : 0.01));
+                        if (data.relativeTransform) {
+                            applySizeAndTransform(node as SceneNode & LayoutMixin, {
+                                width: expectedW,
+                                height: expectedH,
+                                relativeTransform: data.relativeTransform as T2x3,
+                                rotation: data.rotation
+                            });
+                        }
+                        console.warn(`[JsonReconstructor] Normalized pathological size on ${data.name || data.type}`);
+                    } catch (resizeErr) {
+                        console.warn(`[JsonReconstructor] Failed pathological-size normalization for ${data.name || data.type}`, resizeErr);
                     }
                 }
             }
