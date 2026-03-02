@@ -50,8 +50,11 @@ export class StatRow extends BaseComponent {
                     "strokes": [],
                     "effects": [],
                     "cornerRadius": 14,
-                    "layoutSizingHorizontal": "HUG",
+                    "layoutSizingHorizontal": "FIXED",
                     "layoutSizingVertical": "HUG"
+                },
+                "layoutProps": {
+                    "width": 48, "height": 28
                 },
                 "children": [
                     {
@@ -64,7 +67,7 @@ export class StatRow extends BaseComponent {
                             "layoutAlign": "STRETCH", "layoutGrow": 0,
                             "characters": val, "fontSize": 24,
                             "textCase": "ORIGINAL", "textDecoration": "NONE",
-                            "textAlignHorizontal": isLeft ? "RIGHT" : "LEFT", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
+                            "textAlignHorizontal": "CENTER", "textAlignVertical": "TOP", "textAutoResize": "HEIGHT",
                             "paragraphSpacing": 0, "paragraphIndent": 0,
                             "fills": [
                                 {
