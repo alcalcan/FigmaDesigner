@@ -5,12 +5,12 @@ import { StatRow } from "./StatRow";
 import IMG_UCL_Newsletter_Header_Stats_img_5_png from "././assets/UCL_Newsletter_Header_Stats_img_5.png";
 import IMG_UCL_Newsletter_Header_Stats_img_3_png from "././assets/UCL_Newsletter_Header_Stats_img_3.png";
 
-const statsData = [
-    { label: "Won", val1: "3", val2: "11", bar1Width: 155.1897, bar2Width: 154, showTail1: false, showTail2: false },
-    { label: "Drawn", val1: "4", val2: "9", bar1Width: 89.1897, bar2Width: 220, showTail1: false, showTail2: false },
-    { label: "Lost", val1: "4", val2: "1", bar1Width: 223.1897, bar2Width: 86, leftBarHeight: 4, showTail1: false, showTail2: true },
-    { label: "Goals", val1: "9", val2: "14", bar1Width: 109.1897, bar2Width: 200, leftBarHeight: 4, showTail1: false, showTail2: true },
-    { label: "Goals conceded", val1: "11", val2: "14", bar1Width: 142.1897, bar2Width: 167, leftBarHeight: 4, showTail1: false, showTail2: true },
+const statsData: any[] = [
+    { label: "Won", val1: "3", val2: "11", bar1Width: 155.1897, bar2Width: 154, variant: "highlight", highlight1: false, highlight2: true },
+    { label: "Drawn", val1: "4", val2: "9", bar1Width: 89.1897, bar2Width: 220, variant: "highlight", highlight1: false, highlight2: true },
+    { label: "Lost", val1: "4", val2: "1", bar1Width: 223.1897, bar2Width: 86, leftBarHeight: 4, variant: "highlight", highlight1: false, highlight2: true },
+    { label: "Goals", val1: "9", val2: "14", bar1Width: 109.1897, bar2Width: 200, leftBarHeight: 4, variant: "highlight", highlight1: false, highlight2: true },
+    { label: "Goals conceded", val1: "11", val2: "14", bar1Width: 142.1897, bar2Width: 167, leftBarHeight: 4, variant: "highlight", highlight1: true, highlight2: false },
 ];
 
 export class StatsTable extends BaseComponent {

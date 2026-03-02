@@ -35,6 +35,7 @@ Because the component is heavily modularized, updating a specific visual element
 - **Need to change the title or its typography?** Go to `HeaderTitle.ts`.
 - **Need to change the fonts or colors of the "See all stats" button?** Go to `StatsButton.ts`.
 - **Need to adjust the padding of the statistics data rows?** Go to `StatsTable.ts` or `StatRow.ts`.
+- **Need to switch between "Tail" and "Highlight" stat variations?** In `StatsTable.ts`, change the `variant` property in the `statsData` objects to either `"tail"` (default) or `"highlight"`. Use `highlight1: true/false` and `highlight2: true/false` to toggle the highlight state per side.
 
 ### How to Build a Header
 
