@@ -488,6 +488,7 @@ export { SponsorStripDemo } from "../pages/UEFA_web/SponsorStripDemo";
 export { SponsorStripDemo_Curated } from "../pages/UEFA_web/SponsorStripDemo_Curated";
 export { Sporting_CP } from "./Football_Crests/Sporting_CP/Sporting_CP";
 export { StatRow } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/StatRow";
+export { StatsTable } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/StatsTable";
 export { Sttutgart } from "./Football_Crests/Sttutgart/Sttutgart";
 export { Sturm_Graz } from "./Football_Crests/Sturm_Graz/Sturm_Graz";
 export { SubSection_collapsed } from "./UEFA_Academy_online/SubSection/SubSection_collapsed";
