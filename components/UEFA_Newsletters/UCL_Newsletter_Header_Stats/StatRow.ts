@@ -28,7 +28,7 @@ export class StatRow extends BaseComponent {
                     "isMask": false, "maskType": "ALPHA", "clipsContent": true,
                     "layoutMode": "VERTICAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                     "paddingTop": 2, "paddingRight": 12, "paddingBottom": 2, "paddingLeft": 12,
-                    "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
+                    "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
                     "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
                     "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                     "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
