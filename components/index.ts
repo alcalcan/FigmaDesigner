@@ -515,6 +515,7 @@ export { TreeViewDemo } from "../pages/Alex_CookBook/TreeViewDemo";
 export { Tweente } from "./Football_Crests/Tweente/Tweente";
 export { UCL_Newsletter_Header } from "./UEFA_Newsletters/UCL_Newsletter_Header/UCL_Newsletter_Header";
 export { UCL_Newsletter_Header_Stats } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/UCL_Newsletter_Header_Stats";
+export { UCLBackground } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/UCLBackground";
 export { UEFA_Academy_online_CourseDetails } from "../pages/UEFA_Academy_online/UEFA_Academy_online_CourseDetails";
 export { UEFA_Academy_online_Notifications } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Notifications";
 export { UEFA_Academy_online_Summary } from "../pages/UEFA_Academy_online/UEFA_Academy_online_Summary";
