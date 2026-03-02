@@ -237,6 +237,7 @@ export { Header } from "./UEFA_Academy_online/Header/Header";
 export { Header_Sponsor_Banner_Demo } from "../pages/UEFA_web/Header_Sponsor_Banner_Demo";
 export { Header_SponsorStrip_Combinations } from "../pages/UEFA_web/Header_SponsorStrip_Combinations";
 export { HeaderFooter } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/HeaderFooter";
+export { HeaderTitle } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/HeaderTitle";
 export { hero } from "./GQ_2026/hero/hero";
 export { Hertha_Berlin } from "./Football_Crests/Hertha_Berlin/Hertha_Berlin";
 export { Hoffenheim } from "./Football_Crests/Hoffenheim/Hoffenheim";
