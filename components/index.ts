@@ -127,6 +127,7 @@ export { Card__Single_Card_Red } from "./UEFA_icons/Card__Single_Card_Red/Card__
 export { cards_row } from "./UEFA_Academy_online/cards_row/cards_row";
 export { Cards_Row_2 } from "./cards_disciplinary/Cards_Row_2/Cards_Row_2";
 export { CardsDemo } from "../pages/Alex_CookBook/CardsDemo";
+export { CardSection_Title_Nav } from "./UEFA_Academy/Programmes_Section/CardSection_Title_Nav";
 export { Celta_de_Vigo } from "./Football_Crests/Celta_de_Vigo/Celta_de_Vigo";
 export { Celtic_Glasgow } from "./Football_Crests/Celtic_Glasgow/Celtic_Glasgow";
 export { checkbox } from "./Alex_CookBook/checkbox/checkbox";
@@ -219,6 +220,7 @@ export { Football___time_whistle } from "./UEFA_icons/Football___time_whistle/Fo
 export { Football___var } from "./UEFA_icons/Football___var/Football___var";
 export { Football___var_progress } from "./UEFA_icons/Football___var_progress/Football___var_progress";
 export { Football___var_resolution } from "./UEFA_icons/Football___var_resolution/Football___var_resolution";
+export { Footer } from "./UEFA_Academy/Footer/Footer";
 export { Frame_22310 } from "./iris_tree_view_v2/Frame_22310/Frame_22310";
 export { Frankfurt } from "./Football_Crests/Frankfurt/Frankfurt";
 export { Galatasaray } from "./Football_Crests/Galatasaray/Galatasaray";
@@ -233,9 +235,11 @@ export { GQ_Banner_Shirts_Aligned } from "./Alex_CookBook/GQ_Banner_Shirts_Align
 export { Granada } from "./Football_Crests/Granada/Granada";
 export { graph_chart } from "./Alex_CookBook/graph_chart/graph_chart";
 export { GraphChartsDemo } from "../pages/Alex_CookBook/GraphChartsDemo";
-export { Header } from "./UEFA_Academy_online/Header/Header";
 export { Header_Sponsor_Banner_Demo } from "../pages/UEFA_web/Header_Sponsor_Banner_Demo";
 export { Header_SponsorStrip_Combinations } from "../pages/UEFA_web/Header_SponsorStrip_Combinations";
+export { Header as Header_UEFA_Academy } from "./UEFA_Academy/Header/Header";
+export { Header as Header_UEFA_Academy_online } from "./UEFA_Academy_online/Header/Header";
+export { HeaderBanner } from "./UEFA_Academy/HeaderBanner/HeaderBanner";
 export { HeaderFooter } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/HeaderFooter";
 export { HeaderTitle } from "./UEFA_Newsletters/UCL_Newsletter_Header_Stats/HeaderTitle";
 export { hero } from "./GQ_2026/hero/hero";
@@ -351,6 +355,7 @@ export { Lyon } from "./Football_Crests/Lyon/Lyon";
 export { Macabi_Haifa } from "./Football_Crests/Macabi_Haifa/Macabi_Haifa";
 export { Maccabi__Tel_Aviv } from "./Football_Crests/Maccabi__Tel_Aviv/Maccabi__Tel_Aviv";
 export { Madrid } from "./Football_Crests/Madrid/Madrid";
+export { Main_Header } from "./UEFA_Academy/Programmes_Section/Main_Header";
 export { Main_Navigation } from "./UEFA_web/Main_Navigation/Main_Navigation";
 export { Main_Navigation_28 } from "./UEFA_web/Main_Navigation_28/Main_Navigation_28";
 export { Main_Navigation_28_Booking } from "./UEFA_web/Main_Navigation_28_Booking/Main_Navigation_28_Booking";
@@ -366,6 +371,7 @@ export { metric_card_design1 } from "./captures/metric_card_design1/metric_card_
 export { MetricCardsDemo } from "../pages/Alex_CookBook/MetricCardsDemo";
 export { Midtjylland } from "./Football_Crests/Midtjylland/Midtjylland";
 export { Milan } from "./Football_Crests/Milan/Milan";
+export { Mission } from "./UEFA_Academy/Mission/Mission";
 export { modal } from "./Alex_CookBook/modal/modal";
 export { ModalsDemo } from "../pages/Alex_CookBook/ModalsDemo";
 export { Molde } from "./Football_Crests/Molde/Molde";
@@ -408,6 +414,9 @@ export { Product___Flat___Support } from "./UEFA_icons/Product___Flat___Support/
 export { Product___Flat___Trophy } from "./UEFA_icons/Product___Flat___Trophy/Product___Flat___Trophy";
 export { Profile_Card } from "./Alex_CookBook/Profile_Card/Profile_Card";
 export { ProfileCardsDemo } from "../pages/Alex_CookBook/ProfileCardsDemo";
+export { ProgrammeCard } from "./UEFA_Academy/Programmes_Section/ProgrammeCard";
+export { ProgrammesCategorySection } from "./UEFA_Academy/Programmes_Section/ProgrammesCategorySection";
+export { ProgrammesSection } from "./UEFA_Academy/Programmes_Section/ProgrammesSection";
 export { progress_bar } from "./Alex_CookBook/progress_bar/progress_bar";
 export { progress_stepper } from "./Alex_CookBook/progress_stepper/progress_stepper";
 export { ProgressBarDemo } from "../pages/Alex_CookBook/ProgressBarDemo";
@@ -531,6 +540,7 @@ export { UserObservationStickyNote } from "./Miscellaneous/UserObservationSticky
 export { VAR_progress } from "./UEFA_icons/VAR_progress/VAR_progress";
 export { VAR_resolution } from "./UEFA_icons/VAR_resolution/VAR_resolution";
 export { Villarreal } from "./Football_Crests/Villarreal/Villarreal";
+export { Welcome_Section } from "./UEFA_Academy/Welcome_Section/Welcome_Section";
 export { West_Ham } from "./Football_Crests/West_Ham/West_Ham";
 export { Wolfsburg } from "./Football_Crests/Wolfsburg/Wolfsburg";
 export { Wolverhampton } from "./Football_Crests/Wolverhampton/Wolverhampton";
