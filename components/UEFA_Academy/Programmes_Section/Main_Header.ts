@@ -5,8 +5,17 @@ import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseC
 
 
 
+export interface MainHeaderProps extends ComponentProps {
+    title?: string;
+    color?: { r: number, g: number, b: number };
+}
+
 export class Main_Header extends BaseComponent {
-    async create(props: ComponentProps): Promise<SceneNode> {
+    async create(props: MainHeaderProps): Promise<SceneNode> {
+        const title = props.title || "Explore our programmes";
+        const textColor = props.color || { "r": 0.01568627543747425, "g": 0.04313725605607033, "b": 0.10588235408067703 };
+        const dividerColor = props.color || { "r": 0.800000011920929, "g": 0.800000011920929, "b": 0.800000011920929 };
+
         const structure: NodeDefinition = {
             "type": "FRAME",
             "name": "Main Header",
@@ -37,20 +46,20 @@ export class Main_Header extends BaseComponent {
             "children": [
                 {
                     "type": "TEXT",
-                    "name": "Explore our programmes",
+                    "name": title,
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "layoutAlign": "INHERIT", "layoutGrow": 0,
-                        "characters": "Explore our programmes", "fontSize": 36,
+                        "characters": title, "fontSize": 36,
                         "textCase": "UPPER", "textDecoration": "NONE",
                         "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
                         "paragraphSpacing": 0, "paragraphIndent": 0,
                         "fills": [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0.01568627543747425, "g": 0.04313725605607033, "b": 0.10588235408067703 },
+                                "color": textColor,
                                 "boundVariables": {}
                             }
                         ],
@@ -64,12 +73,12 @@ export class Main_Header extends BaseComponent {
                         "richTextSpans": [
                             {
                                 "start": 0,
-                                "end": 22,
+                                "end": title.length,
                                 "font": { "family": "Roboto", "style": "Medium" },
                                 "fills": [
                                     {
                                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                        "color": { "r": 0.01568627543747425, "g": 0.04313725605607033, "b": 0.10588235408067703 },
+                                        "color": textColor,
                                         "boundVariables": {}
                                     }
                                 ],
@@ -96,7 +105,7 @@ export class Main_Header extends BaseComponent {
                         "fills": [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0.800000011920929, "g": 0.800000011920929, "b": 0.800000011920929 },
+                                "color": dividerColor,
                                 "boundVariables": {}
                             }
                         ],

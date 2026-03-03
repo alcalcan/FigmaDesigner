@@ -192,6 +192,7 @@ export { Feren_avaros } from "./Football_Crests/Feren_avaros/Feren_avaros";
 export { Feyenoord } from "./Football_Crests/Feyenoord/Feyenoord";
 export { Fiorentina } from "./Football_Crests/Fiorentina/Fiorentina";
 export { FlowDiagram } from "./Alex_CookBook/miscellaneous/FlowDiagram";
+export { FollowUs } from "./UEFA_Academy/PresidentSection/FollowUs";
 export { Football___away } from "./UEFA_icons/Football___away/Football___away";
 export { Football___card_single_card_red } from "./UEFA_icons/Football___card_single_card_red/Football___card_single_card_red";
 export { Football___card_single_card_yellow } from "./UEFA_icons/Football___card_single_card_yellow/Football___card_single_card_yellow";
@@ -408,6 +409,7 @@ export { PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_010 } from
 export { PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_011 } from "../slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_011";
 export { PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_012 } from "../slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_012";
 export { PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_013 } from "../slides/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Slide_013";
+export { PresidentSection } from "./UEFA_Academy/PresidentSection/PresidentSection";
 export { Product___Flat___Competitions } from "./UEFA_icons/Product___Flat___Competitions/Product___Flat___Competitions";
 export { Product___Flat___Football } from "./UEFA_icons/Product___Flat___Football/Product___Flat___Football";
 export { Product___Flat___Support } from "./UEFA_icons/Product___Flat___Support/Product___Flat___Support";
@@ -415,6 +417,7 @@ export { Product___Flat___Trophy } from "./UEFA_icons/Product___Flat___Trophy/Pr
 export { Profile_Card } from "./Alex_CookBook/Profile_Card/Profile_Card";
 export { ProfileCardsDemo } from "../pages/Alex_CookBook/ProfileCardsDemo";
 export { ProgrammeCard } from "./UEFA_Academy/Programmes_Section/ProgrammeCard";
+export { Programmes_Section } from "./UEFA_Academy/Programmes_Section/Programmes_Section";
 export { ProgrammesCategorySection } from "./UEFA_Academy/Programmes_Section/ProgrammesCategorySection";
 export { ProgrammesSection } from "./UEFA_Academy/Programmes_Section/ProgrammesSection";
 export { progress_bar } from "./Alex_CookBook/progress_bar/progress_bar";
