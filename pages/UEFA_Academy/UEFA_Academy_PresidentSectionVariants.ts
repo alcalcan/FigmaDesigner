@@ -54,6 +54,16 @@ export class UEFA_Academy_PresidentSectionVariants extends BaseDemoPage {
             }
         );
 
+        await this.addSection(
+            root,
+            "5. Stay Connected (Social Only) Variant",
+            "Custom 'Stay Connected' panel housing the Follow Us icons, without card background or text.",
+            async (container) => {
+                const variant5 = await presidentSectionComp.create({ x: 0, y: 0, variant: 'stay-connected-social-only' });
+                container.appendChild(variant5);
+            }
+        );
+
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
 

@@ -9,18 +9,22 @@ import { FollowUs } from "./FollowUs";
 
 
 export interface PresidentSectionProps extends ComponentProps {
-  variant?: 'empty' | 'in-card' | 'outside' | 'stay-connected';
+  variant?: 'empty' | 'in-card' | 'outside' | 'stay-connected' | 'stay-connected-social-only';
 }
 
 export class PresidentSection extends BaseComponent {
   async create(props: PresidentSectionProps): Promise<SceneNode> {
     const variant = props.variant || 'stay-connected';
+    const isSocialOnly = variant === 'stay-connected-social-only';
+    const darkGreen = { r: 0.05, g: 0.35, b: 0.15 };
 
     const followUsNode: NodeDefinition = {
       "type": "COMPONENT",
       "name": "Follow us",
       "component": FollowUs,
-      "props": {},
+      "props": {
+        "variant": variant === 'stay-connected-social-only' ? 'social-only' : 'standard'
+      },
       "layoutProps": {
         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
         "width": 300, "height": 48,
@@ -41,7 +45,7 @@ export class PresidentSection extends BaseComponent {
         "fills": [
           {
             "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-            "color": { "r": 0.800000011920929, "g": 0.800000011920929, "b": 0.800000011920929 },
+            "color": isSocialOnly ? darkGreen : { "r": 0.800000011920929, "g": 0.800000011920929, "b": 0.800000011920929 },
             "boundVariables": {}
           }
         ],
@@ -866,7 +870,8 @@ export class PresidentSection extends BaseComponent {
     if (variant === 'outside') {
       structure.children![1].children!.push(dividerNode);
       structure.children![1].children!.push(followUsNode);
-    } else if (variant === 'stay-connected') {
+    } else if (variant === 'stay-connected' || variant === 'stay-connected-social-only') {
+      const isSocialOnly = variant === 'stay-connected-social-only';
       structure.children![1].children!.push({
         "type": "FRAME",
         "name": "FollowUsCard",
@@ -887,7 +892,7 @@ export class PresidentSection extends BaseComponent {
           "gridColumnCount": 0,
           "gridRowGap": 0,
           "gridColumnGap": 0,
-          "fills": [
+          "fills": isSocialOnly ? [] : [
             {
               "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
               "color": { "r": 1, "g": 1, "b": 1 },
@@ -908,20 +913,20 @@ export class PresidentSection extends BaseComponent {
         },
         "children": [
           {
-            "type": "COMPONENT",
+            "type": "COMPONENT" as const,
             "name": "STAY CONNECTED",
             "component": Main_Header,
             "props": {
               "title": "STAY CONNECTED",
-              "color": { "r": 0, "g": 0.7019608020782471, "b": 0.6901960968971252 }
+              "color": isSocialOnly ? darkGreen : { "r": 0, "g": 0.7019608020782471, "b": 0.6901960968971252 }
             },
             "layoutProps": {
-              "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+              "parentIsAutoLayout": true, "layoutPositioning": "AUTO" as const,
               "width": 986, "height": 64,
-              "relativeTransform": [[1, 0, 145], [0, 1, 32]],
+              "relativeTransform": [[1, 0, 145], [0, 1, 32]] as T2x3,
               "constraints": { "horizontal": "MIN", "vertical": "MIN" }
             }
-          },
+          } as any,
           followUsNode
         ]
       });

@@ -1,16 +1,23 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+export interface FollowUsProps extends ComponentProps {
+    variant?: 'standard' | 'social-only';
+}
 
 export class FollowUs extends BaseComponent {
-    async create(props: ComponentProps): Promise<SceneNode> {
-        const structure: NodeDefinition = {
+    async create(props: FollowUsProps = {}): Promise<SceneNode> {
+        const isSocialOnly = props.variant === 'social-only';
+        const darkGreen = { r: 0.05, g: 0.35, b: 0.15 };
+        const linkedInColor = isSocialOnly ? darkGreen : { "r": 0, "g": 0.4431372582912445, "b": 0.6941176652908325 };
+
+        const structure: any = {
             "type": "FRAME",
             "name": "Follow us",
             "props": {
                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                 "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "layoutMode": "HORIZONTAL", "itemSpacing": 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+                "layoutMode": "HORIZONTAL", "itemSpacing": isSocialOnly ? 24 : 8, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
                 "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
-                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "AUTO",
                 "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
                 "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                 "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
@@ -36,8 +43,8 @@ export class FollowUs extends BaseComponent {
                 "constraints": { "horizontal": "CENTER", "vertical": "MIN" }
             },
             "children": [
-                {
-                    "type": "TEXT",
+                ...(isSocialOnly ? [] : [{
+                    "type": "TEXT" as const,
                     "name": "Follow us",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
@@ -50,7 +57,7 @@ export class FollowUs extends BaseComponent {
                         "paragraphSpacing": 0, "paragraphIndent": 0,
                         "fills": [
                             {
-                                "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "SOLID" as const,
                                 "color": { "r": 0.4000000059604645, "g": 0.4000000059604645, "b": 0.4000000059604645 },
                                 "boundVariables": {}
                             }
@@ -69,7 +76,7 @@ export class FollowUs extends BaseComponent {
                                 "font": { "family": "Roboto", "style": "Medium" },
                                 "fills": [
                                     {
-                                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID" as const,
                                         "color": { "r": 0.4000000059604645, "g": 0.4000000059604645, "b": 0.4000000059604645 },
                                         "boundVariables": {}
                                     }
@@ -81,12 +88,12 @@ export class FollowUs extends BaseComponent {
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                         "width": 240, "height": 36,
-                        "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+                        "relativeTransform": [[1, 0, 0], [0, 1, 0]] as const,
                         "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                     }
-                },
+                }]),
                 {
-                    "type": "FRAME",
+                    "type": "FRAME" as const,
                     "name": "Social / linkedin",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
@@ -106,12 +113,12 @@ export class FollowUs extends BaseComponent {
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                         "width": 48, "height": 48,
-                        "relativeTransform": [[1, 0, 248], [0, 1, 0]],
+                        "relativeTransform": [[1, 0, isSocialOnly ? 0 : 248], [0, 1, 0]] as any,
                         "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                     },
                     "children": [
                         {
-                            "type": "VECTOR",
+                            "type": "VECTOR" as const,
                             "name": "Vector",
                             "props": {
                                 "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
@@ -120,8 +127,8 @@ export class FollowUs extends BaseComponent {
                                 "layoutAlign": "INHERIT", "layoutGrow": 0,
                                 "fills": [
                                     {
-                                        "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                        "color": { "r": 0, "g": 0.4431372582912445, "b": 0.6941176652908325 },
+                                        "visible": true, "opacity": 1, "blendMode": "NORMAL" as const, "type": "SOLID" as const,
+                                        "color": linkedInColor,
                                         "boundVariables": {}
                                     }
                                 ],
@@ -138,12 +145,73 @@ export class FollowUs extends BaseComponent {
                             "layoutProps": {
                                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
                                 "width": 40, "height": 40,
-                                "relativeTransform": [[1, 0, 4], [0, 1, 4]],
+                                "relativeTransform": [[1, 0, 4], [0, 1, 4]] as const,
                                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                             }
                         }
                     ]
-                }
+                },
+                ...(isSocialOnly ? [
+                    {
+                        "type": "FRAME" as const,
+                        "name": "Social / instagram",
+                        "props": {
+                            "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                            "isMask": false, "maskType": "ALPHA", "clipsContent": true,
+                            "layoutMode": "NONE", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+                            "paddingTop": 0, "paddingRight": 0, "paddingBottom": 0, "paddingLeft": 0,
+                            "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                            "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+                            "layoutAlign": "INHERIT", "layoutGrow": 0,
+                            "fills": [],
+                            "strokes": [],
+                            "effects": [],
+                            "cornerRadius": 0,
+                            "layoutSizingHorizontal": "FIXED",
+                            "layoutSizingVertical": "FIXED"
+                        },
+                        "layoutProps": {
+                            "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+                            "width": 48, "height": 48,
+                            "relativeTransform": [[1, 0, 72], [0, 1, 0]] as const,
+                            "constraints": { "horizontal": "MIN", "vertical": "MIN" }
+                        },
+                        "children": [
+                            {
+                                "type": "VECTOR" as const,
+                                "name": "Vector",
+                                "props": {
+                                    "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+                                    "isMask": false, "maskType": "ALPHA",
+                                    "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+                                    "layoutAlign": "INHERIT", "layoutGrow": 0,
+                                    "fills": [
+                                        {
+                                            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+                                            "color": darkGreen,
+                                            "boundVariables": {}
+                                        }
+                                    ],
+                                    "strokes": [],
+                                    "effects": [],
+                                    "cornerRadius": 0,
+                                    "vectorPaths": [
+                                        {
+                                            "windingRule": "EVENODD",
+                                            "data": "M 13.3 10 C 13.3 11.8 11.8 13.3 10 13.3 C 8.2 13.3 6.7 11.8 6.7 10 C 6.7 8.2 8.2 6.7 10 6.7 C 11.8 6.7 13.3 8.2 13.3 10 Z M 0 5.5 C 0 2.5 2.5 0 5.5 0 L 14.5 0 C 17.5 0 20 2.5 20 5.5 L 20 14.5 C 20 17.5 17.5 20 14.5 20 L 5.5 20 C 2.5 20 0 17.5 0 14.5 L 0 5.5 Z M 16.6 4.7 C 16.6 5.3 16 5.9 15.4 5.9 C 14.7 5.9 14.1 5.3 14.1 4.7 C 14.1 4 14.7 3.4 15.4 3.4 C 16 3.4 16.6 4 16.6 4.7 Z M 15.2 10 C 15.2 12.9 12.9 15.2 10 15.2 C 7.1 15.2 4.8 12.9 4.8 10 C 4.8 7.1 7.1 4.8 10 4.8 C 12.9 4.8 15.2 7.1 15.2 10 Z"
+                                        }
+                                    ]
+                                },
+                                "layoutProps": {
+                                    "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
+                                    "width": 40, "height": 40,
+                                    "relativeTransform": [[1, 0, 4], [0, 1, 4]] as const,
+                                    "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
+                                }
+                            }
+                        ]
+                    }
+                ] : [])
             ]
         };
 
