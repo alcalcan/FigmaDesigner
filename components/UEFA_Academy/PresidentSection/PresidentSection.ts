@@ -8,15 +8,83 @@ import { Main_Header } from "../Programmes_Section/Main_Header";
 import { FollowUs } from "./FollowUs";
 
 
+export interface PresidentSectionProps extends ComponentProps {
+  variant?: 'empty' | 'in-card' | 'outside' | 'stay-connected';
+}
+
 export class PresidentSection extends BaseComponent {
-  async create(props: ComponentProps): Promise<SceneNode> {
+  async create(props: PresidentSectionProps): Promise<SceneNode> {
+    const variant = props.variant || 'stay-connected';
+
+    const followUsNode: NodeDefinition = {
+      "type": "COMPONENT",
+      "name": "Follow us",
+      "component": FollowUs,
+      "props": {},
+      "layoutProps": {
+        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+        "width": 300, "height": 48,
+        "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
+      }
+    };
+
+    const dividerNode: NodeDefinition = {
+      "type": "RECTANGLE",
+      "name": "Divider",
+      "props": {
+        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+        "isMask": false, "maskType": "ALPHA",
+        "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+        "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+        "layoutAlign": "STRETCH", "layoutGrow": 0,
+        "fills": [
+          {
+            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+            "color": { "r": 0.800000011920929, "g": 0.800000011920929, "b": 0.800000011920929 },
+            "boundVariables": {}
+          }
+        ],
+        "strokes": [],
+        "effects": [],
+        "cornerRadius": 0,
+        "layoutSizingHorizontal": "FILL",
+        "layoutSizingVertical": "FIXED"
+      },
+      "layoutProps": {
+        "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+        "width": 1276, "height": 1,
+        "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+        "constraints": { "horizontal": "MIN", "vertical": "MIN" }
+      }
+    };
+
+    // Construct the PresidentWordsCard children
+    const presidentWordsCardChildren: any[] = [
+      {
+        "type": "COMPONENT",
+        "name": "PRESIDENT’S MESSAGE",
+        "component": Main_Header,
+        "props": {
+          "title": "PRESIDENT’S MESSAGE",
+          "color": { "r": 0, "g": 0.7019608020782471, "b": 0.6901960968971252 }
+        },
+        "layoutProps": {
+          "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+          "width": 986, "height": 64,
+          "relativeTransform": [[1, 0, 145], [0, 1, 64]],
+          "constraints": { "horizontal": "MIN", "vertical": "MIN" }
+        }
+      }
+    ];
+
     const structure: NodeDefinition = {
       "type": "FRAME",
       "name": "PresidentSection",
       "props": {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-        "layoutMode": "VERTICAL", "itemSpacing": -340, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+        "layoutMode": "VERTICAL", "itemSpacing": variant === 'in-card' ? 0 : -340, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
         "paddingTop": 0, "paddingRight": 202, "paddingBottom": 96, "paddingLeft": 202,
         "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
@@ -417,7 +485,7 @@ export class PresidentSection extends BaseComponent {
                                             "layoutAlign": "INHERIT", "layoutGrow": 0,
                                             "characters": "\"The education programmes run by the UEFA Academy always involve the top professionals in the game with the support of forward-thinking academics. This balance between a theoretical background and professional expertise is a strong feature of our courses. Held at UEFA headquarters and some of the most iconic football facilities in Europe, our programmes will bring you to the heart of European football.\"",
                                             "textCase": "ORIGINAL", "textDecoration": "NONE",
-                                            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
+                                            "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "HEIGHT",
                                             "paragraphSpacing": 0, "paragraphIndent": 0,
                                             "fills": [
                                               {
@@ -790,64 +858,76 @@ export class PresidentSection extends BaseComponent {
                 },
               ]
             },
-            {
-              "type": "FRAME",
-              "name": "FollowUsCard",
-              "props": {
-                "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
-                "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-                "layoutMode": "VERTICAL", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
-                "paddingTop": 32, "paddingRight": 145, "paddingBottom": 32, "paddingLeft": 145,
-                "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
-                "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
-                "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
-                "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-                "layoutAlign": "STRETCH", "layoutGrow": 0,
-                "counterAxisSpacing": 0,
-                "layoutWrap": "NO_WRAP",
-                "counterAxisAlignContent": "AUTO",
-                "gridRowCount": 0,
-                "gridColumnCount": 0,
-                "gridRowGap": 0,
-                "gridColumnGap": 0,
-                "fills": [
-                  {
-                    "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                    "color": { "r": 1, "g": 1, "b": 1 },
-                    "boundVariables": {}
-                  }
-                ],
-                "strokes": [],
-                "effects": [],
-                "cornerRadius": 0,
-                "layoutSizingVertical": "HUG",
-                "layoutSizingHorizontal": "FILL"
-              },
-              "layoutProps": {
-                "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                "width": 1276, "height": 100,
-                "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                "constraints": { "horizontal": "STRETCH", "vertical": "MIN" }
-              },
-              "children": [
-                {
-                  "type": "COMPONENT",
-                  "name": "Follow us",
-                  "component": FollowUs,
-                  "props": {},
-                  "layoutProps": {
-                    "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                    "width": 200, "height": 36,
-                    "relativeTransform": [[1, 0, 0], [0, 1, 0]],
-                    "constraints": { "horizontal": "CENTER", "vertical": "MIN" }
-                  }
-                }
-              ]
-            }
           ]
         }
       ]
     };
+
+    if (variant === 'outside') {
+      structure.children![1].children!.push(dividerNode);
+      structure.children![1].children!.push(followUsNode);
+    } else if (variant === 'stay-connected') {
+      structure.children![1].children!.push({
+        "type": "FRAME",
+        "name": "FollowUsCard",
+        "props": {
+          "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+          "isMask": false, "maskType": "ALPHA", "clipsContent": false,
+          "layoutMode": "VERTICAL", "itemSpacing": 0, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+          "paddingTop": 32, "paddingRight": 145, "paddingBottom": 32, "paddingLeft": 145,
+          "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
+          "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
+          "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
+          "layoutAlign": "STRETCH", "layoutGrow": 0,
+          "counterAxisSpacing": 0,
+          "layoutWrap": "NO_WRAP",
+          "counterAxisAlignContent": "AUTO",
+          "gridRowCount": 0,
+          "gridColumnCount": 0,
+          "gridRowGap": 0,
+          "gridColumnGap": 0,
+          "fills": [
+            {
+              "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
+              "color": { "r": 1, "g": 1, "b": 1 },
+              "boundVariables": {}
+            }
+          ],
+          "strokes": [],
+          "effects": [],
+          "cornerRadius": 0,
+          "layoutSizingVertical": "HUG",
+          "layoutSizingHorizontal": "FILL"
+        },
+        "layoutProps": {
+          "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+          "width": 1276, "height": 100,
+          "relativeTransform": [[1, 0, 0], [0, 1, 0]],
+          "constraints": { "horizontal": "STRETCH", "vertical": "MIN" }
+        },
+        "children": [
+          {
+            "type": "COMPONENT",
+            "name": "STAY CONNECTED",
+            "component": Main_Header,
+            "props": {
+              "title": "STAY CONNECTED",
+              "color": { "r": 0, "g": 0.7019608020782471, "b": 0.6901960968971252 }
+            },
+            "layoutProps": {
+              "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
+              "width": 986, "height": 64,
+              "relativeTransform": [[1, 0, 145], [0, 1, 32]],
+              "constraints": { "horizontal": "MIN", "vertical": "MIN" }
+            }
+          },
+          followUsNode
+        ]
+      });
+    } else if (variant === 'in-card') {
+      structure.children![1].children![0].children!.push(followUsNode);
+    }
 
     const root = await this.renderDefinition(structure);
 

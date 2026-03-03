@@ -9,6 +9,7 @@ import { Content_container } from "../../components/UEFA_Academy_online/Content_
 import { simple_info } from "../../components/UEFA_Academy_online/simple_info/simple_info";
 import { sidebar_filtering } from "../../components/Alex_CookBook/sidebar_filtering/sidebar_filtering";
 import { TitleBar_withCTA } from "../../components/UEFA_Academy_online/TitleBar_withCTA/TitleBar_withCTA";
+import { PresidentSection } from "../../components/UEFA_Academy/PresidentSection/PresidentSection";
 
 export class UEFA_Academy_online_Summary extends BaseComponent {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -36,6 +37,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         const cardComp = new card();
         const sidebarComp = new sidebar_filtering();
         const simpleInfoComp = new simple_info();
+        const presidentSectionComp = new PresidentSection();
 
         // 2. Generate Nodes
         const topBarNode = await topBarComp.create({ x: 0, y: 0 });
@@ -54,6 +56,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         const cardNode = await cardComp.create({ x: 0, y: 0 });
         const sidebarNode = await sidebarComp.create({ x: 0, y: 0 });
         const simpleInfoNode = await simpleInfoComp.create({ x: 0, y: 0, text: "Tip: Use the search bar to find specific resources quickly." });
+        const presidentSectionNode = await presidentSectionComp.create({ x: 0, y: 0, variant: 'in-card' });
 
         // 3. Arrangement within Content Container
 
@@ -95,6 +98,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         root.appendChild(topBarNode);
         root.appendChild(headerNode);
         root.appendChild(container);
+        root.appendChild(presidentSectionNode);
 
         // 5. Layout Alignment & Constraints
 
@@ -109,7 +113,7 @@ export class UEFA_Academy_online_Summary extends BaseComponent {
         container.layoutAlign = "STRETCH";
 
         // All children of the vertical root and content container should fill width
-        [topBarNode, headerNode, container, titleBarNode, simpleInfoNode, mainContentRow].forEach(node => {
+        [topBarNode, headerNode, container, titleBarNode, simpleInfoNode, mainContentRow, presidentSectionNode].forEach(node => {
             if ("layoutAlign" in node) {
                 (node as LayoutMixin).layoutAlign = "STRETCH";
             }

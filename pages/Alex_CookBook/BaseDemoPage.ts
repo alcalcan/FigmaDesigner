@@ -4,7 +4,7 @@ import { Page_title } from "../../components/Alex_CookBook/Page_title/Page_title
 export abstract class BaseDemoPage extends BaseComponent {
     protected pageTitle = new Page_title();
 
-    protected async initPage(name: string, width: number = 1680): Promise<FrameNode> {
+    protected async initPage(name: string, width: number = 1680, hugWidth: boolean = false): Promise<FrameNode> {
         const root = figma.createFrame();
         root.name = name;
         root.layoutMode = "VERTICAL";
@@ -13,11 +13,11 @@ export abstract class BaseDemoPage extends BaseComponent {
         root.paddingLeft = 80;
         root.paddingRight = 80;
         root.paddingBottom = 80;
-        root.resize(width, 100); // Initial height, will grow
-        root.counterAxisSizingMode = "FIXED";
+        root.resize(hugWidth ? 1 : width, 100); // Initial height, will grow
+        root.counterAxisSizingMode = hugWidth ? "AUTO" : "FIXED";
         root.primaryAxisSizingMode = "AUTO";
         root.fills = [{ type: "SOLID", color: { r: 0.949, g: 0.960, b: 0.980 } }]; // #F2F5FA
-        root.layoutAlign = "STRETCH";
+        root.layoutAlign = hugWidth ? "INHERIT" : "STRETCH";
         root.clipsContent = false;
         return root;
     }
@@ -28,7 +28,7 @@ export abstract class BaseDemoPage extends BaseComponent {
             subtitle
         });
         if ("layoutAlign" in titleNode) {
-            titleNode.layoutAlign = "STRETCH";
+            titleNode.layoutAlign = root.counterAxisSizingMode === "AUTO" ? "INHERIT" : "STRETCH";
         }
         root.appendChild(titleNode);
     }
@@ -87,29 +87,36 @@ export abstract class BaseDemoPage extends BaseComponent {
         contentBuilder: (container: FrameNode) => Promise<void>,
         options: { itemSpacing?: number; padding?: number } = {}
     ) {
+        const hugWidth = root.counterAxisSizingMode === "AUTO";
+
         const section = figma.createFrame();
         section.name = `Section: ${title}`;
         section.layoutMode = "VERTICAL";
         section.itemSpacing = 24;
         section.fills = [];
-        section.layoutAlign = "STRETCH";
-        section.counterAxisSizingMode = "FIXED";
         section.clipsContent = false;
         root.appendChild(section);
 
         // Projected width for immediate height/layout calculations
         const rootPadding = root.paddingLeft + root.paddingRight;
-        const sectionWidth = root.width - rootPadding;
-        section.resize(sectionWidth, 100);
+        const sectionWidth = Math.max(1, root.width - rootPadding);
+
+        if (!hugWidth) {
+            section.resize(sectionWidth, 100);
+        }
+
+        section.layoutAlign = hugWidth ? "INHERIT" : "STRETCH";
+        section.counterAxisSizingMode = hugWidth ? "AUTO" : "FIXED";
+        section.primaryAxisSizingMode = "AUTO";
 
         const headerContainer = figma.createFrame();
         headerContainer.name = "Header";
         headerContainer.layoutMode = "VERTICAL";
         headerContainer.itemSpacing = 8;
         headerContainer.fills = [];
-        headerContainer.layoutAlign = "STRETCH";
+        headerContainer.layoutAlign = hugWidth ? "INHERIT" : "STRETCH";
         headerContainer.primaryAxisSizingMode = "AUTO";
-        headerContainer.counterAxisSizingMode = "FIXED";
+        headerContainer.counterAxisSizingMode = hugWidth ? "AUTO" : "FIXED";
 
         const label = figma.createText();
         const titleFont = { family: "Inter", style: "Semi Bold" };
@@ -118,8 +125,8 @@ export abstract class BaseDemoPage extends BaseComponent {
         label.characters = title;
         label.fontSize = 24;
         label.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        label.layoutAlign = "STRETCH";
-        label.textAutoResize = "WIDTH_AND_HEIGHT";
+        label.layoutAlign = hugWidth ? "INHERIT" : "STRETCH";
+        label.textAutoResize = hugWidth ? "WIDTH_AND_HEIGHT" : "HEIGHT";
         headerContainer.appendChild(label);
 
         const desc = figma.createText();
@@ -131,8 +138,8 @@ export abstract class BaseDemoPage extends BaseComponent {
         }
         desc.fontSize = 16;
         desc.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
-        desc.layoutAlign = "STRETCH";
-        desc.textAutoResize = "WIDTH_AND_HEIGHT";
+        desc.layoutAlign = hugWidth ? "INHERIT" : "STRETCH";
+        desc.textAutoResize = hugWidth ? "WIDTH_AND_HEIGHT" : "HEIGHT";
         headerContainer.appendChild(desc);
 
         section.appendChild(headerContainer);
@@ -142,13 +149,15 @@ export abstract class BaseDemoPage extends BaseComponent {
         previewContainer.layoutMode = "VERTICAL";
         previewContainer.itemSpacing = options.itemSpacing ?? 24;
         previewContainer.fills = [];
-        previewContainer.layoutAlign = "STRETCH";
 
         const padding = options.padding ?? 24;
-        previewContainer.resize(sectionWidth, 100);
+        if (!hugWidth) {
+            previewContainer.resize(sectionWidth, 100);
+        }
 
+        previewContainer.layoutAlign = hugWidth ? "INHERIT" : "STRETCH";
         previewContainer.primaryAxisSizingMode = "AUTO"; // Height = Hug
-        previewContainer.counterAxisSizingMode = "FIXED"; // Width = Fixed (Stretch)
+        previewContainer.counterAxisSizingMode = hugWidth ? "AUTO" : "FIXED"; // Width = Fixed (Stretch)
 
         previewContainer.paddingLeft = padding;
         previewContainer.paddingRight = padding;

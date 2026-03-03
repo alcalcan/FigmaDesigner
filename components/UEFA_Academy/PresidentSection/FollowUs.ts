@@ -44,7 +44,7 @@ export class FollowUs extends BaseComponent {
                         "isMask": false, "maskType": "ALPHA",
                         "strokeWeight": 1, "strokeAlign": "OUTSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
                         "layoutAlign": "INHERIT", "layoutGrow": 0,
-                        "characters": "Follow us", "fontSize": 24,
+                        "characters": "Follow us on LinkedIn", "fontSize": 24,
                         "textCase": "ORIGINAL", "textDecoration": "NONE",
                         "textAlignHorizontal": "LEFT", "textAlignVertical": "CENTER", "textAutoResize": "WIDTH_AND_HEIGHT",
                         "paragraphSpacing": 0, "paragraphIndent": 0,
@@ -61,12 +61,12 @@ export class FollowUs extends BaseComponent {
                         "layoutSizingVertical": "HUG",
                         "letterSpacing": { "unit": "PERCENT", "value": 0 },
                         "lineHeight": { "unit": "PIXELS", "value": 32 },
-                        "font": { "family": "Roboto", "style": "Regular" },
+                        "font": { "family": "Roboto", "style": "Medium" },
                         "richTextSpans": [
                             {
                                 "start": 0,
-                                "end": 9,
-                                "font": { "family": "Roboto", "style": "Regular" },
+                                "end": 21,
+                                "font": { "family": "Roboto", "style": "Medium" },
                                 "fills": [
                                     {
                                         "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
@@ -80,7 +80,7 @@ export class FollowUs extends BaseComponent {
                     },
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 100, "height": 36,
+                        "width": 240, "height": 36,
                         "relativeTransform": [[1, 0, 0], [0, 1, 0]],
                         "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                     }
@@ -105,8 +105,8 @@ export class FollowUs extends BaseComponent {
                     },
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
-                        "width": 36, "height": 36,
-                        "relativeTransform": [[1, 0, 108], [0, 1, 0]],
+                        "width": 48, "height": 48,
+                        "relativeTransform": [[1, 0, 248], [0, 1, 0]],
                         "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                     },
                     "children": [
@@ -137,8 +137,8 @@ export class FollowUs extends BaseComponent {
                             },
                             "layoutProps": {
                                 "parentIsAutoLayout": false, "layoutPositioning": "AUTO",
-                                "width": 30, "height": 30,
-                                "relativeTransform": [[1, 0, 3], [0, 1, 3]],
+                                "width": 40, "height": 40,
+                                "relativeTransform": [[1, 0, 4], [0, 1, 4]],
                                 "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
                             }
                         }
