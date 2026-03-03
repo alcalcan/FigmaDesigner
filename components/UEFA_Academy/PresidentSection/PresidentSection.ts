@@ -84,7 +84,7 @@ export class PresidentSection extends BaseComponent {
       "props": {
         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
         "isMask": false, "maskType": "ALPHA", "clipsContent": false,
-        "layoutMode": "VERTICAL", "itemSpacing": variant === 'in-card' ? 0 : -340, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
+        "layoutMode": "VERTICAL", "itemSpacing": -340, "itemReverseZIndex": false, "strokesIncludedInLayout": false,
         "paddingTop": 0, "paddingRight": 202, "paddingBottom": 96, "paddingLeft": 202,
         "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
@@ -926,6 +926,7 @@ export class PresidentSection extends BaseComponent {
         ]
       });
     } else if (variant === 'in-card') {
+      structure.children![1].children![0].children!.push(dividerNode);
       structure.children![1].children![0].children!.push(followUsNode);
     }
 
