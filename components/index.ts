@@ -4,6 +4,7 @@
 export { AcademyDemoPage } from "../pages/UEFA_Academy/AcademyDemoPage";
 export { AcademyHeader } from "./UEFA_Academy/Header/AcademyHeader";
 export { AcademyHeaderBanner } from "./UEFA_Academy/HeaderBanner/AcademyHeaderBanner";
+export { AcademyMission } from "./UEFA_Academy/Mission/AcademyMission";
 export { accordion } from "./Alex_CookBook/accordion/accordion";
 export { Action___action_copy } from "./UEFA_icons/Action___action_copy/Action___action_copy";
 export { Action___action_delete } from "./UEFA_icons/Action___action_delete/Action___action_delete";

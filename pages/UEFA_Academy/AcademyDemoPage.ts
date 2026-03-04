@@ -1,6 +1,7 @@
 import { ComponentProps } from "../../components/BaseComponent";
 import { AcademyHeader } from "../../components/UEFA_Academy/Header/AcademyHeader";
 import { AcademyHeaderBanner } from "../../components/UEFA_Academy/HeaderBanner/AcademyHeaderBanner";
+import { AcademyMission } from "../../components/UEFA_Academy/Mission/AcademyMission";
 import { BaseDemoPage } from "../Alex_CookBook/BaseDemoPage";
 
 export class AcademyDemoPage extends BaseDemoPage {
@@ -14,6 +15,7 @@ export class AcademyDemoPage extends BaseDemoPage {
 
         const academyHeaderComp = new AcademyHeader();
         const academyHeaderBannerComp = new AcademyHeaderBanner();
+        const academyMissionComp = new AcademyMission();
 
         const header = await academyHeaderComp.create({ x: 0, y: 0 });
         this.enforceComponentWidth(header, 1680);
@@ -39,6 +41,22 @@ export class AcademyDemoPage extends BaseDemoPage {
             "2. Academy Header Banner",
             "Hero banner layout combining heading, supporting copy, CTA, and visual block. Rendered as the real component at 1680 width.",
             banner
+        );
+
+        const mission = await academyMissionComp.create({
+            x: 0,
+            y: 0,
+            title: "ABOUT THE UEFA ACADEMY",
+            description: "Building on UEFA’s professional excellence, the Academy inspires the education of individuals and organisations to continuously elevate football.",
+            buttonLabel: "READ MORE"
+        });
+        this.enforceComponentWidth(mission, 1680);
+        await this.appendHugSection(
+            root,
+            "Section: AcademyMission",
+            "3. Academy Mission Banner",
+            "Mission section with integrated image and full-width gradient overlay contained inside the 1680 x 292 component bounds.",
+            mission
         );
 
         root.x = props.x ?? 0;
