@@ -415,6 +415,7 @@ export { Navigation___Expand } from "./UEFA_icons/Navigation___Expand/Navigation
 export { NavLink_selected_28 } from "./UEFA_web/NavLink_selected_28/NavLink_selected_28";
 export { Newcastle } from "./Football_Crests/Newcastle/Newcastle";
 export { Nice } from "./Football_Crests/Nice/Nice";
+export { Notification_Page } from "./capture_NotificationPage/Notification_Page/Notification_Page";
 export { Olympiacos } from "./Football_Crests/Olympiacos/Olympiacos";
 export { Oporto } from "./Football_Crests/Oporto/Oporto";
 export { OptionsDemo } from "../pages/Alex_CookBook/OptionsDemo";
