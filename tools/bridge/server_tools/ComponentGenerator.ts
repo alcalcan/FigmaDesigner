@@ -952,7 +952,9 @@ export class ${this.componentName} extends BaseComponent {
             }
 
             if (data.text.textCase) code += `if ("textCase" in ${varName}) ${varName}.textCase = "${data.text.textCase}";\n`;
-            if (data.text.textDecoration) code += `if ("textDecoration" in ${varName}) ${varName}.textDecoration = "${data.text.textDecoration}";\n`;
+            if (data.text.textDecoration && (data.text.textDecoration === "NONE" || data.text.textDecoration === "UNDERLINE" || data.text.textDecoration === "STRIKETHROUGH")) {
+                code += `if ("textDecoration" in ${varName}) ${varName}.textDecoration = "${data.text.textDecoration}";\n`;
+            }
 
             if (data.text.paragraphSpacing !== undefined && typeof data.text.paragraphSpacing === 'number') code += `${varName}.paragraphSpacing = ${data.text.paragraphSpacing};\n`;
             if (data.text.paragraphIndent !== undefined && typeof data.text.paragraphIndent === 'number') code += `${varName}.paragraphIndent = ${data.text.paragraphIndent};\n`;

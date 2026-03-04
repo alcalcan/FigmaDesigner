@@ -390,6 +390,7 @@ export abstract class BaseComponent {
         "width", "height", "x", "y", "rotation", // Read-only or handled via resize/transform
         "relativeTransform", "layoutGrow", "layoutAlign", // Handled in layoutProps
         "layoutSizingHorizontal", "layoutSizingVertical", // apply post-attach to avoid invalid FILL errors
+        "layoutPositioning", // apply post-attach only when parent is auto-layout
         "gridRowSpan", "gridColumnSpan", // apply post-attach only when parent is GRID
         "type", "children", "fontWeight" // Read-only or handled explicitly
       ]);
@@ -398,6 +399,13 @@ export abstract class BaseComponent {
       for (const [key, value] of Object.entries(def.props)) {
         if (skippedKeys.has(key)) continue;
         if (value === undefined) continue; // Safety: skip if dynamic prop is undefined
+
+        if (key === "textDecoration") {
+          // Figma only accepts NONE/UNDERLINE/STRIKETHROUGH; captures may include "mixed".
+          if (value !== "NONE" && value !== "UNDERLINE" && value !== "STRIKETHROUGH") {
+            continue;
+          }
+        }
 
         // Special handling for fills/strokes to hydrate paints
         if (key === "fills" || key === "strokes") {
@@ -525,10 +533,15 @@ export abstract class BaseComponent {
       const parentNode = node.parent;
 
       // 1. Set Layout Positioning
-      if (def.layoutProps.layoutPositioning && "layoutPositioning" in node) {
+      const rawLayoutPositioning = def.layoutProps.layoutPositioning ?? def.props?.layoutPositioning;
+      const targetLayoutPositioning =
+        rawLayoutPositioning === "AUTO" || rawLayoutPositioning === "ABSOLUTE"
+          ? rawLayoutPositioning
+          : undefined;
+      if (targetLayoutPositioning && "layoutPositioning" in node) {
         try {
           if (parentNode && "layoutMode" in parentNode && parentNode.layoutMode !== "NONE") {
-            (node as LayoutMixin).layoutPositioning = def.layoutProps.layoutPositioning;
+            (node as LayoutMixin).layoutPositioning = targetLayoutPositioning;
           }
         } catch (e) {
           console.warn(`[BaseComponent] Failed to set layoutPositioning on ${def.name || def.type}`, e);
