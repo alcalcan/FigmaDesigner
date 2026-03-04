@@ -8,11 +8,8 @@ type SceneNodeWithPosition = SceneNode & {
 };
 
 export const LIBRARY_NOTIFICATION_SECTION_PATHS = {
-  TOP_BAR: [0, 0],
-  HEADER: [0, 1],
   TOP_SPACER: [0, 2],
   BODY: [0, 3],
-  FOOTER: [0, 4],
   BODY_CONTENT: [0, 3, 0],
   PREFERENCES_CARD: [0, 3, 0, 0],
   PREFERENCES_CONTENT: [0, 3, 0, 0, 0],

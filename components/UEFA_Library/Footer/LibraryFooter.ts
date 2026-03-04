@@ -1,9 +1,9 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
-import { cloneProposalSection, LIBRARY_SECTION_PATHS } from "../shared/LibrarySourceHelpers";
+import { AcademyFooter } from "../../UEFA_Academy/Footer/AcademyFooter";
 
 export class LibraryFooter extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
-    const node = await cloneProposalSection(LIBRARY_SECTION_PATHS.FOOTER, props);
+    const node = await new AcademyFooter().create(props);
     node.name = "LibraryFooter";
     return node;
   }

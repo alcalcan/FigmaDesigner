@@ -1,12 +1,12 @@
 import { BaseComponent, ComponentProps } from "../../components/BaseComponent";
+import { LibraryFooter } from "../../components/UEFA_Library/Footer/LibraryFooter";
+import { LibraryHeader } from "../../components/UEFA_Library/Header/LibraryHeader";
 import { LibraryNotificationBody } from "../../components/UEFA_Library/Notification_body/LibraryNotificationBody";
 import { LibraryNotificationBodySpacer } from "../../components/UEFA_Library/Notification_body_spacer/LibraryNotificationBodySpacer";
 import { LibraryNotificationBottomBar } from "../../components/UEFA_Library/Notification_bottom_bar/LibraryNotificationBottomBar";
-import { LibraryNotificationFooter } from "../../components/UEFA_Library/Notification_footer/LibraryNotificationFooter";
-import { LibraryNotificationHeader } from "../../components/UEFA_Library/Notification_header/LibraryNotificationHeader";
 import { LibraryNotificationSection } from "../../components/UEFA_Library/Notification_section/LibraryNotificationSection";
-import { LibraryNotificationTopBar } from "../../components/UEFA_Library/Notification_top_bar/LibraryNotificationTopBar";
 import { LibraryPageTitle } from "../../components/UEFA_Library/Page_title/LibraryPageTitle";
+import { LibraryTopBar } from "../../components/UEFA_Library/Top_bar/LibraryTopBar";
 
 export class LibraryNotificationPage extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
@@ -20,12 +20,17 @@ export class LibraryNotificationPage extends BaseComponent {
     root.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
     root.clipsContent = false;
 
-    const topBar = await new LibraryNotificationTopBar().create({ x: 0, y: 0 });
-    const header = await new LibraryNotificationHeader().create({ x: 0, y: 0 });
+    const topBar = await new LibraryTopBar().create({ x: 0, y: 0, sectionLabel: "Resources", showNotificationDot: true });
+    const header = await new LibraryHeader().create({
+      x: 0,
+      y: 0,
+      title: "Notifications",
+      subtitle: "Second line for text description"
+    });
     const spacer = await new LibraryNotificationBodySpacer().create({ x: 0, y: 0 });
     const body = await new LibraryNotificationBody().create({ x: 0, y: 0 });
     await this.replaceBodySections(body);
-    const footer = await new LibraryNotificationFooter().create({ x: 0, y: 0 });
+    const footer = await new LibraryFooter().create({ x: 0, y: 0 });
 
     const sections: SceneNode[] = [topBar, header, spacer, body, footer];
     for (const section of sections) {
