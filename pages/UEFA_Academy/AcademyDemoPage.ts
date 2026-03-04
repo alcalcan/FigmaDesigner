@@ -2,6 +2,10 @@ import { ComponentProps } from "../../components/BaseComponent";
 import { AcademyHeader } from "../../components/UEFA_Academy/Header/AcademyHeader";
 import { AcademyHeaderBanner } from "../../components/UEFA_Academy/HeaderBanner/AcademyHeaderBanner";
 import { AcademyMission } from "../../components/UEFA_Academy/Mission/AcademyMission";
+import { AcademyWelcomeSection } from "../../components/UEFA_Academy/Welcome_Section/AcademyWelcomeSection";
+import { AcademyProgrammesSection } from "../../components/UEFA_Academy/Programmes_Section/AcademyProgrammesSection";
+import { AcademyPresidentSection } from "../../components/UEFA_Academy/PresidentSection/AcademyPresidentSection";
+import { AcademyFooter } from "../../components/UEFA_Academy/Footer/AcademyFooter";
 import { BaseDemoPage } from "../Alex_CookBook/BaseDemoPage";
 
 export class AcademyDemoPage extends BaseDemoPage {
@@ -16,6 +20,10 @@ export class AcademyDemoPage extends BaseDemoPage {
         const academyHeaderComp = new AcademyHeader();
         const academyHeaderBannerComp = new AcademyHeaderBanner();
         const academyMissionComp = new AcademyMission();
+        const academyWelcomeComp = new AcademyWelcomeSection();
+        const academyProgrammesComp = new AcademyProgrammesSection();
+        const academyPresidentComp = new AcademyPresidentSection();
+        const academyFooterComp = new AcademyFooter();
 
         const header = await academyHeaderComp.create({ x: 0, y: 0 });
         this.enforceComponentWidth(header, 1680);
@@ -57,6 +65,54 @@ export class AcademyDemoPage extends BaseDemoPage {
             "3. Academy Mission Banner",
             "Mission section with integrated image and full-width gradient overlay contained inside the 1680 x 292 component bounds.",
             mission
+        );
+
+        const welcome = await academyWelcomeComp.create({
+            x: 0,
+            y: 0,
+            title: "WELCOME TO THE UEFA ACADEMY"
+        });
+        this.enforceComponentWidth(welcome, 1680);
+        await this.appendHugSection(
+            root,
+            "Section: AcademyWelcome",
+            "4. Academy Welcome Section",
+            "Original extracted welcome section component, rendered without demo preview wrappers.",
+            welcome
+        );
+
+        const programmes = await academyProgrammesComp.create({
+            x: 0,
+            y: 0,
+            title: "Explore our programmes"
+        });
+        this.enforceComponentWidth(programmes, 1680);
+        await this.appendHugSection(
+            root,
+            "Section: AcademyProgrammes",
+            "5. Academy Programmes Section",
+            "Original extracted programmes section component with the same captured structure and composition.",
+            programmes
+        );
+
+        const president = await academyPresidentComp.create({ x: 0, y: 0, variant: "stay-connected-social-only" });
+        this.enforceComponentWidth(president, 1680);
+        await this.appendHugSection(
+            root,
+            "Section: AcademyPresident",
+            "6. Academy President Section",
+            "Original extracted President Section using the Stay Connected (Social Only) variant with LinkedIn and Instagram icons in dark green.",
+            president
+        );
+
+        const footer = await academyFooterComp.create({ x: 0, y: 0 });
+        this.enforceComponentWidth(footer, 1680);
+        await this.appendHugSection(
+            root,
+            "Section: AcademyFooter",
+            "7. Academy Footer",
+            "Original extracted footer component with its captured link and branding composition.",
+            footer
         );
 
         root.x = props.x ?? 0;

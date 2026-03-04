@@ -76,7 +76,7 @@ export class CardSection_Title_Nav extends BaseModule.BaseComponent {
                 },
                 {
                     type: "FRAME",
-                    name: "Divider Container",
+                    name: "Cards Section Divider Container",
                     props: {
                         layoutMode: "VERTICAL",
                         layoutAlign: "STRETCH",
@@ -87,10 +87,15 @@ export class CardSection_Title_Nav extends BaseModule.BaseComponent {
                         primaryAxisAlignItems: "CENTER",
                         counterAxisAlignItems: "MIN",
                     },
+                    layoutProps: {
+                        layoutSizingHorizontal: "FILL",
+                        layoutSizingVertical: "HUG",
+                        width: 1
+                    },
                     children: [
                         {
                             type: "RECTANGLE",
-                            name: "Horizontal Divider",
+                            name: "Cards Section Horizontal Divider",
                             props: {
                                 fills: [
                                     {
@@ -103,7 +108,7 @@ export class CardSection_Title_Nav extends BaseModule.BaseComponent {
                                 layoutSizingHorizontal: "FILL",
                                 layoutSizingVertical: "FIXED",
                             },
-                            layoutProps: { height: 1, layoutSizingHorizontal: "FILL" },
+                            layoutProps: { width: 1, height: 1, layoutSizingHorizontal: "FILL" },
                         },
                     ],
                 },

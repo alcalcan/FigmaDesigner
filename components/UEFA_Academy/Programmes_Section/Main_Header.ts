@@ -95,7 +95,7 @@ export class Main_Header extends BaseComponent {
                 },
                 {
                     "type": "RECTANGLE",
-                    "name": "Divider",
+                    "name": "Header Divider",
                     "props": {
                         "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
                         "isMask": false, "maskType": "ALPHA",
