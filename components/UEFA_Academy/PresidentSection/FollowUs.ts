@@ -1,4 +1,4 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent";
 export interface FollowUsProps extends ComponentProps {
     variant?: 'standard' | 'social-only';
 }
@@ -9,7 +9,7 @@ export class FollowUs extends BaseComponent {
         const darkGreen = { r: 0.05, g: 0.35, b: 0.15 };
         const linkedInColor = isSocialOnly ? darkGreen : { "r": 0, "g": 0.4431372582912445, "b": 0.6941176652908325 };
 
-        const structure: any = {
+        const structure: NodeDefinition = {
             "type": "FRAME",
             "name": "Follow us",
             "props": {
@@ -113,7 +113,7 @@ export class FollowUs extends BaseComponent {
                     "layoutProps": {
                         "parentIsAutoLayout": true, "layoutPositioning": "AUTO",
                         "width": 48, "height": 48,
-                        "relativeTransform": [[1, 0, isSocialOnly ? 0 : 248], [0, 1, 0]] as any,
+                        "relativeTransform": [[1, 0, isSocialOnly ? 0 : 248], [0, 1, 0]] as T2x3,
                         "constraints": { "horizontal": "MIN", "vertical": "MIN" }
                     },
                     "children": [

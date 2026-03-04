@@ -58,18 +58,17 @@ export class AcademyMission extends BaseComponent {
                         layoutMode: "VERTICAL",
                         primaryAxisSizingMode: "AUTO",
                         counterAxisSizingMode: "FIXED",
-                        primaryAxisAlignItems: "CENTER",
+                        primaryAxisAlignItems: "MIN",
                         counterAxisAlignItems: "CENTER",
-                        itemSpacing: 24,
+                        itemSpacing: 20,
                         fills: [],
                         layoutSizingHorizontal: "FIXED",
                         layoutSizingVertical: "HUG"
                     },
                     layoutProps: {
                         width: 1584,
-                        height: 196,
                         x: 48,
-                        y: 48,
+                        y: 0,
                         layoutPositioning: "ABSOLUTE"
                     },
                     children: [
@@ -146,8 +145,16 @@ export class AcademyMission extends BaseComponent {
         };
 
         const root = await this.renderDefinition(structure);
+        this.centerMissionContent(root);
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
         return root;
+    }
+
+    private centerMissionContent(root: SceneNode): void {
+        if (root.type !== "FRAME") return;
+        const content = root.findOne((n) => n.type === "FRAME" && n.name === "Content");
+        if (!content || content.type !== "FRAME") return;
+        content.y = Math.round((root.height - content.height) / 2);
     }
 }
