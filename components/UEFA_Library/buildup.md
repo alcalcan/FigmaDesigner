@@ -1,29 +1,66 @@
 # UEFA Library Build-Up Guide
 
-This document mirrors the Academy workflow for rebuilding the UEFA Library screen into reusable components while keeping the original capture untouched.
+## Methodology (Stable - Do Not Change)
 
-## Goals
+This section is the canonical methodology for UEFA Library components.
+Do not rewrite this methodology unless explicitly requested by the user.
 
-- Keep `Proposal_notification` as the untouched source of truth.
-- Split major page blocks into reusable `Library*` components.
-- Expose two card primitives:
-- `LibraryFeatureCard` for the 3 wide cards (image on left).
-- `LibraryArticleCard` for the 4 vertical cards (image on top).
-- Compose everything in a dedicated demo page under `pages/UEFA_Library`.
+### 1) Source Discovery and Capture Reading
+
+We start from the capture/source files only to understand structure, spacing, text, and assets.
+
+- Read source trees and identify component boundaries.
+- Map repeated blocks (cards, filters, rows, pagination, sidebars, banners).
+- Extract text content, typography, spacing, and image/icon assets.
+
+### 2) Component Splitting Strategy
+
+We split the page into standalone, production-facing `Library*` components.
+
+- Each component must be directly renderable by itself.
+- Each component must own its local `assets/` folder when it uses images/SVGs.
+- Repeated UI is implemented as reusable components with typed props (e.g. `cardIndex`, labels).
+
+### 3) Required Coding Style
+
+All active UEFA Library components follow this coding style:
+
+1. Export a `Library*` class that extends `BaseComponent`.
+2. Define typed props interface extending `ComponentProps` where needed.
+3. Prefer `ComponentHelpers` (`createFrame`, `createText`, etc.) for readable structure.
+4. Keep clear method boundaries (`resolveModel`, `buildStructure`, `buildSectionX`).
+5. Use semantic node names (no raw `Frame ####` naming in final output).
+6. Ensure important text nodes have real content.
+7. Render via `await this.renderDefinition(structure)` and set `x/y` from props.
+
+### 4) Composition Rules
+
+- Page-level components compose section components, not raw capture fragments.
+- Shared primitives (`TopBar`, `Header`, `Footer`, cards, sidebar blocks) are reusable.
+- Variant behavior is handled with props, not copy-paste component duplication.
+
+### 5) Fidelity and Content Rules
+
+- Keep all required visible text content from source/capture.
+- Keep expected visual behavior (header overlays, legal footer text, certification label, etc.).
+- Use current year dynamically where required in legal footer copy.
+
+### 6) Validation Rules
+
+Before finalizing:
+
+1. `npm run build` must pass.
+2. No missing critical text in rendered components.
+3. No raw numeric frame naming leakage in final rendered layers.
+4. Assets resolve from component-local asset folders.
 
 ## Folder Strategy
 
-Use this pairing:
-
 - Components: `components/UEFA_Library/...`
 - Demo page: `pages/UEFA_Library/LibraryDemoPage.ts`
-- Full reconstructed page: `pages/UEFA_Library/LibraryLandingPage.ts`
+- Full pages: `pages/UEFA_Library/LibraryLandingPage.ts`, `pages/UEFA_Library/LibraryNotificationPage.ts`
 
-Primary source remains:
-
-- `components/UEFA_Library/Proposal_notification/Proposal_notification.ts`
-
-Reusable split components:
+## Active Library Components
 
 - `Top_bar/LibraryTopBar.ts`
 - `Header/LibraryHeader.ts`
@@ -32,6 +69,7 @@ Reusable split components:
 - `Resources_content/LibraryResourcesContent.ts`
 - `Resources_search_bar/LibraryResourcesSearchBar.ts`
 - `Resources_sidebar/LibraryResourcesSidebar.ts`
+- `Sidebar_subject_filters/LibrarySidebarSubjectFilters.ts`
 - `Resources_pagination/LibraryResourcesPagination.ts`
 - `Library_feature_card/LibraryFeatureCard.ts`
 - `Divider/LibraryDivider.ts`
@@ -41,43 +79,4 @@ Reusable split components:
 - `Library_articles_section/LibraryArticlesSection.ts`
 - `Library_article_card/LibraryArticleCard.ts`
 - `Footer/LibraryFooter.ts`
-
-Shared extraction logic:
-
-- `shared/LibrarySourceHelpers.ts`
-
-## How Splitting Works
-
-- Each `Library*` component clones a targeted subtree from `Proposal_notification` using an index path.
-- Source is rendered once per extraction, cloned, then removed.
-- Result: exact visual fidelity from the capture, with separated reusable components.
-
-## Demo Page Pattern
-
-`LibraryDemoPage` follows the same style as `AcademyDemoPage`:
-
-1. Intro header
-2. Numbered section titles and implementation notes
-3. Real component instances at `1680` width
-4. Separate showcase rows for:
-- 3 wide cards (`LibraryFeatureCard`, `cardIndex`)
-- 4 vertical cards (`LibraryArticleCard`, `cardIndex`)
-5. Dedicated extracted components for search bar, sidebar filters, pagination, divider, and related-resources row/section.
-
-## Full Page Reconstruction
-
-`LibraryLandingPage` rebuilds the full original screen layout (top bar to footer) by composing split `Library*` components with the original spacing/padding structure.
-
-## Rules
-
-- Do not edit `Proposal_notification.ts` when splitting.
-- Keep names prefixed with `Library` for canonical components.
-- Keep the demo page in `pages/UEFA_Library` and section numbering explicit.
-- Prefer reusable card components over duplicated card-specific files.
-
-## Validation Checklist
-
-1. Imports resolve for all new `UEFA_Library` files.
-2. Demo page class compiles and instantiates all sections.
-3. Card components support index-based rendering.
-4. Original source component remains unchanged.
+- Notification-specific sections under `Notification_*`

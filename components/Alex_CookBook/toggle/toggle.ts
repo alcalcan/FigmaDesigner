@@ -3,9 +3,17 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 // SVG Assets
 import SVG_toggle_knob from "./assets/toggle_knob.svg";
 
+export interface ToggleProps extends ComponentProps {
+    isOn?: boolean;
+    trackOnColor?: RGB;
+    trackOffColor?: RGB;
+}
+
 export class toggle extends BaseComponent {
-    async create(props: ComponentProps): Promise<SceneNode> {
+    async create(props: ToggleProps): Promise<SceneNode> {
         const isOn = props.isOn === true;
+        const onColor: RGB = props.trackOnColor ?? { r: 0, g: 0.6352941176, b: 0.5882352941 };
+        const offColor: RGB = props.trackOffColor ?? { r: 0.6, g: 0.6, b: 0.6 };
 
         const structure: NodeDefinition = {
             "type": "FRAME",
@@ -41,13 +49,13 @@ export class toggle extends BaseComponent {
                         "fills": isOn ? [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0, "g": 0.6352941176, "b": 0.5882352941 }, // User specified Green (#00A296)
+                                "color": onColor,
                                 "boundVariables": {}
                             }
                         ] : [
                             {
                                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                                "color": { "r": 0.6, "g": 0.6, "b": 0.6 }, // Gray color
+                                "color": offColor,
                                 "boundVariables": {}
                             }
                         ]

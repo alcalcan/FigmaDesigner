@@ -30,15 +30,15 @@ const ICON_PREFIXES = [
 ];
 
 function isNumericFrameName(name: string): boolean {
-  return /^frame\s+\d+$/i.test(name.trim());
+  return /^frame[\s_-]*\d+$/i.test(name.trim());
 }
 
 function isNumericGroupName(name: string): boolean {
-  return /^group\s+\d+$/i.test(name.trim());
+  return /^group[\s_-]*\d+$/i.test(name.trim());
 }
 
 function isNumericLineName(name: string): boolean {
-  return /^line\s+\d+$/i.test(name.trim());
+  return /^line[\s_-]*\d+$/i.test(name.trim());
 }
 
 function getFirstSignificantText(node: SceneNode): string | null {

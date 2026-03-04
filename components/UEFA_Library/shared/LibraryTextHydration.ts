@@ -16,6 +16,14 @@ async function ensureTextFontLoaded(node: TextNode): Promise<void> {
   await figma.loadFontAsync(node.fontName as FontName);
 }
 
+function isGenericFallbackName(name: string): boolean {
+  const normalized = name.trim().toLowerCase();
+  if (!normalized) return true;
+  if (normalized === "text" || normalized === "label" || normalized === "title" || normalized === "subtitle") return true;
+  if (/^frame\s+\d+$/i.test(normalized)) return true;
+  return false;
+}
+
 export async function hydrateTextFromNodeNames(root: SceneNode): Promise<void> {
   const textNodes: TextNode[] = [];
   collectTextNodes(root, textNodes);
@@ -26,6 +34,7 @@ export async function hydrateTextFromNodeNames(root: SceneNode): Promise<void> {
 
     const fallback = textNode.name?.trim() ?? "";
     if (!fallback || fallback.length < 2) continue;
+    if (isGenericFallbackName(fallback)) continue;
 
     try {
       await ensureTextFontLoaded(textNode);
