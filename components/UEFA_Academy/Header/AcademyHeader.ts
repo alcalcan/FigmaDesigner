@@ -20,11 +20,11 @@ export class AcademyHeader extends BaseComponent {
                 paddingTop: 16,
                 paddingBottom: 16,
                 fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
-                layoutSizingHorizontal: "FILL",
+                layoutSizingHorizontal: "FIXED",
                 layoutSizingVertical: "HUG",
                 layoutAlign: "STRETCH"
             },
-            layoutProps: {},
+            layoutProps: { width: 1680 },
             children: [
                 {
                     type: "FRAME",
