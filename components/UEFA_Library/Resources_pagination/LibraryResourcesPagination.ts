@@ -25,9 +25,23 @@ export class LibraryResourcesPagination extends BaseComponent {
     inner.counterAxisAlignItems = "CENTER";
 
     const icon = "children" in inner ? inner.children.find((child) => child.name === "Icon") : undefined;
-    if (!icon || !("children" in icon) || icon.children.length === 0) return;
+    if (!icon) return;
+
+    if ("layoutMode" in icon && icon.layoutMode !== "NONE") {
+      icon.counterAxisAlignItems = "CENTER";
+      icon.primaryAxisAlignItems = "CENTER";
+    }
+
+    if (!("children" in icon) || icon.children.length === 0) return;
 
     const glyph = icon.children[0];
+    if ("constraints" in glyph) {
+      glyph.constraints = { horizontal: "CENTER", vertical: "CENTER" };
+    }
+    if ("layoutAlign" in glyph) {
+      glyph.layoutAlign = "INHERIT";
+    }
+
     if (!("height" in icon) || !("height" in glyph) || !("y" in glyph)) return;
     glyph.y = Math.max(0, (icon.height - glyph.height) / 2);
   }

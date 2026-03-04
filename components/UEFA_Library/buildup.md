@@ -17,7 +17,7 @@ Use this pairing:
 
 - Components: `components/UEFA_Library/...`
 - Demo page: `pages/UEFA_Library/LibraryDemoPage.ts`
-- Full reconstructed page: `pages/UEFA_Library/LibraryRecreatedPage.ts`
+- Full reconstructed page: `pages/UEFA_Library/LibraryLandingPage.ts`
 
 Primary source remains:
 
@@ -66,7 +66,7 @@ Shared extraction logic:
 
 ## Full Page Reconstruction
 
-`LibraryRecreatedPage` rebuilds the full original screen layout (top bar to footer) by composing split `Library*` components with the original spacing/padding structure.
+`LibraryLandingPage` rebuilds the full original screen layout (top bar to footer) by composing split `Library*` components with the original spacing/padding structure.
 
 ## Rules
 

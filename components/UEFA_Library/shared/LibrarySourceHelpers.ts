@@ -52,21 +52,26 @@ function getChildAtPath(root: SceneNode, path: readonly number[]): SceneNode {
   return current;
 }
 
-export async function cloneProposalSection(path: readonly number[], props: ComponentProps): Promise<SceneNodeWithPosition> {
-  const source = await new Proposal_notification().create({ x: 0, y: 0 });
+let cachedSource: SceneNode | null = null;
 
-  const section = getChildAtPath(source, path);
+export async function cloneProposalSection(path: readonly number[], props: ComponentProps): Promise<SceneNodeWithPosition> {
+  if (!cachedSource) {
+    cachedSource = await new Proposal_notification().create({ x: 0, y: 0 });
+    // Keep it hidden to avoid accidentally ending up visible anywhere if mistakenly parented
+    cachedSource.visible = false;
+  }
+
+  const section = getChildAtPath(cachedSource, path);
   if (!("clone" in (section as unknown as { clone?: () => SceneNode }))) {
-    source.remove();
     throw new Error(`Node "${(section as SceneNode).name}" cannot be cloned.`);
   }
 
   const clone = section.clone() as SceneNodeWithPosition;
-  source.remove();
   normalizeLibraryLayerNames(clone);
 
   clone.x = props.x ?? 0;
   clone.y = props.y ?? 0;
+  clone.visible = true; // Ensure the clone is visible
 
   return clone;
 }
