@@ -432,6 +432,7 @@ export { NavLink_selected_28 } from "./UEFA_web/NavLink_selected_28/NavLink_sele
 export { Newcastle } from "./Football_Crests/Newcastle/Newcastle";
 export { NewsletterTemplate as NewsletterTemplate_captured_UCL_generic_preview } from "./captured_UCL_generic_preview/NewsletterTemplate/NewsletterTemplate";
 export { NewsletterTemplate as NewsletterTemplate_captured_UCL_generic_review } from "./captured_UCL_generic_review/NewsletterTemplate/NewsletterTemplate";
+export { NewsletterTemplate as NewsletterTemplate_captured_UCL_specific_preview } from "./captured_UCL_specific_preview/NewsletterTemplate/NewsletterTemplate";
 export { Nice } from "./Football_Crests/Nice/Nice";
 export { Olympiacos } from "./Football_Crests/Olympiacos/Olympiacos";
 export { Oporto } from "./Football_Crests/Oporto/Oporto";
