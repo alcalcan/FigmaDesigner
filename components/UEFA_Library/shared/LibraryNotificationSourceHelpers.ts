@@ -1,5 +1,5 @@
 import { ComponentProps } from "../../BaseComponent";
-import { Notification_Page } from "../../capture_NotificationPage/Notification_Page/Notification_Page";
+import { Proposal_notification } from "../Proposal_notification/Proposal_notification";
 import { normalizeLibraryLayerNames } from "./LibraryLayerNaming";
 
 type SceneNodeWithPosition = SceneNode & {
@@ -53,7 +53,7 @@ let cachedSource: SceneNode | null = null;
 
 async function getSourceRoot(): Promise<SceneNode> {
   if (!cachedSource) {
-    cachedSource = await new Notification_Page().create({ x: 0, y: 0 });
+    cachedSource = await new Proposal_notification().create({ x: 0, y: 0 });
     cachedSource.visible = false;
   }
 

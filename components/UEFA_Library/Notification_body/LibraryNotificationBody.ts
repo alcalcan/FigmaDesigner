@@ -1,16 +1,10 @@
 import { BaseComponent, ComponentProps } from "../../BaseComponent";
+import { checkbox } from "../../Alex_CookBook/checkbox/checkbox";
+import { input_field } from "../../Alex_CookBook/input_field/input_field";
 import { LibraryPageTitle } from "../Page_title/LibraryPageTitle";
 import { LibraryNotificationSection } from "../Notification_section/LibraryNotificationSection";
-import { cloneNotificationSection, LIBRARY_NOTIFICATION_SECTION_PATHS } from "../shared/LibraryNotificationSourceHelpers";
 import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 
-type ChildContainerNode = SceneNode & ChildrenMixin;
-
-const TITLE_BAR_RELATIVE_PATH = [0, 0, 0, 0] as const;
-const SUBJECT_SECTION_RELATIVE_PATH = [0, 0, 0, 2] as const;
-const ORGANISATIONS_SECTION_RELATIVE_PATH = [0, 0, 0, 3] as const;
-const UPLOADED_BY_SECTION_RELATIVE_PATH = [0, 0, 0, 4] as const;
-const PROGRAMS_SECTION_RELATIVE_PATH = [0, 0, 0, 5] as const;
 const SUBJECT_OPTIONS = [
   { label: "Anti-Doping, Medical and Health", checked: false },
   { label: "Communities", checked: false },
@@ -24,48 +18,53 @@ const SUBJECT_OPTIONS = [
   { label: "Technical and Performance", checked: false }
 ];
 
-function getChildAtPath(root: SceneNode, path: readonly number[]): SceneNode {
-  let current: SceneNode = root;
-
-  for (const index of path) {
-    if (!("children" in current)) {
-      throw new Error(`Node "${current.name}" has no children at path index ${index}.`);
-    }
-
-    const child = current.children[index];
-    if (!child) {
-      throw new Error(`Missing child index ${index} on node "${current.name}".`);
-    }
-
-    current = child;
-  }
-
-  return current;
-}
-
 export class LibraryNotificationBody extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
-    const node = await cloneNotificationSection(LIBRARY_NOTIFICATION_SECTION_PATHS.BODY, props);
-    const titleBarParent = getChildAtPath(node, TITLE_BAR_RELATIVE_PATH.slice(0, -1)) as ChildContainerNode;
-    const titleBarIndex = TITLE_BAR_RELATIVE_PATH[TITLE_BAR_RELATIVE_PATH.length - 1];
-    const oldTitleBar = titleBarParent.children[titleBarIndex];
-    const rebuiltTitleBar = await new LibraryPageTitle().create({
+    const root = figma.createFrame();
+    root.name = "LibraryNotificationBody";
+    root.layoutMode = "VERTICAL";
+    root.primaryAxisSizingMode = "AUTO";
+    root.counterAxisSizingMode = "FIXED";
+    root.counterAxisAlignItems = "CENTER";
+    root.itemSpacing = 0;
+    root.fills = [];
+    root.resize(1680, 100);
+
+    const content = figma.createFrame();
+    content.name = "NotificationBodyContent";
+    content.layoutMode = "VERTICAL";
+    content.primaryAxisSizingMode = "AUTO";
+    content.counterAxisSizingMode = "FIXED";
+    content.counterAxisAlignItems = "MIN";
+    content.itemSpacing = 24;
+    content.paddingTop = 0;
+    content.paddingRight = 0;
+    content.paddingBottom = 56;
+    content.paddingLeft = 0;
+    content.fills = [];
+    content.resize(1440, 100);
+
+    const titleBar = await new LibraryPageTitle().create({
       variant: "notification",
       title: "Notification preferences",
       subtitle: "Choose what you want to receive updates about",
-      width: 1392,
+      width: 1440,
       paddingTop: 0,
       paddingRight: 0,
       paddingBottom: 0,
       paddingLeft: 0
     });
-    rebuiltTitleBar.name = "NotificationTitleBar";
-    titleBarParent.insertChild(titleBarIndex, rebuiltTitleBar);
-    oldTitleBar.remove();
+    titleBar.name = "NotificationTitleBar";
 
-    const sectionParent = getChildAtPath(node, SUBJECT_SECTION_RELATIVE_PATH.slice(0, -1)) as ChildContainerNode;
-    const sectionIndex = SUBJECT_SECTION_RELATIVE_PATH[SUBJECT_SECTION_RELATIVE_PATH.length - 1];
-    const oldSubjectSection = sectionParent.children[sectionIndex];
+    const divider = figma.createRectangle();
+    divider.name = "NotificationDivider";
+    divider.resize(1440, 1);
+    divider.fills = [{
+      type: "SOLID",
+      color: { r: 0.8901960849761963, g: 0.9098039269447327, b: 0.9176470637321472 }
+    }];
+    divider.strokes = [];
+
     const subjectSection = await new LibraryNotificationSection().create({
       title: "Subject",
       expanded: true,
@@ -75,50 +74,90 @@ export class LibraryNotificationBody extends BaseComponent {
       options: SUBJECT_OPTIONS
     });
     subjectSection.name = "SubjectNotificationSection";
-    sectionParent.insertChild(sectionIndex, subjectSection);
-    oldSubjectSection.remove();
 
-    await this.replaceSection(node, ORGANISATIONS_SECTION_RELATIVE_PATH, {
+    const organisationsSection = await new LibraryNotificationSection().create({
       title: "Organisations",
       expanded: false,
       selectedLabel: "Organisations",
       selectedCount: 0,
       showChevronButton: true
-    }, "OrganisationsNotificationSection");
+    });
+    organisationsSection.name = "OrganisationsNotificationSection";
 
-    await this.replaceSection(node, UPLOADED_BY_SECTION_RELATIVE_PATH, {
+    const uploadedBySection = await new LibraryNotificationSection().create({
       title: "Uploaded by",
       expanded: false,
       selectedLabel: "Uploaders",
       selectedCount: 0,
       showChevronButton: true
-    }, "UploadedByNotificationSection");
+    });
+    uploadedBySection.name = "UploadedByNotificationSection";
 
-    await this.replaceSection(node, PROGRAMS_SECTION_RELATIVE_PATH, {
+    const programsSection = await new LibraryNotificationSection().create({
       title: "My programs",
       expanded: false,
       selectedLabel: "Programs",
       selectedCount: 0,
       showChevronButton: true
-    }, "ProgramsNotificationSection");
+    });
+    programsSection.name = "ProgramsNotificationSection";
 
-    node.name = "LibraryNotificationBody";
-    normalizeLibraryLayerNames(node);
-    return node;
-  }
+    const footerDivider = figma.createRectangle();
+    footerDivider.name = "NotificationFooterDivider";
+    footerDivider.resize(1440, 1);
+    footerDivider.fills = [{
+      type: "SOLID",
+      color: { r: 0.8901960849761963, g: 0.9098039269447327, b: 0.9176470637321472 }
+    }];
+    footerDivider.strokes = [];
 
-  private async replaceSection(
-    root: SceneNode,
-    relativePath: readonly number[],
-    sectionProps: Parameters<LibraryNotificationSection["create"]>[0],
-    replacementName: string
-  ): Promise<void> {
-    const parent = getChildAtPath(root, relativePath.slice(0, -1)) as ChildContainerNode;
-    const index = relativePath[relativePath.length - 1];
-    const oldSection = parent.children[index];
-    const replacement = await new LibraryNotificationSection().create(sectionProps);
-    replacement.name = replacementName;
-    parent.insertChild(index, replacement);
-    oldSection.remove();
+    const bottomBar = figma.createFrame();
+    bottomBar.name = "NotificationBottomBar";
+    bottomBar.layoutMode = "VERTICAL";
+    bottomBar.primaryAxisSizingMode = "AUTO";
+    bottomBar.counterAxisSizingMode = "AUTO";
+    bottomBar.counterAxisAlignItems = "MIN";
+    bottomBar.itemSpacing = 12;
+    bottomBar.paddingTop = 8;
+    bottomBar.fills = [];
+
+    const emailInput = await new input_field().create({
+      type: "simple",
+      width: 320,
+      placeholder: "Your email address",
+      cornerRadius: 2,
+      state: "default"
+    });
+    emailInput.name = "NotificationEmailInput";
+
+    const emailToggle = await new checkbox().create({
+      characterOverride: "Notify me on email",
+      checked: true,
+      hugContents: true,
+      paddingLeft: 0,
+      strokeTopWeight: 0,
+      strokeRightWeight: 0,
+      strokeBottomWeight: 0,
+      strokeLeftWeight: 0
+    });
+    emailToggle.name = "NotificationEmailToggle";
+
+    bottomBar.appendChild(emailInput);
+    bottomBar.appendChild(emailToggle);
+
+    content.appendChild(titleBar);
+    content.appendChild(divider);
+    content.appendChild(subjectSection);
+    content.appendChild(organisationsSection);
+    content.appendChild(uploadedBySection);
+    content.appendChild(programsSection);
+    content.appendChild(footerDivider);
+    content.appendChild(bottomBar);
+
+    root.appendChild(content);
+    root.x = props.x ?? 0;
+    root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
+    return root;
   }
 }
