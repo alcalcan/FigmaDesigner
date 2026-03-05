@@ -1,4 +1,5 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 import { createBooleanOperation, createFrame, createRectangle, createText, createVector } from "../../ComponentHelpers";
 
 import IMG_Proposal_notification_img_7_png from "./assets/Proposal_notification_img_7.png";
@@ -242,6 +243,7 @@ export class LibraryFeatureCard extends BaseComponent {
     root.name = `LibraryFeatureCard_${safeIndex + 1}`;
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 }

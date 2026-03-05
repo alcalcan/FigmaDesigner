@@ -1,4 +1,5 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 import { createFrame, createLine } from "../../ComponentHelpers";
 
 export class LibraryDivider extends BaseComponent {
@@ -50,6 +51,7 @@ export class LibraryDivider extends BaseComponent {
     root.name = "LibraryDivider";
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 }

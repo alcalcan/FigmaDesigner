@@ -1,5 +1,6 @@
 
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 import { createFrame, createText, createVector, createBooleanOperation, createLine, createRectangle, createEllipse } from "../../ComponentHelpers";
 
 // --- Assets ---
@@ -119,6 +120,7 @@ createBooleanOperation("Union", "UNION", {layoutProps:{parentIsAutoLayout:false,
         root.name = "LibraryTopBar";
         if (props.x !== undefined) root.x = props.x;
         if (props.y !== undefined) root.y = props.y;
+        normalizeLibraryLayerNames(root);
         return root; 
     }
 }

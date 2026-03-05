@@ -1,3 +1,4 @@
+import { Placeholder } from "../../components/Placeholder";
 import { ComponentProps } from "../../components/BaseComponent";
 import { LibraryDivider } from "../../components/UEFA_Library/Divider/LibraryDivider";
 import { LibraryFooter } from "../../components/UEFA_Library/Footer/LibraryFooter";
@@ -10,11 +11,11 @@ import { LibraryArticlesSection } from "../../components/UEFA_Library/Library_ar
 import { LibraryResourcesTitle } from "../../components/UEFA_Library/Library_resources_title/LibraryResourcesTitle";
 import { LibraryPageTitle } from "../../components/UEFA_Library/Page_title/LibraryPageTitle";
 import { LibraryResourcesContent } from "../../components/UEFA_Library/Resources_content/LibraryResourcesContent";
-import { LibraryResourcesPagination } from "../../components/UEFA_Library/Resources_pagination/LibraryResourcesPagination";
 import { LibraryResourcesSearchBar } from "../../components/UEFA_Library/Resources_search_bar/LibraryResourcesSearchBar";
 import { LibraryResourcesSidebar } from "../../components/UEFA_Library/Resources_sidebar/LibraryResourcesSidebar";
 import { LibrarySidebarSubjectFilters } from "../../components/UEFA_Library/Sidebar_subject_filters/LibrarySidebarSubjectFilters";
 import { LibraryTopBar } from "../../components/UEFA_Library/Top_bar/LibraryTopBar";
+import { normalizeLibraryLayerNames } from "../../components/UEFA_Library/shared/LibraryLayerNaming";
 import { BaseDemoPage } from "../Alex_CookBook/BaseDemoPage";
 
 export class LibraryDemoPage extends BaseDemoPage {
@@ -104,7 +105,7 @@ export class LibraryDemoPage extends BaseDemoPage {
       subjectFilters
     );
 
-    const pagination = await new LibraryResourcesPagination().create({ x: 0, y: 0 });
+    const pagination = await new Placeholder("LibraryResourcesPagination").create({ x: 0, y: 0 });
     this.enforceComponentWidth(pagination, 980);
     await this.appendHugSection(
       root,
@@ -184,6 +185,7 @@ export class LibraryDemoPage extends BaseDemoPage {
 
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
 
     return root;
   }

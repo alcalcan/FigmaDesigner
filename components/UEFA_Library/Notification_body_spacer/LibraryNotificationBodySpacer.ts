@@ -1,4 +1,5 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 import { createFrame } from "../../ComponentHelpers";
 
 export class LibraryNotificationBodySpacer extends BaseComponent {
@@ -21,6 +22,7 @@ export class LibraryNotificationBodySpacer extends BaseComponent {
     root.name = "LibraryNotificationBodySpacer";
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 }

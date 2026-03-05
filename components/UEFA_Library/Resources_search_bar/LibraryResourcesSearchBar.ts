@@ -1,6 +1,7 @@
 
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { createFrame, createText, createVector, createBooleanOperation, createLine, createRectangle, createEllipse } from "../../ComponentHelpers";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 
 // --- Assets ---
 import SVG_Proposal_notification_BOLD_CHEVRON_FIX_10x6 from "./assets/Proposal_notification_BOLD_CHEVRON_FIX_10x6.svg";
@@ -106,6 +107,7 @@ createVector("Shape", SVG_Proposal_notification_BOLD_CHEVRON_FIX_10x6, {layoutPr
 ]);
         
         const root = await this.renderDefinition(structure);
+        normalizeLibraryLayerNames(root);
         if (props.x !== undefined) root.x = props.x;
         if (props.y !== undefined) root.y = props.y;
         return root; 

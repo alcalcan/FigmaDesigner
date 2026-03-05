@@ -80,3 +80,24 @@ Before finalizing:
 - `Library_article_card/LibraryArticleCard.ts`
 - `Footer/LibraryFooter.ts`
 - Notification-specific sections under `Notification_*`
+
+## Reused Components (Alex_CookBook)
+
+This section tracks cross-library reuse so future UEFA Library updates follow the same pattern instead of rebuilding primitives.
+
+- `../../Alex_CookBook/button/button`
+  - Used in `Page_title/LibraryPageTitle.ts` (notification variant actions: `Cancel`, `Save`).
+  - Used in `Notification_section/LibraryNotificationSection.ts` (rounded chevron icon button in section headers).
+- `../../Alex_CookBook/chip_expand/chip_expand`
+  - Used in `Notification_section/LibraryNotificationSection.ts` (selection chips: `Subjects 0`, `Organisations 0`, etc.).
+  - Used in `Resources_content/LibraryResourcesContent.ts` (landing/search filter chips row: `Newer first`, `PDF`, etc.).
+- `../../Alex_CookBook/checkbox/checkbox`
+  - Used in `Notification_section/LibraryNotificationSection.ts` (subject option checkboxes).
+  - Used in `Sidebar_subject_filters/LibrarySidebarSubjectFilters.ts` (landing sidebar initiative checkboxes).
+
+## Capture Source Composition Notes
+
+- Notification page still uses capture cloning as baseline (`shared/LibraryNotificationSourceHelpers.ts`), then specific blocks are replaced with reusable component instances.
+- Current replacement pattern in `Notification_body/LibraryNotificationBody.ts`:
+  - Title bar replaced with `LibraryPageTitle` (which now composes Cookbook buttons).
+  - Section headers (`Subject`, `Organisations`, `Uploaded by`, `My programs`) replaced with `LibraryNotificationSection` (which now composes Cookbook chip/button/checkbox primitives).

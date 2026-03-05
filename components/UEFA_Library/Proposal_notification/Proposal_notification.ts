@@ -1,4 +1,5 @@
-import { BaseComponent, ComponentProps, NodeDefinition, T2x3 } from "../../BaseComponent"; 
+import { BaseComponent, ComponentProps, NodeDefinition, T2x3  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming"; 
 
 
 // SVG Assets
@@ -12350,6 +12351,8 @@ export class Proposal_notification extends BaseComponent {
         // Final positioning
         root.x = props.x ?? 0;
         root.y = props.y ?? 0;
+
+        normalizeLibraryLayerNames(root);
 
         return root;
     }

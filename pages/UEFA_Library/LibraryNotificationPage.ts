@@ -4,6 +4,7 @@ import { LibraryHeader } from "../../components/UEFA_Library/Header/LibraryHeade
 import { LibraryNotificationBody } from "../../components/UEFA_Library/Notification_body/LibraryNotificationBody";
 import { LibraryNotificationBodySpacer } from "../../components/UEFA_Library/Notification_body_spacer/LibraryNotificationBodySpacer";
 import { LibraryTopBar } from "../../components/UEFA_Library/Top_bar/LibraryTopBar";
+import { normalizeLibraryLayerNames } from "../../components/UEFA_Library/shared/LibraryLayerNaming";
 
 export class LibraryNotificationPage extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
@@ -35,6 +36,7 @@ export class LibraryNotificationPage extends BaseComponent {
 
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 

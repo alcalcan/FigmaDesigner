@@ -8,6 +8,7 @@ import { LibraryArticlesSection } from "../../components/UEFA_Library/Library_ar
 import { LibraryResourcesTitle } from "../../components/UEFA_Library/Library_resources_title/LibraryResourcesTitle";
 import { LibraryPageTitle } from "../../components/UEFA_Library/Page_title/LibraryPageTitle";
 import { LibraryTopBar } from "../../components/UEFA_Library/Top_bar/LibraryTopBar";
+import { normalizeLibraryLayerNames } from "../../components/UEFA_Library/shared/LibraryLayerNaming";
 
 export class LibraryLandingPage extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
@@ -24,10 +25,10 @@ export class LibraryLandingPage extends BaseComponent {
     const topBar = await new LibraryTopBar().create({ x: 0, y: 0 });
     const header = await new LibraryHeader().create({ x: 0, y: 0 });
     const infoBanner = await new LibraryInfoBanner().create({ x: 0, y: 0 });
-    const pageTitle = await new LibraryPageTitle().create({ x: 0, y: 0 });
+    const pageTitle = await new LibraryPageTitle().create({ x: 0, y: 0, title: "Resources" });
     const mainContent = await new LibraryResourcesContent().create({ x: 0, y: 0 });
     const divider = await new LibraryDivider().create({ x: 0, y: 0 });
-    const relatedTitle = await new LibraryResourcesTitle().create({ x: 0, y: 0 });
+    const relatedTitle = await new LibraryResourcesTitle().create({ x: 0, y: 0, title: "Related resources" });
     const relatedSection = await new LibraryArticlesSection().create({ x: 0, y: 0 });
     const footer = await new LibraryFooter().create({ x: 0, y: 0 });
 
@@ -50,6 +51,7 @@ export class LibraryLandingPage extends BaseComponent {
 
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 

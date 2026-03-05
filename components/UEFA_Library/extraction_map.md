@@ -55,3 +55,17 @@ Source of truth (untouched):
 - `LibraryArticlesSection`
 - `LibraryArticleCard` (`cardIndex` 0..3)
 - `LibraryFooter`
+
+## Cross-Library Reuse (Alex_CookBook)
+
+For UEFA Library refactors, prefer these shared primitives over local redraw:
+
+- `Alex_CookBook/button/button`
+  - Notification title actions (`Cancel`, `Save`) in `LibraryPageTitle`.
+  - Rounded chevron icon control in `LibraryNotificationSection`.
+- `Alex_CookBook/chip_expand/chip_expand`
+  - Header chips in `LibraryNotificationSection`.
+  - Search/filter chips in `LibraryResourcesContent`.
+- `Alex_CookBook/checkbox/checkbox`
+  - Subject options in `LibraryNotificationSection`.
+  - Sidebar initiative options in `LibrarySidebarSubjectFilters`.

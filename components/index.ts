@@ -426,6 +426,8 @@ export { Oporto } from "./Football_Crests/Oporto/Oporto";
 export { OptionsDemo } from "../pages/Alex_CookBook/OptionsDemo";
 export { Page_title as Page_title_Alex_CookBook } from "./Alex_CookBook/Page_title/Page_title";
 export { Page_title as Page_title_UEFA_Academy_online } from "./UEFA_Academy_online/Page_title/Page_title";
+export { pagination } from "./Alex_CookBook/pagination/pagination";
+export { PaginationDemo } from "../pages/Alex_CookBook/PaginationDemo";
 export { PAOK } from "./Football_Crests/PAOK/PAOK";
 export { pk_button } from "./GQ_2026/pk_button/pk_button";
 export { PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Presentation } from "../presentations/EURO28_Booking_com_promotion_in_Secutix_ticketing_portal_2_2026-02-09_15-49-52/PPT_Euro28BookingComPromotionInSecutixTicketingPortal2_Presentation";

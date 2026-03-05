@@ -8,6 +8,22 @@ import { Lucide_chevron_down } from "../../index";
 
 export class chip_expand extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
+    const chipProps = props as ComponentProps & {
+      text?: string;
+      count?: string | number;
+      showChevron?: boolean;
+      fillColor?: RGB;
+      borderColor?: RGB;
+      textColor?: RGB;
+      countColor?: RGB;
+      outlined?: boolean;
+    };
+    const showChevron = chipProps.showChevron ?? true;
+    const fillColor = chipProps.fillColor ?? { r: 0.9450980424880981, g: 0.9529411792755127, b: 0.9725490212440491 };
+    const borderColor = chipProps.borderColor ?? { r: 0, g: 0.6352941393852234, b: 0.5882353186607361 };
+    const textColor = chipProps.textColor ?? { r: 0.10196078568696976, g: 0.1921568661928177, b: 0.23529411852359772 };
+    const countColor = chipProps.countColor ?? textColor;
+
     const structure: NodeDefinition = {
       "type": "FRAME",
       "name": "chip_expand",
@@ -20,14 +36,8 @@ export class chip_expand extends BaseComponent {
         "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "CENTER",
         "strokeWeight": 1, "strokeAlign": "INSIDE", "strokeCap": "NONE", "strokeJoin": "MITER", "strokeMiterLimit": 4,
         "strokeTopWeight": 1, "strokeRightWeight": 1, "strokeBottomWeight": 1, "strokeLeftWeight": 1,
-        "fills": [
-          {
-            "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-            "color": { "r": 0.9450980424880981, "g": 0.9529411792755127, "b": 0.9725490212440491 },
-            "boundVariables": {}
-          }
-        ],
-        "strokes": [],
+        "fills": [{ "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID", "color": fillColor, "boundVariables": {} }],
+        "strokes": chipProps.outlined ? [{ "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID", "color": borderColor, "boundVariables": {} }] : [],
         "effects": [],
         "cornerRadius": (props as any).cornerRadius ?? 8
       },
@@ -48,7 +58,7 @@ export class chip_expand extends BaseComponent {
             "fills": [
               {
                 "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID",
-                "color": { "r": 0.10196078568696976, "g": 0.1921568661928177, "b": 0.23529411852359772 },
+                "color": textColor,
                 "boundVariables": {}
               }
             ],
@@ -133,13 +143,37 @@ export class chip_expand extends BaseComponent {
     }
 
     const root = await this.renderDefinition(structure);
+    const chipRoot = root as FrameNode;
 
     // Update Label if provided
-    if (props.text !== undefined) {
-      const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
+    if (chipProps.text !== undefined) {
+      const textNode = chipRoot.findOne(n => n.name === "Chip Label" && n.type === "TEXT") as TextNode;
       if (textNode) {
         await figma.loadFontAsync(textNode.fontName as FontName);
-        textNode.characters = props.text;
+        textNode.characters = chipProps.text;
+        textNode.fills = [{ type: "SOLID", color: textColor }];
+      }
+    }
+
+    // Optional count token (e.g., "Subjects 0")
+    if (chipProps.count !== undefined) {
+      const countText = figma.createText();
+      countText.name = "Chip Count";
+      await figma.loadFontAsync({ family: "Manrope", style: "Bold" });
+      countText.fontName = { family: "Manrope", style: "Bold" };
+      countText.fontSize = 16;
+      countText.lineHeight = { unit: "PERCENT", value: 130 };
+      countText.textAutoResize = "WIDTH_AND_HEIGHT";
+      countText.characters = String(chipProps.count);
+      countText.fills = [{ type: "SOLID", color: countColor }];
+      chipRoot.insertChild(1, countText);
+    }
+
+    // Optional chevron visibility
+    if (!showChevron) {
+      const chevronArea = chipRoot.findOne(n => n.name === "Expand Icon Area");
+      if (chevronArea) {
+        chevronArea.remove();
       }
     }
 
@@ -147,14 +181,14 @@ export class chip_expand extends BaseComponent {
     // Handle Hover State (Lighter Slate Blue + White Text)
     if (props.hover) {
       // Updated to a lighter slate blue: approximately #455A64
-      (root as FrameNode).fills = [{ type: "SOLID", color: { r: 0.270588, g: 0.352941, b: 0.392157 } }];
+      chipRoot.fills = [{ type: "SOLID", color: { r: 0.270588, g: 0.352941, b: 0.392157 } }];
 
-      const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
-      if (textNode) {
+      const textNodes = chipRoot.findAll(n => n.type === "TEXT") as TextNode[];
+      for (const textNode of textNodes) {
         textNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
       }
 
-      const iconNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron");
+      const iconNode = chipRoot.findOne(n => n.name === "Expand Chevron");
       if (iconNode && ("findAll" in iconNode)) {
         // Target all vectors inside the expanding icon and change their strokes to white
         const vectors = (iconNode as FrameNode).findAll(n => n.type === "VECTOR") as VectorNode[];
@@ -166,15 +200,15 @@ export class chip_expand extends BaseComponent {
     // Handle Selected State (Darker Gray + Dark Text)
     else if (props.selected !== undefined && props.selected) {
       // Darker Gray: #E0E4EB (approx r: 0.88, g: 0.89, b: 0.92)
-      (root as FrameNode).fills = [{ type: "SOLID", color: { r: 0.878, g: 0.894, b: 0.922 } }];
+      chipRoot.fills = [{ type: "SOLID", color: { r: 0.878, g: 0.894, b: 0.922 } }];
 
       // Ensure Text/Icon are dark (default #1A313C approx { r: 0.102, g: 0.192, b: 0.235 })
-      const textNode = (root as FrameNode).findOne(n => n.type === "TEXT") as TextNode;
-      if (textNode) {
+      const textNodes = chipRoot.findAll(n => n.type === "TEXT") as TextNode[];
+      for (const textNode of textNodes) {
         textNode.fills = [{ type: "SOLID", color: { r: 0.10196, g: 0.19216, b: 0.23529 } }];
       }
 
-      const iconNode = (root as FrameNode).findOne(n => n.name === "Expand Chevron");
+      const iconNode = chipRoot.findOne(n => n.name === "Expand Chevron");
       if (iconNode && ("findAll" in iconNode)) {
         // Target all vectors inside the expanding icon and change their strokes to dark
         const vectors = (iconNode as FrameNode).findAll(n => n.type === "VECTOR") as VectorNode[];
@@ -186,7 +220,7 @@ export class chip_expand extends BaseComponent {
 
     // Handle Expanded State (Chevron Rotation)
     if (props.expanded) {
-      const vector = (root as FrameNode).findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
+      const vector = chipRoot.findOne(n => n.name === "Expand Chevron" && n.type === "VECTOR") as VectorNode;
       if (vector) {
         vector.rotation = 180;
         vector.x = 6 + vector.width;

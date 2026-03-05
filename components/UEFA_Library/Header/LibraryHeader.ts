@@ -1,4 +1,5 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 import { createFrame, createText } from "../../ComponentHelpers";
 
 import IMG_Proposal_notification_img_1_opt_png from "./assets/Proposal_notification_img_1_opt.png";
@@ -171,6 +172,7 @@ export class LibraryHeader extends BaseComponent {
     root.name = "LibraryHeader";
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 }

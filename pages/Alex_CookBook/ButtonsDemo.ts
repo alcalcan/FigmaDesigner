@@ -4,6 +4,7 @@ import { BaseDemoPage } from "./BaseDemoPage";
 // Components
 import { button } from "../../components/Alex_CookBook/button/button";
 import { Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings, Lucide_bell, Lucide_search, Lucide_user } from "../../components/index";
+import { cloneNotificationSection, LIBRARY_NOTIFICATION_SECTION_PATHS } from "../../components/UEFA_Library/shared/LibraryNotificationSourceHelpers";
 
 export class ButtonsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -96,6 +97,59 @@ export class ButtonsDemo extends BaseDemoPage {
             row.appendChild(await btn.create({ label: "Next Step", backIcon: Lucide_arrow_right, variant: "neutral" }));
             row.appendChild(await btn.create({ label: "Settings", frontIcon: Action___settings, variant: "outline" }));
             container.appendChild(row);
+        });
+
+        // --- SECTION 6: UEFA Library Notification Controls ---
+        await this.addSection(root, "UEFA Library Notification Controls", "Recreated controls used on Library notification page + capture reference underneath.", async (container) => {
+            const recreationRow = this.createRow(container);
+            recreationRow.appendChild(await btn.create({
+                variant: "outline",
+                label: "Cancel",
+                size: "medium",
+                cornerRadius: 24,
+                baseColor: { r: 0, g: 0.6352941393852234, b: 0.5882353186607361 },
+                textColor: { r: 0, g: 0.6352941393852234, b: 0.5882353186607361 },
+                padding: { v: 12, h: 24 }
+            }));
+            recreationRow.appendChild(await btn.create({
+                variant: "primary",
+                label: "Save",
+                size: "medium",
+                width: 192,
+                cornerRadius: 24,
+                baseColor: { r: 0.7019608020782471, g: 0.7529411911964417, b: 0.772549033164978 },
+                textColor: { r: 1, g: 1, b: 1 },
+                padding: { v: 12, h: 24 }
+            }));
+            recreationRow.appendChild(await btn.create({
+                variant: "icon",
+                size: "medium",
+                frontIcon: Lucide_chevron_down,
+                iconSize: 24,
+                cornerRadius: 100,
+                baseColor: { r: 0.9450980424880981, g: 0.9529411792755127, b: 0.9725490212440491 },
+                textColor: { r: 0.10196078568696976, g: 0.1921568661928177, b: 0.23529411852359772 }
+            }));
+            container.appendChild(recreationRow);
+
+            const captureLabel = figma.createText();
+            await figma.loadFontAsync({ family: "Inter", style: "Medium" });
+            captureLabel.fontName = { family: "Inter", style: "Medium" };
+            captureLabel.characters = "Capture Reference (UEFA Library Notification Title Bar)";
+            captureLabel.fontSize = 14;
+            captureLabel.fills = [{ type: "SOLID", color: { r: 0.38823530077934265, g: 0.47843137383461, b: 0.5215686559677124 } }];
+            captureLabel.layoutAlign = "STRETCH";
+            captureLabel.textAutoResize = "HEIGHT";
+            container.appendChild(captureLabel);
+
+            const captureNode = await cloneNotificationSection(LIBRARY_NOTIFICATION_SECTION_PATHS.TITLE_BAR_WITH_CTA, { x: 0, y: 0 });
+            if ("resize" in captureNode) {
+                captureNode.resize(1000, captureNode.height);
+            }
+            if ("layoutAlign" in captureNode) {
+                captureNode.layoutAlign = "STRETCH";
+            }
+            container.appendChild(captureNode);
         });
 
         root.x = props.x ?? 0;

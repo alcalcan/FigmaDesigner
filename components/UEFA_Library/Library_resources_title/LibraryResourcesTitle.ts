@@ -1,4 +1,5 @@
-import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { BaseComponent, ComponentProps, NodeDefinition  } from "../../BaseComponent";
+import { normalizeLibraryLayerNames } from "../shared/LibraryLayerNaming";
 import { createFrame, createText } from "../../ComponentHelpers";
 
 export interface LibraryResourcesTitleProps extends ComponentProps {
@@ -15,9 +16,10 @@ export class LibraryResourcesTitle extends BaseComponent {
       paddingRight: 120,
       paddingBottom: 8,
       paddingLeft: 120,
+      primaryAxisSizingMode: "FIXED",
       counterAxisSizingMode: "AUTO",
-      primaryAxisAlignItems: "SPACE_BETWEEN",
-      counterAxisAlignItems: "CENTER",
+      primaryAxisAlignItems: "MIN",
+      counterAxisAlignItems: "MIN",
       layoutAlign: "STRETCH",
       layoutProps: {
         parentIsAutoLayout: true,
@@ -40,6 +42,7 @@ export class LibraryResourcesTitle extends BaseComponent {
     root.name = "LibraryResourcesTitle";
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
+    normalizeLibraryLayerNames(root);
     return root;
   }
 }

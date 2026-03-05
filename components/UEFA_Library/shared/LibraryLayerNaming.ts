@@ -52,6 +52,75 @@ function getFirstSignificantText(node: SceneNode): string | null {
   return null;
 }
 
+function getAllText(node: SceneNode): string[] {
+  if (node.type === "TEXT") {
+    const text = node.characters.trim();
+    return text ? [text] : [];
+  }
+
+  if ("children" in node) {
+    const out: string[] = [];
+    for (const child of node.children) {
+      out.push(...getAllText(child));
+    }
+    return out;
+  }
+
+  return [];
+}
+
+function hasDescendantName(node: SceneNode, pattern: RegExp): boolean {
+  if (pattern.test((node.name || "").trim())) return true;
+  if ("children" in node) {
+    for (const child of node.children) {
+      if (hasDescendantName(child, pattern)) return true;
+    }
+  }
+  return false;
+}
+
+function normalizeAccordionLabel(input: string): string | null {
+  const value = input.trim().toLowerCase();
+  if (!value) return null;
+
+  const normalized = value.replace(/\s+/g, " ");
+  const accordionLabels: Record<string, string> = {
+    "subject": "Subject",
+    "subjects": "Subjects",
+    "efi initiatives": "EFI Initiatives",
+    "uefa initiative": "UEFA Initiative",
+    "organisation": "Organisation",
+    "organisations": "Organisations",
+    "uploaded by": "Uploaded By",
+    "my programs": "My Programs"
+  };
+
+  return accordionLabels[normalized] || null;
+}
+
+function deriveAccordionName(node: SceneNode): string | null {
+  if (node.type !== "FRAME") return null;
+
+  const nodeText = getAllText(node)
+    .map(normalizeAccordionLabel)
+    .find((value): value is string => Boolean(value));
+  if (!nodeText) return null;
+
+  const isHeaderLayout = node.layoutMode === "HORIZONTAL";
+  const hasToggleGlyph = hasDescendantName(node, /(add|plus|minus|chevron|expand|collapse)/i);
+  if (isHeaderLayout && hasToggleGlyph) {
+    const expanded = hasDescendantName(node, /(minus|collapse)/i);
+    return expanded ? `${nodeText} Expanded Accordion Header` : `${nodeText} Accordion Header`;
+  }
+
+  const hasOptionRows = hasDescendantName(node, /(option|checkbox)/i);
+  if (node.layoutMode === "VERTICAL" && hasOptionRows) {
+    return `${nodeText} Accordion Panel`;
+  }
+
+  return null;
+}
+
 function findIconName(node: SceneNode): string | null {
   const raw = (node.name || "").trim();
   for (const prefix of ICON_PREFIXES) {
@@ -80,6 +149,9 @@ function isCardLike(node: SceneNode): boolean {
 }
 
 function deriveDescriptiveName(node: SceneNode): string | null {
+  const accordionName = deriveAccordionName(node);
+  if (accordionName) return accordionName;
+
   // 1. Check for Icons first
   const iconName = findIconName(node);
   if (iconName) {
