@@ -2,7 +2,8 @@ import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseCompone
 import { ReviewBackground } from "./ReviewBackground";
 import { ReviewFooter } from "./ReviewFooter";
 import { TopBarReview } from "./TopBarReview";
-import { ReviewTitle } from "./ReviewTitle";
+import { ReviewHeroPlay } from "./ReviewHeroPlay";
+import { ReviewHeaderTitle } from "./ReviewHeaderTitle";
 import { ReviewButton } from "./ReviewButton";
 
 export class UCL_Newsletter_Header_Review extends BaseComponent {
@@ -23,7 +24,8 @@ export class UCL_Newsletter_Header_Review extends BaseComponent {
         { "type": "COMPONENT", "name": "Review Background", "component": ReviewBackground, "props": {} },
         { "type": "COMPONENT", "name": "Review Footer", "component": ReviewFooter, "props": {} },
         { "type": "COMPONENT", "name": "Top bar", "component": TopBarReview, "props": {} },
-        { "type": "COMPONENT", "name": "Review Title", "component": ReviewTitle, "props": {} },
+        { "type": "COMPONENT", "name": "Hero Play", "component": ReviewHeroPlay, "props": {} },
+        { "type": "COMPONENT", "name": "Review Header Title", "component": ReviewHeaderTitle, "props": { "x": 43.2324, "y": 415 } },
         { "type": "COMPONENT", "name": "Buttons", "component": ReviewButton, "props": {} }
       ]
     };
