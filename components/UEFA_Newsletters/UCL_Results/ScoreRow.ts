@@ -1,6 +1,8 @@
 import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
 import { createFrame, createRectangle, createText, createVector } from "../../ComponentHelpers";
 import { Ajax } from "../../Football_Crests/Ajax/Ajax";
+import { Barcelona } from "../../Football_Crests/Barcelona/Barcelona";
+import { Bayern } from "../../Football_Crests/Bayern/Bayern";
 import { Benfica } from "../../Football_Crests/Benfica/Benfica";
 import { Madrid } from "../../Football_Crests/Madrid/Madrid";
 import { Manchester_City } from "../../Football_Crests/Manchester_City/Manchester_City";
@@ -10,6 +12,8 @@ import { Real_Sociedad } from "../../Football_Crests/Real_Sociedad/Real_Sociedad
 const CREST_COMPONENTS: Record<string, new () => BaseComponent> = {
   ajax: Ajax,
   benfica: Benfica,
+  barcelona: Barcelona,
+  bayern: Bayern,
   madrid: Madrid,
   real_madrid: Madrid,
   manchester_city: Manchester_City,

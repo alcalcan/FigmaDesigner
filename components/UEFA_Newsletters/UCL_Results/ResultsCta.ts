@@ -4,6 +4,7 @@ import { createFrame, createText } from "../../ComponentHelpers";
 export class ResultsCta extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
     const label = String(props.text ?? "See all results");
+    const filled = Boolean(props.filled ?? false);
 
     const structure: NodeDefinition = createFrame(
       "Results CTA",
@@ -31,13 +32,13 @@ export class ResultsCta extends BaseComponent {
             counterAxisSizingMode: "FIXED",
             primaryAxisAlignItems: "MIN",
             counterAxisAlignItems: "CENTER",
-            fills: [],
-            strokes: [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color: { r: 0, g: 0.9333333373069763, b: 1 } }],
+            fills: filled ? [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color: { r: 0, g: 0.9333333373069763, b: 1 } }] : [],
+            strokes: filled ? [] : [{ visible: true, opacity: 1, blendMode: "NORMAL", type: "SOLID", color: { r: 0, g: 0.9333333373069763, b: 1 } }],
             cornerRadius: 8,
             layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 296, height: 48 }
           },
           [
-            createText("CTA Label", label, 20, "SemiBold", { r: 0, g: 0.9333333373069763, b: 1 }, {
+            createText("CTA Label", label, 20, "SemiBold", filled ? { r: 0.003921568859368563, g: 0.003921568859368563, b: 0.19607843458652496 } : { r: 0, g: 0.9333333373069763, b: 1 }, {
               font: { family: "Manrope", style: "SemiBold" },
               textAlignHorizontal: "CENTER",
               textAutoResize: "HEIGHT",

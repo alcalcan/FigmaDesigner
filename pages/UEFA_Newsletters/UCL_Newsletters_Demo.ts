@@ -3,6 +3,8 @@ import { BaseDemoPage } from "../Alex_CookBook/BaseDemoPage";
 
 import { UCL_Newsletter_Header_Stats } from "../../components/UEFA_Newsletters/UCL_Newsletter_Header_Stats/UCL_Newsletter_Header_Stats";
 import { UCL_Newsletter_Header_Review } from "../../components/UEFA_Newsletters/UCL_Newsletter_Header_Review/UCL_Newsletter_Header_Review";
+import { UCL_Newsletter_Header_Generic_Preview } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/UCL_Header_Generic_Preview";
+import { UCL_Newsletter_Header_Specific_Preview } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/UCL_Header_Specific_Preview";
 import { UCL_Results } from "../../components/UEFA_Newsletters/UCL_Results/UCL_Results";
 import { UCL_Upcoming_Matches } from "../../components/UEFA_Newsletters/UCL_Results/UCL_Upcoming_Matches";
 import { UCL_League_Standings } from "../../components/UEFA_Newsletters/UCL_League_Standings/UCL_League_Standings";
@@ -90,6 +92,8 @@ export class UCL_Newsletters_Demo extends BaseDemoPage {
 
         await addItem(row, await new UCL_Newsletter_Header_Stats().create({}), "UCL_Newsletter_Header_Stats");
         await addItem(row, await new UCL_Newsletter_Header_Review().create({}), "UCL_Newsletter_Header_Review");
+        await addItem(row, await new UCL_Newsletter_Header_Generic_Preview().create({}), "UCL_Newsletter_Header_Generic_Preview");
+        await addItem(row, await new UCL_Newsletter_Header_Specific_Preview().create({}), "UCL_Newsletter_Header_Specific_Preview");
         await addItem(row, await new UCL_Results().create({}), "UCL_Results");
         await addItem(row, await new UCL_Upcoming_Matches().create({}), "UCL_Upcoming_Matches");
         await addItem(row, await new UCL_League_Standings().create({}), "UCL_League_Standings");
@@ -97,6 +101,18 @@ export class UCL_Newsletters_Demo extends BaseDemoPage {
         await addItem(row, await new UCL_Footer().create({}), "UCL_Footer");
       },
       { itemSpacing: 24, padding: 24 }
+    );
+
+    await this.addSection(
+      root,
+      "Preview Header Variants",
+      "Captured-accurate generic and specific preview header variants exposed as reusable components.",
+      async (container) => {
+        const row = createWrapRow(container);
+
+        await addItem(row, await new UCL_Newsletter_Header_Generic_Preview().create({}), "UCL_Newsletter_Header_Generic_Preview");
+        await addItem(row, await new UCL_Newsletter_Header_Specific_Preview().create({}), "UCL_Newsletter_Header_Specific_Preview");
+      }
     );
 
     await this.addSection(
