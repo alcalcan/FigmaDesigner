@@ -27,10 +27,14 @@ const resolveCrest = (value: unknown, fallback: new () => BaseComponent): new ()
 
 export class ScoreRow extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
+    const variant = String(props.variant ?? "results").toLowerCase();
+    const isUpcoming = variant === "upcoming";
     const homeTeam = String(props.homeTeam ?? "Ajax");
     const awayTeam = String(props.awayTeam ?? "Benfica");
     const homeScore = String(props.homeScore ?? "5");
     const awayScore = String(props.awayScore ?? "2");
+    const centerText = String(props.centerText ?? (isUpcoming ? "VS" : `${homeScore} - ${awayScore}`));
+    const matchTime = typeof props.matchTime === "string" ? props.matchTime : undefined;
     const homeCrest = resolveCrest(props.homeCrest ?? homeTeam, Ajax);
     const awayCrest = resolveCrest(props.awayCrest ?? awayTeam, Benfica);
 
@@ -43,7 +47,7 @@ export class ScoreRow extends BaseComponent {
       {
         layoutMode: "NONE",
         fills: [],
-        layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 512, height: 60 }
+        layoutProps: { parentIsAutoLayout: true, layoutPositioning: "AUTO", width: 512, height: matchTime ? 90 : 60 }
       },
       [
         createFrame(
@@ -74,7 +78,7 @@ export class ScoreRow extends BaseComponent {
               lineHeight: { unit: "PERCENT", value: 130 },
               layoutProps: { parentIsAutoLayout: false, layoutPositioning: "AUTO", width: 124, height: 26, relativeTransform: [[1, 0, 70], [0, 1, 5]] }
             }),
-            createText("Score Text", `${homeScore} - ${awayScore}`, 20, "Bold", { r: 1, g: 1, b: 1 }, {
+            createText("Score Text", centerText, 20, "Bold", { r: 1, g: 1, b: 1 }, {
               font: { family: "Champions", style: "Bold" },
               textAlignHorizontal: "CENTER",
               textAutoResize: "NONE",
@@ -101,7 +105,18 @@ export class ScoreRow extends BaseComponent {
           name: "Away Crest",
           component: awayCrest,
           layoutProps: { parentIsAutoLayout: false, layoutPositioning: "AUTO", width: 60, height: 60, relativeTransform: [[1, 0, 452], [0, 1, 0]] }
-        }
+        },
+        ...(matchTime
+          ? [
+              createText("Match Time", matchTime, 20, "Regular", { r: 0.5493977665901184, g: 1, b: 1 }, {
+                font: { family: "Champions", style: "Regular" },
+                textAlignHorizontal: "CENTER",
+                textAutoResize: "NONE",
+                lineHeight: { unit: "PERCENT", value: 130 },
+                layoutProps: { parentIsAutoLayout: false, layoutPositioning: "AUTO", width: 512, height: 26, relativeTransform: [[1, 0, 0], [0, 1, 64]] }
+              })
+            ]
+          : [])
       ]
     );
 

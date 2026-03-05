@@ -5,9 +5,14 @@ import { ResultsCta } from "./ResultsCta";
 
 export class ResultsSection extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
+    const variant = String(props.variant ?? "results").toLowerCase();
+    const isUpcoming = variant === "upcoming";
+    const defaultTitle = isUpcoming ? "UPCOMING MATCHES" : "RESULTS";
+    const defaultCta = isUpcoming ? "See all matches" : "See all results";
+
     const structure: NodeDefinition = {
       type: "FRAME",
-      name: "Results",
+      name: isUpcoming ? "Upcoming matches" : "Results",
       props: {
         visible: true,
         opacity: 1,
@@ -17,7 +22,7 @@ export class ResultsSection extends BaseComponent {
         maskType: "ALPHA",
         clipsContent: false,
         layoutMode: "VERTICAL",
-        itemSpacing: 22,
+        itemSpacing: isUpcoming ? 16 : 22,
         paddingTop: 32,
         paddingRight: 20,
         paddingBottom: 32,
@@ -54,9 +59,14 @@ export class ResultsSection extends BaseComponent {
         constraints: { horizontal: "MIN", vertical: "MIN" }
       },
       children: [
-        { type: "COMPONENT", name: "Results Title", component: ResultsTitle, props: { text: props.title ?? "RESULTS" } },
-        { type: "COMPONENT", name: "Results Scoreboard", component: ResultsScoreboard, props: { matches: props.matches } },
-        { type: "COMPONENT", name: "Results CTA", component: ResultsCta, props: { text: props.ctaText ?? "See all results" } }
+        { type: "COMPONENT", name: "Results Title", component: ResultsTitle, props: { text: props.title ?? defaultTitle } },
+        {
+          type: "COMPONENT",
+          name: "Results Scoreboard",
+          component: ResultsScoreboard,
+          props: { variant, matches: props.matches, rowSpacing: props.rowSpacing }
+        },
+        { type: "COMPONENT", name: "Results CTA", component: ResultsCta, props: { text: props.ctaText ?? defaultCta } }
       ]
     };
 

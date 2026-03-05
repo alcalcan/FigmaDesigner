@@ -4,6 +4,7 @@ import { BaseDemoPage } from "../Alex_CookBook/BaseDemoPage";
 import { UCL_Newsletter_Header_Stats } from "../../components/UEFA_Newsletters/UCL_Newsletter_Header_Stats/UCL_Newsletter_Header_Stats";
 import { UCL_Newsletter_Header_Review } from "../../components/UEFA_Newsletters/UCL_Newsletter_Header_Review/UCL_Newsletter_Header_Review";
 import { UCL_Results } from "../../components/UEFA_Newsletters/UCL_Results/UCL_Results";
+import { UCL_Upcoming_Matches } from "../../components/UEFA_Newsletters/UCL_Results/UCL_Upcoming_Matches";
 import { UCL_League_Standings } from "../../components/UEFA_Newsletters/UCL_League_Standings/UCL_League_Standings";
 import { UCL_S_and_E } from "../../components/UEFA_Newsletters/UCL_S_and_E/UCL_S_and_E";
 import { UCL_Footer } from "../../components/UEFA_Newsletters/UCL_Footer/UCL_Footer";
@@ -90,6 +91,7 @@ export class UCL_Newsletters_Demo extends BaseDemoPage {
         await addItem(row, await new UCL_Newsletter_Header_Stats().create({}), "UCL_Newsletter_Header_Stats");
         await addItem(row, await new UCL_Newsletter_Header_Review().create({}), "UCL_Newsletter_Header_Review");
         await addItem(row, await new UCL_Results().create({}), "UCL_Results");
+        await addItem(row, await new UCL_Upcoming_Matches().create({}), "UCL_Upcoming_Matches");
         await addItem(row, await new UCL_League_Standings().create({}), "UCL_League_Standings");
         await addItem(row, await new UCL_S_and_E().create({}), "UCL_S_and_E");
         await addItem(row, await new UCL_Footer().create({}), "UCL_Footer");
@@ -139,9 +141,34 @@ export class UCL_Newsletters_Demo extends BaseDemoPage {
         const row = createWrapRow(container);
 
         await addItem(row, await new ResultsSection().create({}), "ResultsSection");
+        await addItem(
+          row,
+          await new ResultsSection().create({
+            variant: "upcoming",
+            title: "UPCOMING MATCHES",
+            ctaText: "See all matches",
+            matches: [
+              { homeTeam: "Ajax", homeCrest: "Ajax", awayTeam: "Benfica", awayCrest: "Benfica", centerText: "VS", matchTime: "TUE 14 MAR, 18:55 CET" },
+              { homeTeam: "Ajax", homeCrest: "Ajax", awayTeam: "Benfica", awayCrest: "Benfica", centerText: "VS", matchTime: "TUE 14 MAR, 18:55 CET" }
+            ]
+          }),
+          "ResultsSection (Upcoming Variant)"
+        );
         await addItem(row, await new ResultsTitle().create({}), "ResultsTitle");
         await addItem(row, await new ResultsScoreboard().create({}), "ResultsScoreboard");
+        await addItem(
+          row,
+          await new ResultsScoreboard().create({
+            variant: "upcoming",
+            matches: [
+              { homeTeam: "Ajax", homeCrest: "Ajax", awayTeam: "Benfica", awayCrest: "Benfica", centerText: "VS", matchTime: "TUE 14 MAR, 18:55 CET" },
+              { homeTeam: "Ajax", homeCrest: "Ajax", awayTeam: "Benfica", awayCrest: "Benfica", centerText: "VS", matchTime: "TUE 14 MAR, 18:55 CET" }
+            ]
+          }),
+          "ResultsScoreboard (Upcoming Variant)"
+        );
         await addItem(row, await new ScoreRow().create({}), "ScoreRow");
+        await addItem(row, await new ScoreRow().create({ variant: "upcoming", centerText: "VS", matchTime: "TUE 14 MAR, 18:55 CET" }), "ScoreRow (Upcoming Variant)");
         await addItem(row, await new ResultsCta().create({}), "ResultsCta");
       }
     );

@@ -29,9 +29,11 @@ export class UCL_Results extends BaseComponent {
           name: "Results",
           component: ResultsSection,
           props: {
+            variant: props.variant,
             title: props.title,
             matches: props.matches,
-            ctaText: props.ctaText
+            ctaText: props.ctaText,
+            rowSpacing: props.rowSpacing
           }
         }
       ]
