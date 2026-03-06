@@ -49,6 +49,25 @@ import { FooterSocial } from "../../components/UEFA_Newsletters/UCL_Footer/Foote
 import { FooterLegal } from "../../components/UEFA_Newsletters/UCL_Footer/FooterLegal";
 import { FooterBottomGraphic } from "../../components/UEFA_Newsletters/UCL_Footer/FooterBottomGraphic";
 
+import { GenericImageplaceholder } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/GenericImageplaceholder";
+import { Genericdecocomps } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/Genericdecocomps";
+import { GenericTopbar } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/GenericTopbar";
+import { GenericUpcomingMatchesBanner } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/GenericUpcomingMatchesBanner";
+import { Genericdividerball1desktop } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/Genericdividerball1desktop";
+import { GenericUPCOMINGMATCHES } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/GenericUPCOMINGMATCHES";
+import { GenericButtons } from "../../components/UEFA_Newsletters/UCL_Header_Generic_Preview/GenericButtons";
+
+import { SpecificImageplaceholder } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificImageplaceholder";
+import { Specificdecocomps } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/Specificdecocomps";
+import { SpecificButtons } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificButtons";
+import { SpecificRectangle2243 } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificRectangle2243";
+import { SpecificRectangle2244 } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificRectangle2244";
+import { SpecificTopbar } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificTopbar";
+import { SpecificFrame2609260 } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificFrame2609260";
+import { SpecificDateBox } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificDateBox";
+import { SpecificMadrid } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificMadrid";
+import { SpecificBarcelona } from "../../components/UEFA_Newsletters/UCL_Header_Specific_Preview/SpecificBarcelona";
+
 export class UCL_Newsletters_Demo extends BaseDemoPage {
   async create(props: ComponentProps): Promise<SceneNode> {
     const root = await this.initPage("UEFA Newsletters - UCL Demo", 1680, true);
@@ -112,6 +131,43 @@ export class UCL_Newsletters_Demo extends BaseDemoPage {
 
         await addItem(row, await new UCL_Newsletter_Header_Generic_Preview().create({}), "UCL_Newsletter_Header_Generic_Preview");
         await addItem(row, await new UCL_Newsletter_Header_Specific_Preview().create({}), "UCL_Newsletter_Header_Specific_Preview");
+      }
+    );
+
+    await this.addSection(
+      root,
+      "Generic Header Building Blocks",
+      "Atomic and section-level parts for the generic preview header variant.",
+      async (container) => {
+        const row = createWrapRow(container);
+
+        await addItem(row, await new GenericImageplaceholder().create({}), "GenericImageplaceholder");
+        await addItem(row, await new Genericdecocomps().create({}), "Genericdecocomps");
+        await addItem(row, await new GenericTopbar().create({}), "GenericTopbar");
+        await addItem(row, await new GenericUpcomingMatchesBanner().create({}), "GenericUpcomingMatchesBanner");
+        await addItem(row, await new Genericdividerball1desktop().create({}), "Genericdividerball1desktop");
+        await addItem(row, await new GenericUPCOMINGMATCHES().create({}), "GenericUPCOMINGMATCHES");
+        await addItem(row, await new GenericButtons().create({}), "GenericButtons");
+      }
+    );
+
+    await this.addSection(
+      root,
+      "Specific Header Building Blocks",
+      "Atomic and section-level parts for the specific preview header variant.",
+      async (container) => {
+        const row = createWrapRow(container);
+
+        await addItem(row, await new SpecificImageplaceholder().create({}), "SpecificImageplaceholder");
+        await addItem(row, await new Specificdecocomps().create({}), "Specificdecocomps");
+        await addItem(row, await new SpecificButtons().create({}), "SpecificButtons");
+        await addItem(row, await new SpecificRectangle2243().create({}), "SpecificRectangle2243");
+        await addItem(row, await new SpecificRectangle2244().create({}), "SpecificRectangle2244");
+        await addItem(row, await new SpecificTopbar().create({}), "SpecificTopbar");
+        await addItem(row, await new SpecificFrame2609260().create({}), "SpecificFrame2609260");
+        await addItem(row, await new SpecificDateBox().create({}), "SpecificDateBox");
+        await addItem(row, await new SpecificMadrid().create({}), "SpecificMadrid");
+        await addItem(row, await new SpecificBarcelona().create({}), "SpecificBarcelona");
       }
     );
 

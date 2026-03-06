@@ -1,65 +1,40 @@
-import { BaseComponent, ComponentProps } from "../../BaseComponent";
-import { UCLBackground } from "../UCL_Newsletter_Header_Stats/UCLBackground";
-import { HeaderFooter } from "../UCL_Newsletter_Header_Stats/HeaderFooter";
-import { TopBarReview } from "../UCL_Newsletter_Header_Review/TopBarReview";
-import { ResultsTitle } from "../UCL_Results/ResultsTitle";
-import { ResultsScoreboard } from "../UCL_Results/ResultsScoreboard";
-import { ResultsCta } from "../UCL_Results/ResultsCta";
+import { BaseComponent, ComponentProps, NodeDefinition } from "../../BaseComponent";
+import { GenericImageplaceholder } from "./GenericImageplaceholder";
+import { Genericdecocomps } from "./Genericdecocomps";
+import { GenericTopbar } from "./GenericTopbar";
+import { GenericUpcomingMatchesBanner } from "./GenericUpcomingMatchesBanner";
+import { Genericdividerball1desktop } from "./Genericdividerball1desktop";
+import { GenericUPCOMINGMATCHES } from "./GenericUPCOMINGMATCHES";
+import { GenericButtons } from "./GenericButtons";
+
 
 export class UCL_Newsletter_Header_Generic_Preview extends BaseComponent {
   async create(props: ComponentProps): Promise<SceneNode> {
-    const root = figma.createFrame();
-    root.name = "UCL_Newsletter_Header_Generic_Preview";
-    root.resize(600, 696);
-    root.fills = [];
-    root.clipsContent = true;
-
-    const background = await new UCLBackground().create({});
-    background.x = 0;
-    background.y = 0;
-    root.appendChild(background);
-
-    const footer = await new HeaderFooter().create({});
-    footer.x = 0;
-    footer.y = 0;
-    root.appendChild(footer);
-
-    const topBar = await new TopBarReview().create({});
-    const myUefa = topBar.findChild((n) => n.name === "LOGO MyUEFA");
-    if (myUefa) myUefa.remove();
-    if (topBar.type === "FRAME") {
-      topBar.fills = [];
-    }
-    topBar.x = 0;
-    topBar.y = 22;
-    const logosContainer = topBar.findChild((n) => n.name === "Logos container");
-    if (logosContainer && "x" in logosContainer) {
-      logosContainer.x = 275;
-    }
-    root.appendChild(topBar);
-
-    const title = await new ResultsTitle().create({ text: "UPCOMING MATCHES" });
-    title.x = 44;
-    title.y = 170;
-    root.appendChild(title);
-
-    const scoreboard = await new ResultsScoreboard().create({
-      variant: "upcoming",
-      rowSpacing: 8,
-      matches: [
-        { homeTeam: "Real Madrid", homeCrest: "madrid", awayTeam: "Barcelona", awayCrest: "barcelona", centerText: "VS", matchTime: "TUE 30 SEP, 20:00 CET" },
-        { homeTeam: "Man City", homeCrest: "manchester_city", awayTeam: "Bayern", awayCrest: "bayern", centerText: "VS", matchTime: "WED 1 OCT, 21:00 CET" }
+    const structure: NodeDefinition = {
+      "type": "FRAME",
+      "name": "UCL_Newsletter_Header_Generic_Preview",
+      "props": {
+        "visible": true, "opacity": 1, "locked": false, "blendMode": "PASS_THROUGH",
+        "isMask": false, "maskType": "ALPHA", "clipsContent": true,
+        "layoutMode": "NONE",
+        "fills": [{ "visible": true, "opacity": 1, "blendMode": "NORMAL", "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1 }, "boundVariables": {} }],
+        "strokes": [], "effects": [], "cornerRadius": 0,
+        "layoutSizingHorizontal": "FIXED", "layoutSizingVertical": "FIXED"
+      },
+      "layoutProps": { "width": 600, "height": 696, "parentIsAutoLayout": false },
+      "children": [
+        { "type": "COMPONENT", "name": "Image placeholder", "component": GenericImageplaceholder, "props": {} },
+        { "type": "COMPONENT", "name": "deco_comps", "component": Genericdecocomps, "props": {} },
+        { "type": "COMPONENT", "name": "Top bar", "component": GenericTopbar, "props": {} },
+        { "type": "COMPONENT", "name": "UpcomingMatches_Banner", "component": GenericUpcomingMatchesBanner, "props": {} },
+        { "type": "COMPONENT", "name": "divider-ball-1-desktop", "component": Genericdividerball1desktop, "props": {} },
+        { "type": "COMPONENT", "name": "UPCOMING MATCHES", "component": GenericUPCOMINGMATCHES, "props": {} },
+        { "type": "COMPONENT", "name": "divider-ball-1-desktop", "component": Genericdividerball1desktop, "props": {} },
+        { "type": "COMPONENT", "name": "Buttons", "component": GenericButtons, "props": {} }
       ]
-    });
-    scoreboard.x = 44;
-    scoreboard.y = 236;
-    root.appendChild(scoreboard);
+    };
 
-    const cta = await new ResultsCta().create({ text: "See all matches", filled: true });
-    cta.x = 44;
-    cta.y = 560;
-    root.appendChild(cta);
-
+    const root = await this.renderDefinition(structure);
     root.x = props.x ?? 0;
     root.y = props.y ?? 0;
     return root;

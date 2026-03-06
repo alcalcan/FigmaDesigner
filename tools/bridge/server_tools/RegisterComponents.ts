@@ -25,9 +25,22 @@ export function registerComponents() {
     const exports: ComponentExport[] = [];
     const seenClasses = new Map<string, ComponentExport[]>();
 
+    const EXCLUDED_DIRS = [
+        'Football_Crests',
+        'captures',
+        'captured_',
+        'test_cap'
+    ];
+
     // Helpler to walk directory
     function walk(dir: string, project: string = "") {
         if (!fs.existsSync(dir)) return;
+
+        const dirName = path.basename(dir);
+        if (EXCLUDED_DIRS.some(ex => dirName.includes(ex))) {
+            return;
+        }
+
         const items = fs.readdirSync(dir);
 
         for (const item of items) {
