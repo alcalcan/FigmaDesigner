@@ -28,7 +28,6 @@ export function registerComponents() {
     const EXCLUDED_DIRS = [
         'Football_Crests',
         'captures',
-        'captured_',
         'test_cap'
     ];
 
@@ -37,7 +36,10 @@ export function registerComponents() {
         if (!fs.existsSync(dir)) return;
 
         const dirName = path.basename(dir);
-        if (EXCLUDED_DIRS.some(ex => dirName.includes(ex))) {
+        const shouldExcludeDir =
+            EXCLUDED_DIRS.includes(dirName) ||
+            dirName.startsWith('captured_');
+        if (shouldExcludeDir) {
             return;
         }
 

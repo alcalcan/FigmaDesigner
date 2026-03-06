@@ -126,6 +126,7 @@ export { CookbookComponentsDemo } from "../pages/Alex_CookBook/CookbookComponent
 export { date_picker } from "./Alex_CookBook/date_picker/date_picker";
 export { DecisionMap } from "./Alex_CookBook/miscellaneous/DecisionMap";
 export { DemoFlow } from "../flows/Alex_Cookbook/DemoFlow";
+export { DesktopHeader } from "./captures_header_eq_newsletter/DesktopHeader/DesktopHeader";
 export { Divider } from "./UEFA_Academy_online/Divider/Divider";
 export { dropdown_input } from "./Alex_CookBook/dropdown_input/dropdown_input";
 export { dropdown_options } from "./Alex_CookBook/dropdown_options/dropdown_options";

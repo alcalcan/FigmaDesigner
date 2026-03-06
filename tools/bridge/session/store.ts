@@ -4,7 +4,8 @@ import { CommandEnvelope, EventEnvelope, SessionOpenResponse, SessionState } fro
 import { ParsedCommandInput, ParsedEventInput } from '../../../shared/remoteValidation';
 
 const SESSION_TTL_MS = 1000 * 60 * 60; // 1h
-const PRESENCE_WINDOW_MS = 15_000;
+// Keep plugin presence resilient to brief Figma/plugin stalls while long commands run.
+const PRESENCE_WINDOW_MS = 120_000;
 const REDELIVERY_MS = 5_000;
 const MAX_RECENT_EVENTS = 200;
 

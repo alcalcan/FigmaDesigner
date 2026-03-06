@@ -57,6 +57,15 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
         const presentations: string[] = [];
         const flows: string[] = [];
 
+        const shouldExcludeDirectory = (directoryName: string): boolean => {
+            return (
+                directoryName === 'Football_Crests' ||
+                directoryName === 'captures' ||
+                directoryName === 'test_cap' ||
+                directoryName.startsWith('captured_')
+            );
+        };
+
         const walk = (dir: string, baseDir: string, list: string[]) => {
             if (!fs.existsSync(dir)) return;
             const items = fs.readdirSync(dir);
@@ -65,6 +74,9 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
                 const stat = fs.statSync(fullPath);
 
                 if (stat.isDirectory()) {
+                    if (baseDir.endsWith(path.sep + 'components') && shouldExcludeDirectory(item)) {
+                        return;
+                    }
                     walk(fullPath, baseDir, list);
                 } else if ((item.endsWith('.ts') || item.endsWith('.tsx')) &&
                     /^[A-Za-z]/.test(item) &&

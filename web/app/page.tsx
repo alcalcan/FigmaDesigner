@@ -425,6 +425,7 @@ export default function HomePage() {
   const pendingCommandMetaRef = useRef<Record<string, PendingCommandMeta>>({});
   const commandTimeoutByIdRef = useRef<Record<string, number>>({});
   const insertPendingByPathRef = useRef<Record<string, string>>({});
+  const pendingCaptureSaveRequestsRef = useRef<Set<Promise<void>>>(new Set());
 
   useEffect(() => {
     optionsRef.current = captureOptions;
@@ -824,24 +825,46 @@ export default function HomePage() {
     const packetObj = packet as Record<string, unknown>;
     if (!packetObj.name || !packetObj.data) return;
 
-    await fetch(`${BRIDGE_BASE_URL}/save-packet`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        projectName: String(payload.projectName || 'Default').replace(/[^a-z0-9]/gi, '_'),
-        name: packetObj.name,
-        data: packetObj.data,
-        assets: packetObj.assets,
-        procedural: optionsRef.current.procedural,
-        simplified: optionsRef.current.processAuto,
-        batchFolder: optionsRef.current.captureFolder || 'captures',
-        options: {
-          refactor: !optionsRef.current.generatorOnly,
-          compact: !optionsRef.current.generatorOnly,
-          skipGeneration: optionsRef.current.processAuto
+    const requestPromise = (async () => {
+      const response = await fetch(`${BRIDGE_BASE_URL}/save-packet`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectName: String(payload.projectName || 'Default').replace(/[^a-z0-9]/gi, '_'),
+          name: packetObj.name,
+          data: packetObj.data,
+          assets: packetObj.assets,
+          procedural: optionsRef.current.procedural,
+          simplified: optionsRef.current.processAuto,
+          batchFolder: optionsRef.current.captureFolder || 'captures',
+          options: {
+            refactor: !optionsRef.current.generatorOnly,
+            compact: !optionsRef.current.generatorOnly,
+            skipGeneration: optionsRef.current.processAuto
+          }
+        })
+      });
+
+      if (!response.ok) {
+        let details = '';
+        try {
+          const errPayload = await response.json();
+          if (typeof errPayload?.error === 'string') details = errPayload.error;
+        } catch {
+          // ignore JSON parsing errors for non-JSON responses
         }
-      })
-    });
+        throw new Error(
+          details || `Failed to save packet "${String(packetObj.name)}" (${response.status})`
+        );
+      }
+    })();
+
+    pendingCaptureSaveRequestsRef.current.add(requestPromise);
+    try {
+      await requestPromise;
+    } finally {
+      pendingCaptureSaveRequestsRef.current.delete(requestPromise);
+    }
   }, []);
 
   const savePngPacket = useCallback(async (payload: Record<string, unknown>) => {
@@ -910,7 +933,16 @@ export default function HomePage() {
     }
   }, []);
 
-  const processCaptureFinished = useCallback(async (payload: Record<string, unknown>) => {
+  const processCaptureFinished = useCallback(async (_payload: Record<string, unknown>) => {
+    const pendingSaves = Array.from(pendingCaptureSaveRequestsRef.current);
+    if (pendingSaves.length > 0) {
+      const saveResults = await Promise.allSettled(pendingSaves);
+      const failedSaves = saveResults.filter((entry) => entry.status === 'rejected');
+      if (failedSaves.length > 0) {
+        setInfoMessage(`Capture finished, but ${failedSaves.length} packet save(s) failed.`);
+      }
+    }
+
     if (!optionsRef.current.processAuto) {
       await loadFiles();
       await loadComponentIndex();
@@ -918,7 +950,9 @@ export default function HomePage() {
     }
 
     const folder = optionsRef.current.captureFolder || 'captures';
-    const projectName = String(payload.projectName || 'Default').replace(/[^a-z0-9]/gi, '_');
+    // Keep generated components grouped under the selected capture folder.
+    // This matches what users expect when they set a custom capture folder.
+    const projectName = String(folder).replace(/[^a-z0-9_-]/gi, '_') || 'captures';
 
     await fetch(`${BRIDGE_BASE_URL}/generate-folder-to-code`, {
       method: 'POST',
@@ -1834,7 +1868,7 @@ export default function HomePage() {
 
           <div className="section">
             <label className="section-label">Tools</label>
-            <div className="card card-no-padding tool-list">
+            <div className="card card-no-padding tool-list fixed-panel-card">
               <button className="tool-row-btn" onClick={() => void sendCommand('tools-select-instances')}>
                 <Hammer size={12} className="tool-row-icon" />
                 <span>Select All Instances</span>
@@ -1864,7 +1898,7 @@ export default function HomePage() {
 
           <div className="section">
             <label className="section-label">Code Preview</label>
-            <div className="card">
+            <div className="card fixed-panel-card">
               <label className="checkbox-row">
                 <input
                   type="checkbox"
@@ -1895,7 +1929,7 @@ export default function HomePage() {
 
           <div className="section">
             <label className="section-label">Direct Generate from JSON</label>
-            <div className="card">
+            <div className="card fixed-panel-card">
               <textarea
                 value={jsonInput}
                 onChange={(event) => setJsonInput(event.target.value)}
@@ -1927,7 +1961,7 @@ export default function HomePage() {
 
           <div className="section">
             <label className="section-label">Event Stream</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding fixed-panel-card">
               <div className="log-list">
                 {events.length === 0 ? (
                   <div className="empty-row">No events received yet</div>

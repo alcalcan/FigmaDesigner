@@ -12,6 +12,7 @@ console.log(`[Plugin] Starting code.ts | Time: ${Date.now()}`);
 const BRIDGE_BASE_URL = "http://127.0.0.1:4000";
 const USE_LEGACY_UI_BY_DEFAULT = false;
 const REMOTE_POLL_INTERVAL_MS = 1000;
+const REMOTE_HEARTBEAT_INTERVAL_MS = 5000;
 const REMOTE_COMMAND_TIMEOUTS = {
   generateComponentMs: 20_000,
   lightweightMs: 30_000,
@@ -205,6 +206,7 @@ const handledRemoteCommandIds: string[] = [];
 let activeRemoteCommandId: string | null = null;
 let activeRemoteCommandSessionId: string | null = null;
 let pollIntervalHandle: number | null = null;
+let heartbeatIntervalHandle: number | null = null;
 let pollInFlight = false;
 
 const postUiMessageLocal = (message: Record<string, unknown>) => {
@@ -250,6 +252,27 @@ const postSessionEvent = async (
     }, 4_000);
   } catch {
     // Keep UI local even if bridge event forwarding fails.
+  }
+};
+
+const sendPluginHeartbeat = async () => {
+  if (!remoteSessionState.sessionId) return;
+  try {
+    const response = await fetchWithTimeout(
+      `${BRIDGE_BASE_URL}/session/${encodeURIComponent(remoteSessionState.sessionId)}/heartbeat?actor=plugin`,
+      { method: "POST" },
+      3_000
+    );
+    if (!response.ok && response.status === 404) {
+      remoteSessionState.sessionId = null;
+      remoteSessionState.webUrl = null;
+      remoteSessionState.connected = false;
+      remoteSessionState.message = "Session expired. Reconnecting...";
+      postRemoteStatus();
+      await ensureRemoteSession();
+    }
+  } catch {
+    // Polling/event forwarding will surface bridge reachability separately.
   }
 };
 
@@ -512,6 +535,13 @@ const startRemotePolling = (
   pollIntervalHandle = setInterval(() => {
     void pollRemoteCommands(dispatchCommand);
   }, REMOTE_POLL_INTERVAL_MS) as unknown as number;
+};
+
+const startRemoteHeartbeat = () => {
+  if (heartbeatIntervalHandle !== null) return;
+  heartbeatIntervalHandle = setInterval(() => {
+    void sendPluginHeartbeat();
+  }, REMOTE_HEARTBEAT_INTERVAL_MS) as unknown as number;
 };
 
 const isUrlReachable = async (url: string): Promise<boolean> => {
@@ -2154,5 +2184,6 @@ figma.ui.onmessage = async (msg) => {
 
 void ensureRemoteSession().then(() => {
   startRemotePolling(handlePluginMessage);
+  startRemoteHeartbeat();
   postRemoteStatus();
 });

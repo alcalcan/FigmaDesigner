@@ -303,6 +303,7 @@ let activeTab = 'tab-sync';
 let isClipboardCapture = false;
 let lastCapturedProject = "Default";
 let activeSaves = 0;
+let captureSaveErrors = 0;
 const captureBtn = document.getElementById('capture-btn');
 const processCheckbox = document.getElementById('process-checkbox');
 const detailedCheckbox = document.getElementById('detailed-checkbox');
@@ -366,6 +367,24 @@ function showFeedback(btn, originalText, successText = "Captured!") {
         btn.style.backgroundColor = originalColor;
         btn.style.boxShadow = originalBoxShadow;
     }, 2000);
+}
+
+function waitForPendingSaves(timeoutMs = 15000) {
+    const start = Date.now();
+    return new Promise((resolve) => {
+        const check = () => {
+            if (activeSaves <= 0) {
+                resolve({ completed: true, pending: 0 });
+                return;
+            }
+            if (Date.now() - start >= timeoutMs) {
+                resolve({ completed: false, pending: activeSaves });
+                return;
+            }
+            setTimeout(check, 100);
+        };
+        check();
+    });
 }
 
 createBtn.onclick = () => {
@@ -1477,6 +1496,19 @@ window.onmessage = async (event) => {
                             skipGeneration: processAuto // Postpone generation until batch is done
                         }
                     })
+                }).then(async (response) => {
+                    if (!response.ok) {
+                        captureSaveErrors++;
+                        let errorMessage = `${response.status} ${response.statusText}`;
+                        try {
+                            const errorPayload = await response.json();
+                            if (errorPayload?.error) errorMessage = errorPayload.error;
+                        } catch (_) { }
+                        console.error(`[UI] Failed to save packet ${msg.packet.name}: ${errorMessage}`);
+                    }
+                }).catch((err) => {
+                    captureSaveErrors++;
+                    console.error(`[UI] Failed to save packet ${msg.packet.name}:`, err);
                 }).finally(() => {
                     activeSaves--;
                 });
@@ -1518,69 +1550,55 @@ window.onmessage = async (event) => {
         console.log("[UI] Capture operation finished signal received");
         const processAuto = document.getElementById('process-checkbox').checked ||
             document.getElementById('procedural-gen-checkbox-capture').checked;
+        const saveWait = await waitForPendingSaves();
+        if (!saveWait.completed) {
+            console.warn(`[UI] Timed out waiting for pending packet saves (${saveWait.pending} still active).`);
+        }
 
         if (processAuto) {
-            // Wait for any pending saves to complete
-            const checkSaves = async () => {
-                if (activeSaves > 0) {
-                    console.log(`[UI] Waiting for ${activeSaves} pending saves...`);
-                    setTimeout(checkSaves, 100);
-                    return;
-                }
+            try {
+                const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
+                // 1. Get Folder Name AGAIN (since batchFolder var is local to other handler)
+                const folderInput = document.getElementById('capture-folder-input');
+                const userFolder = folderInput ? folderInput.value.trim() : "";
+                const batchFolder = userFolder || "captures";
 
-                try {
-                    const isProcedural = document.getElementById('procedural-gen-checkbox-capture').checked;
-                    // 1. Get Folder Name AGAIN (since batchFolder var is local to other handler)
-                    const folderInput = document.getElementById('capture-folder-input');
-                    const userFolder = folderInput ? folderInput.value.trim() : "";
-                    const batchFolder = userFolder || "captures";
+                syncBtn.textContent = "Processing batch in " + batchFolder + "...";
 
-                    syncBtn.textContent = "Processing batch in " + batchFolder + "...";
+                await fetch('http://127.0.0.1:4000/generate-folder-to-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        folder: batchFolder,
+                        project: (msg.projectName || "Default").replace(/[^a-z0-9]/gi, '_'),
+                        simplified: true,
+                        procedural: isProcedural,
+                        refactor: !generatorOnlyCheckboxCapture.checked,
+                        compact: !generatorOnlyCheckboxCapture.checked,
+                        cleanup: false // KEEP captures for debugging
+                    })
+                });
 
-                    // If we used a temporary batch folder, target that for generation and cleanup
-                    // We check if there are multiple saves or if we set lastCapturedProject to to_be_converted
-                    // Wait, lastCapturedProject is just the sanitized projectName.
-                    // Let's check how many were captured. We can't see msg.total here.
-                    // But if to_be_converted exists, it means we used it.
-                    // Actually, let's just use a more robust way to track if it was a batch.
-                    const isBatch = lastCapturedProject === "to_be_converted" || true; // Fallback to check
-
-                    await fetch('http://127.0.0.1:4000/generate-folder-to-code', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            folder: batchFolder,
-                            project: (msg.projectName || "Default").replace(/[^a-z0-9]/gi, '_'),
-                            simplified: true,
-                            procedural: isProcedural,
-                            refactor: !generatorOnlyCheckboxCapture.checked,
-                            compact: !generatorOnlyCheckboxCapture.checked,
-                            cleanup: false // KEEP captures for debugging
-                        })
-                    });
-
-                    showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured & Processed!");
-                } catch (e) {
-                    console.error("Batch processing failed", e);
-                    showFeedback(syncBtn, "Capture Sync (to Disk)", "Save Complete");
-                }
-
-                if (statusDot.className === "dot active") {
-                    statusTextSpan.textContent = "Connected & Listening";
-                }
-                loadFiles();
-                loadComponents();
-            };
-
-            checkSaves();
-        } else {
-            showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured!");
-            if (statusDot.className === "dot active") {
-                statusTextSpan.textContent = "Connected & Listening";
+                showFeedback(syncBtn, "Capture Sync (to Disk)", "Captured & Processed!");
+            } catch (e) {
+                console.error("Batch processing failed", e);
+                showFeedback(syncBtn, "Capture Sync (to Disk)", "Save Complete");
             }
-            loadFiles();
-            loadComponents();
+        } else {
+            const successText = captureSaveErrors > 0 ? "Captured (Partial)" : "Captured!";
+            showFeedback(syncBtn, "Capture Sync (to Disk)", successText);
         }
+
+        if (captureSaveErrors > 0) {
+            console.warn(`[UI] Capture finished with ${captureSaveErrors} packet save error(s).`);
+        }
+        captureSaveErrors = 0;
+
+        if (statusDot.className === "dot active") {
+            statusTextSpan.textContent = "Connected & Listening";
+        }
+        loadFiles();
+        loadComponents();
     }
 
     if (msg.type === 'capture-preview-result-packet') {
