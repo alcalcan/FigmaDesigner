@@ -345,6 +345,7 @@ button.small-btn {
   gap: 8px;
   padding-top: 6px;
   padding-bottom: 6px;
+  padding-right: 12px;
   font-size: 11px;
   color: #eee;
   cursor: pointer;

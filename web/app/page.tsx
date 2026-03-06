@@ -1575,9 +1575,14 @@ export default function HomePage() {
                   : renderTree(flowTree, 0, {
                     selectedValue: selectedCatalogPath,
                     onSelect: setSelectedCatalogPath,
+                    insertable: true,
+                    insertPendingByPath,
                     deletable: true,
                     editMode: sectionEditMode.flows,
                     deletePendingByPath,
+                    onInsert: (value, label) => {
+                      void queueCatalogInsert(value, label);
+                    },
                     onDelete: (value, label) => {
                       void deleteCatalogLeaf('flows', value, label);
                     }
