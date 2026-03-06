@@ -298,8 +298,8 @@ button.small-btn {
 
 .catalog-list {
   flex: 1 1 auto;
-  min-height: auto;
-  height: clamp(200px, 22vh, 600px);
+  min-height: 400px;
+  height: clamp(400px, 50vh, 1000px);
   overflow-y: auto;
 }
 
@@ -555,8 +555,8 @@ textarea {
 }
 
 .fixed-panel-card {
-  min-height: auto;
-  height: clamp(200px, 22vh, 600px);
+  min-height: 400px;
+  height: clamp(400px, 50vh, 1000px);
   max-height: none;
   flex: 1 1 auto;
   display: flex;
