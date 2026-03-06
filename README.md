@@ -66,6 +66,16 @@ npm run bridge
 ```
 *(Or use `npm run dev` to watch for code changes and run the bridge simultaneously)*
 
+### 1.1 Full Remote Mode (Plugin + Bridge + Web Control Center)
+Use this when you want `Open Web Control Center` to work immediately from the plugin:
+```bash
+npm run dev
+```
+This now starts:
+- plugin TypeScript watch build
+- bridge server on `127.0.0.1:4000`
+- Next.js web control center on `127.0.0.1:3000`
+
 ### 2. Available Components
 The plugin now supports a **Components** section in the UI that auto-scans for available TypeScript components in the `components/` directory.
 
@@ -78,3 +88,18 @@ The plugin now supports a **Components** section in the UI that auto-scans for a
 3. Export it in `components/index.ts`.
 4. Restart the bridge server (`npm run bridge`) to pick up the new file.
 5. Click **Refresh** in the plugin UI.
+
+## Remote Web Control Center (Next.js)
+
+This repository now includes a remote control UI under `web/` that can drive the plugin through bridge sessions.
+
+### Start bridge + web app
+```bash
+npm run bridge
+npm run web:dev
+```
+
+Or run both together:
+```bash
+npm run dev:remote
+```

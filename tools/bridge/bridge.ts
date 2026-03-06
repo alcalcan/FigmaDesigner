@@ -8,7 +8,16 @@ import { handlePoll, handleLog } from './handlers/system';
 import { handleSavePpt } from './handlers/ppt_export';
 import { handleImportPpt } from './handlers/ppt_import';
 import { handleSelectSavePath } from './handlers/system_dialog';
-import { startBuild } from '../build';
+import {
+    handleActivePluginSession,
+    handleSessionCommand,
+    handleSessionEvent,
+    handleSessionEvents,
+    handleSessionHeartbeat,
+    handleSessionOpen,
+    handleSessionPoll,
+    handleSessionStatus
+} from './handlers/session';
 
 // Build watcher is now managed by the parent process in npm run dev
 // startBuild({ watch: true }).catch(err => console.error("[Bridge] Build Watcher Error:", err));
@@ -22,8 +31,11 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+    const parsedUrl = new URL(req.url || '/', 'http://127.0.0.1');
+    const pathname = parsedUrl.pathname;
+
     // Total request logger for debugging (ignore poll noise)
-    if (req.url !== '/poll') {
+    if (pathname !== '/poll') {
         console.log(`[${req.method}] ${req.url} (Origin: ${req.headers.origin || 'none'})`);
     }
 
@@ -33,36 +45,53 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    if (req.method === 'GET' && req.url === '/poll') return handlePoll(req, res);
-    if (req.method === 'POST' && req.url === '/log') return handleLog(req, res);
+    if (req.method === 'GET' && pathname === '/poll') return handlePoll(req, res);
+    if (req.method === 'POST' && pathname === '/log') return handleLog(req, res);
 
-    if (req.method === 'GET' && (req.url === '/list' || req.url?.startsWith('/list?'))) return handleList(req, res);
-    if (req.method === 'GET' && (req.url === '/read' || req.url?.startsWith('/read?'))) return handleRead(req, res);
-    if (req.method === 'GET' && (req.url === '/read-asset' || req.url?.startsWith('/read-asset?'))) return handleReadAsset(req, res);
-    if (req.method === 'POST' && req.url === '/delete') return handleDelete(req, res);
-    if (req.method === 'POST' && req.url === '/batch-delete') return handleBatchDelete(req, res);
+    if (req.method === 'POST' && pathname === '/session/open') return void handleSessionOpen(req, res);
+    if (req.method === 'GET' && pathname === '/session/active-plugin') return handleActivePluginSession(res);
 
-    if (req.method === 'GET' && (req.url === '/list-components' || req.url?.startsWith('/list-components?'))) return handleListComponents(req, res);
-    if (req.method === 'POST' && req.url === '/delete-component') return handleDeleteComponent(req, res);
-    if (req.method === 'POST' && req.url === '/delete-component-folder') return handleDeleteComponentFolder(req, res);
-    if (req.method === 'POST' && req.url === '/batch-delete-components') return handleBatchDeleteComponents(req, res);
-    if (req.method === 'POST' && req.url === '/batch-delete-pages') return handleBatchDeletePages(req, res);
+    const sessionMatch = pathname.match(/^\/session\/([^/]+)\/(poll|command|event|events|status|heartbeat)$/);
+    if (sessionMatch) {
+        const [, sessionId, action] = sessionMatch;
+        if (req.method === 'GET' && action === 'poll') return handleSessionPoll(res, sessionId);
+        if (req.method === 'POST' && action === 'command') return void handleSessionCommand(req, res, sessionId);
+        if (req.method === 'POST' && action === 'event') return void handleSessionEvent(req, res, sessionId);
+        if (req.method === 'GET' && action === 'events') return handleSessionEvents(req, res, sessionId);
+        if (req.method === 'GET' && action === 'status') return handleSessionStatus(res, sessionId);
+        if (req.method === 'POST' && action === 'heartbeat') {
+            const actor = parsedUrl.searchParams.get('actor') === 'plugin' ? 'plugin' : 'web';
+            return handleSessionHeartbeat(res, sessionId, actor);
+        }
+    }
 
-    if (req.method === 'POST' && req.url === '/save') return handleSave(req, res);
-    if (req.method === 'POST' && req.url === '/save-packet') return handleSavePacket(req, res);
-    if (req.method === 'POST' && req.url === '/save-png') return handleSavePng(req, res);
-    if (req.method === 'POST' && req.url === '/save-ppt') return handleSavePpt(req, res);
-    if (req.method === 'POST' && req.url === '/import-ppt') return handleImportPpt(req, res);
-    if (req.method === 'POST' && req.url === '/select-save-path') return handleSelectSavePath(req, res);
+    if (req.method === 'GET' && pathname === '/list') return handleList(req, res);
+    if (req.method === 'GET' && pathname === '/read') return handleRead(req, res);
+    if (req.method === 'GET' && pathname === '/read-asset') return handleReadAsset(req, res);
+    if (req.method === 'POST' && pathname === '/delete') return handleDelete(req, res);
+    if (req.method === 'POST' && pathname === '/batch-delete') return handleBatchDelete(req, res);
 
-    if (req.method === 'POST' && req.url === '/generate-code-preview') return handleGenerateCodePreview(req, res);
-    if (req.method === 'POST' && req.url === '/generate-clipboard') return handleGenerateClipboard(req, res);
-    if (req.method === 'POST' && req.url === '/generate-to-code') return handleGenerateToCode(req, res);
-    if (req.method === 'POST' && req.url === '/generate-folder-to-code') return handleGenerateFolderToCode(req, res);
-    if (req.method === 'POST' && req.url === '/refactor-code') return handleRefactorCode(req, res);
-    if (req.method === 'POST' && req.url === '/procedural-convert') return handleProceduralConvert(req, res);
+    if (req.method === 'GET' && pathname === '/list-components') return handleListComponents(req, res);
+    if (req.method === 'POST' && pathname === '/delete-component') return handleDeleteComponent(req, res);
+    if (req.method === 'POST' && pathname === '/delete-component-folder') return handleDeleteComponentFolder(req, res);
+    if (req.method === 'POST' && pathname === '/batch-delete-components') return handleBatchDeleteComponents(req, res);
+    if (req.method === 'POST' && pathname === '/batch-delete-pages') return handleBatchDeletePages(req, res);
 
-    if (req.method === 'GET' && req.url === '/') {
+    if (req.method === 'POST' && pathname === '/save') return handleSave(req, res);
+    if (req.method === 'POST' && pathname === '/save-packet') return handleSavePacket(req, res);
+    if (req.method === 'POST' && pathname === '/save-png') return handleSavePng(req, res);
+    if (req.method === 'POST' && pathname === '/save-ppt') return handleSavePpt(req, res);
+    if (req.method === 'POST' && pathname === '/import-ppt') return handleImportPpt(req, res);
+    if (req.method === 'POST' && pathname === '/select-save-path') return handleSelectSavePath(req, res);
+
+    if (req.method === 'POST' && pathname === '/generate-code-preview') return handleGenerateCodePreview(req, res);
+    if (req.method === 'POST' && pathname === '/generate-clipboard') return handleGenerateClipboard(req, res);
+    if (req.method === 'POST' && pathname === '/generate-to-code') return handleGenerateToCode(req, res);
+    if (req.method === 'POST' && pathname === '/generate-folder-to-code') return handleGenerateFolderToCode(req, res);
+    if (req.method === 'POST' && pathname === '/refactor-code') return handleRefactorCode(req, res);
+    if (req.method === 'POST' && pathname === '/procedural-convert') return handleProceduralConvert(req, res);
+
+    if (req.method === 'GET' && pathname === '/') {
         res.writeHead(200);
         res.end("Bridge Server Online");
         return;

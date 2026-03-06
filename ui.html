@@ -226,14 +226,6 @@
     <h2>Figma Designer</h2>
 
     <div class="section">
-        <label class="section-label">Pipeline Control</label>
-        <button id="create-btn">
-            Generate from Pipeline
-        </button>
-    </div>
-
-
-    <div class="section">
         <label class="section-label">Flows (Auto-Scan)</label>
         <div class="card" style="padding: 0; overflow: hidden;">
             <div
@@ -1231,8 +1223,10 @@
             }, 2000);
         }
 
-        createBtn.onclick = () => {
-            parent.postMessage({ pluginMessage: { type: 'create' } }, '*')
+        if (createBtn) {
+            createBtn.onclick = () => {
+                parent.postMessage({ pluginMessage: { type: 'create' } }, '*')
+            }
         }
 
         captureBtn.onclick = () => {

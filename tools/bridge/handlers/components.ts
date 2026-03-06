@@ -66,14 +66,14 @@ export function handleListComponents(req: http.IncomingMessage, res: http.Server
 
                 if (stat.isDirectory()) {
                     walk(fullPath, baseDir, list);
-                } else if (item.endsWith('.ts') &&
+                } else if ((item.endsWith('.ts') || item.endsWith('.tsx')) &&
                     /^[A-Za-z]/.test(item) &&
                     !item.includes('BaseComponent') &&
                     !item.includes('Helpers') &&
                     !item.includes('JsonReconstructor')) {
 
-                    const relativePath = path.relative(baseDir, fullPath);
-                    const name = relativePath.replace(/\.ts$/, '');
+                    const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/');
+                    const name = relativePath;
                     list.push(name);
                 }
             });

@@ -6,7 +6,7 @@ The **Bridge Server** acts as the intermediary between the Figma Plugin and the 
 
 The bridge code has been refactored into a modular structure under `tools/bridge/`:
 
-- **`bridge.ts`**: Main entry point. Starts the HTTP server (Port 3001) and delegates requests.
+- **`bridge.ts`**: Main entry point. Starts the HTTP server (Port 4000) and delegates requests.
 - **`state.ts`**: Manages shared state like the "pending command" queue and CLI spinners.
 - **`types.ts`**: Shared TypeScript interfaces.
 - **`utils.ts`**: Helper functions (file system walking, strict sanitization, etc.).
@@ -21,10 +21,14 @@ The bridge code has been refactored into a modular structure under `tools/bridge
 ## 🚀 Running the Server
 
 ### Standard Development Mode
-This runs the Bridge Server alongside the build watcher. This is the recommended way to work.
+This runs the bridge, plugin build watcher, and Next.js web control center together. This is the recommended way to work.
 ```bash
 npm run watch
 ```
+
+The stack uses:
+- Bridge: `http://127.0.0.1:4000`
+- Web Control Center: `http://127.0.0.1:3000`
 
 ### Standalone Bridge
 If you only want to run the Bridge Server without rebuilding the other tools:
@@ -41,6 +45,15 @@ If you need to manually restart (e.g., after installing new dependencies), press
 ### System
 - `GET /poll`: Used by the plugin to check for pending commands (e.g., "capture").
 - `POST /log`: Logs messages from the plugin to the local terminal.
+
+### Remote Session Transport
+- `POST /session/open`: Create a session and return `sessionId` + web URL (plugin-owned session authority).
+- `GET /session/:id/poll`: Plugin fetches next command from ordered queue.
+- `POST /session/:id/command`: Web app enqueues a command with optional idempotency key.
+- `POST /session/:id/event`: Plugin emits command progress/results and acknowledgements.
+- `GET /session/:id/events`: SSE stream consumed by the web app.
+- `GET /session/:id/status`: Session health and queue stats.
+- `GET /session/active-plugin`: Resolve the active plugin session for web session sync.
 
 ### Extraction & Assets
 - `POST /save-packet`: Atomic save of a component capture (JSON + Assets).

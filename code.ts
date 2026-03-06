@@ -4,19 +4,549 @@ import { AssetStore, processFills } from "./components/PaintHelpers";
 import * as ComponentRegistry from "./components/index";
 import * as ExtractPPT from "./presentation_logic/PPTExtractor";
 import { runAccessibilityCheck } from "./tools/accessibility_checker";
+import { COMMAND_TYPES, CommandEnvelope, EVENT_TYPES, EventType } from "./shared/remoteProtocol";
 
 // Plugin Initialization Log
 console.log(`[Plugin] Starting code.ts | Time: ${Date.now()}`);
 
-// Show the HTML page in "ui.html".
-console.log("[Plugin] Calling figma.showUI");
-figma.showUI(__html__, { width: 450, height: 800 });
+const BRIDGE_BASE_URL = "http://127.0.0.1:4000";
+const USE_LEGACY_UI_BY_DEFAULT = false;
+const REMOTE_POLL_INTERVAL_MS = 1000;
+const REMOTE_COMMAND_TIMEOUTS = {
+  generateComponentMs: 20_000,
+  lightweightMs: 30_000,
+  captureExportMs: 180_000
+} as const;
+
+const commandTypeSet = new Set<string>(COMMAND_TYPES);
+const eventTypeSet = new Set<string>(EVENT_TYPES);
+
+const captureExportCommandTypes = new Set<string>([
+  "capture",
+  "capture-bridge",
+  "capture-png",
+  "capture-preview",
+  "export-ppt-from-selection"
+]);
+
+const getRemoteCommandTimeoutMs = (commandType: string): number => {
+  if (commandType === "generate-component") return REMOTE_COMMAND_TIMEOUTS.generateComponentMs;
+  if (captureExportCommandTypes.has(commandType)) return REMOTE_COMMAND_TIMEOUTS.captureExportMs;
+  return REMOTE_COMMAND_TIMEOUTS.lightweightMs;
+};
+
+const fetchWithTimeout = async (
+  input: string,
+  init: RequestInit = {},
+  timeoutMs: number = 5_000
+): Promise<Response> => {
+  if (typeof AbortController === "undefined") {
+    return Promise.race([
+      fetch(input, init),
+      new Promise<Response>((_, reject) => {
+        setTimeout(() => reject(new Error(`Request timed out after ${Math.round(timeoutMs / 1000)}s.`)), timeoutMs);
+      })
+    ]);
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+};
+
+const REMOTE_UI_HTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #111114;
+      color: #f4f4f6;
+    }
+    .panel {
+      border: 1px solid #25252d;
+      border-radius: 12px;
+      background: #17171d;
+      padding: 14px;
+    }
+    .title {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #b4b4c2;
+      margin-bottom: 10px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #767680;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+    }
+    .dot.connected {
+      background: #2fd46b;
+      box-shadow: 0 0 6px rgba(47, 212, 107, 0.65);
+    }
+    .dot.error {
+      background: #ff5f57;
+      box-shadow: 0 0 6px rgba(255, 95, 87, 0.65);
+    }
+    .meta {
+      font-size: 10px;
+      line-height: 1.4;
+      color: #8f90a0;
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #0d99ff;
+      color: #fff;
+    }
+    button.secondary {
+      background: #2a2a35;
+      color: #f0f0f8;
+      border: 1px solid #38384a;
+    }
+    button:last-child { margin-bottom: 0; }
+    .hint {
+      margin-top: 10px;
+      font-size: 10px;
+      color: #7c7d8d;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h3 class="title">FigmaDesigner Remote</h3>
+    <div class="status-row">
+      <span id="status-dot" class="dot"></span>
+      <span id="status-text">Connecting to bridge...</span>
+    </div>
+    <div class="meta">
+      <div>Session: <span id="session-id">pending</span></div>
+      <div>Web URL: <span id="web-url">pending</span></div>
+    </div>
+    <button id="open-web-btn">Open Web Control Center</button>
+    <button id="retry-btn" class="secondary">Retry Bridge Connection</button>
+    <button id="open-legacy-btn" class="secondary">Open Legacy Plugin UI</button>
+    <div class="hint">Bridge: localhost:4000 | Web: localhost:3000.</div>
+    <div class="hint">Start stack with: npm run dev (or npm run watch)</div>
+  </div>
+  <script>
+    const statusDot = document.getElementById('status-dot');
+    const statusText = document.getElementById('status-text');
+    const sessionId = document.getElementById('session-id');
+    const webUrl = document.getElementById('web-url');
+
+    const setStatus = (state) => {
+      const connected = !!state.connected;
+      statusDot.className = connected ? 'dot connected' : 'dot error';
+      statusText.textContent = state.message || (connected ? 'Connected' : 'Disconnected');
+      sessionId.textContent = state.sessionId || 'pending';
+      webUrl.textContent = state.webUrl || 'pending';
+    };
+
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg || msg.type !== 'remote-status') return;
+      setStatus(msg);
+    };
+
+    document.getElementById('open-web-btn').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'open-web-ui' } }, '*');
+    };
+    document.getElementById('open-legacy-btn').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'open-legacy-ui' } }, '*');
+    };
+    document.getElementById('retry-btn').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'remote-reconnect' } }, '*');
+    };
+  </script>
+</body>
+</html>
+`;
+
+interface RemoteSessionState {
+  sessionId: string | null;
+  webUrl: string | null;
+  connected: boolean;
+  message: string;
+}
+
+const remoteSessionState: RemoteSessionState = {
+  sessionId: null,
+  webUrl: null,
+  connected: false,
+  message: "Connecting to bridge..."
+};
+
+const handledRemoteCommandIds: string[] = [];
+let activeRemoteCommandId: string | null = null;
+let activeRemoteCommandSessionId: string | null = null;
+let pollIntervalHandle: number | null = null;
+let pollInFlight = false;
+
+const postUiMessageLocal = (message: Record<string, unknown>) => {
+  if (!figma.ui) return;
+  figma.ui.postMessage(message);
+};
+
+const postRemoteStatus = () => {
+  postUiMessageLocal({
+    type: "remote-status",
+    connected: remoteSessionState.connected,
+    message: remoteSessionState.message,
+    sessionId: remoteSessionState.sessionId,
+    webUrl: remoteSessionState.webUrl
+  });
+};
+
+const safeJson = async (response: { json: () => Promise<unknown> }): Promise<Record<string, unknown>> => {
+  const parsed = await response.json();
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return {};
+  }
+  return parsed as Record<string, unknown>;
+};
+
+const postSessionEvent = async (
+  type: EventType,
+  payload: Record<string, unknown>,
+  commandId?: string,
+  sessionIdOverride?: string
+) => {
+  const targetSessionId = sessionIdOverride || activeRemoteCommandSessionId || remoteSessionState.sessionId;
+  if (!targetSessionId) return;
+  try {
+    await fetchWithTimeout(`${BRIDGE_BASE_URL}/session/${encodeURIComponent(targetSessionId)}/event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type,
+        payload,
+        commandId
+      })
+    }, 4_000);
+  } catch {
+    // Keep UI local even if bridge event forwarding fails.
+  }
+};
+
+const emitPluginUiMessage = (message: Record<string, unknown>) => {
+  postUiMessageLocal(message);
+  const rawType = message.type;
+  if (typeof rawType === "string" && eventTypeSet.has(rawType)) {
+    const payload = { ...message };
+    delete payload.type;
+    void postSessionEvent(
+      rawType as EventType,
+      payload,
+      activeRemoteCommandId ?? undefined,
+      activeRemoteCommandSessionId ?? undefined
+    );
+  }
+};
+
+const showRemoteUi = () => {
+  console.log("[Plugin] Showing remote thin UI");
+  figma.showUI(REMOTE_UI_HTML, { width: 360, height: 300 });
+  postRemoteStatus();
+};
+
+const showLegacyUi = () => {
+  console.log("[Plugin] Showing legacy UI");
+  figma.showUI(__html__, { width: 450, height: 800 });
+};
+
+const startUi = () => {
+  if (USE_LEGACY_UI_BY_DEFAULT) {
+    showLegacyUi();
+    return;
+  }
+  showRemoteUi();
+};
+
+const hasCommandType = (value: unknown): value is string =>
+  typeof value === "string" && commandTypeSet.has(value);
+
+const toPluginMessage = (command: CommandEnvelope): Record<string, unknown> => ({
+  type: command.type,
+  ...command.payload
+});
+
+const markCommandHandled = (commandId: string) => {
+  handledRemoteCommandIds.push(commandId);
+  if (handledRemoteCommandIds.length > 500) {
+    handledRemoteCommandIds.splice(0, handledRemoteCommandIds.length - 500);
+  }
+};
+
+const ensureRemoteSession = async () => {
+  try {
+    const response = await fetchWithTimeout(`${BRIDGE_BASE_URL}/session/open`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        webBaseUrl: "http://127.0.0.1:3000"
+      })
+    }, 5_000);
+
+    if (!response.ok) {
+      throw new Error(`Session open failed (${response.status})`);
+    }
+
+    const body = await safeJson(response);
+    const sessionId = typeof body.sessionId === "string" ? body.sessionId : null;
+    const webUrl = typeof body.webUrl === "string" ? body.webUrl : null;
+
+    if (!sessionId || !webUrl) {
+      throw new Error("Bridge returned invalid session payload");
+    }
+
+    remoteSessionState.sessionId = sessionId;
+    remoteSessionState.webUrl = webUrl;
+    remoteSessionState.connected = true;
+    remoteSessionState.message = "Connected to bridge";
+    postRemoteStatus();
+    console.log(`[Plugin] Remote session opened: ${sessionId}`);
+  } catch (error) {
+    remoteSessionState.connected = false;
+    remoteSessionState.message = `Bridge unavailable: ${(error as Error).message}`;
+    postRemoteStatus();
+  }
+};
+
+interface CommandDispatchResult {
+  ackMessage?: string;
+}
+
+const toErrorInfo = (error: unknown): { message: string; details?: string; errorCode: "timeout" | "dispatch_error" } => {
+  const errorCode = (
+    error &&
+    typeof error === "object" &&
+    "errorCode" in error &&
+    typeof (error as { errorCode?: unknown }).errorCode === "string"
+  )
+    ? (error as { errorCode: "timeout" | "dispatch_error" }).errorCode
+    : "dispatch_error";
+  if (error instanceof Error) {
+    return {
+      message: error.message || "Command failed.",
+      details: error.stack,
+      errorCode
+    };
+  }
+  if (typeof error === "string") {
+    return { message: error, errorCode };
+  }
+  return { message: "Command failed.", errorCode };
+};
+
+const sendCommandAckDetailed = async (
+  commandId: string,
+  ok: boolean,
+  message: string,
+  commandType: string,
+  details?: string,
+  extra?: { durationMs?: number; errorCode?: string },
+  sessionIdOverride?: string
+) => {
+  const payload: Record<string, unknown> = {
+    ok,
+    message,
+    commandType
+  };
+  if (details) payload.details = details;
+  if (typeof extra?.durationMs === "number") payload.durationMs = extra.durationMs;
+  if (extra?.errorCode) payload.errorCode = extra.errorCode;
+  await postSessionEvent("command-ack", payload, commandId, sessionIdOverride);
+};
+
+const withRemoteCommandTimeout = <T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  commandType: string
+): Promise<T> => new Promise<T>((resolve, reject) => {
+  const timeoutError = new Error(
+    `Command "${commandType}" timed out after ${Math.round(timeoutMs / 1000)}s.`
+  ) as Error & { errorCode?: string };
+  timeoutError.errorCode = "timeout";
+
+  const timer = setTimeout(() => {
+    reject(timeoutError);
+  }, timeoutMs);
+
+  promise.then((value) => {
+    clearTimeout(timer);
+    resolve(value);
+  }).catch((error) => {
+    clearTimeout(timer);
+    reject(error);
+  });
+});
+
+const pollRemoteCommands = async (
+  dispatchCommand: (msg: Record<string, unknown>) => Promise<CommandDispatchResult | void>
+) => {
+  if (!remoteSessionState.sessionId) {
+    await ensureRemoteSession();
+    return;
+  }
+  if (pollInFlight) return;
+
+  pollInFlight = true;
+  try {
+    const response = await fetchWithTimeout(
+      `${BRIDGE_BASE_URL}/session/${encodeURIComponent(remoteSessionState.sessionId)}/poll`,
+      {},
+      5_000
+    );
+    if (!response.ok) {
+      if (response.status === 404) {
+        remoteSessionState.sessionId = null;
+        remoteSessionState.webUrl = null;
+      }
+      throw new Error(`Poll failed (${response.status})`);
+    }
+
+    remoteSessionState.connected = true;
+    if (remoteSessionState.message !== "Connected to bridge") {
+      remoteSessionState.message = "Connected to bridge";
+      postRemoteStatus();
+    }
+
+    const body = await safeJson(response);
+    const command = (body.command && typeof body.command === "object")
+      ? body.command as CommandEnvelope
+      : null;
+
+    if (!command || !command.id || !hasCommandType(command.type)) {
+      return;
+    }
+
+    if (handledRemoteCommandIds.includes(command.id)) {
+      await sendCommandAckDetailed(
+        command.id,
+        true,
+        "Duplicate command ignored (already handled).",
+        command.type,
+        undefined,
+        undefined,
+        command.sessionId
+      );
+      return;
+    }
+
+    activeRemoteCommandId = command.id;
+    activeRemoteCommandSessionId = command.sessionId;
+    const commandStartedAt = Date.now();
+    try {
+      const timeoutMs = getRemoteCommandTimeoutMs(command.type);
+      const result = await withRemoteCommandTimeout(
+        Promise.resolve(dispatchCommand(toPluginMessage(command))),
+        timeoutMs,
+        command.type
+      );
+      const durationMs = Date.now() - commandStartedAt;
+      markCommandHandled(command.id);
+      await sendCommandAckDetailed(
+        command.id,
+        true,
+        result?.ackMessage || `Command "${command.type}" completed.`,
+        command.type,
+        undefined,
+        { durationMs },
+        command.sessionId
+      );
+    } catch (error) {
+      const info = toErrorInfo(error);
+      const durationMs = Date.now() - commandStartedAt;
+      markCommandHandled(command.id);
+      await sendCommandAckDetailed(
+        command.id,
+        false,
+        info.message,
+        command.type,
+        info.details,
+        { durationMs, errorCode: info.errorCode },
+        command.sessionId
+      );
+    } finally {
+      activeRemoteCommandId = null;
+      activeRemoteCommandSessionId = null;
+    }
+  } catch (error) {
+    remoteSessionState.connected = false;
+    remoteSessionState.message = `Bridge poll error: ${(error as Error).message}`;
+    postRemoteStatus();
+  } finally {
+    pollInFlight = false;
+  }
+};
+
+const startRemotePolling = (
+  dispatchCommand: (msg: Record<string, unknown>) => Promise<CommandDispatchResult | void>
+) => {
+  if (pollIntervalHandle !== null) return;
+  pollIntervalHandle = setInterval(() => {
+    void pollRemoteCommands(dispatchCommand);
+  }, REMOTE_POLL_INTERVAL_MS) as unknown as number;
+};
+
+const isUrlReachable = async (url: string): Promise<boolean> => {
+  try {
+    await Promise.race([
+      fetch(url, { method: "GET" }),
+      new Promise((_resolve, reject) => setTimeout(() => reject(new Error("timeout")), 3500))
+    ]);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const openWebControlCenter = async () => {
+  if (!remoteSessionState.webUrl) {
+    figma.notify("Web Control Center URL is not available yet.", { error: true });
+    return;
+  }
+  const reachable = await isUrlReachable(remoteSessionState.webUrl);
+  if (!reachable) {
+    remoteSessionState.message = "Opening web URL while server warms up...";
+    postRemoteStatus();
+    figma.notify("Web server may still be starting. Use `npm run dev` or `npm run watch`.", { error: false });
+  }
+  figma.openExternal(remoteSessionState.webUrl);
+};
+
+startUi();
 
 // Helper to log to UI (since we can't see Figma console)
 const logToUI = (msg: string) => {
   console.log(msg);
   if (figma.ui) {
-    figma.ui.postMessage({ type: 'log', message: msg });
+    emitPluginUiMessage({ type: 'log', message: msg });
   }
 };
 
@@ -65,7 +595,7 @@ const createPptErrorSlide = (name: string, text: string): PptErrorSlide => ({
 
 const postPptExportError = (message: string) => {
   figma.notify(message, { error: true });
-  figma.ui.postMessage({
+  emitPluginUiMessage({
     type: 'export-ppt-error',
     message
   });
@@ -1069,11 +1599,28 @@ const captureNode = async (
 // calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = async (msg) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handlePluginMessage = async (msg: any): Promise<CommandDispatchResult | void> => {
   try {
+    if (msg.type === 'open-web-ui') {
+      await openWebControlCenter();
+      return { ackMessage: 'Opened Web Control Center.' };
+    }
+
+    if (msg.type === 'open-legacy-ui') {
+      showLegacyUi();
+      return { ackMessage: 'Opened legacy plugin UI.' };
+    }
+
+    if (msg.type === 'remote-reconnect') {
+      await ensureRemoteSession();
+      return { ackMessage: 'Bridge reconnection attempted.' };
+    }
+
     if (msg.type === 'create') {
       const pipeline = new Pipeline();
       await pipeline.run();
+      return { ackMessage: 'Pipeline run completed.' };
     }
 
     // --- Tools Handlers ---
@@ -1083,6 +1630,7 @@ figma.ui.onmessage = async (msg) => {
       const count = instances.length;
       figma.notify(`Selected ${count} instances.`);
       console.log(`Selected ${count} instances.`);
+      return { ackMessage: `Selected ${count} instances.` };
     }
 
     if (msg.type === 'tools-organize-grid') {
@@ -1119,11 +1667,13 @@ figma.ui.onmessage = async (msg) => {
       });
 
       figma.notify(`Reorganized ${count} items into a grid.`);
+      return { ackMessage: `Reorganized ${count} items into a grid.` };
     }
 
     if (msg.type === 'tools-check-accessibility') {
       const selection = figma.currentPage.selection;
       await runAccessibilityCheck(selection);
+      return { ackMessage: 'Accessibility check finished.' };
     }
 
     if (msg.type === 'tools-extract-details') {
@@ -1138,6 +1688,7 @@ figma.ui.onmessage = async (msg) => {
       figma.currentPage.selection = [detailsCard];
       figma.viewport.scrollAndZoomIntoView([detailsCard]);
       figma.notify(`Extracted details for "${sourceNode.name}".`);
+      return { ackMessage: `Extracted details for "${sourceNode.name}".` };
     }
 
     // Handle Manual Capture (Download)
@@ -1179,12 +1730,13 @@ figma.ui.onmessage = async (msg) => {
         content: val.bytesBase64
       }));
 
-      figma.ui.postMessage({
+      emitPluginUiMessage({
         type: 'capture-download',
         data: details,
         fileName: fileName,
         assets: assets
       });
+      return { ackMessage: `Capture downloaded (${details.length} node${details.length === 1 ? '' : 's'}).` };
     }
 
     // Handle Capture request from Bridge (via UI)
@@ -1197,7 +1749,7 @@ figma.ui.onmessage = async (msg) => {
         if (selection.length === 0) {
           console.warn("[Plugin] No selection");
           figma.notify("Please select at least one element to capture.", { error: true });
-          figma.ui.postMessage({ type: 'capture-error', message: "No selection" });
+          emitPluginUiMessage({ type: 'capture-error', message: "No selection" });
           return;
         }
 
@@ -1225,7 +1777,7 @@ figma.ui.onmessage = async (msg) => {
                 const variantTotal = variants.length;
 
                 for (const node of variants) {
-                  figma.ui.postMessage({
+                  emitPluginUiMessage({
                     type: 'capture-status',
                     message: `Capturing Variant ${variantIndex} / ${variantTotal}...`,
                     count: variantIndex,
@@ -1248,7 +1800,7 @@ figma.ui.onmessage = async (msg) => {
                       targetProjectName = "BookingCase";
                     }
 
-                    figma.ui.postMessage({
+                    emitPluginUiMessage({
                       type: 'capture-png-result-packet',
                       projectName: targetProjectName,
                       packet: {
@@ -1262,7 +1814,7 @@ figma.ui.onmessage = async (msg) => {
                     console.warn(`Failed to export variant ${node.name}`, e);
                   }
                 }
-                return; // Done with smart capture
+                return { ackMessage: `PNG capture completed (${variantTotal} variant${variantTotal === 1 ? '' : 's'}).` };
               }
             }
           }
@@ -1272,7 +1824,7 @@ figma.ui.onmessage = async (msg) => {
             count++;
             console.log(`[Plugin] Capturing PNG ${count}/${total}: ${node.name} (ID: ${node.id})`);
 
-            figma.ui.postMessage({
+            emitPluginUiMessage({
               type: 'capture-status',
               message: `Capturing PNG ${count} / ${total}...`,
               count,
@@ -1286,7 +1838,7 @@ figma.ui.onmessage = async (msg) => {
               });
               const base64 = figma.base64Encode(pngBytes);
 
-              figma.ui.postMessage({
+              emitPluginUiMessage({
                 type: 'capture-png-result-packet',
                 projectName: projectName,
                 packet: {
@@ -1299,7 +1851,7 @@ figma.ui.onmessage = async (msg) => {
               console.warn(`Failed to export PNG for ${node.name}`, e);
             }
           }
-          return;
+          return { ackMessage: `PNG capture completed (${count} frame${count === 1 ? '' : 's'}).` };
         }
 
         const total = selection.length;
@@ -1310,7 +1862,7 @@ figma.ui.onmessage = async (msg) => {
           const isLast = count === total;
           console.log(`[Plugin] Capturing ${count}/${total}: ${node.name} (ID: ${node.id})`);
 
-          figma.ui.postMessage({
+          emitPluginUiMessage({
             type: 'capture-status',
             message: `Capturing ${count} / ${total}...`,
             count,
@@ -1334,7 +1886,7 @@ figma.ui.onmessage = async (msg) => {
             if (!data) {
               console.warn(`[Plugin] Capture returned null for ${node.name}`);
               // Report "skipped" to the UI so it knows we moved past this element
-              figma.ui.postMessage({
+              emitPluginUiMessage({
                 type: 'capture-bridge-result-packet',
                 projectName: projectName,
                 packet: null, // Signals skip
@@ -1366,7 +1918,7 @@ figma.ui.onmessage = async (msg) => {
               finalName = `${msg.componentNameOverride}_${count}`;
             }
 
-            figma.ui.postMessage({
+            emitPluginUiMessage({
               type: resultType,
               projectName: projectName,
               packet: {
@@ -1381,7 +1933,7 @@ figma.ui.onmessage = async (msg) => {
           } catch (e) {
             console.error(`Capture failed for ${node.name}:`, e);
             // Still send something to keep count on UI side
-            figma.ui.postMessage({
+            emitPluginUiMessage({
               type: 'capture-bridge-result-packet',
               projectName: projectName,
               packet: null,
@@ -1393,11 +1945,13 @@ figma.ui.onmessage = async (msg) => {
         }
 
         console.log("[Plugin] Capture Loop Finished");
-        figma.ui.postMessage({ type: 'capture-finished', projectName: projectName });
+        emitPluginUiMessage({ type: 'capture-finished', projectName: projectName });
+        return { ackMessage: `Capture completed (${total} item${total === 1 ? '' : 's'}).` };
       } catch (e) {
         console.error("Capture failed:", e);
         figma.notify("Capture failed: " + (e as Error).message, { error: true });
-        figma.ui.postMessage({ type: 'capture-error', message: (e as Error).message });
+        emitPluginUiMessage({ type: 'capture-error', message: (e as Error).message });
+        throw e;
       }
     }
 
@@ -1427,26 +1981,33 @@ figma.ui.onmessage = async (msg) => {
           figma.currentPage.appendChild(result);
           figma.viewport.scrollAndZoomIntoView([result]);
           console.log("Reconstruction from JSON complete.");
+          return { ackMessage: "Generated node from JSON payload." };
         }
+        throw new Error("JSON reconstruction returned no node.");
       } catch (e) {
         const message = (e as Error).message || "Failed to generate from JSON";
         console.error("Failed to generate from JSON:", e);
         figma.notify(message, { error: true });
-        figma.ui.postMessage({ type: 'capture-error', message });
+        emitPluginUiMessage({ type: 'capture-error', message });
+        throw e;
       }
     }
 
     if (msg.type === 'generate-component') {
       const name = msg.componentName;
       const projectName = msg.projectName; // Optional
+      if (typeof name !== 'string' || name.trim().length === 0) {
+        throw new Error("Missing componentName for generate-component.");
+      }
       type GeneratedComponentClass = new () => {
         create: (props: Record<string, unknown>) => SceneNode | Promise<SceneNode>;
         createAsync?: (props: Record<string, unknown>) => Promise<SceneNode>;
       };
       const componentRegistry = ComponentRegistry as unknown as Record<string, GeneratedComponentClass | undefined>;
 
+      const registryKeys = Object.keys(ComponentRegistry);
       logToUI(`[Plugin] Requested Component: '${name}', Project: '${projectName}'`);
-      logToUI(`[Plugin] Current Registry Keys: ${Object.keys(ComponentRegistry).join(", ")}`);
+      logToUI(`[Plugin] Registry size: ${registryKeys.length}`);
 
       let ComponentClass = componentRegistry[name];
       logToUI(`[Plugin] Initial lookup for '${name}': ${ComponentClass ? 'FOUND' : 'NOT FOUND'}`);
@@ -1460,8 +2021,9 @@ figma.ui.onmessage = async (msg) => {
       }
 
       if (!ComponentClass) {
-        figma.notify(`Component ${name} not found in registry.`, { error: true });
-        return;
+        const message = `Component ${name} not found in registry.`;
+        figma.notify(message, { error: true });
+        throw new Error(message);
       }
 
       try {
@@ -1494,10 +2056,14 @@ figma.ui.onmessage = async (msg) => {
           figma.currentPage.appendChild(result);
           figma.viewport.scrollAndZoomIntoView([result]);
           figma.notify(`Generated ${name}`);
+          return { ackMessage: `Generated ${name}.` };
         }
+        throw new Error(`Component ${name} returned no scene node.`);
       } catch (e) {
-        console.error(e);
-        figma.notify(`Failed to generate ${name}: ${(e as Error).message}`, { error: true });
+        const message = `Failed to generate ${name}: ${(e as Error).message}`;
+        console.error(message, e);
+        figma.notify(message, { error: true });
+        throw new Error(message);
       }
     }
 
@@ -1555,7 +2121,7 @@ figma.ui.onmessage = async (msg) => {
         }
       }
 
-      figma.ui.postMessage({
+      emitPluginUiMessage({
         type: 'export-ppt-data',
         payload: [{
           presentationName: presentationNode.name || "Presentation",
@@ -1563,14 +2129,30 @@ figma.ui.onmessage = async (msg) => {
         }],
         docName: figma.root.name
       });
+      return { ackMessage: `PPT data exported (${slides.length} slide${slides.length === 1 ? '' : 's'}).` };
     }
 
     if (msg.type === 'cancel') {
       figma.closePlugin();
+      return { ackMessage: 'Plugin closed.' };
     }
   } catch (e) {
     console.error("Uncaught Plugin Error:", e);
     figma.notify("Plugin Error: " + (e as Error).message);
-    figma.ui.postMessage({ type: 'capture-error', message: (e as Error).message || String(e) });
+    emitPluginUiMessage({ type: 'capture-error', message: (e as Error).message || String(e) });
+    throw e;
   }
 };
+
+figma.ui.onmessage = async (msg) => {
+  try {
+    await handlePluginMessage(msg || {});
+  } catch {
+    // Errors are already surfaced via notifications and event channel.
+  }
+};
+
+void ensureRemoteSession().then(() => {
+  startRemotePolling(handlePluginMessage);
+  postRemoteStatus();
+});
