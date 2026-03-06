@@ -1096,9 +1096,36 @@ export default function HomePage() {
   }, [ensureSession]);
 
   useEffect(() => {
-    if (!sessionId) return;
-
     let cancelled = false;
+
+    // Separate polling logic for connection recovery
+    const startConnectionPolling = () => {
+      return setInterval(async () => {
+        if (cancelled) return;
+        const currentSession = sessionRef.current;
+        if (!currentSession) {
+          // If we have no session, try to actively find one.
+          await ensureSession();
+        } else {
+          // If we have a session but we're disconnected, 
+          // ensureSession will recover if the plugin was restarted.
+          const currentStatus = await fetchWithTimeout(`${BRIDGE_BASE_URL}/session/${encodeURIComponent(currentSession)}/status`, {}, 2000).catch(() => null);
+          if (!currentStatus || !currentStatus.ok) {
+            await ensureSession();
+          }
+        }
+      }, 3000); // Check every 3 seconds if disconnected/missing
+    };
+
+    const connectionInterval = startConnectionPolling();
+
+    if (!sessionId) {
+      // If no session ID, just poll.
+      return () => {
+        cancelled = true;
+        clearInterval(connectionInterval);
+      };
+    }
 
     const connectEvents = () => {
       const stream = new EventSource(
@@ -1119,6 +1146,8 @@ export default function HomePage() {
       stream.onerror = () => {
         if (!cancelled) {
           setInfoMessage('Event stream disconnected. Reconnecting...');
+          // if the stream drops, we should aggressively ensure session
+          ensureSession();
         }
       };
 
@@ -1137,9 +1166,11 @@ export default function HomePage() {
     return () => {
       cancelled = true;
       clearInterval(interval);
+      clearInterval(connectionInterval);
       stream.close();
     };
   }, [
+    ensureSession,
     handleIncomingEvent,
     loadComponentIndex,
     loadFiles,
@@ -1458,8 +1489,16 @@ export default function HomePage() {
             <span className={`dot ${connected ? 'active' : 'error'}`} />
             <span>{connected ? 'Plugin Connected' : 'Plugin Disconnected'}</span>
           </div>
-          <button className="secondary small-btn" onClick={() => void refreshSessionStatus()}>Refresh</button>
-          <button className="secondary small-btn" onClick={() => void restartSession()}>Resync Session</button>
+          <button
+            className="secondary small-btn"
+            onClick={() => {
+              void restartSession();
+              void loadFiles();
+              void loadComponentIndex();
+            }}
+          >
+            Sync Connection
+          </button>
         </div>
       </div>
       <div className="session-telemetry">
