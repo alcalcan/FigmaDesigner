@@ -141,7 +141,7 @@ h2 {
   flex-direction: column;
 }
 
-.section > .card {
+.section>.card {
   flex: 1 1 auto;
 }
 
@@ -298,7 +298,8 @@ button.small-btn {
 
 .catalog-list {
   flex: 1 1 auto;
-  min-height: 400px;
+  min-height: auto;
+  height: clamp(200px, 22vh, 600px);
   overflow-y: auto;
 }
 
@@ -441,6 +442,7 @@ button.small-btn {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -553,8 +555,8 @@ textarea {
 }
 
 .fixed-panel-card {
-  min-height: 400px;
-  height: auto;
+  min-height: auto;
+  height: clamp(200px, 22vh, 600px);
   max-height: none;
   flex: 1 1 auto;
   display: flex;
@@ -668,6 +670,7 @@ textarea {
   body {
     padding: 20px;
   }
+
   .ui-layout {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
