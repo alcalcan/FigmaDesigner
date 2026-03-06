@@ -25,6 +25,21 @@
             margin-bottom: 40px;
         }
 
+        .section-list-shell {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 360px;
+        }
+
+        .section-list-body {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            background: #1e1e1e;
+        }
+
         .section-label {
             font-size: 10px;
             font-weight: 800;
@@ -227,7 +242,7 @@
 
     <div class="section">
         <label class="section-label">Flows (Auto-Scan)</label>
-        <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="card section-list-shell">
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Flows</span>
@@ -238,7 +253,7 @@
                         style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
                 </div>
             </div>
-            <div id="flow-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
+            <div id="flow-list" class="section-list-body">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see flows
                 </div>
@@ -254,7 +269,7 @@
 
     <div class="section">
         <label class="section-label">Screens & Pages (Auto-Scan)</label>
-        <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="card section-list-shell">
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Pages</span>
@@ -265,7 +280,7 @@
                         style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
                 </div>
             </div>
-            <div id="page-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
+            <div id="page-list" class="section-list-body">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see pages
                 </div>
@@ -281,7 +296,7 @@
 
     <div class="section">
         <label class="section-label">Components (Auto-Scan)</label>
-        <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="card section-list-shell">
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Components</span>
@@ -292,7 +307,7 @@
                         style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
                 </div>
             </div>
-            <div id="component-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
+            <div id="component-list" class="section-list-body">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see components
                 </div>
@@ -308,7 +323,7 @@
 
     <div class="section">
         <label class="section-label">Presentations (Auto-Scan)</label>
-        <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="card section-list-shell">
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Presentations</span>
@@ -319,7 +334,7 @@
                         style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
                 </div>
             </div>
-            <div id="presentation-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
+            <div id="presentation-list" class="section-list-body">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see presentations
                 </div>
@@ -334,7 +349,7 @@
     </div>
     <div class="section">
         <label class="section-label">Slides (Auto-Scan)</label>
-        <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="card section-list-shell">
             <div
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Available Slides</span>
@@ -345,7 +360,7 @@
                         style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
                 </div>
             </div>
-            <div id="slide-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
+            <div id="slide-list" class="section-list-body">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see slides
                 </div>
@@ -363,7 +378,7 @@
 
     <div class="section">
         <label class="section-label">Generate from JSON</label>
-        <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="card section-list-shell">
             <div id="file-browser-header"
                 style="padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; justify-content: space-between; align-items: center; background: #252525;">
                 <span style="font-size: 11px; font-weight: 600; color: #888;">Extracted Files</span>
@@ -374,7 +389,7 @@
                         style="width: auto; padding: 4px 8px; font-size: 10px; margin: 0;">Refresh</button>
                 </div>
             </div>
-            <div id="file-list" style="max-height: 300px; overflow-y: auto; background: #1e1e1e;">
+            <div id="file-list" class="section-list-body">
                 <div style="padding: 20px; text-align: center; font-size: 11px; color: #555;">
                     Connect to server to see files
                 </div>

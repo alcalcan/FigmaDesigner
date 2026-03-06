@@ -20,6 +20,21 @@
             margin-bottom: 40px;
         }
 
+        .section-list-shell {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 360px;
+        }
+
+        .section-list-body {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            background: #1e1e1e;
+        }
+
         .section-label {
             font-size: 10px;
             font-weight: 800;

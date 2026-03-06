@@ -9,6 +9,7 @@ import {
   FileCode2,
   Folder,
   FolderOpen,
+  Hammer,
   Loader2,
   X
 } from 'lucide-react';
@@ -416,8 +417,6 @@ export default function HomePage() {
   const [jsonInput, setJsonInput] = useState<string>('');
   const [assetsInput, setAssetsInput] = useState<string>('{}');
 
-  const [componentNameInput, setComponentNameInput] = useState<string>('');
-  const [componentProjectInput, setComponentProjectInput] = useState<string>('');
 
   const optionsRef = useRef<CaptureOptions>(captureOptions);
   const sessionRef = useRef<string>('');
@@ -1482,9 +1481,9 @@ export default function HomePage() {
 
       <div className="ui-layout">
         <div className="plugin-column">
-          <div className="section">
+          <div className="section catalog-section">
             <label className="section-label">Flows (Auto-Scan)</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding catalog-card">
               <div className="card-header">
                 <span>Available Flows</span>
                 <div className="list-actions">
@@ -1497,7 +1496,7 @@ export default function HomePage() {
                   <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
                 </div>
               </div>
-              <div className="list tree-list">
+              <div className="list tree-list catalog-list">
                 {flowTree.length === 0
                   ? <div className="empty-row">Connect to server to see flows</div>
                   : renderTree(flowTree, 0, {
@@ -1514,9 +1513,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="section">
+          <div className="section catalog-section">
             <label className="section-label">Pages (Auto-Scan)</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding catalog-card">
               <div className="card-header">
                 <span>Available Pages</span>
                 <div className="list-actions">
@@ -1529,7 +1528,7 @@ export default function HomePage() {
                   <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
                 </div>
               </div>
-              <div className="list tree-list">
+              <div className="list tree-list catalog-list">
                 {pageTree.length === 0
                   ? <div className="empty-row">Connect to server to see pages</div>
                   : renderTree(pageTree, 0, {
@@ -1551,9 +1550,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="section">
+          <div className="section catalog-section">
             <label className="section-label">Components (Auto-Scan)</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding catalog-card">
               <div className="card-header">
                 <span>Available Components</span>
                 <div className="list-actions">
@@ -1566,40 +1565,7 @@ export default function HomePage() {
                   <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
                 </div>
               </div>
-              <div className="card-pad">
-                <div className="field-grid">
-                  <input
-                    placeholder="Component name"
-                    value={componentNameInput}
-                    onChange={(event) => setComponentNameInput(event.target.value)}
-                  />
-                  <input
-                    placeholder="Project (optional)"
-                    value={componentProjectInput}
-                    onChange={(event) => setComponentProjectInput(event.target.value)}
-                  />
-                </div>
-                <button
-                  className="secondary"
-                  style={{ marginTop: 8 }}
-                  disabled={!connected}
-                  onClick={() => {
-                    const actionLabel = `Insert ${componentNameInput || 'component'}`;
-                    if (!ensurePluginConnected(actionLabel)) return;
-                    void sendCommand('generate-component', {
-                      componentName: componentNameInput,
-                      projectName: componentProjectInput
-                    }, undefined, {
-                      kind: 'action',
-                      label: actionLabel,
-                      type: 'generate-component'
-                    });
-                  }}
-                >
-                  Insert by Name
-                </button>
-              </div>
-              <div className="list tree-list">
+              <div className="list tree-list catalog-list">
                 {componentTree.length === 0
                   ? <div className="empty-row">Connect to server to see components</div>
                   : renderTree(componentTree, 0, {
@@ -1623,9 +1589,9 @@ export default function HomePage() {
         </div>
 
         <div className="plugin-column">
-          <div className="section">
+          <div className="section catalog-section">
             <label className="section-label">Presentations (Auto-Scan)</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding catalog-card">
               <div className="card-header">
                 <span>Available Presentations</span>
                 <div className="list-actions">
@@ -1638,7 +1604,7 @@ export default function HomePage() {
                   <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
                 </div>
               </div>
-              <div className="list tree-list">
+              <div className="list tree-list catalog-list">
                 {presentationTree.length === 0
                   ? <div className="empty-row">Connect to server to see presentations</div>
                   : renderTree(presentationTree, 0, {
@@ -1660,9 +1626,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="section">
+          <div className="section catalog-section">
             <label className="section-label">Slides (Auto-Scan)</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding catalog-card">
               <div className="card-header">
                 <span>Available Slides</span>
                 <div className="list-actions">
@@ -1675,7 +1641,7 @@ export default function HomePage() {
                   <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
                 </div>
               </div>
-              <div className="list tree-list">
+              <div className="list tree-list catalog-list">
                 {slideTree.length === 0
                   ? <div className="empty-row">Connect to server to see slides</div>
                   : renderTree(slideTree, 0, {
@@ -1697,9 +1663,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="section">
+          <div className="section catalog-section">
             <label className="section-label">Generate from JSON</label>
-            <div className="card card-no-padding">
+            <div className="card card-no-padding catalog-card">
               <div className="card-header">
                 <span>Extracted Files</span>
                 <div className="list-actions">
@@ -1712,7 +1678,7 @@ export default function HomePage() {
                   <button className="secondary small-btn" onClick={() => void loadFiles()}>Refresh</button>
                 </div>
               </div>
-              <div className="list tree-list">
+              <div className="list tree-list catalog-list">
                 {fileTree.length === 0
                   ? <div className="empty-row">Connect to server to see files</div>
                   : renderTree(fileTree, 0, {
@@ -1868,13 +1834,31 @@ export default function HomePage() {
 
           <div className="section">
             <label className="section-label">Tools</label>
-            <div className="card tool-list">
-              <button className="secondary" onClick={() => void sendCommand('tools-select-instances')}>Select All Instances</button>
-              <button className="secondary" onClick={() => void sendCommand('tools-organize-grid')}>Organize in Grid</button>
-              <button className="secondary" onClick={() => void sendCommand('tools-check-accessibility')}>Check Color Contrast (AA/AAA)</button>
-              <button className="secondary" onClick={() => void sendCommand('tools-extract-details')}>Extract Details</button>
-              <button className="secondary" onClick={() => void sendCommand('capture', { detailed: captureOptions.detailed })}>Download JSON (Manual)</button>
-              <button className="danger" onClick={() => void sendCommand('cancel')}>Close Plugin</button>
+            <div className="card card-no-padding tool-list">
+              <button className="tool-row-btn" onClick={() => void sendCommand('tools-select-instances')}>
+                <Hammer size={12} className="tool-row-icon" />
+                <span>Select All Instances</span>
+              </button>
+              <button className="tool-row-btn" onClick={() => void sendCommand('tools-organize-grid')}>
+                <Hammer size={12} className="tool-row-icon" />
+                <span>Organize in Grid</span>
+              </button>
+              <button className="tool-row-btn" onClick={() => void sendCommand('tools-check-accessibility')}>
+                <Hammer size={12} className="tool-row-icon" />
+                <span>Check Color Contrast (AA/AAA)</span>
+              </button>
+              <button className="tool-row-btn" onClick={() => void sendCommand('tools-extract-details')}>
+                <Hammer size={12} className="tool-row-icon" />
+                <span>Extract Details</span>
+              </button>
+              <button className="tool-row-btn" onClick={() => void sendCommand('capture', { detailed: captureOptions.detailed })}>
+                <Hammer size={12} className="tool-row-icon" />
+                <span>Download JSON (Manual)</span>
+              </button>
+              <button className="tool-row-btn tool-row-danger" onClick={() => void sendCommand('cancel')}>
+                <Hammer size={12} className="tool-row-icon" />
+                <span>Close Plugin</span>
+              </button>
             </div>
           </div>
 

@@ -126,7 +126,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .plugin-column {
@@ -136,6 +136,11 @@ h2 {
 .section {
   margin-bottom: 0;
   min-width: 0;
+}
+
+.catalog-section {
+  display: flex;
+  flex-direction: column;
 }
 
 .section-label {
@@ -250,6 +255,12 @@ button.small-btn {
   overflow: hidden;
 }
 
+.catalog-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
 .card-pad {
   padding: 12px;
 }
@@ -278,6 +289,14 @@ button.small-btn {
   background: #1e1e1e;
 }
 
+.catalog-list {
+  flex: 0 0 320px;
+  min-height: 320px;
+  height: 320px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
 .row {
   padding: 8px 12px;
   font-size: 11px;
@@ -304,6 +323,10 @@ button.small-btn {
 }
 
 .tree-list {
+  max-height: 320px;
+}
+
+.tree-list.catalog-list {
   max-height: 320px;
 }
 
@@ -517,8 +540,52 @@ textarea {
   gap: 8px;
 }
 
-.tool-list button:last-child {
-  margin-bottom: 0;
+.tool-list {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tool-row-btn {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid #2a2a2a;
+  background: #1e1e1e;
+  color: #eee;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 8px 12px;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.tool-row-btn:hover {
+  background: #2a2a2a;
+  transform: none;
+  box-shadow: none;
+}
+
+.tool-row-btn:active {
+  transform: none;
+}
+
+.tool-row-btn:last-child {
+  border-bottom: none;
+}
+
+.tool-row-icon {
+  color: #888;
+  flex-shrink: 0;
+}
+
+.tool-row-btn.tool-row-danger {
+  color: #ff8d8d;
+  background: #241617;
+}
+
+.tool-row-btn.tool-row-danger:hover {
+  background: #2d1b1c;
 }
 
 .log-list {
