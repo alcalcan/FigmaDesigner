@@ -14,7 +14,7 @@ const USE_LEGACY_UI_BY_DEFAULT = false;
 const REMOTE_POLL_INTERVAL_MS = 1000;
 const REMOTE_HEARTBEAT_INTERVAL_MS = 5000;
 const REMOTE_COMMAND_TIMEOUTS = {
-  generateComponentMs: 20_000,
+  generateComponentMs: 120_000,
   lightweightMs: 30_000,
   captureExportMs: 180_000
 } as const;

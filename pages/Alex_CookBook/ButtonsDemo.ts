@@ -4,7 +4,8 @@ import { BaseDemoPage } from "./BaseDemoPage";
 // Components
 import { button } from "../../components/Alex_CookBook/button/button";
 import { Lucide_plus, Lucide_chevron_down, Lucide_arrow_right, Action___settings, Lucide_bell, Lucide_search, Lucide_user } from "../../components/index";
-import { cloneNotificationSection, LIBRARY_NOTIFICATION_SECTION_PATHS } from "../../components/UEFA_Library/shared/LibraryNotificationSourceHelpers";
+import { LibraryPageTitle } from "../../components/UEFA_Library/Page_title/LibraryPageTitle";
+
 
 export class ButtonsDemo extends BaseDemoPage {
     async create(props: ComponentProps): Promise<SceneNode> {
@@ -142,14 +143,16 @@ export class ButtonsDemo extends BaseDemoPage {
             captureLabel.textAutoResize = "HEIGHT";
             container.appendChild(captureLabel);
 
-            const captureNode = await cloneNotificationSection(LIBRARY_NOTIFICATION_SECTION_PATHS.TITLE_BAR_WITH_CTA, { x: 0, y: 0 });
-            if ("resize" in captureNode) {
-                captureNode.resize(1000, captureNode.height);
-            }
-            if ("layoutAlign" in captureNode) {
-                captureNode.layoutAlign = "STRETCH";
-            }
+            const captureNode = await new LibraryPageTitle().create({
+                variant: "notification",
+                width: 1000,
+                paddingTop: 32,
+                paddingRight: 40,
+                paddingBottom: 32,
+                paddingLeft: 40
+            });
             container.appendChild(captureNode);
+
         });
 
         root.x = props.x ?? 0;
