@@ -54,7 +54,10 @@ hr.session-divider {
 
 .session-column {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
 }
 
 .telemetry-chip {
@@ -70,7 +73,73 @@ hr.session-divider {
 .info-line {
   font-size: 11px;
   color: #888;
-  margin-bottom: 18px;
+}
+
+.view-toggles {
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  background: transparent;
+  border: 1px solid #3c3c3c;
+  color: #888;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.view-btn.active {
+  background: #2a2a2a;
+  color: #eee;
+  border-color: #555;
+}
+
+.view-btn:hover:not(.active) {
+  background: #242424;
+  color: #ddd;
+}
+
+.ui-layout-sidebar {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.sidebar-left-column {
+  width: 350px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-right-column {
+  flex: 1;
+  min-height: 800px;
+  background: #1a1a1a;
+  border: 1px dashed #333;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 14px;
+}
+
+.sidebar-view-mode .section-label {
+  display: none;
+}
+
+.sidebar-view-mode .catalog-list,
+.sidebar-view-mode .fixed-panel-card {
+  height: 280px !important;
+  min-height: 280px !important;
+  max-height: 280px !important;
 }
 
 .error-card {

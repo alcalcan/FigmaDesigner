@@ -11,7 +11,9 @@ import {
   FolderOpen,
   Hammer,
   Loader2,
-  X
+  X,
+  LayoutGrid,
+  Sidebar
 } from 'lucide-react';
 
 type CommandType =
@@ -387,6 +389,7 @@ const buildProjectFileTree = (
 };
 
 export default function HomePage() {
+  const [viewMode, setViewMode] = useState<'grid' | 'sidebar'>('grid');
   const [sessionId, setSessionId] = useState<string>('');
   const [status, setStatus] = useState<SessionStatusResponse | null>(null);
   const [events, setEvents] = useState<EventEnvelope[]>([]);
@@ -1509,6 +1512,22 @@ export default function HomePage() {
       <hr className="session-divider" />
       <div className="session-column">
         <div className="info-line">{infoMessage}</div>
+        <div className="view-toggles">
+          <button
+            className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+            title="Grid View"
+          >
+            <LayoutGrid size={16} />
+          </button>
+          <button
+            className={`view-btn ${viewMode === 'sidebar' ? 'active' : ''}`}
+            onClick={() => setViewMode('sidebar')}
+            title="Sidebar View"
+          >
+            <Sidebar size={16} />
+          </button>
+        </div>
       </div>
       {commandError ? (
         <div className="error-card">
@@ -1552,482 +1571,489 @@ export default function HomePage() {
         </div>
       ) : null}
 
-      <div className="ui-layout">
-        <div className="plugin-column">
-          <div className="section catalog-section">
-            <label className="section-label">Flows (Auto-Scan)</label>
-            <div className="card card-no-padding catalog-card">
-              <div className="card-header">
-                <span>Available Flows</span>
-                <div className="list-actions">
-                  <button
-                    className="secondary small-btn"
-                    onClick={() => toggleSectionEdit('flows')}
-                  >
-                    {sectionEditMode.flows ? 'Done' : 'Edit'}
-                  </button>
-                  <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+      <div className={viewMode === 'sidebar' ? 'ui-layout-sidebar sidebar-view-mode' : 'ui-layout'}>
+        <div className={viewMode === 'sidebar' ? 'sidebar-left-column' : ''} style={{ display: viewMode === 'sidebar' ? undefined : 'contents' }}>
+          <div className="plugin-column">
+            <div className="section catalog-section">
+              <label className="section-label">Flows (Auto-Scan)</label>
+              <div className="card card-no-padding catalog-card">
+                <div className="card-header">
+                  <span>Available Flows</span>
+                  <div className="list-actions">
+                    <button
+                      className="secondary small-btn"
+                      onClick={() => toggleSectionEdit('flows')}
+                    >
+                      {sectionEditMode.flows ? 'Done' : 'Edit'}
+                    </button>
+                    <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+                  </div>
+                </div>
+                <div className="list tree-list catalog-list">
+                  {flowTree.length === 0
+                    ? <div className="empty-row">Connect to server to see flows</div>
+                    : renderTree(flowTree, 0, {
+                      selectedValue: selectedCatalogPath,
+                      onSelect: setSelectedCatalogPath,
+                      insertable: true,
+                      insertPendingByPath,
+                      deletable: true,
+                      editMode: sectionEditMode.flows,
+                      deletePendingByPath,
+                      onInsert: (value, label) => {
+                        void queueCatalogInsert(value, label);
+                      },
+                      onDelete: (value, label) => {
+                        void deleteCatalogLeaf('flows', value, label);
+                      }
+                    })}
                 </div>
               </div>
-              <div className="list tree-list catalog-list">
-                {flowTree.length === 0
-                  ? <div className="empty-row">Connect to server to see flows</div>
-                  : renderTree(flowTree, 0, {
-                    selectedValue: selectedCatalogPath,
-                    onSelect: setSelectedCatalogPath,
-                    insertable: true,
-                    insertPendingByPath,
-                    deletable: true,
-                    editMode: sectionEditMode.flows,
-                    deletePendingByPath,
-                    onInsert: (value, label) => {
-                      void queueCatalogInsert(value, label);
-                    },
-                    onDelete: (value, label) => {
-                      void deleteCatalogLeaf('flows', value, label);
-                    }
-                  })}
+            </div>
+
+            <div className="section catalog-section">
+              <label className="section-label">Pages (Auto-Scan)</label>
+              <div className="card card-no-padding catalog-card">
+                <div className="card-header">
+                  <span>Available Pages</span>
+                  <div className="list-actions">
+                    <button
+                      className="secondary small-btn"
+                      onClick={() => toggleSectionEdit('pages')}
+                    >
+                      {sectionEditMode.pages ? 'Done' : 'Edit'}
+                    </button>
+                    <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+                  </div>
+                </div>
+                <div className="list tree-list catalog-list">
+                  {pageTree.length === 0
+                    ? <div className="empty-row">Connect to server to see pages</div>
+                    : renderTree(pageTree, 0, {
+                      selectedValue: selectedCatalogPath,
+                      onSelect: setSelectedCatalogPath,
+                      insertable: true,
+                      insertPendingByPath,
+                      deletable: true,
+                      editMode: sectionEditMode.pages,
+                      deletePendingByPath,
+                      onInsert: (value, label) => {
+                        void queueCatalogInsert(value, label);
+                      },
+                      onDelete: (value, label) => {
+                        void deleteCatalogLeaf('pages', value, label);
+                      }
+                    })}
+                </div>
+              </div>
+            </div>
+
+            <div className="section catalog-section">
+              <label className="section-label">Components (Auto-Scan)</label>
+              <div className="card card-no-padding catalog-card">
+                <div className="card-header">
+                  <span>Available Components</span>
+                  <div className="list-actions">
+                    <button
+                      className="secondary small-btn"
+                      onClick={() => toggleSectionEdit('components')}
+                    >
+                      {sectionEditMode.components ? 'Done' : 'Edit'}
+                    </button>
+                    <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+                  </div>
+                </div>
+                <div className="list tree-list catalog-list">
+                  {componentTree.length === 0
+                    ? <div className="empty-row">Connect to server to see components</div>
+                    : renderTree(componentTree, 0, {
+                      selectedValue: selectedCatalogPath,
+                      onSelect: setSelectedCatalogPath,
+                      insertable: true,
+                      insertPendingByPath,
+                      deletable: true,
+                      editMode: sectionEditMode.components,
+                      deletePendingByPath,
+                      onInsert: (value, label) => {
+                        void queueCatalogInsert(value, label);
+                      },
+                      onDelete: (value, label) => {
+                        void deleteCatalogLeaf('components', value, label);
+                      }
+                    })}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="section catalog-section">
-            <label className="section-label">Pages (Auto-Scan)</label>
-            <div className="card card-no-padding catalog-card">
-              <div className="card-header">
-                <span>Available Pages</span>
-                <div className="list-actions">
-                  <button
-                    className="secondary small-btn"
-                    onClick={() => toggleSectionEdit('pages')}
-                  >
-                    {sectionEditMode.pages ? 'Done' : 'Edit'}
-                  </button>
-                  <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+          <div className="plugin-column">
+            <div className="section catalog-section">
+              <label className="section-label">Presentations (Auto-Scan)</label>
+              <div className="card card-no-padding catalog-card">
+                <div className="card-header">
+                  <span>Available Presentations</span>
+                  <div className="list-actions">
+                    <button
+                      className="secondary small-btn"
+                      onClick={() => toggleSectionEdit('presentations')}
+                    >
+                      {sectionEditMode.presentations ? 'Done' : 'Edit'}
+                    </button>
+                    <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+                  </div>
+                </div>
+                <div className="list tree-list catalog-list">
+                  {presentationTree.length === 0
+                    ? <div className="empty-row">Connect to server to see presentations</div>
+                    : renderTree(presentationTree, 0, {
+                      selectedValue: selectedCatalogPath,
+                      onSelect: setSelectedCatalogPath,
+                      insertable: true,
+                      insertPendingByPath,
+                      deletable: true,
+                      editMode: sectionEditMode.presentations,
+                      deletePendingByPath,
+                      onInsert: (value, label) => {
+                        void queueCatalogInsert(value, label);
+                      },
+                      onDelete: (value, label) => {
+                        void deleteCatalogLeaf('presentations', value, label);
+                      }
+                    })}
                 </div>
               </div>
-              <div className="list tree-list catalog-list">
-                {pageTree.length === 0
-                  ? <div className="empty-row">Connect to server to see pages</div>
-                  : renderTree(pageTree, 0, {
-                    selectedValue: selectedCatalogPath,
-                    onSelect: setSelectedCatalogPath,
-                    insertable: true,
-                    insertPendingByPath,
-                    deletable: true,
-                    editMode: sectionEditMode.pages,
-                    deletePendingByPath,
-                    onInsert: (value, label) => {
-                      void queueCatalogInsert(value, label);
-                    },
-                    onDelete: (value, label) => {
-                      void deleteCatalogLeaf('pages', value, label);
-                    }
-                  })}
+            </div>
+
+            <div className="section catalog-section">
+              <label className="section-label">Slides (Auto-Scan)</label>
+              <div className="card card-no-padding catalog-card">
+                <div className="card-header">
+                  <span>Available Slides</span>
+                  <div className="list-actions">
+                    <button
+                      className="secondary small-btn"
+                      onClick={() => toggleSectionEdit('slides')}
+                    >
+                      {sectionEditMode.slides ? 'Done' : 'Edit'}
+                    </button>
+                    <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
+                  </div>
+                </div>
+                <div className="list tree-list catalog-list">
+                  {slideTree.length === 0
+                    ? <div className="empty-row">Connect to server to see slides</div>
+                    : renderTree(slideTree, 0, {
+                      selectedValue: selectedCatalogPath,
+                      onSelect: setSelectedCatalogPath,
+                      insertable: true,
+                      insertPendingByPath,
+                      deletable: true,
+                      editMode: sectionEditMode.slides,
+                      deletePendingByPath,
+                      onInsert: (value, label) => {
+                        void queueCatalogInsert(value, label);
+                      },
+                      onDelete: (value, label) => {
+                        void deleteCatalogLeaf('slides', value, label);
+                      }
+                    })}
+                </div>
+              </div>
+            </div>
+
+            <div className="section catalog-section">
+              <label className="section-label">Generate from JSON</label>
+              <div className="card card-no-padding catalog-card">
+                <div className="card-header">
+                  <span>Extracted Files</span>
+                  <div className="list-actions">
+                    <button
+                      className="secondary small-btn"
+                      onClick={() => toggleSectionEdit('files')}
+                    >
+                      {sectionEditMode.files ? 'Done' : 'Edit'}
+                    </button>
+                    <button className="secondary small-btn" onClick={() => void loadFiles()}>Refresh</button>
+                  </div>
+                </div>
+                <div className="list tree-list catalog-list">
+                  {fileTree.length === 0
+                    ? <div className="empty-row">Connect to server to see files</div>
+                    : renderTree(fileTree, 0, {
+                      selectedValue: selectedFilePath,
+                      onSelect: setSelectedFilePath,
+                      deletable: true,
+                      editMode: sectionEditMode.files,
+                      deletePendingByPath,
+                      onDelete: (value, label) => {
+                        void deleteExtractedFile(value, label);
+                      }
+                    })}
+                </div>
+                <div className="card-footer">
+                  <button className="success" onClick={() => void generateFromSelectedFile()}>Generate Selected</button>
+                  <button className="secondary" onClick={() => void convertSelectedToCode()}>Convert to Code Component</button>
+                  <button
+                    className="secondary"
+                    onClick={() => {
+                      setClipboardCapturePending(false);
+                      void sendCommand('capture-preview', {
+                        detailed: captureOptions.detailed,
+                        saveVectorInJson: captureOptions.saveVectorInJson,
+                        skipAssets: !captureOptions.exactRefactor
+                      });
+                    }}
+                  >
+                    Copy Compact Code
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="section catalog-section">
-            <label className="section-label">Components (Auto-Scan)</label>
-            <div className="card card-no-padding catalog-card">
-              <div className="card-header">
-                <span>Available Components</span>
-                <div className="list-actions">
-                  <button
-                    className="secondary small-btn"
-                    onClick={() => toggleSectionEdit('components')}
-                  >
-                    {sectionEditMode.components ? 'Done' : 'Edit'}
-                  </button>
-                  <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
-                </div>
+          <div className="plugin-column">
+            <div className="section">
+              <div className="section-title-row">
+                <label className="section-label">Bridge Server</label>
               </div>
-              <div className="list tree-list catalog-list">
-                {componentTree.length === 0
-                  ? <div className="empty-row">Connect to server to see components</div>
-                  : renderTree(componentTree, 0, {
-                    selectedValue: selectedCatalogPath,
-                    onSelect: setSelectedCatalogPath,
-                    insertable: true,
-                    insertPendingByPath,
-                    deletable: true,
-                    editMode: sectionEditMode.components,
-                    deletePendingByPath,
-                    onInsert: (value, label) => {
-                      void queueCatalogInsert(value, label);
-                    },
-                    onDelete: (value, label) => {
-                      void deleteCatalogLeaf('components', value, label);
-                    }
-                  })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="plugin-column">
-          <div className="section catalog-section">
-            <label className="section-label">Presentations (Auto-Scan)</label>
-            <div className="card card-no-padding catalog-card">
-              <div className="card-header">
-                <span>Available Presentations</span>
-                <div className="list-actions">
-                  <button
-                    className="secondary small-btn"
-                    onClick={() => toggleSectionEdit('presentations')}
-                  >
-                    {sectionEditMode.presentations ? 'Done' : 'Edit'}
-                  </button>
-                  <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
-                </div>
-              </div>
-              <div className="list tree-list catalog-list">
-                {presentationTree.length === 0
-                  ? <div className="empty-row">Connect to server to see presentations</div>
-                  : renderTree(presentationTree, 0, {
-                    selectedValue: selectedCatalogPath,
-                    onSelect: setSelectedCatalogPath,
-                    insertable: true,
-                    insertPendingByPath,
-                    deletable: true,
-                    editMode: sectionEditMode.presentations,
-                    deletePendingByPath,
-                    onInsert: (value, label) => {
-                      void queueCatalogInsert(value, label);
-                    },
-                    onDelete: (value, label) => {
-                      void deleteCatalogLeaf('presentations', value, label);
-                    }
-                  })}
-              </div>
-            </div>
-          </div>
-
-          <div className="section catalog-section">
-            <label className="section-label">Slides (Auto-Scan)</label>
-            <div className="card card-no-padding catalog-card">
-              <div className="card-header">
-                <span>Available Slides</span>
-                <div className="list-actions">
-                  <button
-                    className="secondary small-btn"
-                    onClick={() => toggleSectionEdit('slides')}
-                  >
-                    {sectionEditMode.slides ? 'Done' : 'Edit'}
-                  </button>
-                  <button className="secondary small-btn" onClick={() => void loadComponentIndex()}>Refresh</button>
-                </div>
-              </div>
-              <div className="list tree-list catalog-list">
-                {slideTree.length === 0
-                  ? <div className="empty-row">Connect to server to see slides</div>
-                  : renderTree(slideTree, 0, {
-                    selectedValue: selectedCatalogPath,
-                    onSelect: setSelectedCatalogPath,
-                    insertable: true,
-                    insertPendingByPath,
-                    deletable: true,
-                    editMode: sectionEditMode.slides,
-                    deletePendingByPath,
-                    onInsert: (value, label) => {
-                      void queueCatalogInsert(value, label);
-                    },
-                    onDelete: (value, label) => {
-                      void deleteCatalogLeaf('slides', value, label);
-                    }
-                  })}
-              </div>
-            </div>
-          </div>
-
-          <div className="section catalog-section">
-            <label className="section-label">Generate from JSON</label>
-            <div className="card card-no-padding catalog-card">
-              <div className="card-header">
-                <span>Extracted Files</span>
-                <div className="list-actions">
-                  <button
-                    className="secondary small-btn"
-                    onClick={() => toggleSectionEdit('files')}
-                  >
-                    {sectionEditMode.files ? 'Done' : 'Edit'}
-                  </button>
-                  <button className="secondary small-btn" onClick={() => void loadFiles()}>Refresh</button>
-                </div>
-              </div>
-              <div className="list tree-list catalog-list">
-                {fileTree.length === 0
-                  ? <div className="empty-row">Connect to server to see files</div>
-                  : renderTree(fileTree, 0, {
-                    selectedValue: selectedFilePath,
-                    onSelect: setSelectedFilePath,
-                    deletable: true,
-                    editMode: sectionEditMode.files,
-                    deletePendingByPath,
-                    onDelete: (value, label) => {
-                      void deleteExtractedFile(value, label);
-                    }
-                  })}
-              </div>
-              <div className="card-footer">
-                <button className="success" onClick={() => void generateFromSelectedFile()}>Generate Selected</button>
-                <button className="secondary" onClick={() => void convertSelectedToCode()}>Convert to Code Component</button>
+              <div className="card">
+                <input
+                  placeholder="Component Name (Optional)"
+                  value={captureOptions.componentNameOverride}
+                  onChange={(event) =>
+                    setCaptureOptions((prev) => ({ ...prev, componentNameOverride: event.target.value }))
+                  }
+                />
+                <input
+                  style={{ marginTop: 8 }}
+                  placeholder="Folder (Default: captures)"
+                  value={captureOptions.captureFolder}
+                  onChange={(event) =>
+                    setCaptureOptions((prev) => ({ ...prev, captureFolder: event.target.value }))
+                  }
+                />
+                <button
+                  className="success"
+                  style={{ marginTop: 10 }}
+                  onClick={() =>
+                    void sendCommand('capture-bridge', {
+                      detailed: captureOptions.detailed,
+                      saveVectorInJson: captureOptions.saveVectorInJson,
+                      procedural: captureOptions.procedural,
+                      refactor: !captureOptions.generatorOnly,
+                      compact: !captureOptions.generatorOnly,
+                      componentNameOverride: captureOptions.componentNameOverride
+                    })
+                  }
+                >
+                  Capture Sync (to Disk)
+                </button>
+                <button className="secondary" onClick={() => void sendCommand('capture-png')}>Capture PNG</button>
                 <button
                   className="secondary"
                   onClick={() => {
-                    setClipboardCapturePending(false);
+                    setClipboardCapturePending(true);
                     void sendCommand('capture-preview', {
                       detailed: captureOptions.detailed,
                       saveVectorInJson: captureOptions.saveVectorInJson,
-                      skipAssets: !captureOptions.exactRefactor
+                      skipAssets: false
                     });
                   }}
                 >
-                  Copy Compact Code
+                  Capture to Clipboard
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="plugin-column">
-          <div className="section">
-            <div className="section-title-row">
-              <label className="section-label">Bridge Server</label>
-            </div>
-            <div className="card">
-              <input
-                placeholder="Component Name (Optional)"
-                value={captureOptions.componentNameOverride}
-                onChange={(event) =>
-                  setCaptureOptions((prev) => ({ ...prev, componentNameOverride: event.target.value }))
-                }
-              />
-              <input
-                style={{ marginTop: 8 }}
-                placeholder="Folder (Default: captures)"
-                value={captureOptions.captureFolder}
-                onChange={(event) =>
-                  setCaptureOptions((prev) => ({ ...prev, captureFolder: event.target.value }))
-                }
-              />
-              <button
-                className="success"
-                style={{ marginTop: 10 }}
-                onClick={() =>
-                  void sendCommand('capture-bridge', {
-                    detailed: captureOptions.detailed,
-                    saveVectorInJson: captureOptions.saveVectorInJson,
-                    procedural: captureOptions.procedural,
-                    refactor: !captureOptions.generatorOnly,
-                    compact: !captureOptions.generatorOnly,
-                    componentNameOverride: captureOptions.componentNameOverride
-                  })
-                }
-              >
-                Capture Sync (to Disk)
-              </button>
-              <button className="secondary" onClick={() => void sendCommand('capture-png')}>Capture PNG</button>
-              <button
-                className="secondary"
-                onClick={() => {
-                  setClipboardCapturePending(true);
-                  void sendCommand('capture-preview', {
-                    detailed: captureOptions.detailed,
-                    saveVectorInJson: captureOptions.saveVectorInJson,
-                    skipAssets: false
-                  });
-                }}
-              >
-                Capture to Clipboard
-              </button>
-              <button
-                className="secondary"
-                onClick={() =>
-                  void sendCommand('export-ppt-from-selection', {
-                    fidelity: 'balanced',
-                    rasterScale: 3,
-                    compositionFallback: 'container',
-                    textFidelityMode: 'always_editable',
-                    platformProfile: 'cross_platform'
-                  })
-                }
-              >
-                Build PPT (Selected Frame)
-              </button>
-              <div className="option-row">
-                <label className="checkbox-row">
-                  <input
-                    type="radio"
-                    name="bridge_capture_mode"
-                    checked={captureOptions.generatorOnly}
-                    onChange={() =>
-                      setCaptureOptions((prev) => ({ ...prev, generatorOnly: true, processAuto: false, procedural: false }))
-                    }
-                  />
-                  Generator Only
-                </label>
-                <label className="checkbox-row">
-                  <input
-                    type="radio"
-                    name="bridge_capture_mode"
-                    checked={captureOptions.processAuto}
-                    onChange={() =>
-                      setCaptureOptions((prev) => ({ ...prev, generatorOnly: false, processAuto: true, procedural: false }))
-                    }
-                  />
-                  Process & Refactor
-                </label>
-                <label className="checkbox-row">
-                  <input
-                    type="radio"
-                    name="bridge_capture_mode"
-                    checked={captureOptions.procedural}
-                    onChange={() =>
-                      setCaptureOptions((prev) => ({ ...prev, generatorOnly: false, processAuto: false, procedural: true }))
-                    }
-                  />
-                  Procedural Gen
-                </label>
-              </div>
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={captureOptions.detailed}
-                  onChange={(event) => setCaptureOptions((prev) => ({ ...prev, detailed: event.target.checked }))}
-                />
-                Recursive (Deep Capture)
-              </label>
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={captureOptions.saveVectorInJson}
-                  onChange={(event) => setCaptureOptions((prev) => ({ ...prev, saveVectorInJson: event.target.checked }))}
-                />
-                Save Vector in JSON (Slow)
-              </label>
-            </div>
-          </div>
-
-          <div className="section">
-            <label className="section-label">Tools</label>
-            <div className="card card-no-padding tool-list fixed-panel-card">
-              <button className="tool-row-btn" onClick={() => void sendCommand('tools-select-instances')}>
-                <Hammer size={12} className="tool-row-icon" />
-                <span>Select All Instances</span>
-              </button>
-              <button className="tool-row-btn" onClick={() => void sendCommand('tools-organize-grid')}>
-                <Hammer size={12} className="tool-row-icon" />
-                <span>Organize in Grid</span>
-              </button>
-              <button className="tool-row-btn" onClick={() => void sendCommand('tools-check-accessibility')}>
-                <Hammer size={12} className="tool-row-icon" />
-                <span>Check Color Contrast (AA/AAA)</span>
-              </button>
-              <button className="tool-row-btn" onClick={() => void sendCommand('tools-extract-details')}>
-                <Hammer size={12} className="tool-row-icon" />
-                <span>Extract Details</span>
-              </button>
-              <button className="tool-row-btn" onClick={() => void sendCommand('capture', { detailed: captureOptions.detailed })}>
-                <Hammer size={12} className="tool-row-icon" />
-                <span>Download JSON (Manual)</span>
-              </button>
-              <button className="tool-row-btn tool-row-danger" onClick={() => void sendCommand('cancel')}>
-                <Hammer size={12} className="tool-row-icon" />
-                <span>Close Plugin</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="section">
-            <label className="section-label">Code Preview</label>
-            <div className="card fixed-panel-card">
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={captureOptions.exactRefactor}
-                  onChange={(event) => setCaptureOptions((prev) => ({ ...prev, exactRefactor: event.target.checked }))}
-                />
-                Exact Refactored Code (No Compact)
-              </label>
-              <textarea
-                value={previewCode}
-                onChange={(event) => setPreviewCode(event.target.value)}
-                placeholder="Generated code will appear here..."
-              />
-              <div className="list-actions">
                 <button
                   className="secondary"
-                  onClick={() => {
-                    void navigator.clipboard.writeText(previewCode);
-                    setInfoMessage('Preview copied to clipboard.');
-                  }}
+                  onClick={() =>
+                    void sendCommand('export-ppt-from-selection', {
+                      fidelity: 'balanced',
+                      rasterScale: 3,
+                      compositionFallback: 'container',
+                      textFidelityMode: 'always_editable',
+                      platformProfile: 'cross_platform'
+                    })
+                  }
                 >
-                  Copy Preview
+                  Build PPT (Selected Frame)
                 </button>
-                <button className="secondary" onClick={() => setPreviewCode('')}>Clear</button>
+                <div className="option-row">
+                  <label className="checkbox-row">
+                    <input
+                      type="radio"
+                      name="bridge_capture_mode"
+                      checked={captureOptions.generatorOnly}
+                      onChange={() =>
+                        setCaptureOptions((prev) => ({ ...prev, generatorOnly: true, processAuto: false, procedural: false }))
+                      }
+                    />
+                    Generator Only
+                  </label>
+                  <label className="checkbox-row">
+                    <input
+                      type="radio"
+                      name="bridge_capture_mode"
+                      checked={captureOptions.processAuto}
+                      onChange={() =>
+                        setCaptureOptions((prev) => ({ ...prev, generatorOnly: false, processAuto: true, procedural: false }))
+                      }
+                    />
+                    Process & Refactor
+                  </label>
+                  <label className="checkbox-row">
+                    <input
+                      type="radio"
+                      name="bridge_capture_mode"
+                      checked={captureOptions.procedural}
+                      onChange={() =>
+                        setCaptureOptions((prev) => ({ ...prev, generatorOnly: false, processAuto: false, procedural: true }))
+                      }
+                    />
+                    Procedural Gen
+                  </label>
+                </div>
+                <label className="checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={captureOptions.detailed}
+                    onChange={(event) => setCaptureOptions((prev) => ({ ...prev, detailed: event.target.checked }))}
+                  />
+                  Recursive (Deep Capture)
+                </label>
+                <label className="checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={captureOptions.saveVectorInJson}
+                    onChange={(event) => setCaptureOptions((prev) => ({ ...prev, saveVectorInJson: event.target.checked }))}
+                  />
+                  Save Vector in JSON (Slow)
+                </label>
               </div>
             </div>
-          </div>
 
-          <div className="section">
-            <label className="section-label">Direct Generate from JSON</label>
-            <div className="card fixed-panel-card">
-              <textarea
-                value={jsonInput}
-                onChange={(event) => setJsonInput(event.target.value)}
-                placeholder='Paste capture JSON object (root node)...'
-              />
-              <textarea
-                style={{ marginTop: 8 }}
-                value={assetsInput}
-                onChange={(event) => setAssetsInput(event.target.value)}
-                placeholder='Paste assets map JSON, e.g. {"assets/img.png":"base64..."}'
-              />
-              <button
-                className="secondary"
-                style={{ marginTop: 8 }}
-                onClick={() => {
-                  try {
-                    const data = JSON.parse(jsonInput || '{}') as Record<string, unknown>;
-                    const assets = JSON.parse(assetsInput || '{}') as Record<string, unknown>;
-                    void sendCommand('generate-from-json', { data, assets });
-                  } catch {
-                    setInfoMessage('Invalid JSON input for generate-from-json.');
-                  }
-                }}
-              >
-                Send JSON Payload
-              </button>
+            <div className="section">
+              <label className="section-label">Tools</label>
+              <div className="card card-no-padding tool-list fixed-panel-card">
+                <button className="tool-row-btn" onClick={() => void sendCommand('tools-select-instances')}>
+                  <Hammer size={12} className="tool-row-icon" />
+                  <span>Select All Instances</span>
+                </button>
+                <button className="tool-row-btn" onClick={() => void sendCommand('tools-organize-grid')}>
+                  <Hammer size={12} className="tool-row-icon" />
+                  <span>Organize in Grid</span>
+                </button>
+                <button className="tool-row-btn" onClick={() => void sendCommand('tools-check-accessibility')}>
+                  <Hammer size={12} className="tool-row-icon" />
+                  <span>Check Color Contrast (AA/AAA)</span>
+                </button>
+                <button className="tool-row-btn" onClick={() => void sendCommand('tools-extract-details')}>
+                  <Hammer size={12} className="tool-row-icon" />
+                  <span>Extract Details</span>
+                </button>
+                <button className="tool-row-btn" onClick={() => void sendCommand('capture', { detailed: captureOptions.detailed })}>
+                  <Hammer size={12} className="tool-row-icon" />
+                  <span>Download JSON (Manual)</span>
+                </button>
+                <button className="tool-row-btn tool-row-danger" onClick={() => void sendCommand('cancel')}>
+                  <Hammer size={12} className="tool-row-icon" />
+                  <span>Close Plugin</span>
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="section">
-            <label className="section-label">Event Stream</label>
-            <div className="card card-no-padding fixed-panel-card">
-              <div className="log-list">
-                {events.length === 0 ? (
-                  <div className="empty-row">No events received yet</div>
-                ) : (
-                  events.map((eventItem, index) => (
-                    <div
-                      key={`${eventItem.id}-${index}`}
-                      className={`log-item ${eventItem.type === 'command-ack' ? 'ack-event' : ''}`}
-                    >
-                      <div>
-                        <span className={`log-type ${eventItem.type === 'command-ack' ? 'ack-type' : ''}`}>{eventItem.type}</span>
-                        <span className="log-time">{new Date(eventItem.createdAt).toLocaleTimeString()}</span>
+            <div className="section">
+              <label className="section-label">Code Preview</label>
+              <div className="card fixed-panel-card">
+                <label className="checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={captureOptions.exactRefactor}
+                    onChange={(event) => setCaptureOptions((prev) => ({ ...prev, exactRefactor: event.target.checked }))}
+                  />
+                  Exact Refactored Code (No Compact)
+                </label>
+                <textarea
+                  value={previewCode}
+                  onChange={(event) => setPreviewCode(event.target.value)}
+                  placeholder="Generated code will appear here..."
+                />
+                <div className="list-actions">
+                  <button
+                    className="secondary"
+                    onClick={() => {
+                      void navigator.clipboard.writeText(previewCode);
+                      setInfoMessage('Preview copied to clipboard.');
+                    }}
+                  >
+                    Copy Preview
+                  </button>
+                  <button className="secondary" onClick={() => setPreviewCode('')}>Clear</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="section">
+              <label className="section-label">Direct Generate from JSON</label>
+              <div className="card fixed-panel-card">
+                <textarea
+                  value={jsonInput}
+                  onChange={(event) => setJsonInput(event.target.value)}
+                  placeholder='Paste capture JSON object (root node)...'
+                />
+                <textarea
+                  style={{ marginTop: 8 }}
+                  value={assetsInput}
+                  onChange={(event) => setAssetsInput(event.target.value)}
+                  placeholder='Paste assets map JSON, e.g. {"assets/img.png":"base64..."}'
+                />
+                <button
+                  className="secondary"
+                  style={{ marginTop: 8 }}
+                  onClick={() => {
+                    try {
+                      const data = JSON.parse(jsonInput || '{}') as Record<string, unknown>;
+                      const assets = JSON.parse(assetsInput || '{}') as Record<string, unknown>;
+                      void sendCommand('generate-from-json', { data, assets });
+                    } catch {
+                      setInfoMessage('Invalid JSON input for generate-from-json.');
+                    }
+                  }}
+                >
+                  Send JSON Payload
+                </button>
+              </div>
+            </div>
+
+            <div className="section">
+              <label className="section-label">Event Stream</label>
+              <div className="card card-no-padding fixed-panel-card">
+                <div className="log-list">
+                  {events.length === 0 ? (
+                    <div className="empty-row">No events received yet</div>
+                  ) : (
+                    events.map((eventItem, index) => (
+                      <div
+                        key={`${eventItem.id}-${index}`}
+                        className={`log-item ${eventItem.type === 'command-ack' ? 'ack-event' : ''}`}
+                      >
+                        <div>
+                          <span className={`log-type ${eventItem.type === 'command-ack' ? 'ack-type' : ''}`}>{eventItem.type}</span>
+                          <span className="log-time">{new Date(eventItem.createdAt).toLocaleTimeString()}</span>
+                        </div>
+                        <div className="log-payload">{JSON.stringify(eventItem.payload).slice(0, 260)}</div>
+                        {eventItem.commandId ? <div className="log-command-id">commandId: {eventItem.commandId}</div> : null}
                       </div>
-                      <div className="log-payload">{JSON.stringify(eventItem.payload).slice(0, 260)}</div>
-                      {eventItem.commandId ? <div className="log-command-id">commandId: {eventItem.commandId}</div> : null}
-                    </div>
-                  ))
-                )}
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
+        {viewMode === 'sidebar' && (
+          <div className="sidebar-right-column">
+            Right panel content (to be decided)
+          </div>
+        )}
       </div>
     </main>
   );
