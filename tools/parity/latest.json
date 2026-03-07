@@ -1,0 +1,32 @@
+{
+  "latestGlobal": {
+    "status": "ok",
+    "filePath": "UEFA_icons/Action___Print/Action___Print.ts",
+    "mode": "fidelity",
+    "thresholdPercent": 0.1,
+    "mismatchPercent": 98.25808318862151,
+    "mismatchPixels": 475294,
+    "totalPixels": 483720,
+    "passed": false,
+    "baselinePath": "/Users/alexcalcan/Documents/Apps/FigmaDesigner/web/all_notes_fixed_preview.png",
+    "actualPath": "/Users/alexcalcan/Documents/Apps/FigmaDesigner/tools/parity/UEFA_icons_Action___Print_Action___Print.ts/2026-03-07T09-38-16-148Z/actual.png",
+    "diffPath": "/Users/alexcalcan/Documents/Apps/FigmaDesigner/tools/parity/UEFA_icons_Action___Print_Action___Print.ts/2026-03-07T09-38-16-148Z/diff.png",
+    "createdAt": "2026-03-07T09:38:17.699Z"
+  },
+  "latestByPath": {
+    "UEFA_icons/Action___Print/Action___Print.ts": {
+      "status": "ok",
+      "filePath": "UEFA_icons/Action___Print/Action___Print.ts",
+      "mode": "fidelity",
+      "thresholdPercent": 0.1,
+      "mismatchPercent": 98.25808318862151,
+      "mismatchPixels": 475294,
+      "totalPixels": 483720,
+      "passed": false,
+      "baselinePath": "/Users/alexcalcan/Documents/Apps/FigmaDesigner/web/all_notes_fixed_preview.png",
+      "actualPath": "/Users/alexcalcan/Documents/Apps/FigmaDesigner/tools/parity/UEFA_icons_Action___Print_Action___Print.ts/2026-03-07T09-38-16-148Z/actual.png",
+      "diffPath": "/Users/alexcalcan/Documents/Apps/FigmaDesigner/tools/parity/UEFA_icons_Action___Print_Action___Print.ts/2026-03-07T09-38-16-148Z/diff.png",
+      "createdAt": "2026-03-07T09:38:17.699Z"
+    }
+  }
+}

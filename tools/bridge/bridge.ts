@@ -8,6 +8,8 @@ import { handlePoll, handleLog } from './handlers/system';
 import { handleSavePpt } from './handlers/ppt_export';
 import { handleImportPpt } from './handlers/ppt_import';
 import { handleSelectSavePath } from './handlers/system_dialog';
+import { handleResolveFont, handleFontFile } from './handlers/fonts';
+import { handleParityCompare, handleParityLatest } from './handlers/parity';
 import {
     handleActivePluginSession,
     handleSessionCommand,
@@ -83,6 +85,8 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && pathname === '/save-ppt') return handleSavePpt(req, res);
     if (req.method === 'POST' && pathname === '/import-ppt') return handleImportPpt(req, res);
     if (req.method === 'POST' && pathname === '/select-save-path') return handleSelectSavePath(req, res);
+    if (req.method === 'GET' && pathname === '/font/resolve') return void handleResolveFont(req, res);
+    if (req.method === 'GET' && pathname === '/font/file') return handleFontFile(req, res);
 
     if (req.method === 'POST' && pathname === '/generate-code-preview') return handleGenerateCodePreview(req, res);
     if (req.method === 'POST' && pathname === '/generate-clipboard') return handleGenerateClipboard(req, res);
@@ -90,6 +94,8 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && pathname === '/generate-folder-to-code') return handleGenerateFolderToCode(req, res);
     if (req.method === 'POST' && pathname === '/refactor-code') return handleRefactorCode(req, res);
     if (req.method === 'POST' && pathname === '/procedural-convert') return handleProceduralConvert(req, res);
+    if (req.method === 'POST' && pathname === '/parity/compare') return void handleParityCompare(req, res);
+    if (req.method === 'GET' && pathname === '/parity/latest') return handleParityLatest(req, res);
 
     if (req.method === 'GET' && pathname === '/') {
         res.writeHead(200);

@@ -1,0 +1,47 @@
+{
+  "open sans::regular": {
+    "key": "open sans::regular",
+    "family": "Open Sans",
+    "style": "Regular",
+    "weight": 400,
+    "fontStyle": "normal",
+    "fileName": "e9b116fbd4e6634c270ba19d55d935c3128b79a9.woff2",
+    "createdAt": "2026-03-07T09:23:40.337Z"
+  },
+  "open sans::bold": {
+    "key": "open sans::bold",
+    "family": "Open Sans",
+    "style": "Bold",
+    "weight": 700,
+    "fontStyle": "normal",
+    "fileName": "cc9c1011966c6da7639c90a99cd2e6c6a32ea8bb.woff2",
+    "createdAt": "2026-03-07T09:27:00.078Z"
+  },
+  "manrope::semibold": {
+    "key": "manrope::semibold",
+    "family": "Manrope",
+    "style": "SemiBold",
+    "weight": 600,
+    "fontStyle": "normal",
+    "fileName": "a40adf92f798ff0be77a3dcc61d96195184a4c4f.woff2",
+    "createdAt": "2026-03-07T09:36:51.720Z"
+  },
+  "manrope::extrabold": {
+    "key": "manrope::extrabold",
+    "family": "Manrope",
+    "style": "ExtraBold",
+    "weight": 700,
+    "fontStyle": "normal",
+    "fileName": "a11ab81eb9e6b16007945c7299131449012916e7.woff2",
+    "createdAt": "2026-03-07T09:37:01.742Z"
+  },
+  "manrope::regular": {
+    "key": "manrope::regular",
+    "family": "Manrope",
+    "style": "Regular",
+    "weight": 400,
+    "fontStyle": "normal",
+    "fileName": "2d2f9973ebd222373a99b3ac7d23a53c22250446.woff2",
+    "createdAt": "2026-03-07T09:37:27.429Z"
+  }
+}

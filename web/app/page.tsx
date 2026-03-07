@@ -16,6 +16,7 @@ import {
   Sidebar
 } from 'lucide-react';
 
+import { FidelityPreview } from './FidelityPreview';
 import { LivePreview } from './LivePreview';
 
 type CommandType =
@@ -120,6 +121,37 @@ interface CommandErrorState {
 
 type CatalogSection = 'flows' | 'pages' | 'components' | 'presentations' | 'slides' | 'files';
 type CatalogDeleteType = 'flow' | 'page' | 'component' | 'presentation' | 'slide';
+type PreviewRenderMode = 'standard' | 'fidelity';
+type ParityRunState = 'idle' | 'running' | 'passed' | 'failed' | 'error';
+
+interface CommandAckPayload {
+  ok?: boolean;
+  message?: string;
+  details?: string;
+  commandType?: string;
+  durationMs?: number;
+  errorCode?: string;
+}
+
+interface CommandAckWaiter {
+  resolve: (payload: CommandAckPayload) => void;
+  reject: (error: Error) => void;
+}
+
+interface ParityResult {
+  status: 'ok';
+  filePath: string;
+  mode: string;
+  thresholdPercent: number;
+  mismatchPercent: number;
+  mismatchPixels: number;
+  totalPixels: number;
+  passed: boolean;
+  baselinePath: string;
+  actualPath: string;
+  diffPath: string;
+  createdAt: string;
+}
 
 const BRIDGE_BASE_URL = 'http://127.0.0.1:4000';
 const COMMAND_TIMEOUTS = {
@@ -421,6 +453,10 @@ export default function HomePage() {
 
   const [jsonInput, setJsonInput] = useState<string>('');
   const [assetsInput, setAssetsInput] = useState<string>('{}');
+  const [previewRenderMode, setPreviewRenderMode] = useState<PreviewRenderMode>('standard');
+  const [parityRunState, setParityRunState] = useState<ParityRunState>('idle');
+  const [parityResult, setParityResult] = useState<ParityResult | null>(null);
+  const [parityError, setParityError] = useState<string | null>(null);
 
 
   const optionsRef = useRef<CaptureOptions>(captureOptions);
@@ -431,6 +467,8 @@ export default function HomePage() {
   const commandTimeoutByIdRef = useRef<Record<string, number>>({});
   const insertPendingByPathRef = useRef<Record<string, string>>({});
   const pendingCaptureSaveRequestsRef = useRef<Set<Promise<void>>>(new Set());
+  const commandAckWaitersRef = useRef<Record<string, CommandAckWaiter>>({});
+  const earlyCommandAcksRef = useRef<Record<string, { ok: boolean; payload: CommandAckPayload }>>({});
 
   useEffect(() => {
     optionsRef.current = captureOptions;
@@ -452,6 +490,12 @@ export default function HomePage() {
     clipboardPendingRef.current = clipboardCapturePending;
   }, [clipboardCapturePending]);
 
+  useEffect(() => {
+    setParityRunState('idle');
+    setParityResult(null);
+    setParityError(null);
+  }, [selectedCatalogPath]);
+
   const updateInsertPendingByPath = useCallback((
     updater: Record<string, string> | ((prev: Record<string, string>) => Record<string, string>)
   ) => {
@@ -469,6 +513,10 @@ export default function HomePage() {
       window.clearTimeout(timerId);
     }
     commandTimeoutByIdRef.current = {};
+    const pendingWaiters = Object.values(commandAckWaitersRef.current);
+    pendingWaiters.forEach((waiter) => waiter.reject(new Error('Command wait cancelled during cleanup.')));
+    commandAckWaitersRef.current = {};
+    earlyCommandAcksRef.current = {};
   }, []);
 
   const updateQuerySession = useCallback((id: string) => {
@@ -524,6 +572,11 @@ export default function HomePage() {
 
   const resetSessionUiState = useCallback(() => {
     clearAllCommandTimeouts();
+    Object.values(commandAckWaitersRef.current).forEach((waiter) => {
+      waiter.reject(new Error('Session reset while waiting for command acknowledgement.'));
+    });
+    commandAckWaitersRef.current = {};
+    earlyCommandAcksRef.current = {};
     pendingCommandMetaRef.current = {};
     setEvents([]);
     setPendingCommands({});
@@ -555,6 +608,11 @@ export default function HomePage() {
         return next;
       });
       clearPendingCommandState(commandId, meta?.path);
+      const waiter = commandAckWaitersRef.current[commandId];
+      if (waiter) {
+        delete commandAckWaitersRef.current[commandId];
+        waiter.reject(new Error(`Command ${commandId} timed out waiting for acknowledgement.`));
+      }
 
       const commandType = meta?.type || type;
       const labelPrefix = meta?.label ? `${meta.label}: ` : '';
@@ -583,6 +641,11 @@ export default function HomePage() {
       const response = await fetchWithTimeout(`${BRIDGE_BASE_URL}/session/active-plugin`, {}, 4_000);
       if (!response.ok) {
         clearAllCommandTimeouts();
+        Object.values(commandAckWaitersRef.current).forEach((waiter) => {
+          waiter.reject(new Error('Active plugin session unavailable.'));
+        });
+        commandAckWaitersRef.current = {};
+        earlyCommandAcksRef.current = {};
         pendingCommandMetaRef.current = {};
         setStatus(null);
         setSessionId('');
@@ -730,6 +793,31 @@ export default function HomePage() {
     setInfoMessage(meta ? `${meta.label} queued...` : `Command queued: ${type}`);
     return commandId;
   }, [adoptActivePluginSession, scheduleCommandTimeout]);
+
+  const sendCommandAndWaitAck = useCallback(async (
+    type: CommandType,
+    payload: Record<string, unknown> = {},
+    idempotencyKey?: string,
+    meta?: PendingCommandMeta
+  ): Promise<CommandAckPayload> => {
+    const commandId = await sendCommand(type, payload, idempotencyKey, meta);
+    if (!commandId) {
+      throw new Error(`Failed to queue command: ${type}`);
+    }
+
+    const earlyAck = earlyCommandAcksRef.current[commandId];
+    if (earlyAck) {
+      delete earlyCommandAcksRef.current[commandId];
+      if (earlyAck.ok) {
+        return earlyAck.payload;
+      }
+      throw new Error(earlyAck.payload.message || 'Command failed.');
+    }
+
+    return new Promise<CommandAckPayload>((resolve, reject) => {
+      commandAckWaitersRef.current[commandId] = { resolve, reject };
+    });
+  }, [sendCommand]);
 
   const loadFiles = useCallback(async () => {
     const response = await fetch(`${BRIDGE_BASE_URL}/list?t=${Date.now()}`);
@@ -1025,6 +1113,26 @@ export default function HomePage() {
         return next;
       });
       clearPendingCommandState(commandId, meta?.path);
+    }
+
+    if (commandId) {
+      const waiter = commandAckWaitersRef.current[commandId];
+      if (waiter) {
+        delete commandAckWaitersRef.current[commandId];
+        if (ok) {
+          waiter.resolve(envelope.payload as CommandAckPayload);
+        } else {
+          const reason = typeof envelope.payload.message === 'string'
+            ? envelope.payload.message
+            : 'Command failed.';
+          waiter.reject(new Error(reason));
+        }
+      } else {
+        earlyCommandAcksRef.current[commandId] = {
+          ok,
+          payload: envelope.payload as CommandAckPayload
+        };
+      }
     }
 
     const labelPrefix = meta?.label ? `${meta.label}: ` : '';
@@ -1355,6 +1463,97 @@ export default function HomePage() {
       });
     }
   }, [ensurePluginConnected, sendCommand, updateInsertPendingByPath]);
+
+  const runParityComparison = useCallback(async () => {
+    if (!selectedCatalogPath) {
+      const message = 'Select a catalog item before running parity.';
+      setInfoMessage(message);
+      setParityRunState('error');
+      setParityError(message);
+      return;
+    }
+
+    if (!ensurePluginConnected('Run Parity (Chromium)')) return;
+
+    const pathParts = selectedCatalogPath.split('/').filter(Boolean);
+    if (pathParts.length === 0) {
+      const message = 'Invalid selected path for parity run.';
+      setInfoMessage(message);
+      setParityRunState('error');
+      setParityError(message);
+      return;
+    }
+
+    const componentName = stripCodeExt(pathParts[pathParts.length - 1]);
+    const projectName = pathParts[0] || '';
+    const parityRunId = `parity_${Date.now()}`;
+
+    setPreviewRenderMode('fidelity');
+    setParityRunState('running');
+    setParityResult(null);
+    setParityError(null);
+
+    try {
+      await sendCommandAndWaitAck(
+        'generate-component',
+        { componentName, projectName },
+        undefined,
+        {
+          kind: 'action',
+          label: 'Parity Insert',
+          path: selectedCatalogPath,
+          type: 'generate-component'
+        }
+      );
+
+      await sendCommandAndWaitAck(
+        'capture-png',
+        { scale: 1, namePrefix: parityRunId },
+        undefined,
+        {
+          kind: 'action',
+          label: 'Parity Baseline Capture',
+          type: 'capture-png'
+        }
+      );
+
+      await new Promise((resolve) => window.setTimeout(resolve, 500));
+
+      const response = await fetch(`${BRIDGE_BASE_URL}/parity/compare`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filePath: selectedCatalogPath,
+          mode: 'fidelity',
+          thresholdPercent: 0.1,
+          webBaseUrl: window.location.origin
+        })
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Parity comparison request failed.');
+      }
+
+      const result = await response.json() as ParityResult & { error?: string };
+      if (result.status !== 'ok') {
+        throw new Error(result.error || 'Parity comparison failed.');
+      }
+
+      setParityResult(result);
+      setParityRunState(result.passed ? 'passed' : 'failed');
+      setInfoMessage(
+        result.passed
+          ? `Parity passed (${result.mismatchPercent.toFixed(4)}% mismatch).`
+          : `Parity failed (${result.mismatchPercent.toFixed(4)}% mismatch).`
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setParityRunState('error');
+      setParityError(message);
+      setInfoMessage(`Parity run failed: ${message}`);
+    }
+  }, [ensurePluginConnected, selectedCatalogPath, sendCommandAndWaitAck]);
 
   const flowTree = useMemo(
     () => buildProjectFileTree(componentIndex.flows, 'flows'),
@@ -2053,7 +2252,53 @@ export default function HomePage() {
         </div>
         {viewMode === 'sidebar' && (
           <div className="sidebar-right-column">
-            <LivePreview filePath={selectedCatalogPath} />
+            <div className="preview-toolbar">
+              <div className="preview-mode-group">
+                <button
+                  className={`secondary small-btn ${previewRenderMode === 'standard' ? 'preview-mode-active' : ''}`}
+                  style={{ width: 'auto' }}
+                  onClick={() => setPreviewRenderMode('standard')}
+                >
+                  Standard
+                </button>
+                <button
+                  className={`secondary small-btn ${previewRenderMode === 'fidelity' ? 'preview-mode-active' : ''}`}
+                  style={{ width: 'auto' }}
+                  onClick={() => setPreviewRenderMode('fidelity')}
+                >
+                  Fidelity
+                </button>
+              </div>
+              <button
+                className="secondary small-btn"
+                style={{ width: 'auto' }}
+                onClick={() => { void runParityComparison(); }}
+                disabled={parityRunState === 'running' || !selectedCatalogPath || !connected}
+              >
+                {parityRunState === 'running' ? (
+                  <>
+                    <Loader2 size={12} className="icon-spin" />
+                    Running...
+                  </>
+                ) : 'Run Parity (Chromium)'}
+              </button>
+            </div>
+            {parityResult ? (
+              <div className={`parity-status ${parityResult.passed ? 'parity-pass' : 'parity-fail'}`}>
+                <strong>{parityResult.passed ? 'Parity Passed' : 'Parity Failed'}</strong>
+                <span>Mismatched: {parityResult.mismatchPercent.toFixed(4)}% ({parityResult.mismatchPixels}/{parityResult.totalPixels})</span>
+                <span>Diff: {parityResult.diffPath}</span>
+              </div>
+            ) : parityError ? (
+              <div className="parity-status parity-error">{parityError}</div>
+            ) : null}
+            <div className="preview-surface">
+              {previewRenderMode === 'fidelity' ? (
+                <FidelityPreview filePath={selectedCatalogPath} />
+              ) : (
+                <LivePreview filePath={selectedCatalogPath} />
+              )}
+            </div>
           </div>
         )}
       </div>

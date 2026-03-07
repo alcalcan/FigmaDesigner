@@ -1786,6 +1786,11 @@ const handlePluginMessage = async (msg: any): Promise<CommandDispatchResult | vo
         const projectName = figma.root.name;
 
         if (msg.type === 'capture-png') {
+          const pngScale = typeof msg.scale === 'number' && Number.isFinite(msg.scale) && msg.scale > 0
+            ? msg.scale
+            : 2;
+          const prefixRaw = typeof msg.namePrefix === 'string' ? msg.namePrefix : '';
+          const namePrefix = prefixRaw ? `${prefixRaw.replace(/[^a-z0-9_-]/gi, '_')}_` : '';
 
           const total = selection.length;
 
@@ -1817,12 +1822,12 @@ const handlePluginMessage = async (msg: any): Promise<CommandDispatchResult | vo
                   try {
                     const pngBytes = await node.exportAsync({
                       format: 'PNG',
-                      constraint: { type: 'SCALE', value: 2 }
+                      constraint: { type: 'SCALE', value: pngScale }
                     });
                     const base64 = figma.base64Encode(pngBytes);
 
                     // Enforce naming convention: variant_<number>
-                    const variantName = `variant_${variantIndex}`;
+                    const variantName = `${namePrefix}variant_${variantIndex}`;
 
                     // User Request Override: If specifically NavBookingDemo, save to "BookingCase" folder
                     let targetProjectName = projectName;
@@ -1864,7 +1869,7 @@ const handlePluginMessage = async (msg: any): Promise<CommandDispatchResult | vo
             try {
               const pngBytes = await node.exportAsync({
                 format: 'PNG',
-                constraint: { type: 'SCALE', value: 2 }
+                constraint: { type: 'SCALE', value: pngScale }
               });
               const base64 = figma.base64Encode(pngBytes);
 
@@ -1872,7 +1877,7 @@ const handlePluginMessage = async (msg: any): Promise<CommandDispatchResult | vo
                 type: 'capture-png-result-packet',
                 projectName: projectName,
                 packet: {
-                  name: node.name,
+                  name: `${namePrefix}${node.name}`,
                   data: base64
                 },
                 isLast: count === total
