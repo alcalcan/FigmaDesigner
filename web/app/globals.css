@@ -120,7 +120,11 @@ hr.session-divider {
 
 .sidebar-right-column {
   flex: 1;
-  min-height: 800px;
+  height: calc(100vh - 140px);
+  /* Fill visible viewport minus topbar/padding */
+  min-height: 400px;
+  position: sticky;
+  top: 24px;
   background: #1a1a1a;
   border: 1px dashed #333;
   border-radius: 12px;
