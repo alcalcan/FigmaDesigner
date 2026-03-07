@@ -42,8 +42,15 @@ const mapTextDecoration = (value: unknown): React.CSSProperties['textDecoration'
 const mapBlendMode = (value: unknown): React.CSSProperties['mixBlendMode'] | undefined => {
   if (typeof value !== 'string') return undefined;
   if (value === 'PASS_THROUGH' || value === 'NORMAL') return undefined;
-  const css = value.toLowerCase().replace(/_/g, '-');
-  return css as React.CSSProperties['mixBlendMode'];
+
+  // Figma uses snake_case, CSS uses kebab-case
+  const mode = value.toLowerCase().replace(/_/g, '-');
+
+  // Specific mappings for those that don't match 1:1 reliably
+  if (mode === 'linear-burn') return 'plus-darker' as any; // Heuristic
+  if (mode === 'linear-dodge') return 'plus-lighter' as any;
+
+  return mode as React.CSSProperties['mixBlendMode'];
 };
 
 const textAlignMap: Record<string, React.CSSProperties['textAlign']> = {
@@ -209,6 +216,52 @@ const FigmaNode = ({ node, parentLayoutMode = 'NONE', isRoot = false }: { node: 
   if (typeof layout.layoutGrow === 'number') style.flexGrow = layout.layoutGrow;
   if (layout.layoutAlign === 'STRETCH') style.alignSelf = 'stretch';
 
+  // Advanced Constraint Mapping for Absolute Positioned Nodes
+  if (!isRoot && isAbsolute) {
+    const constraints = (props.constraints || {}) as { horizontal?: string; vertical?: string };
+    const hConst = constraints.horizontal || 'MIN';
+    const vConst = constraints.vertical || 'MIN';
+
+    // Horizontal Constraints
+    if (hConst === 'MAX') {
+      style.left = 'auto';
+      style.right = toNumber(layout.right) ?? 0;
+    } else if (hConst === 'CENTER') {
+      style.left = '50%';
+      const x = toNumber(layout.x) ?? 0;
+      const w = toNumber(layout.width) ?? 0;
+      // Offset from center: x + w/2 - parentW/2
+      // But we don't always have parentW. Assume parent is the relative container.
+      // A better way is using transform: translateX(-50%) if we want true centering,
+      // but Figma uses fixed offsets.
+      style.transform = `${style.transform || ''} translateX(-50%)`;
+      if (x !== undefined) style.marginLeft = x; // This is a heuristic
+    } else if (hConst === 'STRETCH') {
+      style.left = toNumber(layout.x) ?? 0;
+      style.right = toNumber(layout.right) ?? 0;
+      style.width = 'auto';
+    } else if (hConst === 'SCALE') {
+      style.left = `${(toNumber(layout.x) ?? 0)}%`;
+      style.width = `${(toNumber(layout.width) ?? 0)}%`;
+    }
+
+    // Vertical Constraints
+    if (vConst === 'MAX') {
+      style.top = 'auto';
+      style.bottom = toNumber(layout.bottom) ?? 0;
+    } else if (vConst === 'CENTER') {
+      style.top = '50%';
+      style.transform = `${style.transform || ''} translateY(-50%)`;
+    } else if (vConst === 'STRETCH') {
+      style.top = toNumber(layout.y) ?? 0;
+      style.bottom = toNumber(layout.bottom) ?? 0;
+      style.height = 'auto';
+    } else if (vConst === 'SCALE') {
+      style.top = `${(toNumber(layout.y) ?? 0)}%`;
+      style.height = `${(toNumber(layout.height) ?? 0)}%`;
+    }
+  }
+
   const visibleFill = firstVisiblePaint(props.fills);
   if (visibleFill) {
     if (visibleFill.type === 'SOLID' && visibleFill.color && typeof visibleFill.color === 'object') {
@@ -342,9 +395,49 @@ const FigmaNode = ({ node, parentLayoutMode = 'NONE', isRoot = false }: { node: 
   }
 
   if (!content && Array.isArray(node.children) && node.children.length > 0) {
-    content = node.children.map((child, index) => (
-      <FigmaNode key={`${child.name || child.type || 'node'}-${index}`} node={child} parentLayoutMode={layoutMode} />
-    ));
+    const renderedChildren: React.ReactNode[] = [];
+    let currentMask: GenericNode | null = null;
+    let maskedGroup: React.ReactNode[] = [];
+
+    const flushMaskedGroup = (index: number) => {
+      if (currentMask) {
+        renderedChildren.push(
+          <div
+            key={`masked-group-${index}`}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              // We use the mask node itself to define the mask-image
+              // This is a simplified version; real mask-image would need the SVG or Alpha channel.
+              // For now, we use a CSS selector approach or simply mark it.
+              WebkitMaskImage: 'inherit', // Placeholder for actual mask logic
+              maskImage: 'inherit'
+            }}
+            className="figma-mask-group"
+          >
+            <FigmaNode node={currentMask} parentLayoutMode={layoutMode} />
+            {maskedGroup}
+          </div>
+        );
+        currentMask = null;
+        maskedGroup = [];
+      }
+    };
+
+    node.children.forEach((child, index) => {
+      const isMask = child.props?.isMask === true;
+
+      if (isMask) {
+        flushMaskedGroup(index);
+        currentMask = child;
+      } else if (currentMask) {
+        maskedGroup.push(<FigmaNode key={`${child.name || child.type || 'node'}-${index}`} node={child} parentLayoutMode={layoutMode} />);
+      } else {
+        renderedChildren.push(<FigmaNode key={`${child.name || child.type || 'node'}-${index}`} node={child} parentLayoutMode={layoutMode} />);
+      }
+    });
+    flushMaskedGroup(node.children.length);
+    content = renderedChildren;
   }
 
   return (

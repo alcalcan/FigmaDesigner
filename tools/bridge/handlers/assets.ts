@@ -15,21 +15,36 @@ export async function handleReadAsset(req: http.IncomingMessage, res: http.Serve
         return;
     }
 
-    // Try to find the asset in extraction or components
     const extractionRoot = path.join(process.cwd(), 'tools', 'extraction');
-    const componentsRoot = path.join(process.cwd(), 'components');
-
-    // Potentially the path comes in as 'Project/Component/assets/img.png'
-    // or just 'Component/assets/img.png' relative to some root.
-
     let fullPath = path.join(extractionRoot, filePath);
 
-    if (!fs.existsSync(fullPath)) {
-        // Try components root
-        fullPath = path.join(componentsRoot, filePath);
+    let found = fs.existsSync(fullPath);
+
+    if (!found) {
+        // Try other roots
+        const searchableDirs = ['components', 'pages', 'slides', 'presentations', 'flows'];
+        for (const dir of searchableDirs) {
+            const candidate = path.join(process.cwd(), dir, filePath);
+            if (fs.existsSync(candidate)) {
+                fullPath = candidate;
+                found = true;
+                break;
+            }
+        }
     }
 
-    if (!fs.existsSync(fullPath)) {
+    if (!found) {
+        // Fallback for explicit relative paths from root
+        const explicitPath = path.join(process.cwd(), filePath);
+        const searchableDirs = ['components', 'pages', 'slides', 'presentations', 'flows'];
+        const isAllowedRoot = searchableDirs.some(dir => explicitPath.startsWith(path.join(process.cwd(), dir)));
+        if (isAllowedRoot && fs.existsSync(explicitPath)) {
+            fullPath = explicitPath;
+            found = true;
+        }
+    }
+
+    if (!found) {
         res.writeHead(404);
         res.end(JSON.stringify({ error: "Asset not found" }));
         return;

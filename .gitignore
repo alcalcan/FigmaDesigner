@@ -8,3 +8,9 @@ out/
 dist/
 code.js
 tools/extraction/
+
+# Testing
+test-results/
+playwright-report/
+blob-report/
+web/test-results/

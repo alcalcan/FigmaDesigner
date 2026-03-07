@@ -42,8 +42,8 @@ function isNumericLineName(name: string): boolean {
 }
 
 function getFirstSignificantText(node: SceneNode): string | null {
-  if (node.type === "TEXT") return node.characters.trim();
-  if ("children" in node) {
+  if (node.type === "TEXT") return (node.characters || "").trim();
+  if ("children" in node && Array.isArray(node.children)) {
     for (const child of node.children) {
       const text = getFirstSignificantText(child);
       if (text && text.length > 1) return text;
@@ -54,7 +54,7 @@ function getFirstSignificantText(node: SceneNode): string | null {
 
 function getAllText(node: SceneNode): string[] {
   if (node.type === "TEXT") {
-    const text = node.characters.trim();
+    const text = (node.characters || "").trim();
     return text ? [text] : [];
   }
 

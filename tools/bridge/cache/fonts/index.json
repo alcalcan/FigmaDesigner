@@ -43,5 +43,41 @@
     "fontStyle": "normal",
     "fileName": "2d2f9973ebd222373a99b3ac7d23a53c22250446.woff2",
     "createdAt": "2026-03-07T09:37:27.429Z"
+  },
+  "manrope::bold": {
+    "key": "manrope::bold",
+    "family": "Manrope",
+    "style": "Bold",
+    "weight": 700,
+    "fontStyle": "normal",
+    "fileName": "a11ab81eb9e6b16007945c7299131449012916e7.woff2",
+    "createdAt": "2026-03-07T17:42:30.478Z"
+  },
+  "inter::bold": {
+    "key": "inter::bold",
+    "family": "Inter",
+    "style": "Bold",
+    "weight": 700,
+    "fontStyle": "normal",
+    "fileName": "b35358c54a06b78080c706c18e7a53cc68b6f745.woff2",
+    "createdAt": "2026-03-07T17:50:56.770Z"
+  },
+  "inter::regular": {
+    "key": "inter::regular",
+    "family": "Inter",
+    "style": "Regular",
+    "weight": 400,
+    "fontStyle": "normal",
+    "fileName": "49374580a9fad6169403fa94f420d0966a851580.woff2",
+    "createdAt": "2026-03-07T17:50:56.878Z"
+  },
+  "manrope::light": {
+    "key": "manrope::light",
+    "family": "Manrope",
+    "style": "Light",
+    "weight": 300,
+    "fontStyle": "normal",
+    "fileName": "78ef240dd57636da928f4379ebadb44d44118478.woff2",
+    "createdAt": "2026-03-07T18:26:57.868Z"
   }
 }

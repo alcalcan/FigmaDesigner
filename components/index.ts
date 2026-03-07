@@ -351,6 +351,7 @@ export { Mission } from "./UEFA_Academy/Mission/Mission";
 export { modal } from "./Alex_CookBook/modal/modal";
 export { ModalsDemo } from "../pages/Alex_CookBook/ModalsDemo";
 export { Nav_Booking_28_Demo } from "../pages/UEFA_web/Nav_Booking_28_Demo";
+export { Nav_Booking_Simplified_Demo } from "../pages/UEFA_web/Nav_Booking_Simplified_Demo";
 export { Nav_Euro_28_Demo } from "../pages/UEFA_web/Nav_Euro_28_Demo";
 export { NavBookingDemo } from "../pages/UEFA_web/NavBookingDemo";
 export { Navigation___close } from "./UEFA_icons/Navigation___close/Navigation___close";

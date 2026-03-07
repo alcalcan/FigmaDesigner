@@ -31,9 +31,10 @@ const walk = (nodeValue: unknown, parentPath: string, issues: string[]): void =>
   const currentPath = parentPath ? `${parentPath} > ${label}` : label;
   const props = asRecord(node.props) || {};
 
-  if (props.isMask === true) {
-    pushIssue(issues, `${currentPath}: mask behavior is not supported in Fidelity mode yet.`);
-  }
+  // Mask support is now partially implemented via group wrapping in the renderer
+  // if (props.isMask === true) {
+  //   pushIssue(issues, `${currentPath}: mask behavior is not supported in Fidelity mode yet.`);
+  // }
 
   const fills = asArray<GenericRecord>(props.fills);
   fills.forEach((fill, index) => {

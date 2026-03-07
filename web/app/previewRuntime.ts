@@ -14,6 +14,51 @@ export type PreviewRuntimeResult = {
   nodeDefinition: Record<string, unknown>;
 };
 
+if (typeof window !== 'undefined' && !(window as any).figma) {
+  const createMockNode = (type: string) => ({
+    type,
+    appendChild: () => { },
+    fills: [],
+    strokes: [],
+    effects: [],
+    children: [],
+    resize: function (width: number, height: number) {
+      const self = this as any;
+      self.width = width;
+      self.height = height;
+      if (!self.layoutProps) self.layoutProps = {};
+      self.layoutProps.width = width;
+      self.layoutProps.height = height;
+    },
+    findOne: function (callback: (node: any) => boolean): any {
+      if (callback(this)) return this;
+      const childrenArr = this.children as any[];
+      if (childrenArr && childrenArr.length > 0) {
+        for (const child of childrenArr) {
+          if (child.findOne) {
+            const found = child.findOne(callback);
+            if (found) return found;
+          } else if (callback(child)) {
+            return child;
+          }
+        }
+      }
+      return null;
+    }
+  });
+
+  (window as any).figma = {
+    loadFontAsync: async () => Promise.resolve(),
+    createFrame: () => createMockNode('FRAME'),
+    createText: () => ({ ...createMockNode('TEXT'), characters: '' }),
+    createVector: () => createMockNode('VECTOR'),
+    createLine: () => createMockNode('LINE'),
+    createRectangle: () => createMockNode('RECTANGLE'),
+    createEllipse: () => createMockNode('ELLIPSE'),
+    createBooleanOperation: () => createMockNode('BOOLEAN_OPERATION')
+  };
+}
+
 type RuntimeModule = {
   exports: Record<string, unknown>;
 };
@@ -23,7 +68,7 @@ const BRIDGE_BASE_URL = 'http://127.0.0.1:4000';
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp', '.svg'];
 
-const moduleCache = new Map<string, RuntimeModule>();
+const moduleCache = new Map<string, Promise<RuntimeModule>>();
 const assetCache = new Map<string, string>();
 
 const isRelativeImport = (request: string): boolean => request.startsWith('./') || request.startsWith('../');
@@ -81,8 +126,12 @@ const fetchAsset = async (filePath: string): Promise<string> => {
 
   if (normalized.toLowerCase().endsWith('.svg')) {
     const svgText = await fetchSource(normalized);
-    assetCache.set(normalized, svgText);
-    return svgText;
+    const base64 = typeof btoa !== 'undefined'
+      ? btoa(unescape(encodeURIComponent(svgText)))
+      : Buffer.from(svgText).toString('base64');
+    const dataUrl = `data:image/svg+xml;base64,${base64}`;
+    assetCache.set(normalized, dataUrl);
+    return dataUrl;
   }
 
   const response = await fetch(`${BRIDGE_BASE_URL}/read-asset?path=${encodeURIComponent(normalized)}`);
@@ -167,71 +216,113 @@ class BaseComponentMock {
       );
     }
 
+    if (!resolved.resize) {
+      resolved.resize = function (width: number, height: number) {
+        const self = this as any;
+        self.width = width;
+        self.height = height;
+        if (!self.layoutProps) self.layoutProps = {};
+        self.layoutProps.width = width;
+        self.layoutProps.height = height;
+      };
+    }
+
+    if (!resolved.findOne) {
+      resolved.findOne = function (callback: (node: any) => boolean): any {
+        if (callback(this)) return this;
+        const childrenArr = this.children as any[];
+        if (childrenArr && childrenArr.length > 0) {
+          for (const child of childrenArr) {
+            if (child.findOne) {
+              const found = child.findOne(callback);
+              if (found) return found;
+            } else if (callback(child)) {
+              return child;
+            }
+          }
+        }
+        return null;
+      };
+    }
+
     return resolved;
+  }
+
+  // Polyfill for frontend execution context where `hydratePaints` is invoked directly 
+  // by components but unsupported in previewRuntime's mock.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  hydratePaints(node: any, def: any): void {
+    // No-op for preview environments. Paints are handled natively via JSON properties.
   }
 }
 
 const executeModule = async (resolvedPath: string): Promise<RuntimeModule> => {
-  const cached = moduleCache.get(resolvedPath);
-  if (cached) return cached;
+  const existing = moduleCache.get(resolvedPath);
+  if (existing) return existing;
 
-  const source = await fetchSource(resolvedPath);
-  if (!babelTransform) {
-    throw new Error('Babel transform is unavailable in this environment.');
-  }
+  const executionPromise = (async (): Promise<RuntimeModule> => {
+    const source = await fetchSource(resolvedPath);
+    if (!babelTransform) {
+      throw new Error('Babel transform is unavailable in this environment.');
+    }
 
-  const transformed = babelTransform(source, {
-    presets: ['react', 'typescript', ['env', { modules: 'commonjs' }]],
-    filename: resolvedPath
-  });
-  const asyncCommonJsCode = transformed.code.replace(/(^|[^\w$])require\s*\(/g, '$1await __asyncRequire(');
+    const transformed = babelTransform(source, {
+      presets: ['react', 'typescript', ['env', { modules: 'commonjs' }]],
+      filename: resolvedPath
+    });
+    const asyncCommonJsCode = transformed.code.replace(/(^|[^\w$])require\s*\(/g, '$1await __asyncRequire(');
 
-  const moduleObj: RuntimeModule = { exports: {} };
-  moduleCache.set(resolvedPath, moduleObj);
+    const moduleObj: RuntimeModule = { exports: {} };
 
-  const localRequire = async (request: string): Promise<unknown> => {
-    if (request === 'react') return { ...React, default: React };
-    if (request.includes('lucide') || request.endsWith('/index') || request.endsWith('index')) return LucideReact;
-    if (request.includes('BaseComponent')) return { BaseComponent: BaseComponentMock };
+    const localRequire = async (request: string): Promise<unknown> => {
+      if (request === 'react') return { ...React, default: React };
+      if (request.includes('lucide') || request.endsWith('/index') || request.endsWith('index')) return LucideReact;
+      if (request.includes('BaseComponent')) return { BaseComponent: BaseComponentMock };
 
-    if (isRelativeImport(request)) {
-      const nextPath = await resolveModulePath(request, resolvedPath);
-      if (isAssetPath(nextPath)) {
-        return fetchAsset(nextPath);
+      if (isRelativeImport(request)) {
+        const nextPath = await resolveModulePath(request, resolvedPath);
+        if (isAssetPath(nextPath)) {
+          const assetUrl = await fetchAsset(nextPath);
+          return { default: assetUrl };
+        }
+        const moduleValue = await executeModule(nextPath);
+        return moduleValue.exports;
       }
-      const moduleValue = await executeModule(nextPath);
-      return moduleValue.exports;
-    }
 
-    if (isAssetPath(request)) {
-      const nextPath = await resolveModulePath(request, resolvedPath);
-      return fetchAsset(nextPath);
-    }
+      if (isAssetPath(request)) {
+        const nextPath = await resolveModulePath(request, resolvedPath);
+        const assetUrl = await fetchAsset(nextPath);
+        return { default: assetUrl };
+      }
 
-    console.warn(`Preview runtime: unresolved external module "${request}"`);
-    return {};
-  };
+      console.warn(`Preview runtime: unresolved external module "${request}"`);
+      return {};
+    };
 
-  // Execute transpiled module with async-aware require wrapper.
-  const wrappedCode = `
-    return (async () => {
-      const __asyncRequire = async (id) => await require(id);
-      ${asyncCommonJsCode}
-      return module.exports;
-    })();
-  `;
+    // Execute transpiled module with async-aware require wrapper.
+    const wrappedCode = `
+      return (async () => {
+        const __asyncRequire = async (id) => await require(id);
+        ${asyncCommonJsCode}
+        return module.exports;
+      })();
+    `;
 
-  // eslint-disable-next-line no-new-func
-  const executor = new Function('require', 'exports', 'module', wrappedCode) as (
-    requireFn: (request: string) => Promise<unknown>,
-    exportsObj: Record<string, unknown>,
-    moduleArg: { exports: Record<string, unknown> }
-  ) => Promise<Record<string, unknown>>;
+    // eslint-disable-next-line no-new-func
+    const executor = new Function('require', 'exports', 'module', wrappedCode) as (
+      requireFn: (request: string) => Promise<unknown>,
+      exportsObj: Record<string, unknown>,
+      moduleArg: { exports: Record<string, unknown> }
+    ) => Promise<Record<string, unknown>>;
 
-  const finalExports = await executor(localRequire, moduleObj.exports, { exports: moduleObj.exports });
-  moduleObj.exports = finalExports;
+    const finalExports = await executor(localRequire, moduleObj.exports, { exports: moduleObj.exports });
+    moduleObj.exports = finalExports;
 
-  return moduleObj;
+    return moduleObj;
+  })();
+
+  moduleCache.set(resolvedPath, executionPromise);
+  return executionPromise;
 };
 
 const findComponentClass = (moduleExports: Record<string, unknown>): ComponentType | null => {

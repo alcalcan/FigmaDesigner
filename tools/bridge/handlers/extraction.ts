@@ -54,19 +54,25 @@ export function handleRead(req: http.IncomingMessage, res: http.ServerResponse) 
     // but for components it might send "Project/Component/Comp.ts".
     // Let's verify if the filePath passed is purely relative.
 
-    // Attempt to resolve in components dir if not found in extraction
-    if (!allowed && fs.existsSync(componentsPath)) {
-        if (componentsPath.startsWith(path.join(process.cwd(), 'components'))) {
-            targetPath = componentsPath;
-            allowed = true;
-            console.log(`[Bridge] Reading component file: ${filePath}`);
+    // Attempt to resolve in specific sub-directories if not found in extraction
+    const searchableDirs = ['components', 'pages', 'slides', 'presentations', 'flows'];
+    if (!allowed) {
+        for (const dir of searchableDirs) {
+            const candidatePath = path.join(process.cwd(), dir, filePath);
+            if (candidatePath.startsWith(path.join(process.cwd(), dir)) && fs.existsSync(candidatePath)) {
+                targetPath = candidatePath;
+                allowed = true;
+                console.log(`[Bridge] Reading ${dir} file: ${filePath}`);
+                break;
+            }
         }
     }
 
     if (!allowed) {
-        // One more fallback: maybe the UI sends "components/Project/..." explicitly?
+        // Fallback for explicit relative paths from root if they map to allowed directories
         const explicitPath = path.join(process.cwd(), filePath);
-        if (explicitPath.startsWith(path.join(process.cwd(), 'components')) && fs.existsSync(explicitPath)) {
+        const isAllowedRoot = searchableDirs.some(dir => explicitPath.startsWith(path.join(process.cwd(), dir)));
+        if (isAllowedRoot && fs.existsSync(explicitPath)) {
             targetPath = explicitPath;
             allowed = true;
         }

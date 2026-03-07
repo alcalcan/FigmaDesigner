@@ -99,9 +99,49 @@ export function FigmaNodeRenderer({ node, parentLayoutMode = 'NONE' }: { node: a
     const toRgba = (color: any, opacity: number = 1) => `rgba(${Math.round(color.r * 255)}, ${Math.round(color.g * 255)}, ${Math.round(color.b * 255)}, ${opacity})`;
 
     if (props.fills && props.fills.length > 0) {
-        const fill = props.fills.find((f: any) => f.visible !== false && f.type === 'SOLID');
-        if (fill && fill.color) {
-            style.backgroundColor = toRgba(fill.color, fill.opacity !== undefined ? fill.opacity : 1);
+        const visibleFills = props.fills.filter((f: any) => f.visible !== false);
+        const imageAndGradients: string[] = [];
+        let solidColor: string | undefined = undefined;
+
+        visibleFills.forEach((fill: any) => {
+            if (fill.type === 'SOLID' && fill.color) {
+                solidColor = toRgba(fill.color, fill.opacity !== undefined ? fill.opacity : 1);
+            } else if (fill.type === 'IMAGE' && fill.assetRef) {
+                const assetUrl = typeof fill.assetRef === 'object' && fill.assetRef.default ? fill.assetRef.default : fill.assetRef;
+                imageAndGradients.push(`url(${assetUrl})`);
+
+                // Map Figma scaleMode to CSS backgroundSize
+                if (fill.scaleMode === 'FILL') style.backgroundSize = 'cover';
+                else if (fill.scaleMode === 'FIT') style.backgroundSize = 'contain';
+                else if (fill.scaleMode === 'TILE') {
+                    style.backgroundRepeat = 'repeat';
+                    style.backgroundSize = 'auto';
+                } else if (fill.scaleMode === 'STRETCH') style.backgroundSize = '100% 100%';
+
+                style.backgroundPosition = 'center';
+            } else if (fill.type === 'GRADIENT_LINEAR' && fill.gradientStops) {
+                const stops = fill.gradientStops.map((s: any) => {
+                    const color = s.color ? toRgba(s.color, s.color.a !== undefined ? s.color.a : 1) : 'transparent';
+                    return `${color} ${Math.round(s.position * 100)}%`;
+                }).join(', ');
+
+                // Simple transform mapping
+                let angle = '90deg';
+                if (fill.gradientTransform) {
+                    const [[a, b], [c, d]] = fill.gradientTransform;
+                    if (a === -1) angle = '270deg';
+                    if (b === 1) angle = '180deg';
+                    if (b === -1) angle = '0deg';
+                }
+                imageAndGradients.push(`linear-gradient(${angle}, ${stops})`);
+            }
+        });
+
+        if (imageAndGradients.length > 0) {
+            style.backgroundImage = imageAndGradients.reverse().join(', ');
+        }
+        if (solidColor) {
+            style.backgroundColor = solidColor;
         }
     }
 
@@ -109,28 +149,41 @@ export function FigmaNodeRenderer({ node, parentLayoutMode = 'NONE' }: { node: a
         const stroke = props.strokes.find((s: any) => s.visible !== false && s.type === 'SOLID');
         if (stroke && stroke.color) {
             const color = toRgba(stroke.color, stroke.opacity !== undefined ? stroke.opacity : 1);
+            const w = props.strokeWeight || 1;
+            const align = props.strokeAlign || 'INSIDE';
 
             if (props.strokeTopWeight !== undefined) {
                 style.borderTop = `${props.strokeTopWeight}px solid ${color}`;
                 style.borderRight = `${props.strokeRightWeight}px solid ${color}`;
                 style.borderBottom = `${props.strokeBottomWeight}px solid ${color}`;
                 style.borderLeft = `${props.strokeLeftWeight}px solid ${color}`;
+            } else if (type === 'LINE') {
+                const wVal = style.width;
+                const wStr = String(wVal);
+                if (wStr === '0px' || wStr === '0') {
+                    style.borderLeft = `${w}px solid ${color}`;
+                } else {
+                    style.borderTop = `${w}px solid ${color}`;
+                }
             } else {
-                const w = props.strokeWeight || 1;
-                if (type === 'LINE') {
-                    const wVal = style.width;
-                    const wStr = String(wVal);
-                    if (wStr === '0px' || wStr === '0') {
-                        style.borderLeft = `${w}px solid ${color}`;
-                    } else {
-                        style.borderTop = `${w}px solid ${color}`;
-                    }
+                // Approximate INSIDE/OUTSIDE alignment
+                if (align === 'INSIDE') {
+                    style.boxShadow = `inset 0 0 0 ${w}px ${color}`;
+                } else if (align === 'OUTSIDE') {
+                    style.outline = `${w}px solid ${color}`;
+                    style.outlineOffset = `-${w}px`; // Not quite right but outline is outside
                 } else {
                     style.border = `${w}px solid ${color}`;
                 }
             }
         }
     }
+
+    // Per-corner radius support
+    if (props.topLeftRadius !== undefined) style.borderTopLeftRadius = props.topLeftRadius;
+    if (props.topRightRadius !== undefined) style.borderTopRightRadius = props.topRightRadius;
+    if (props.bottomLeftRadius !== undefined) style.borderBottomLeftRadius = props.bottomLeftRadius;
+    if (props.bottomRightRadius !== undefined) style.borderBottomRightRadius = props.bottomRightRadius;
 
     // 7. Effects (Shadows)
     if (props.effects && props.effects.length > 0) {
@@ -209,8 +262,18 @@ export function FigmaNodeRenderer({ node, parentLayoutMode = 'NONE' }: { node: a
             <FigmaNodeRenderer key={i} node={child} parentLayoutMode={currentLayoutMode} />
         ));
     } else if (type === 'VECTOR') {
-        if (node.svgContent) {
-            content = <div dangerouslySetInnerHTML={{ __html: node.svgContent }} style={{ width: '100%', height: '100%' }} />;
+        let svgContent = node.svgContent;
+        if (svgContent && typeof svgContent === 'object' && svgContent.default) {
+            svgContent = svgContent.default;
+        }
+
+        if (svgContent) {
+            // SVGs imported via Babel are converted to data URLs, not raw HTML tags
+            if (typeof svgContent === 'string' && svgContent.trim().startsWith('data:image/')) {
+                content = <img src={svgContent} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Vector asset" />;
+            } else {
+                content = <div dangerouslySetInnerHTML={{ __html: svgContent }} style={{ width: '100%', height: '100%' }} />;
+            }
         } else {
             // Vector placeholder
             content = <div style={{ width: '100%', height: '100%', border: '1px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: '#aaa' }}>VECTOR</div>;

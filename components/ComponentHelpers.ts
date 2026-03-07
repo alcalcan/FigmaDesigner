@@ -26,11 +26,35 @@ const DEFAULT_LAYOUT_PROPS = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+const attachMethods = <T extends NodeDefinition>(nodeDef: T): T => {
+    (nodeDef as any).resize = function (width: number, height: number) {
+        if (!this.layoutProps) this.layoutProps = {};
+        this.layoutProps.width = width;
+        this.layoutProps.height = height;
+    };
+    (nodeDef as any).findOne = function (callback: (node: any) => boolean): any {
+        if (callback(this)) return this;
+        if (this.children) {
+            for (const child of this.children) {
+                if (child.findOne) {
+                    const found = child.findOne(callback);
+                    if (found) return found;
+                } else if (callback(child)) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    };
+    return nodeDef;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createFrame = (name: string, overrides: any = {}, children: (NodeDefinition | null | undefined)[] = []): NodeDefinition => {
     // Merge nested layoutProps if they exist in overrides
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
-    return {
+    return attachMethods({
         type: "FRAME",
         name,
         props: { ...DEFAULT_PROPS, ...restOverrides },
@@ -41,14 +65,14 @@ export const createFrame = (name: string, overrides: any = {}, children: (NodeDe
             ...DEFAULT_LAYOUT_PROPS,
             ...ovrLayoutProps
         }
-    };
+    });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createText = (name: string, text: string, fontSize: number, style: string, color: any, overrides: any = {}): NodeDefinition => {
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
-    return {
+    return attachMethods({
         type: "TEXT",
         name,
         props: {
@@ -71,7 +95,7 @@ export const createText = (name: string, text: string, fontSize: number, style: 
             height: undefined,
             ...ovrLayoutProps
         }
-    };
+    });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,7 +107,7 @@ export const createVector = (name: string, svgContent: string | undefined, overr
     if (!restOverrides.fills) delete (props as any).fills;
     if (!restOverrides.strokes) delete (props as any).strokes;
 
-    return {
+    return attachMethods({
         type: "VECTOR",
         shouldFlatten: true,
         name,
@@ -95,7 +119,7 @@ export const createVector = (name: string, svgContent: string | undefined, overr
             ...ovrLayoutProps
         },
         svgContent
-    };
+    });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +127,7 @@ export const createBooleanOperation = (name: string, booleanOperation: "UNION" |
     // Merge nested layoutProps if they exist in overrides
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
-    return {
+    return attachMethods({
         type: "BOOLEAN_OPERATION",
         booleanOperation,
         name,
@@ -115,14 +139,14 @@ export const createBooleanOperation = (name: string, booleanOperation: "UNION" |
             ...DEFAULT_LAYOUT_PROPS,
             ...ovrLayoutProps
         }
-    };
+    });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createLine = (name: string, overrides: any = {}): NodeDefinition => {
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
-    return {
+    return attachMethods({
         type: "LINE",
         name,
         props: { ...DEFAULT_PROPS, ...restOverrides },
@@ -135,14 +159,14 @@ export const createLine = (name: string, overrides: any = {}): NodeDefinition =>
             height: 0, // Default for line
             ...ovrLayoutProps
         }
-    };
+    });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createRectangle = (name: string, overrides: any = {}): NodeDefinition => {
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
-    return {
+    return attachMethods({
         type: "RECTANGLE",
         name,
         props: { ...DEFAULT_PROPS, ...restOverrides },
@@ -153,14 +177,14 @@ export const createRectangle = (name: string, overrides: any = {}): NodeDefiniti
             ...DEFAULT_LAYOUT_PROPS,
             ...ovrLayoutProps
         }
-    };
+    });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createEllipse = (name: string, overrides: any = {}): NodeDefinition => {
     const { layoutProps: ovrLayoutProps, ...restOverrides } = overrides;
 
-    return {
+    return attachMethods({
         type: "ELLIPSE",
         name,
         props: { ...DEFAULT_PROPS, ...restOverrides },
@@ -171,5 +195,5 @@ export const createEllipse = (name: string, overrides: any = {}): NodeDefinition
             ...DEFAULT_LAYOUT_PROPS,
             ...ovrLayoutProps
         }
-    };
+    });
 };

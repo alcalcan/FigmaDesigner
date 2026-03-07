@@ -1,11 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { FidelityPreview } from '../FidelityPreview';
 import { LivePreview } from '../LivePreview';
 
-export default function PreviewRoutePage() {
+function PreviewContent() {
   const searchParams = useSearchParams();
   const filePath = searchParams.get('path') || '';
   const mode = (searchParams.get('mode') || 'fidelity').toLowerCase();
@@ -22,5 +23,13 @@ export default function PreviewRoutePage() {
     <main style={{ minHeight: '100vh', background: '#050506' }}>
       {mode === 'standard' ? <LivePreview filePath={filePath} /> : <FidelityPreview filePath={filePath} standalone />}
     </main>
+  );
+}
+
+export default function PreviewRoutePage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#050506' }}>Loading preview...</div>}>
+      <PreviewContent />
+    </Suspense>
   );
 }
