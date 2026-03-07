@@ -16,6 +16,8 @@ import {
   Sidebar
 } from 'lucide-react';
 
+import { LivePreview } from './LivePreview';
+
 type CommandType =
   | 'create'
   | 'tools-select-instances'
@@ -2051,7 +2053,7 @@ export default function HomePage() {
         </div>
         {viewMode === 'sidebar' && (
           <div className="sidebar-right-column">
-            Right panel content (to be decided)
+            <LivePreview filePath={selectedCatalogPath} />
           </div>
         )}
       </div>
