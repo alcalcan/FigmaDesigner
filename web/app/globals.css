@@ -46,12 +46,15 @@ h2 {
   flex-wrap: wrap;
 }
 
-.session-telemetry {
+hr.session-divider {
+  border: 0;
+  border-top: 1px solid #2a2a2a;
+  margin: 12px 0 16px 0;
+}
+
+.session-column {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
+  flex-direction: column;
 }
 
 .telemetry-chip {

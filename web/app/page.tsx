@@ -1483,7 +1483,12 @@ export default function HomePage() {
   return (
     <main>
       <div className="topbar">
-        <h2>Figma Designer Control Center</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <h2>Figma Designer Control Center</h2>
+          <span className="telemetry-chip">
+            {status?.sessionId || sessionId || 'none'}
+          </span>
+        </div>
         <div className="topbar-actions">
           <div className="status-badge">
             <span className={`dot ${connected ? 'active' : 'error'}`} />
@@ -1501,15 +1506,10 @@ export default function HomePage() {
           </button>
         </div>
       </div>
-      <div className="session-telemetry">
-        <span className="telemetry-chip">sessionId: {status?.sessionId || sessionId || 'none'}</span>
-        <span className="telemetry-chip">pluginConnected: {status?.pluginConnected ? 'true' : 'false'}</span>
-        <span className="telemetry-chip">queued: {status?.queuedCommands ?? 0}</span>
-        <span className="telemetry-chip">inFlight: {status?.inFlightCommands ?? 0}</span>
-        <span className="telemetry-chip">eventsBuffered: {status?.eventsBuffered ?? 0}</span>
+      <hr className="session-divider" />
+      <div className="session-column">
+        <div className="info-line">{infoMessage}</div>
       </div>
-
-      <div className="info-line">{infoMessage}</div>
       {commandError ? (
         <div className="error-card">
           <div className="error-header">
@@ -2010,9 +2010,9 @@ export default function HomePage() {
                 {events.length === 0 ? (
                   <div className="empty-row">No events received yet</div>
                 ) : (
-                  events.map((eventItem) => (
+                  events.map((eventItem, index) => (
                     <div
-                      key={eventItem.id}
+                      key={`${eventItem.id}-${index}`}
                       className={`log-item ${eventItem.type === 'command-ack' ? 'ack-event' : ''}`}
                     >
                       <div>
